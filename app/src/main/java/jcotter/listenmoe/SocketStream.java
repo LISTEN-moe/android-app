@@ -11,7 +11,6 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -35,7 +34,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
-import com.neovisionaries.ws.client.WebSocketCloseCode;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
@@ -64,19 +62,16 @@ public class SocketStream extends Service {
     public SocketStream() {}
     @Override public IBinder onBind(Intent intent) {return null;}
     @Override public void onCreate(){
-        Log.i("State", "Starting");
         killable = false;
         volume = 0.5f;
         notif = false;
         notifID = -1;
     }
     @Override public void onDestroy(){
-        Log.i("Destroyed", "Destroyed");
         if(ws != null)
             ws.disconnect();
     }
     @Override public int onStartCommand(Intent intent, int flags, int startID){
-        Log.i("State", "Processing Intent");
         // Volume Control //
         if(intent.hasExtra("volume"))
         {
@@ -136,7 +131,6 @@ public class SocketStream extends Service {
             voiceOfKanacchi.setPlayWhenReady(false);
             stopForeground(true);
             if(killable) {
-                Log.i("State", "Killing");
                 stopSelf();
             }
             Intent returnIntent = new Intent("jcotter.listenmoe")
@@ -181,14 +175,12 @@ public class SocketStream extends Service {
         final String url = getResources().getString(R.string.apiSocket);
         // Create Web Socket //
         ws = null;
-        Log.i("Connection", "Connecting");
         WebSocketFactory factory = new WebSocketFactory();
         try{
             ws = factory.createSocket(url, 900000);
             ws.addListener(new WebSocketAdapter(){
                 @Override
                 public void onFrame(WebSocket websocket, WebSocketFrame frame) throws Exception{
-                    Log.i("Connection", "Frame Received");
                     if(frame.getPayloadText().contains("listeners")) {
                         // Get userToken from shared preferences if socket not authenticated //
                         if (!frame.getPayloadText().contains("\"extended\":{")) {
@@ -196,7 +188,6 @@ public class SocketStream extends Service {
                             String token = sharedPreferences.getString("userToken", "NULL");
                             if (!token.equals("NULL")) {
                                 ws.sendText("{\"token\":\"" + token + "\"}");
-                                Log.i("Connection", "Authenticating");
                             }
                         }
                         // Parses the API information //
@@ -207,7 +198,6 @@ public class SocketStream extends Service {
                 public void onConnectError(WebSocket websocket, WebSocketException exception) throws Exception {
                     exception.printStackTrace();
                     parseJSON("NULL");
-                    Log.i("Connection", "Error");
                     SystemClock.sleep(6000);
                     connectWebSocket();
                 }
@@ -217,7 +207,6 @@ public class SocketStream extends Service {
                 }
                 @Override
                 public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer) throws Exception {
-                    Log.i("Connection", "Disconnected");
                     SystemClock.sleep(6000);
                     if(closedByServer)
                         connectWebSocket();

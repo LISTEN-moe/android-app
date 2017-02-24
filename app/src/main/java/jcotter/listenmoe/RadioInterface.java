@@ -16,7 +16,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,7 +158,6 @@ public class RadioInterface extends AppCompatActivity {
     }
     private void socketDisplay(){
         // PURPOSE: DISPLAYS DATA RECEIVED FROM WEBSOCKET | CHECKS IF STREAM IS PLAYING //
-        Log.i("SocketDisplay", "SocketDisplay");
         songID = -1;
         favorite = false;
         broadcastReceiver = new BroadcastReceiver() {
