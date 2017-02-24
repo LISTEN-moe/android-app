@@ -1,0 +1,17 @@
+<resources>
+    <!-- Style for TabHost -->
+    <style name="TabWidgetTheme" parent="AppTheme">
+        <item name="android:textColorPrimary">@color/flavoredText</item>
+        <item name="android:textColorSecondary">#c0c0c0</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+
+</resources>

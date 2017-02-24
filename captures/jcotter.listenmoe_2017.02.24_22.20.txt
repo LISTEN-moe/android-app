@@ -1,0 +1,2 @@
+Bad activity command, or no activities match: jcotter.listenmoe
+Use -h for help.

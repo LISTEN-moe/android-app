@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/backgroundColor"
+    android:id="@+id/root"
+    tools:context="jcotter.listenmoe.Menu">
+
+    <TabHost
+        android:layout_width="0dp"
+        android:layout_height="551dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/TabWidgetTheme"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:id="@+id/tabAPI"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:showDividers="middle" />
+
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/Requests"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10sp"
+                    android:layout_marginRight="10sp">
+
+                    <TextView
+                        android:text="@string/loginRequired"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/req_loginRequired"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold"
+                        android:textAlignment="center"
+                        android:layout_marginTop="10sp"
+                        android:fontFamily="sans-serif" />
+
+                    <TextView
+                        android:text="@string/search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/req_searchText"
+                        android:layout_marginTop="10sp"
+                        android:visibility="gone"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textPersonName"
+                            android:ems="10"
+                            android:id="@+id/req_search"
+                            android:textColor="@android:color/white"
+                            android:lines="1"
+                            android:visibility="gone"
+                            android:layout_weight="1"
+                            android:layout_gravity="start|center_horizontal" />
+
+                        <Button
+                            android:text="@string/searchAlt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/req_searchButton"
+                            android:layout_weight="0"
+                            android:layout_gravity="end|center_horizontal"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fadeScrollbars="false"
+                        android:id="@+id/req_list"
+                        android:layout_marginTop="5sp"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/req_remaining"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold"
+                        android:textAlignment="center"
+                        android:textSize="18sp"
+                        android:layout_marginTop="10sp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Favorites"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp">
+
+                    <TextView
+                        android:text="@string/loginRequired"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/fav_loginRequired"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/white"
+                        android:textStyle="normal|bold"
+                        android:textAlignment="center"
+                        android:layout_marginTop="10sp" />
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/fav_list"
+                        android:layout_marginTop="10sp"
+                        android:visibility="gone"
+                        android:fadeScrollbars="false" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp">
+
+                    <TextView
+                        android:text="@string/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/username"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_marginTop="15sp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:ems="10"
+                        android:id="@+id/login_username"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:maxLines="1" />
+
+                    <TextView
+                        android:text="@string/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/password"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:ems="10"
+                        android:id="@+id/login_password"
+                        android:textColor="@android:color/white" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal">
+
+                        <Button
+                            android:text="@string/tabLogin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/login_button"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10sp"
+                            android:textSize="16sp"
+                            android:layout_weight="1" />
+
+                        <Button
+                            android:text="@string/logoutString"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/login_logout"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </TabHost>
+
+</android.support.constraint.ConstraintLayout>
