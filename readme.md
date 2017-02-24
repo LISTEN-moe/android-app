@@ -21,6 +21,7 @@ In its current state the app was completely rewritten from the Beta release. The
     * Play/Pause
     * Toggle Favorite Status of Currently Playing Song
     * Stop Music Stream & Close Notification
+    
 ##### Planned:
 -  __High Priority__ 
     * Song History
