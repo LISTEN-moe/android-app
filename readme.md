@@ -30,11 +30,11 @@ In its current state the app was completely rewritten from the Beta release. The
     * [Bluetooth Control Compatibility?? ](https://snag.gy/tiYgwn.jpg)
 ***
 # 3rd Party Libraries Used
-Name        | License           
+|Name        | License	|           
  :-------------: |:-------------:
- [__nv-websocket-client__](https://github.com/TakahikoKawasaki/nv-websocket-client)      | [Apache 2.0]
- [__OkHttp__](https://github.com/square/okhttp)      | [Apache 2.0]      
- [__ExoPlayer__](https://github.com/google/ExoPlayer) | [Apache 2.0]      
+ [__nv-websocket-client__](https://github.com/TakahikoKawasaki/nv-websocket-client)      | [Apache 2.0]	|
+ [__OkHttp__](https://github.com/square/okhttp)      | [Apache 2.0]		|
+ [__ExoPlayer__](https://github.com/google/ExoPlayer) | [Apache 2.0]	|      
 [Apache 2.0]:https://www.apache.org/licenses/LICENSE-2.0
 ***
 
