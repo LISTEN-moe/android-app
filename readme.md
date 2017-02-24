@@ -37,3 +37,7 @@ In its current state the app was completely rewritten from the Beta release. The
 | [__ExoPlayer__](https://github.com/google/ExoPlayer) | [Apache 2.0]	|      
 [Apache 2.0]:https://www.apache.org/licenses/LICENSE-2.0
 ***
+| Command | Description |
+| --- | --- |
+| git status | List all new or modified files |
+| git diff | Show file differences that haven't been staged |
