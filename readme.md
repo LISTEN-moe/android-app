@@ -26,7 +26,8 @@ In its current state the app was completely rewritten from the Beta release. The
 -  __High Priority__ 
     * Song History
     * Display Requests Remaining
-    * Display Number of Songs in Queue 
+    * Display Number of Songs in Queue
+	* Search Favorites List
 - __Low Priority__
     * [Bluetooth Control Compatibility?? ](https://snag.gy/tiYgwn.jpg)
     
