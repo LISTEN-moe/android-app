@@ -44,6 +44,8 @@
     <string name="apiSearch">https://listen.moe/api/songs/search</string>
     <string name="apiRequest">https://listen.moe/api/songs/request</string>
 
+    <string name="github">https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App</string>
+
     <!-- WebSocket -->
     <string name="apiSong">song_name</string>
     <string name="apiListeners">listeners</string>

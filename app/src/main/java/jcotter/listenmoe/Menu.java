@@ -3,12 +3,13 @@ package jcotter.listenmoe;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -35,7 +38,7 @@ public class Menu extends AppCompatActivity {
 
     // [GLOBAL VARIABLES] //
     // UI VARIABLES //
-    ConstraintLayout root;
+    LinearLayout root;
     TabHost tabHost;
     //Request Tab //
     TextView req_loginRequired;
@@ -52,6 +55,7 @@ public class Menu extends AppCompatActivity {
     EditText password;
     Button login;
     Button logout;
+    ImageButton github;
     // NON-UI GLOBAL VARIABLES //
     List<Integer> songIds, favorite;
     List<Boolean> enabled;
@@ -62,7 +66,7 @@ public class Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        root = (ConstraintLayout) findViewById(R.id.root);
+        root = (LinearLayout) findViewById(R.id.root);
         tabHost = (TabHost) findViewById(R.id.tabAPI);
         req_loginRequired = (TextView) findViewById(R.id.req_loginRequired);
         req_searchText = (TextView) findViewById(R.id.req_searchText);
@@ -77,6 +81,7 @@ public class Menu extends AppCompatActivity {
         password = (EditText) findViewById(R.id.login_password);
         login = (Button) findViewById(R.id.login_button);
         logout = (Button) findViewById(R.id.login_logout);
+        github = (ImageButton) findViewById(R.id.github);
 
         // SETUP METHODS //
         tabHostSetup();
@@ -337,6 +342,14 @@ public class Menu extends AppCompatActivity {
             public void onClick(View view) {
                 onWindowFocusChanged(true);
                 logout();
+            }
+        });
+        github.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri link = Uri.parse(getString(R.string.github));
+                Intent intent = new Intent(Intent.ACTION_VIEW, link);
+                startActivity(intent);
             }
         });
     }
