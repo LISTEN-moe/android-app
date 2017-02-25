@@ -93,10 +93,12 @@ public class SocketStream extends Service {
         {
             killable = false;
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            if (sharedPreferences.getString("userToken", "NULL").equals("NULL"))
+            if (sharedPreferences.getString("userToken", "NULL").equals("NULL") && ws != null)
                 ws.sendText("update");
-            else
+            else if (ws != null)
                 ws.sendText("{\"token\":\"" + sharedPreferences.getString("userToken", "NULL") + "\"}");
+            else
+                connectWebSocket();
         } else
         // Play/Pause Music Stream //
         if(intent.hasExtra("play"))
@@ -253,9 +255,10 @@ public class SocketStream extends Service {
                 }
                 if(json.contains("\"extended\":{")){
                     JSONObject jsonObjectE = jsonObject.getJSONObject("extended");
-                    songID = jsonObject.getInt("song_id");
+                    //songID = jsonObject.getInt("song_id");
                     favorite = jsonObjectE.getBoolean("favorite");
                 }
+                songID = jsonObject.getInt("song_id");
             } catch (JSONException ex){ ex.printStackTrace(); }
         } else {
             nowPlaying = getResources().getString(R.string.apiFailed);
