@@ -77,7 +77,6 @@ public class SocketStream extends Service {
         {
             if (voiceOfKanacchi != null)
                 voiceOfKanacchi.setVolume(intent.getFloatExtra("volume", 0.5f));
-                //notification();
             else
                 volume = intent.getFloatExtra("volume", 0.5f);
         }

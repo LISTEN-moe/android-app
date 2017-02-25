@@ -131,7 +131,7 @@ public class RadioInterface extends AppCompatActivity {
             @Override public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if(isRunning()){
                     Intent intent = new Intent(getBaseContext(), SocketStream.class)
-                            .putExtra("volume", seekBar.getProgress() / 1000f);
+                            .putExtra("volume", seekBar.getProgress() / 100f);
                     startService(intent);
                 }
             }
