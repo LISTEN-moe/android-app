@@ -34,6 +34,109 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/Login"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:paddingLeft="10sp"
+                    android:paddingRight="10sp">
+
+                    <TextView
+                        android:text="@string/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/username"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:layout_marginTop="15sp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:ems="10"
+                        android:id="@+id/login_username"
+                        android:textColor="@android:color/primary_text_dark"
+                        android:maxLines="1"
+                        tools:ignore="LabelFor" />
+
+                    <TextView
+                        android:text="@string/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/password"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textPassword"
+                        android:ems="10"
+                        android:id="@+id/login_password"
+                        android:textColor="@android:color/white"
+                        tools:ignore="LabelFor" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="0.1"
+                        tools:ignore="InefficientWeight">
+
+                        <Button
+                            android:text="@string/tabLogin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/login_button"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10sp"
+                            android:textSize="16sp"
+                            android:layout_weight="1"
+                            tools:ignore="ButtonStyle,NestedWeights" />
+
+                        <Button
+                            android:text="@string/logoutString"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/login_logout"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:layout_gravity="center_horizontal"
+                            tools:ignore="ButtonStyle" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:text="@string/loginStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/loginStatus"
+                        android:layout_weight="1"
+                        android:textSize="18sp"
+                        android:textStyle="normal|bold"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:visibility="invisible" />
+
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/icon_github"
+                        android:id="@+id/github"
+                        android:background="@android:color/transparent"
+                        android:backgroundTint="@android:color/transparent"
+                        android:contentDescription=""
+                        android:layout_gravity="end"
+                        tools:ignore="ContentDescription" />
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/Requests"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -138,97 +241,6 @@
                         android:layout_marginTop="10sp"
                         android:visibility="gone"
                         android:fadeScrollbars="false" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/Login"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:paddingLeft="10sp"
-                    android:paddingRight="10sp">
-
-                    <TextView
-                        android:text="@string/username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/username"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold"
-                        android:layout_marginTop="15sp" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:ems="10"
-                        android:id="@+id/login_username"
-                        android:textColor="@android:color/primary_text_dark"
-                        android:maxLines="1"
-                        tools:ignore="LabelFor" />
-
-                    <TextView
-                        android:text="@string/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/password"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:ems="10"
-                        android:id="@+id/login_password"
-                        android:textColor="@android:color/white"
-                        tools:ignore="LabelFor" />
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="1"
-                        tools:ignore="InefficientWeight">
-
-                        <Button
-                            android:text="@string/tabLogin"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/login_button"
-                            android:textAlignment="center"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10sp"
-                            android:textSize="16sp"
-                            android:layout_weight="1"
-                            tools:ignore="ButtonStyle,NestedWeights" />
-
-                        <Button
-                            android:text="@string/logoutString"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/login_logout"
-                            android:layout_weight="1"
-                            android:textAlignment="center"
-                            android:layout_gravity="center_horizontal"
-                            tools:ignore="ButtonStyle" />
-
-                    </LinearLayout>
-
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/icon_github"
-                        android:id="@+id/github"
-                        android:background="@android:color/transparent"
-                        android:backgroundTint="@android:color/transparent"
-                        android:contentDescription=""
-                        android:layout_gravity="end"
-                        tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 

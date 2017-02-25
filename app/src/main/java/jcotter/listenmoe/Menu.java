@@ -55,6 +55,7 @@ public class Menu extends AppCompatActivity {
     EditText password;
     Button login;
     Button logout;
+    TextView status;
     ImageButton github;
     // NON-UI GLOBAL VARIABLES //
     List<Integer> songIds, favorite;
@@ -81,6 +82,7 @@ public class Menu extends AppCompatActivity {
         password = (EditText) findViewById(R.id.login_password);
         login = (Button) findViewById(R.id.login_button);
         logout = (Button) findViewById(R.id.login_logout);
+        status = (TextView) findViewById(R.id.loginStatus);
         github = (ImageButton) findViewById(R.id.github);
 
         // SETUP METHODS //
@@ -159,6 +161,8 @@ public class Menu extends AppCompatActivity {
                 else if (currentTab == 1)
                     favoriteTab(sharedPreferences.getString("userToken", "NULL"));
                 else if (currentTab == 2){
+                    if(!sharedPreferences.getString("userToken", "NULL").equals("NULL"))
+                    status.setVisibility(View.VISIBLE);
                     if(sharedPreferences.getLong("lastAuth", 0) != 0)
                         runOnUiThread(new Runnable() {
                             @Override
@@ -509,6 +513,7 @@ public class Menu extends AppCompatActivity {
                                 .putString("userToken", token)
                                 .putLong("lastAuth", System.currentTimeMillis() / 1000);
                         editor.commit();
+                        status.setVisibility(View.VISIBLE);
                         Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
                     }
                 });
@@ -530,6 +535,7 @@ public class Menu extends AppCompatActivity {
             editor.commit();
             username.setText("");
             password.setText("");
+            status.setVisibility(View.INVISIBLE);
             Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
         }
     }

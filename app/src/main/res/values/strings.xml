@@ -25,6 +25,7 @@
     <string name="invalid_user">invalid-user</string>
     <string name="errorName">Error: Invalid Username</string>
     <string name="errorPass">Error: Incorrect Password</string>
+    <string name="loginStatus">User Currently Logged In Successfully</string>
     <string name="errorGeneral">Error: Login Failed</string>
     <string name="loginRequired">You must log in to use this feature</string>
     <string name="requestsRemaining"> Requests Remaining</string>
