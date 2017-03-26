@@ -18,24 +18,28 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 class APIActions {
-    interface APIListener{
+    interface APIListener {
         void favoriteListCallback(String jsonResult);
+
         void authenticateCallback(String token);
+
         void requestCallback(String jsonResult);
+
         void favoriteCallback(String jsonResult);
+
         void searchCallback(String jsonResult);
     }
 
     private APIListener apiListener;
 
-    APIActions(APIListener apiListener){
+    APIActions(APIListener apiListener) {
         this.apiListener = apiListener;
     }
 
-    void favoriteList(Context applicationContext){
+    void favoriteList(Context applicationContext) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         final String userToken = sharedPreferences.getString("userToken", "NULL");
-        if(userToken.equals("NULL")) {
+        if (userToken.equals("NULL")) {
             apiListener.favoriteCallback("NULL");
             return;
         }
@@ -47,14 +51,18 @@ class APIActions {
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {e.printStackTrace();}
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 apiListener.favoriteListCallback(response.body().string());
             }
-    });
+        });
     }
-    void authenticate(final Context applicationContext, final String username, final String password){
+
+    void authenticate(final Context applicationContext, final String username, final String password) {
         OkHttpClient okHttpClient = new OkHttpClient();
         try {
             String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
@@ -74,10 +82,10 @@ class APIActions {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String body = response.body().string();
-                    if(body.contains(applicationContext.getString(R.string.errorPass))) {
+                    if (body.contains(applicationContext.getString(R.string.errorPass))) {
                         apiListener.authenticateCallback(applicationContext.getString(R.string.invalid_pass));
                         return;
-                    } else if(body.contains(applicationContext.getString(R.string.invalid_user))){
+                    } else if (body.contains(applicationContext.getString(R.string.invalid_user))) {
                         apiListener.authenticateCallback(applicationContext.getString(R.string.invalid_user));
                         return;
                     }
@@ -88,9 +96,12 @@ class APIActions {
                     apiListener.authenticateCallback(body.substring(25, body.length() - 2));
                 }
             });
-        }catch (UnsupportedEncodingException ex) {ex.printStackTrace();}
+        } catch (UnsupportedEncodingException ex) {
+            ex.printStackTrace();
+        }
     }
-    void request(int songID, Context applicationContext){
+
+    void request(int songID, Context applicationContext) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
@@ -102,18 +113,22 @@ class APIActions {
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {e.printStackTrace();}
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 apiListener.requestCallback(response.body().string());
             }
         });
     }
-    void favorite(int songID, Context applicationContext){
+
+    void favorite(int songID, Context applicationContext) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
-        if (token.equals("NULL")){
+        if (token.equals("NULL")) {
             apiListener.favoriteCallback("error-login");
             return;
         }
@@ -124,18 +139,23 @@ class APIActions {
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {e.printStackTrace(); apiListener.favoriteCallback("error_general");}
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                apiListener.favoriteCallback("error_general");
+            }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 apiListener.favoriteCallback(response.body().string());
             }
         });
     }
-    void search(String query, Context applicationContext){
+
+    void search(String query, Context applicationContext) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
-        if(token.equals("NULL")) return;
+        if (token.equals("NULL")) return;
         Request request = new Request.Builder()
                 .url(applicationContext.getString(R.string.apiSearch))
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "query=" + query))
@@ -143,7 +163,10 @@ class APIActions {
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {e.printStackTrace();}
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 apiListener.searchCallback(response.body().string());

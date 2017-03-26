@@ -8,11 +8,11 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -61,9 +61,11 @@ public class Menu extends AppCompatActivity {
     List<Integer> songIds, favorite;
     List<Boolean> enabled;
     ArrayAdapter<String> adapter;
+
     // [METHODS] //
     // SYSTEM METHODS //
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
@@ -91,11 +93,13 @@ public class Menu extends AppCompatActivity {
         uiClickListeners();
         onWindowFocusChanged(true);
     }
-    @Override public void onWindowFocusChanged(boolean hasFocus){
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
             InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            if(imm.isActive() && getWindow().getCurrentFocus() != null) {
+            if (imm.isActive() && getWindow().getCurrentFocus() != null) {
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
             }
         }
@@ -111,8 +115,9 @@ public class Menu extends AppCompatActivity {
         username.clearFocus();
         password.clearFocus();
     }
+
     // UI METHODS //
-    private void tabHostSetup(){
+    private void tabHostSetup() {
         // PURPOSE: SETS UP THE TAB HOST //
         tabHost.setup();
         // Tab 1 //
@@ -133,10 +138,11 @@ public class Menu extends AppCompatActivity {
         // Opens Tab specified in intent | Defaults to Request Tab //
         tabHost.setCurrentTab(this.getIntent().getIntExtra("index", 0));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if(tabHost.getCurrentTab() == 0)
+        if (tabHost.getCurrentTab() == 0)
             requestTab(sharedPreferences.getString("userToken", "NULL"));
     }
-    private void tabChangeListener(){
+
+    private void tabChangeListener() {
         // PURPOSE: LISTENER FOR TAB HOST SELECTION //
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
@@ -150,20 +156,20 @@ public class Menu extends AppCompatActivity {
                 req_search.setText("");
                 username.setText("");
                 password.setText("");
-                if(req_list != null) req_list.setAdapter(null);
-                if(fav_list != null) fav_list.setAdapter(null);
+                if (req_list != null) req_list.setAdapter(null);
+                if (fav_list != null) fav_list.setAdapter(null);
                 // Changes Tab content if a valid token is available //
                 // Not required for Login Tab as same UI Components always shown //
                 final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 int currentTab = tabHost.getCurrentTab();
-                if(currentTab == 0)
+                if (currentTab == 0)
                     requestTab(sharedPreferences.getString("userToken", "NULL"));
                 else if (currentTab == 1)
                     favoriteTab(sharedPreferences.getString("userToken", "NULL"));
-                else if (currentTab == 2){
-                    if(!sharedPreferences.getString("userToken", "NULL").equals("NULL"))
-                    status.setVisibility(View.VISIBLE);
-                    if(sharedPreferences.getLong("lastAuth", 0) != 0)
+                else if (currentTab == 2) {
+                    if (!sharedPreferences.getString("userToken", "NULL").equals("NULL"))
+                        status.setVisibility(View.VISIBLE);
+                    if (sharedPreferences.getLong("lastAuth", 0) != 0)
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -174,9 +180,10 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
-    private void requestTab(String userToken){
+
+    private void requestTab(String userToken) {
         // PURPOSE: CONTROLS CONTENT DISPLAYED IN REQUEST TAB //
-        if (userToken.equals("NULL")){
+        if (userToken.equals("NULL")) {
             req_loginRequired.setVisibility(View.VISIBLE);
             req_searchText.setVisibility(View.GONE);
             req_search.setVisibility(View.GONE);
@@ -190,9 +197,10 @@ public class Menu extends AppCompatActivity {
         req_searchButton.setVisibility(View.VISIBLE);
         req_search.setVisibility(View.VISIBLE);
     }
-    private void favoriteTab(String userToken){
+
+    private void favoriteTab(String userToken) {
         // PURPOSE: CONTROLS CONTENT DISPLAYED IN FAVORITE TAB //
-        if (userToken.equals("NULL")){
+        if (userToken.equals("NULL")) {
             fav_loginRequired.setVisibility(View.VISIBLE);
             fav_list.setVisibility(View.GONE);
             return;
@@ -205,14 +213,27 @@ public class Menu extends AppCompatActivity {
             public void favoriteListCallback(String jsonResult) {
                 listViewDisplay(jsonResult, 1);
             }
-            @Override public void authenticateCallback(String token) {}
-            @Override public void requestCallback(String jsonResult) {}
-            @Override public void favoriteCallback(String jsonResult) {}
-            @Override public void searchCallback(String jsonResult) {}
+
+            @Override
+            public void authenticateCallback(String token) {
+            }
+
+            @Override
+            public void requestCallback(String jsonResult) {
+            }
+
+            @Override
+            public void favoriteCallback(String jsonResult) {
+            }
+
+            @Override
+            public void searchCallback(String jsonResult) {
+            }
         });
         apiActions.favoriteList(getApplicationContext());
     }
-    private void listViewDisplay(final String displayData, final int tab){
+
+    private void listViewDisplay(final String displayData, final int tab) {
         // PURPOSE: PROCESSES AND DISPLAYS THE RELEVANT LIST VIEW DATA //
         final int currentTab = tabHost.getCurrentTab();
         List<String> displayList = new ArrayList<>();
@@ -230,29 +251,31 @@ public class Menu extends AppCompatActivity {
             enabled = new ArrayList<>();
             // Loop through each song setting whether it is a favorite, enabled, both or neither & Sets song string format //
             JSONObject song;
-            for(int i = 0; i < songsObject.length(); i++){
-                song =  songsObject.getJSONObject(i);
-                if(!song.getString("anime").equals(""))
+            for (int i = 0; i < songsObject.length(); i++) {
+                song = songsObject.getJSONObject(i);
+                if (!song.getString("anime").equals(""))
                     displayList.add(song.getString("artist") + " - " + song.getString("title") + " [" + song.getString("anime") + "]");
                 else
                     displayList.add(song.getString("artist") + " - " + song.getString("title"));
                 songIds.add(i, song.getInt("id"));
-                if(!song.has("enabled"))
+                if (!song.has("enabled"))
                     enabled.add(i, true);
                 else
                     enabled.add(i, false);
-                if(currentTab == 0){
-                    if(song.has("favorite"))
+                if (currentTab == 0) {
+                    if (song.has("favorite"))
                         favorite.add(i, song.getInt("favorite"));
                     else
                         favorite.add(i, 0);
                 } else
-                    favorite.add(i,1);
+                    favorite.add(i, 1);
             }
-        }catch (JSONException ex){ex.printStackTrace();}
-        if(displayList.size() != 0){
+        } catch (JSONException ex) {
+            ex.printStackTrace();
+        }
+        if (displayList.size() != 0) {
             // Creates a new Adapter using displayList //
-            adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, displayList){
+            adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, displayList) {
                 @SuppressWarnings("deprecation")
                 @NonNull
                 @Override
@@ -262,17 +285,17 @@ public class Menu extends AppCompatActivity {
                     text.setBackgroundColor(0);
                     text.setTextColor(Color.WHITE);
                     // Sets Text Grey if song is disabled //
-                    if(!enabled.get(position)){
-                        if(Build.VERSION.SDK_INT >= 23){
+                    if (!enabled.get(position)) {
+                        if (Build.VERSION.SDK_INT >= 23) {
                             text.setTextColor(getColor(R.color.greyText));
                         } else {
                             text.setTextColor(getResources().getColor(R.color.greyText));
                         }
                     }
                     // If current tab is Request Tab sets Pink text for favorites //
-                    if(currentTab == 0){
-                        if(favorite.get(position) == 1){
-                            if(Build.VERSION.SDK_INT >= 23){
+                    if (currentTab == 0) {
+                        if (favorite.get(position) == 1) {
+                            if (Build.VERSION.SDK_INT >= 23) {
                                 text.setBackgroundColor(getColor(R.color.flavoredText));
                             } else {
                                 text.setBackgroundColor(getResources().getColor(R.color.flavoredText));
@@ -282,7 +305,7 @@ public class Menu extends AppCompatActivity {
                     return text;
                 }
             };
-        }else {
+        } else {
             // Sets Adapter to empty to display nothing //
             if (adapter != null)
                 adapter = null;
@@ -290,11 +313,11 @@ public class Menu extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(adapter != null) {
-                    if(tab == 0){
+                if (adapter != null) {
+                    if (tab == 0) {
                         req_list.setAdapter(adapter);
                         req_list.setVisibility(View.VISIBLE);
-                    } else if(tab == 1){
+                    } else if (tab == 1) {
                         fav_list.setAdapter(adapter);
                         fav_list.setVisibility(View.VISIBLE);
                     }
@@ -302,7 +325,8 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
-    private void uiClickListeners(){
+
+    private void uiClickListeners() {
         // PURPOSE: LISTENERS FOR ALL CLICKABLE UI COMPONENTS //
         root.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -314,7 +338,7 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onWindowFocusChanged(true);
-                if(req_search.getText().toString().trim().length() == 0) return;
+                if (req_search.getText().toString().trim().length() == 0) return;
                 search();
             }
         });
@@ -334,7 +358,7 @@ public class Menu extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onWindowFocusChanged(true);
-                if(username.getText().length() == 0)
+                if (username.getText().length() == 0)
                     Toast.makeText(getBaseContext(), getString(R.string.errorName), Toast.LENGTH_LONG).show();
                 else if (password.getText().length() == 0)
                     Toast.makeText(getBaseContext(), getString(R.string.errorPass), Toast.LENGTH_LONG).show();
@@ -357,7 +381,8 @@ public class Menu extends AppCompatActivity {
             }
         });
     }
-    private void confirmationDialog(final int songIndex){
+
+    private void confirmationDialog(final int songIndex) {
         // PURPOSE: DISPLAYS A DIALOG CONTAINING SONG ACTIONS //
         AlertDialog.Builder builder = new AlertDialog.Builder(Menu.this);
         // Cancel button //
@@ -367,7 +392,7 @@ public class Menu extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        if(favorite.get(songIndex) == 1){
+        if (favorite.get(songIndex) == 1) {
             // Create button "Unfavorite"
             builder.setNegativeButton("Un" + getString(R.string.tabFav).substring(0, getString(R.string.tabFav).length() - 1), new DialogInterface.OnClickListener() {
                 @Override
@@ -377,41 +402,43 @@ public class Menu extends AppCompatActivity {
             });
         } else {
             // Create button "Favorite" //
-            builder.setNegativeButton(getString(R.string.tabFav).substring(0 ,getString(R.string.tabFav).length() - 1), new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(getString(R.string.tabFav).substring(0, getString(R.string.tabFav).length() - 1), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int in) {
                     favorite(songIndex);
                 }
             });
         }
-        if(enabled.get(songIndex)){
+        if (enabled.get(songIndex)) {
             // Create button Request //
             builder.setNeutralButton(getString(R.string.tabReq).substring(0, getString(R.string.tabReq).length() - 1), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int im) {
-                   request(songIndex);
+                    request(songIndex);
                 }
             });
         }
         builder.create().show();
     }
+
     // LOGIC METHODS //
-    private void favorite(final int songIndex){
+    private void favorite(final int songIndex) {
         // PURPOSE: CHANGES THE FAVORITE STATUS OF A SONG //
         final int songID = songIds.get(songIndex);
         APIActions apiActions = new APIActions(new APIActions.APIListener() {
-            @Override public void favoriteCallback(final String jsonResult) {
+            @Override
+            public void favoriteCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(jsonResult.contains("success\":true")){
+                        if (jsonResult.contains("success\":true")) {
                             Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_SHORT).show();
-                            if(jsonResult.contains("favorite\":true"))
+                            if (jsonResult.contains("favorite\":true"))
                                 favorite.set(songIndex, 1);
                             else {
                                 favorite.set(songIndex, 0);
                                 // Removes Song from Favorite List //
-                                if(tabHost.getCurrentTab() == 1){
+                                if (tabHost.getCurrentTab() == 1) {
                                     songIds.remove(songIndex);
                                     favorite.remove(songIndex);
                                     enabled.remove(songIndex);
@@ -426,22 +453,35 @@ public class Menu extends AppCompatActivity {
                 });
             }
 
-            @Override public void searchCallback(String jsonResult) {}
-            @Override public void favoriteListCallback(String jsonResult) {}
-            @Override public void authenticateCallback(String token) {}
-            @Override public void requestCallback(String jsonResult) {}
+            @Override
+            public void searchCallback(String jsonResult) {
+            }
+
+            @Override
+            public void favoriteListCallback(String jsonResult) {
+            }
+
+            @Override
+            public void authenticateCallback(String token) {
+            }
+
+            @Override
+            public void requestCallback(String jsonResult) {
+            }
         });
         apiActions.favorite(songID, getApplicationContext());
     }
-    private void request(final int songIndex){
+
+    private void request(final int songIndex) {
         // PURPOSE: REQUESTS A SONG //
         final int songID = songIds.get(songIndex);
         APIActions apiActions = new APIActions(new APIActions.APIListener() {
-            @Override public void requestCallback(final String jsonResult) {
+            @Override
+            public void requestCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(jsonResult.contains("success\":true")){
+                        if (jsonResult.contains("success\":true")) {
                             Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_LONG).show();
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -451,7 +491,7 @@ public class Menu extends AppCompatActivity {
                                 }
                             });
                         } else {
-                            if(jsonResult.contains("user-is-not-supporter")){
+                            if (jsonResult.contains("user-is-not-supporter")) {
                                 Toast.makeText(getBaseContext(), R.string.supporter, Toast.LENGTH_LONG).show();
                             } else {
                                 Toast.makeText(getBaseContext(), R.string.req_error, Toast.LENGTH_LONG).show();
@@ -460,16 +500,30 @@ public class Menu extends AppCompatActivity {
                     }
                 });
             }
-            @Override public void favoriteListCallback(String jsonResult) {}
-            @Override public void authenticateCallback(String token) {}
-            @Override public void favoriteCallback(String jsonResult) {}
-            @Override public void searchCallback(String jsonResult) {}
+
+            @Override
+            public void favoriteListCallback(String jsonResult) {
+            }
+
+            @Override
+            public void authenticateCallback(String token) {
+            }
+
+            @Override
+            public void favoriteCallback(String jsonResult) {
+            }
+
+            @Override
+            public void searchCallback(String jsonResult) {
+            }
         });
         apiActions.request(songID, getApplicationContext());
     }
-    private void search(){
+
+    private void search() {
         APIActions apiActions = new APIActions(new APIActions.APIListener() {
-            @Override public void searchCallback(final String jsonResult) {
+            @Override
+            public void searchCallback(final String jsonResult) {
                 listViewDisplay(jsonResult, 0);
                 /*runOnUiThread(new Runnable() {
                     @Override
@@ -483,27 +537,41 @@ public class Menu extends AppCompatActivity {
                     }
                 });*/
             }
-            @Override public void favoriteListCallback(String jsonResult) {}
-            @Override public void authenticateCallback(String token) {}
-            @Override public void requestCallback(String jsonResult) {}
-            @Override public void favoriteCallback(String jsonResult) {}
+
+            @Override
+            public void favoriteListCallback(String jsonResult) {
+            }
+
+            @Override
+            public void authenticateCallback(String token) {
+            }
+
+            @Override
+            public void requestCallback(String jsonResult) {
+            }
+
+            @Override
+            public void favoriteCallback(String jsonResult) {
+            }
         });
         apiActions.search(req_search.getText().toString().trim(), getApplicationContext());
     }
-    private void login(){
+
+    private void login() {
         APIActions apiActions = new APIActions(new APIActions.APIListener() {
-            @Override public void authenticateCallback(final String token) {
+            @Override
+            public void authenticateCallback(final String token) {
                 runOnUiThread(new Runnable() {
                     @SuppressLint("CommitPrefEdits")
                     @Override
                     public void run() {
-                        if(token.contains(getString(R.string.invalid_user))){
+                        if (token.contains(getString(R.string.invalid_user))) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorName), Toast.LENGTH_LONG).show();
                             return;
-                        } else if (token.contains(getString(R.string.invalid_pass))){
+                        } else if (token.contains(getString(R.string.invalid_pass))) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorPass), Toast.LENGTH_LONG).show();
                             return;
-                        } else if (token.contains("error-general")){
+                        } else if (token.contains("error-general")) {
 
                             Toast.makeText(getBaseContext(), getString(R.string.errorGeneral), Toast.LENGTH_LONG).show();
                             return;
@@ -518,17 +586,30 @@ public class Menu extends AppCompatActivity {
                     }
                 });
             }
-            @Override public void favoriteListCallback(String jsonResult) {}
-            @Override public void requestCallback(String jsonResult) {}
-            @Override public void favoriteCallback(String jsonResult) {}
-            @Override public void searchCallback(String jsonResult) {}
+
+            @Override
+            public void favoriteListCallback(String jsonResult) {
+            }
+
+            @Override
+            public void requestCallback(String jsonResult) {
+            }
+
+            @Override
+            public void favoriteCallback(String jsonResult) {
+            }
+
+            @Override
+            public void searchCallback(String jsonResult) {
+            }
         });
         apiActions.authenticate(getApplicationContext(), username.getText().toString().trim(), password.getText().toString().trim());
     }
+
     @SuppressLint("CommitPrefEdits")
-    private void logout(){
+    private void logout() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if(!sharedPreferences.getString("userToken", "NULL").equals("NULL")){
+        if (!sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
             SharedPreferences.Editor editor = sharedPreferences.edit()
                     .putString("userToken", "NULL")
                     .putLong("lastAuth", 0);

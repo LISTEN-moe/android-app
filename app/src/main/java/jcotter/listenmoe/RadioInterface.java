@@ -9,11 +9,11 @@ import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
@@ -44,9 +44,11 @@ public class RadioInterface extends AppCompatActivity {
     int songID;
     boolean favorite;
     boolean playing;
+
     // [METHODS] //
     // SYSTEM METHODS //
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radio_interface);
         // Get UI Components //
@@ -81,16 +83,21 @@ public class RadioInterface extends AppCompatActivity {
         favoriteButtonListener();
         getToken();
     }
-    @Override public void onPause(){
+
+    @Override
+    public void onPause() {
         super.onPause();
-        try{
+        try {
             unregisterReceiver(broadcastReceiver);
-        } catch(IllegalArgumentException ignored){}
+        } catch (IllegalArgumentException ignored) {
+        }
         Intent intent = new Intent(getBaseContext(), SocketStream.class)
                 .putExtra("killable", true);
         startService(intent);
     }
-    @Override public void onWindowFocusChanged(boolean hasFocus) {
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
         // PURPOSE: SETS FULLSCREEN FLAGS //
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus) {
@@ -109,14 +116,17 @@ public class RadioInterface extends AppCompatActivity {
             }*/
         }
     }
-    @Override public void onResume(){
+
+    @Override
+    public void onResume() {
         super.onResume();
         socketDisplay();
         playPauseButtonListener();
         onWindowFocusChanged(true);
     }
+
     // UI METHODS //
-    private void menuButtonListener(){
+    private void menuButtonListener() {
         // PURPOSE: LISTENER FOR MENU BUTTON //
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,29 +135,40 @@ public class RadioInterface extends AppCompatActivity {
             }
         });
     }
-    private void volumeSliderListener(){
+
+    private void volumeSliderListener() {
         // PURPOSE: LISTENER FOR VOLUME SLIDER PROGRESS CHANGED //
         volumeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if(isRunning()){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (isRunning()) {
                     Intent intent = new Intent(getBaseContext(), SocketStream.class)
                             .putExtra("volume", seekBar.getProgress() / 100.0f);
                     startService(intent);
                 }
             }
-            @Override public void onStartTrackingTouch(SeekBar seekBar) {}
-            @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
         });
     }
-    private void playPauseButtonListener(){
+
+    private void playPauseButtonListener() {
         // PURPOSE: LISTENER FOR PLAY/PAUSE BUTTON //
         playPause.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 playPauseLogic();
             }
         });
     }
-    private void favoriteButtonListener(){
+
+    private void favoriteButtonListener() {
         // PURPOSE: LISTENER FOR FAVORITE BUTTON //
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,7 +177,8 @@ public class RadioInterface extends AppCompatActivity {
             }
         });
     }
-    private void socketDisplay(){
+
+    private void socketDisplay() {
         // PURPOSE: DISPLAYS DATA RECEIVED FROM WEBSOCKET | CHECKS IF STREAM IS PLAYING //
         songID = -1;
         favorite = false;
@@ -164,13 +186,13 @@ public class RadioInterface extends AppCompatActivity {
             @SuppressWarnings("deprecation")
             @Override
             public void onReceive(Context context, final Intent intent) {
-                if(intent.hasExtra("nowPlaying")){
+                if (intent.hasExtra("nowPlaying")) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             nowPlaying.setText(intent.getStringExtra("nowPlaying"));
                             currentText.setText(intent.getStringExtra("listeners"));
-                            if(!intent.getStringExtra("requestedBy").equals("NULL")) {
+                            if (!intent.getStringExtra("requestedBy").equals("NULL")) {
                                 requestText.setVisibility(View.VISIBLE);
                                 requestText.setMovementMethod(LinkMovementMethod.getInstance());
                                 if (Build.VERSION.SDK_INT >= 24) {
@@ -182,13 +204,13 @@ public class RadioInterface extends AppCompatActivity {
                                 requestText.setVisibility(View.INVISIBLE);
                             songID = intent.getIntExtra("songID", -1);
                             favorite = intent.getBooleanExtra("favorite", false);
-                            if(Build.VERSION.SDK_INT >= 21){
-                                if(favorite)
+                            if (Build.VERSION.SDK_INT >= 21) {
+                                if (favorite)
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
                                 else
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
                             } else {
-                                if(favorite)
+                                if (favorite)
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
                                 else
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
@@ -196,24 +218,24 @@ public class RadioInterface extends AppCompatActivity {
                         }
                     });
                 }
-                if(intent.hasExtra("running")){
-                    if(intent.getBooleanExtra("running", false)){
+                if (intent.hasExtra("running")) {
+                    if (intent.getBooleanExtra("running", false)) {
                         playing = true;
-                        if(Build.VERSION.SDK_INT >= 21){
+                        if (Build.VERSION.SDK_INT >= 21) {
                             playPause.setImageDrawable(getDrawable(R.drawable.icon_pause));
                         } else {
                             playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_pause));
                         }
                     } else {
                         playing = false;
-                        if(Build.VERSION.SDK_INT >= 21){
+                        if (Build.VERSION.SDK_INT >= 21) {
                             playPause.setImageDrawable(getDrawable(R.drawable.icon_play));
                         } else {
                             playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
                         }
                     }
                 }
-                if(intent.hasExtra("volume"))
+                if (intent.hasExtra("volume"))
                     volumeSlider.setProgress(intent.getIntExtra("volume", 50));
             }
         };
@@ -221,18 +243,19 @@ public class RadioInterface extends AppCompatActivity {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction("jcotter.listenmoe");
             registerReceiver(broadcastReceiver, intentFilter);
-        } catch(IllegalArgumentException ignored){}
+        } catch (IllegalArgumentException ignored) {
+        }
         Intent intent = new Intent(this, SocketStream.class);
-        if(isRunning()) {
+        if (isRunning()) {
             intent.putExtra("re:re", true); // Requests Socket Update //
             intent.putExtra("probe", true); // Checks if Music Stream is Playing //
-        }
-        else
+        } else
             intent.putExtra("receiver", true); // Start SocketStream //
         startService(intent);
     }
+
     // LOGIC METHODS //
-    private void getToken(){
+    private void getToken() {
         // PURPOSE : NEW TOKEN IF CURRENT > 20 DAYS OLD  OTHERWISE RETURN CURRENT TOKEN //
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         // Returns if current token < 20 days old //
@@ -240,52 +263,67 @@ public class RadioInterface extends AppCompatActivity {
             userToken = sharedPreferences.getString("userToken", "NULL");
         }
     }
-    private void openMenu(int tabIndex){
+
+    private void openMenu(int tabIndex) {
         // PURPOSE: OPENS MENU.CLASS AND SPECIFIES WHICH TAB TO DISPLAY //
         Intent intent = new Intent(this, Menu.class)
                 .putExtra("index", tabIndex);
         startActivity(intent);
     }
-    private void favoriteLogic(){
+
+    private void favoriteLogic() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if(sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
+        if (sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
             openMenu(2);
             return;
         }
-        if(songID == -1) return;
+        if (songID == -1) return;
         APIActions apiActions = new APIActions(new APIActions.APIListener() {
-            @Override public void favoriteCallback(final String jsonResult) {
+            @Override
+            public void favoriteCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @SuppressWarnings("deprecation")
                     @Override
                     public void run() {
-                        if(jsonResult.contains("success\":true")){
-                            if(jsonResult.contains("favorite\":true")){
+                        if (jsonResult.contains("success\":true")) {
+                            if (jsonResult.contains("favorite\":true")) {
                                 favorite = true;
-                                if(Build.VERSION.SDK_INT >= 21){
+                                if (Build.VERSION.SDK_INT >= 21) {
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
                                 } else {
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
                                 }
                             } else {
                                 favorite = false;
-                                if(Build.VERSION.SDK_INT >= 21){
+                                if (Build.VERSION.SDK_INT >= 21) {
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
                                 } else {
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
                                 }
                             }
-                        } else if(jsonResult.contains("Failed to authenticate token.")){
+                        } else if (jsonResult.contains("Failed to authenticate token.")) {
                             Toast.makeText(getBaseContext(), "Token Expired", Toast.LENGTH_SHORT).show();
                             openMenu(2);
                         }
                     }
                 });
             }
-            @Override public void favoriteListCallback(String jsonResult) {}
-            @Override public void authenticateCallback(String token) {}
-            @Override public void requestCallback(String jsonResult) {}
-            @Override public void searchCallback(String jsonResult) {}
+
+            @Override
+            public void favoriteListCallback(String jsonResult) {
+            }
+
+            @Override
+            public void authenticateCallback(String token) {
+            }
+
+            @Override
+            public void requestCallback(String jsonResult) {
+            }
+
+            @Override
+            public void searchCallback(String jsonResult) {
+            }
         });
         apiActions.favorite(songID, getApplicationContext());
 
@@ -300,10 +338,11 @@ public class RadioInterface extends AppCompatActivity {
             }
         }, 750);
     }
-    private void playPauseLogic(){
-        if(songID == -1) return;
+
+    private void playPauseLogic() {
+        if (songID == -1) return;
         Intent intent = new Intent(this, SocketStream.class);
-        if(playing)
+        if (playing)
             intent.putExtra("play", false);
         else {
             intent.putExtra("play", true);
@@ -311,11 +350,12 @@ public class RadioInterface extends AppCompatActivity {
         }
         startService(intent);
     }
-    private boolean isRunning(){
+
+    private boolean isRunning() {
         // PURPOSE: CHECKS IF SOCKET STREAM SERVICE IS RUNNING //
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for(ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if(SocketStream.class.getName().equals(service.service.getClassName())){
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (SocketStream.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }
