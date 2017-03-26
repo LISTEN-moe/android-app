@@ -296,9 +296,9 @@ public class Menu extends AppCompatActivity {
                     if (currentTab == 0) {
                         if (favorite.get(position) == 1) {
                             if (Build.VERSION.SDK_INT >= 23) {
-                                text.setBackgroundColor(getColor(R.color.flavoredText));
+                                text.setBackgroundColor(getColor(R.color.colorAccent));
                             } else {
-                                text.setBackgroundColor(getResources().getColor(R.color.flavoredText));
+                                text.setBackgroundColor(getResources().getColor(R.color.colorAccent));
                             }
                         }
                     }

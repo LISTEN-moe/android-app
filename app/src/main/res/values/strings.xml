@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LISTEN.moe</string>
     <!-- Radio Interface -->
@@ -54,5 +55,4 @@
     <string name="apiAnime">anime_name</string>
     <string name="apiRequestedBy">requested_by</string>
     <string name="apiFailed">Unable to connect to the API.\n Please check your internet connection. \n If you are connected stop the app and then try again. \n If the problem persists the radio might be down for maintenance</string>
-
 </resources>
