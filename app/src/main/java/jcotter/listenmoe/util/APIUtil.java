@@ -1,4 +1,4 @@
-package jcotter.listenmoe;
+package jcotter.listenmoe.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import jcotter.listenmoe.R;
+import jcotter.listenmoe.interfaces.APIListenerInterface;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -17,26 +19,14 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-class APIActions {
-    interface APIListener {
-        void favoriteListCallback(String jsonResult);
+public class APIUtil {
+    private APIListenerInterface apiListener;
 
-        void authenticateCallback(String token);
-
-        void requestCallback(String jsonResult);
-
-        void favoriteCallback(String jsonResult);
-
-        void searchCallback(String jsonResult);
-    }
-
-    private APIListener apiListener;
-
-    APIActions(APIListener apiListener) {
+    public APIUtil(APIListenerInterface apiListener) {
         this.apiListener = apiListener;
     }
 
-    void favoriteList(Context applicationContext) {
+    public void favoriteList(Context applicationContext) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         final String userToken = sharedPreferences.getString("userToken", "NULL");
         if (userToken.equals("NULL")) {
@@ -62,7 +52,7 @@ class APIActions {
         });
     }
 
-    void authenticate(final Context applicationContext, final String username, final String password) {
+    public void authenticate(final Context applicationContext, final String username, final String password) {
         OkHttpClient okHttpClient = new OkHttpClient();
         try {
             String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
@@ -101,7 +91,7 @@ class APIActions {
         }
     }
 
-    void request(int songID, Context applicationContext) {
+    public void request(int songID, Context applicationContext) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
@@ -124,7 +114,7 @@ class APIActions {
         });
     }
 
-    void favorite(int songID, Context applicationContext) {
+    public void favorite(int songID, Context applicationContext) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
@@ -151,7 +141,7 @@ class APIActions {
         });
     }
 
-    void search(String query, Context applicationContext) {
+    public void search(String query, Context applicationContext) {
         OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");

@@ -1,4 +1,4 @@
-package jcotter.listenmoe;
+package jcotter.listenmoe.ui;
 
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
@@ -25,7 +25,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class RadioInterface extends AppCompatActivity {
+import jcotter.listenmoe.service.StreamService;
+import jcotter.listenmoe.util.APIUtil;
+import jcotter.listenmoe.R;
+import jcotter.listenmoe.interfaces.APIListenerInterface;
+
+public class RadioActivity extends AppCompatActivity {
 
     // [GLOBAL VARIABLES] //
     // UI VARIABLES //
@@ -50,7 +55,7 @@ public class RadioInterface extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_radio_interface);
+        setContentView(R.layout.activity_radio);
         // Get UI Components //
         playPause = (ImageButton) findViewById(R.id.playPause);
         volumeSlider = (SeekBar) findViewById(R.id.seekBar);
@@ -91,7 +96,7 @@ public class RadioInterface extends AppCompatActivity {
             unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException ignored) {
         }
-        Intent intent = new Intent(getBaseContext(), SocketStream.class)
+        Intent intent = new Intent(getBaseContext(), StreamService.class)
                 .putExtra("killable", true);
         startService(intent);
     }
@@ -142,7 +147,7 @@ public class RadioInterface extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (isRunning()) {
-                    Intent intent = new Intent(getBaseContext(), SocketStream.class)
+                    Intent intent = new Intent(getBaseContext(), StreamService.class)
                             .putExtra("volume", seekBar.getProgress() / 100.0f);
                     startService(intent);
                 }
@@ -245,12 +250,12 @@ public class RadioInterface extends AppCompatActivity {
             registerReceiver(broadcastReceiver, intentFilter);
         } catch (IllegalArgumentException ignored) {
         }
-        Intent intent = new Intent(this, SocketStream.class);
+        Intent intent = new Intent(this, StreamService.class);
         if (isRunning()) {
             intent.putExtra("re:re", true); // Requests Socket Update //
             intent.putExtra("probe", true); // Checks if Music Stream is Playing //
         } else
-            intent.putExtra("receiver", true); // Start SocketStream //
+            intent.putExtra("receiver", true); // Start StreamService //
         startService(intent);
     }
 
@@ -266,7 +271,7 @@ public class RadioInterface extends AppCompatActivity {
 
     private void openMenu(int tabIndex) {
         // PURPOSE: OPENS MENU.CLASS AND SPECIFIES WHICH TAB TO DISPLAY //
-        Intent intent = new Intent(this, Menu.class)
+        Intent intent = new Intent(this, MenuActivity.class)
                 .putExtra("index", tabIndex);
         startActivity(intent);
     }
@@ -278,7 +283,7 @@ public class RadioInterface extends AppCompatActivity {
             return;
         }
         if (songID == -1) return;
-        APIActions apiActions = new APIActions(new APIActions.APIListener() {
+        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
             @Override
             public void favoriteCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
@@ -325,7 +330,7 @@ public class RadioInterface extends AppCompatActivity {
             public void searchCallback(String jsonResult) {
             }
         });
-        apiActions.favorite(songID, getApplicationContext());
+        apiUtil.favorite(songID, getApplicationContext());
 
         final Toast toast = Toast.makeText(getBaseContext(), "Sending...", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 0);
@@ -341,7 +346,7 @@ public class RadioInterface extends AppCompatActivity {
 
     private void playPauseLogic() {
         if (songID == -1) return;
-        Intent intent = new Intent(this, SocketStream.class);
+        Intent intent = new Intent(this, StreamService.class);
         if (playing)
             intent.putExtra("play", false);
         else {
@@ -355,7 +360,7 @@ public class RadioInterface extends AppCompatActivity {
         // PURPOSE: CHECKS IF SOCKET STREAM SERVICE IS RUNNING //
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (SocketStream.class.getName().equals(service.service.getClassName())) {
+            if (StreamService.class.getName().equals(service.service.getClassName())) {
                 return true;
             }
         }

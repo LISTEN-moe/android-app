@@ -1,4 +1,4 @@
-package jcotter.listenmoe;
+package jcotter.listenmoe.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -34,7 +34,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Menu extends AppCompatActivity {
+import jcotter.listenmoe.util.APIUtil;
+import jcotter.listenmoe.R;
+import jcotter.listenmoe.interfaces.APIListenerInterface;
+
+public class MenuActivity extends AppCompatActivity {
 
     // [GLOBAL VARIABLES] //
     // UI VARIABLES //
@@ -208,7 +212,7 @@ public class Menu extends AppCompatActivity {
         fav_loginRequired.setVisibility(View.GONE);
         fav_list.setVisibility(View.VISIBLE);
         // Retrieves Favorites //
-        APIActions apiActions = new APIActions(new APIActions.APIListener() {
+        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
             @Override
             public void favoriteListCallback(String jsonResult) {
                 listViewDisplay(jsonResult, 1);
@@ -230,7 +234,7 @@ public class Menu extends AppCompatActivity {
             public void searchCallback(String jsonResult) {
             }
         });
-        apiActions.favoriteList(getApplicationContext());
+        apiUtil.favoriteList(getApplicationContext());
     }
 
     private void listViewDisplay(final String displayData, final int tab) {
@@ -384,7 +388,7 @@ public class Menu extends AppCompatActivity {
 
     private void confirmationDialog(final int songIndex) {
         // PURPOSE: DISPLAYS A DIALOG CONTAINING SONG ACTIONS //
-        AlertDialog.Builder builder = new AlertDialog.Builder(Menu.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
         // Cancel button //
         builder.setMessage(R.string.req_dialog_message);
         builder.setPositiveButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -425,7 +429,7 @@ public class Menu extends AppCompatActivity {
     private void favorite(final int songIndex) {
         // PURPOSE: CHANGES THE FAVORITE STATUS OF A SONG //
         final int songID = songIds.get(songIndex);
-        APIActions apiActions = new APIActions(new APIActions.APIListener() {
+        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
             @Override
             public void favoriteCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
@@ -469,13 +473,13 @@ public class Menu extends AppCompatActivity {
             public void requestCallback(String jsonResult) {
             }
         });
-        apiActions.favorite(songID, getApplicationContext());
+        apiUtil.favorite(songID, getApplicationContext());
     }
 
     private void request(final int songIndex) {
         // PURPOSE: REQUESTS A SONG //
         final int songID = songIds.get(songIndex);
-        APIActions apiActions = new APIActions(new APIActions.APIListener() {
+        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
             @Override
             public void requestCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
@@ -517,11 +521,11 @@ public class Menu extends AppCompatActivity {
             public void searchCallback(String jsonResult) {
             }
         });
-        apiActions.request(songID, getApplicationContext());
+        apiUtil.request(songID, getApplicationContext());
     }
 
     private void search() {
-        APIActions apiActions = new APIActions(new APIActions.APIListener() {
+        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
             @Override
             public void searchCallback(final String jsonResult) {
                 listViewDisplay(jsonResult, 0);
@@ -554,11 +558,11 @@ public class Menu extends AppCompatActivity {
             public void favoriteCallback(String jsonResult) {
             }
         });
-        apiActions.search(req_search.getText().toString().trim(), getApplicationContext());
+        apiUtil.search(req_search.getText().toString().trim(), getApplicationContext());
     }
 
     private void login() {
-        APIActions apiActions = new APIActions(new APIActions.APIListener() {
+        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
             @Override
             public void authenticateCallback(final String token) {
                 runOnUiThread(new Runnable() {
@@ -603,7 +607,7 @@ public class Menu extends AppCompatActivity {
             public void searchCallback(String jsonResult) {
             }
         });
-        apiActions.authenticate(getApplicationContext(), username.getText().toString().trim(), password.getText().toString().trim());
+        apiUtil.authenticate(getApplicationContext(), username.getText().toString().trim(), password.getText().toString().trim());
     }
 
     @SuppressLint("CommitPrefEdits")

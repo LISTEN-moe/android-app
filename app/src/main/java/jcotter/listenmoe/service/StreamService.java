@@ -1,4 +1,4 @@
-package jcotter.listenmoe;
+package jcotter.listenmoe.service;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -43,7 +43,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-public class SocketStream extends Service {
+import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.util.APIUtil;
+import jcotter.listenmoe.R;
+import jcotter.listenmoe.ui.MenuActivity;
+import jcotter.listenmoe.ui.RadioActivity;
+
+public class StreamService extends Service {
 
     // [GLOBAL VARIABLES] //
     SimpleExoPlayer voiceOfKanacchi;
@@ -60,7 +66,7 @@ public class SocketStream extends Service {
 
     // [METHODS] //
     // SYSTEM METHODS //
-    public SocketStream() {
+    public StreamService() {
     }
 
     @Override
@@ -142,7 +148,7 @@ public class SocketStream extends Service {
                         } else
                             // Change Favorite Status of Current Song //
                             if (intent.hasExtra("favorite")) {
-                                APIActions apiActions = new APIActions(new APIActions.APIListener() {
+                                APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
                                     @Override
                                     public void favoriteCallback(String jsonResult) {
                                         favorite = true;
@@ -164,7 +170,7 @@ public class SocketStream extends Service {
                                     public void searchCallback(String jsonResult) {
                                     }
                                 });
-                                apiActions.favorite(songID, getApplicationContext());
+                                apiUtil.favorite(songID, getApplicationContext());
                             }
         // Returns Music Stream State to RadioInterface //
         if (intent.hasExtra("probe")) {
@@ -296,7 +302,7 @@ public class SocketStream extends Service {
         if (!notif) return;
         if (notifID == -1)
             notifID = (int) System.currentTimeMillis();
-        Intent intent = new Intent(this, RadioInterface.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        Intent intent = new Intent(this, RadioActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(artist)
@@ -328,7 +334,7 @@ public class SocketStream extends Service {
         PendingIntent favoritePending = PendingIntent.getService(this, 2, favoriteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
-            Intent authIntent = new Intent(this, Menu.class)
+            Intent authIntent = new Intent(this, MenuActivity.class)
                     .putExtra("index", 2);
             PendingIntent authPending = PendingIntent.getActivity(this, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
