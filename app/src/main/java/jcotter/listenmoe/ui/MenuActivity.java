@@ -34,37 +34,38 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.util.APIUtil;
 
 public class MenuActivity extends AppCompatActivity {
 
     // [GLOBAL VARIABLES] //
     // UI VARIABLES //
-    LinearLayout root;
-    TabHost tabHost;
+    private LinearLayout root;
+    private TabHost tabHost;
     //Request Tab //
-    TextView req_loginRequired;
-    TextView req_searchText;
-    EditText req_search;
-    Button req_searchButton;
-    ListView req_list;
-    TextView req_remaining;
+    private TextView req_loginRequired;
+    private TextView req_searchText;
+    private EditText req_search;
+    private Button req_searchButton;
+    private ListView req_list;
+    private TextView req_remaining;
     // Favorites Tab //
-    TextView fav_loginRequired;
-    ListView fav_list;
+    private TextView fav_loginRequired;
+    private ListView fav_list;
     // Login Tab //
-    EditText username;
-    EditText password;
-    Button login;
-    Button logout;
-    TextView status;
-    ImageButton github;
+    private EditText username;
+    private EditText password;
+    private Button login;
+    private Button logout;
+    private TextView status;
+    private ImageButton github;
+
     // NON-UI GLOBAL VARIABLES //
-    List<Integer> songIds, favorite;
-    List<Boolean> enabled;
-    ArrayAdapter<String> adapter;
+    private List<Integer> songIds, favorite;
+    private List<Boolean> enabled;
+    private ArrayAdapter<String> adapter;
 
     // [METHODS] //
     // SYSTEM METHODS //

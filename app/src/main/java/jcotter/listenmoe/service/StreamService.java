@@ -52,21 +52,18 @@ import jcotter.listenmoe.util.APIUtil;
 
 public class StreamService extends Service {
 
-    // [GLOBAL VARIABLES] //
-    SimpleExoPlayer voiceOfKanacchi;
-    WebSocket ws;
-    float volume;
-    String artist;
-    String title;
-    String anime;
-    int songID;
-    boolean favorite;
-    boolean killable;
-    boolean notif;
-    int notifID;
+    private SimpleExoPlayer voiceOfKanacchi;
+    private WebSocket ws;
+    private float volume;
+    private String artist;
+    private String title;
+    private String anime;
+    private int songID;
+    private boolean favorite;
+    private boolean killable;
+    private boolean notif;
+    private int notifID;
 
-    // [METHODS] //
-    // SYSTEM METHODS //
     public StreamService() {
     }
 

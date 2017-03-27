@@ -12,43 +12,38 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import jcotter.listenmoe.service.StreamService;
-import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.service.StreamService;
+import jcotter.listenmoe.util.APIUtil;
 
 public class RadioActivity extends AppCompatActivity {
 
-    // [GLOBAL VARIABLES] //
-    // UI VARIABLES //
-    ImageView background;
-    SeekBar volumeSlider;
-    ImageButton playPause;
-    ImageButton menuButton;
-    ImageButton favoriteButton;
-    TextView poweredBy;
-    TextView currentText;
-    TextView nowPlaying;
-    TextView requestText;
     // NON-UI GLOBAL VARIABLES
     String userToken;
     BroadcastReceiver broadcastReceiver;
     int songID;
     boolean favorite;
     boolean playing;
+    // UI views
+    private SeekBar volumeSlider;
+    private ImageButton playPause;
+    private ImageButton menuButton;
+    private ImageButton favoriteButton;
+    private TextView poweredBy;
+    private TextView currentText;
+    private TextView nowPlaying;
+    private TextView requestText;
 
     // [METHODS] //
     // SYSTEM METHODS //
