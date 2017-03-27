@@ -102,32 +102,10 @@ public class RadioActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        // PURPOSE: SETS FULLSCREEN FLAGS //
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            );
-            // Sets correct play/pause button when the activity regains focus
-            /*if (isRunning()) {
-                playPause.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.icon_pause));
-            } else {
-                playPause.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.icon_play));
-            }*/
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         socketDisplay();
         playPauseButtonListener();
-        onWindowFocusChanged(true);
     }
 
     // UI METHODS //
