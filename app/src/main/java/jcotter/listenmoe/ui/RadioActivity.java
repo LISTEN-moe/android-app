@@ -1,5 +1,6 @@
 package jcotter.listenmoe.ui;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -44,7 +45,6 @@ public class RadioActivity extends AppCompatActivity {
     TextView nowPlaying;
     TextView requestText;
     // NON-UI GLOBAL VARIABLES
-    String userToken;
     BroadcastReceiver broadcastReceiver;
     int songID;
     boolean favorite;
@@ -83,15 +83,15 @@ public class RadioActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         // SETUP METHODS //
+        tokenValidity();
         menuButtonListener();
         volumeSliderListener();
         favoriteButtonListener();
-        getToken();
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    @Override protected void onStop() {
+        // Purpose: Allows Stream to
+        super.onStop();
         try {
             unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException ignored) {
@@ -105,7 +105,7 @@ public class RadioActivity extends AppCompatActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         // PURPOSE: SETS FULLSCREEN FLAGS //
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
+        if (hasFocus)
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -113,13 +113,6 @@ public class RadioActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
             );
-            // Sets correct play/pause button when the activity regains focus
-            /*if (isRunning()) {
-                playPause.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.icon_pause));
-            } else {
-                playPause.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.icon_play));
-            }*/
-        }
     }
 
     @Override
@@ -200,45 +193,43 @@ public class RadioActivity extends AppCompatActivity {
                             if (!intent.getStringExtra("requestedBy").equals("NULL")) {
                                 requestText.setVisibility(View.VISIBLE);
                                 requestText.setMovementMethod(LinkMovementMethod.getInstance());
-                                if (Build.VERSION.SDK_INT >= 24) {
+                                if (Build.VERSION.SDK_INT >= 24)
                                     requestText.setText(Html.fromHtml(intent.getStringExtra("requestedBy"), Html.FROM_HTML_MODE_COMPACT));
-                                } else {
+                                else
                                     requestText.setText(Html.fromHtml(intent.getStringExtra("requestedBy")));
-                                }
                             } else
                                 requestText.setVisibility(View.INVISIBLE);
                             songID = intent.getIntExtra("songID", -1);
-                            favorite = intent.getBooleanExtra("favorite", false);
-                            if (Build.VERSION.SDK_INT >= 21) {
-                                if (favorite)
-                                    favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                                else
-                                    favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                            } else {
-                                if (favorite)
-                                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                                else
-                                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
-                            }
                         }
                     });
                 }
                 if (intent.hasExtra("running")) {
                     if (intent.getBooleanExtra("running", false)) {
                         playing = true;
-                        if (Build.VERSION.SDK_INT >= 21) {
+                        if (Build.VERSION.SDK_INT >= 21)
                             playPause.setImageDrawable(getDrawable(R.drawable.icon_pause));
-                        } else {
+                        else
                             playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_pause));
-                        }
                     } else {
                         playing = false;
-                        if (Build.VERSION.SDK_INT >= 21) {
+                        if (Build.VERSION.SDK_INT >= 21)
                             playPause.setImageDrawable(getDrawable(R.drawable.icon_play));
-                        } else {
+                        else
                             playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
-                        }
                     }
+                }
+                if (intent.hasExtra("favorite")) {
+                    favorite = intent.getBooleanExtra("favorite", false);
+                    if (Build.VERSION.SDK_INT >= 21)
+                        if (favorite)
+                            favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
+                        else
+                            favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
+                    else
+                        if (favorite)
+                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
+                        else
+                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
                 }
                 if (intent.hasExtra("volume"))
                     volumeSlider.setProgress(intent.getIntExtra("volume", 50));
@@ -254,18 +245,27 @@ public class RadioActivity extends AppCompatActivity {
         if (isRunning()) {
             intent.putExtra("re:re", true); // Requests Socket Update //
             intent.putExtra("probe", true); // Checks if Music Stream is Playing //
-        } else
+        } else {
             intent.putExtra("receiver", true); // Start StreamService //
+            intent.putExtra("probe", true); // Get Volume & Checks if Music Stream is Playing //
+        }
         startService(intent);
     }
 
     // LOGIC METHODS //
-    private void getToken() {
-        // PURPOSE : NEW TOKEN IF CURRENT > 20 DAYS OLD  OTHERWISE RETURN CURRENT TOKEN //
+    @SuppressLint("ApplySharedPref")
+    private void tokenValidity() {
+        // PURPOSE : Retrieves Token, Invalidates if token is 28 days old //
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        // Returns if current token < 20 days old //
-        if (!sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
-            userToken = sharedPreferences.getString("userToken", "NULL");
+        // Check for token //
+        if (sharedPreferences.getString("userToken", "NULL").equals("NULL"))
+            return;
+        // Check token is valid //
+        if (Math.round((System.currentTimeMillis() / 1000 - sharedPreferences.getLong("lastAuth", 0)) / 86400.0) >= 28) {
+            SharedPreferences.Editor editor = sharedPreferences.edit()
+                    .putString("userToken", "NULL")
+                    .putLong("lastAuth", 0);
+            editor.commit();
         }
     }
 
@@ -293,22 +293,25 @@ public class RadioActivity extends AppCompatActivity {
                         if (jsonResult.contains("success\":true")) {
                             if (jsonResult.contains("favorite\":true")) {
                                 favorite = true;
-                                if (Build.VERSION.SDK_INT >= 21) {
+                                if (Build.VERSION.SDK_INT >= 21)
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                                } else {
+                                else
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                                }
                             } else {
                                 favorite = false;
-                                if (Build.VERSION.SDK_INT >= 21) {
+                                if (Build.VERSION.SDK_INT >= 21)
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                                } else {
+                                else
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
-                                }
                             }
                         } else if (jsonResult.contains("Failed to authenticate token.")) {
                             Toast.makeText(getBaseContext(), "Token Expired", Toast.LENGTH_SHORT).show();
                             openMenu(2);
+                        }
+                        if (isRunning()) {
+                            Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
+                                    .putExtra("favUpdate", true);
+                            startService(favUpdate);
                         }
                     }
                 });

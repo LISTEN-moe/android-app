@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.SystemClock;
@@ -60,7 +61,7 @@ public class StreamService extends Service {
     String anime;
     int songID;
     boolean favorite;
-    boolean killable;
+    boolean uiOpen;
     boolean notif;
     int notifID;
 
@@ -76,7 +77,7 @@ public class StreamService extends Service {
 
     @Override
     public void onCreate() {
-        killable = false;
+        uiOpen = true;
         volume = 0.5f;
         notif = false;
         notifID = -1;
@@ -92,22 +93,26 @@ public class StreamService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID) {
         // Volume Control //
         if (intent.hasExtra("volume")) {
+            volume = intent.getFloatExtra("volume", 0.5f);
             if (voiceOfKanacchi != null)
                 voiceOfKanacchi.setVolume(intent.getFloatExtra("volume", 0.5f));
-            else
-                volume = intent.getFloatExtra("volume", 0.5f);
         }
         // Starts WebSocket //
         if (intent.hasExtra("receiver"))
             connectWebSocket();
         else
             // Allows Service to be Killed //
-            if (intent.hasExtra("killable"))
-                killable = true;
+            if (intent.hasExtra("killable")) {
+                uiOpen = false;
+                if (voiceOfKanacchi != null && !voiceOfKanacchi.getPlayWhenReady()) {
+                    stopForeground(true);
+                    stopSelf();
+                }
+            }
             else
                 // Requests WebSocket Update //
                 if (intent.hasExtra("re:re")) {
-                    killable = false;
+                    uiOpen = true;
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                     if (sharedPreferences.getString("userToken", "NULL").equals("NULL") && ws != null)
                         ws.sendText("update");
@@ -139,7 +144,7 @@ public class StreamService extends Service {
                             notif = false;
                             voiceOfKanacchi.setPlayWhenReady(false);
                             stopForeground(true);
-                            if (killable) {
+                            if (!uiOpen) {
                                 stopSelf();
                             }
                             Intent returnIntent = new Intent("jcotter.listenmoe")
@@ -151,7 +156,14 @@ public class StreamService extends Service {
                                 APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
                                     @Override
                                     public void favoriteCallback(String jsonResult) {
-                                        favorite = true;
+                                        if (jsonResult.contains("success\":true"))
+                                            favorite = jsonResult.contains("favorite\":true");
+                                        if (uiOpen) {
+                                            Intent favIntent = new Intent("jcotter.listenmoe")
+                                                    .putExtra("favorite", favorite);
+                                            sendBroadcast(favIntent);
+                                        }
+                                        notification();
                                     }
 
                                     @Override
@@ -171,18 +183,19 @@ public class StreamService extends Service {
                                     }
                                 });
                                 apiUtil.favorite(songID, getApplicationContext());
-                            }
+                            } else if (intent.hasExtra("favUpdate"))
+                                favorite = intent.getBooleanExtra("favUpdate", false);
         // Returns Music Stream State to RadioInterface //
         if (intent.hasExtra("probe")) {
             Intent returnIntent = new Intent("jcotter.listenmoe");
-            if (voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady()) {
+            returnIntent.putExtra("volume", (int) (volume * 100));
+            if (voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady())
                 returnIntent.putExtra("running", true);
-                returnIntent.putExtra("volume", (int) (volume * 100));
-            } else
+            else
                 returnIntent.putExtra("running", false);
             sendBroadcast(returnIntent);
         }
-        // Updates Notification
+        // Updates Notification //
         notification();
 
         return START_NOT_STICKY;
@@ -299,6 +312,7 @@ public class StreamService extends Service {
     }
 
     private void notification() {
+        // PURPOSE: CREATE NOTIFICATION FOR FOREGROUND SERVICE //
         if (!notif) return;
         if (notifID == -1)
             notifID = (int) System.currentTimeMillis();
@@ -322,11 +336,17 @@ public class StreamService extends Service {
         if (voiceOfKanacchi.getPlayWhenReady()) {
             playPauseIntent.putExtra("play", false);
             playPausePending = PendingIntent.getService(this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "", playPausePending).build());
+            if (Build.VERSION.SDK_INT < 24)
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "", playPausePending).build());
+            else
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "Pause", playPausePending).build());
         } else {
             playPauseIntent.putExtra("play", true);
             playPausePending = PendingIntent.getService(this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "", playPausePending).build());
+            if (Build.VERSION.SDK_INT < 24)
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "", playPausePending).build());
+            else
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "Play", playPausePending).build());
         }
         // Favorite Button //
         Intent favoriteIntent = new Intent(this, this.getClass())
@@ -337,18 +357,30 @@ public class StreamService extends Service {
             Intent authIntent = new Intent(this, MenuActivity.class)
                     .putExtra("index", 2);
             PendingIntent authPending = PendingIntent.getActivity(this, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
+            if (Build.VERSION.SDK_INT < 24)
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
+            else
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "Favorite", authPending).build());
         } else {
             if (favorite)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "", favoritePending).build());
+                if (Build.VERSION.SDK_INT < 24)
+                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "", favoritePending).build());
+                else
+                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "UnFavorite", favoritePending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", favoritePending).build());
+                if (Build.VERSION.SDK_INT < 24)
+                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", favoritePending).build());
+                else
+                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "Favorite", favoritePending).build());
         }
         // Stop Button //
         Intent stopIntent = new Intent(this, this.getClass())
                 .putExtra("stop", true);
         PendingIntent stopPending = PendingIntent.getService(this, 4, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
+        if (Build.VERSION.SDK_INT < 24)
+            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
+        else
+            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "Stop", stopPending).build());
         startForeground(notifID, builder.build());
     }
 
