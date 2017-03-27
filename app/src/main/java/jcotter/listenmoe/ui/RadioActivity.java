@@ -61,7 +61,6 @@ public class RadioActivity extends AppCompatActivity {
         volumeSlider = (SeekBar) findViewById(R.id.seekBar);
         poweredBy = (TextView) findViewById(R.id.poweredBy);
         currentText = (TextView) findViewById(R.id.currentText);
-        background = (ImageView) findViewById(R.id.backgroundImage);
         nowPlaying = (TextView) findViewById(R.id.nowPlaying);
         requestText = (TextView) findViewById(R.id.requestedText);
         menuButton = (ImageButton) findViewById(R.id.menuButton);
@@ -74,10 +73,6 @@ public class RadioActivity extends AppCompatActivity {
         requestText.setTypeface(openSans);
 
         requestText.setVisibility(View.INVISIBLE);
-
-        // Scale Background Image //
-        background.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        background.setScaleType(ImageView.ScaleType.FIT_XY);
 
         // Sets Audio Type To Media (Volume Button Control) //
         setVolumeControlStream(AudioManager.STREAM_MUSIC);

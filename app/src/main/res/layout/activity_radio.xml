@@ -2,17 +2,16 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_radio_interface"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundColor"
-    tools:context="jcotter.listenmoe.ui.RadioActivity">
+    tools:context=".ui.RadioActivity">
 
     <ImageView
-        android:id="@+id/backgroundImage"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:src="@drawable/backgroundgraphic"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
