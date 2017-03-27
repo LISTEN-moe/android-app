@@ -37,15 +37,6 @@
     <string name="req_error">An Error Occurred!</string>
     <string name="supporter">Supporter Status Required</string>
 
-    <!-- Endpoints -->
-    <string name="streamLink">https://listen.moe/stream</string>
-    <string name="apiSocket">wss://listen.moe/api/v2/socket</string>
-    <string name="apiAuthenticate">https://listen.moe/api/authenticate</string>
-    <string name="apiFavorite">https://listen.moe/api/songs/favorite</string>
-    <string name="apiUserFavorites">https://listen.moe/api/user/favorites</string>
-    <string name="apiSearch">https://listen.moe/api/songs/search</string>
-    <string name="apiRequest">https://listen.moe/api/songs/request</string>
-
     <string name="github">https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App</string>
 
     <!-- WebSocket -->

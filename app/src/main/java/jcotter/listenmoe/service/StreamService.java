@@ -43,11 +43,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-import jcotter.listenmoe.interfaces.APIListenerInterface;
-import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.R;
+import jcotter.listenmoe.constants.Endpoints;
+import jcotter.listenmoe.interfaces.APIListenerInterface;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
+import jcotter.listenmoe.util.APIUtil;
 
 public class StreamService extends Service {
 
@@ -191,7 +192,7 @@ public class StreamService extends Service {
     // WEBSOCKET RELATED METHODS //
     private void connectWebSocket() {
         // PURPOSE: CONNECT TO WEBSOCKET - RETRIEVE INFO //
-        final String url = getResources().getString(R.string.apiSocket);
+        final String url = Endpoints.SOCKET;
         // Create Web Socket //
         ws = null;
         WebSocketFactory factory = new WebSocketFactory();
@@ -363,7 +364,7 @@ public class StreamService extends Service {
         voiceOfKanacchi = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "LISTEN.moe"));
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        MediaSource streamSource = new ExtractorMediaSource(Uri.parse(getString(R.string.streamLink)), dataSourceFactory, extractorsFactory, null, null);
+        MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
         streamListener();
         voiceOfKanacchi.prepare(streamSource);
         voiceOfKanacchi.setVolume(volume);

@@ -10,6 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import jcotter.listenmoe.R;
+import jcotter.listenmoe.constants.Endpoints;
 import jcotter.listenmoe.interfaces.APIListenerInterface;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -21,9 +22,11 @@ import okhttp3.Response;
 
 public class APIUtil {
     private APIListenerInterface apiListener;
+    private OkHttpClient http;
 
     public APIUtil(APIListenerInterface apiListener) {
         this.apiListener = apiListener;
+        this.http = new OkHttpClient();
     }
 
     public void favoriteList(Context applicationContext) {
@@ -33,13 +36,12 @@ public class APIUtil {
             apiListener.favoriteCallback("NULL");
             return;
         }
-        OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiUserFavorites))
+                .url(Endpoints.USER_FAVORITES)
                 .get()
                 .addHeader("authorization", userToken)
                 .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        http.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -53,15 +55,14 @@ public class APIUtil {
     }
 
     public void authenticate(final Context applicationContext, final String username, final String password) {
-        OkHttpClient okHttpClient = new OkHttpClient();
         try {
             String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
             String usernameE = URLEncoder.encode(username.trim(), "UTF-8");
             Request request = new Request.Builder()
-                    .url(applicationContext.getString(R.string.apiAuthenticate))
+                    .url(Endpoints.AUTH)
                     .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "password=" + passwordE + "&username=" + usernameE))
                     .build();
-            okHttpClient.newCall(request).enqueue(new Callback() {
+            http.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
@@ -92,16 +93,15 @@ public class APIUtil {
     }
 
     public void request(int songID, Context applicationContext) {
-        OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
         if (token.equals("NULL")) return;
         Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiRequest))
+                .url(Endpoints.REQUEST)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songID)))
                 .addHeader("authorization", token)
                 .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        http.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -115,7 +115,6 @@ public class APIUtil {
     }
 
     public void favorite(int songID, Context applicationContext) {
-        OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
         if (token.equals("NULL")) {
@@ -123,11 +122,11 @@ public class APIUtil {
             return;
         }
         Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiFavorite))
+                .url(Endpoints.FAVORITE)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songID)))
                 .addHeader("authorization", token)
                 .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        http.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -142,16 +141,15 @@ public class APIUtil {
     }
 
     public void search(String query, Context applicationContext) {
-        OkHttpClient okHttpClient = new OkHttpClient();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
         String token = sharedPreferences.getString("userToken", "NULL");
         if (token.equals("NULL")) return;
         Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiSearch))
+                .url(Endpoints.SEARCH)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "query=" + query))
                 .addHeader("authorization", token)
                 .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+        http.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
