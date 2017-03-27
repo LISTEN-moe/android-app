@@ -1,12 +1,20 @@
-# gitignore from https://gist.github.com/iainconnor/8605514
 # Built application files
-/*/build/
+build/
+*.apk
+*.ap_
+bin/
+gen/
+target/
 
-# Crashlytics configuations
-com_crashlytics_export_strings.xml
+# Files for the dex VM
+*.dex
+
+# Java class files
+*.class
 
 # Local configuration file (sdk path, etc)
 local.properties
+.gitattributes
 
 # Gradle generated files
 .gradle/
@@ -15,18 +23,10 @@ local.properties
 .signing/
 
 # User-specific configurations
-.idea/libraries/
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/.name
-.idea/compiler.xml
-.idea/copyright/profiles_settings.xml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/modules.xml
-.idea/scopes/scope_settings.xml
-.idea/vcs.xml
+.idea/
 *.iml
+ajcore.*.txt
+captures/
 
 # OS-specific files
 .DS_Store
