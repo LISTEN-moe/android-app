@@ -11,7 +11,7 @@ import java.net.URLEncoder;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
-import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.interfaces.IAPIListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -21,10 +21,10 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class APIUtil {
-    private APIListenerInterface apiListener;
+    private IAPIListener apiListener;
     private OkHttpClient http;
 
-    public APIUtil(APIListenerInterface apiListener) {
+    public APIUtil(IAPIListener apiListener) {
         this.apiListener = apiListener;
         this.http = new OkHttpClient();
     }

@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jcotter.listenmoe.R;
-import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.interfaces.IAPIListener;
 import jcotter.listenmoe.util.APIUtil;
 
 public class MenuActivity extends AppCompatActivity {
@@ -206,7 +206,7 @@ public class MenuActivity extends AppCompatActivity {
         fav_loginRequired.setVisibility(View.GONE);
         fav_list.setVisibility(View.VISIBLE);
         // Retrieves Favorites //
-        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+        APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
             public void favoriteListCallback(String jsonResult) {
                 listViewDisplay(jsonResult, 1);
@@ -423,7 +423,7 @@ public class MenuActivity extends AppCompatActivity {
     private void favorite(final int songIndex) {
         // PURPOSE: CHANGES THE FAVORITE STATUS OF A SONG //
         final int songID = songIds.get(songIndex);
-        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+        APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
             public void favoriteCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
@@ -473,7 +473,7 @@ public class MenuActivity extends AppCompatActivity {
     private void request(final int songIndex) {
         // PURPOSE: REQUESTS A SONG //
         final int songID = songIds.get(songIndex);
-        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+        APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
             public void requestCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {
@@ -519,7 +519,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void search() {
-        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+        APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
             public void searchCallback(final String jsonResult) {
                 listViewDisplay(jsonResult, 0);
@@ -556,7 +556,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void login() {
-        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+        APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
             public void authenticateCallback(final String token) {
                 runOnUiThread(new Runnable() {

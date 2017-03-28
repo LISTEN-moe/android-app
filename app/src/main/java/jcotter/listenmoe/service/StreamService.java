@@ -46,7 +46,7 @@ import java.io.IOException;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
-import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.interfaces.IAPIListener;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.APIUtil;
@@ -150,7 +150,7 @@ public class StreamService extends Service {
                         } else
                             // Change Favorite Status of Current Song //
                             if (intent.hasExtra("favorite")) {
-                                APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+                                APIUtil apiUtil = new APIUtil(new IAPIListener() {
                                     @Override
                                     public void favoriteCallback(String jsonResult) {
                                         if (jsonResult.contains("success\":true"))

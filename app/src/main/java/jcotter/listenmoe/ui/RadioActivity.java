@@ -24,7 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import jcotter.listenmoe.R;
-import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.interfaces.IAPIListener;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
 
@@ -257,7 +257,7 @@ public class RadioActivity extends AppCompatActivity {
             return;
         }
         if (songID == -1) return;
-        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+        APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
             public void favoriteCallback(final String jsonResult) {
                 runOnUiThread(new Runnable() {

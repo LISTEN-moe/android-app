@@ -1,6 +1,6 @@
 package jcotter.listenmoe.interfaces;
 
-public interface APIListenerInterface {
+public interface IAPIListener {
     void favoriteListCallback(String jsonResult);
 
     void authenticateCallback(String token);
