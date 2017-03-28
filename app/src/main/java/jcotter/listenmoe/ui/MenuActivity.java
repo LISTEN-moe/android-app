@@ -41,21 +41,25 @@ import jcotter.listenmoe.util.APIUtil;
 
 public class MenuActivity extends AppCompatActivity {
 
-    // [GLOBAL VARIABLES] //
-    // UI VARIABLES //
+    private static final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
+
+    // UI views
     private LinearLayout root;
     private TabHost tabHost;
-    //Request Tab //
+
+    // Request Tab
     private TextView req_loginRequired;
     private TextView req_searchText;
     private EditText req_search;
     private Button req_searchButton;
     private ListView req_list;
     private TextView req_remaining;
-    // Favorites Tab //
+
+    // Favorites tab
     private TextView fav_loginRequired;
     private ListView fav_list;
-    // Login Tab //
+
+    // Login tab
     private EditText username;
     private EditText password;
     private Button login;
@@ -63,15 +67,11 @@ public class MenuActivity extends AppCompatActivity {
     private TextView status;
     private ImageButton github;
 
-    // NON-UI GLOBAL VARIABLES //
+    // NON-UI GLOBAL VARIABLES
     private List<Integer> songIds, favorite;
     private List<Boolean> enabled;
     private ArrayAdapter<String> adapter;
 
-    private static final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
-
-    // [METHODS] //
-    // SYSTEM METHODS //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +95,7 @@ public class MenuActivity extends AppCompatActivity {
         status = (TextView) findViewById(R.id.loginStatus);
         github = (ImageButton) findViewById(R.id.github);
 
-        // SETUP METHODS //
+        // SETUP METHODS
         tabHostSetup();
         tabChangeListener();
         uiClickListeners();
@@ -117,9 +117,13 @@ public class MenuActivity extends AppCompatActivity {
         password.clearFocus();
     }
 
+
     // UI METHODS //
+
+    /**
+     * Sets up the tab host.
+     */
     private void tabHostSetup() {
-        // PURPOSE: SETS UP THE TAB HOST //
         tabHost.setup();
         // Tab 1 //
         TabHost.TabSpec spec = tabHost.newTabSpec(getString(R.string.tabReq));
@@ -143,8 +147,10 @@ public class MenuActivity extends AppCompatActivity {
             requestTab(sharedPreferences.getString("userToken", "NULL"));
     }
 
+    /**
+     * Listener for tab host selection.
+     */
     private void tabChangeListener() {
-        // PURPOSE: LISTENER FOR TAB HOST SELECTION //
         tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String s) {
@@ -182,8 +188,11 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Controls content displayed in request tab.
+     * @param userToken
+     */
     private void requestTab(String userToken) {
-        // PURPOSE: CONTROLS CONTENT DISPLAYED IN REQUEST TAB //
         if (userToken.equals("NULL")) {
             req_loginRequired.setVisibility(View.VISIBLE);
             req_searchText.setVisibility(View.GONE);
@@ -199,8 +208,11 @@ public class MenuActivity extends AppCompatActivity {
         req_search.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Controls content displayed in favourite tab.
+     * @param userToken
+     */
     private void favoriteTab(String userToken) {
-        // PURPOSE: CONTROLS CONTENT DISPLAYED IN FAVORITE TAB //
         if (userToken.equals("NULL")) {
             fav_loginRequired.setVisibility(View.VISIBLE);
             fav_list.setVisibility(View.GONE);
@@ -234,8 +246,12 @@ public class MenuActivity extends AppCompatActivity {
         apiUtil.favoriteList(getApplicationContext());
     }
 
+    /**
+     * Processes and displays the relevant listview data.
+     * @param displayData
+     * @param tab
+     */
     private void listViewDisplay(final String displayData, final int tab) {
-        // PURPOSE: PROCESSES AND DISPLAYS THE RELEVANT LIST VIEW DATA //
         final int currentTab = tabHost.getCurrentTab();
         List<String> displayList = new ArrayList<>();
         try {
@@ -327,8 +343,10 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Listeners for all clickable UI views.
+     */
     private void uiClickListeners() {
-        // PURPOSE: LISTENERS FOR ALL CLICKABLE UI COMPONENTS //
         root.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -383,8 +401,11 @@ public class MenuActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Displays a dialog containing song actions.
+     * @param songIndex
+     */
     private void confirmationDialog(final int songIndex) {
-        // PURPOSE: DISPLAYS A DIALOG CONTAINING SONG ACTIONS //
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
         // Cancel button //
         builder.setMessage(R.string.req_dialog_message);
@@ -422,9 +443,14 @@ public class MenuActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+
     // LOGIC METHODS //
+
+    /**
+     * Updates the favorite status of a song.
+     * @param songIndex
+     */
     private void favorite(final int songIndex) {
-        // PURPOSE: CHANGES THE FAVORITE STATUS OF A SONG //
         final int songID = songIds.get(songIndex);
         APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
@@ -473,8 +499,11 @@ public class MenuActivity extends AppCompatActivity {
         apiUtil.favorite(songID, getApplicationContext());
     }
 
+    /**
+     * Requests a song.
+     * @param songIndex
+     */
     private void request(final int songIndex) {
-        // PURPOSE: REQUESTS A SONG //
         final int songID = songIds.get(songIndex);
         APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
@@ -521,6 +550,9 @@ public class MenuActivity extends AppCompatActivity {
         apiUtil.request(songID, getApplicationContext());
     }
 
+    /**
+     *
+     */
     private void search() {
         APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
@@ -558,6 +590,9 @@ public class MenuActivity extends AppCompatActivity {
         apiUtil.search(req_search.getText().toString().trim(), getApplicationContext());
     }
 
+    /**
+     *
+     */
     private void login() {
         APIUtil apiUtil = new APIUtil(new IAPIListener() {
             @Override
@@ -607,6 +642,9 @@ public class MenuActivity extends AppCompatActivity {
         apiUtil.authenticate(getApplicationContext(), username.getText().toString().trim(), password.getText().toString().trim());
     }
 
+    /**
+     *
+     */
     @SuppressLint("CommitPrefEdits")
     private void logout() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());

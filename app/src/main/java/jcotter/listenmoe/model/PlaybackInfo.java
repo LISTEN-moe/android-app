@@ -85,4 +85,8 @@ public class PlaybackInfo extends BasicTrack {
     public void setExtended(ExtendedInfo extended) {
         this.extended = extended;
     }
+
+    public boolean hasExtended() {
+        return this.extended != null;
+    }
 }

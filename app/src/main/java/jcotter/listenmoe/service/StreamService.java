@@ -24,9 +24,11 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.trackselection.AdaptiveVideoTrackSelection;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -199,9 +201,13 @@ public class StreamService extends Service {
         return START_NOT_STICKY;
     }
 
+
     // WEBSOCKET RELATED METHODS //
+
+    /**
+     * Connects to the websocket and retrieves playback info.
+     */
     private void connectWebSocket() {
-        // PURPOSE: CONNECT TO WEBSOCKET - RETRIEVE INFO //
         final String url = Endpoints.SOCKET;
         // Create Web Socket //
         ws = null;
@@ -261,6 +267,7 @@ public class StreamService extends Service {
 
     /**
      * Parses JSON resposne from websocket.
+     *
      * @param json Response from the LISTEN.moe websocket.
      */
     private void parseJSON(String json) {
@@ -385,13 +392,16 @@ public class StreamService extends Service {
         startForeground(notifID, builder.build());
     }
 
+
     // MUSIC PLAYER RELATED METHODS //
+
+    /**
+     * Creates and starts the stream.
+     */
     private void startStream() {
-        // PURPOSE: CREATE AND START STREAM PLAYER //
-        Handler mainHandler = new Handler();
         BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveVideoTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(mainHandler, videoTrackSelectionFactory);
+        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         LoadControl loadControl = new DefaultLoadControl();
         voiceOfKanacchi = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "LISTEN.moe"));
@@ -422,6 +432,10 @@ public class StreamService extends Service {
 
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest) {
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
             }
 
             @Override
