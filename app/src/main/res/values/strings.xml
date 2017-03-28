@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">LISTEN.moe</string>
-    <!-- Radio Interface -->
-    <string name="infoPlayPause">Play/Pause Button</string>
-    <string name="infoBackground">Background Image</string>
-    <string name="infoVolume">Volume Slider</string>
-    <string name="infoVolumeDown">Volume Down Image</string>
-    <string name="infoVolumeUp">Volume Up Image</string>
+
+    <!-- Radio -->
+    <string name="infoPlayPause">Play/pause button</string>
+    <string name="infoVolume">Volume slider</string>
+    <string name="infoVolumeDown">Volume down image</string>
+    <string name="infoVolumeUp">Volume up image</string>
     <string name="infoMenu">Menu</string>
-    <string name="currentListeners">Current Listeners:</string>
+    <string name="currentListeners">Current listeners:</string>
     <string name="nowPlaying">- Now Playing -</string>
-    <string name="poweredBy">Powered By: <a href="https://listen.moe"> LISTEN.moe</a></string>
-    <string name="requestedText">Requested By:</string>
+    <string name="poweredBy">Powered by: <a href="https://listen.moe"> LISTEN.moe</a></string>
+    <string name="requestedText">Requested by:</string>
 
     <!-- Menu -->
     <string name="tabFav">Favorites</string>
@@ -22,28 +22,19 @@
     <string name="searchAlt">Search</string>
     <string name="username">Username:</string>
     <string name="password">Password:</string>
-    <string name="invalid_pass">invalid-password</string>
-    <string name="invalid_user">invalid-user</string>
-    <string name="errorName">Error: Invalid Username</string>
-    <string name="errorPass">Error: Incorrect Password</string>
-    <string name="loginStatus">User Currently Logged In Successfully</string>
-    <string name="errorGeneral">Error: Login Failed</string>
+    <string name="errorName">Error: invalid username</string>
+    <string name="errorPass">Error: incorrect password</string>
+    <string name="loginStatus">User currently logged in successfully</string>
+    <string name="errorGeneral">Error: login failed</string>
     <string name="loginRequired">You must log in to use this feature</string>
-    <string name="requestsRemaining"> Requests Remaining</string>
-    <string name="req_dialog_title">Available Actions</string>
+    <string name="requestsRemaining"> Requests remaining</string>
+    <string name="req_dialog_title">Available actions</string>
     <string name="req_dialog_message">What action would you like to take?</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="success">Success!</string>
-    <string name="req_error">An Error Occurred!</string>
-    <string name="supporter">Supporter Status Required</string>
-
-    <string name="github">https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App</string>
+    <string name="req_error">An error occurred!</string>
+    <string name="supporter">Supporter status required</string>
 
     <!-- WebSocket -->
-    <string name="apiSong">song_name</string>
-    <string name="apiListeners">listeners</string>
-    <string name="apiArtist">artist_name</string>
-    <string name="apiAnime">anime_name</string>
-    <string name="apiRequestedBy">requested_by</string>
-    <string name="apiFailed">Unable to connect to the API.\n Please check your internet connection. \n If you are connected stop the app and then try again. \n If the problem persists the radio might be down for maintenance</string>
+    <string name="apiFailed">Unable to connect to the API.\n Please check your internet connection.\n If you are connected stop the app and then try again.\n If the problem persists the radio might be down for maintenance</string>
 </resources>

@@ -46,6 +46,7 @@ import java.io.IOException;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
+import jcotter.listenmoe.constants.SocketResponse;
 import jcotter.listenmoe.interfaces.IAPIListener;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
@@ -258,8 +259,11 @@ public class StreamService extends Service {
         }
     }
 
+    /**
+     * Parses JSON resposne from websocket.
+     * @param json Response from the LISTEN.moe websocket.
+     */
     private void parseJSON(String json) {
-        // PURPOSE: PARSE JSON INFO FROM WEBSOCKET //
         String nowPlaying = "NULL";
         String listeners = "NULL";
         String requestedBy = "NULL";
@@ -269,27 +273,26 @@ public class StreamService extends Service {
             try {
                 JSONObject jsonObject = new JSONObject(json);
                 listeners = getResources().getString(R.string.currentListeners);
-                listeners = listeners + "  " + jsonObject.getString(getResources().getString(R.string.apiListeners)) + "  ";
+                listeners = listeners + "  " + jsonObject.getString(SocketResponse.LISTENERS) + "  ";
                 nowPlaying = getResources().getString(R.string.nowPlaying);
-                title = jsonObject.getString(getResources().getString(R.string.apiSong)).trim();
-                artist = jsonObject.getString(getResources().getString(R.string.apiArtist)).trim();
-                anime = jsonObject.getString(getResources().getString(R.string.apiAnime)).trim();
+                songID = jsonObject.getInt(SocketResponse.SONG_ID);
+                title = jsonObject.getString(SocketResponse.SONG_NAME).trim();
+                artist = jsonObject.getString(SocketResponse.ARTIST_NAME).trim();
+                anime = jsonObject.getString(SocketResponse.ANIME_NAME).trim();
                 if (anime.equals("")) {
                     nowPlaying = nowPlaying + "\n" + artist + "\n" + title;
                     anime = "NULL";
                 } else
                     nowPlaying = nowPlaying + "\n" + artist + "\n" + title + "\n[" + anime + "]";
-                String requested_by = jsonObject.getString(getResources().getString(R.string.apiRequestedBy));
+                String requested_by = jsonObject.getString(SocketResponse.REQUESTED_BY);
                 if (!requested_by.equals("")) {
                     String base = getResources().getString(R.string.requestedText);
                     requestedBy = base + " " + "<a href=\"https://forum.listen.moe/u/" + requested_by + "\"" + ">" + requested_by + "</a>";
                 }
                 if (json.contains("\"extended\":{")) {
-                    JSONObject jsonObjectE = jsonObject.getJSONObject("extended");
-                    //songID = jsonObject.getInt("song_id");
-                    favorite = jsonObjectE.getBoolean("favorite");
+                    JSONObject jsonObjectE = jsonObject.getJSONObject(SocketResponse.EXTENDED);
+                    favorite = jsonObjectE.getBoolean(SocketResponse.EXTENDED_FAVORITE);
                 }
-                songID = jsonObject.getInt("song_id");
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
@@ -308,8 +311,10 @@ public class StreamService extends Service {
         notification();
     }
 
+    /**
+     * Creates a notification for the foreground service.
+     */
     private void notification() {
-        // PURPOSE: CREATE NOTIFICATION FOR FOREGROUND SERVICE //
         if (!notif) return;
         if (notifID == -1)
             notifID = (int) System.currentTimeMillis();
@@ -399,8 +404,10 @@ public class StreamService extends Service {
         notif = true;
     }
 
+    /**
+     * Restarts the stream if a disconnect occurs.
+     */
     private void streamListener() {
-        // PURPOSE: RESTART STREAM IF DISCONNECTION OCCURS //
         voiceOfKanacchi.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {

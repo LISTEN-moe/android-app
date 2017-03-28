@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jcotter.listenmoe.R;
+import jcotter.listenmoe.constants.Auth;
 import jcotter.listenmoe.interfaces.IAPIListener;
 import jcotter.listenmoe.util.APIUtil;
 
@@ -66,6 +67,8 @@ public class MenuActivity extends AppCompatActivity {
     private List<Integer> songIds, favorite;
     private List<Boolean> enabled;
     private ArrayAdapter<String> adapter;
+
+    private static final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
 
     // [METHODS] //
     // SYSTEM METHODS //
@@ -373,7 +376,7 @@ public class MenuActivity extends AppCompatActivity {
         github.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri link = Uri.parse(getString(R.string.github));
+                Uri link = Uri.parse(GITHUB_URL);
                 Intent intent = new Intent(Intent.ACTION_VIEW, link);
                 startActivity(intent);
             }
@@ -563,10 +566,10 @@ public class MenuActivity extends AppCompatActivity {
                     @SuppressLint("CommitPrefEdits")
                     @Override
                     public void run() {
-                        if (token.contains(getString(R.string.invalid_user))) {
+                        if (token.contains(Auth.INVALID_USER)) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorName), Toast.LENGTH_LONG).show();
                             return;
-                        } else if (token.contains(getString(R.string.invalid_pass))) {
+                        } else if (token.contains(Auth.INVALID_PASS)) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorPass), Toast.LENGTH_LONG).show();
                             return;
                         } else if (token.contains("error-general")) {
