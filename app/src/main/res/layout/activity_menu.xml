@@ -14,7 +14,6 @@
         android:id="@+id/tabAPI"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
         android:theme="@style/TabWidgetTheme">
 
         <LinearLayout
@@ -25,8 +24,7 @@
             <TabWidget
                 android:id="@android:id/tabs"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:showDividers="middle" />
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@android:id/tabcontent"

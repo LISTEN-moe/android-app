@@ -1,6 +1,5 @@
 package jcotter.listenmoe.ui;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -190,6 +189,7 @@ public class MenuActivity extends AppCompatActivity {
 
     /**
      * Controls content displayed in request tab.
+     *
      * @param userToken
      */
     private void requestTab(String userToken) {
@@ -210,6 +210,7 @@ public class MenuActivity extends AppCompatActivity {
 
     /**
      * Controls content displayed in favourite tab.
+     *
      * @param userToken
      */
     private void favoriteTab(String userToken) {
@@ -248,6 +249,7 @@ public class MenuActivity extends AppCompatActivity {
 
     /**
      * Processes and displays the relevant listview data.
+     *
      * @param displayData
      * @param tab
      */
@@ -403,6 +405,7 @@ public class MenuActivity extends AppCompatActivity {
 
     /**
      * Displays a dialog containing song actions.
+     *
      * @param songIndex
      */
     private void confirmationDialog(final int songIndex) {
@@ -448,6 +451,7 @@ public class MenuActivity extends AppCompatActivity {
 
     /**
      * Updates the favorite status of a song.
+     *
      * @param songIndex
      */
     private void favorite(final int songIndex) {
@@ -501,6 +505,7 @@ public class MenuActivity extends AppCompatActivity {
 
     /**
      * Requests a song.
+     *
      * @param songIndex
      */
     private void request(final int songIndex) {
@@ -587,6 +592,7 @@ public class MenuActivity extends AppCompatActivity {
             public void favoriteCallback(String jsonResult) {
             }
         });
+
         apiUtil.search(req_search.getText().toString().trim(), getApplicationContext());
     }
 
@@ -598,7 +604,6 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void authenticateCallback(final String token) {
                 runOnUiThread(new Runnable() {
-                    @SuppressLint("CommitPrefEdits")
                     @Override
                     public void run() {
                         if (token.contains(AuthMessages.INVALID_USER)) {
@@ -607,8 +612,7 @@ public class MenuActivity extends AppCompatActivity {
                         } else if (token.contains(AuthMessages.INVALID_PASS)) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorPass), Toast.LENGTH_LONG).show();
                             return;
-                        } else if (token.contains("error-general")) {
-
+                        } else if (token.contains(AuthMessages.ERROR)) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorGeneral), Toast.LENGTH_LONG).show();
                             return;
                         }
@@ -616,7 +620,7 @@ public class MenuActivity extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit()
                                 .putString("userToken", token)
                                 .putLong("lastAuth", System.currentTimeMillis() / 1000);
-                        editor.commit();
+                        editor.apply();
                         status.setVisibility(View.VISIBLE);
                         Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
                     }
@@ -639,20 +643,20 @@ public class MenuActivity extends AppCompatActivity {
             public void searchCallback(String jsonResult) {
             }
         });
+
         apiUtil.authenticate(getApplicationContext(), username.getText().toString().trim(), password.getText().toString().trim());
     }
 
     /**
      *
      */
-    @SuppressLint("CommitPrefEdits")
     private void logout() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (!sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
             SharedPreferences.Editor editor = sharedPreferences.edit()
                     .putString("userToken", "NULL")
                     .putLong("lastAuth", 0);
-            editor.commit();
+            editor.apply();
             username.setText("");
             password.setText("");
             status.setVisibility(View.INVISIBLE);

@@ -1,6 +1,5 @@
 package jcotter.listenmoe.ui;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -227,7 +226,6 @@ public class RadioActivity extends AppCompatActivity {
     }
 
     // LOGIC METHODS //
-    @SuppressLint("ApplySharedPref")
     private void tokenValidity() {
         // PURPOSE : Retrieves Token, Invalidates if token is 28 days old //
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -239,7 +237,7 @@ public class RadioActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit()
                     .putString("userToken", "NULL")
                     .putLong("lastAuth", 0);
-            editor.commit();
+            editor.apply();
         }
     }
 

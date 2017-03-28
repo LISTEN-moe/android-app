@@ -1,6 +1,5 @@
 package jcotter.listenmoe.util;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -70,7 +69,6 @@ public class APIUtil {
                     apiListener.authenticateCallback("error-general");
                 }
 
-                @SuppressLint("CommitPrefEdits")
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String body = response.body().string();
@@ -84,7 +82,7 @@ public class APIUtil {
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
                     SharedPreferences.Editor editor = sharedPreferences.edit()
                             .putString("userToken", body.substring(25, body.length() - 2));
-                    editor.commit();
+                    editor.apply();
                     apiListener.authenticateCallback(body.substring(25, body.length() - 2));
                 }
             });
