@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jcotter.listenmoe.R;
-import jcotter.listenmoe.constants.Auth;
+import jcotter.listenmoe.constants.AuthMessages;
 import jcotter.listenmoe.interfaces.IAPIListener;
 import jcotter.listenmoe.util.APIUtil;
 
@@ -566,10 +566,10 @@ public class MenuActivity extends AppCompatActivity {
                     @SuppressLint("CommitPrefEdits")
                     @Override
                     public void run() {
-                        if (token.contains(Auth.INVALID_USER)) {
+                        if (token.contains(AuthMessages.INVALID_USER)) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorName), Toast.LENGTH_LONG).show();
                             return;
-                        } else if (token.contains(Auth.INVALID_PASS)) {
+                        } else if (token.contains(AuthMessages.INVALID_PASS)) {
                             Toast.makeText(getBaseContext(), getString(R.string.errorPass), Toast.LENGTH_LONG).show();
                             return;
                         } else if (token.contains("error-general")) {

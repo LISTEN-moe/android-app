@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import jcotter.listenmoe.R;
-import jcotter.listenmoe.constants.Auth;
+import jcotter.listenmoe.constants.AuthMessages;
 import jcotter.listenmoe.constants.Endpoints;
 import jcotter.listenmoe.interfaces.IAPIListener;
 import okhttp3.Call;
@@ -75,10 +75,10 @@ public class APIUtil {
                 public void onResponse(Call call, Response response) throws IOException {
                     String body = response.body().string();
                     if (body.contains(applicationContext.getString(R.string.errorPass))) {
-                        apiListener.authenticateCallback(Auth.INVALID_PASS);
+                        apiListener.authenticateCallback(AuthMessages.INVALID_PASS);
                         return;
-                    } else if (body.contains(Auth.INVALID_USER)) {
-                        apiListener.authenticateCallback(Auth.INVALID_USER);
+                    } else if (body.contains(AuthMessages.INVALID_USER)) {
+                        apiListener.authenticateCallback(AuthMessages.INVALID_USER);
                         return;
                     }
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
