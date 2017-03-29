@@ -3,13 +3,11 @@ package jcotter.listenmoe.service;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -50,6 +48,7 @@ import jcotter.listenmoe.model.PlaybackInfo;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.APIUtil;
+import jcotter.listenmoe.util.AuthUtil;
 
 public class StreamService extends Service {
 
@@ -107,11 +106,11 @@ public class StreamService extends Service {
                 // Requests WebSocket Update //
                 if (intent.hasExtra("re:re")) {
                     uiOpen = true;
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    if (sharedPreferences.getString("userToken", null) == null && ws != null)
+                    final String authToken = AuthUtil.getAuthToken(getApplicationContext());
+                    if (authToken == null && ws != null)
                         ws.sendText("update");
                     else if (ws != null)
-                        ws.sendText("{\"token\":\"" + sharedPreferences.getString("userToken", null) + "\"}");
+                        ws.sendText("{\"token\":\"" + authToken + "\"}");
                     else
                         connectWebSocket();
                 } else
@@ -207,10 +206,9 @@ public class StreamService extends Service {
                     if (frame.getPayloadText().contains("listeners")) {
                         // Get userToken from shared preferences if socket not authenticated //
                         if (!frame.getPayloadText().contains("\"extended\":{")) {
-                            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            String token = sharedPreferences.getString("userToken", null);
-                            if (token != null) {
-                                ws.sendText("{\"token\":\"" + token + "\"}");
+                            final String authToken = AuthUtil.getAuthToken(getBaseContext());
+                            if (authToken != null) {
+                                ws.sendText("{\"token\":\"" + authToken + "\"}");
                             }
                         }
                         // Parses the API information //
@@ -355,8 +353,7 @@ public class StreamService extends Service {
         Intent favoriteIntent = new Intent(this, this.getClass())
                 .putExtra("favorite", true);
         PendingIntent favoritePending = PendingIntent.getService(this, 2, favoriteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.getString("userToken", null) == null) {
+        if (!AuthUtil.isAuthenticated(getApplicationContext())) {
             Intent authIntent = new Intent(this, MenuActivity.class)
                     .putExtra("index", 2);
             PendingIntent authPending = PendingIntent.getActivity(this, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);

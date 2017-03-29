@@ -5,13 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -26,6 +24,7 @@ import jcotter.listenmoe.R;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
+import jcotter.listenmoe.util.AuthUtil;
 
 public class RadioActivity extends AppCompatActivity {
     // UI views
@@ -248,17 +247,15 @@ public class RadioActivity extends AppCompatActivity {
      * Retrieves token. Invalidates it if it's 28 days old.
      */
     private void tokenValidity() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         // Check for token //
-        if (sharedPreferences.getString("userToken", null) == null)
+        if (!AuthUtil.isAuthenticated(this)) {
             return;
+        }
 
         // Check token is valid //
-        if (Math.round((System.currentTimeMillis() / 1000 - sharedPreferences.getLong("lastAuth", 0)) / 86400.0) >= 28) {
-            SharedPreferences.Editor editor = sharedPreferences.edit()
-                    .putString("userToken", null)
-                    .putLong("lastAuth", 0);
-            editor.apply();
+        final long lastAuth = AuthUtil.getTokenAge(this);
+        if (Math.round((System.currentTimeMillis() / 1000 - lastAuth) / 86400.0) >= 28) {
+            AuthUtil.clearAuthToken(this);
         }
     }
 
@@ -274,8 +271,7 @@ public class RadioActivity extends AppCompatActivity {
     }
 
     private void favoriteLogic() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.getString("userToken", null) == null) {
+        if (!AuthUtil.isAuthenticated(this)) {
             openMenu(2);
             return;
         }
