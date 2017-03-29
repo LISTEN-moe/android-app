@@ -262,7 +262,7 @@ public class StreamService extends Service {
 
         String nowPlaying;
         String listeners;
-        String requestedBy = "";
+        String requestedBy = null;
         boolean extended = false;
         favorite = false;
         songID = -1;
@@ -277,12 +277,12 @@ public class StreamService extends Service {
 
             nowPlaying = String.format(getResources().getString(R.string.nowPlaying), artist, title);
             if (!anime.equals("")) {
-                nowPlaying += String.format("\n[%s]", anime);
+                nowPlaying += String.format("\n[ %s ]", anime);
             }
 
             String requested_by = playbackInfo.getRequestedBy();
-            if (requested_by != null) {
-                requestedBy = String.format(getResources().getString(R.string.requestedText), requested_by, requested_by);
+            if (!requested_by.equals("")) {
+                requestedBy = String.format(getResources().getString(R.string.requestedText), requested_by);
             }
 
             if (playbackInfo.hasExtended()) {

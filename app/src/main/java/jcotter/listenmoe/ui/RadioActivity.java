@@ -182,18 +182,20 @@ public class RadioActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            songID = intent.getIntExtra("songID", -1);
                             nowPlaying.setText(intent.getStringExtra("nowPlaying"));
                             currentText.setText(intent.getStringExtra("listeners"));
-                            if (!intent.getStringExtra("requestedBy").equals("")) {
+                            final String requestedBy = intent.getStringExtra("requestedBy");
+                            if (requestedBy != null) {
                                 requestText.setVisibility(View.VISIBLE);
                                 requestText.setMovementMethod(LinkMovementMethod.getInstance());
                                 if (Build.VERSION.SDK_INT >= 24)
-                                    requestText.setText(Html.fromHtml(intent.getStringExtra("requestedBy"), Html.FROM_HTML_MODE_COMPACT));
+                                    requestText.setText(Html.fromHtml(requestedBy, Html.FROM_HTML_MODE_COMPACT));
                                 else
-                                    requestText.setText(Html.fromHtml(intent.getStringExtra("requestedBy")));
-                            } else
+                                    requestText.setText(Html.fromHtml(requestedBy));
+                            } else {
                                 requestText.setVisibility(View.INVISIBLE);
-                            songID = intent.getIntExtra("songID", -1);
+                            }
                         }
                     });
                 }

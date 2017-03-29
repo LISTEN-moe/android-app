@@ -9,7 +9,7 @@
     <string name="infoVolumeUp">Volume up image</string>
     <string name="infoMenu">Menu</string>
     <string name="nowPlaying" formatted="false">- Now Playing -\n%s\n%s</string>
-    <string name="requestedText" formatted="false">Requested by: <a href="https://forum.listen.moe/u/%s">%s</a></string>
+    <string name="requestedText">Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a></string>
     <string name="poweredBy">Powered by: <a href="https://listen.moe"> LISTEN.moe</a></string>
     <string name="currentListeners">Current listeners: %d</string>
 
