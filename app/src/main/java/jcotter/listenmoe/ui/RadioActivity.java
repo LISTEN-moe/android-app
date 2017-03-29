@@ -32,7 +32,6 @@ import jcotter.listenmoe.util.AuthUtil;
 public class RadioActivity extends AppCompatActivity {
     // UI views
     private SeekBar volumeSlider;
-    private ImageView background;
     private ImageButton playPause;
     private ImageButton menuButton;
     private ImageButton favoriteButton;
@@ -52,7 +51,6 @@ public class RadioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_radio);
 
         // Get UI views
-        background = (ImageView) findViewById(R.id.backgroundImage);
         playPause = (ImageButton) findViewById(R.id.playPause);
         volumeSlider = (SeekBar) findViewById(R.id.seekBar);
         poweredBy = (TextView) findViewById(R.id.poweredBy);
@@ -70,10 +68,6 @@ public class RadioActivity extends AppCompatActivity {
         requestText.setTypeface(openSans);
 
         requestText.setVisibility(View.INVISIBLE);
-
-        // Scale background image
-        background.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        background.setScaleType(ImageView.ScaleType.FIT_XY);
 
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
