@@ -17,6 +17,7 @@ import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.interfaces.RequestSongCallback;
 import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
+import jcotter.listenmoe.interfaces.UserInfoCallback;
 import jcotter.listenmoe.model.SongsList;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -93,8 +94,32 @@ public class APIUtil {
      * Gets the user information such as id, username and in a not so distant future, preferences.
      * /api/user
      */
-    public void getUserInfo() {
-        // TODO
+    public void getUserInfo(final UserInfoCallback callback) {
+        final String userToken = sharedPrefs.getString(USER_TOKEN, null);
+        if (userToken == null) {
+            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            return;
+        }
+
+        Request request = new Request.Builder()
+                .url(Endpoints.USER)
+                .get()
+                .addHeader("authorization", userToken)
+                .build();
+
+        http.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                callback.onFailure(ResponseMessages.ERROR);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                // TODO: parse as JSONObject
+                callback.onSuccess(response.body().string());
+            }
+        });
     }
 
     /**

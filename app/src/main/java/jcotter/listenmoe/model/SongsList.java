@@ -4,11 +4,11 @@ import java.util.List;
 
 public class SongsList {
     private List<Song> songs;
-//    private List<Integer> extra;
+    private SongsExtra extra;
 
-    public SongsList(List<Song> songs, List<Integer> extra) {
+    public SongsList(List<Song> songs, SongsExtra extra) {
         this.songs = songs;
-//        this.extra = extra;
+        this.extra = extra;
     }
 
     public List<Song> getSongs() {
@@ -19,11 +19,11 @@ public class SongsList {
         this.songs = songs;
     }
 
-//    public List<Integer> getExtra() {
-//        return extra;
-//    }
-//
-//    public void setExtra(List<Integer> extra) {
-//        this.extra = extra;
-//    }
+    public SongsExtra getExtra() {
+        return extra;
+    }
+
+    public void setExtra(SongsExtra extra) {
+        this.extra = extra;
+    }
 }
