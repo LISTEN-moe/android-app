@@ -37,7 +37,6 @@ public class RadioActivity extends AppCompatActivity {
     private TextView nowPlaying;
     private TextView requestText;
 
-    private APIUtil apiUtil;
     private BroadcastReceiver broadcastReceiver;
     private int songID;
     private boolean favorite;
@@ -47,8 +46,6 @@ public class RadioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radio);
-
-        this.apiUtil = new APIUtil(this);
 
         // Get UI views
         playPause = (ImageButton) findViewById(R.id.playPause);
@@ -277,7 +274,7 @@ public class RadioActivity extends AppCompatActivity {
         }
         if (songID == -1) return;
 
-        this.apiUtil.favoriteSong(songID, new FavoriteSongCallback() {
+        APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
             @Override
             public void onFailure(final String result) {
             }

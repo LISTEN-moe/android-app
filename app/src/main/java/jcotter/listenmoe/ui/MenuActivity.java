@@ -69,14 +69,11 @@ public class MenuActivity extends AppCompatActivity {
     private List<Integer> songIds, favorite;
     private List<Boolean> enabled;
     private ArrayAdapter<String> adapter;
-    private APIUtil apiUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
-        this.apiUtil = new APIUtil(this);
 
         root = (LinearLayout) findViewById(R.id.root);
         tabHost = (TabHost) findViewById(R.id.tabAPI);
@@ -227,7 +224,7 @@ public class MenuActivity extends AppCompatActivity {
         fav_loginRequired.setVisibility(View.GONE);
         fav_list.setVisibility(View.VISIBLE);
 
-        this.apiUtil.getUserFavorites(new UserFavoritesCallback() {
+        APIUtil.getUserFavorites(this, new UserFavoritesCallback() {
             @Override
             public void onFailure(String result) {
             }
@@ -441,7 +438,7 @@ public class MenuActivity extends AppCompatActivity {
     private void favorite(final int songIndex) {
         final int songID = songIds.get(songIndex);
 
-        this.apiUtil.favoriteSong(songID, new FavoriteSongCallback() {
+        APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
             @Override
             public void onFailure(final String result) {
             }
@@ -483,7 +480,7 @@ public class MenuActivity extends AppCompatActivity {
     private void request(final int songIndex) {
         final int songID = songIds.get(songIndex);
 
-        this.apiUtil.requestSong(songID, new RequestSongCallback() {
+        APIUtil.requestSong(this, songID, new RequestSongCallback() {
             @Override
             public void onFailure(final String result) {
             }
@@ -517,7 +514,7 @@ public class MenuActivity extends AppCompatActivity {
     private void search() {
         final String query = req_search.getText().toString().trim();
 
-        this.apiUtil.search(query, new SearchCallback() {
+        APIUtil.search(this, query, new SearchCallback() {
             @Override
             public void onFailure(final String result) {
             }
@@ -536,7 +533,7 @@ public class MenuActivity extends AppCompatActivity {
         final String user = this.username.getText().toString().trim();
         final String pass = this.password.getText().toString().trim();
 
-        this.apiUtil.authenticate(user, pass, new AuthCallback() {
+        APIUtil.authenticate(this, user, pass, new AuthCallback() {
             @Override
             public void onFailure(final String result) {
                 runOnUiThread(new Runnable() {

@@ -27,15 +27,8 @@ import okhttp3.Response;
 
 public class APIUtil {
 
-    private Context context;
-    private OkHttpClient http;
-    private Gson gson;
-
-    public APIUtil(Context context) {
-        this.context = context;
-        this.http = new OkHttpClient();
-        this.gson = new Gson();
-    }
+    private static OkHttpClient http = new OkHttpClient();
+    private static Gson gson = new Gson();
 
     /**
      * Authenticates to the radio.
@@ -44,7 +37,7 @@ public class APIUtil {
      * @param username User's username.
      * @param password User's password.
      */
-    public void authenticate(final String username, final String password, final AuthCallback callback) {
+    public static void authenticate(final Context context, final String username, final String password, final AuthCallback callback) {
         try {
             String usernameE = URLEncoder.encode(username.trim(), "UTF-8");
             String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
@@ -88,13 +81,13 @@ public class APIUtil {
      * Gets the user information such as id, username and in a not so distant future, preferences.
      * /api/user
      */
-    public void getUserInfo(final UserInfoCallback callback) {
-        if (!AuthUtil.isAuthenticated(this.context)) {
+    public static void getUserInfo(final Context context, final UserInfoCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.USER)
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.USER)
                 .get()
                 .build();
 
@@ -117,13 +110,13 @@ public class APIUtil {
      * Gets a list of all the user's favorited songs.
      * /api/user/favorites
      */
-    public void getUserFavorites(final UserFavoritesCallback callback) {
-        if (!AuthUtil.isAuthenticated(this.context)) {
+    public static void getUserFavorites(final Context context, final UserFavoritesCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.USER_FAVORITES)
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.USER_FAVORITES)
                 .get()
                 .build();
 
@@ -136,7 +129,7 @@ public class APIUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                SongsList songsList = parseSongJson(response.body().string());
+                SongsList songsList = APIUtil.parseSongJson(response.body().string());
                 callback.onSuccess(songsList.getSongs());
             }
         });
@@ -148,13 +141,13 @@ public class APIUtil {
      *
      * @param songId Song to toggle.
      */
-    public void favoriteSong(final int songId, final FavoriteSongCallback callback) {
-        if (!AuthUtil.isAuthenticated(this.context)) {
+    public static void favoriteSong(final Context context, final int songId, final FavoriteSongCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.FAVORITE)
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.FAVORITE)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
                 .build();
 
@@ -178,13 +171,13 @@ public class APIUtil {
      *
      * @param songId Song to request.
      */
-    public void requestSong(final int songId, final RequestSongCallback callback) {
-        if (!AuthUtil.isAuthenticated(this.context)) {
+    public static void requestSong(final Context context, final int songId, final RequestSongCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.REQUEST)
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.REQUEST)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
                 .build();
 
@@ -208,13 +201,13 @@ public class APIUtil {
      *
      * @param query Search query string.
      */
-    public void search(final String query, final SearchCallback callback) {
-        if (!AuthUtil.isAuthenticated(this.context)) {
+    public static void search(final Context context, final String query, final SearchCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.SEARCH)
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.SEARCH)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "query=" + query))
                 .build();
 
@@ -227,13 +220,13 @@ public class APIUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                SongsList songsList = parseSongJson(response.body().string());
+                SongsList songsList = APIUtil.parseSongJson(response.body().string());
                 callback.onSuccess(songsList.getSongs());
             }
         });
     }
 
-    private SongsList parseSongJson(final String jsonString) {
+    private static SongsList parseSongJson(final String jsonString) {
         SongsList songsList = gson.fromJson(jsonString, SongsList.class);
         return songsList;
     }

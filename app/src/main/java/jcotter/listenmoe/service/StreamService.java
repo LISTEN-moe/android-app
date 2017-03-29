@@ -149,8 +149,7 @@ public class StreamService extends Service {
                         } else
                             // Change Favorite Status of Current Song //
                             if (intent.hasExtra("favorite")) {
-                                APIUtil apiUtil = new APIUtil(getApplicationContext());
-                                apiUtil.favoriteSong(songID, new FavoriteSongCallback() {
+                                APIUtil.favoriteSong(getApplicationContext(), songID, new FavoriteSongCallback() {
                                     @Override
                                     public void onFailure(String result) {
                                     }
