@@ -294,6 +294,8 @@ public class StreamService extends Service {
             listeners = String.format(getResources().getString(R.string.currentListeners), 0);
         }
 
+        // TODO: send a parcelable object (i.e. the PlaybackInfo) and let the activity handle how
+        // it's displayed
         Intent intent = new Intent("jcotter.listenmoe")
                 .putExtra("nowPlaying", nowPlaying)
                 .putExtra("listeners", listeners)
