@@ -177,8 +177,8 @@ public class StreamService extends Service {
         // Returns Music Stream State to RadioInterface //
         if (intent.hasExtra("probe")) {
             Intent returnIntent = new Intent("jcotter.listenmoe")
-                .putExtra("volume", (int) (volume * 100))
-                .putExtra("running", voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
+                    .putExtra("volume", (int) (volume * 100))
+                    .putExtra("running", voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
 
             sendBroadcast(returnIntent);
         }

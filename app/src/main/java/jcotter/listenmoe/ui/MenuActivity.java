@@ -3,12 +3,10 @@ package jcotter.listenmoe.ui;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,6 +36,7 @@ import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.util.APIUtil;
+import jcotter.listenmoe.util.AuthUtil;
 
 public class MenuActivity extends AppCompatActivity {
     private final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
@@ -144,9 +143,9 @@ public class MenuActivity extends AppCompatActivity {
         tabHost.addTab(spec);
         // Opens Tab specified in intent | Defaults to Request Tab //
         tabHost.setCurrentTab(this.getIntent().getIntExtra("index", 0));
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (tabHost.getCurrentTab() == 0)
-            requestTab(sharedPreferences.getString("userToken", null));
+        if (tabHost.getCurrentTab() == 0) {
+            requestTab(AuthUtil.getAuthToken(this));
+        }
     }
 
     /**
@@ -169,22 +168,24 @@ public class MenuActivity extends AppCompatActivity {
                 if (fav_list != null) fav_list.setAdapter(null);
                 // Changes Tab content if a valid token is available //
                 // Not required for Login Tab as same UI Components always shown //
-                final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 int currentTab = tabHost.getCurrentTab();
+                final String userToken = AuthUtil.getAuthToken(getBaseContext());
                 if (currentTab == 0)
-                    requestTab(sharedPreferences.getString("userToken", null));
+                    requestTab(userToken);
                 else if (currentTab == 1)
-                    favoriteTab(sharedPreferences.getString("userToken", null));
+                    favoriteTab(userToken);
                 else if (currentTab == 2) {
-                    if (sharedPreferences.getString("userToken", null) != null)
+                    if (userToken != null)
                         status.setVisibility(View.VISIBLE);
-                    if (sharedPreferences.getLong("lastAuth", 0) != 0)
+                    final long tokenAge = AuthUtil.getTokenAge(getBaseContext());
+                    if (tokenAge != 0) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getBaseContext(), "Current Token Age: " + (Math.round((System.currentTimeMillis() / 1000 - sharedPreferences.getLong("lastAuth", 0)) / 86400.0)) + " Days", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getBaseContext(), "Current Token Age: " + (Math.round((System.currentTimeMillis() / 1000 - tokenAge) / 86400.0)) + " Days", Toast.LENGTH_LONG).show();
                             }
                         });
+                    }
                 }
             }
         });
@@ -577,12 +578,8 @@ public class MenuActivity extends AppCompatActivity {
      *
      */
     private void logout() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.getString("userToken", null) != null) {
-            SharedPreferences.Editor editor = sharedPreferences.edit()
-                    .putString("userToken", null)
-                    .putLong("lastAuth", 0);
-            editor.apply();
+        if (AuthUtil.isAuthenticated(this)) {
+            AuthUtil.clearAuthToken(this);
             this.username.setText("");
             this.password.setText("");
             this.status.setVisibility(View.INVISIBLE);

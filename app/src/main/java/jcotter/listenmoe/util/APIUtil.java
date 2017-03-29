@@ -1,8 +1,6 @@
 package jcotter.listenmoe.util;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
@@ -28,16 +26,15 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class APIUtil {
-    private final String USER_TOKEN = "userToken";
 
+    private Context context;
     private OkHttpClient http;
     private Gson gson;
-    private SharedPreferences sharedPrefs;
 
     public APIUtil(Context context) {
+        this.context = context;
         this.http = new OkHttpClient();
         this.gson = new Gson();
-        this.sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     /**
@@ -76,10 +73,7 @@ public class APIUtil {
                     }
 
                     final String userToken = body.substring(25, body.length() - 2);
-                    SharedPreferences.Editor editor = sharedPrefs.edit()
-                            .putString(USER_TOKEN, userToken)
-                            .putLong("lastAuth", System.currentTimeMillis() / 1000);
-                    editor.apply();
+                    AuthUtil.setAuthToken(context, userToken);
 
                     callback.onSuccess(userToken);
                 }
@@ -95,16 +89,13 @@ public class APIUtil {
      * /api/user
      */
     public void getUserInfo(final UserInfoCallback callback) {
-        final String userToken = sharedPrefs.getString(USER_TOKEN, null);
-        if (userToken == null) {
+        if (!AuthUtil.isAuthenticated(this.context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = new Request.Builder()
-                .url(Endpoints.USER)
+        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.USER)
                 .get()
-                .addHeader("authorization", userToken)
                 .build();
 
         http.newCall(request).enqueue(new Callback() {
@@ -127,16 +118,13 @@ public class APIUtil {
      * /api/user/favorites
      */
     public void getUserFavorites(final UserFavoritesCallback callback) {
-        final String userToken = sharedPrefs.getString(USER_TOKEN, null);
-        if (userToken == null) {
+        if (!AuthUtil.isAuthenticated(this.context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = new Request.Builder()
-                .url(Endpoints.USER_FAVORITES)
+        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.USER_FAVORITES)
                 .get()
-                .addHeader("authorization", userToken)
                 .build();
 
         http.newCall(request).enqueue(new Callback() {
@@ -161,16 +149,13 @@ public class APIUtil {
      * @param songId Song to toggle.
      */
     public void favoriteSong(final int songId, final FavoriteSongCallback callback) {
-        final String userToken = sharedPrefs.getString(USER_TOKEN, null);
-        if (userToken == null) {
+        if (!AuthUtil.isAuthenticated(this.context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = new Request.Builder()
-                .url(Endpoints.FAVORITE)
+        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.FAVORITE)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
-                .addHeader("authorization", userToken)
                 .build();
 
         http.newCall(request).enqueue(new Callback() {
@@ -194,16 +179,13 @@ public class APIUtil {
      * @param songId Song to request.
      */
     public void requestSong(final int songId, final RequestSongCallback callback) {
-        final String userToken = sharedPrefs.getString(USER_TOKEN, null);
-        if (userToken == null) {
+        if (!AuthUtil.isAuthenticated(this.context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = new Request.Builder()
-                .url(Endpoints.REQUEST)
+        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.REQUEST)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
-                .addHeader("authorization", userToken)
                 .build();
 
         http.newCall(request).enqueue(new Callback() {
@@ -227,16 +209,13 @@ public class APIUtil {
      * @param query Search query string.
      */
     public void search(final String query, final SearchCallback callback) {
-        final String userToken = sharedPrefs.getString(USER_TOKEN, null);
-        if (userToken == null) {
+        if (!AuthUtil.isAuthenticated(this.context)) {
             callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
-        Request request = new Request.Builder()
-                .url(Endpoints.SEARCH)
+        Request request = AuthUtil.createAuthRequest(this.context, Endpoints.SEARCH)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "query=" + query))
-                .addHeader("authorization", userToken)
                 .build();
 
         http.newCall(request).enqueue(new Callback() {
