@@ -65,9 +65,6 @@ public class StreamService extends Service {
     private boolean notif;
     private int notifID;
 
-    public StreamService() {
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
         return null;
@@ -139,13 +136,16 @@ public class StreamService extends Service {
                         // Stop Stream & Foreground ( & Service (Depends)) //
                         if (intent.hasExtra("stop")) {
                             notif = false;
+
                             voiceOfKanacchi.setPlayWhenReady(false);
                             stopForeground(true);
                             if (!uiOpen) {
                                 stopSelf();
                             }
+
                             Intent returnIntent = new Intent("jcotter.listenmoe")
                                     .putExtra("running", false);
+
                             sendBroadcast(returnIntent);
                         } else
                             // Change Favorite Status of Current Song //
@@ -154,7 +154,6 @@ public class StreamService extends Service {
                                 apiUtil.favoriteSong(songID, new FavoriteSongCallback() {
                                     @Override
                                     public void onFailure(String result) {
-
                                     }
 
                                     @Override
@@ -172,16 +171,15 @@ public class StreamService extends Service {
                                         }
                                     }
                                 });
-                            } else if (intent.hasExtra("favUpdate"))
+                            } else if (intent.hasExtra("favUpdate")) {
                                 favorite = intent.getBooleanExtra("favUpdate", false);
+                            }
         // Returns Music Stream State to RadioInterface //
         if (intent.hasExtra("probe")) {
-            Intent returnIntent = new Intent("jcotter.listenmoe");
-            returnIntent.putExtra("volume", (int) (volume * 100));
-            if (voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady())
-                returnIntent.putExtra("running", true);
-            else
-                returnIntent.putExtra("running", false);
+            Intent returnIntent = new Intent("jcotter.listenmoe")
+                .putExtra("volume", (int) (volume * 100))
+                .putExtra("running", voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
+
             sendBroadcast(returnIntent);
         }
         // Updates Notification //
@@ -273,34 +271,30 @@ public class StreamService extends Service {
         songID = -1;
 
         if (playbackInfo.getSongId() != 0) {
-            listeners = getResources().getString(R.string.currentListeners);
-            listeners += "  " + playbackInfo.getListeners() + "  ";
+            listeners = String.format(getResources().getString(R.string.currentListeners), playbackInfo.getListeners());
 
             songID = playbackInfo.getSongId();
             title = playbackInfo.getSongName().trim();
             artist = playbackInfo.getArtistName().trim();
             anime = playbackInfo.getAnimeName().trim();
 
-            nowPlaying = getResources().getString(R.string.nowPlaying);
-            if (anime.equals("")) {
-                nowPlaying = nowPlaying + "\n" + artist + "\n" + title;
-            } else {
-                nowPlaying = nowPlaying + "\n" + artist + "\n" + title + "\n[" + anime + "]";
+            nowPlaying = String.format(getResources().getString(R.string.nowPlaying), artist, title);
+            if (!anime.equals("")) {
+                nowPlaying += String.format("\n[%s]", anime);
             }
 
             String requested_by = playbackInfo.getRequestedBy();
             if (requested_by != null) {
-                String base = getResources().getString(R.string.requestedText);
-                requestedBy = base + " " + "<a href=\"https://forum.listen.moe/u/" + requested_by + "\"" + ">" + requested_by + "</a>";
+                requestedBy = String.format(getResources().getString(R.string.requestedText), requested_by, requested_by);
             }
-            
+
             if (playbackInfo.hasExtended()) {
                 extended = true;
                 favorite = playbackInfo.getExtended().isFavorite();
             }
         } else {
             nowPlaying = getResources().getString(R.string.apiFailed);
-            listeners = getResources().getString(R.string.currentListeners) + " 0";
+            listeners = String.format(getResources().getString(R.string.currentListeners), 0);
         }
 
         Intent intent = new Intent("jcotter.listenmoe")

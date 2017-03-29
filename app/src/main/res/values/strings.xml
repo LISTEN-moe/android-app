@@ -8,10 +8,10 @@
     <string name="infoVolumeDown">Volume down image</string>
     <string name="infoVolumeUp">Volume up image</string>
     <string name="infoMenu">Menu</string>
-    <string name="currentListeners">Current listeners:</string>
-    <string name="nowPlaying">- Now Playing -</string>
+    <string name="nowPlaying" formatted="false">- Now Playing -\n%s\n%s</string>
+    <string name="requestedText" formatted="false">Requested by: <a href="https://forum.listen.moe/u/%s">%s</a></string>
     <string name="poweredBy">Powered by: <a href="https://listen.moe"> LISTEN.moe</a></string>
-    <string name="requestedText">Requested by:</string>
+    <string name="currentListeners">Current listeners: %d</string>
 
     <!-- Menu -->
     <string name="tabFav">Favorites</string>
@@ -27,8 +27,6 @@
     <string name="loginStatus">User currently logged in successfully</string>
     <string name="errorGeneral">Error: login failed</string>
     <string name="loginRequired">You must log in to use this feature</string>
-    <string name="requestsRemaining"> Requests remaining</string>
-    <string name="req_dialog_title">Available actions</string>
     <string name="req_dialog_message">What action would you like to take?</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="success">Success!</string>
