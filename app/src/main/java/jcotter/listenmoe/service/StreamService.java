@@ -113,10 +113,10 @@ public class StreamService extends Service {
                 if (intent.hasExtra("re:re")) {
                     uiOpen = true;
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                    if (sharedPreferences.getString("userToken", "NULL").equals("NULL") && ws != null)
+                    if (sharedPreferences.getString("userToken", null) == null && ws != null)
                         ws.sendText("update");
                     else if (ws != null)
-                        ws.sendText("{\"token\":\"" + sharedPreferences.getString("userToken", "NULL") + "\"}");
+                        ws.sendText("{\"token\":\"" + sharedPreferences.getString("userToken", null) + "\"}");
                     else
                         connectWebSocket();
                 } else
@@ -212,8 +212,8 @@ public class StreamService extends Service {
                         // Get userToken from shared preferences if socket not authenticated //
                         if (!frame.getPayloadText().contains("\"extended\":{")) {
                             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                            String token = sharedPreferences.getString("userToken", "NULL");
-                            if (!token.equals("NULL")) {
+                            String token = sharedPreferences.getString("userToken", null);
+                            if (token != null) {
                                 ws.sendText("{\"token\":\"" + token + "\"}");
                             }
                         }
@@ -314,8 +314,10 @@ public class StreamService extends Service {
      */
     private void notification() {
         if (!notif) return;
+
         if (notifID == -1)
             notifID = (int) System.currentTimeMillis();
+
         Intent intent = new Intent(this, RadioActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -330,7 +332,8 @@ public class StreamService extends Service {
             builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title));
             builder.setContentText(title);
         }
-        // Play Pause Button //
+
+        // Play Pause Button
         Intent playPauseIntent = new Intent(this, this.getClass());
         PendingIntent playPausePending;
         if (voiceOfKanacchi.getPlayWhenReady()) {
@@ -348,12 +351,13 @@ public class StreamService extends Service {
             else
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "Play", playPausePending).build());
         }
-        // Favorite Button //
+
+        // Favorite Button
         Intent favoriteIntent = new Intent(this, this.getClass())
                 .putExtra("favorite", true);
         PendingIntent favoritePending = PendingIntent.getService(this, 2, favoriteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
+        if (sharedPreferences.getString("userToken", null) == null) {
             Intent authIntent = new Intent(this, MenuActivity.class)
                     .putExtra("index", 2);
             PendingIntent authPending = PendingIntent.getActivity(this, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -372,14 +376,17 @@ public class StreamService extends Service {
             else
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "Favorite", favoritePending).build());
         }
-        // Stop Button //
+
+        // Stop Button
         Intent stopIntent = new Intent(this, this.getClass())
                 .putExtra("stop", true);
         PendingIntent stopPending = PendingIntent.getService(this, 4, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         if (Build.VERSION.SDK_INT < 24)
             builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
         else
             builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "Stop", stopPending).build());
+
         startForeground(notifID, builder.build());
     }
 

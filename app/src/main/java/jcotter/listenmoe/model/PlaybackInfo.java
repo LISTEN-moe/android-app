@@ -1,12 +1,14 @@
 package jcotter.listenmoe.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class PlaybackInfo extends BasicTrack {
-    private int songId;
-    private String animeName;
-    private String requestedBy;
+    @SerializedName("song_id") private int songId;
+    @SerializedName("anime_name") private String animeName;
+    @SerializedName("request_by") private String requestedBy;
     private int listeners;
     private BasicTrack last;
-    private BasicTrack secondLast;
+    @SerializedName("second_last") private BasicTrack secondLast;
     private ExtendedInfo extended;
 
     public PlaybackInfo(String artistName, String songName, int songId, String animeName, String requestedBy, int listeners, BasicTrack last, BasicTrack secondLast) {

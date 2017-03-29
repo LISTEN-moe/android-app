@@ -256,7 +256,7 @@ public class RadioActivity extends AppCompatActivity {
         // Check token is valid //
         if (Math.round((System.currentTimeMillis() / 1000 - sharedPreferences.getLong("lastAuth", 0)) / 86400.0) >= 28) {
             SharedPreferences.Editor editor = sharedPreferences.edit()
-                    .putString("userToken", "NULL")
+                    .putString("userToken", null)
                     .putLong("lastAuth", 0);
             editor.apply();
         }
