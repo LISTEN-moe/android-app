@@ -26,21 +26,21 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import jcotter.listenmoe.R;
-import jcotter.listenmoe.constants.AuthMessages;
-import jcotter.listenmoe.interfaces.IAPIListener;
+import jcotter.listenmoe.constants.ResponseMessages;
+import jcotter.listenmoe.interfaces.AuthCallback;
+import jcotter.listenmoe.interfaces.FavoriteSongCallback;
+import jcotter.listenmoe.interfaces.RequestSongCallback;
+import jcotter.listenmoe.interfaces.SearchCallback;
+import jcotter.listenmoe.interfaces.UserFavoritesCallback;
+import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.util.APIUtil;
 
 public class MenuActivity extends AppCompatActivity {
-
-    private static final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
+    private final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
 
     // UI views
     private LinearLayout root;
@@ -54,7 +54,7 @@ public class MenuActivity extends AppCompatActivity {
     private ListView req_list;
     private TextView req_remaining;
 
-    // Favorites tab
+    // SongsList tab
     private TextView fav_loginRequired;
     private ListView fav_list;
 
@@ -70,11 +70,14 @@ public class MenuActivity extends AppCompatActivity {
     private List<Integer> songIds, favorite;
     private List<Boolean> enabled;
     private ArrayAdapter<String> adapter;
+    private APIUtil apiUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+
+        this.apiUtil = new APIUtil(this);
 
         root = (LinearLayout) findViewById(R.id.root);
         tabHost = (TabHost) findViewById(R.id.tabAPI);
@@ -143,7 +146,7 @@ public class MenuActivity extends AppCompatActivity {
         tabHost.setCurrentTab(this.getIntent().getIntExtra("index", 0));
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (tabHost.getCurrentTab() == 0)
-            requestTab(sharedPreferences.getString("userToken", "NULL"));
+            requestTab(sharedPreferences.getString("userToken", null));
     }
 
     /**
@@ -169,11 +172,11 @@ public class MenuActivity extends AppCompatActivity {
                 final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 int currentTab = tabHost.getCurrentTab();
                 if (currentTab == 0)
-                    requestTab(sharedPreferences.getString("userToken", "NULL"));
+                    requestTab(sharedPreferences.getString("userToken", null));
                 else if (currentTab == 1)
-                    favoriteTab(sharedPreferences.getString("userToken", "NULL"));
+                    favoriteTab(sharedPreferences.getString("userToken", null));
                 else if (currentTab == 2) {
-                    if (!sharedPreferences.getString("userToken", "NULL").equals("NULL"))
+                    if (sharedPreferences.getString("userToken", null) != null)
                         status.setVisibility(View.VISIBLE);
                     if (sharedPreferences.getLong("lastAuth", 0) != 0)
                         runOnUiThread(new Runnable() {
@@ -193,7 +196,7 @@ public class MenuActivity extends AppCompatActivity {
      * @param userToken
      */
     private void requestTab(String userToken) {
-        if (userToken.equals("NULL")) {
+        if (userToken == null) {
             req_loginRequired.setVisibility(View.VISIBLE);
             req_searchText.setVisibility(View.GONE);
             req_search.setVisibility(View.GONE);
@@ -214,84 +217,64 @@ public class MenuActivity extends AppCompatActivity {
      * @param userToken
      */
     private void favoriteTab(String userToken) {
-        if (userToken.equals("NULL")) {
+        if (userToken == null) {
             fav_loginRequired.setVisibility(View.VISIBLE);
             fav_list.setVisibility(View.GONE);
             return;
         }
+
         fav_loginRequired.setVisibility(View.GONE);
         fav_list.setVisibility(View.VISIBLE);
-        // Retrieves Favorites //
-        APIUtil apiUtil = new APIUtil(new IAPIListener() {
+
+        this.apiUtil.getUserFavorites(new UserFavoritesCallback() {
             @Override
-            public void favoriteListCallback(String jsonResult) {
-                listViewDisplay(jsonResult, 1);
+            public void onFailure(String result) {
             }
 
             @Override
-            public void authenticateCallback(String token) {
-            }
-
-            @Override
-            public void requestCallback(String jsonResult) {
-            }
-
-            @Override
-            public void favoriteCallback(String jsonResult) {
-            }
-
-            @Override
-            public void searchCallback(String jsonResult) {
+            public void onSuccess(List<Song> favorites) {
+                listViewDisplay(favorites, 1);
             }
         });
-        apiUtil.favoriteList(getApplicationContext());
     }
 
     /**
      * Processes and displays the relevant listview data.
      *
-     * @param displayData
+     * @param songs
      * @param tab
      */
-    private void listViewDisplay(final String displayData, final int tab) {
+    private void listViewDisplay(final List<Song> songs, final int tab) {
         final int currentTab = tabHost.getCurrentTab();
+
         List<String> displayList = new ArrayList<>();
-        try {
-            // Get songs object from JSON data //
-            JSONObject json = new JSONObject(displayData);
-            JSONArray songsObject = json.getJSONArray("songs");
-            // Nullify Lists & Re-init them //
-            songIds = null;
-            enabled = null;
-            favorite = null;
-            adapter = null;
-            songIds = new ArrayList<>();
-            favorite = new ArrayList<>();
-            enabled = new ArrayList<>();
-            // Loop through each song setting whether it is a favorite, enabled, both or neither & Sets song string format //
-            JSONObject song;
-            for (int i = 0; i < songsObject.length(); i++) {
-                song = songsObject.getJSONObject(i);
-                if (!song.getString("anime").equals(""))
-                    displayList.add(song.getString("artist") + " - " + song.getString("title") + " [" + song.getString("anime") + "]");
-                else
-                    displayList.add(song.getString("artist") + " - " + song.getString("title"));
-                songIds.add(i, song.getInt("id"));
-                if (!song.has("enabled"))
-                    enabled.add(i, true);
-                else
-                    enabled.add(i, false);
-                if (currentTab == 0) {
-                    if (song.has("favorite"))
-                        favorite.add(i, song.getInt("favorite"));
-                    else
-                        favorite.add(i, 0);
-                } else
-                    favorite.add(i, 1);
+        songIds = null;
+        enabled = null;
+        favorite = null;
+        adapter = null;
+        songIds = new ArrayList<>();
+        favorite = new ArrayList<>();
+        enabled = new ArrayList<>();
+
+        // Loop through each song setting whether it is a favorite, enabled, both or neither & Sets song string format
+        for (int i = 0; i < songs.size(); i++) {
+            Song song = songs.get(i);
+            if (song.getAnime().equals(""))
+                displayList.add(song.getArtist() + " - " + song.getTitle());
+            else
+                displayList.add(song.getArtist() + " - " + song.getTitle() + " [" + song.getAnime() + "]");
+            songIds.add(i, song.getId());
+            if (song.isEnabled())
+                enabled.add(i, true);
+            else
+                enabled.add(i, false);
+            if (currentTab == 0) {
+                favorite.add(i, song.getFavorite());
+            } else {
+                favorite.add(i, 1);
             }
-        } catch (JSONException ex) {
-            ex.printStackTrace();
         }
+
         if (displayList.size() != 0) {
             // Creates a new Adapter using displayList //
             adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, displayList) {
@@ -456,9 +439,14 @@ public class MenuActivity extends AppCompatActivity {
      */
     private void favorite(final int songIndex) {
         final int songID = songIds.get(songIndex);
-        APIUtil apiUtil = new APIUtil(new IAPIListener() {
+
+        this.apiUtil.favoriteSong(songID, new FavoriteSongCallback() {
             @Override
-            public void favoriteCallback(final String jsonResult) {
+            public void onFailure(final String result) {
+            }
+
+            @Override
+            public void onSuccess(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -483,24 +471,7 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 });
             }
-
-            @Override
-            public void searchCallback(String jsonResult) {
-            }
-
-            @Override
-            public void favoriteListCallback(String jsonResult) {
-            }
-
-            @Override
-            public void authenticateCallback(String token) {
-            }
-
-            @Override
-            public void requestCallback(String jsonResult) {
-            }
         });
-        apiUtil.favorite(songID, getApplicationContext());
     }
 
     /**
@@ -510,21 +481,22 @@ public class MenuActivity extends AppCompatActivity {
      */
     private void request(final int songIndex) {
         final int songID = songIds.get(songIndex);
-        APIUtil apiUtil = new APIUtil(new IAPIListener() {
+
+        this.apiUtil.requestSong(songID, new RequestSongCallback() {
             @Override
-            public void requestCallback(final String jsonResult) {
+            public void onFailure(final String result) {
+            }
+
+            @Override
+            public void onSuccess(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (jsonResult.contains("success\":true")) {
                             Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_LONG).show();
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    enabled.set(songIndex, false);
-                                    adapter.notifyDataSetChanged();
-                                }
-                            });
+
+                            enabled.set(songIndex, false);
+                            adapter.notifyDataSetChanged();
                         } else {
                             if (jsonResult.contains("user-is-not-supporter")) {
                                 Toast.makeText(getBaseContext(), R.string.supporter, Toast.LENGTH_LONG).show();
@@ -535,116 +507,70 @@ public class MenuActivity extends AppCompatActivity {
                     }
                 });
             }
-
-            @Override
-            public void favoriteListCallback(String jsonResult) {
-            }
-
-            @Override
-            public void authenticateCallback(String token) {
-            }
-
-            @Override
-            public void favoriteCallback(String jsonResult) {
-            }
-
-            @Override
-            public void searchCallback(String jsonResult) {
-            }
         });
-        apiUtil.request(songID, getApplicationContext());
     }
 
     /**
      *
      */
     private void search() {
-        APIUtil apiUtil = new APIUtil(new IAPIListener() {
+        final String query = req_search.getText().toString().trim();
+
+        this.apiUtil.search(query, new SearchCallback() {
             @Override
-            public void searchCallback(final String jsonResult) {
-                listViewDisplay(jsonResult, 0);
-                /*runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try{
-                            JSONObject jsonObject = new JSONObject(jsonResult);
-                            JSONObject extras = jsonObject.getJSONObject("extra");
-                            String search = getString(R.string.search) + "     [" + extras.get("requests").toString() + " Requests Remaining]";
-                            req_searchText.setText(search);
-                        }catch(JSONException ex){ex.printStackTrace();}
-                    }
-                });*/
+            public void onFailure(final String result) {
             }
 
             @Override
-            public void favoriteListCallback(String jsonResult) {
-            }
-
-            @Override
-            public void authenticateCallback(String token) {
-            }
-
-            @Override
-            public void requestCallback(String jsonResult) {
-            }
-
-            @Override
-            public void favoriteCallback(String jsonResult) {
+            public void onSuccess(final List<Song> favorites) {
+                listViewDisplay(favorites, 0);
             }
         });
-
-        apiUtil.search(req_search.getText().toString().trim(), getApplicationContext());
     }
 
     /**
      *
      */
     private void login() {
-        APIUtil apiUtil = new APIUtil(new IAPIListener() {
+        final String user = this.username.getText().toString().trim();
+        final String pass = this.password.getText().toString().trim();
+
+        this.apiUtil.authenticate(user, pass, new AuthCallback() {
             @Override
-            public void authenticateCallback(final String token) {
+            public void onFailure(final String result) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (token.contains(AuthMessages.INVALID_USER)) {
-                            Toast.makeText(getBaseContext(), getString(R.string.errorName), Toast.LENGTH_LONG).show();
-                            return;
-                        } else if (token.contains(AuthMessages.INVALID_PASS)) {
-                            Toast.makeText(getBaseContext(), getString(R.string.errorPass), Toast.LENGTH_LONG).show();
-                            return;
-                        } else if (token.contains(AuthMessages.ERROR)) {
-                            Toast.makeText(getBaseContext(), getString(R.string.errorGeneral), Toast.LENGTH_LONG).show();
-                            return;
+                        String errorMsg = "";
+
+                        switch (result) {
+                            case ResponseMessages.INVALID_USER:
+                                errorMsg = getString(R.string.errorName);
+                                break;
+                            case ResponseMessages.INVALID_PASS:
+                                errorMsg = getString(R.string.errorPass);
+                                break;
+                            case ResponseMessages.ERROR:
+                                errorMsg = getString(R.string.errorGeneral);
+                                break;
                         }
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                        SharedPreferences.Editor editor = sharedPreferences.edit()
-                                .putString("userToken", token)
-                                .putLong("lastAuth", System.currentTimeMillis() / 1000);
-                        editor.apply();
-                        status.setVisibility(View.VISIBLE);
-                        Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
+
+                        Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_LONG).show();
                     }
                 });
             }
 
             @Override
-            public void favoriteListCallback(String jsonResult) {
-            }
-
-            @Override
-            public void requestCallback(String jsonResult) {
-            }
-
-            @Override
-            public void favoriteCallback(String jsonResult) {
-            }
-
-            @Override
-            public void searchCallback(String jsonResult) {
+            public void onSuccess(final String result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        status.setVisibility(View.VISIBLE);
+                        Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
-
-        apiUtil.authenticate(getApplicationContext(), username.getText().toString().trim(), password.getText().toString().trim());
     }
 
     /**
@@ -652,14 +578,14 @@ public class MenuActivity extends AppCompatActivity {
      */
     private void logout() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (!sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
+        if (sharedPreferences.getString("userToken", null) != null) {
             SharedPreferences.Editor editor = sharedPreferences.edit()
-                    .putString("userToken", "NULL")
+                    .putString("userToken", null)
                     .putLong("lastAuth", 0);
             editor.apply();
-            username.setText("");
-            password.setText("");
-            status.setVisibility(View.INVISIBLE);
+            this.username.setText("");
+            this.password.setText("");
+            this.status.setVisibility(View.INVISIBLE);
             Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
         }
     }

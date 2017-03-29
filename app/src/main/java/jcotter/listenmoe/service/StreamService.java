@@ -48,7 +48,7 @@ import java.io.IOException;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
 import jcotter.listenmoe.constants.SocketResponse;
-import jcotter.listenmoe.interfaces.IAPIListener;
+import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.APIUtil;
@@ -152,36 +152,28 @@ public class StreamService extends Service {
                         } else
                             // Change Favorite Status of Current Song //
                             if (intent.hasExtra("favorite")) {
-                                APIUtil apiUtil = new APIUtil(new IAPIListener() {
+                                APIUtil apiUtil = new APIUtil(getApplicationContext());
+                                apiUtil.favoriteSong(songID, new FavoriteSongCallback() {
                                     @Override
-                                    public void favoriteCallback(String jsonResult) {
-                                        if (jsonResult.contains("success\":true"))
+                                    public void onFailure(String result) {
+
+                                    }
+
+                                    @Override
+                                    public void onSuccess(String jsonResult) {
+                                        if (jsonResult.contains("success\":true")) {
                                             favorite = jsonResult.contains("favorite\":true");
-                                        if (uiOpen) {
-                                            Intent favIntent = new Intent("jcotter.listenmoe")
-                                                    .putExtra("favorite", favorite);
-                                            sendBroadcast(favIntent);
+
+                                            if (uiOpen) {
+                                                Intent favIntent = new Intent("jcotter.listenmoe")
+                                                        .putExtra("favorite", favorite);
+                                                sendBroadcast(favIntent);
+                                            }
+
+                                            notification();
                                         }
-                                        notification();
-                                    }
-
-                                    @Override
-                                    public void favoriteListCallback(String jsonResult) {
-                                    }
-
-                                    @Override
-                                    public void authenticateCallback(String token) {
-                                    }
-
-                                    @Override
-                                    public void requestCallback(String jsonResult) {
-                                    }
-
-                                    @Override
-                                    public void searchCallback(String jsonResult) {
                                     }
                                 });
-                                apiUtil.favorite(songID, getApplicationContext());
                             } else if (intent.hasExtra("favUpdate"))
                                 favorite = intent.getBooleanExtra("favUpdate", false);
         // Returns Music Stream State to RadioInterface //
