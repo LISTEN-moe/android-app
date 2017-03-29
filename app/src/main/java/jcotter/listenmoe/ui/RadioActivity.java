@@ -10,12 +10,15 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,6 +32,7 @@ import jcotter.listenmoe.util.AuthUtil;
 public class RadioActivity extends AppCompatActivity {
     // UI views
     private SeekBar volumeSlider;
+    private ImageView background;
     private ImageButton playPause;
     private ImageButton menuButton;
     private ImageButton favoriteButton;
@@ -48,6 +52,7 @@ public class RadioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_radio);
 
         // Get UI views
+        background = (ImageView) findViewById(R.id.backgroundImage);
         playPause = (ImageButton) findViewById(R.id.playPause);
         volumeSlider = (SeekBar) findViewById(R.id.seekBar);
         poweredBy = (TextView) findViewById(R.id.poweredBy);
@@ -65,6 +70,10 @@ public class RadioActivity extends AppCompatActivity {
         requestText.setTypeface(openSans);
 
         requestText.setVisibility(View.INVISIBLE);
+
+        // Scale background image
+        background.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        background.setScaleType(ImageView.ScaleType.FIT_XY);
 
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
