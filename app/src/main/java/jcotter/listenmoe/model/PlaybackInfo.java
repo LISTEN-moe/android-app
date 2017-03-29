@@ -7,7 +7,7 @@ public class PlaybackInfo extends BasicTrack {
     private int songId;
     @SerializedName("anime_name")
     private String animeName;
-    @SerializedName("request_by")
+    @SerializedName("requested_by")
     private String requestedBy;
     private int listeners;
     private BasicTrack last;
