@@ -34,21 +34,19 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.google.gson.Gson;
 import com.neovisionaries.ws.client.WebSocket;
 import com.neovisionaries.ws.client.WebSocketAdapter;
 import com.neovisionaries.ws.client.WebSocketException;
 import com.neovisionaries.ws.client.WebSocketFactory;
 import com.neovisionaries.ws.client.WebSocketFrame;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
-import jcotter.listenmoe.constants.SocketResponse;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
+import jcotter.listenmoe.model.PlaybackInfo;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.APIUtil;
@@ -259,52 +257,59 @@ public class StreamService extends Service {
     /**
      * Parses JSON resposne from websocket.
      *
-     * @param json Response from the LISTEN.moe websocket.
+     * @param jsonString Response from the LISTEN.moe websocket.
      */
-    private void parseJSON(String json) {
-        String nowPlaying = "NULL";
-        String listeners = "NULL";
-        String requestedBy = "NULL";
+    private void parseJSON(String jsonString) {
+        System.out.println(jsonString);
+
+        Gson gson = new Gson();
+        PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
+
+        String nowPlaying;
+        String listeners;
+        String requestedBy = "";
+        boolean extended = false;
         favorite = false;
         songID = -1;
-        if (json.contains("listeners")) {
-            try {
-                JSONObject jsonObject = new JSONObject(json);
-                listeners = getResources().getString(R.string.currentListeners);
-                listeners = listeners + "  " + jsonObject.getString(SocketResponse.LISTENERS) + "  ";
-                nowPlaying = getResources().getString(R.string.nowPlaying);
-                songID = jsonObject.getInt(SocketResponse.SONG_ID);
-                title = jsonObject.getString(SocketResponse.SONG_NAME).trim();
-                artist = jsonObject.getString(SocketResponse.ARTIST_NAME).trim();
-                anime = jsonObject.getString(SocketResponse.ANIME_NAME).trim();
-                if (anime.equals("")) {
-                    nowPlaying = nowPlaying + "\n" + artist + "\n" + title;
-                    anime = "NULL";
-                } else
-                    nowPlaying = nowPlaying + "\n" + artist + "\n" + title + "\n[" + anime + "]";
-                String requested_by = jsonObject.getString(SocketResponse.REQUESTED_BY);
-                if (!requested_by.equals("")) {
-                    String base = getResources().getString(R.string.requestedText);
-                    requestedBy = base + " " + "<a href=\"https://forum.listen.moe/u/" + requested_by + "\"" + ">" + requested_by + "</a>";
-                }
-                if (json.contains("\"extended\":{")) {
-                    JSONObject jsonObjectE = jsonObject.getJSONObject(SocketResponse.EXTENDED);
-                    favorite = jsonObjectE.getBoolean(SocketResponse.EXTENDED_FAVORITE);
-                }
-            } catch (JSONException ex) {
-                ex.printStackTrace();
+
+        if (playbackInfo.getSongId() != 0) {
+            listeners = getResources().getString(R.string.currentListeners);
+            listeners += "  " + playbackInfo.getListeners() + "  ";
+
+            songID = playbackInfo.getSongId();
+            title = playbackInfo.getSongName().trim();
+            artist = playbackInfo.getArtistName().trim();
+            anime = playbackInfo.getAnimeName().trim();
+
+            nowPlaying = getResources().getString(R.string.nowPlaying);
+            if (anime.equals("")) {
+                nowPlaying = nowPlaying + "\n" + artist + "\n" + title;
+            } else {
+                nowPlaying = nowPlaying + "\n" + artist + "\n" + title + "\n[" + anime + "]";
+            }
+
+            String requested_by = playbackInfo.getRequestedBy();
+            if (requested_by != null) {
+                String base = getResources().getString(R.string.requestedText);
+                requestedBy = base + " " + "<a href=\"https://forum.listen.moe/u/" + requested_by + "\"" + ">" + requested_by + "</a>";
+            }
+            
+            if (playbackInfo.hasExtended()) {
+                extended = true;
+                favorite = playbackInfo.getExtended().isFavorite();
             }
         } else {
             nowPlaying = getResources().getString(R.string.apiFailed);
             listeners = getResources().getString(R.string.currentListeners) + " 0";
         }
+
         Intent intent = new Intent("jcotter.listenmoe")
                 .putExtra("nowPlaying", nowPlaying)
                 .putExtra("listeners", listeners)
                 .putExtra("requestedBy", requestedBy)
                 .putExtra("songID", songID)
                 .putExtra("favorite", favorite)
-                .putExtra("authenticated", json.contains("\"extended\":{"));
+                .putExtra("authenticated", extended);
         sendBroadcast(intent);
         notification();
     }
@@ -325,7 +330,7 @@ public class StreamService extends Service {
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentIntent(pendingIntent)
                 .setColor(Color.argb(255, 29, 33, 50));
-        if (!anime.equals("NULL")) {
+        if (!anime.equals("")) {
             builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title + "\n" + "[" + anime + "]"));
             builder.setContentText(title + "\n" + "[" + anime + "]");
         } else {

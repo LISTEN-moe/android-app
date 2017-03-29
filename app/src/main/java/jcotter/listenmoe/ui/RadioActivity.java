@@ -179,7 +179,7 @@ public class RadioActivity extends AppCompatActivity {
                         public void run() {
                             nowPlaying.setText(intent.getStringExtra("nowPlaying"));
                             currentText.setText(intent.getStringExtra("listeners"));
-                            if (!intent.getStringExtra("requestedBy").equals("NULL")) {
+                            if (!intent.getStringExtra("requestedBy").equals("")) {
                                 requestText.setVisibility(View.VISIBLE);
                                 requestText.setMovementMethod(LinkMovementMethod.getInstance());
                                 if (Build.VERSION.SDK_INT >= 24)
