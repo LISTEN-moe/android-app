@@ -2,6 +2,14 @@
 <resources>
     <string name="app_name">LISTEN.moe</string>
 
+    <!-- Actions (notification, dialogs) -->
+    <string name="action_play">Play</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_favorite">Favorite</string>
+    <string name="action_unfavorite">Unfavorite</string>
+    <string name="action_request">Request</string>
+
     <!-- Radio -->
     <string name="infoPlayPause">Play/pause button</string>
     <string name="infoVolume">Volume slider</string>
@@ -26,6 +34,8 @@
     <string name="errorPass">Error: incorrect password</string>
     <string name="loginStatus">User currently logged in successfully</string>
     <string name="errorGeneral">Error: login failed</string>
+    <string name="token_expired">Token expired</string>
+    <string name="token_age">Current token age: %d days</string>
     <string name="loginRequired">You must log in to use this feature</string>
     <string name="req_dialog_message">What action would you like to take?</string>
     <string name="dialog_cancel">Cancel</string>
@@ -35,4 +45,5 @@
 
     <!-- WebSocket -->
     <string name="apiFailed">Unable to connect to the API.\n Please check your internet connection.\n If you are connected stop the app and then try again.\n If the problem persists the radio might be down for maintenance</string>
+    <string name="sending">Sending...</string>
 </resources>

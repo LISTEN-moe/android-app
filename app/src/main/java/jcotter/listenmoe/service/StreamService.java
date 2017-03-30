@@ -340,14 +340,14 @@ public class StreamService extends Service {
             if (Build.VERSION.SDK_INT < 24)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "", playPausePending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "Pause", playPausePending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, getString(R.string.action_pause), playPausePending).build());
         } else {
             playPauseIntent.putExtra("play", true);
             playPausePending = PendingIntent.getService(this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             if (Build.VERSION.SDK_INT < 24)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "", playPausePending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "Play", playPausePending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, getString(R.string.action_play), playPausePending).build());
         }
 
         // Favorite Button
@@ -361,17 +361,17 @@ public class StreamService extends Service {
             if (Build.VERSION.SDK_INT < 24)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "Favorite", authPending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, getString(R.string.action_favorite), authPending).build());
         } else {
             if (favorite)
                 if (Build.VERSION.SDK_INT < 24)
                     builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "", favoritePending).build());
                 else
-                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "UnFavorite", favoritePending).build());
             else if (Build.VERSION.SDK_INT < 24)
+                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, getString(R.string.action_unfavorite), favoritePending).build());
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", favoritePending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "Favorite", favoritePending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, getString(R.string.action_favorite), favoritePending).build());
         }
 
         // Stop Button
@@ -382,7 +382,7 @@ public class StreamService extends Service {
         if (Build.VERSION.SDK_INT < 24)
             builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
         else
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "Stop", stopPending).build());
+            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, getString(R.string.action_stop), stopPending).build());
 
         startForeground(notifID, builder.build());
     }

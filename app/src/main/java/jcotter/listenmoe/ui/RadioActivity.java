@@ -287,7 +287,7 @@ public class RadioActivity extends AppCompatActivity {
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
                             }
                         } else if (jsonResult.contains("Failed to authenticate token.")) {
-                            Toast.makeText(getBaseContext(), "Token Expired", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getBaseContext(), getString(R.string.token_expired), Toast.LENGTH_SHORT).show();
                             openMenu(2);
                         }
                         if (isRunning()) {
@@ -300,7 +300,7 @@ public class RadioActivity extends AppCompatActivity {
             }
         });
 
-        final Toast toast = Toast.makeText(getBaseContext(), "Sending...", Toast.LENGTH_SHORT);
+        final Toast toast = Toast.makeText(getBaseContext(), getString(R.string.sending), Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
         Handler handler = new Handler();
