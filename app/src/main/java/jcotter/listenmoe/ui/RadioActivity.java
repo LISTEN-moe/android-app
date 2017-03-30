@@ -182,7 +182,7 @@ public class RadioActivity extends AppCompatActivity {
                             if (requestedBy != null) {
                                 requestText.setVisibility(View.VISIBLE);
                                 requestText.setMovementMethod(LinkMovementMethod.getInstance());
-                                if (Build.VERSION.SDK_INT >= 24)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
                                     requestText.setText(Html.fromHtml(requestedBy, Html.FROM_HTML_MODE_COMPACT));
                                 else
                                     requestText.setText(Html.fromHtml(requestedBy));
@@ -195,13 +195,13 @@ public class RadioActivity extends AppCompatActivity {
                 if (intent.hasExtra("running")) {
                     if (intent.getBooleanExtra("running", false)) {
                         playing = true;
-                        if (Build.VERSION.SDK_INT >= 21)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                             playPause.setImageDrawable(getDrawable(R.drawable.icon_pause));
                         else
                             playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_pause));
                     } else {
                         playing = false;
-                        if (Build.VERSION.SDK_INT >= 21)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                             playPause.setImageDrawable(getDrawable(R.drawable.icon_play));
                         else
                             playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
@@ -209,7 +209,7 @@ public class RadioActivity extends AppCompatActivity {
                 }
                 if (intent.hasExtra("favorite")) {
                     favorite = intent.getBooleanExtra("favorite", false);
-                    if (Build.VERSION.SDK_INT >= 21)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                         if (favorite)
                             favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
                         else
@@ -275,13 +275,13 @@ public class RadioActivity extends AppCompatActivity {
                         if (jsonResult.contains("success\":true")) {
                             if (jsonResult.contains("favorite\":true")) {
                                 favorite = true;
-                                if (Build.VERSION.SDK_INT >= 21)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
                                 else
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
                             } else {
                                 favorite = false;
-                                if (Build.VERSION.SDK_INT >= 21)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                                     favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
                                 else
                                     favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));

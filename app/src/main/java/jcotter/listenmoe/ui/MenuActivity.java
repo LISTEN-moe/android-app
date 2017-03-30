@@ -286,7 +286,7 @@ public class MenuActivity extends AppCompatActivity {
                     text.setTextColor(Color.WHITE);
                     // Sets Text Grey if song is disabled //
                     if (!enabled.get(position)) {
-                        if (Build.VERSION.SDK_INT >= 23) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             text.setTextColor(getColor(R.color.greyText));
                         } else {
                             text.setTextColor(getResources().getColor(R.color.greyText));
@@ -295,7 +295,7 @@ public class MenuActivity extends AppCompatActivity {
                     // If current tab is Request Tab sets Pink text for favorites //
                     if (currentTab == 0) {
                         if (favorite.get(position) == 1) {
-                            if (Build.VERSION.SDK_INT >= 23) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 text.setBackgroundColor(getColor(R.color.colorAccent));
                             } else {
                                 text.setBackgroundColor(getResources().getColor(R.color.colorAccent));
