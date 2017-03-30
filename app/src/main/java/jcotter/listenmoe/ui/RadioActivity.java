@@ -87,7 +87,7 @@ public class RadioActivity extends AppCompatActivity {
         } catch (IllegalArgumentException ignored) {
         }
         Intent intent = new Intent(getBaseContext(), StreamService.class)
-                .putExtra("killable", true);
+                .putExtra(StreamService.KILLABLE, true);
         startService(intent);
     }
 
@@ -122,7 +122,7 @@ public class RadioActivity extends AppCompatActivity {
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (isRunning()) {
                     Intent intent = new Intent(getBaseContext(), StreamService.class)
-                            .putExtra("volume", seekBar.getProgress() / 100.0f);
+                            .putExtra(StreamService.VOLUME, seekBar.getProgress() / 100.0f);
                     startService(intent);
                 }
             }
@@ -192,8 +192,8 @@ public class RadioActivity extends AppCompatActivity {
                         }
                     });
                 }
-                if (intent.hasExtra("running")) {
-                    if (intent.getBooleanExtra("running", false)) {
+                if (intent.hasExtra(StreamService.RUNNING)) {
+                    if (intent.getBooleanExtra(StreamService.RUNNING, false)) {
                         playing = true;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                             playPause.setImageDrawable(getDrawable(R.drawable.icon_pause));
@@ -207,8 +207,8 @@ public class RadioActivity extends AppCompatActivity {
                             playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
                     }
                 }
-                if (intent.hasExtra("favorite")) {
-                    favorite = intent.getBooleanExtra("favorite", false);
+                if (intent.hasExtra(StreamService.FAVORITE)) {
+                    favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
                         if (favorite)
                             favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
@@ -219,8 +219,9 @@ public class RadioActivity extends AppCompatActivity {
                     else
                         favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
                 }
-                if (intent.hasExtra("volume"))
-                    volumeSlider.setProgress(intent.getIntExtra("volume", 50));
+                if (intent.hasExtra(StreamService.VOLUME)) {
+                    volumeSlider.setProgress(intent.getIntExtra(StreamService.VOLUME, 50));
+                }
             }
         };
 
@@ -232,11 +233,11 @@ public class RadioActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(this, StreamService.class);
         if (isRunning()) {
-            intent.putExtra("re:re", true); // Requests Socket Update //
-            intent.putExtra("probe", true); // Checks if Music Stream is Playing //
+            intent.putExtra(StreamService.RECEIVER, true); // Requests Socket Update //
+            intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
         } else {
-            intent.putExtra("receiver", true); // Start StreamService //
-            intent.putExtra("probe", true); // Get Volume & Checks if Music Stream is Playing //
+            intent.putExtra(StreamService.RECEIVER, true); // Start StreamService //
+            intent.putExtra(StreamService.PROBE, true); // Get Volume & Checks if Music Stream is Playing //
         }
         startService(intent);
     }
@@ -292,7 +293,7 @@ public class RadioActivity extends AppCompatActivity {
                         }
                         if (isRunning()) {
                             Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
-                                    .putExtra("favUpdate", true);
+                                    .putExtra(StreamService.TOGGLE_FAVORITE, true);
                             startService(favUpdate);
                         }
                     }
@@ -316,10 +317,10 @@ public class RadioActivity extends AppCompatActivity {
         if (songID == -1) return;
         Intent intent = new Intent(this, StreamService.class);
         if (playing)
-            intent.putExtra("play", false);
+            intent.putExtra(StreamService.PLAY, false);
         else {
-            intent.putExtra("play", true);
-            intent.putExtra("volume", volumeSlider.getProgress() / 100.0f);
+            intent.putExtra(StreamService.PLAY, true);
+            intent.putExtra(StreamService.VOLUME, volumeSlider.getProgress() / 100.0f);
         }
         startService(intent);
     }
