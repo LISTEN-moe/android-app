@@ -1,16 +1,22 @@
 package jcotter.listenmoe.util;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import jcotter.listenmoe.R;
-import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.constants.Endpoints;
+import jcotter.listenmoe.constants.ResponseMessages;
+import jcotter.listenmoe.interfaces.AuthCallback;
+import jcotter.listenmoe.interfaces.FavoriteSongCallback;
+import jcotter.listenmoe.interfaces.RequestSongCallback;
+import jcotter.listenmoe.interfaces.SearchCallback;
+import jcotter.listenmoe.interfaces.UserFavoritesCallback;
+import jcotter.listenmoe.interfaces.UserInfoCallback;
+import jcotter.listenmoe.model.SongsList;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -20,147 +26,208 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class APIUtil {
-    private APIListenerInterface apiListener;
 
-    public APIUtil(APIListenerInterface apiListener) {
-        this.apiListener = apiListener;
-    }
+    private static OkHttpClient http = new OkHttpClient();
+    private static Gson gson = new Gson();
 
-    public void favoriteList(Context applicationContext) {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        final String userToken = sharedPreferences.getString("userToken", "NULL");
-        if (userToken.equals("NULL")) {
-            apiListener.favoriteCallback("NULL");
-            return;
-        }
-        OkHttpClient okHttpClient = new OkHttpClient();
-        Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiUserFavorites))
-                .get()
-                .addHeader("authorization", userToken)
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                apiListener.favoriteListCallback(response.body().string());
-            }
-        });
-    }
-
-    public void authenticate(final Context applicationContext, final String username, final String password) {
-        OkHttpClient okHttpClient = new OkHttpClient();
+    /**
+     * Authenticates to the radio.
+     * /api/authenticate
+     *
+     * @param username User's username.
+     * @param password User's password.
+     */
+    public static void authenticate(final Context context, final String username, final String password, final AuthCallback callback) {
         try {
-            String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
             String usernameE = URLEncoder.encode(username.trim(), "UTF-8");
+            String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
+
             Request request = new Request.Builder()
-                    .url(applicationContext.getString(R.string.apiAuthenticate))
+                    .url(Endpoints.AUTH)
                     .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "password=" + passwordE + "&username=" + usernameE))
                     .build();
-            okHttpClient.newCall(request).enqueue(new Callback() {
+
+            http.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
                     e.printStackTrace();
-                    apiListener.authenticateCallback("error-general");
+                    callback.onFailure(ResponseMessages.ERROR);
                 }
 
-                @SuppressLint("CommitPrefEdits")
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    String body = response.body().string();
-                    if (body.contains(applicationContext.getString(R.string.errorPass))) {
-                        apiListener.authenticateCallback(applicationContext.getString(R.string.invalid_pass));
+                    final String body = response.body().string();
+                    if (body.contains(ResponseMessages.INVALID_PASS)) {
+                        callback.onFailure(ResponseMessages.INVALID_PASS);
                         return;
-                    } else if (body.contains(applicationContext.getString(R.string.invalid_user))) {
-                        apiListener.authenticateCallback(applicationContext.getString(R.string.invalid_user));
+                    } else if (body.contains(ResponseMessages.INVALID_USER)) {
+                        callback.onFailure(ResponseMessages.INVALID_USER);
                         return;
                     }
-                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-                    SharedPreferences.Editor editor = sharedPreferences.edit()
-                            .putString("userToken", body.substring(25, body.length() - 2));
-                    editor.commit();
-                    apiListener.authenticateCallback(body.substring(25, body.length() - 2));
+
+                    final String userToken = body.substring(25, body.length() - 2);
+                    AuthUtil.setAuthToken(context, userToken);
+
+                    callback.onSuccess(userToken);
                 }
             });
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            callback.onFailure(ResponseMessages.ERROR);
         }
     }
 
-    public void request(int songID, Context applicationContext) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        String token = sharedPreferences.getString("userToken", "NULL");
-        if (token.equals("NULL")) return;
-        Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiRequest))
-                .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songID)))
-                .addHeader("authorization", token)
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                apiListener.requestCallback(response.body().string());
-            }
-        });
-    }
-
-    public void favorite(int songID, Context applicationContext) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        String token = sharedPreferences.getString("userToken", "NULL");
-        if (token.equals("NULL")) {
-            apiListener.favoriteCallback("error-login");
+    /**
+     * Gets the user information such as id, username and in a not so distant future, preferences.
+     * /api/user
+     */
+    public static void getUserInfo(final Context context, final UserInfoCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
+            callback.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
-        Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiFavorite))
-                .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songID)))
-                .addHeader("authorization", token)
+
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.USER)
+                .get()
                 .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+
+        http.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                apiListener.favoriteCallback("error_general");
+                callback.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                apiListener.favoriteCallback(response.body().string());
+                // TODO: parse as JSONObject
+                callback.onSuccess(response.body().string());
             }
         });
     }
 
-    public void search(String query, Context applicationContext) {
-        OkHttpClient okHttpClient = new OkHttpClient();
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-        String token = sharedPreferences.getString("userToken", "NULL");
-        if (token.equals("NULL")) return;
-        Request request = new Request.Builder()
-                .url(applicationContext.getString(R.string.apiSearch))
-                .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "query=" + query))
-                .addHeader("authorization", token)
+    /**
+     * Gets a list of all the user's favorited songs.
+     * /api/user/favorites
+     */
+    public static void getUserFavorites(final Context context, final UserFavoritesCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
+            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            return;
+        }
+
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.USER_FAVORITES)
+                .get()
                 .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
+
+        http.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
+                callback.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                apiListener.searchCallback(response.body().string());
+                SongsList songsList = APIUtil.parseSongJson(response.body().string());
+                callback.onSuccess(songsList.getSongs());
             }
         });
+    }
+
+    /**
+     * Toggles the favorited status of a song. If the song is already on favorites, it will remove it and vice-versa.
+     * /api/songs/favorite
+     *
+     * @param songId Song to toggle.
+     */
+    public static void favoriteSong(final Context context, final int songId, final FavoriteSongCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
+            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            return;
+        }
+
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.FAVORITE)
+                .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
+                .build();
+
+        http.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                callback.onFailure(ResponseMessages.ERROR);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                callback.onSuccess(response.body().string());
+            }
+        });
+    }
+
+    /**
+     * Sends a song request to the queue.
+     * /api/songs/request
+     *
+     * @param songId Song to request.
+     */
+    public static void requestSong(final Context context, final int songId, final RequestSongCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
+            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            return;
+        }
+
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.REQUEST)
+                .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
+                .build();
+
+        http.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                callback.onFailure(ResponseMessages.ERROR);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                callback.onSuccess(response.body().string());
+            }
+        });
+    }
+
+    /**
+     * Searches for a song.
+     * /api/songs/search
+     *
+     * @param query Search query string.
+     */
+    public static void search(final Context context, final String query, final SearchCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
+            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            return;
+        }
+
+        Request request = AuthUtil.createAuthRequest(context, Endpoints.SEARCH)
+                .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "query=" + query))
+                .build();
+
+        http.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+                callback.onFailure(ResponseMessages.ERROR);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                SongsList songsList = APIUtil.parseSongJson(response.body().string());
+                callback.onSuccess(songsList.getSongs());
+            }
+        });
+    }
+
+    private static SongsList parseSongJson(final String jsonString) {
+        SongsList songsList = gson.fromJson(jsonString, SongsList.class);
+        return songsList;
     }
 }

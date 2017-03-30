@@ -1,18 +1,15 @@
 package jcotter.listenmoe.ui;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -26,47 +23,44 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import jcotter.listenmoe.R;
+import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
-import jcotter.listenmoe.R;
-import jcotter.listenmoe.interfaces.APIListenerInterface;
+import jcotter.listenmoe.util.AuthUtil;
 
 public class RadioActivity extends AppCompatActivity {
+    // UI views
+    private SeekBar volumeSlider;
+    private ImageButton playPause;
+    private ImageButton menuButton;
+    private ImageButton favoriteButton;
+    private TextView poweredBy;
+    private TextView currentText;
+    private TextView nowPlaying;
+    private TextView requestText;
 
-    // [GLOBAL VARIABLES] //
-    // UI VARIABLES //
-    ImageView background;
-    SeekBar volumeSlider;
-    ImageButton playPause;
-    ImageButton menuButton;
-    ImageButton favoriteButton;
-    TextView poweredBy;
-    TextView currentText;
-    TextView nowPlaying;
-    TextView requestText;
-    // NON-UI GLOBAL VARIABLES
-    BroadcastReceiver broadcastReceiver;
-    int songID;
-    boolean favorite;
-    boolean playing;
+    private BroadcastReceiver broadcastReceiver;
+    private int songID;
+    private boolean favorite;
+    private boolean playing;
 
-    // [METHODS] //
-    // SYSTEM METHODS //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_radio);
-        // Get UI Components //
+
+        // Get UI views
         playPause = (ImageButton) findViewById(R.id.playPause);
         volumeSlider = (SeekBar) findViewById(R.id.seekBar);
         poweredBy = (TextView) findViewById(R.id.poweredBy);
         currentText = (TextView) findViewById(R.id.currentText);
-        background = (ImageView) findViewById(R.id.backgroundImage);
         nowPlaying = (TextView) findViewById(R.id.nowPlaying);
         requestText = (TextView) findViewById(R.id.requestedText);
         menuButton = (ImageButton) findViewById(R.id.menuButton);
         favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
-        // Set Font To OpenSans //
+
+        // Set font to OpenSans
         Typeface openSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
         poweredBy.setTypeface(openSans);
         currentText.setTypeface(openSans);
@@ -75,21 +69,18 @@ public class RadioActivity extends AppCompatActivity {
 
         requestText.setVisibility(View.INVISIBLE);
 
-        // Scale Background Image //
-        background.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        background.setScaleType(ImageView.ScaleType.FIT_XY);
-
-        // Sets Audio Type To Media (Volume Button Control) //
+        // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        // SETUP METHODS //
+        // SETUP METHODS
         tokenValidity();
         menuButtonListener();
         volumeSliderListener();
         favoriteButtonListener();
     }
 
-    @Override protected void onStop() {
+    @Override
+    protected void onStop() {
         // Purpose: Allows Stream to
         super.onStop();
         try {
@@ -102,30 +93,19 @@ public class RadioActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        // PURPOSE: SETS FULLSCREEN FLAGS //
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus)
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            );
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         socketDisplay();
         playPauseButtonListener();
-        onWindowFocusChanged(true);
     }
 
+
     // UI METHODS //
+
+    /**
+     * Listener for menu button.
+     */
     private void menuButtonListener() {
-        // PURPOSE: LISTENER FOR MENU BUTTON //
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -134,8 +114,10 @@ public class RadioActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Listener for volume slider progress changed.
+     */
     private void volumeSliderListener() {
-        // PURPOSE: LISTENER FOR VOLUME SLIDER PROGRESS CHANGED //
         volumeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -156,8 +138,10 @@ public class RadioActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Listener for play/pause button.
+     */
     private void playPauseButtonListener() {
-        // PURPOSE: LISTENER FOR PLAY/PAUSE BUTTON //
         playPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,8 +150,10 @@ public class RadioActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Listener for favorite button.
+     */
     private void favoriteButtonListener() {
-        // PURPOSE: LISTENER FOR FAVORITE BUTTON //
         favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -176,8 +162,10 @@ public class RadioActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Displays data received from websocket and checks if stream is playing.
+     */
     private void socketDisplay() {
-        // PURPOSE: DISPLAYS DATA RECEIVED FROM WEBSOCKET | CHECKS IF STREAM IS PLAYING //
         songID = -1;
         favorite = false;
         broadcastReceiver = new BroadcastReceiver() {
@@ -188,18 +176,20 @@ public class RadioActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            songID = intent.getIntExtra("songID", -1);
                             nowPlaying.setText(intent.getStringExtra("nowPlaying"));
                             currentText.setText(intent.getStringExtra("listeners"));
-                            if (!intent.getStringExtra("requestedBy").equals("NULL")) {
+                            final String requestedBy = intent.getStringExtra("requestedBy");
+                            if (requestedBy != null) {
                                 requestText.setVisibility(View.VISIBLE);
                                 requestText.setMovementMethod(LinkMovementMethod.getInstance());
                                 if (Build.VERSION.SDK_INT >= 24)
-                                    requestText.setText(Html.fromHtml(intent.getStringExtra("requestedBy"), Html.FROM_HTML_MODE_COMPACT));
+                                    requestText.setText(Html.fromHtml(requestedBy, Html.FROM_HTML_MODE_COMPACT));
                                 else
-                                    requestText.setText(Html.fromHtml(intent.getStringExtra("requestedBy")));
-                            } else
+                                    requestText.setText(Html.fromHtml(requestedBy));
+                            } else {
                                 requestText.setVisibility(View.INVISIBLE);
-                            songID = intent.getIntExtra("songID", -1);
+                            }
                         }
                     });
                 }
@@ -225,16 +215,16 @@ public class RadioActivity extends AppCompatActivity {
                             favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
                         else
                             favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
+                    else if (favorite)
+                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
                     else
-                        if (favorite)
-                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                        else
-                            favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
                 }
                 if (intent.hasExtra("volume"))
                     volumeSlider.setProgress(intent.getIntExtra("volume", 50));
             }
         };
+
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction("jcotter.listenmoe");
@@ -252,42 +242,51 @@ public class RadioActivity extends AppCompatActivity {
         startService(intent);
     }
 
+
     // LOGIC METHODS //
-    @SuppressLint("ApplySharedPref")
+
+    /**
+     * Retrieves token. Invalidates it if it's 28 days old.
+     */
     private void tokenValidity() {
-        // PURPOSE : Retrieves Token, Invalidates if token is 28 days old //
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         // Check for token //
-        if (sharedPreferences.getString("userToken", "NULL").equals("NULL"))
+        if (!AuthUtil.isAuthenticated(this)) {
             return;
+        }
+
         // Check token is valid //
-        if (Math.round((System.currentTimeMillis() / 1000 - sharedPreferences.getLong("lastAuth", 0)) / 86400.0) >= 28) {
-            SharedPreferences.Editor editor = sharedPreferences.edit()
-                    .putString("userToken", "NULL")
-                    .putLong("lastAuth", 0);
-            editor.commit();
+        final long lastAuth = AuthUtil.getTokenAge(this);
+        if (Math.round((System.currentTimeMillis() / 1000 - lastAuth) / 86400.0) >= 28) {
+            AuthUtil.clearAuthToken(this);
         }
     }
 
+    /**
+     * Opens the MenuActivity with the specified tab.
+     *
+     * @param tabIndex
+     */
     private void openMenu(int tabIndex) {
-        // PURPOSE: OPENS MENU.CLASS AND SPECIFIES WHICH TAB TO DISPLAY //
         Intent intent = new Intent(this, MenuActivity.class)
                 .putExtra("index", tabIndex);
         startActivity(intent);
     }
 
     private void favoriteLogic() {
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.getString("userToken", "NULL").equals("NULL")) {
+        if (!AuthUtil.isAuthenticated(this)) {
             openMenu(2);
             return;
         }
         if (songID == -1) return;
-        APIUtil apiUtil = new APIUtil(new APIListenerInterface() {
+
+        APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
             @Override
-            public void favoriteCallback(final String jsonResult) {
+            public void onFailure(final String result) {
+            }
+
+            @Override
+            public void onSuccess(final String jsonResult) {
                 runOnUiThread(new Runnable() {
-                    @SuppressWarnings("deprecation")
                     @Override
                     public void run() {
                         if (jsonResult.contains("success\":true")) {
@@ -316,24 +315,7 @@ public class RadioActivity extends AppCompatActivity {
                     }
                 });
             }
-
-            @Override
-            public void favoriteListCallback(String jsonResult) {
-            }
-
-            @Override
-            public void authenticateCallback(String token) {
-            }
-
-            @Override
-            public void requestCallback(String jsonResult) {
-            }
-
-            @Override
-            public void searchCallback(String jsonResult) {
-            }
         });
-        apiUtil.favorite(songID, getApplicationContext());
 
         final Toast toast = Toast.makeText(getBaseContext(), "Sending...", Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 0);
@@ -359,8 +341,12 @@ public class RadioActivity extends AppCompatActivity {
         startService(intent);
     }
 
+    /**
+     * Checks if socket stream service is running.
+     *
+     * @return Whether the service is running.
+     */
     private boolean isRunning() {
-        // PURPOSE: CHECKS IF SOCKET STREAM SERVICE IS RUNNING //
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (StreamService.class.getName().equals(service.service.getClassName())) {
