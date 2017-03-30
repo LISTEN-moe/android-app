@@ -10,15 +10,12 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,8 +69,10 @@ public class RadioActivity extends AppCompatActivity {
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        // SETUP METHODS
-        tokenValidity();
+        // Invalidate token if needed
+        AuthUtil.checkAuthTokenValidity(this);
+
+        // Set up view listeners
         menuButtonListener();
         volumeSliderListener();
         favoriteButtonListener();
@@ -244,22 +243,6 @@ public class RadioActivity extends AppCompatActivity {
 
 
     // LOGIC METHODS //
-
-    /**
-     * Retrieves token. Invalidates it if it's 28 days old.
-     */
-    private void tokenValidity() {
-        // Check for token //
-        if (!AuthUtil.isAuthenticated(this)) {
-            return;
-        }
-
-        // Check token is valid //
-        final long lastAuth = AuthUtil.getTokenAge(this);
-        if (Math.round((System.currentTimeMillis() / 1000 - lastAuth) / 86400.0) >= 28) {
-            AuthUtil.clearAuthToken(this);
-        }
-    }
 
     /**
      * Opens the MenuActivity with the specified tab.

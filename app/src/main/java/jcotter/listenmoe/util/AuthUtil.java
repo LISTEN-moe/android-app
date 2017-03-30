@@ -17,6 +17,18 @@ public class AuthUtil {
         return userToken != null;
     }
 
+    public static void checkAuthTokenValidity(final Context context) {
+        if (!AuthUtil.isAuthenticated(context)) {
+            return;
+        }
+
+        // Check token is valid (max 28 days)
+        final long lastAuth = AuthUtil.getTokenAge(context);
+        if (Math.round((System.currentTimeMillis() / 1000 - lastAuth) / 86400.0) >= 28) {
+            AuthUtil.clearAuthToken(context);
+        }
+    }
+
     public static String getAuthToken(final Context context) {
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getString(USER_TOKEN, null);
