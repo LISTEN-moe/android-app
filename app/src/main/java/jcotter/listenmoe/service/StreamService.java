@@ -45,12 +45,18 @@ import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.model.PlaybackInfo;
+import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class StreamService extends Service {
+
+    public static final String UPDATE_PLAYING = "update_playing";
+    public static final String UPDATE_PLAYING_SONG = UPDATE_PLAYING + ".song";
+    public static final String UPDATE_PLAYING_LISTENERS = UPDATE_PLAYING + ".listeners";
+    public static final String UPDATE_PLAYING_REQUESTER = UPDATE_PLAYING + ".requester";
 
     public static final String VOLUME = "volume";
     public static final String RECEIVER = "receiver";
@@ -67,14 +73,12 @@ public class StreamService extends Service {
     private SimpleExoPlayer voiceOfKanacchi;
     private WebSocket ws;
     private float volume;
-    private String artist;
-    private String title;
-    private String anime;
-    private int songID;
-    private boolean favorite;
     private boolean uiOpen;
     private boolean notif;
     private int notifID;
+
+    private Gson gson;
+    private Song currentSong;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -83,16 +87,20 @@ public class StreamService extends Service {
 
     @Override
     public void onCreate() {
+        this.gson = new Gson();
+
         uiOpen = true;
         volume = 0.5f;
+
         notif = false;
         notifID = -1;
     }
 
     @Override
     public void onDestroy() {
-        if (ws != null)
+        if (ws != null) {
             ws.disconnect();
+        }
     }
 
     @Override
@@ -163,7 +171,7 @@ public class StreamService extends Service {
                         } else {
                             // Toggle favorite status of current song
                             if (intent.hasExtra(StreamService.FAVORITE)) {
-                                APIUtil.favoriteSong(getApplicationContext(), songID, new FavoriteSongCallback() {
+                                APIUtil.favoriteSong(getApplicationContext(), currentSong.getId(), new FavoriteSongCallback() {
                                     @Override
                                     public void onFailure(String result) {
                                     }
@@ -171,7 +179,8 @@ public class StreamService extends Service {
                                     @Override
                                     public void onSuccess(String jsonResult) {
                                         if (jsonResult.contains("success\":true")) {
-                                            favorite = jsonResult.contains("favorite\":true");
+                                            boolean favorite = jsonResult.contains("favorite\":true");
+                                            currentSong.setFavorite(favorite);
 
                                             if (uiOpen) {
                                                 Intent favIntent = new Intent("jcotter.listenmoe")
@@ -184,7 +193,7 @@ public class StreamService extends Service {
                                     }
                                 });
                             } else if (intent.hasExtra(StreamService.TOGGLE_FAVORITE)) {
-                                favorite = intent.getBooleanExtra(StreamService.TOGGLE_FAVORITE, false);
+                                currentSong.setFavorite(intent.getBooleanExtra(StreamService.TOGGLE_FAVORITE, false));
                             }
                         }
                     }
@@ -276,55 +285,33 @@ public class StreamService extends Service {
      * @param jsonString Response from the LISTEN.moe websocket.
      */
     private void parseJSON(String jsonString) {
-        System.out.println(jsonString);
-
-        Gson gson = new Gson();
         PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
 
-        String nowPlaying;
-        String listeners;
-        String requestedBy = null;
-        boolean extended = false;
-        favorite = false;
-        songID = -1;
-
         if (playbackInfo.getSongId() != 0) {
-            listeners = String.format(getResources().getString(R.string.currentListeners), playbackInfo.getListeners());
-
-            songID = playbackInfo.getSongId();
-            title = playbackInfo.getSongName().trim();
-            artist = playbackInfo.getArtistName().trim();
-            anime = playbackInfo.getAnimeName().trim();
-
-            nowPlaying = String.format(getResources().getString(R.string.nowPlaying), artist, title);
-            if (!anime.equals("")) {
-                nowPlaying += String.format("\n[ %s ]", anime);
-            }
-
-            String requested_by = playbackInfo.getRequestedBy();
-            if (!requested_by.equals("")) {
-                requestedBy = String.format(getResources().getString(R.string.requestedText), requested_by);
-            }
+            currentSong = new Song(
+                    playbackInfo.getSongId(),
+                    playbackInfo.getArtistName().trim(),
+                    playbackInfo.getSongName().trim(),
+                    playbackInfo.getAnimeName().trim()
+            );
 
             if (playbackInfo.hasExtended()) {
-                extended = true;
-                favorite = playbackInfo.getExtended().isFavorite();
+                currentSong.setFavorite(playbackInfo.getExtended().isFavorite());
             }
         } else {
-            nowPlaying = getResources().getString(R.string.apiFailed);
-            listeners = String.format(getResources().getString(R.string.currentListeners), 0);
+            currentSong = null;
         }
 
-        // TODO: send a parcelable object (i.e. the PlaybackInfo) and let the activity handle how
-        // it's displayed
-        Intent intent = new Intent("jcotter.listenmoe")
-                .putExtra("nowPlaying", nowPlaying)
-                .putExtra("listeners", listeners)
-                .putExtra("requestedBy", requestedBy)
-                .putExtra("songID", songID)
-                .putExtra("favorite", favorite)
-                .putExtra("authenticated", extended);
+        // Send the updated info to the RadioActivity
+        final Intent intent = new Intent()
+                .setAction(StreamService.UPDATE_PLAYING)
+                .putExtra(StreamService.UPDATE_PLAYING_SONG, currentSong)
+                .putExtra(StreamService.UPDATE_PLAYING_LISTENERS, playbackInfo.getListeners())
+                .putExtra(StreamService.UPDATE_PLAYING_REQUESTER, playbackInfo.getRequestedBy());
+
         sendBroadcast(intent);
+
+        // Update notification
         notification();
     }
 
@@ -340,17 +327,19 @@ public class StreamService extends Service {
         Intent intent = new Intent(this, RadioActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setContentTitle(artist)
+                .setContentTitle(currentSong.getArtist())
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentIntent(pendingIntent)
                 .setColor(Color.argb(255, 29, 33, 50));
-        if (!anime.equals("")) {
-            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title + "\n" + "[" + anime + "]"));
-            builder.setContentText(title + "\n" + "[" + anime + "]");
-        } else {
-            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title));
-            builder.setContentText(title);
+
+        // Construct string with song title and anime
+        final String currentSongAnime = currentSong.getAnime();
+        String title = currentSong.getTitle();
+        if (!currentSongAnime.equals("")) {
+            title += "\n" + "[" + currentSongAnime + "]";
         }
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title));
+        builder.setContentText(title);
 
         // Play/pause button
         Intent playPauseIntent = new Intent(this, this.getClass());
@@ -384,7 +373,7 @@ public class StreamService extends Service {
             else
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, getString(R.string.action_favorite), authPending).build());
         } else {
-            if (favorite)
+            if (currentSong.isFavorite())
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                     builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "", favoritePending).build());
                 else

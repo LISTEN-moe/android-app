@@ -22,20 +22,21 @@ import android.widget.Toast;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
+import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class RadioActivity extends AppCompatActivity {
     // UI views
-    private SeekBar volumeSlider;
-    private ImageButton playPause;
+    private SeekBar mVolumeBar;
+    private ImageButton mPlayPauseBtn;
     private ImageButton menuButton;
-    private ImageButton favoriteButton;
-    private TextView poweredBy;
-    private TextView currentText;
-    private TextView nowPlaying;
-    private TextView requestText;
+    private ImageButton mFavoriteBtn;
+    private TextView mPoweredByTxt;
+    private TextView mListenersTxt;
+    private TextView mNowPlayingTxt;
+    private TextView mRequestedByTxt;
 
     private BroadcastReceiver broadcastReceiver;
     private int songID;
@@ -48,23 +49,23 @@ public class RadioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_radio);
 
         // Get UI views
-        playPause = (ImageButton) findViewById(R.id.playPause);
-        volumeSlider = (SeekBar) findViewById(R.id.seekBar);
-        poweredBy = (TextView) findViewById(R.id.poweredBy);
-        currentText = (TextView) findViewById(R.id.currentText);
-        nowPlaying = (TextView) findViewById(R.id.nowPlaying);
-        requestText = (TextView) findViewById(R.id.requestedText);
+        mPlayPauseBtn = (ImageButton) findViewById(R.id.playPause);
+        mVolumeBar = (SeekBar) findViewById(R.id.seekBar);
+        mPoweredByTxt = (TextView) findViewById(R.id.poweredBy);
+        mListenersTxt = (TextView) findViewById(R.id.currentText);
+        mNowPlayingTxt = (TextView) findViewById(R.id.nowPlaying);
+        mRequestedByTxt = (TextView) findViewById(R.id.requestedText);
         menuButton = (ImageButton) findViewById(R.id.menuButton);
-        favoriteButton = (ImageButton) findViewById(R.id.favoriteButton);
+        mFavoriteBtn = (ImageButton) findViewById(R.id.favoriteButton);
 
         // Set font to OpenSans
         Typeface openSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
-        poweredBy.setTypeface(openSans);
-        currentText.setTypeface(openSans);
-        nowPlaying.setTypeface(openSans);
-        requestText.setTypeface(openSans);
+        mPoweredByTxt.setTypeface(openSans);
+        mListenersTxt.setTypeface(openSans);
+        mNowPlayingTxt.setTypeface(openSans);
+        mRequestedByTxt.setTypeface(openSans);
 
-        requestText.setVisibility(View.INVISIBLE);
+        mRequestedByTxt.setVisibility(View.INVISIBLE);
 
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -117,7 +118,7 @@ public class RadioActivity extends AppCompatActivity {
      * Listener for volume slider progress changed.
      */
     private void volumeSliderListener() {
-        volumeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mVolumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 if (isRunning()) {
@@ -141,7 +142,7 @@ public class RadioActivity extends AppCompatActivity {
      * Listener for play/pause button.
      */
     private void playPauseButtonListener() {
-        playPause.setOnClickListener(new View.OnClickListener() {
+        mPlayPauseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playPauseLogic();
@@ -153,7 +154,7 @@ public class RadioActivity extends AppCompatActivity {
      * Listener for favorite button.
      */
     private void favoriteButtonListener() {
-        favoriteButton.setOnClickListener(new View.OnClickListener() {
+        mFavoriteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 favoriteLogic();
@@ -167,70 +168,115 @@ public class RadioActivity extends AppCompatActivity {
     private void socketDisplay() {
         songID = -1;
         favorite = false;
+
         broadcastReceiver = new BroadcastReceiver() {
             @SuppressWarnings("deprecation")
             @Override
             public void onReceive(Context context, final Intent intent) {
-                if (intent.hasExtra("nowPlaying")) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            songID = intent.getIntExtra("songID", -1);
-                            nowPlaying.setText(intent.getStringExtra("nowPlaying"));
-                            currentText.setText(intent.getStringExtra("listeners"));
-                            final String requestedBy = intent.getStringExtra("requestedBy");
-                            if (requestedBy != null) {
-                                requestText.setVisibility(View.VISIBLE);
-                                requestText.setMovementMethod(LinkMovementMethod.getInstance());
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                                    requestText.setText(Html.fromHtml(requestedBy, Html.FROM_HTML_MODE_COMPACT));
+                switch (intent.getAction()) {
+                    // Updating current song info from StreamService
+                    case StreamService.UPDATE_PLAYING:
+                        final StringBuilder playingBuilder = new StringBuilder();
+                        final StringBuilder listenersBuilder = new StringBuilder();
+                        final StringBuilder requesterBuilder = new StringBuilder();
+
+                        // Fetch data from intent
+                        if (intent.hasExtra(StreamService.UPDATE_PLAYING_SONG)) {
+                            final Song currentSong = intent.getParcelableExtra(StreamService.UPDATE_PLAYING_SONG);
+                            final int listeners = intent.getIntExtra(StreamService.UPDATE_PLAYING_LISTENERS, 0);
+                            final String requester = intent.getStringExtra(StreamService.UPDATE_PLAYING_REQUESTER);
+
+                            songID = currentSong.getId();
+
+                            // Current listeners
+                            listenersBuilder.append(String.format(getResources().getString(R.string.currentListeners), listeners));
+
+                            // Current song info
+                            playingBuilder.append(String.format(getResources().getString(R.string.nowPlaying), currentSong.getArtist(), currentSong.getTitle()));
+                            if (!currentSong.getAnime().equals("")) {
+                                playingBuilder.append(String.format("\n[ %s ]", currentSong.getAnime()));
+                            }
+
+                            // Song requester
+                            if (!requester.equals("")) {
+                                requesterBuilder.append(String.format(getResources().getString(R.string.requestedText), requester));
+                            }
+                        } else {
+                            playingBuilder.append(getString(R.string.apiFailed));
+                            listenersBuilder.append(String.format(getResources().getString(R.string.currentListeners), 0));
+                        }
+
+                        final String nowPlaying = playingBuilder.toString();
+                        final String currentListeners = listenersBuilder.toString();
+                        final String requestedBy = requesterBuilder.toString();
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mNowPlayingTxt.setText(nowPlaying);
+                                mListenersTxt.setText(currentListeners);
+
+                                if (requestedBy.equals("")) {
+                                    mRequestedByTxt.setVisibility(View.INVISIBLE);
+                                } else {
+                                    mRequestedByTxt.setVisibility(View.VISIBLE);
+                                    mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        mRequestedByTxt.setText(Html.fromHtml(requestedBy, Html.FROM_HTML_MODE_COMPACT));
+                                    } else {
+                                        mRequestedByTxt.setText(Html.fromHtml(requestedBy));
+                                    }
+                                }
+                            }
+                        });
+                        break;
+
+                    default:
+                        if (intent.hasExtra(StreamService.RUNNING)) {
+                            if (intent.getBooleanExtra(StreamService.RUNNING, false)) {
+                                playing = true;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                    mPlayPauseBtn.setImageDrawable(getDrawable(R.drawable.icon_pause));
                                 else
-                                    requestText.setText(Html.fromHtml(requestedBy));
+                                    mPlayPauseBtn.setImageDrawable(getResources().getDrawable(R.drawable.icon_pause));
                             } else {
-                                requestText.setVisibility(View.INVISIBLE);
+                                playing = false;
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                    mPlayPauseBtn.setImageDrawable(getDrawable(R.drawable.icon_play));
+                                else
+                                    mPlayPauseBtn.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
                             }
                         }
-                    });
+                        if (intent.hasExtra(StreamService.FAVORITE)) {
+                            favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                if (favorite)
+                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
+                                else
+                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
+                            else if (favorite)
+                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
+                            else
+                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                        }
+
+                        if (intent.hasExtra(StreamService.VOLUME)) {
+                            mVolumeBar.setProgress(intent.getIntExtra(StreamService.VOLUME, 50));
+                        }
+                        break;
                 }
-                if (intent.hasExtra(StreamService.RUNNING)) {
-                    if (intent.getBooleanExtra(StreamService.RUNNING, false)) {
-                        playing = true;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                            playPause.setImageDrawable(getDrawable(R.drawable.icon_pause));
-                        else
-                            playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_pause));
-                    } else {
-                        playing = false;
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                            playPause.setImageDrawable(getDrawable(R.drawable.icon_play));
-                        else
-                            playPause.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
-                    }
-                }
-                if (intent.hasExtra(StreamService.FAVORITE)) {
-                    favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                        if (favorite)
-                            favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                        else
-                            favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                    else if (favorite)
-                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                    else
-                        favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
-                }
-                if (intent.hasExtra(StreamService.VOLUME)) {
-                    volumeSlider.setProgress(intent.getIntExtra(StreamService.VOLUME, 50));
-                }
+
             }
         };
 
         try {
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction("jcotter.listenmoe");
+            intentFilter.addAction(StreamService.UPDATE_PLAYING);
             registerReceiver(broadcastReceiver, intentFilter);
         } catch (IllegalArgumentException ignored) {
         }
+
         Intent intent = new Intent(this, StreamService.class);
         if (isRunning()) {
             intent.putExtra(StreamService.RECEIVER, true); // Requests Socket Update //
@@ -274,27 +320,27 @@ public class RadioActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         if (jsonResult.contains("success\":true")) {
-                            if (jsonResult.contains("favorite\":true")) {
-                                favorite = true;
+                            favorite = jsonResult.contains("favorite\":true");
+                            if (favorite) {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_full));
+                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
                                 else
-                                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
+                                    mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
                             } else {
-                                favorite = false;
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    favoriteButton.setImageDrawable(getDrawable(R.drawable.favorite_empty));
+                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
                                 else
-                                    favoriteButton.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                                    mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                            }
+
+                            if (isRunning()) {
+                                Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
+                                        .putExtra(StreamService.TOGGLE_FAVORITE, favorite);
+                                startService(favUpdate);
                             }
                         } else if (jsonResult.contains("Failed to authenticate token.")) {
                             Toast.makeText(getBaseContext(), getString(R.string.token_expired), Toast.LENGTH_SHORT).show();
                             openMenu(2);
-                        }
-                        if (isRunning()) {
-                            Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
-                                    .putExtra(StreamService.TOGGLE_FAVORITE, true);
-                            startService(favUpdate);
                         }
                     }
                 });
@@ -320,7 +366,7 @@ public class RadioActivity extends AppCompatActivity {
             intent.putExtra(StreamService.PLAY, false);
         else {
             intent.putExtra(StreamService.PLAY, true);
-            intent.putExtra(StreamService.VOLUME, volumeSlider.getProgress() / 100.0f);
+            intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
         }
         startService(intent);
     }

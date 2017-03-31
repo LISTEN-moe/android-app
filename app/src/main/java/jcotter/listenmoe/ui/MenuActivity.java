@@ -267,7 +267,7 @@ public class MenuActivity extends AppCompatActivity {
             else
                 enabled.add(i, false);
             if (currentTab == 0) {
-                favorite.add(i, song.getFavorite());
+                favorite.add(i, song.isFavorite() ? 1 : 0);
             } else {
                 favorite.add(i, 1);
             }
