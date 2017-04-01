@@ -45,6 +45,7 @@ import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.model.PlaybackInfo;
+import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.ui.MenuActivity;
 import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.APIUtil;
@@ -52,17 +53,32 @@ import jcotter.listenmoe.util.AuthUtil;
 
 public class StreamService extends Service {
 
+    public static final String UPDATE_PLAYING = "update_playing";
+    public static final String UPDATE_PLAYING_SONG = UPDATE_PLAYING + ".song";
+    public static final String UPDATE_PLAYING_LISTENERS = UPDATE_PLAYING + ".listeners";
+    public static final String UPDATE_PLAYING_REQUESTER = UPDATE_PLAYING + ".requester";
+
+    public static final String VOLUME = "volume";
+    public static final String RECEIVER = "receiver";
+    public static final String KILLABLE = "killable";
+    public static final String REQUEST = "re:re";
+    public static final String PLAY = "play";
+    public static final String RUNNING = "running";
+    public static final String STOP = "stop";
+    public static final String FAVORITE = "favorite";
+    public static final String TOGGLE_FAVORITE = "favUpdate";
+    public static final String PROBE = "probe";
+
+
     private SimpleExoPlayer voiceOfKanacchi;
     private WebSocket ws;
     private float volume;
-    private String artist;
-    private String title;
-    private String anime;
-    private int songID;
-    private boolean favorite;
     private boolean uiOpen;
     private boolean notif;
     private int notifID;
+
+    private Gson gson;
+    private Song currentSong;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -71,69 +87,75 @@ public class StreamService extends Service {
 
     @Override
     public void onCreate() {
+        this.gson = new Gson();
+
         uiOpen = true;
         volume = 0.5f;
+
         notif = false;
         notifID = -1;
     }
 
     @Override
     public void onDestroy() {
-        if (ws != null)
+        if (ws != null) {
             ws.disconnect();
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
-        // Volume Control //
-        if (intent.hasExtra("volume")) {
-            volume = intent.getFloatExtra("volume", 0.5f);
-            if (voiceOfKanacchi != null)
-                voiceOfKanacchi.setVolume(intent.getFloatExtra("volume", 0.5f));
+        // Volume control
+        if (intent.hasExtra(StreamService.VOLUME)) {
+            if (voiceOfKanacchi != null) {
+                volume = intent.getFloatExtra(StreamService.VOLUME, 0.5f);
+                voiceOfKanacchi.setVolume(volume);
+            }
         }
-        // Starts WebSocket //
-        if (intent.hasExtra("receiver"))
+
+        // Starts WebSocket
+        if (intent.hasExtra(StreamService.RECEIVER)) {
             connectWebSocket();
-        else
-            // Allows Service to be Killed //
-            if (intent.hasExtra("killable")) {
+        } else {
+            // Allows service to be killed
+            if (intent.hasExtra(StreamService.KILLABLE)) {
                 uiOpen = false;
                 if (voiceOfKanacchi != null && !voiceOfKanacchi.getPlayWhenReady()) {
                     stopForeground(true);
                     stopSelf();
                 }
-            } else
-                // Requests WebSocket Update //
-                if (intent.hasExtra("re:re")) {
+            } else {
+                // Requests WebSocket update
+                if (intent.hasExtra(StreamService.REQUEST)) {
                     uiOpen = true;
                     final String authToken = AuthUtil.getAuthToken(getApplicationContext());
-                    if (authToken == null && ws != null)
+                    if (authToken == null && ws != null) {
                         ws.sendText("update");
-                    else if (ws != null)
+                    } else if (ws != null) {
                         ws.sendText("{\"token\":\"" + authToken + "\"}");
-                    else
+                    } else {
                         connectWebSocket();
-                } else
-                    // Play/Pause Music Stream //
-                    if (intent.hasExtra("play")) {
+                    }
+                } else {
+                    // Play/pause music stream
+                    if (intent.hasExtra(StreamService.PLAY)) {
                         Intent returnIntent = new Intent("jcotter.listenmoe");
-                        if (intent.getBooleanExtra("play", false)) {
+                        if (intent.getBooleanExtra(StreamService.PLAY, false)) {
                             if (voiceOfKanacchi == null) {
                                 startStream();
-                                returnIntent.putExtra("running", true);
                             } else {
                                 voiceOfKanacchi.setPlayWhenReady(true);
                                 voiceOfKanacchi.seekToDefaultPosition();
-                                returnIntent.putExtra("running", true);
                             }
+                            returnIntent.putExtra(StreamService.RUNNING, true);
                         } else {
                             voiceOfKanacchi.setPlayWhenReady(false);
-                            returnIntent.putExtra("running", false);
+                            returnIntent.putExtra(StreamService.RUNNING, false);
                         }
                         sendBroadcast(returnIntent);
-                    } else
-                        // Stop Stream & Foreground ( & Service (Depends)) //
-                        if (intent.hasExtra("stop")) {
+                    } else {
+                        // Stop Stream & Foreground ( & Service (Depends))
+                        if (intent.hasExtra(StreamService.STOP)) {
                             notif = false;
 
                             voiceOfKanacchi.setPlayWhenReady(false);
@@ -143,13 +165,13 @@ public class StreamService extends Service {
                             }
 
                             Intent returnIntent = new Intent("jcotter.listenmoe")
-                                    .putExtra("running", false);
+                                    .putExtra(StreamService.RUNNING, false);
 
                             sendBroadcast(returnIntent);
-                        } else
-                            // Change Favorite Status of Current Song //
-                            if (intent.hasExtra("favorite")) {
-                                APIUtil.favoriteSong(getApplicationContext(), songID, new FavoriteSongCallback() {
+                        } else {
+                            // Toggle favorite status of current song
+                            if (intent.hasExtra(StreamService.FAVORITE)) {
+                                APIUtil.favoriteSong(getApplicationContext(), currentSong.getId(), new FavoriteSongCallback() {
                                     @Override
                                     public void onFailure(String result) {
                                     }
@@ -157,11 +179,12 @@ public class StreamService extends Service {
                                     @Override
                                     public void onSuccess(String jsonResult) {
                                         if (jsonResult.contains("success\":true")) {
-                                            favorite = jsonResult.contains("favorite\":true");
+                                            boolean favorite = jsonResult.contains("favorite\":true");
+                                            currentSong.setFavorite(favorite);
 
                                             if (uiOpen) {
                                                 Intent favIntent = new Intent("jcotter.listenmoe")
-                                                        .putExtra("favorite", favorite);
+                                                        .putExtra(StreamService.FAVORITE, favorite);
                                                 sendBroadcast(favIntent);
                                             }
 
@@ -169,18 +192,25 @@ public class StreamService extends Service {
                                         }
                                     }
                                 });
-                            } else if (intent.hasExtra("favUpdate")) {
-                                favorite = intent.getBooleanExtra("favUpdate", false);
+                            } else if (intent.hasExtra(StreamService.TOGGLE_FAVORITE)) {
+                                currentSong.setFavorite(intent.getBooleanExtra(StreamService.TOGGLE_FAVORITE, false));
                             }
-        // Returns Music Stream State to RadioInterface //
-        if (intent.hasExtra("probe")) {
+                        }
+                    }
+                }
+            }
+        }
+
+        // Returns music stream state to RadioActivity
+        if (intent.hasExtra(StreamService.PROBE)) {
             Intent returnIntent = new Intent("jcotter.listenmoe")
-                    .putExtra("volume", (int) (volume * 100))
-                    .putExtra("running", voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
+                    .putExtra(StreamService.VOLUME, (int) (volume * 100))
+                    .putExtra(StreamService.RUNNING, voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
 
             sendBroadcast(returnIntent);
         }
-        // Updates Notification //
+
+        // Update notification
         notification();
 
         return START_NOT_STICKY;
@@ -255,55 +285,33 @@ public class StreamService extends Service {
      * @param jsonString Response from the LISTEN.moe websocket.
      */
     private void parseJSON(String jsonString) {
-        System.out.println(jsonString);
-
-        Gson gson = new Gson();
         PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
 
-        String nowPlaying;
-        String listeners;
-        String requestedBy = null;
-        boolean extended = false;
-        favorite = false;
-        songID = -1;
-
         if (playbackInfo.getSongId() != 0) {
-            listeners = String.format(getResources().getString(R.string.currentListeners), playbackInfo.getListeners());
-
-            songID = playbackInfo.getSongId();
-            title = playbackInfo.getSongName().trim();
-            artist = playbackInfo.getArtistName().trim();
-            anime = playbackInfo.getAnimeName().trim();
-
-            nowPlaying = String.format(getResources().getString(R.string.nowPlaying), artist, title);
-            if (!anime.equals("")) {
-                nowPlaying += String.format("\n[ %s ]", anime);
-            }
-
-            String requested_by = playbackInfo.getRequestedBy();
-            if (!requested_by.equals("")) {
-                requestedBy = String.format(getResources().getString(R.string.requestedText), requested_by);
-            }
+            currentSong = new Song(
+                    playbackInfo.getSongId(),
+                    playbackInfo.getArtistName().trim(),
+                    playbackInfo.getSongName().trim(),
+                    playbackInfo.getAnimeName().trim()
+            );
 
             if (playbackInfo.hasExtended()) {
-                extended = true;
-                favorite = playbackInfo.getExtended().isFavorite();
+                currentSong.setFavorite(playbackInfo.getExtended().isFavorite());
             }
         } else {
-            nowPlaying = getResources().getString(R.string.apiFailed);
-            listeners = String.format(getResources().getString(R.string.currentListeners), 0);
+            currentSong = null;
         }
 
-        // TODO: send a parcelable object (i.e. the PlaybackInfo) and let the activity handle how
-        // it's displayed
-        Intent intent = new Intent("jcotter.listenmoe")
-                .putExtra("nowPlaying", nowPlaying)
-                .putExtra("listeners", listeners)
-                .putExtra("requestedBy", requestedBy)
-                .putExtra("songID", songID)
-                .putExtra("favorite", favorite)
-                .putExtra("authenticated", extended);
+        // Send the updated info to the RadioActivity
+        final Intent intent = new Intent()
+                .setAction(StreamService.UPDATE_PLAYING)
+                .putExtra(StreamService.UPDATE_PLAYING_SONG, currentSong)
+                .putExtra(StreamService.UPDATE_PLAYING_LISTENERS, playbackInfo.getListeners())
+                .putExtra(StreamService.UPDATE_PLAYING_REQUESTER, playbackInfo.getRequestedBy());
+
         sendBroadcast(intent);
+
+        // Update notification
         notification();
     }
 
@@ -319,70 +327,72 @@ public class StreamService extends Service {
         Intent intent = new Intent(this, RadioActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setContentTitle(artist)
+                .setContentTitle(currentSong.getArtist())
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentIntent(pendingIntent)
                 .setColor(Color.argb(255, 29, 33, 50));
-        if (!anime.equals("")) {
-            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title + "\n" + "[" + anime + "]"));
-            builder.setContentText(title + "\n" + "[" + anime + "]");
-        } else {
-            builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title));
-            builder.setContentText(title);
-        }
 
-        // Play Pause Button
+        // Construct string with song title and anime
+        final String currentSongAnime = currentSong.getAnime();
+        String title = currentSong.getTitle();
+        if (!currentSongAnime.equals("")) {
+            title += "\n" + "[" + currentSongAnime + "]";
+        }
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title));
+        builder.setContentText(title);
+
+        // Play/pause button
         Intent playPauseIntent = new Intent(this, this.getClass());
         PendingIntent playPausePending;
         if (voiceOfKanacchi.getPlayWhenReady()) {
-            playPauseIntent.putExtra("play", false);
+            playPauseIntent.putExtra(StreamService.PLAY, false);
             playPausePending = PendingIntent.getService(this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < 24)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "", playPausePending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "Pause", playPausePending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, getString(R.string.action_pause), playPausePending).build());
         } else {
-            playPauseIntent.putExtra("play", true);
+            playPauseIntent.putExtra(StreamService.PLAY, true);
             playPausePending = PendingIntent.getService(this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < 24)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "", playPausePending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "Play", playPausePending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, getString(R.string.action_play), playPausePending).build());
         }
 
-        // Favorite Button
+        // Favorite button
         Intent favoriteIntent = new Intent(this, this.getClass())
-                .putExtra("favorite", true);
+                .putExtra(StreamService.FAVORITE, true);
         PendingIntent favoritePending = PendingIntent.getService(this, 2, favoriteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         if (!AuthUtil.isAuthenticated(getApplicationContext())) {
             Intent authIntent = new Intent(this, MenuActivity.class)
                     .putExtra("index", 2);
             PendingIntent authPending = PendingIntent.getActivity(this, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < 24)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "Favorite", authPending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, getString(R.string.action_favorite), authPending).build());
         } else {
-            if (favorite)
-                if (Build.VERSION.SDK_INT < 24)
+            if (currentSong.isFavorite())
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                     builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "", favoritePending).build());
                 else
-                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "UnFavorite", favoritePending).build());
-            else if (Build.VERSION.SDK_INT < 24)
+                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, getString(R.string.action_unfavorite), favoritePending).build());
+            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", favoritePending).build());
             else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "Favorite", favoritePending).build());
+                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, getString(R.string.action_favorite), favoritePending).build());
         }
 
-        // Stop Button
+        // Stop button
         Intent stopIntent = new Intent(this, this.getClass())
-                .putExtra("stop", true);
+                .putExtra(StreamService.STOP, true);
         PendingIntent stopPending = PendingIntent.getService(this, 4, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        if (Build.VERSION.SDK_INT < 24)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
         else
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "Stop", stopPending).build());
+            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, getString(R.string.action_stop), stopPending).build());
 
         startForeground(notifID, builder.build());
     }

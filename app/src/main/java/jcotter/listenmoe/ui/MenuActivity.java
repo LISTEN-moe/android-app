@@ -179,7 +179,7 @@ public class MenuActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(getBaseContext(), "Current Token Age: " + (Math.round((System.currentTimeMillis() / 1000 - tokenAge) / 86400.0)) + " Days", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getBaseContext(), String.format(getString(R.string.token_age), Math.round((System.currentTimeMillis() / 1000 - tokenAge) / 86400.0)), Toast.LENGTH_LONG).show();
                             }
                         });
                     }
@@ -267,7 +267,7 @@ public class MenuActivity extends AppCompatActivity {
             else
                 enabled.add(i, false);
             if (currentTab == 0) {
-                favorite.add(i, song.getFavorite());
+                favorite.add(i, song.isFavorite() ? 1 : 0);
             } else {
                 favorite.add(i, 1);
             }
@@ -286,7 +286,7 @@ public class MenuActivity extends AppCompatActivity {
                     text.setTextColor(Color.WHITE);
                     // Sets Text Grey if song is disabled //
                     if (!enabled.get(position)) {
-                        if (Build.VERSION.SDK_INT >= 23) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             text.setTextColor(getColor(R.color.greyText));
                         } else {
                             text.setTextColor(getResources().getColor(R.color.greyText));
@@ -295,7 +295,7 @@ public class MenuActivity extends AppCompatActivity {
                     // If current tab is Request Tab sets Pink text for favorites //
                     if (currentTab == 0) {
                         if (favorite.get(position) == 1) {
-                            if (Build.VERSION.SDK_INT >= 23) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                 text.setBackgroundColor(getColor(R.color.colorAccent));
                             } else {
                                 text.setBackgroundColor(getResources().getColor(R.color.colorAccent));
@@ -400,7 +400,7 @@ public class MenuActivity extends AppCompatActivity {
         });
         if (favorite.get(songIndex) == 1) {
             // Create button "Unfavorite"
-            builder.setNegativeButton("Un" + getString(R.string.tabFav).substring(0, getString(R.string.tabFav).length() - 1), new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(getString(R.string.action_unfavorite), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int in) {
                     favorite(songIndex);
@@ -408,7 +408,7 @@ public class MenuActivity extends AppCompatActivity {
             });
         } else {
             // Create button "Favorite" //
-            builder.setNegativeButton(getString(R.string.tabFav).substring(0, getString(R.string.tabFav).length() - 1), new DialogInterface.OnClickListener() {
+            builder.setNegativeButton(getString(R.string.action_favorite), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int in) {
                     favorite(songIndex);
@@ -417,7 +417,7 @@ public class MenuActivity extends AppCompatActivity {
         }
         if (enabled.get(songIndex)) {
             // Create button Request //
-            builder.setNeutralButton(getString(R.string.tabReq).substring(0, getString(R.string.tabReq).length() - 1), new DialogInterface.OnClickListener() {
+            builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int im) {
                     request(songIndex);
