@@ -8,7 +8,7 @@ public class Song implements Parcelable {
     private String artist;
     private String title;
     private String anime;
-    private boolean enabled;
+    private Boolean enabled;
     private int favorite;
 
     public Song(int id, String artist, String title, String anime) {
@@ -62,7 +62,7 @@ public class Song implements Parcelable {
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return enabled == null;
     }
 
     public void setEnabled(boolean enabled) {
