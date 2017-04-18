@@ -69,6 +69,8 @@ public class StreamService extends Service {
     public static final String TOGGLE_FAVORITE = "favUpdate";
     public static final String PROBE = "probe";
 
+    public static boolean isServiceRunning = false;
+
 
     private SimpleExoPlayer voiceOfKanacchi;
     private WebSocket ws;
@@ -97,14 +99,9 @@ public class StreamService extends Service {
     }
 
     @Override
-    public void onDestroy() {
-        if (ws != null) {
-            ws.disconnect();
-        }
-    }
-
-    @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
+        isServiceRunning = true;
+
         // Volume control
         if (intent.hasExtra(StreamService.VOLUME)) {
             if (voiceOfKanacchi != null) {
@@ -214,6 +211,15 @@ public class StreamService extends Service {
         notification();
 
         return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        isServiceRunning = false;
+
+        if (ws != null) {
+            ws.disconnect();
+        }
     }
 
 

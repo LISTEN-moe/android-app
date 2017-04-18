@@ -1,6 +1,5 @@
 package jcotter.listenmoe.ui;
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -121,7 +120,7 @@ public class RadioActivity extends AppCompatActivity {
         mVolumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (isRunning()) {
+                if (StreamService.isServiceRunning) {
                     Intent intent = new Intent(getBaseContext(), StreamService.class)
                             .putExtra(StreamService.VOLUME, seekBar.getProgress() / 100.0f);
                     startService(intent);
@@ -278,7 +277,7 @@ public class RadioActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this, StreamService.class);
-        if (isRunning()) {
+        if (StreamService.isServiceRunning) {
             intent.putExtra(StreamService.RECEIVER, true); // Requests Socket Update //
             intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
         } else {
@@ -333,7 +332,7 @@ public class RadioActivity extends AppCompatActivity {
                                     mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
                             }
 
-                            if (isRunning()) {
+                            if (StreamService.isServiceRunning) {
                                 Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
                                         .putExtra(StreamService.TOGGLE_FAVORITE, favorite);
                                 startService(favUpdate);
@@ -369,20 +368,5 @@ public class RadioActivity extends AppCompatActivity {
             intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
         }
         startService(intent);
-    }
-
-    /**
-     * Checks if socket stream service is running.
-     *
-     * @return Whether the service is running.
-     */
-    private boolean isRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (StreamService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
     }
 }
