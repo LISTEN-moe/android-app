@@ -300,9 +300,10 @@ public class MenuActivity extends AppCompatActivity {
                 }
             };
         } else {
-            // Sets Adapter to empty to display nothing //
-            if (adapter != null)
+            // Sets adapter to empty to display nothing
+            if (adapter != null) {
                 adapter = null;
+            }
         }
         runOnUiThread(new Runnable() {
             @Override
@@ -385,32 +386,27 @@ public class MenuActivity extends AppCompatActivity {
      */
     private void confirmationDialog(final int songIndex) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
-        // Cancel button //
+        // Cancel button
         builder.setMessage(R.string.req_dialog_message);
         builder.setPositiveButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }
         });
-        if (favorite.get(songIndex) == 1) {
-            // Create button "Unfavorite"
-            builder.setNegativeButton(getString(R.string.action_unfavorite), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int in) {
-                    favorite(songIndex);
-                }
-            });
-        } else {
-            // Create button "Favorite" //
-            builder.setNegativeButton(getString(R.string.action_favorite), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int in) {
-                    favorite(songIndex);
-                }
-            });
-        }
+
+        // Create button "Favorite"/"Unfavorite"
+        final String favoriteAction = favorite.get(songIndex) == 1 ?
+                getString(R.string.action_unfavorite) :
+                getString(R.string.action_favorite);
+        builder.setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int in) {
+                favorite(songIndex);
+            }
+        });
+
         if (enabled.get(songIndex)) {
-            // Create button Request //
+            // Create button "Request"
             builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int im) {

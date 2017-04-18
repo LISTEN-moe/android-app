@@ -136,7 +136,7 @@ public class StreamService extends Service {
                 } else {
                     // Play/pause music stream
                     if (intent.hasExtra(StreamService.PLAY)) {
-                        Intent returnIntent = new Intent("jcotter.listenmoe");
+                        final Intent returnIntent = new Intent(getPackageName());
                         if (intent.getBooleanExtra(StreamService.PLAY, false)) {
                             if (voiceOfKanacchi == null) {
                                 startStream();
@@ -161,9 +161,8 @@ public class StreamService extends Service {
                                 stopSelf();
                             }
 
-                            Intent returnIntent = new Intent("jcotter.listenmoe")
-                                    .putExtra(StreamService.RUNNING, false);
-
+                            final Intent returnIntent = new Intent(getPackageName());
+                            returnIntent.putExtra(StreamService.RUNNING, false);
                             sendBroadcast(returnIntent);
                         } else {
                             // Toggle favorite status of current song
@@ -178,8 +177,8 @@ public class StreamService extends Service {
                                         currentSong.setFavorite(favorited);
 
                                         if (uiOpen) {
-                                            Intent favIntent = new Intent("jcotter.listenmoe")
-                                                    .putExtra(StreamService.FAVORITE, favorited);
+                                            final Intent favIntent = new Intent(getPackageName());
+                                            favIntent.putExtra(StreamService.FAVORITE, favorited);
                                             sendBroadcast(favIntent);
                                         }
 
@@ -197,10 +196,9 @@ public class StreamService extends Service {
 
         // Returns music stream state to RadioActivity
         if (intent.hasExtra(StreamService.PROBE)) {
-            Intent returnIntent = new Intent("jcotter.listenmoe")
-                    .putExtra(StreamService.VOLUME, (int) (volume * 100))
-                    .putExtra(StreamService.RUNNING, voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
-
+            final Intent returnIntent = new Intent(getPackageName());
+            returnIntent.putExtra(StreamService.VOLUME, (int) (volume * 100));
+            returnIntent.putExtra(StreamService.RUNNING, voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
             sendBroadcast(returnIntent);
         }
 
@@ -220,16 +218,16 @@ public class StreamService extends Service {
     }
 
 
-    // WEBSOCKET RELATED METHODS //
+    // WEBSOCKET METHODS
 
     /**
      * Connects to the websocket and retrieves playback info.
      */
     private void connectWebSocket() {
         final String url = Endpoints.SOCKET;
-        // Create Web Socket //
+        // Create Web Socket
         ws = null;
-        WebSocketFactory factory = new WebSocketFactory();
+        final WebSocketFactory factory = new WebSocketFactory();
         try {
             ws = factory.createSocket(url, 900000);
             ws.addListener(new WebSocketAdapter() {
@@ -243,7 +241,8 @@ public class StreamService extends Service {
                                 ws.sendText("{\"token\":\"" + authToken + "\"}");
                             }
                         }
-                        // Parses the API information //
+
+                        // Parses the API information
                         parseJSON(frame.getPayloadText());
                     }
                 }
@@ -306,12 +305,11 @@ public class StreamService extends Service {
         }
 
         // Send the updated info to the RadioActivity
-        final Intent intent = new Intent()
-                .setAction(StreamService.UPDATE_PLAYING)
-                .putExtra(StreamService.UPDATE_PLAYING_SONG, currentSong)
-                .putExtra(StreamService.UPDATE_PLAYING_LISTENERS, playbackInfo.getListeners())
-                .putExtra(StreamService.UPDATE_PLAYING_REQUESTER, playbackInfo.getRequestedBy());
-
+        final Intent intent = new Intent();
+        intent.setAction(StreamService.UPDATE_PLAYING);
+        intent.putExtra(StreamService.UPDATE_PLAYING_SONG, currentSong);
+        intent.putExtra(StreamService.UPDATE_PLAYING_LISTENERS, playbackInfo.getListeners());
+        intent.putExtra(StreamService.UPDATE_PLAYING_REQUESTER, playbackInfo.getRequestedBy());
         sendBroadcast(intent);
 
         // Update notification
@@ -327,9 +325,12 @@ public class StreamService extends Service {
         if (notifID == -1)
             notifID = (int) System.currentTimeMillis();
 
-        Intent intent = new Intent(this, RadioActivity.class).setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+        final Intent intent = new Intent(this, RadioActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(currentSong.getArtist())
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentIntent(pendingIntent)
@@ -345,7 +346,7 @@ public class StreamService extends Service {
         builder.setContentText(title);
 
         // Play/pause button
-        Intent playPauseIntent = new Intent(this, this.getClass());
+        final Intent playPauseIntent = new Intent(this, this.getClass());
         PendingIntent playPausePending;
         if (voiceOfKanacchi.getPlayWhenReady()) {
             playPauseIntent.putExtra(StreamService.PLAY, false);
@@ -364,12 +365,12 @@ public class StreamService extends Service {
         }
 
         // Favorite button
-        Intent favoriteIntent = new Intent(this, this.getClass())
-                .putExtra(StreamService.FAVORITE, true);
+        final Intent favoriteIntent = new Intent(this, this.getClass());
+        favoriteIntent.putExtra(StreamService.FAVORITE, true);
         PendingIntent favoritePending = PendingIntent.getService(this, 2, favoriteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         if (!AuthUtil.isAuthenticated(getApplicationContext())) {
-            Intent authIntent = new Intent(this, MenuActivity.class)
-                    .putExtra("index", 2);
+            final Intent authIntent = new Intent(this, MenuActivity.class);
+            authIntent.putExtra("index", 2);
             PendingIntent authPending = PendingIntent.getActivity(this, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
                 builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
@@ -388,10 +389,9 @@ public class StreamService extends Service {
         }
 
         // Stop button
-        Intent stopIntent = new Intent(this, this.getClass())
-                .putExtra(StreamService.STOP, true);
+        final Intent stopIntent = new Intent(this, this.getClass());
+        stopIntent.putExtra(StreamService.STOP, true);
         PendingIntent stopPending = PendingIntent.getService(this, 4, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
             builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
         else

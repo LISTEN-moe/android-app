@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
@@ -82,14 +80,14 @@ public class RadioActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        // Purpose: Allows Stream to
         super.onStop();
         try {
             unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException ignored) {
         }
-        Intent intent = new Intent(getBaseContext(), StreamService.class)
-                .putExtra(StreamService.KILLABLE, true);
+
+        final Intent intent = new Intent(getBaseContext(), StreamService.class);
+        intent.putExtra(StreamService.KILLABLE, true);
         startService(intent);
     }
 
@@ -230,14 +228,14 @@ public class RadioActivity extends AppCompatActivity {
 
                     default:
                         if (intent.hasExtra(StreamService.RUNNING)) {
-                            if (intent.getBooleanExtra(StreamService.RUNNING, false)) {
-                                playing = true;
+                            playing = intent.getBooleanExtra(StreamService.RUNNING, false);
+                            if (playing) {
                                 mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.icon_pause));
                             } else {
-                                playing = false;
                                 mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.icon_play));
                             }
                         }
+
                         if (intent.hasExtra(StreamService.FAVORITE)) {
                             favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
                             if (favorite) {
@@ -257,14 +255,14 @@ public class RadioActivity extends AppCompatActivity {
         };
 
         try {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("jcotter.listenmoe");
+            final IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(getPackageName());
             intentFilter.addAction(StreamService.UPDATE_PLAYING);
             registerReceiver(broadcastReceiver, intentFilter);
         } catch (IllegalArgumentException ignored) {
         }
 
-        Intent intent = new Intent(this, StreamService.class);
+        final Intent intent = new Intent(this, StreamService.class);
         if (StreamService.isServiceRunning) {
             intent.putExtra(StreamService.RECEIVER, true); // Requests Socket Update //
             intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
@@ -284,8 +282,8 @@ public class RadioActivity extends AppCompatActivity {
      * @param tabIndex
      */
     private void openMenu(int tabIndex) {
-        Intent intent = new Intent(this, MenuActivity.class)
-                .putExtra("index", tabIndex);
+        final Intent intent = new Intent(this, MenuActivity.class);
+        intent.putExtra("index", tabIndex);
         startActivity(intent);
     }
 
@@ -294,6 +292,7 @@ public class RadioActivity extends AppCompatActivity {
             openMenu(2);
             return;
         }
+
         if (songID == -1) return;
 
         APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
@@ -346,13 +345,10 @@ public class RadioActivity extends AppCompatActivity {
 
     private void playPauseLogic() {
         if (songID == -1) return;
-        Intent intent = new Intent(this, StreamService.class);
-        if (playing)
-            intent.putExtra(StreamService.PLAY, false);
-        else {
-            intent.putExtra(StreamService.PLAY, true);
-            intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
-        }
+
+        final Intent intent = new Intent(this, StreamService.class);
+        intent.putExtra(StreamService.PLAY, !playing);
+        intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
         startService(intent);
     }
 }
