@@ -26,6 +26,7 @@ import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
+import jcotter.listenmoe.util.SDKUtil;
 
 public class RadioActivity extends AppCompatActivity {
     // UI views
@@ -221,11 +222,7 @@ public class RadioActivity extends AppCompatActivity {
                                 } else {
                                     mRequestedByTxt.setVisibility(View.VISIBLE);
                                     mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                        mRequestedByTxt.setText(Html.fromHtml(requestedBy, Html.FROM_HTML_MODE_COMPACT));
-                                    } else {
-                                        mRequestedByTxt.setText(Html.fromHtml(requestedBy));
-                                    }
+                                    mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
                                 }
                             }
                         });
@@ -235,29 +232,19 @@ public class RadioActivity extends AppCompatActivity {
                         if (intent.hasExtra(StreamService.RUNNING)) {
                             if (intent.getBooleanExtra(StreamService.RUNNING, false)) {
                                 playing = true;
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mPlayPauseBtn.setImageDrawable(getDrawable(R.drawable.icon_pause));
-                                else
-                                    mPlayPauseBtn.setImageDrawable(getResources().getDrawable(R.drawable.icon_pause));
+                                mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.icon_pause));
                             } else {
                                 playing = false;
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mPlayPauseBtn.setImageDrawable(getDrawable(R.drawable.icon_play));
-                                else
-                                    mPlayPauseBtn.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
+                                mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.icon_play));
                             }
                         }
                         if (intent.hasExtra(StreamService.FAVORITE)) {
                             favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                if (favorite)
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                                else
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                            else if (favorite)
-                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                            else
-                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                            if (favorite) {
+                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_full));
+                            } else {
+                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_empty));
+                            }
                         }
 
                         if (intent.hasExtra(StreamService.VOLUME)) {
@@ -330,15 +317,9 @@ public class RadioActivity extends AppCompatActivity {
                     public void run() {
                         favorite = favorited;
                         if (favorited) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                            else
-                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_full));
                         } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                            else
-                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_empty));
                         }
 
                         if (StreamService.isServiceRunning) {
