@@ -170,23 +170,20 @@ public class StreamService extends Service {
                             if (intent.hasExtra(StreamService.FAVORITE)) {
                                 APIUtil.favoriteSong(getApplicationContext(), currentSong.getId(), new FavoriteSongCallback() {
                                     @Override
-                                    public void onFailure(String result) {
+                                    public void onFailure(final String result) {
                                     }
 
                                     @Override
-                                    public void onSuccess(String jsonResult) {
-                                        if (jsonResult.contains("success\":true")) {
-                                            boolean favorite = jsonResult.contains("favorite\":true");
-                                            currentSong.setFavorite(favorite);
+                                    public void onSuccess(final boolean favorited) {
+                                        currentSong.setFavorite(favorited);
 
-                                            if (uiOpen) {
-                                                Intent favIntent = new Intent("jcotter.listenmoe")
-                                                        .putExtra(StreamService.FAVORITE, favorite);
-                                                sendBroadcast(favIntent);
-                                            }
-
-                                            notification();
+                                        if (uiOpen) {
+                                            Intent favIntent = new Intent("jcotter.listenmoe")
+                                                    .putExtra(StreamService.FAVORITE, favorited);
+                                            sendBroadcast(favIntent);
                                         }
+
+                                        notification();
                                     }
                                 });
                             } else if (intent.hasExtra(StreamService.TOGGLE_FAVORITE)) {

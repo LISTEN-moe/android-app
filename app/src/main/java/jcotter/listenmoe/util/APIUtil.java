@@ -17,6 +17,7 @@ import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
 import jcotter.listenmoe.interfaces.UserInfoCallback;
 import jcotter.listenmoe.model.SongsList;
+import jcotter.listenmoe.model.UserInfo;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -111,8 +112,7 @@ public class APIUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // TODO: parse body
-                callback.onSuccess(response.body().string());
+                callback.onSuccess(gson.fromJson(response.body().string(), UserInfo.class));
             }
         });
     }
@@ -176,8 +176,15 @@ public class APIUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // TODO: parse body
-                callback.onSuccess(response.body().string());
+                final String jsonResult = response.body().string();
+
+                if (jsonResult.contains(ResponseMessages.SUCCESS)) {
+                    callback.onSuccess(jsonResult.contains("favorite\":true"));
+                } else if (jsonResult.contains(ResponseMessages.AUTH_FAILURE)) {
+                    callback.onFailure(ResponseMessages.AUTH_FAILURE);
+                } else {
+                    callback.onFailure(ResponseMessages.ERROR);
+                }
             }
         });
     }
@@ -209,8 +216,17 @@ public class APIUtil {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                // TODO: parse body
-                callback.onSuccess(response.body().string());
+                final String jsonResult = response.body().string();
+
+                if (jsonResult.contains(ResponseMessages.SUCCESS)) {
+                    callback.onSuccess();
+                } else {
+                    if (jsonResult.contains(ResponseMessages.USER_NOT_SUPPORTER)) {
+                        callback.onFailure(ResponseMessages.USER_NOT_SUPPORTER);
+                    } else {
+                        callback.onFailure(ResponseMessages.ERROR);
+                    }
+                }
             }
         });
     }

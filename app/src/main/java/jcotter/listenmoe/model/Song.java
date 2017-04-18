@@ -83,6 +83,19 @@ public class Song implements Parcelable {
     }
 
     @Override
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append(String.format("%s - %s", artist, title));
+
+        if (anime != null && !anime.equals("")) {
+            builder.append(String.format(" [ %s ]", anime));
+        }
+
+        return builder.toString();
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }

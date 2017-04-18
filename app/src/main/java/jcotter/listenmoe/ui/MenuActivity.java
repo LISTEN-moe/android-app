@@ -226,11 +226,11 @@ public class MenuActivity extends AppCompatActivity {
 
         APIUtil.getUserFavorites(this, new UserFavoritesCallback() {
             @Override
-            public void onFailure(String result) {
+            public void onFailure(final String result) {
             }
 
             @Override
-            public void onSuccess(List<Song> favorites) {
+            public void onSuccess(final List<Song> favorites) {
                 listViewDisplay(favorites, 1);
             }
         });
@@ -257,15 +257,9 @@ public class MenuActivity extends AppCompatActivity {
         // Loop through each song setting whether it is a favorite, enabled, both or neither & Sets song string format
         for (int i = 0; i < songs.size(); i++) {
             Song song = songs.get(i);
-            if (song.getAnime().equals(""))
-                displayList.add(song.getArtist() + " - " + song.getTitle());
-            else
-                displayList.add(song.getArtist() + " - " + song.getTitle() + " [" + song.getAnime() + "]");
+            displayList.add(song.toString());
             songIds.add(i, song.getId());
-            if (song.isEnabled())
-                enabled.add(i, true);
-            else
-                enabled.add(i, false);
+            enabled.add(i, song.isEnabled());
             if (currentTab == 0) {
                 favorite.add(i, song.isFavorite() ? 1 : 0);
             } else {
@@ -441,33 +435,31 @@ public class MenuActivity extends AppCompatActivity {
         APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
             @Override
             public void onFailure(final String result) {
-            }
-
-            @Override
-            public void onSuccess(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (jsonResult.contains("success\":true")) {
-                            Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_SHORT).show();
-                            if (jsonResult.contains("favorite\":true"))
-                                favorite.set(songIndex, 1);
-                            else {
-                                favorite.set(songIndex, 0);
-                                // Removes Song from Favorite List //
-                                if (tabHost.getCurrentTab() == 1) {
-                                    songIds.remove(songIndex);
-                                    favorite.remove(songIndex);
-                                    enabled.remove(songIndex);
-                                    adapter.remove(adapter.getItem(songIndex));
-                                }
-                            }
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            Toast.makeText(getBaseContext(), R.string.req_error, Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getBaseContext(), R.string.req_error, Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+
+            @Override
+            public void onSuccess(final boolean favorited) {
+                if (favorited) {
+                    favorite.set(songIndex, 1);
+                } else {
+                    favorite.set(songIndex, 0);
+
+                    // Remove song from favorites list
+                    if (tabHost.getCurrentTab() == 1) {
+                        songIds.remove(songIndex);
+                        favorite.remove(songIndex);
+                        enabled.remove(songIndex);
+                        adapter.remove(adapter.getItem(songIndex));
+                    }
+                }
+
+                adapter.notifyDataSetChanged();
             }
         });
     }
@@ -483,25 +475,27 @@ public class MenuActivity extends AppCompatActivity {
         APIUtil.requestSong(this, songID, new RequestSongCallback() {
             @Override
             public void onFailure(final String result) {
-            }
-
-            @Override
-            public void onSuccess(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (jsonResult.contains("success\":true")) {
-                            Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_LONG).show();
-
-                            enabled.set(songIndex, false);
-                            adapter.notifyDataSetChanged();
+                        if (result.equals(ResponseMessages.USER_NOT_SUPPORTER)) {
+                            Toast.makeText(getBaseContext(), R.string.supporter, Toast.LENGTH_LONG).show();
                         } else {
-                            if (jsonResult.contains("user-is-not-supporter")) {
-                                Toast.makeText(getBaseContext(), R.string.supporter, Toast.LENGTH_LONG).show();
-                            } else {
-                                Toast.makeText(getBaseContext(), R.string.req_error, Toast.LENGTH_LONG).show();
-                            }
+                            Toast.makeText(getBaseContext(), R.string.req_error, Toast.LENGTH_LONG).show();
                         }
+                    }
+                });
+            }
+
+            @Override
+            public void onSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_LONG).show();
+
+                        enabled.set(songIndex, false);
+                        adapter.notifyDataSetChanged();
                     }
                 });
             }

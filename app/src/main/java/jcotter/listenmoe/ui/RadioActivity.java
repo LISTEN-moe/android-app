@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import jcotter.listenmoe.R;
+import jcotter.listenmoe.constants.ResponseMessages;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
@@ -58,7 +59,7 @@ public class RadioActivity extends AppCompatActivity {
         mFavoriteBtn = (ImageButton) findViewById(R.id.favoriteButton);
 
         // Set font to OpenSans
-        Typeface openSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
+        final Typeface openSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
         mPoweredByTxt.setTypeface(openSans);
         mListenersTxt.setTypeface(openSans);
         mNowPlayingTxt.setTypeface(openSans);
@@ -311,35 +312,39 @@ public class RadioActivity extends AppCompatActivity {
         APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
             @Override
             public void onFailure(final String result) {
-            }
-
-            @Override
-            public void onSuccess(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (jsonResult.contains("success\":true")) {
-                            favorite = jsonResult.contains("favorite\":true");
-                            if (favorite) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                                else
-                                    mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                            } else {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                                else
-                                    mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
-                            }
-
-                            if (StreamService.isServiceRunning) {
-                                Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
-                                        .putExtra(StreamService.TOGGLE_FAVORITE, favorite);
-                                startService(favUpdate);
-                            }
-                        } else if (jsonResult.contains("Failed to authenticate token.")) {
+                        if (result.equals(ResponseMessages.AUTH_FAILURE)) {
                             Toast.makeText(getBaseContext(), getString(R.string.token_expired), Toast.LENGTH_SHORT).show();
                             openMenu(2);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onSuccess(final boolean favorited) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        favorite = favorited;
+                        if (favorited) {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
+                            else
+                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
+                        } else {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                                mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
+                            else
+                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                        }
+
+                        if (StreamService.isServiceRunning) {
+                            Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
+                                    .putExtra(StreamService.TOGGLE_FAVORITE, favorited);
+                            startService(favUpdate);
                         }
                     }
                 });
