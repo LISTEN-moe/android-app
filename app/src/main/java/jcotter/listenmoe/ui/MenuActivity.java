@@ -454,8 +454,12 @@ public class MenuActivity extends AppCompatActivity {
                         adapter.remove(adapter.getItem(songIndex));
                     }
                 }
-
-                adapter.notifyDataSetChanged();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        adapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
     }
