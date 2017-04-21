@@ -3,25 +3,30 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
+
     defaultConfig {
-        applicationId "jcotter.listenmoe"
+        applicationId 'jcotter.listenmoe'
         minSdkVersion 21  // TODO: 19 in the future, possibly
         targetSdkVersion 25
         versionCode 14
-        versionName "1.4"
+        versionName '1.4'
     }
+
     buildTypes {
         release {
             minifyEnabled true
             useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             minifyEnabled false
             useProguard false
         }
     }
+}
+
+ext {
+    supportLibVersion = '25.3.1'
 }
 
 dependencies {
@@ -33,7 +38,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0' // Apache 2.0 | https://github.com/google/gson
 
     //compile 'com.google.android.gms:play-services:10.2.0' // Required for Android 19 (Soon, Maybe, Possibly)
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
+    compile "com.android.support:appcompat-v7:$supportLibVersion"
+    compile "com.android.support:support-v4:$supportLibVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

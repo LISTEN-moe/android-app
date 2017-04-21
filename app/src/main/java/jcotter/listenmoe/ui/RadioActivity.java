@@ -1,17 +1,14 @@
 package jcotter.listenmoe.ui;
 
-import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Typeface;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
@@ -21,11 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import jcotter.listenmoe.R;
+import jcotter.listenmoe.constants.ResponseMessages;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
+import jcotter.listenmoe.util.SDKUtil;
 
 public class RadioActivity extends AppCompatActivity {
     // UI views
@@ -59,7 +58,7 @@ public class RadioActivity extends AppCompatActivity {
         mFavoriteBtn = (ImageButton) findViewById(R.id.favoriteButton);
 
         // Set font to OpenSans
-        Typeface openSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
+        final Typeface openSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
         mPoweredByTxt.setTypeface(openSans);
         mListenersTxt.setTypeface(openSans);
         mNowPlayingTxt.setTypeface(openSans);
@@ -81,14 +80,14 @@ public class RadioActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        // Purpose: Allows Stream to
         super.onStop();
         try {
             unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException ignored) {
         }
-        Intent intent = new Intent(getBaseContext(), StreamService.class)
-                .putExtra(StreamService.KILLABLE, true);
+
+        final Intent intent = new Intent(getBaseContext(), StreamService.class);
+        intent.putExtra(StreamService.KILLABLE, true);
         startService(intent);
     }
 
@@ -121,7 +120,7 @@ public class RadioActivity extends AppCompatActivity {
         mVolumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (isRunning()) {
+                if (StreamService.isServiceRunning) {
                     Intent intent = new Intent(getBaseContext(), StreamService.class)
                             .putExtra(StreamService.VOLUME, seekBar.getProgress() / 100.0f);
                     startService(intent);
@@ -221,11 +220,7 @@ public class RadioActivity extends AppCompatActivity {
                                 } else {
                                     mRequestedByTxt.setVisibility(View.VISIBLE);
                                     mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                        mRequestedByTxt.setText(Html.fromHtml(requestedBy, Html.FROM_HTML_MODE_COMPACT));
-                                    } else {
-                                        mRequestedByTxt.setText(Html.fromHtml(requestedBy));
-                                    }
+                                    mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
                                 }
                             }
                         });
@@ -233,31 +228,21 @@ public class RadioActivity extends AppCompatActivity {
 
                     default:
                         if (intent.hasExtra(StreamService.RUNNING)) {
-                            if (intent.getBooleanExtra(StreamService.RUNNING, false)) {
-                                playing = true;
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mPlayPauseBtn.setImageDrawable(getDrawable(R.drawable.icon_pause));
-                                else
-                                    mPlayPauseBtn.setImageDrawable(getResources().getDrawable(R.drawable.icon_pause));
+                            playing = intent.getBooleanExtra(StreamService.RUNNING, false);
+                            if (playing) {
+                                mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.icon_pause));
                             } else {
-                                playing = false;
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mPlayPauseBtn.setImageDrawable(getDrawable(R.drawable.icon_play));
-                                else
-                                    mPlayPauseBtn.setImageDrawable(getResources().getDrawable(R.drawable.icon_play));
+                                mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.icon_play));
                             }
                         }
+
                         if (intent.hasExtra(StreamService.FAVORITE)) {
                             favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                if (favorite)
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                                else
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                            else if (favorite)
-                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                            else
-                                mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
+                            if (favorite) {
+                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_full));
+                            } else {
+                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_empty));
+                            }
                         }
 
                         if (intent.hasExtra(StreamService.VOLUME)) {
@@ -270,15 +255,15 @@ public class RadioActivity extends AppCompatActivity {
         };
 
         try {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction("jcotter.listenmoe");
+            final IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(getPackageName());
             intentFilter.addAction(StreamService.UPDATE_PLAYING);
             registerReceiver(broadcastReceiver, intentFilter);
         } catch (IllegalArgumentException ignored) {
         }
 
-        Intent intent = new Intent(this, StreamService.class);
-        if (isRunning()) {
+        final Intent intent = new Intent(this, StreamService.class);
+        if (StreamService.isServiceRunning) {
             intent.putExtra(StreamService.RECEIVER, true); // Requests Socket Update //
             intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
         } else {
@@ -297,8 +282,8 @@ public class RadioActivity extends AppCompatActivity {
      * @param tabIndex
      */
     private void openMenu(int tabIndex) {
-        Intent intent = new Intent(this, MenuActivity.class)
-                .putExtra("index", tabIndex);
+        final Intent intent = new Intent(this, MenuActivity.class);
+        intent.putExtra("index", tabIndex);
         startActivity(intent);
     }
 
@@ -307,40 +292,39 @@ public class RadioActivity extends AppCompatActivity {
             openMenu(2);
             return;
         }
+
         if (songID == -1) return;
 
         APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
             @Override
             public void onFailure(final String result) {
-            }
-
-            @Override
-            public void onSuccess(final String jsonResult) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (jsonResult.contains("success\":true")) {
-                            favorite = jsonResult.contains("favorite\":true");
-                            if (favorite) {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_full));
-                                else
-                                    mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_full));
-                            } else {
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                                    mFavoriteBtn.setImageDrawable(getDrawable(R.drawable.favorite_empty));
-                                else
-                                    mFavoriteBtn.setImageDrawable(getResources().getDrawable(R.drawable.favorite_empty));
-                            }
-
-                            if (isRunning()) {
-                                Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
-                                        .putExtra(StreamService.TOGGLE_FAVORITE, favorite);
-                                startService(favUpdate);
-                            }
-                        } else if (jsonResult.contains("Failed to authenticate token.")) {
+                        if (result.equals(ResponseMessages.AUTH_FAILURE)) {
                             Toast.makeText(getBaseContext(), getString(R.string.token_expired), Toast.LENGTH_SHORT).show();
                             openMenu(2);
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onSuccess(final boolean favorited) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        favorite = favorited;
+                        if (favorited) {
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_full));
+                        } else {
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_empty));
+                        }
+
+                        if (StreamService.isServiceRunning) {
+                            Intent favUpdate = new Intent(getBaseContext(), StreamService.class)
+                                    .putExtra(StreamService.TOGGLE_FAVORITE, favorited);
+                            startService(favUpdate);
                         }
                     }
                 });
@@ -361,28 +345,10 @@ public class RadioActivity extends AppCompatActivity {
 
     private void playPauseLogic() {
         if (songID == -1) return;
-        Intent intent = new Intent(this, StreamService.class);
-        if (playing)
-            intent.putExtra(StreamService.PLAY, false);
-        else {
-            intent.putExtra(StreamService.PLAY, true);
-            intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
-        }
-        startService(intent);
-    }
 
-    /**
-     * Checks if socket stream service is running.
-     *
-     * @return Whether the service is running.
-     */
-    private boolean isRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
-            if (StreamService.class.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
+        final Intent intent = new Intent(this, StreamService.class);
+        intent.putExtra(StreamService.PLAY, !playing);
+        intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
+        startService(intent);
     }
 }
