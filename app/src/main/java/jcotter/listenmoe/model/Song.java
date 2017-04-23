@@ -25,8 +25,8 @@ public class Song implements Parcelable {
         this.artist = in.readString();
         this.title = in.readString();
         this.anime = in.readString();
-        this.favorite = in.readInt();
         this.enabled = in.readByte() != 0;
+        this.favorite = in.readInt();
     }
 
     public int getId() {

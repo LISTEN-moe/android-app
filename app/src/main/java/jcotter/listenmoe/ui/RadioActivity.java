@@ -186,6 +186,7 @@ public class RadioActivity extends AppCompatActivity {
                             final String requester = intent.getStringExtra(StreamService.UPDATE_PLAYING_REQUESTER);
 
                             songID = currentSong.getId();
+                            favorite = currentSong.isFavorite();
 
                             // Current listeners
                             listenersBuilder.append(String.format(getResources().getString(R.string.currentListeners), listeners));
@@ -221,6 +222,11 @@ public class RadioActivity extends AppCompatActivity {
                                     mRequestedByTxt.setVisibility(View.VISIBLE);
                                     mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
                                     mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
+                                }
+                                if (favorite) {
+                                    mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_full));
+                                } else {
+                                    mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_empty));
                                 }
                             }
                         });
@@ -264,7 +270,7 @@ public class RadioActivity extends AppCompatActivity {
 
         final Intent intent = new Intent(this, StreamService.class);
         if (StreamService.isServiceRunning) {
-            intent.putExtra(StreamService.RECEIVER, true); // Requests Socket Update //
+            intent.putExtra(StreamService.REQUEST, true); // Requests Socket Update //
             intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
         } else {
             intent.putExtra(StreamService.RECEIVER, true); // Start StreamService //
