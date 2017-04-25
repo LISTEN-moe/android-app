@@ -3,11 +3,13 @@ package jcotter.listenmoe.service;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -74,7 +76,6 @@ public class StreamService extends Service {
 
     private SimpleExoPlayer voiceOfKanacchi;
     private WebSocket ws;
-    private float volume;
     private boolean uiOpen;
     private boolean notif;
     private int notifID;
@@ -92,7 +93,6 @@ public class StreamService extends Service {
         this.gson = new Gson();
 
         uiOpen = true;
-        volume = 0.5f;
 
         notif = false;
         notifID = -1;
@@ -105,8 +105,7 @@ public class StreamService extends Service {
         // Volume control
         if (intent.hasExtra(StreamService.VOLUME)) {
             if (voiceOfKanacchi != null) {
-                volume = intent.getFloatExtra(StreamService.VOLUME, 0.5f);
-                voiceOfKanacchi.setVolume(volume);
+                voiceOfKanacchi.setVolume(intent.getFloatExtra(StreamService.VOLUME, 0.5f));
             }
         }
 
@@ -197,7 +196,6 @@ public class StreamService extends Service {
         // Returns music stream state to RadioActivity
         if (intent.hasExtra(StreamService.PROBE)) {
             final Intent returnIntent = new Intent(getPackageName());
-            returnIntent.putExtra(StreamService.VOLUME, (int) (volume * 100));
             returnIntent.putExtra(StreamService.RUNNING, voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
             sendBroadcast(returnIntent);
         }
@@ -417,7 +415,8 @@ public class StreamService extends Service {
         MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
         streamListener();
         voiceOfKanacchi.prepare(streamSource);
-        voiceOfKanacchi.setVolume(volume);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        voiceOfKanacchi.setVolume(sharedPreferences.getFloat(StreamService.VOLUME, 0.5f));
         voiceOfKanacchi.setPlayWhenReady(true);
         notif = true;
     }
