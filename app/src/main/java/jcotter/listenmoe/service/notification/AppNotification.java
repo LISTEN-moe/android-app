@@ -2,7 +2,6 @@ package jcotter.listenmoe.service.notification;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
@@ -14,8 +13,8 @@ import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class AppNotification {
-    private int NOTIFICATION_ID = 1;
-    private StreamService service;
+    protected int NOTIFICATION_ID = 1;
+    protected StreamService service;
 
     public void init(StreamService service) {
         this.service = service;
@@ -26,93 +25,85 @@ public class AppNotification {
             return;
         }
 
+        // Get current song info
         final Song song = service.getCurrentSong();
-
         if (song == null) {
             return;
         }
 
         final boolean isPlaying = service.isPlaying();
 
-        final Intent intent = new Intent(service, RadioActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        final PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(service)
-                .setContentTitle(song.getArtist())
-                .setSmallIcon(R.drawable.icon_notification)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentIntent(pendingIntent)
-                .setColor(ContextCompat.getColor(service, R.color.colorAccent));
-
-        // Construct string with song title and anime
+        // Construct content string with song title and anime
         final String currentSongAnime = song.getAnime();
         String title = song.getTitle();
         if (!currentSongAnime.equals("")) {
-            title += "\n" + "[" + currentSongAnime + "]";
+            title += "\n[" + currentSongAnime + "]";
         }
-        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title));
-        builder.setContentText(title);
 
-        // Play/pause button
-        final Intent playPauseIntent = new Intent(service, service.getClass());
-        PendingIntent playPausePending;
-        if (isPlaying) {
-            playPauseIntent.putExtra(StreamService.PLAY, false);
-            playPausePending = PendingIntent.getService(service, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "", playPausePending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, service.getString(R.string.action_pause), playPausePending).build());
+        // Play/pause action
+        final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
+                isPlaying ? R.drawable.icon_pause : R.drawable.icon_play,
+                isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
+                getPlaybackAction(service.getClass(), StreamService.PLAY, !isPlaying)
+        );
+
+        // Favorite action
+        NotificationCompat.Action favoriteAction;
+        if (AuthUtil.isAuthenticated(service)) {
+            favoriteAction = new NotificationCompat.Action(
+                    song.isFavorite() ? R.drawable.favorite_full : R.drawable.favorite_empty,
+                    song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
+                    getPlaybackAction(service.getClass(), StreamService.FAVORITE, true)
+            );
         } else {
-            playPauseIntent.putExtra(StreamService.PLAY, true);
-            playPausePending = PendingIntent.getService(service, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "", playPausePending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, service.getString(R.string.action_play), playPausePending).build());
+            favoriteAction = new NotificationCompat.Action(
+                    R.drawable.favorite_empty,
+                    service.getString(R.string.action_favorite),
+                    getPlaybackAction(MenuActivity.class, MenuActivity.TAB_INDEX, 2)
+            );
         }
 
-        // Favorite button
-        final Intent favoriteIntent = new Intent(service, service.getClass());
-        favoriteIntent.putExtra(StreamService.FAVORITE, true);
-        PendingIntent favoritePending = PendingIntent.getService(service, 2, favoriteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        if (!AuthUtil.isAuthenticated(service)) {
-            final Intent authIntent = new Intent(service, MenuActivity.class);
-            authIntent.putExtra("index", 2);
-            PendingIntent authPending = PendingIntent.getActivity(service, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, service.getString(R.string.action_favorite), authPending).build());
-        } else {
-            if (song.isFavorite())
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "", favoritePending).build());
-                else
-                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, service.getString(R.string.action_unfavorite), favoritePending).build());
-            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", favoritePending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, service.getString(R.string.action_favorite), favoritePending).build());
-        }
+        // Stop action
+        final NotificationCompat.Action stopAction = new NotificationCompat.Action(
+                R.drawable.icon_close,
+                service.getString(R.string.action_stop),
+                getPlaybackAction(service.getClass(), StreamService.STOP, true)
+        );
 
-        // Stop button
-        final Intent stopIntent = new Intent(service, service.getClass());
-        stopIntent.putExtra(StreamService.STOP, true);
-        PendingIntent stopPending = PendingIntent.getService(service, 4, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
-        else
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, service.getString(R.string.action_stop), stopPending).build());
+        // Build the notification
+        final Intent action = new Intent(service, RadioActivity.class);
+        action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, 0);
+
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(service)
+                .setSmallIcon(R.drawable.icon_notification)
+                .setColor(ContextCompat.getColor(service, R.color.colorAccent))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
+                .setContentTitle(song.getArtist())
+                .setContentText(title)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setContentIntent(clickIntent)
+                .setOngoing(isPlaying)
+                .addAction(playPauseAction)
+                .addAction(favoriteAction)
+                .addAction(stopAction);
 
         service.startForeground(NOTIFICATION_ID, builder.build());
     }
 
-    public void stop() {
-        service.stop();
+    private PendingIntent getPlaybackAction(final Class target, final String action, final boolean value) {
+        final Intent intent = new Intent(service, target);
+        intent.putExtra(action, value);
+
+        return PendingIntent.getService(service, 0, intent, 0);
+    }
+
+    private PendingIntent getPlaybackAction(final Class target, final String action, final int value) {
+        final Intent intent = new Intent(service, target);
+        intent.putExtra(action, value);
+
+        return PendingIntent.getService(service, 0, intent, 0);
     }
 }

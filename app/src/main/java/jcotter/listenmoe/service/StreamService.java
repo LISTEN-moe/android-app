@@ -133,6 +133,7 @@ public class StreamService extends Service {
                     if (intent.hasExtra(StreamService.PLAY)) {
                         final Intent returnIntent = new Intent(getPackageName());
                         if (intent.getBooleanExtra(StreamService.PLAY, false)) {
+                            isStreamStarted = true;
                             if (voiceOfKanacchi == null) {
                                 startStream();
                             } else {
