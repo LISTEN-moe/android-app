@@ -289,7 +289,7 @@ public class RadioActivity extends AppCompatActivity {
      */
     private void openMenu(int tabIndex) {
         final Intent intent = new Intent(this, MenuActivity.class);
-        intent.putExtra("index", tabIndex);
+        intent.putExtra(MenuActivity.TAB_INDEX, tabIndex);
         startActivity(intent);
     }
 

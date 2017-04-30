@@ -39,6 +39,8 @@ import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class MenuActivity extends AppCompatActivity {
+    public static final String TAB_INDEX = "tab_index";
+
     private final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
 
     // UI views
@@ -139,7 +141,7 @@ public class MenuActivity extends AppCompatActivity {
         spec.setIndicator(getString(R.string.tabLogin));
         tabHost.addTab(spec);
         // Opens Tab specified in intent | Defaults to Request Tab //
-        tabHost.setCurrentTab(this.getIntent().getIntExtra("index", 0));
+        tabHost.setCurrentTab(this.getIntent().getIntExtra(MenuActivity.TAB_INDEX, 0));
         if (tabHost.getCurrentTab() == 0) {
             requestTab(AuthUtil.getAuthToken(this));
         }
