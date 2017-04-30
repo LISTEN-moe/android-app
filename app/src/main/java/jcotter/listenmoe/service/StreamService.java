@@ -2,9 +2,13 @@ package jcotter.listenmoe.service;
 
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
@@ -423,8 +427,23 @@ public class StreamService extends Service {
 
     /**
      * Restarts the stream if a disconnect occurs.
+     * Handles headphone unplugging
      */
     private void streamListener() {
+        final IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                    voiceOfKanacchi.setPlayWhenReady(false);
+                    final Intent update = new Intent(getPackageName());
+                    update.putExtra(StreamService.RUNNING, false);
+                    sendBroadcast(update);
+                    notification();
+                }
+            }
+        };
+
         voiceOfKanacchi.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
@@ -451,6 +470,14 @@ public class StreamService extends Service {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                try {
+                    if (playWhenReady)
+                        registerReceiver(broadcastReceiver, intentFilter);
+                    else
+                        unregisterReceiver(broadcastReceiver);
+                } catch (IllegalArgumentException ignored) {
+                }
+
             }
         });
     }
