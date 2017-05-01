@@ -89,12 +89,10 @@ public class StreamService extends Service {
 
     @Override
     public void onCreate() {
-        this.gson = new Gson();
+        gson = new Gson();
+        notification = new AppNotification(this);
 
         uiOpen = true;
-
-        notification = new AppNotification();
-        notification.init(this);
     }
 
     @Override

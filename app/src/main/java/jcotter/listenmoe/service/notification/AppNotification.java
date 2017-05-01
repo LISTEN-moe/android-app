@@ -17,9 +17,9 @@ public class AppNotification {
     private int NOTIFICATION_ID = 1;
     private StreamService service;
 
-    private int actionRequestCode = 0;
+    private int actionRequestCode;
 
-    public void init(StreamService service) {
+    public AppNotification(StreamService service) {
         this.service = service;
     }
 
@@ -45,6 +45,8 @@ public class AppNotification {
             titleBuilder.append(String.format("[ %s ]", currentSongAnime));
         }
         final String title = titleBuilder.toString();
+
+        actionRequestCode = 0;
 
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
