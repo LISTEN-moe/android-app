@@ -13,8 +13,10 @@ import jcotter.listenmoe.ui.RadioActivity;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class AppNotification {
-    protected int NOTIFICATION_ID = 1;
-    protected StreamService service;
+    private int NOTIFICATION_ID = 1;
+    private StreamService service;
+
+    private int actionRequestCode = 0;
 
     public void init(StreamService service) {
         this.service = service;
@@ -34,17 +36,20 @@ public class AppNotification {
         final boolean isPlaying = service.isPlaying();
 
         // Construct content string with song title and anime
+        final StringBuilder titleBuilder = new StringBuilder();
+        titleBuilder.append(song.getTitle());
         final String currentSongAnime = song.getAnime();
-        String title = song.getTitle();
         if (!currentSongAnime.equals("")) {
-            title += "\n[" + currentSongAnime + "]";
+            titleBuilder.append("\n");
+            titleBuilder.append(String.format("[ %s ]", currentSongAnime));
         }
+        final String title = titleBuilder.toString();
 
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
                 isPlaying ? R.drawable.icon_pause : R.drawable.icon_play,
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
-                getPlaybackAction(service.getClass(), StreamService.PLAY, !isPlaying)
+                getPlaybackActionService(StreamService.class, StreamService.PLAY, !isPlaying)
         );
 
         // Favorite action
@@ -53,13 +58,13 @@ public class AppNotification {
             favoriteAction = new NotificationCompat.Action(
                     song.isFavorite() ? R.drawable.favorite_full : R.drawable.favorite_empty,
                     song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
-                    getPlaybackAction(service.getClass(), StreamService.FAVORITE, true)
+                    getPlaybackActionService(StreamService.class, StreamService.FAVORITE, true)
             );
         } else {
             favoriteAction = new NotificationCompat.Action(
                     R.drawable.favorite_empty,
                     service.getString(R.string.action_favorite),
-                    getPlaybackAction(MenuActivity.class, MenuActivity.TAB_INDEX, 2)
+                    getPlaybackActionActivity(MenuActivity.class, MenuActivity.TAB_INDEX, 2)
             );
         }
 
@@ -67,13 +72,13 @@ public class AppNotification {
         final NotificationCompat.Action stopAction = new NotificationCompat.Action(
                 R.drawable.icon_close,
                 service.getString(R.string.action_stop),
-                getPlaybackAction(service.getClass(), StreamService.STOP, true)
+                getPlaybackActionService(StreamService.class, StreamService.STOP, true)
         );
 
         // Build the notification
         final Intent action = new Intent(service, RadioActivity.class);
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, 0);
+        final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service)
                 .setSmallIcon(R.drawable.icon_notification)
@@ -85,7 +90,7 @@ public class AppNotification {
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(clickIntent)
-                .setOngoing(isPlaying)
+                .setOngoing(StreamService.isStreamStarted)
                 .addAction(playPauseAction)
                 .addAction(favoriteAction)
                 .addAction(stopAction);
@@ -93,17 +98,18 @@ public class AppNotification {
         service.startForeground(NOTIFICATION_ID, builder.build());
     }
 
-    private PendingIntent getPlaybackAction(final Class target, final String action, final boolean value) {
+    private PendingIntent getPlaybackActionService(final Class target, final String action, final boolean value) {
         final Intent intent = new Intent(service, target);
         intent.putExtra(action, value);
 
-        return PendingIntent.getService(service, 0, intent, 0);
+        return PendingIntent.getService(service, ++actionRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    private PendingIntent getPlaybackAction(final Class target, final String action, final int value) {
+    // TODO: possibly move this since it's related to the activity instead of the service
+    private PendingIntent getPlaybackActionActivity(final Class target, final String action, final int value) {
         final Intent intent = new Intent(service, target);
         intent.putExtra(action, value);
 
-        return PendingIntent.getService(service, 0, intent, 0);
+        return PendingIntent.getActivity(service, ++actionRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
