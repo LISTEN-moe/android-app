@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId 'jcotter.listenmoe'
@@ -10,6 +10,8 @@ android {
         targetSdkVersion 25
         versionCode 14
         versionName '1.4'
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {

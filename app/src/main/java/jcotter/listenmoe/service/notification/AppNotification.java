@@ -2,8 +2,9 @@ package jcotter.listenmoe.service.notification;
 
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.NotificationCompat;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.model.Song;
@@ -47,7 +48,7 @@ public class AppNotification {
 
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
-                isPlaying ? R.drawable.icon_pause : R.drawable.icon_play,
+                isPlaying ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp,
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
                 getPlaybackActionService(StreamService.class, StreamService.PLAY, !isPlaying)
         );
@@ -56,13 +57,13 @@ public class AppNotification {
         NotificationCompat.Action favoriteAction;
         if (AuthUtil.isAuthenticated(service)) {
             favoriteAction = new NotificationCompat.Action(
-                    song.isFavorite() ? R.drawable.favorite_full : R.drawable.favorite_empty,
+                    song.isFavorite() ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp,
                     song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
                     getPlaybackActionService(StreamService.class, StreamService.FAVORITE, true)
             );
         } else {
             favoriteAction = new NotificationCompat.Action(
-                    R.drawable.favorite_empty,
+                    R.drawable.ic_star_border_black_24dp,
                     service.getString(R.string.action_favorite),
                     getPlaybackActionActivity(MenuActivity.class, MenuActivity.TAB_INDEX, 2)
             );
@@ -70,7 +71,7 @@ public class AppNotification {
 
         // Stop action
         final NotificationCompat.Action stopAction = new NotificationCompat.Action(
-                R.drawable.icon_close,
+                R.drawable.ic_stop_black_24dp,
                 service.getString(R.string.action_stop),
                 getPlaybackActionService(StreamService.class, StreamService.STOP, true)
         );
@@ -80,20 +81,30 @@ public class AppNotification {
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(service)
+        final NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(service)
                 .setSmallIcon(R.drawable.icon_notification)
-                .setColor(ContextCompat.getColor(service, R.color.colorAccent))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
                 .setContentTitle(song.getArtist())
                 .setContentText(title)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(clickIntent)
                 .setOngoing(StreamService.isStreamStarted)
+                .setShowWhen(false)
                 .addAction(playPauseAction)
                 .addAction(favoriteAction)
                 .addAction(stopAction);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // Visibility
+            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+            // Special media style
+            builder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1, 2));
+
+            // Text/icon color
+            builder.setColor(ContextCompat.getColor(service, R.color.colorAccent));
+        }
 
         service.startForeground(NOTIFICATION_ID, builder.build());
     }
