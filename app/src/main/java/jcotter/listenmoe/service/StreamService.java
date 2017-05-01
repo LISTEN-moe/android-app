@@ -1,10 +1,16 @@
 package jcotter.listenmoe.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.preference.PreferenceManager;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -69,7 +75,6 @@ public class StreamService extends Service {
 
     private SimpleExoPlayer voiceOfKanacchi;
     private WebSocket ws;
-    private float volume;
     private boolean uiOpen;
 
     private AppNotification notification;
@@ -87,7 +92,6 @@ public class StreamService extends Service {
         this.gson = new Gson();
 
         uiOpen = true;
-        volume = 0.5f;
 
         notification = new AppNotification();
         notification.init(this);
@@ -100,8 +104,7 @@ public class StreamService extends Service {
         // Volume control
         if (intent.hasExtra(StreamService.VOLUME)) {
             if (voiceOfKanacchi != null) {
-                volume = intent.getFloatExtra(StreamService.VOLUME, 0.5f);
-                voiceOfKanacchi.setVolume(volume);
+                voiceOfKanacchi.setVolume(intent.getFloatExtra(StreamService.VOLUME, 0.5f));
             }
         }
 
@@ -183,7 +186,6 @@ public class StreamService extends Service {
         // Returns music stream state to RadioActivity
         if (intent.hasExtra(StreamService.PROBE)) {
             final Intent returnIntent = new Intent(getPackageName());
-            returnIntent.putExtra(StreamService.VOLUME, (int) (volume * 100));
             returnIntent.putExtra(StreamService.RUNNING, voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
             sendBroadcast(returnIntent);
         }
@@ -361,10 +363,25 @@ public class StreamService extends Service {
 
         voiceOfKanacchi = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
         voiceOfKanacchi.prepare(streamSource);
-        voiceOfKanacchi.setVolume(volume);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        voiceOfKanacchi.setVolume(sharedPreferences.getFloat(StreamService.VOLUME, 0.5f));
         voiceOfKanacchi.setPlayWhenReady(true);
 
         isStreamStarted = true;
+
+        final IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
+                    voiceOfKanacchi.setPlayWhenReady(false);
+                    final Intent update = new Intent(getPackageName());
+                    update.putExtra(StreamService.RUNNING, false);
+                    sendBroadcast(update);
+                    updateNotification();
+                }
+            }
+        };
 
         voiceOfKanacchi.addListener(new ExoPlayer.EventListener() {
             @Override
@@ -392,6 +409,14 @@ public class StreamService extends Service {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                try {
+                    if (playWhenReady) {
+                        registerReceiver(broadcastReceiver, intentFilter);
+                    } else {
+                        unregisterReceiver(broadcastReceiver);
+                    }
+                } catch (IllegalArgumentException ignored) {
+                }
             }
         });
     }

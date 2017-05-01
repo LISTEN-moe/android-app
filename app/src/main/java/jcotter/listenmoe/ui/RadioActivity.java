@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
@@ -117,6 +119,9 @@ public class RadioActivity extends AppCompatActivity {
      * Listener for volume slider progress changed.
      */
     private void volumeSliderListener() {
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mVolumeBar.setProgress((int) (sharedPreferences.getFloat(StreamService.VOLUME, 0.5f) * 100));
+
         mVolumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -133,6 +138,9 @@ public class RadioActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                SharedPreferences.Editor editor = sharedPreferences.edit()
+                        .putFloat(StreamService.VOLUME, seekBar.getProgress() / 100.0f);
+                editor.apply();
             }
         });
     }
@@ -250,10 +258,6 @@ public class RadioActivity extends AppCompatActivity {
                                 mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.favorite_empty));
                             }
                         }
-
-                        if (intent.hasExtra(StreamService.VOLUME)) {
-                            mVolumeBar.setProgress(intent.getIntExtra(StreamService.VOLUME, 50));
-                        }
                         break;
                 }
 
@@ -274,7 +278,7 @@ public class RadioActivity extends AppCompatActivity {
             intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
         } else {
             intent.putExtra(StreamService.RECEIVER, true); // Start StreamService //
-            intent.putExtra(StreamService.PROBE, true); // Get Volume & Checks if Music Stream is Playing //
+            intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
         }
         startService(intent);
     }
