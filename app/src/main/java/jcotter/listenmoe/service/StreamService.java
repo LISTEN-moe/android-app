@@ -1,20 +1,16 @@
 package jcotter.listenmoe.service;
 
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -47,13 +43,11 @@ import com.neovisionaries.ws.client.WebSocketFrame;
 
 import java.io.IOException;
 
-import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.Endpoints;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.model.PlaybackInfo;
 import jcotter.listenmoe.model.Song;
-import jcotter.listenmoe.ui.MenuActivity;
-import jcotter.listenmoe.ui.RadioActivity;
+import jcotter.listenmoe.service.notification.AppNotification;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
 
@@ -76,13 +70,14 @@ public class StreamService extends Service {
     public static final String PROBE = "probe";
 
     public static boolean isServiceRunning = false;
+    public static boolean isStreamStarted = false;
 
 
     private SimpleExoPlayer voiceOfKanacchi;
     private WebSocket ws;
     private boolean uiOpen;
-    private boolean notif;
-    private int notifID;
+
+    private AppNotification notification;
 
     private Gson gson;
     private Song currentSong;
@@ -94,12 +89,10 @@ public class StreamService extends Service {
 
     @Override
     public void onCreate() {
-        this.gson = new Gson();
+        gson = new Gson();
+        notification = new AppNotification(this);
 
         uiOpen = true;
-
-        notif = false;
-        notifID = -1;
     }
 
     @Override
@@ -141,6 +134,7 @@ public class StreamService extends Service {
                     if (intent.hasExtra(StreamService.PLAY)) {
                         final Intent returnIntent = new Intent(getPackageName());
                         if (intent.getBooleanExtra(StreamService.PLAY, false)) {
+                            isStreamStarted = true;
                             if (voiceOfKanacchi == null) {
                                 startStream();
                             } else {
@@ -156,17 +150,7 @@ public class StreamService extends Service {
                     } else {
                         // Stop Stream & Foreground ( & Service (Depends))
                         if (intent.hasExtra(StreamService.STOP)) {
-                            notif = false;
-
-                            voiceOfKanacchi.setPlayWhenReady(false);
-                            stopForeground(true);
-                            if (!uiOpen) {
-                                stopSelf();
-                            }
-
-                            final Intent returnIntent = new Intent(getPackageName());
-                            returnIntent.putExtra(StreamService.RUNNING, false);
-                            sendBroadcast(returnIntent);
+                            stop();
                         } else {
                             // Toggle favorite status of current song
                             if (intent.hasExtra(StreamService.FAVORITE)) {
@@ -185,7 +169,7 @@ public class StreamService extends Service {
                                             sendBroadcast(favIntent);
                                         }
 
-                                        notification();
+                                        updateNotification();
                                     }
                                 });
                             } else if (intent.hasExtra(StreamService.TOGGLE_FAVORITE)) {
@@ -205,7 +189,7 @@ public class StreamService extends Service {
         }
 
         // Update notification
-        notification();
+        updateNotification();
 
         return START_NOT_STICKY;
     }
@@ -213,14 +197,59 @@ public class StreamService extends Service {
     @Override
     public void onDestroy() {
         isServiceRunning = false;
+        isStreamStarted = false;
 
         if (ws != null) {
             ws.disconnect();
         }
     }
 
+    /**
+     * Gets the currently playing song.
+     *
+     * @return The current song.
+     */
+    public Song getCurrentSong() {
+        return currentSong;
+    }
 
-    // WEBSOCKET METHODS
+    /**
+     * Gets the status of the music player and whether or not it's currently playing something.
+     *
+     * @return Whether the player is playing something.
+     */
+    public boolean isPlaying() {
+        return voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady();
+    }
+
+    /**
+     * Stops the stream and kills the service.
+     */
+    public void stop() {
+        isStreamStarted = false;
+
+        if (voiceOfKanacchi != null) {
+            voiceOfKanacchi.setPlayWhenReady(false);
+        }
+
+        stopForeground(true);
+        if (!uiOpen) {
+            stopSelf();
+        }
+
+        final Intent returnIntent = new Intent(getPackageName());
+        returnIntent.putExtra(StreamService.RUNNING, false);
+        sendBroadcast(returnIntent);
+    }
+
+    /**
+     * Updates the notification if there is a song playing.
+     */
+    private void updateNotification() {
+        if (currentSong != null && currentSong.getId() != -1) {
+            notification.update();
+        }
+    }
 
     /**
      * Connects to the websocket and retrieves playback info.
@@ -288,8 +317,8 @@ public class StreamService extends Service {
      *
      * @param jsonString Response from the LISTEN.moe websocket.
      */
-    private void parseJSON(String jsonString) {
-        PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
+    private void parseJSON(final String jsonString) {
+        final PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
 
         if (playbackInfo.getSongId() != 0) {
             currentSong = new Song(
@@ -315,121 +344,29 @@ public class StreamService extends Service {
         sendBroadcast(intent);
 
         // Update notification
-        notification();
+        updateNotification();
     }
-
-    /**
-     * Creates a notification for the foreground service.
-     */
-    private void notification() {
-        if (!notif) return;
-
-        if (notifID == -1)
-            notifID = (int) System.currentTimeMillis();
-
-        final Intent intent = new Intent(this, RadioActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                .setContentTitle(currentSong.getArtist())
-                .setSmallIcon(R.drawable.icon_notification)
-                .setContentIntent(pendingIntent)
-                .setColor(Color.argb(255, 29, 33, 50));
-
-        // Construct string with song title and anime
-        final String currentSongAnime = currentSong.getAnime();
-        String title = currentSong.getTitle();
-        if (!currentSongAnime.equals("")) {
-            title += "\n" + "[" + currentSongAnime + "]";
-        }
-        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(title));
-        builder.setContentText(title);
-
-        // Play/pause button
-        final Intent playPauseIntent = new Intent(this, this.getClass());
-        PendingIntent playPausePending;
-        if (voiceOfKanacchi.getPlayWhenReady()) {
-            playPauseIntent.putExtra(StreamService.PLAY, false);
-            playPausePending = PendingIntent.getService(this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, "", playPausePending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_pause, getString(R.string.action_pause), playPausePending).build());
-        } else {
-            playPauseIntent.putExtra(StreamService.PLAY, true);
-            playPausePending = PendingIntent.getService(this, 1, playPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, "", playPausePending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_play, getString(R.string.action_play), playPausePending).build());
-        }
-
-        // Favorite button
-        final Intent favoriteIntent = new Intent(this, this.getClass());
-        favoriteIntent.putExtra(StreamService.FAVORITE, true);
-        PendingIntent favoritePending = PendingIntent.getService(this, 2, favoriteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        if (!AuthUtil.isAuthenticated(getApplicationContext())) {
-            final Intent authIntent = new Intent(this, MenuActivity.class);
-            authIntent.putExtra("index", 2);
-            PendingIntent authPending = PendingIntent.getActivity(this, 3, authIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", authPending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, getString(R.string.action_favorite), authPending).build());
-        } else {
-            if (currentSong.isFavorite())
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, "", favoritePending).build());
-                else
-                    builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_full, getString(R.string.action_unfavorite), favoritePending).build());
-            else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, "", favoritePending).build());
-            else
-                builder.addAction(new NotificationCompat.Action.Builder(R.drawable.favorite_empty, getString(R.string.action_favorite), favoritePending).build());
-        }
-
-        // Stop button
-        final Intent stopIntent = new Intent(this, this.getClass());
-        stopIntent.putExtra(StreamService.STOP, true);
-        PendingIntent stopPending = PendingIntent.getService(this, 4, stopIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N)
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, "", stopPending).build());
-        else
-            builder.addAction(new NotificationCompat.Action.Builder(R.drawable.icon_close, getString(R.string.action_stop), stopPending).build());
-
-        startForeground(notifID, builder.build());
-    }
-
-
-    // MUSIC PLAYER RELATED METHODS //
 
     /**
      * Creates and starts the stream.
      */
     private void startStream() {
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        LoadControl loadControl = new DefaultLoadControl();
+        final BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        final TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
+        final TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
+        final LoadControl loadControl = new DefaultLoadControl();
+        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "LISTEN.moe"));
+        final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
+
         voiceOfKanacchi = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "LISTEN.moe"));
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
-        streamListener();
         voiceOfKanacchi.prepare(streamSource);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         voiceOfKanacchi.setVolume(sharedPreferences.getFloat(StreamService.VOLUME, 0.5f));
         voiceOfKanacchi.setPlayWhenReady(true);
-        notif = true;
-    }
 
-    /**
-     * Restarts the stream if a disconnect occurs.
-     * Handles headphone unplugging
-     */
-    private void streamListener() {
+        isStreamStarted = true;
+
         final IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -439,7 +376,7 @@ public class StreamService extends Service {
                     final Intent update = new Intent(getPackageName());
                     update.putExtra(StreamService.RUNNING, false);
                     sendBroadcast(update);
-                    notification();
+                    updateNotification();
                 }
             }
         };
@@ -471,13 +408,13 @@ public class StreamService extends Service {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
                 try {
-                    if (playWhenReady)
+                    if (playWhenReady) {
                         registerReceiver(broadcastReceiver, intentFilter);
-                    else
+                    } else {
                         unregisterReceiver(broadcastReceiver);
+                    }
                 } catch (IllegalArgumentException ignored) {
                 }
-
             }
         });
     }
