@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">LISTEN.moe</string>
+    <string name="app_name" translatable="false">LISTEN.moe</string>
 
     <!-- Actions (notification, dialogs) -->
     <string name="action_play">Play</string>
