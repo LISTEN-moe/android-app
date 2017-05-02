@@ -443,22 +443,22 @@ public class MenuActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(final boolean favorited) {
-                if (favorited) {
-                    favorite.set(songIndex, 1);
-                } else {
-                    favorite.set(songIndex, 0);
-
-                    // Remove song from favorites list
-                    if (tabHost.getCurrentTab() == 1) {
-                        songIds.remove(songIndex);
-                        favorite.remove(songIndex);
-                        enabled.remove(songIndex);
-                        adapter.remove(adapter.getItem(songIndex));
-                    }
-                }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if (favorited) {
+                            favorite.set(songIndex, 1);
+                        } else {
+                            favorite.set(songIndex, 0);
+
+                            // Remove song from favorites list
+                            if (tabHost.getCurrentTab() == 1) {
+                                songIds.remove(songIndex);
+                                favorite.remove(songIndex);
+                                enabled.remove(songIndex);
+                                adapter.remove(adapter.getItem(songIndex));
+                            }
+                        }
                         adapter.notifyDataSetChanged();
                     }
                 });
@@ -517,7 +517,12 @@ public class MenuActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(final List<Song> favorites) {
-                listViewDisplay(favorites, 0);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        listViewDisplay(favorites, 0);
+                    }
+                });
             }
         });
     }
