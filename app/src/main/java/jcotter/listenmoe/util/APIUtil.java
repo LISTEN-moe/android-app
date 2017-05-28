@@ -54,13 +54,13 @@ public class APIUtil {
 
             http.newCall(request).enqueue(new Callback() {
                 @Override
-                public void onFailure(Call call, IOException e) {
+                public void onFailure(final Call call, final IOException e) {
                     e.printStackTrace();
                     callback.onFailure(ResponseMessages.ERROR);
                 }
 
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
+                public void onResponse(final Call call, final Response response) throws IOException {
                     final String body = response.body().string();
 
                     // Handle error messages
@@ -104,13 +104,13 @@ public class APIUtil {
 
         http.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
                 callback.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(final Call call, final Response response) throws IOException {
                 callback.onSuccess(gson.fromJson(response.body().string(), UserInfo.class));
             }
         });
@@ -135,13 +135,13 @@ public class APIUtil {
 
         http.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
                 callback.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(final Call call, final Response response) throws IOException {
                 final SongsList songsList = APIUtil.parseSongJson(response.body().string());
                 callback.onSuccess(songsList.getSongs());
             }
@@ -168,13 +168,13 @@ public class APIUtil {
 
         http.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
                 callback.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(final Call call, final Response response) throws IOException {
                 final String jsonResult = response.body().string();
 
                 if (jsonResult.contains(ResponseMessages.SUCCESS)) {
@@ -208,13 +208,13 @@ public class APIUtil {
 
         http.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
                 callback.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(final Call call, final Response response) throws IOException {
                 final String jsonResult = response.body().string();
 
                 if (jsonResult.contains(ResponseMessages.SUCCESS)) {
@@ -250,13 +250,13 @@ public class APIUtil {
 
         http.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
                 callback.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(final Call call, final Response response) throws IOException {
                 final SongsList songsList = APIUtil.parseSongJson(response.body().string());
                 callback.onSuccess(songsList.getSongs());
             }
