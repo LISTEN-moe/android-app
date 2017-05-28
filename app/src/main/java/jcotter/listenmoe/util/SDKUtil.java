@@ -6,6 +6,9 @@ import android.os.Build;
 import android.text.Html;
 import android.text.Spanned;
 
+/**
+ * Miscellaneous helpers to handle slightly different APIs between different Android SDK versions.
+ */
 public class SDKUtil {
     public static Drawable getDrawable(final Context context, final int id) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
