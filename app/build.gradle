@@ -45,5 +45,6 @@ dependencies {
     //compile 'com.google.android.gms:play-services:10.2.0' // Required for Android 19 (Soon, Maybe, Possibly)
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 }

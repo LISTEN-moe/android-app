@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.Menu;
@@ -57,7 +58,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_radio);
+        setContentView(R.layout.activity_main);
+
+        // Set up app bar
+        setSupportActionBar((Toolbar) findViewById(R.id.appbar));
 
         // Get UI views
         mPlayPauseBtn = (ImageButton) findViewById(R.id.playPause);
