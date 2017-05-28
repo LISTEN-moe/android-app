@@ -200,7 +200,7 @@ public class RadioActivity extends AppCompatActivity {
                             listenersBuilder.append(String.format(getResources().getString(R.string.currentListeners), listeners));
 
                             // Current song info
-                            playingBuilder.append(String.format(getResources().getString(R.string.nowPlaying), currentSong.getArtist(), currentSong.getTitle()));
+                            playingBuilder.append(String.format(getResources().getString(R.string.nowPlaying), currentSong.getTitle(), currentSong.getArtist()));
                             if (!currentSong.getAnime().equals("")) {
                                 playingBuilder.append(String.format("\n[ %s ]", currentSong.getAnime()));
                             }

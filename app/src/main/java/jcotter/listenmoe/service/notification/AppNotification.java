@@ -36,15 +36,14 @@ public class AppNotification {
 
         final boolean isPlaying = service.isPlaying();
 
-        // Construct content string with song title and anime
-        final StringBuilder titleBuilder = new StringBuilder();
-        titleBuilder.append(song.getTitle());
+        // Construct content string with song artist and anime
+        final StringBuilder textBuilder = new StringBuilder();
+        textBuilder.append(song.getArtist());
         final String currentSongAnime = song.getAnime();
         if (!currentSongAnime.equals("")) {
-            titleBuilder.append("\n");
-            titleBuilder.append(String.format("[ %s ]", currentSongAnime));
+            textBuilder.append(String.format(" [ %s ]", currentSongAnime));
         }
-        final String title = titleBuilder.toString();
+        final String text = textBuilder.toString();
 
         actionRequestCode = 0;
 
@@ -85,9 +84,9 @@ public class AppNotification {
 
         final NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(service)
                 .setSmallIcon(R.drawable.icon_notification)
-                .setContentTitle(song.getArtist())
-                .setContentText(title)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
+                .setContentTitle(song.getTitle())
+                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(clickIntent)
