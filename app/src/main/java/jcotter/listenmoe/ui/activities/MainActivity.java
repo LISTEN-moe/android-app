@@ -2,6 +2,7 @@ package jcotter.listenmoe.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -18,6 +19,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ import android.widget.Toast;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.ResponseMessages;
+import jcotter.listenmoe.interfaces.AuthCallback;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
@@ -86,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        // TODO: use flag to track if registered
         try {
             unregisterReceiver(broadcastReceiver);
         } catch (IllegalArgumentException ignored) {
@@ -109,12 +116,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        final boolean authenticated = AuthUtil.isAuthenticated(this);
+        menu.findItem(R.id.action_login).setVisible(!authenticated);
+        menu.findItem(R.id.action_logout).setVisible(authenticated);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_search:
+                // TODO: replace with search view
+                openMenu(0);
+                return true;
+
+            case R.id.action_login:
+                showLoginDialog();
+                return true;
+
+            case R.id.action_logout:
+                showLogoutDialog();
+                return true;
+
             case R.id.action_about:
                 showAboutDialog();
                 return true;
@@ -122,6 +147,118 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void showLoginDialog() {
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, (ViewGroup) findViewById(R.id.layout_root));
+        final EditText mLoginUser = (EditText) layout.findViewById(R.id.login_username);
+        final EditText mLoginPass = (EditText) layout.findViewById(R.id.login_password);
+
+        final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+                .setTitle(R.string.login)
+                .setView(layout)
+                .setPositiveButton(R.string.login, null)
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+
+        // Override the positive button listener so it won't automatically be dismissed even with
+        // an error
+        loginDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                final Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final String user = mLoginUser.getText().toString().trim();
+                        final String pass = mLoginPass.getText().toString().trim();
+
+                        if (user.length() == 0 || pass.length() == 0) {
+                            return;
+                        }
+
+                        login(user, pass, dialog);
+                    }
+                });
+            }
+        });
+
+        loginDialog.show();
+    }
+
+    /**
+     * Logs the user in with the provided credentials.
+     *
+     * @param user   Username to pass in the request body.
+     * @param pass   Password to pass in the request body.
+     * @param dialog Reference to the login dialog so it can be dismissed upon success.
+     */
+    private void login(final String user, final String pass, final DialogInterface dialog) {
+        APIUtil.authenticate(this, user, pass, new AuthCallback() {
+            @Override
+            public void onFailure(final String result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        String errorMsg = "";
+
+                        switch (result) {
+                            case ResponseMessages.INVALID_USER:
+                                errorMsg = getString(R.string.error_name);
+                                break;
+                            case ResponseMessages.INVALID_PASS:
+                                errorMsg = getString(R.string.error_pass);
+                                break;
+                            case ResponseMessages.ERROR:
+                                errorMsg = getString(R.string.error_general);
+                                break;
+                        }
+
+                        Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onSuccess(final String result) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
+                        dialog.dismiss();
+                        invalidateOptionsMenu();
+                    }
+                });
+            }
+        });
+    }
+
+    private void showLogoutDialog() {
+        new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+                .setTitle(R.string.logout)
+                .setMessage(R.string.logout_confirmation)
+                .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        logout();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show();
+    }
+
+    /**
+     * Logs the user out.
+     */
+    private void logout() {
+        if (!AuthUtil.isAuthenticated(this)) {
+            return;
+        }
+
+        AuthUtil.clearAuthToken(this);
+        Toast.makeText(getBaseContext(), getString(R.string.logged_out), Toast.LENGTH_LONG).show();
+        invalidateOptionsMenu();
     }
 
     private void showAboutDialog() {
@@ -147,7 +284,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // UI METHODS //
+    // UI methods
+    // TODO: move this stuff into a fragment
 
     /**
      * Listener for menu button.
@@ -256,7 +394,7 @@ public class MainActivity extends AppCompatActivity {
                                 requesterBuilder.append(String.format(getResources().getString(R.string.requestedText), requester));
                             }
                         } else {
-                            playingBuilder.append(getString(R.string.apiFailed));
+                            playingBuilder.append(getString(R.string.api_failure));
                             listenersBuilder.append(String.format(getResources().getString(R.string.currentListeners), 0));
                         }
 

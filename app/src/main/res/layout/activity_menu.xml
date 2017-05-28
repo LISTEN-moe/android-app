@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
@@ -39,88 +38,6 @@
                     android:paddingLeft="10sp"
                     android:paddingRight="10sp">
 
-                    <TextView
-                        android:id="@+id/username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="15sp"
-                        android:text="@string/username"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
-
-                    <EditText
-                        android:id="@+id/login_username"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:textColor="@android:color/primary_text_dark"
-                        tools:ignore="LabelFor" />
-
-                    <TextView
-                        android:id="@+id/password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/password"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold" />
-
-                    <EditText
-                        android:id="@+id/login_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
-                        android:inputType="textPassword"
-                        android:textColor="@android:color/white"
-                        tools:ignore="LabelFor" />
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="0.1"
-                        android:orientation="horizontal"
-                        tools:ignore="InefficientWeight">
-
-                        <Button
-                            android:id="@+id/login_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="10sp"
-                            android:layout_weight="1"
-                            android:text="@string/tabLogin"
-                            android:textAlignment="center"
-                            android:textSize="16sp"
-                            tools:ignore="ButtonStyle,NestedWeights" />
-
-                        <Button
-                            android:id="@+id/login_logout"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_weight="1"
-                            android:text="@string/logoutString"
-                            android:textAlignment="center"
-                            tools:ignore="ButtonStyle" />
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/loginStatus"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/loginStatus"
-                        android:textAlignment="center"
-                        android:textColor="@android:color/white"
-                        android:textSize="18sp"
-                        android:textStyle="normal|bold"
-                        android:visibility="invisible" />
-
                 </LinearLayout>
 
                 <LinearLayout
@@ -137,7 +54,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10sp"
                         android:fontFamily="sans-serif"
-                        android:text="@string/loginRequired"
+                        android:text="@string/login_required"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"
@@ -178,7 +95,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_horizontal"
                             android:layout_weight="0"
-                            android:text="@string/searchAlt"
+                            android:text="@string/search"
                             android:visibility="gone" />
                     </LinearLayout>
 
@@ -215,7 +132,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10sp"
-                        android:text="@string/loginRequired"
+                        android:text="@string/login_required"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="18sp"

@@ -54,13 +54,6 @@ public class MenuActivity extends AppCompatActivity {
     private TextView fav_loginRequired;
     private ListView fav_list;
 
-    // Login tab
-    private EditText username;
-    private EditText password;
-    private Button login;
-    private Button logout;
-    private TextView status;
-
     // NON-UI GLOBAL VARIABLES
     private List<Integer> songIds, favorite;
     private List<Boolean> enabled;
@@ -82,12 +75,6 @@ public class MenuActivity extends AppCompatActivity {
         fav_loginRequired = (TextView) findViewById(R.id.fav_loginRequired);
         fav_list = (ListView) findViewById(R.id.fav_list);
 
-        username = (EditText) findViewById(R.id.login_username);
-        password = (EditText) findViewById(R.id.login_password);
-        login = (Button) findViewById(R.id.login_button);
-        logout = (Button) findViewById(R.id.login_logout);
-        status = (TextView) findViewById(R.id.loginStatus);
-
         // SETUP METHODS
         tabHostSetup();
         tabChangeListener();
@@ -106,8 +93,6 @@ public class MenuActivity extends AppCompatActivity {
         }
         // Removes cursor from the edit text fields
         req_search.clearFocus();
-        username.clearFocus();
-        password.clearFocus();
     }
 
 
@@ -129,9 +114,9 @@ public class MenuActivity extends AppCompatActivity {
         spec.setIndicator(getString(R.string.tabFav));
         tabHost.addTab(spec);
         // Tab 3 //
-        spec = tabHost.newTabSpec(getString(R.string.tabLogin));
+        spec = tabHost.newTabSpec(getString(R.string.login));
         spec.setContent(R.id.Login);
-        spec.setIndicator(getString(R.string.tabLogin));
+        spec.setIndicator(getString(R.string.login));
         tabHost.addTab(spec);
         // Opens Tab specified in intent | Defaults to Request Tab //
         tabHost.setCurrentTab(this.getIntent().getIntExtra(MenuActivity.TAB_INDEX, 0));
@@ -154,8 +139,6 @@ public class MenuActivity extends AppCompatActivity {
                 songIds = null;
                 // Reset UI Components //
                 req_search.setText("");
-                username.setText("");
-                password.setText("");
                 if (req_list != null) req_list.setAdapter(null);
                 if (fav_list != null) fav_list.setAdapter(null);
                 // Changes Tab content if a valid token is available //
@@ -167,8 +150,6 @@ public class MenuActivity extends AppCompatActivity {
                 else if (currentTab == 1)
                     favoriteTab(userToken);
                 else if (currentTab == 2) {
-                    if (userToken != null)
-                        status.setVisibility(View.VISIBLE);
                     final long tokenAge = AuthUtil.getTokenAge(getBaseContext());
                     if (tokenAge != 0) {
                         runOnUiThread(new Runnable() {
@@ -346,24 +327,6 @@ public class MenuActivity extends AppCompatActivity {
                 confirmationDialog(i);
             }
         });
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onWindowFocusChanged(true);
-                if (username.getText().length() == 0)
-                    Toast.makeText(getBaseContext(), getString(R.string.errorName), Toast.LENGTH_LONG).show();
-                else if (password.getText().length() == 0)
-                    Toast.makeText(getBaseContext(), getString(R.string.errorPass), Toast.LENGTH_LONG).show();
-                login();
-            }
-        });
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onWindowFocusChanged(true);
-                logout();
-            }
-        });
     }
 
     /**
@@ -375,7 +338,7 @@ public class MenuActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MenuActivity.this);
         // Cancel button
         builder.setMessage(R.string.req_dialog_message);
-        builder.setPositiveButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 dialog.dismiss();
             }
@@ -510,63 +473,5 @@ public class MenuActivity extends AppCompatActivity {
                 });
             }
         });
-    }
-
-    /**
-     *
-     */
-    private void login() {
-        final String user = this.username.getText().toString().trim();
-        final String pass = this.password.getText().toString().trim();
-
-        APIUtil.authenticate(this, user, pass, new AuthCallback() {
-            @Override
-            public void onFailure(final String result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String errorMsg = "";
-
-                        switch (result) {
-                            case ResponseMessages.INVALID_USER:
-                                errorMsg = getString(R.string.errorName);
-                                break;
-                            case ResponseMessages.INVALID_PASS:
-                                errorMsg = getString(R.string.errorPass);
-                                break;
-                            case ResponseMessages.ERROR:
-                                errorMsg = getString(R.string.errorGeneral);
-                                break;
-                        }
-
-                        Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onSuccess(final String result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        status.setVisibility(View.VISIBLE);
-                        Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }
-        });
-    }
-
-    /**
-     *
-     */
-    private void logout() {
-        if (AuthUtil.isAuthenticated(this)) {
-            AuthUtil.clearAuthToken(this);
-            this.username.setText("");
-            this.password.setText("");
-            this.status.setVisibility(View.INVISIBLE);
-            Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
-        }
     }
 }

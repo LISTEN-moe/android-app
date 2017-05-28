@@ -2,6 +2,11 @@
 <resources>
     <string name="app_name" translatable="false">LISTEN.moe</string>
 
+    <!-- Generic strings -->
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="success">Success!</string>
+
     <!-- Actions (notification, dialogs) -->
     <string name="action_play">Play</string>
     <string name="action_pause">Pause</string>
@@ -9,6 +14,20 @@
     <string name="action_favorite">Favorite</string>
     <string name="action_unfavorite">Unfavorite</string>
     <string name="action_request">Request</string>
+
+    <!-- Search -->
+    <string name="search">Search</string>
+
+    <!-- Login/logout -->
+    <string name="login">Login</string>
+    <string name="logout">Logout</string>
+    <string name="username">Username:</string>
+    <string name="password">Password:</string>
+    <string name="error_general">Error: login failed</string>
+    <string name="error_name">Error: invalid username</string>
+    <string name="error_pass">Error: incorrect password</string>
+    <string name="logout_confirmation">Are you sure you want to logout?</string>
+    <string name="logged_out">Logged out</string>
 
     <!-- About dialog -->
     <string name="about">About</string>
@@ -20,7 +39,6 @@
         <br/>
         Report bugs or request features on <a href=\'https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App\'>GitHub</a>.
     ]]></string>
-    <string name="close">Close</string>
 
     <!-- Radio -->
     <string name="infoPlayPause">Play/pause button</string>
@@ -35,26 +53,14 @@
     <!-- Menu -->
     <string name="tabFav">Favorites</string>
     <string name="tabReq">Requests</string>
-    <string name="tabLogin">Login</string>
-    <string name="logoutString">Logout</string>
-    <string name="search">Search:</string>
-    <string name="searchAlt">Search</string>
-    <string name="username">Username:</string>
-    <string name="password">Password:</string>
-    <string name="errorName">Error: invalid username</string>
-    <string name="errorPass">Error: incorrect password</string>
-    <string name="loginStatus">User currently logged in successfully</string>
-    <string name="errorGeneral">Error: login failed</string>
     <string name="token_expired">Token expired</string>
     <string name="token_age">Current token age: %d days</string>
-    <string name="loginRequired">You must log in to use this feature</string>
+    <string name="login_required">You must log in to use this feature</string>
     <string name="req_dialog_message">What action would you like to take?</string>
-    <string name="dialog_cancel">Cancel</string>
-    <string name="success">Success!</string>
     <string name="req_error">An error occurred!</string>
     <string name="supporter">Supporter status required</string>
 
     <!-- WebSocket -->
-    <string name="apiFailed">Unable to connect to the API.\n Please check your internet connection.\n If you are connected stop the app and then try again.\n If the problem persists the radio might be down for maintenance</string>
-    <string name="sending">Sending...</string>
+    <string name="api_failure">Unable to connect to the API.\n Please check your internet connection.\n If you are connected stop the app and then try again.\n If the problem persists the radio might be down for maintenance</string>
+    <string name="sending">Sending…</string>
 </resources>
