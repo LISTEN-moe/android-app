@@ -8,7 +8,7 @@
     android:background="@color/backgroundColor"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".ui.MenuActivity">
+    tools:context=".ui.activities.MenuActivity">
 
     <TabHost
         android:id="@+id/tabAPI"
@@ -120,17 +120,6 @@
                         android:textSize="18sp"
                         android:textStyle="normal|bold"
                         android:visibility="invisible" />
-
-                    <ImageButton
-                        android:id="@+id/github"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:background="@android:color/transparent"
-                        android:backgroundTint="@android:color/transparent"
-                        android:contentDescription=""
-                        app:srcCompat="@drawable/icon_github"
-                        tools:ignore="ContentDescription" />
 
                 </LinearLayout>
 

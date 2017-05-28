@@ -181,7 +181,7 @@ public class StreamService extends Service {
             }
         }
 
-        // Returns music stream state to RadioActivity
+        // Returns music stream state to MainActivity
         if (intent.hasExtra(StreamService.PROBE)) {
             final Intent returnIntent = new Intent(getPackageName());
             returnIntent.putExtra(StreamService.RUNNING, voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
@@ -335,7 +335,7 @@ public class StreamService extends Service {
             currentSong = null;
         }
 
-        // Send the updated info to the RadioActivity
+        // Send the updated info to the MainActivity
         final Intent intent = new Intent();
         intent.setAction(StreamService.UPDATE_PLAYING);
         intent.putExtra(StreamService.UPDATE_PLAYING_SONG, currentSong);

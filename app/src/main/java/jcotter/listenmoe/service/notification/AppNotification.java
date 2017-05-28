@@ -9,8 +9,8 @@ import android.support.v7.app.NotificationCompat;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
-import jcotter.listenmoe.ui.MenuActivity;
-import jcotter.listenmoe.ui.RadioActivity;
+import jcotter.listenmoe.ui.activities.MainActivity;
+import jcotter.listenmoe.ui.activities.MenuActivity;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class AppNotification {
@@ -78,7 +78,7 @@ public class AppNotification {
         );
 
         // Build the notification
-        final Intent action = new Intent(service, RadioActivity.class);
+        final Intent action = new Intent(service, MainActivity.class);
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
 

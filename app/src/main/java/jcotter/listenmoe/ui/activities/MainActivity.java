@@ -1,18 +1,22 @@
-package jcotter.listenmoe.ui;
+package jcotter.listenmoe.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
@@ -28,16 +32,17 @@ import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
 import jcotter.listenmoe.util.SDKUtil;
 
-public class RadioActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
     // UI views
     private SeekBar mVolumeBar;
     private ImageButton mPlayPauseBtn;
     private ImageButton menuButton;
     private ImageButton mFavoriteBtn;
-    private TextView mPoweredByTxt;
     private TextView mListenersTxt;
     private TextView mNowPlayingTxt;
     private TextView mRequestedByTxt;
+
+    private AlertDialog mAboutDialog;
 
     private BroadcastReceiver broadcastReceiver;
     private int songID;
@@ -52,7 +57,6 @@ public class RadioActivity extends AppCompatActivity {
         // Get UI views
         mPlayPauseBtn = (ImageButton) findViewById(R.id.playPause);
         mVolumeBar = (SeekBar) findViewById(R.id.seekBar);
-        mPoweredByTxt = (TextView) findViewById(R.id.poweredBy);
         mListenersTxt = (TextView) findViewById(R.id.currentText);
         mNowPlayingTxt = (TextView) findViewById(R.id.nowPlaying);
         mRequestedByTxt = (TextView) findViewById(R.id.requestedText);
@@ -61,7 +65,6 @@ public class RadioActivity extends AppCompatActivity {
 
         // Set font to OpenSans
         final Typeface openSans = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
-        mPoweredByTxt.setTypeface(openSans);
         mListenersTxt.setTypeface(openSans);
         mNowPlayingTxt.setTypeface(openSans);
         mRequestedByTxt.setTypeface(openSans);
@@ -98,6 +101,49 @@ public class RadioActivity extends AppCompatActivity {
         super.onResume();
         socketDisplay();
         playPauseButtonListener();
+    }
+
+
+    // Overflow menu
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                showAboutDialog();
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void showAboutDialog() {
+        if (mAboutDialog == null) {
+            String version;
+            try {
+                version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            } catch (PackageManager.NameNotFoundException e) {
+                version = "";
+            }
+
+            mAboutDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+                    .setTitle(R.string.about)
+                    .setMessage(SDKUtil.fromHtml(getString(R.string.about_content, getString(R.string.app_name), version)))
+                    .setPositiveButton(R.string.close, null)
+                    .create();
+        }
+
+        mAboutDialog.show();
+
+        final TextView textContent = (TextView) mAboutDialog.findViewById(android.R.id.message);
+        textContent.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
 

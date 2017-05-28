@@ -10,6 +10,18 @@
     <string name="action_unfavorite">Unfavorite</string>
     <string name="action_request">Request</string>
 
+    <!-- About dialog -->
+    <string name="about">About</string>
+    <string name="about_content"><![CDATA[
+        <b>%1$s %2$s</b>
+        <br/>
+        Powered by: <a href="https://listen.moe">LISTEN.moe</a>
+        <br/>
+        <br/>
+        Report bugs or request features on <a href=\'https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App\'>GitHub</a>.
+    ]]></string>
+    <string name="close">Close</string>
+
     <!-- Radio -->
     <string name="infoPlayPause">Play/pause button</string>
     <string name="infoVolume">Volume slider</string>
@@ -18,7 +30,6 @@
     <string name="infoMenu">Menu</string>
     <string name="nowPlaying" formatted="false">- Now Playing -\n%s\n%s</string>
     <string name="requestedText"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>
-    <string name="poweredBy">Powered by: <a href="https://listen.moe"> LISTEN.moe</a></string>
     <string name="currentListeners">Current listeners: %d</string>
 
     <!-- Menu -->

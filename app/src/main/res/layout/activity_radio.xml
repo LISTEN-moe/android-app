@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    tools:context=".ui.RadioActivity">
+    tools:context=".ui.activities.MainActivity">
 
     <ImageView
         android:layout_width="0dp"
@@ -171,19 +171,6 @@
         app:layout_constraintVertical_bias="0.72"
         app:srcCompat="@drawable/ic_star_border_black_24dp"
         tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/poweredBy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:autoLink="web"
-        android:text="@string/poweredBy"
-        android:textColor="@android:color/white"
-        android:textColorLink="@color/colorAccent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent" />
 
     <TextView
         android:id="@+id/currentText"

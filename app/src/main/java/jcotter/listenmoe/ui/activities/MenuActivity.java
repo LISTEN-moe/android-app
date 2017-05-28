@@ -1,10 +1,8 @@
-package jcotter.listenmoe.ui;
+package jcotter.listenmoe.ui.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TabHost;
@@ -41,8 +38,6 @@ import jcotter.listenmoe.util.AuthUtil;
 public class MenuActivity extends AppCompatActivity {
     public static final String TAB_INDEX = "tab_index";
 
-    private final String GITHUB_URL = "https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App";
-
     // UI views
     private LinearLayout root;
     private TabHost tabHost;
@@ -65,7 +60,6 @@ public class MenuActivity extends AppCompatActivity {
     private Button login;
     private Button logout;
     private TextView status;
-    private ImageButton github;
 
     // NON-UI GLOBAL VARIABLES
     private List<Integer> songIds, favorite;
@@ -93,7 +87,6 @@ public class MenuActivity extends AppCompatActivity {
         login = (Button) findViewById(R.id.login_button);
         logout = (Button) findViewById(R.id.login_logout);
         status = (TextView) findViewById(R.id.loginStatus);
-        github = (ImageButton) findViewById(R.id.github);
 
         // SETUP METHODS
         tabHostSetup();
@@ -369,14 +362,6 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View view) {
                 onWindowFocusChanged(true);
                 logout();
-            }
-        });
-        github.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Uri link = Uri.parse(GITHUB_URL);
-                Intent intent = new Intent(Intent.ACTION_VIEW, link);
-                startActivity(intent);
             }
         });
     }
