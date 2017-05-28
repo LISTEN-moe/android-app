@@ -26,7 +26,6 @@ import java.util.List;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.ResponseMessages;
-import jcotter.listenmoe.interfaces.AuthCallback;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.interfaces.RequestSongCallback;
 import jcotter.listenmoe.interfaces.SearchCallback;

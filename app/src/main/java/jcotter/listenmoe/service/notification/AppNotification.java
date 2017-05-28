@@ -63,6 +63,7 @@ public class AppNotification {
                     getPlaybackActionService(StreamService.class, StreamService.FAVORITE, true)
             );
         } else {
+            // TODO: trigger MainActivity login dialog
             favoriteAction = new NotificationCompat.Action(
                     R.drawable.ic_star_border_black_24dp,
                     service.getString(R.string.action_favorite),
