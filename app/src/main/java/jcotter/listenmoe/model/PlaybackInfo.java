@@ -2,6 +2,10 @@ package jcotter.listenmoe.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class PlaybackInfo extends BasicTrack {
     @SerializedName("song_id")
     private int songId;
@@ -66,6 +70,10 @@ public class PlaybackInfo extends BasicTrack {
 
     public void setListeners(int listeners) {
         this.listeners = listeners;
+    }
+
+    public List<BasicTrack> getPlayHistory() {
+        return new ArrayList<>(Arrays.asList(last, secondLast));
     }
 
     public BasicTrack getLast() {
