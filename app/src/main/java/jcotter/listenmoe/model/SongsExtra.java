@@ -10,8 +10,4 @@ public class SongsExtra {
     public int getRequests() {
         return requests;
     }
-
-    public void setRequests(int requests) {
-        this.requests = requests;
-    }
 }

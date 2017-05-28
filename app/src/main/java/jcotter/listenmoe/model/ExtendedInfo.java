@@ -13,15 +13,7 @@ public class ExtendedInfo {
         return favorite;
     }
 
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
-    }
-
     public QueueInfo getQueue() {
         return queue;
-    }
-
-    public void setQueue(QueueInfo queue) {
-        this.queue = queue;
     }
 }

@@ -17,31 +17,15 @@ public class QueueInfo {
         return songsInQueue;
     }
 
-    public void setSongsInQueue(int songsInQueue) {
-        this.songsInQueue = songsInQueue;
-    }
-
     public boolean isHasSongInQueue() {
         return hasSongInQueue;
-    }
-
-    public void setHasSongInQueue(boolean hasSongInQueue) {
-        this.hasSongInQueue = hasSongInQueue;
     }
 
     public int getInQueueBeforeUserSong() {
         return inQueueBeforeUserSong;
     }
 
-    public void setInQueueBeforeUserSong(int inQueueBeforeUserSong) {
-        this.inQueueBeforeUserSong = inQueueBeforeUserSong;
-    }
-
     public int getUserSongsInQueue() {
         return userSongsInQueue;
-    }
-
-    public void setUserSongsInQueue(int userSongsInQueue) {
-        this.userSongsInQueue = userSongsInQueue;
     }
 }

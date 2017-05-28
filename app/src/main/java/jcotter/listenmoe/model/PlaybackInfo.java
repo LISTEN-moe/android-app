@@ -44,32 +44,16 @@ public class PlaybackInfo extends BasicTrack {
         return songId;
     }
 
-    public void setSongId(int songId) {
-        this.songId = songId;
-    }
-
     public String getAnimeName() {
         return animeName;
-    }
-
-    public void setAnimeName(String animeName) {
-        this.animeName = animeName;
     }
 
     public String getRequestedBy() {
         return requestedBy;
     }
 
-    public void setRequestedBy(String requestedBy) {
-        this.requestedBy = requestedBy;
-    }
-
     public int getListeners() {
         return listeners;
-    }
-
-    public void setListeners(int listeners) {
-        this.listeners = listeners;
     }
 
     public List<BasicTrack> getPlayHistory() {
@@ -80,24 +64,12 @@ public class PlaybackInfo extends BasicTrack {
         return last;
     }
 
-    public void setLast(BasicTrack last) {
-        this.last = last;
-    }
-
     public BasicTrack getSecondLast() {
         return secondLast;
     }
 
-    public void setSecondLast(BasicTrack secondLast) {
-        this.secondLast = secondLast;
-    }
-
     public ExtendedInfo getExtended() {
         return extended;
-    }
-
-    public void setExtended(ExtendedInfo extended) {
-        this.extended = extended;
     }
 
     public boolean hasExtended() {

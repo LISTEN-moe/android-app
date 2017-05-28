@@ -15,15 +15,7 @@ public class SongsList {
         return songs;
     }
 
-    public void setSongs(List<Song> songs) {
-        this.songs = songs;
-    }
-
     public SongsExtra getExtra() {
         return extra;
-    }
-
-    public void setExtra(SongsExtra extra) {
-        this.extra = extra;
     }
 }

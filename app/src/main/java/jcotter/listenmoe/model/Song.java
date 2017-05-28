@@ -33,48 +33,24 @@ public class Song implements Parcelable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getArtist() {
         return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getAnime() {
         return anime;
-    }
-
-    public void setAnime(String anime) {
-        this.anime = anime;
     }
 
     public boolean isEnabled() {
         return enabled == null;
     }
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public boolean isFavorite() {
         return favorite == 1;
-    }
-
-    public void setFavorite(int favorite) {
-        this.favorite = favorite;
     }
 
     // The API is inconsistent in how they flag a song as favorited...
