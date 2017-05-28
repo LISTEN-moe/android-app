@@ -2,6 +2,7 @@ package jcotter.listenmoe.constants;
 
 public class ResponseMessages {
     public static final String SUCCESS = "success\":true";
+    public static final String FAVORITED = "favorite\":true";
 
     public static final String INVALID_PASS = "invalid-password";
     public static final String INVALID_USER = "invalid-user";

@@ -16,6 +16,7 @@ import jcotter.listenmoe.interfaces.RequestSongCallback;
 import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
 import jcotter.listenmoe.interfaces.UserInfoCallback;
+import jcotter.listenmoe.model.AuthResponse;
 import jcotter.listenmoe.model.SongsList;
 import jcotter.listenmoe.model.UserInfo;
 import okhttp3.Call;
@@ -70,10 +71,13 @@ public class APIUtil {
                     } else if (body.contains(ResponseMessages.INVALID_USER)) {
                         callback.onFailure(ResponseMessages.INVALID_USER);
                         return;
+                    } else if (!body.contains(ResponseMessages.SUCCESS)) {
+                        callback.onFailure(ResponseMessages.ERROR);
+                        return;
                     }
 
                     // Get auth token from response
-                    final String userToken = body.substring(25, body.length() - 2);
+                    final String userToken = gson.fromJson(body, AuthResponse.class).getToken();
                     AuthUtil.setAuthToken(context, userToken);
 
                     callback.onSuccess(userToken);
@@ -178,7 +182,7 @@ public class APIUtil {
                 final String jsonResult = response.body().string();
 
                 if (jsonResult.contains(ResponseMessages.SUCCESS)) {
-                    callback.onSuccess(jsonResult.contains("favorite\":true"));
+                    callback.onSuccess(jsonResult.contains(ResponseMessages.FAVORITED));
                 } else if (jsonResult.contains(ResponseMessages.AUTH_FAILURE)) {
                     callback.onFailure(ResponseMessages.AUTH_FAILURE);
                 } else {
