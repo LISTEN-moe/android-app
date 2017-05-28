@@ -231,11 +231,8 @@ public class RadioActivity extends AppCompatActivity {
                                     mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
                                     mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
                                 }
-                                if (favorite) {
-                                    mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.ic_star_black_24dp));
-                                } else {
-                                    mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.ic_star_border_black_24dp));
-                                }
+                                final int favDrawable = favorite ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp;
+                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), favDrawable));
                             }
                         });
                         break;
@@ -243,20 +240,14 @@ public class RadioActivity extends AppCompatActivity {
                     default:
                         if (intent.hasExtra(StreamService.RUNNING)) {
                             playing = intent.getBooleanExtra(StreamService.RUNNING, false);
-                            if (playing) {
-                                mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.ic_pause_black_24dp));
-                            } else {
-                                mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.ic_play_arrow_black_24dp));
-                            }
+                            final int playDrawable = playing ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+                            mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), playDrawable));
                         }
 
                         if (intent.hasExtra(StreamService.FAVORITE)) {
                             favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
-                            if (favorite) {
-                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.ic_star_black_24dp));
-                            } else {
-                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), R.drawable.ic_star_border_black_24dp));
-                            }
+                            final int favDrawable = favorite ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp;
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getApplicationContext(), favDrawable));
                         }
                         break;
                 }
@@ -274,12 +265,11 @@ public class RadioActivity extends AppCompatActivity {
 
         final Intent intent = new Intent(this, StreamService.class);
         if (StreamService.isServiceRunning) {
-            intent.putExtra(StreamService.REQUEST, true); // Requests Socket Update //
-            intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
+            intent.putExtra(StreamService.REQUEST, true); // Requests socket update
         } else {
-            intent.putExtra(StreamService.RECEIVER, true); // Start StreamService //
-            intent.putExtra(StreamService.PROBE, true); // Checks if Music Stream is Playing //
+            intent.putExtra(StreamService.RECEIVER, true); // Start service
         }
+        intent.putExtra(StreamService.PROBE, true); // Checks if stream is playing
         startService(intent);
     }
 

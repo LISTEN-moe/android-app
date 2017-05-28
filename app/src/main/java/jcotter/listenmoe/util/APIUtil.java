@@ -30,7 +30,6 @@ import okhttp3.Response;
  * Helper class for performing LISTEN.moe API calls.
  */
 public class APIUtil {
-
     private static OkHttpClient http = new OkHttpClient();
     private static Gson gson = new Gson();
 
