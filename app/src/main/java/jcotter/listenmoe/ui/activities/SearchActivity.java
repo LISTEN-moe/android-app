@@ -25,6 +25,8 @@ import jcotter.listenmoe.util.APIUtil;
 
 public class SearchActivity extends AppCompatActivity implements SearchAdapter.OnItemClickListener {
 
+    private SearchAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,12 +44,12 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     private void initSearch() {
-        final SearchAdapter searchAdapter = new SearchAdapter(this);
+        adapter = new SearchAdapter(this);
 
         final RecyclerView mResults = (RecyclerView) findViewById(R.id.search_results);
         mResults.setLayoutManager(new LinearLayoutManager(this));
 //        mList.addItemDecoration(new DividerItemDecoration(getContext()));
-        mResults.setAdapter(searchAdapter);
+        mResults.setAdapter(adapter);
 
         final EditText mSearchQuery = (EditText) findViewById(R.id.search_query);
         mSearchQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -63,7 +65,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                searchAdapter.setResults(results);
+                                adapter.setResults(results);
                             }
                         });
                     }
@@ -86,7 +88,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
                 .setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int in) {
-                                favorite(song.getId());
+                                favorite(song);
                     }
                 });
 
@@ -95,7 +97,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
             builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int im) {
-                            request(song.getId());
+                            request(song);
                 }
             });
         }
@@ -107,10 +109,10 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     /**
      * Updates the favorite status of a song.
      *
-     * @param songID ID of the song to update the favorite status of.
+     * @param song The song to update the favorite status of.
      */
-    private void favorite(final int songID) {
-        APIUtil.favoriteSong(this, songID, new FavoriteSongCallback() {
+    private void favorite(final Song song) {
+        APIUtil.favoriteSong(this, song.getId(), new FavoriteSongCallback() {
             @Override
             public void onFailure(final String result) {
                 runOnUiThread(new Runnable() {
@@ -126,20 +128,8 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                        if (favorited) {
-//                            favorite.set(songIndex, 1);
-//                        } else {
-//                            favorite.set(songIndex, 0);
-//
-//                            // Remove song from favorites list
-//                            if (tabHost.getCurrentTab() == 1) {
-//                                songIds.remove(songIndex);
-//                                favorite.remove(songIndex);
-//                                enabled.remove(songIndex);
-//                                adapter.remove(adapter.getItem(songIndex));
-//                            }
-//                        }
-//                        adapter.notifyDataSetChanged();
+                        song.setFavorite(favorited);
+                        adapter.notifyDataSetChanged();
                     }
                 });
             }
@@ -149,10 +139,10 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     /**
      * Requests a song.
      *
-     * @param songID ID of the song to request.
+     * @param song The song to request.
      */
-    private void request(final int songID) {
-        APIUtil.requestSong(this, songID, new RequestSongCallback() {
+    private void request(final Song song) {
+        APIUtil.requestSong(this, song.getId(), new RequestSongCallback() {
             @Override
             public void onFailure(final String result) {
                 runOnUiThread(new Runnable() {
@@ -174,8 +164,8 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
                     public void run() {
                         Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_LONG).show();
 
-//                        enabled.set(songIndex, false);
-//                        adapter.notifyDataSetChanged();
+                        song.setEnabled(false);
+                        adapter.notifyDataSetChanged();
                     }
                 });
             }

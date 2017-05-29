@@ -49,6 +49,10 @@ public class Song implements Parcelable {
         return enabled == null;
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public boolean isFavorite() {
         return favorite == 1;
     }

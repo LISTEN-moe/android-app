@@ -1,9 +1,11 @@
 package jcotter.listenmoe.adapters;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -27,7 +29,6 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void setResults(List<Song> songs) {
         this.songs = songs;
-
         notifyDataSetChanged();
     }
 
@@ -43,6 +44,12 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         ((SearchItemHolder) holder).mTitle.setText(song.getTitle());
         ((SearchItemHolder) holder).mSubtitle.setText(song.getArtistAndAnime());
+        ((SearchItemHolder) holder).mFavorited.setVisibility(song.isFavorite() ? View.VISIBLE : View.GONE);
+
+        if (!song.isEnabled()) {
+            ((SearchItemHolder) holder).mTitle.setTypeface(null, Typeface.ITALIC);
+            ((SearchItemHolder) holder).mSubtitle.setTypeface(null, Typeface.ITALIC);
+        }
     }
 
     @Override
@@ -53,12 +60,14 @@ public class SearchAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private class SearchItemHolder extends RecyclerView.ViewHolder {
         TextView mTitle;
         TextView mSubtitle;
+        LinearLayout mFavorited;
 
         SearchItemHolder(View itemView) {
             super(itemView);
 
             mTitle = (TextView) itemView.findViewById(R.id.title);
             mSubtitle = (TextView) itemView.findViewById(R.id.subtitle);
+            mFavorited = (LinearLayout) itemView.findViewById(R.id.favorited);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
