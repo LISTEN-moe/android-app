@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
     android:fitsSystemWindows="true"
+    android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".ui.fragments.RadioFragment">
 
     <ImageView
         android:id="@+id/logo"

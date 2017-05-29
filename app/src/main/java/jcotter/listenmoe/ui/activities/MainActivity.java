@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        // Toggle visibility of login/logout items based on authentication status
         final boolean authenticated = AuthUtil.isAuthenticated(this);
         menu.findItem(R.id.action_login).setVisible(!authenticated);
         menu.findItem(R.id.action_logout).setVisible(authenticated);
@@ -106,8 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                // TODO: replace with search view
-                openMenu(0);
+                startActivity(new Intent(this, SearchActivity.class));
                 return true;
 
             case R.id.action_login:
@@ -259,16 +259,5 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView textContent = (TextView) mAboutDialog.findViewById(android.R.id.message);
         textContent.setMovementMethod(LinkMovementMethod.getInstance());
-    }
-
-    /**
-     * Opens the MenuActivity with the specified tab.
-     *
-     * @param tabIndex
-     */
-    private void openMenu(int tabIndex) {
-        final Intent intent = new Intent(this, MenuActivity.class);
-        intent.putExtra(MenuActivity.TAB_INDEX, tabIndex);
-        startActivity(intent);
     }
 }

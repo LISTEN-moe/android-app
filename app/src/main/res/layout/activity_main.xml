@@ -10,20 +10,19 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/backgroundgraphic"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/backgroundgraphic"
         tools:ignore="ContentDescription" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@null"
-        app:elevation="0dp">
+        android:background="@null">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/appbar"

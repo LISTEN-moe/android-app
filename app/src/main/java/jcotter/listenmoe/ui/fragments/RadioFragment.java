@@ -72,8 +72,8 @@ public class RadioFragment extends TabFragment {
 
         // Set up view listeners
         volumeSliderListener();
-        playPauseButtonListener();
-        favoriteButtonListener();
+        mPlayPauseBtn.setOnClickListener(mOnClickListener);
+        mFavoriteBtn.setOnClickListener(mOnClickListener);
 
         socketDisplay();
 
@@ -89,7 +89,6 @@ public class RadioFragment extends TabFragment {
     private void volumeSliderListener() {
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mVolumeBar.setProgress((int) (sharedPreferences.getFloat(StreamService.VOLUME, 0.5f) * 100));
-
         mVolumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -113,29 +112,15 @@ public class RadioFragment extends TabFragment {
         });
     }
 
-    /**
-     * Listener for play/pause button.
-     */
-    private void playPauseButtonListener() {
-        mPlayPauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (v == mPlayPauseBtn) {
                 playPauseLogic();
-            }
-        });
-    }
-
-    /**
-     * Listener for favorite button.
-     */
-    private void favoriteButtonListener() {
-        mFavoriteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            } else if (v == mFavoriteBtn) {
                 favoriteLogic();
             }
-        });
-    }
+        }
+    };
 
     /**
      * Displays data received from websocket and checks if stream is playing.
