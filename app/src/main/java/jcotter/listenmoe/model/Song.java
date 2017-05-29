@@ -58,6 +58,17 @@ public class Song implements Parcelable {
         this.favorite = favorite ? 1 : 0;
     }
 
+    public String getArtistAndAnime() {
+        final StringBuilder textBuilder = new StringBuilder();
+        textBuilder.append(artist);
+
+        if (!anime.equals("")) {
+            textBuilder.append(String.format(" [ %s ]", anime));
+        }
+
+        return textBuilder.toString();
+    }
+
     @Override
     public String toString() {
         final StringBuilder builder = new StringBuilder();

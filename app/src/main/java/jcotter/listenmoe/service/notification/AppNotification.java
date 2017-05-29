@@ -35,15 +35,7 @@ public class AppNotification {
         }
 
         final boolean isPlaying = service.isPlaying();
-
-        // Construct content string with song artist and anime
-        final StringBuilder textBuilder = new StringBuilder();
-        textBuilder.append(song.getArtist());
-        final String currentSongAnime = song.getAnime();
-        if (!currentSongAnime.equals("")) {
-            textBuilder.append(String.format(" [ %s ]", currentSongAnime));
-        }
-        final String text = textBuilder.toString();
+        final String text = song.getArtistAndAnime();
 
         actionRequestCode = 0;
 
