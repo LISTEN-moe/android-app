@@ -31,6 +31,8 @@ import jcotter.listenmoe.util.AuthUtil;
 import jcotter.listenmoe.util.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TRIGGER_LOGIN = "trigger_login";
+
     private AlertDialog mAboutDialog;
 
     public static BroadcastReceiver broadcastReceiver;
@@ -48,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Invalidate token if needed
         AuthUtil.checkAuthTokenValidity(this);
+
+        if (getIntent() != null) {
+            final String action = getIntent().getAction();
+
+            if (action.equals(MainActivity.TRIGGER_LOGIN)) {
+                showLoginDialog();
+            }
+        }
     }
 
     @Override
@@ -205,6 +215,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                         invalidateOptionsMenu();
+
+                        // TODO: update notification?
                     }
                 });
             }

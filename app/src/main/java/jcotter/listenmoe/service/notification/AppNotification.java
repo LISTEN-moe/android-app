@@ -10,7 +10,6 @@ import jcotter.listenmoe.R;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.ui.activities.MainActivity;
-import jcotter.listenmoe.ui.activities.MenuActivity;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class AppNotification {
@@ -55,11 +54,10 @@ public class AppNotification {
                     getPlaybackActionService(StreamService.class, StreamService.FAVORITE, true)
             );
         } else {
-            // TODO: trigger MainActivity login dialog
             favoriteAction = new NotificationCompat.Action(
                     R.drawable.ic_star_border_black_24dp,
                     service.getString(R.string.action_favorite),
-                    getPlaybackActionActivity(MenuActivity.class, MenuActivity.TAB_INDEX, 2)
+                    getPlaybackActionActivity(MainActivity.class, MainActivity.TRIGGER_LOGIN)
             );
         }
 
@@ -111,9 +109,9 @@ public class AppNotification {
     }
 
     // TODO: possibly move this since it's related to the activity instead of the service
-    private PendingIntent getPlaybackActionActivity(final Class target, final String action, final int value) {
+    private PendingIntent getPlaybackActionActivity(final Class target, final String action) {
         final Intent intent = new Intent(service, target);
-        intent.putExtra(action, value);
+        intent.setAction(action);
 
         return PendingIntent.getActivity(service, ++actionRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

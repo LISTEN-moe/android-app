@@ -28,9 +28,6 @@
 
         <activity android:name=".ui.activities.SearchActivity" />
 
-        <!-- TODO: remove this -->
-        <activity android:name=".ui.activities.MenuActivity" />
-
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
