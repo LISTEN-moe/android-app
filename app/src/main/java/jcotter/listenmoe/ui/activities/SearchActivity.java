@@ -15,17 +15,18 @@ import android.widget.Toast;
 import java.util.List;
 
 import jcotter.listenmoe.R;
-import jcotter.listenmoe.adapters.SearchAdapter;
+import jcotter.listenmoe.adapters.SongAdapter;
 import jcotter.listenmoe.constants.ResponseMessages;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
+import jcotter.listenmoe.interfaces.OnSongItemClickListener;
 import jcotter.listenmoe.interfaces.RequestSongCallback;
 import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.util.APIUtil;
 
-public class SearchActivity extends AppCompatActivity implements SearchAdapter.OnItemClickListener {
+public class SearchActivity extends AppCompatActivity implements OnSongItemClickListener {
 
-    private SearchAdapter adapter;
+    private SongAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     private void initSearch() {
-        adapter = new SearchAdapter(this);
+        adapter = new SongAdapter(this);
 
         final RecyclerView mResults = (RecyclerView) findViewById(R.id.search_results);
         mResults.setLayoutManager(new LinearLayoutManager(this));
@@ -65,7 +66,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                adapter.setResults(results);
+                                adapter.setSongs(results);
                             }
                         });
                     }
@@ -76,7 +77,7 @@ public class SearchActivity extends AppCompatActivity implements SearchAdapter.O
     }
 
     @Override
-    public void onItemClick(final Song song) {
+    public void onSongItemClick(final Song song) {
         // Create button "Favorite"/"Unfavorite"
         final String favoriteAction = song.isFavorite() ?
                 getString(R.string.action_unfavorite) :

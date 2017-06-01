@@ -32,6 +32,7 @@ import jcotter.listenmoe.util.AuthUtil;
 import jcotter.listenmoe.util.SDKUtil;
 
 public class RadioFragment extends TabFragment {
+
     // UI views
     private TextView mNowPlayingTxt;
     private TextView mRequestedByTxt;
