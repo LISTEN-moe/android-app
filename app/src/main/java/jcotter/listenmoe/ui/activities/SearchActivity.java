@@ -10,19 +10,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
-import jcotter.listenmoe.constants.ResponseMessages;
-import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.interfaces.OnSongItemClickListener;
-import jcotter.listenmoe.interfaces.RequestSongCallback;
 import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.util.APIUtil;
+import jcotter.listenmoe.util.SongActionsUtil;
 
 public class SearchActivity extends AppCompatActivity implements OnSongItemClickListener {
 
@@ -89,7 +86,7 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
                 .setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int in) {
-                                favorite(song);
+                        SongActionsUtil.favorite(getParent(), adapter, song);
                     }
                 });
 
@@ -98,78 +95,11 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
             builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int im) {
-                            request(song);
+                    SongActionsUtil.request(getParent(), adapter, song);
                 }
             });
         }
 
         builder.create().show();
-    }
-
-
-    /**
-     * Updates the favorite status of a song.
-     *
-     * @param song The song to update the favorite status of.
-     */
-    private void favorite(final Song song) {
-        APIUtil.favoriteSong(this, song.getId(), new FavoriteSongCallback() {
-            @Override
-            public void onFailure(final String result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getBaseContext(), R.string.req_error, Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-            @Override
-            public void onSuccess(final boolean favorited) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        song.setFavorite(favorited);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        });
-    }
-
-    /**
-     * Requests a song.
-     *
-     * @param song The song to request.
-     */
-    private void request(final Song song) {
-        APIUtil.requestSong(this, song.getId(), new RequestSongCallback() {
-            @Override
-            public void onFailure(final String result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (result.equals(ResponseMessages.USER_NOT_SUPPORTER)) {
-                            Toast.makeText(getBaseContext(), R.string.supporter, Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(getBaseContext(), R.string.req_error, Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-            }
-
-            @Override
-            public void onSuccess() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(getBaseContext(), R.string.success, Toast.LENGTH_LONG).show();
-
-                        song.setEnabled(false);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-            }
-        });
     }
 }

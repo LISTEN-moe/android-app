@@ -17,6 +17,7 @@ import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
 import jcotter.listenmoe.interfaces.UserInfoCallback;
 import jcotter.listenmoe.model.AuthResponse;
+import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.model.SongsList;
 import jcotter.listenmoe.model.UserInfo;
 import okhttp3.Call;
@@ -147,7 +148,10 @@ public class APIUtil {
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 final SongsList songsList = APIUtil.parseSongJson(response.body().string());
-                callback.onSuccess(songsList.getSongs());
+                for (final Song song : songsList.getSongs()) {
+                    song.setFavorite(true);
+                }
+                callback.onSuccess(songsList);
             }
         });
     }

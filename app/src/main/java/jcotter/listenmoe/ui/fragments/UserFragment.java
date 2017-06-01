@@ -11,23 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.List;
-
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
 import jcotter.listenmoe.interfaces.OnSongItemClickListener;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
 import jcotter.listenmoe.interfaces.UserInfoCallback;
 import jcotter.listenmoe.model.Song;
+import jcotter.listenmoe.model.SongsList;
 import jcotter.listenmoe.model.UserInfo;
 import jcotter.listenmoe.ui.fragments.base.TabFragment;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
+import jcotter.listenmoe.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements OnSongItemClickListener {
 
     // UI views
     private TextView mUserName;
+    private TextView mUserRequests;
     private RecyclerView mUserFavorites;
 
     private SongAdapter adapter;
@@ -43,6 +44,7 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
 
         // Get UI views
         mUserName = (TextView) rootView.findViewById(R.id.user_name);
+        mUserRequests = (TextView) rootView.findViewById(R.id.user_requests);
         mUserFavorites = (RecyclerView) rootView.findViewById(R.id.user_favorites);
 
         // Set up favorites list
@@ -62,16 +64,6 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
             // TODO: show login required message
             return;
         }
-
-//        final long tokenAge = AuthUtil.getTokenAge(getBaseContext());
-//        if (tokenAge != 0) {
-//            runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Toast.makeText(getBaseContext(), String.format(getString(R.string.token_age), Math.round((System.currentTimeMillis() / 1000 - tokenAge) / 86400.0)), Toast.LENGTH_LONG).show();
-//                }
-//            });
-//        }
 
         APIUtil.getUserInfo(getContext(), new UserInfoCallback() {
             @Override
@@ -97,11 +89,12 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
             }
 
             @Override
-            public void onSuccess(final List<Song> favorites) {
+            public void onSuccess(final SongsList songsList) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.setSongs(favorites);
+                        adapter.setSongs(songsList.getSongs());
+                        mUserRequests.setText(Integer.toString(songsList.getExtra().getRequests()));
                     }
                 });
             }
@@ -121,7 +114,7 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
                 .setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int in) {
-//                        favorite(song);
+                        SongActionsUtil.favorite(getActivity(), adapter, song);
                     }
                 });
 
@@ -130,7 +123,7 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
             builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int im) {
-//                    request(song);
+                    SongActionsUtil.request(getActivity(), adapter, song);
                 }
             });
         }
