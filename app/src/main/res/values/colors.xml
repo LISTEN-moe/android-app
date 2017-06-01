@@ -3,9 +3,7 @@
     <color name="colorPrimary">#1D1F2B</color>
     <color name="colorAccent">#EC1A55</color>
 
-    <color name="backgroundColor">#1D1F2B</color>
     <color name="grey">#747574</color>
-    <color name="greyText">#696969</color>
     <color name="lightGrey">#C0C0C0</color>
     <color name="volumeLight">#F75E7E</color>
 </resources>
