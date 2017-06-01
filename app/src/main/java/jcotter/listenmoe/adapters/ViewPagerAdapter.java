@@ -6,23 +6,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.ViewGroup;
 
+import jcotter.listenmoe.R;
 import jcotter.listenmoe.ui.fragments.RadioFragment;
 import jcotter.listenmoe.ui.fragments.UserFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
-    private static RadioFragment radioFragment;
-    private static UserFragment userFragment;
+    final private int[] ICONS = new int[]{
+            R.drawable.ic_radio_white_24dp,
+            R.drawable.ic_person_white_24dp
+    };
 
     public ViewPagerAdapter(FragmentManager fm, Context mContext) {
         super(fm);
-    }
-
-    public static RadioFragment getRadioFragment() {
-        return radioFragment;
-    }
-
-    public static UserFragment getUserFragment() {
-        return userFragment;
     }
 
     @Override
@@ -38,35 +33,22 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        final Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
-
-        // Save fragment references depending on position
-        switch (position) {
-            case 0:
-                radioFragment = (RadioFragment) createdFragment;
-                break;
-            case 1:
-                userFragment = (UserFragment) createdFragment;
-                break;
-            case 2:
-        }
-
-        return createdFragment;
-    }
-
-    @Override
     public int getCount() {
         return 2;
     }
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // TODO
-        if (position == 0) {
-            return "Radio";
-        } else {
-            return "User";
-        }
+        return "";
+    }
+
+    /**
+     * Gets the tab's icon.
+     *
+     * @param position The tab index.
+     * @return The resource ID for the tab's icon.
+     */
+    public int getIcon(int position) {
+        return ICONS[position];
     }
 }

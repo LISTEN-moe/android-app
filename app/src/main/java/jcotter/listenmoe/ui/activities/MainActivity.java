@@ -96,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
         final TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+
+        final int tabCount = mTabLayout.getTabCount();
+        for (int i = 0; i < tabCount; i++) {
+            mTabLayout.getTabAt(i).setIcon(mViewPagerAdapter.getIcon(i));
+        }
     }
 
 
