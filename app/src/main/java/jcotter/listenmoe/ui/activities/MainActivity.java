@@ -88,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up ViewPager and adapter
         final ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
-        final ViewPagerAdapter mViewPagerAdapter =
-                new ViewPagerAdapter(getSupportFragmentManager(), this);
+        final ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mViewPagerAdapter);
 
         // Set up tabs

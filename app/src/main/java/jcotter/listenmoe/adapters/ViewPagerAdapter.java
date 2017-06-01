@@ -16,7 +16,7 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
             R.drawable.ic_person_white_24dp
     };
 
-    public ViewPagerAdapter(FragmentManager fm, Context mContext) {
+    public ViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
