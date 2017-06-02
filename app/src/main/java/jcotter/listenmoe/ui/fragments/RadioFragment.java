@@ -130,7 +130,7 @@ public class RadioFragment extends TabFragment {
         songID = -1;
         favorite = false;
 
-        MainActivity.broadcastReceiver = new BroadcastReceiver() {
+        ((MainActivity) getActivity()).setBroadcastReceiver(new BroadcastReceiver() {
             @SuppressWarnings("deprecation")
             @Override
             public void onReceive(Context context, final Intent intent) {
@@ -207,13 +207,16 @@ public class RadioFragment extends TabFragment {
                 }
 
             }
-        };
+        });
 
+        // TODO: clean up this stuff
         try {
             final IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(getActivity().getPackageName());
             intentFilter.addAction(StreamService.UPDATE_PLAYING);
-            getActivity().registerReceiver(MainActivity.broadcastReceiver, intentFilter);
+
+            final MainActivity activity = (MainActivity) getActivity();
+            activity.registerReceiver(activity.getBroadcastReceiver(), intentFilter);
         } catch (IllegalArgumentException ignored) {
         }
 

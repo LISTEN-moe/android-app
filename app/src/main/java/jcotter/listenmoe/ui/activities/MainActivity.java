@@ -33,9 +33,10 @@ import jcotter.listenmoe.util.SDKUtil;
 public class MainActivity extends AppCompatActivity {
     public static final String TRIGGER_LOGIN = "trigger_login";
 
-    private AlertDialog mAboutDialog;
+    private BroadcastReceiver broadcastReceiver;
+    private boolean receiverRegistered = false;
 
-    public static BroadcastReceiver broadcastReceiver;
+    private AlertDialog mAboutDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +65,25 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        // TODO: use flag to track if registered
-        try {
-            unregisterReceiver(MainActivity.broadcastReceiver);
-        } catch (IllegalArgumentException ignored) {
+        if (receiverRegistered) {
+            unregisterReceiver(broadcastReceiver);
         }
 
         final Intent intent = new Intent(getBaseContext(), StreamService.class);
         intent.putExtra(StreamService.KILLABLE, true);
         startService(intent);
+    }
+
+
+    // Broadcast receiver
+
+    public BroadcastReceiver getBroadcastReceiver() {
+        return broadcastReceiver;
+    }
+
+    public void setBroadcastReceiver(BroadcastReceiver receiver) {
+        broadcastReceiver = receiver;
+        receiverRegistered = true;
     }
 
 
@@ -257,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
+    // TODO: actual activity with LICENSEs and stuff?
     private void showAboutDialog() {
         if (mAboutDialog == null) {
             String version;
