@@ -20,11 +20,19 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/nowPlaying"
+        android:id="@+id/track_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
-        android:text="@string/nowPlaying"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/track_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
@@ -33,7 +41,6 @@
         android:id="@+id/requestedText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/requestedText"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textColorLink="@color/colorAccent"
@@ -55,6 +62,7 @@
             android:id="@+id/seekBar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:contentDescription="@string/volume"
             android:max="100"
             android:progress="50"
             android:progressBackgroundTint="@color/volumeLight"
@@ -76,12 +84,12 @@
         android:layout_gravity="center_horizontal">
 
         <ImageButton
-            android:id="@+id/playPause"
+            android:id="@+id/play_pause_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
-            android:contentDescription="@string/infoPlayPause"
+            android:contentDescription="@string/play_pause"
             android:foreground="@android:color/transparent"
             android:foregroundTint="@android:color/transparent"
             android:scaleType="fitXY"
@@ -89,14 +97,14 @@
             app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
 
         <ImageButton
-            android:id="@+id/favoriteButton"
+            android:id="@+id/favorite_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
+            android:contentDescription="@string/favorite"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/ic_star_border_white_24dp"
-            tools:ignore="ContentDescription" />
+            app:srcCompat="@drawable/ic_star_border_white_24dp" />
 
     </LinearLayout>
 
@@ -104,7 +112,6 @@
         android:id="@+id/currentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/currentListeners"
         android:textAlignment="center"
         android:textColor="@android:color/white" />
 

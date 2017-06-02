@@ -34,7 +34,8 @@ import jcotter.listenmoe.util.SDKUtil;
 public class RadioFragment extends TabFragment {
 
     // UI views
-    private TextView mNowPlayingTxt;
+    private TextView mTrackTitle;
+    private TextView mTrackSubtitle;
     private TextView mRequestedByTxt;
     private SeekBar mVolumeBar;
     private ImageButton mPlayPauseBtn;
@@ -56,16 +57,18 @@ public class RadioFragment extends TabFragment {
         final View rootView = inflater.inflate(R.layout.fragment_radio, container, false);
 
         // Get UI views
-        mNowPlayingTxt = (TextView) rootView.findViewById(R.id.nowPlaying);
+        mTrackTitle = (TextView) rootView.findViewById(R.id.track_title);
+        mTrackSubtitle = (TextView) rootView.findViewById(R.id.track_subtitle);
         mRequestedByTxt = (TextView) rootView.findViewById(R.id.requestedText);
         mVolumeBar = (SeekBar) rootView.findViewById(R.id.seekBar);
-        mPlayPauseBtn = (ImageButton) rootView.findViewById(R.id.playPause);
-        mFavoriteBtn = (ImageButton) rootView.findViewById(R.id.favoriteButton);
+        mPlayPauseBtn = (ImageButton) rootView.findViewById(R.id.play_pause_btn);
+        mFavoriteBtn = (ImageButton) rootView.findViewById(R.id.favorite_btn);
         mListenersTxt = (TextView) rootView.findViewById(R.id.currentText);
 
         // Set font to OpenSans
         final Typeface openSans = Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Regular.ttf");
-        mNowPlayingTxt.setTypeface(openSans);
+        mTrackTitle.setTypeface(openSans);
+        mTrackSubtitle.setTypeface(openSans);
         mRequestedByTxt.setTypeface(openSans);
         mListenersTxt.setTypeface(openSans);
 
@@ -141,46 +144,43 @@ public class RadioFragment extends TabFragment {
                 switch (intent.getAction()) {
                     // Updating current song info from StreamService
                     case StreamService.UPDATE_PLAYING:
-                        final StringBuilder playingBuilder = new StringBuilder();
-                        final StringBuilder listenersBuilder = new StringBuilder();
+                        // TODO: clean this up a bit more
+                        final String trackTitle;
+                        final String trackSubtitle;
                         final StringBuilder requesterBuilder = new StringBuilder();
 
                         // Fetch data from intent
                         if (intent.hasExtra(StreamService.UPDATE_PLAYING_SONG)) {
                             final Song currentSong = intent.getParcelableExtra(StreamService.UPDATE_PLAYING_SONG);
-                            final int listeners = intent.getIntExtra(StreamService.UPDATE_PLAYING_LISTENERS, 0);
                             final String requester = intent.getStringExtra(StreamService.UPDATE_PLAYING_REQUESTER);
 
                             songID = currentSong.getId();
                             favorite = currentSong.isFavorite();
 
-                            // Current listeners
-                            listenersBuilder.append(String.format(getResources().getString(R.string.currentListeners), listeners));
-
                             // Current song info
-                            playingBuilder.append(String.format(getResources().getString(R.string.nowPlaying), currentSong.getTitle(), currentSong.getArtist()));
-                            if (!currentSong.getAnime().equals("")) {
-                                playingBuilder.append(String.format("\n[ %s ]", currentSong.getAnime()));
-                            }
+                            trackTitle = currentSong.getTitle();
+                            trackSubtitle = currentSong.getArtistAndAnime();
 
                             // Song requester
                             if (!requester.equals("")) {
-                                requesterBuilder.append(String.format(getResources().getString(R.string.requestedText), requester));
+                                requesterBuilder.append(String.format(getResources().getString(R.string.requested_by), requester));
                             }
                         } else {
-                            playingBuilder.append(getString(R.string.api_failure));
-                            listenersBuilder.append(String.format(getResources().getString(R.string.currentListeners), 0));
+                            trackTitle = getString(R.string.api_failure);
+                            trackSubtitle = "";
                         }
 
-                        final String nowPlaying = playingBuilder.toString();
-                        final String currentListeners = listenersBuilder.toString();
+                        // Current listeners
+                        final String listeners = String.format(getResources().getString(R.string.current_listeners), intent.getIntExtra(StreamService.UPDATE_PLAYING_LISTENERS, 0));
+
                         final String requestedBy = requesterBuilder.toString();
 
                         getActivity().runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mNowPlayingTxt.setText(nowPlaying);
-                                mListenersTxt.setText(currentListeners);
+                                mTrackTitle.setText(trackTitle);
+                                mTrackSubtitle.setText(trackSubtitle);
+                                mListenersTxt.setText(listeners);
 
                                 if (requestedBy.equals("")) {
                                     mRequestedByTxt.setVisibility(View.INVISIBLE);
@@ -267,10 +267,8 @@ public class RadioFragment extends TabFragment {
         });
 
         final Toast toast = Toast.makeText(getActivity(), getString(R.string.sending), Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
         toast.show();
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 toast.cancel();

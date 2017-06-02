@@ -46,12 +46,11 @@
     ]]></string>
 
     <!-- Radio tab -->
-    <string name="infoPlayPause">Play/pause button</string>
-    <string name="infoVolume">Volume</string>
-    <string name="infoMenu">Menu</string>
-    <string name="nowPlaying" formatted="false">%s\n%s</string>
-    <string name="requestedText"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>
-    <string name="currentListeners">Current listeners: %d</string>
+    <string name="play_pause">Play/pause</string>
+    <string name="favorite">Favorite</string>
+    <string name="volume">Volume</string>
+    <string name="requested_by"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>
+    <string name="current_listeners">Current listeners: %d</string>
 
     <!-- User tab -->
     <string name="user_requests">%d requests remaining</string>
