@@ -24,7 +24,7 @@ public class SongActionsUtil {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, R.string.req_error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -55,9 +55,9 @@ public class SongActionsUtil {
                     @Override
                     public void run() {
                         if (result.equals(ResponseMessages.USER_NOT_SUPPORTER)) {
-                            Toast.makeText(activity, R.string.supporter, Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity, R.string.supporter_required, Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(activity, R.string.req_error, Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity, R.string.error, Toast.LENGTH_LONG).show();
                         }
                     }
                 });

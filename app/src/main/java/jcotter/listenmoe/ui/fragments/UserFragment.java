@@ -93,7 +93,7 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
                     @Override
                     public void run() {
                         adapter.setSongs(songsList.getSongs());
-                        mUserRequests.setText(Integer.toString(songsList.getExtra().getRequests()));
+                        mUserRequests.setText(String.format(getString(R.string.user_requests), songsList.getExtra().getRequests()));
                     }
                 });
             }

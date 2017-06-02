@@ -6,6 +6,8 @@
     <string name="close">Close</string>
     <string name="cancel">Cancel</string>
     <string name="success">Success!</string>
+    <string name="error">An error occurred</string>
+    <string name="sending">Sending…</string>
 
     <!-- Actions (notification, dialogs) -->
     <string name="action_play">Play</string>
@@ -18,7 +20,7 @@
     <!-- Search -->
     <string name="search">Search</string>
 
-    <!-- Login/logout -->
+    <!-- Auth -->
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="username">Username:</string>
@@ -28,6 +30,8 @@
     <string name="error_pass">Error: incorrect password</string>
     <string name="logout_confirmation">Are you sure you want to logout?\n\nYou have been logged in for %d days.</string>
     <string name="logged_out">Logged out</string>
+    <string name="token_expired">Token expired</string>
+    <string name="login_required">You must log in to use this feature</string>
 
     <!-- About dialog -->
     <string name="about">About</string>
@@ -40,24 +44,21 @@
         Report bugs or request features on <a href=\'https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App\'>GitHub</a>.
     ]]></string>
 
-    <!-- Radio -->
+    <!-- Radio tab -->
     <string name="infoPlayPause">Play/pause button</string>
-    <string name="infoVolume">Volume slider</string>
+    <string name="infoVolume">Volume</string>
     <string name="infoMenu">Menu</string>
-    <string name="nowPlaying" formatted="false">- Now Playing -\n%s\n%s</string>
+    <string name="nowPlaying" formatted="false">%s\n%s</string>
     <string name="requestedText"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>
     <string name="currentListeners">Current listeners: %d</string>
 
-    <!-- Menu -->
-    <string name="tabFav">Favorites</string>
-    <string name="tabReq">Requests</string>
-    <string name="token_expired">Token expired</string>
-    <string name="login_required">You must log in to use this feature</string>
+    <!-- User tab -->
+    <string name="user_requests">%d requests remaining</string>
+
+    <!-- Song item actions -->
     <string name="req_dialog_message">What action would you like to take?</string>
-    <string name="req_error">An error occurred!</string>
-    <string name="supporter">Supporter status required</string>
+    <string name="supporter_required">Supporter status required</string>
 
     <!-- WebSocket -->
     <string name="api_failure">Unable to connect to the API.\n Please check your internet connection.\n If you are connected stop the app and then try again.\n If the problem persists the radio might be down for maintenance</string>
-    <string name="sending">Sending…</string>
 </resources>
