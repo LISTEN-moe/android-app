@@ -47,4 +47,5 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.6.0' // Apache 2.0 | https://github.com/square/okhttp
     compile 'com.google.android.exoplayer:exoplayer:r2.3.1' // Apache 2.0 | https://github.com/google/ExoPlayer
     compile 'com.google.code.gson:gson:2.8.0' // Apache 2.0 | https://github.com/google/gson
+    compile 'de.hdodenhof:circleimageview:2.1.0' // Apache 2.0 | https://github.com/hdodenhof/CircleImageView
 }

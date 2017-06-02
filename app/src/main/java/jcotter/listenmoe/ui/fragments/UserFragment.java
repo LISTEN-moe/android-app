@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
 import jcotter.listenmoe.interfaces.OnSongItemClickListener;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
+import jcotter.listenmoe.interfaces.UserForumInfoCallback;
 import jcotter.listenmoe.interfaces.UserInfoCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.model.SongsList;
@@ -22,11 +24,13 @@ import jcotter.listenmoe.model.UserInfo;
 import jcotter.listenmoe.ui.fragments.base.TabFragment;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
+import jcotter.listenmoe.util.DownloadImageTask;
 import jcotter.listenmoe.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements OnSongItemClickListener {
 
     // UI views
+    private ImageView mUserAvatar;
     private TextView mUserName;
     private TextView mUserRequests;
     private RecyclerView mUserFavorites;
@@ -43,6 +47,7 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
         final View rootView = inflater.inflate(R.layout.fragment_user, container, false);
 
         // Get UI views
+        mUserAvatar = (ImageView) rootView.findViewById(R.id.user_avatar);
         mUserName = (TextView) rootView.findViewById(R.id.user_name);
         mUserRequests = (TextView) rootView.findViewById(R.id.user_requests);
         mUserFavorites = (RecyclerView) rootView.findViewById(R.id.user_favorites);
@@ -74,7 +79,25 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mUserName.setText(userInfo.getUsername());
+                        final String userName = userInfo.getUsername();
+
+                        mUserName.setText(userName);
+
+                        APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoCallback() {
+                            @Override
+                            public void onFailure(final String result) {
+                            }
+
+                            @Override
+                            public void onSuccess(final String avatarUrl) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        new DownloadImageTask(mUserAvatar).execute(avatarUrl);
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
             }
