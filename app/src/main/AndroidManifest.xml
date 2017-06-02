@@ -26,7 +26,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.SearchActivity" />
+        <activity android:name=".ui.activities.SearchActivity"
+            android:parentActivityName=".ui.activities.MainActivity" />
 
         <meta-data
             android:name="android.max_aspect"

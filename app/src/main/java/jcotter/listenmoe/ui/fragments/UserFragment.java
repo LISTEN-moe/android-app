@@ -50,7 +50,6 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
         // Set up favorites list
         adapter = new SongAdapter(this);
         mUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
-//        mList.addItemDecoration(new DividerItemDecoration(getContext()));
         mUserFavorites.setAdapter(adapter);
 
         // Show info

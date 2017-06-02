@@ -6,8 +6,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -30,13 +30,12 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        // Handle up action
-        findViewById(R.id.search_up).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        // Set up app bar
+        Toolbar mAppbar = (Toolbar) findViewById(R.id.appbar);
+        setSupportActionBar(mAppbar);
+
+        // Enable the Up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initSearch();
     }
@@ -46,7 +45,6 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
 
         final RecyclerView mResults = (RecyclerView) findViewById(R.id.search_results);
         mResults.setLayoutManager(new LinearLayoutManager(this));
-//        mList.addItemDecoration(new DividerItemDecoration(getContext()));
         mResults.setAdapter(adapter);
 
         final EditText mSearchQuery = (EditText) findViewById(R.id.search_query);

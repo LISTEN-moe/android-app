@@ -1,55 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorPrimary"
     tools:context=".ui.activities.SearchActivity">
 
     <!-- TODO: empty search results, login required message -->
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="fill_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@android:color/white">
+        android:background="@color/colorPrimary">
 
-        <EditText
-            android:id="@+id/search_query"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/appbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@null"
-            android:hint="@string/search"
-            android:imeOptions="actionSearch"
-            android:inputType="textNoSuggestions"
-            android:maxLines="1"
-            android:paddingLeft="@dimen/search_view_text_padding"
-            android:paddingRight="@dimen/search_view_text_padding"
-            android:textColorHint="@color/grey"
-            android:textSize="16sp" />
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
-        <ImageButton
-            android:id="@+id/search_up"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:paddingLeft="@dimen/search_icon_padding"
-            android:paddingRight="@dimen/search_icon_padding"
-            android:src="@drawable/ic_arrow_back_black_24dp"
-            android:tint="@color/grey" />
+            <EditText
+                android:id="@+id/search_query"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:inputType="textNoSuggestions"
+                android:maxLines="1"
+                android:paddingRight="16dp"
+                android:textColorHint="@color/grey"
+                android:textSize="16sp" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dip"
-            android:layout_alignParentBottom="true"
-            android:background="#fff"
-            android:backgroundTint="#10000000" />
-    </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/search_results"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

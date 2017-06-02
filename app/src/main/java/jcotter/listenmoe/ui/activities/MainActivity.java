@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Init app/tab bar
-        initToolbar();
+        initAppbar();
 
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initializes everything for the tabs: the adapter, icons, and title handler
      */
-    private void initToolbar() {
+    private void initAppbar() {
         // Set up app bar
         setSupportActionBar((Toolbar) findViewById(R.id.appbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);

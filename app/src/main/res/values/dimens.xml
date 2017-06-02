@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- TODO: standardize 8dp/16dp/etc. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <dimen name="search_icon_padding">12dp</dimen>
-    <dimen name="search_view_text_padding">65dp</dimen>
 </resources>
