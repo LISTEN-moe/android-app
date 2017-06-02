@@ -3,6 +3,7 @@ package jcotter.listenmoe.ui.activities;
 import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (receiverRegistered) {
             unregisterReceiver(broadcastReceiver);
+            receiverRegistered = false;
         }
 
         final Intent intent = new Intent(getBaseContext(), StreamService.class);
@@ -77,12 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Broadcast receiver
 
-    public BroadcastReceiver getBroadcastReceiver() {
-        return broadcastReceiver;
-    }
-
-    public void setBroadcastReceiver(BroadcastReceiver receiver) {
+    public void registerBroadcastReceiver(BroadcastReceiver receiver, IntentFilter intentFilter) {
         broadcastReceiver = receiver;
+        registerReceiver(broadcastReceiver, intentFilter);
         receiverRegistered = true;
     }
 
