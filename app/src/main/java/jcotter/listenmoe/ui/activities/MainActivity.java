@@ -29,6 +29,7 @@ import jcotter.listenmoe.interfaces.AuthCallback;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
+import jcotter.listenmoe.util.NetworkUtil;
 import jcotter.listenmoe.util.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +44,20 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Show error view if there's no Internet connection
+        if (!NetworkUtil.isNetworkAvailable(this)) {
+            findViewById(R.id.no_internet).setVisibility(View.VISIBLE);
+            findViewById(R.id.content).setVisibility(View.GONE);
+
+            final Button mRetry = (Button) findViewById(R.id.btn_retry);
+            mRetry.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    recreate();
+                }
+            });
+        }
 
         // Init app/tab bar
         initAppbar();

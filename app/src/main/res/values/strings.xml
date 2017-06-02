@@ -61,4 +61,8 @@
 
     <!-- WebSocket -->
     <string name="api_failure">Unable to connect to the API.\n Please check your internet connection.\n If you are connected stop the app and then try again.\n If the problem persists the radio might be down for maintenance</string>
+
+    <!-- No Internet view -->
+    <string name="no_internet">Can\'t connect to LISTEN.moe!\nPlease check your Internet connection.</string>
+    <string name="retry">Retry</string>
 </resources>
