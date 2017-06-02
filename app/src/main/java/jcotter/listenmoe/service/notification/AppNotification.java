@@ -40,7 +40,7 @@ public class AppNotification {
 
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
-                isPlaying ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp,
+                isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp,
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
                 getPlaybackActionService(StreamService.class, StreamService.PLAY, !isPlaying)
         );
@@ -49,13 +49,13 @@ public class AppNotification {
         NotificationCompat.Action favoriteAction;
         if (AuthUtil.isAuthenticated(service)) {
             favoriteAction = new NotificationCompat.Action(
-                    song.isFavorite() ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp,
+                    song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
                     song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
                     getPlaybackActionService(StreamService.class, StreamService.FAVORITE, true)
             );
         } else {
             favoriteAction = new NotificationCompat.Action(
-                    R.drawable.ic_star_border_black_24dp,
+                    R.drawable.ic_star_border_white_24dp,
                     service.getString(R.string.action_favorite),
                     getPlaybackActionActivity(MainActivity.class, MainActivity.TRIGGER_LOGIN)
             );
@@ -63,7 +63,7 @@ public class AppNotification {
 
         // Stop action
         final NotificationCompat.Action stopAction = new NotificationCompat.Action(
-                R.drawable.ic_stop_black_24dp,
+                R.drawable.ic_stop_white_24dp,
                 service.getString(R.string.action_stop),
                 getPlaybackActionService(StreamService.class, StreamService.STOP, true)
         );

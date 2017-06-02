@@ -46,10 +46,9 @@
             android:id="@+id/volumeDown"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:contentDescription="@string/infoVolumeDown"
             android:scaleType="fitXY"
-            android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_volume_down_black_24dp" />
+            app:srcCompat="@drawable/ic_volume_down_white_24dp"
+            tools:ignore="ContentDescription" />
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -65,10 +64,9 @@
             android:id="@+id/volumeUp"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:contentDescription="@string/infoVolumeUp"
             android:scaleType="fitXY"
-            android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_volume_up_black_24dp" />
+            app:srcCompat="@drawable/ic_volume_up_white_24dp"
+            tools:ignore="ContentDescription" />
 
     </LinearLayout>
 
@@ -87,9 +85,8 @@
             android:foreground="@android:color/transparent"
             android:foregroundTint="@android:color/transparent"
             android:scaleType="fitXY"
-            android:tint="@android:color/white"
             android:visibility="visible"
-            app:srcCompat="@drawable/ic_play_arrow_black_24dp" />
+            app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
 
         <ImageButton
             android:id="@+id/favoriteButton"
@@ -98,8 +95,7 @@
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:scaleType="fitXY"
-            android:tint="@android:color/white"
-            app:srcCompat="@drawable/ic_star_border_black_24dp"
+            app:srcCompat="@drawable/ic_star_border_white_24dp"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>

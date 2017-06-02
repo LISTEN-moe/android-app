@@ -43,8 +43,6 @@
     <!-- Radio -->
     <string name="infoPlayPause">Play/pause button</string>
     <string name="infoVolume">Volume slider</string>
-    <string name="infoVolumeDown">Volume down image</string>
-    <string name="infoVolumeUp">Volume up image</string>
     <string name="infoMenu">Menu</string>
     <string name="nowPlaying" formatted="false">- Now Playing -\n%s\n%s</string>
     <string name="requestedText"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>

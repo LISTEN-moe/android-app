@@ -185,7 +185,7 @@ public class RadioFragment extends TabFragment {
                                     mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
                                     mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
                                 }
-                                final int favDrawable = favorite ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp;
+                                final int favDrawable = favorite ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
                                 mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
                             }
                         });
@@ -194,13 +194,13 @@ public class RadioFragment extends TabFragment {
                     default:
                         if (intent.hasExtra(StreamService.RUNNING)) {
                             playing = intent.getBooleanExtra(StreamService.RUNNING, false);
-                            final int playDrawable = playing ? R.drawable.ic_pause_black_24dp : R.drawable.ic_play_arrow_black_24dp;
+                            final int playDrawable = playing ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp;
                             mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), playDrawable));
                         }
 
                         if (intent.hasExtra(StreamService.FAVORITE)) {
                             favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
-                            final int favDrawable = favorite ? R.drawable.ic_star_black_24dp : R.drawable.ic_star_border_black_24dp;
+                            final int favDrawable = favorite ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
                             mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
                         }
                         break;
@@ -259,9 +259,9 @@ public class RadioFragment extends TabFragment {
                     public void run() {
                         favorite = favorited;
                         if (favorited) {
-                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_black_24dp));
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_white_24dp));
                         } else {
-                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_border_black_24dp));
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_border_white_24dp));
                         }
 
                         if (StreamService.isServiceRunning) {
