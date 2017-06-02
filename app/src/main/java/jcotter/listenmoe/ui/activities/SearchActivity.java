@@ -93,7 +93,7 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
                 .setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int in) {
-                        SongActionsUtil.favorite(getParent(), adapter, song);
+                        SongActionsUtil.favorite(SearchActivity.this, adapter, song);
                     }
                 });
 
@@ -102,7 +102,7 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
             builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int im) {
-                    SongActionsUtil.request(getParent(), adapter, song);
+                    SongActionsUtil.request(SearchActivity.this, adapter, song);
                 }
             });
         }

@@ -15,28 +15,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_marginTop="48dp"
-        android:padding="8dp"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
             android:layout_marginTop="64dp"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:textSize="20sp" />
 
         <TextView
             android:id="@+id/user_requests"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/white"
-            android:textAlignment="center"
-            android:fontFamily="sans-serif-light"
             android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif-light"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
             android:textSize="14sp" />
 
     </LinearLayout>
@@ -47,8 +47,8 @@
         android:layout_height="96dp"
         android:layout_gravity="center"
         android:layout_marginTop="-170dp"
-        app:civ_border_width="2dp"
-        app:civ_border_color="@color/colorAccent"/>
+        app:civ_border_color="@color/colorAccent"
+        app:civ_border_width="2dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/user_favorites"
