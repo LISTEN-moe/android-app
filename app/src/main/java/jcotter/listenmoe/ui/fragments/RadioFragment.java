@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,11 +58,11 @@ public class RadioFragment extends TabFragment {
         // Get UI views
         mTrackTitle = (TextView) rootView.findViewById(R.id.track_title);
         mTrackSubtitle = (TextView) rootView.findViewById(R.id.track_subtitle);
-        mRequestedByTxt = (TextView) rootView.findViewById(R.id.requestedText);
-        mVolumeBar = (SeekBar) rootView.findViewById(R.id.seekBar);
+        mRequestedByTxt = (TextView) rootView.findViewById(R.id.requested_by);
+        mVolumeBar = (SeekBar) rootView.findViewById(R.id.volume_seekbar);
         mPlayPauseBtn = (ImageButton) rootView.findViewById(R.id.play_pause_btn);
         mFavoriteBtn = (ImageButton) rootView.findViewById(R.id.favorite_btn);
-        mListenersTxt = (TextView) rootView.findViewById(R.id.currentText);
+        mListenersTxt = (TextView) rootView.findViewById(R.id.current_listeners);
 
         // Set font to OpenSans
         final Typeface openSans = Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Regular.ttf");
@@ -119,9 +118,9 @@ public class RadioFragment extends TabFragment {
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             if (v == mPlayPauseBtn) {
-                playPauseLogic();
+                togglePlayPause();
             } else if (v == mFavoriteBtn) {
-                favoriteLogic();
+                favorite();
             }
         }
     };
@@ -222,9 +221,23 @@ public class RadioFragment extends TabFragment {
         getActivity().startService(intent);
     }
 
-    private void favoriteLogic() {
+    private void togglePlayPause() {
+        if (songID == -1) return;
+
+        final Intent intent = new Intent(getActivity(), StreamService.class);
+        intent.putExtra(StreamService.PLAY, !playing);
+        intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
+        getActivity().startService(intent);
+    }
+
+    private void favorite() {
         if (!AuthUtil.isAuthenticated(getActivity())) {
-            ((MainActivity) getActivity()).showLoginDialog();
+            ((MainActivity) getActivity()).showLoginDialog(new MainActivity.OnLoginListener() {
+                @Override
+                public void onLogin() {
+                    favorite();
+                }
+            });
             return;
         }
 
@@ -274,14 +287,5 @@ public class RadioFragment extends TabFragment {
                 toast.cancel();
             }
         }, 750);
-    }
-
-    private void playPauseLogic() {
-        if (songID == -1) return;
-
-        final Intent intent = new Intent(getActivity(), StreamService.class);
-        intent.putExtra(StreamService.PLAY, !playing);
-        intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
-        getActivity().startService(intent);
     }
 }

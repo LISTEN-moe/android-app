@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -33,6 +34,10 @@ import jcotter.listenmoe.util.NetworkUtil;
 import jcotter.listenmoe.util.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
+    public interface OnLoginListener {
+        void onLogin();
+    }
+
     public static final String TRIGGER_LOGIN = "trigger_login";
 
     private BroadcastReceiver broadcastReceiver;
@@ -171,6 +176,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showLoginDialog() {
+        showLoginDialog(null);
+    }
+
+    public void showLoginDialog(@Nullable final OnLoginListener listener) {
         final View layout = getLayoutInflater().inflate(R.layout.dialog_login, (ViewGroup) findViewById(R.id.layout_root));
         final EditText mLoginUser = (EditText) layout.findViewById(R.id.login_username);
         final EditText mLoginPass = (EditText) layout.findViewById(R.id.login_password);
@@ -198,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        login(user, pass, dialog);
+                        login(user, pass, dialog, listener);
                     }
                 });
             }
@@ -210,11 +219,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Logs the user in with the provided credentials.
      *
-     * @param user   Username to pass in the request body.
-     * @param pass   Password to pass in the request body.
-     * @param dialog Reference to the login dialog so it can be dismissed upon success.
+     * @param user     Username to pass in the request body.
+     * @param pass     Password to pass in the request body.
+     * @param dialog   Reference to the login dialog so it can be dismissed upon success.
+     * @param listener Used to run something after a successful login.
      */
-    private void login(final String user, final String pass, final DialogInterface dialog) {
+    private void login(final String user, final String pass, final DialogInterface dialog, final OnLoginListener listener) {
         APIUtil.authenticate(this, user, pass, new AuthCallback() {
             @Override
             public void onFailure(final String result) {
@@ -248,6 +258,10 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                         invalidateOptionsMenu();
+
+                        if (listener != null) {
+                            listener.onLogin();
+                        }
 
                         // TODO: update notification?
                     }

@@ -38,10 +38,11 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/requestedText"
+        android:id="@+id/requested_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
+        android:layout_margin="8dp"
         android:textColor="@android:color/white"
         android:textColorLink="@color/colorAccent"
         android:textSize="14sp" />
@@ -49,6 +50,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:layout_gravity="center_horizontal">
 
         <ImageView
@@ -59,7 +61,7 @@
             tools:ignore="ContentDescription" />
 
         <SeekBar
-            android:id="@+id/seekBar"
+            android:id="@+id/volume_seekbar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:contentDescription="@string/volume"
@@ -92,6 +94,7 @@
             android:contentDescription="@string/play_pause"
             android:foreground="@android:color/transparent"
             android:foregroundTint="@android:color/transparent"
+            android:layout_margin="8dp"
             android:scaleType="fitXY"
             android:visibility="visible"
             app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
@@ -103,13 +106,14 @@
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/favorite"
+            android:layout_margin="8dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_star_border_white_24dp" />
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/currentText"
+        android:id="@+id/current_listeners"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
