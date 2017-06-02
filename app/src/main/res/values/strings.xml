@@ -19,6 +19,7 @@
 
     <!-- Search -->
     <string name="search">Search</string>
+    <string name="no_results">No results for \"%s\"</string>
 
     <!-- Auth -->
     <string name="login">Login</string>

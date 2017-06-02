@@ -8,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -23,6 +25,10 @@ import jcotter.listenmoe.util.SongActionsUtil;
 
 public class SearchActivity extends AppCompatActivity implements OnSongItemClickListener {
 
+    private RecyclerView mResultsList;
+    private LinearLayout mNoResults;
+    private TextView mNoResultsMsg;
+
     private SongAdapter adapter;
 
     @Override
@@ -31,11 +37,13 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
         setContentView(R.layout.activity_search);
 
         // Set up app bar
-        Toolbar mAppbar = (Toolbar) findViewById(R.id.appbar);
-        setSupportActionBar(mAppbar);
-
-        // Enable the Up button
+        setSupportActionBar((Toolbar) findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // UI view references
+        mResultsList = (RecyclerView) findViewById(R.id.search_results);
+        mNoResults = (LinearLayout) findViewById(R.id.no_results);
+        mNoResultsMsg = (TextView) findViewById(R.id.no_results_msg);
 
         initSearch();
     }
@@ -43,15 +51,15 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
     private void initSearch() {
         adapter = new SongAdapter(this);
 
-        final RecyclerView mResults = (RecyclerView) findViewById(R.id.search_results);
-        mResults.setLayoutManager(new LinearLayoutManager(this));
-        mResults.setAdapter(adapter);
+        mResultsList.setLayoutManager(new LinearLayoutManager(this));
+        mResultsList.setAdapter(adapter);
 
         final EditText mSearchQuery = (EditText) findViewById(R.id.search_query);
         mSearchQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                APIUtil.search(getBaseContext(), v.getText().toString().trim(), new SearchCallback() {
+                final String query = v.getText().toString().trim();
+                APIUtil.search(getBaseContext(), query, new SearchCallback() {
                     @Override
                     public void onFailure(final String result) {
                     }
@@ -62,6 +70,7 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
                             @Override
                             public void run() {
                                 adapter.setSongs(results);
+                                toggleEmptyView(results.size() == 0, query);
                             }
                         });
                     }
@@ -99,5 +108,14 @@ public class SearchActivity extends AppCompatActivity implements OnSongItemClick
         }
 
         builder.create().show();
+    }
+
+    private void toggleEmptyView(boolean isEmpty, String query) {
+        mResultsList.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
+        mNoResults.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
+
+        if (isEmpty) {
+            mNoResultsMsg.setText(String.format(getString(R.string.no_results), query));
+        }
     }
 }
