@@ -131,7 +131,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                startActivity(new Intent(this, SearchActivity.class));
+                if (AuthUtil.isAuthenticated(this)) {
+                    startActivity(new Intent(this, SearchActivity.class));
+                } else {
+                    showLoginDialog();
+                }
                 return true;
 
             case R.id.action_login:

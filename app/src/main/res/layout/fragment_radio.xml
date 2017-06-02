@@ -13,12 +13,11 @@
     tools:context=".ui.fragments.RadioFragment">
 
     <ImageView
-        android:id="@+id/logo"
         android:layout_width="326dp"
         android:layout_height="133dp"
         android:layout_gravity="center_horizontal"
-        android:contentDescription="@string/infoVolume"
-        app:srcCompat="@drawable/main_logo" />
+        app:srcCompat="@drawable/main_logo"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/nowPlaying"
@@ -46,7 +45,6 @@
         android:layout_gravity="center_horizontal">
 
         <ImageView
-            android:id="@+id/volumeDown"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:scaleType="fitXY"
@@ -64,7 +62,6 @@
             android:thumbTint="@color/colorAccent" />
 
         <ImageView
-            android:id="@+id/volumeUp"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:scaleType="fitXY"
