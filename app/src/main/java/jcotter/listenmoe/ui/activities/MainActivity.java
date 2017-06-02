@@ -228,9 +228,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLogoutDialog() {
+        final long tokenAge = AuthUtil.getTokenAge(this);
+
         new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
                 .setTitle(R.string.logout)
-                .setMessage(R.string.logout_confirmation)
+                .setMessage(String.format(getString(R.string.logout_confirmation), Math.round((System.currentTimeMillis() / 1000 - tokenAge) / 86400.0)))
                 .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

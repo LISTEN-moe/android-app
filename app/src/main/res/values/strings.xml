@@ -26,7 +26,7 @@
     <string name="error_general">Error: login failed</string>
     <string name="error_name">Error: invalid username</string>
     <string name="error_pass">Error: incorrect password</string>
-    <string name="logout_confirmation">Are you sure you want to logout?</string>
+    <string name="logout_confirmation">Are you sure you want to logout?\n\nYou have been logged in for %d days.</string>
     <string name="logged_out">Logged out</string>
 
     <!-- About dialog -->
@@ -54,7 +54,6 @@
     <string name="tabFav">Favorites</string>
     <string name="tabReq">Requests</string>
     <string name="token_expired">Token expired</string>
-    <string name="token_age">Current token age: %d days</string>
     <string name="login_required">You must log in to use this feature</string>
     <string name="req_dialog_message">What action would you like to take?</string>
     <string name="req_error">An error occurred!</string>
