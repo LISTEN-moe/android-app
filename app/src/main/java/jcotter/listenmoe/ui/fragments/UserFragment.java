@@ -67,7 +67,6 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
         APIUtil.getUserInfo(getContext(), new UserInfoCallback() {
             @Override
             public void onFailure(final String result) {
-
             }
 
             @Override
@@ -84,7 +83,6 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
         APIUtil.getUserFavorites(getContext(), new UserFavoritesCallback() {
             @Override
             public void onFailure(final String result) {
-
             }
 
             @Override

@@ -15,10 +15,12 @@ import jcotter.listenmoe.interfaces.FavoriteSongCallback;
 import jcotter.listenmoe.interfaces.RequestSongCallback;
 import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
+import jcotter.listenmoe.interfaces.UserForumInfoCallback;
 import jcotter.listenmoe.interfaces.UserInfoCallback;
 import jcotter.listenmoe.model.AuthResponse;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.model.SongsList;
+import jcotter.listenmoe.model.UserForumInfo;
 import jcotter.listenmoe.model.UserInfo;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -117,6 +119,38 @@ public class APIUtil {
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 callback.onSuccess(gson.fromJson(response.body().string(), UserInfo.class));
+            }
+        });
+    }
+
+    /**
+     * Gets a user's avatar URL from the forum.
+     *
+     * @param context  Android context to fetch SharedPreferences.
+     * @param username The user's username.
+     * @param callback Listener to handle the response.
+     */
+    public static void getUserAvatar(final Context context, final String username, final UserForumInfoCallback callback) {
+        if (!AuthUtil.isAuthenticated(context)) {
+            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            return;
+        }
+
+        final Request request = new Request.Builder()
+                .url(String.format(Endpoints.FORUM_USER, username))
+                .get()
+                .build();
+
+        http.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(final Call call, final IOException e) {
+                e.printStackTrace();
+                callback.onFailure(ResponseMessages.ERROR);
+            }
+
+            @Override
+            public void onResponse(final Call call, final Response response) throws IOException {
+                callback.onSuccess(gson.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
             }
         });
     }

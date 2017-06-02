@@ -9,4 +9,5 @@ public class Endpoints {
     public static final String USER_FAVORITES = "https://listen.moe/api/user/favorites";
     public static final String SEARCH = "https://listen.moe/api/songs/search";
     public static final String REQUEST = "https://listen.moe/api/songs/request";
+    public static final String FORUM_USER = "https://forum.listen.moe/api/users/%s";
 }
