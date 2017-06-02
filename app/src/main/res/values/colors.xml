@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1D1F2B</color>
-    <color name="colorAccent">#EC1A55</color>
+    <color name="colorPrimary">@color/grey</color>
+    <color name="colorAccent">@color/pink</color>
 
-    <color name="grey">#747574</color>
-    <color name="lightGrey">#C0C0C0</color>
-    <color name="volumeLight">#F75E7E</color>
+    <color name="grey">#1D1F2B</color>
+    <color name="light_grey">#2B2E41</color>
+    <color name="lighter_grey">#747574</color>
+
+    <color name="pink">#EC1A55</color>
+    <color name="light_pink">#F75E7E</color>
 </resources>

@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="@color/light_grey"
     android:orientation="vertical"
     tools:context=".ui.activities.SearchActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="fill_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary">
+        android:background="@color/grey">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/appbar"
@@ -28,7 +28,7 @@
                 android:inputType="textNoSuggestions"
                 android:maxLines="1"
                 android:paddingRight="16dp"
-                android:textColorHint="@color/grey"
+                android:textColorHint="@color/lighter_grey"
                 android:textSize="16sp" />
 
         </android.support.v7.widget.Toolbar>
@@ -39,7 +39,6 @@
         android:id="@+id/search_results"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 
     <LinearLayout
         android:id="@+id/no_results"

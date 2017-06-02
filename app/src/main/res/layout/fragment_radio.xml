@@ -67,9 +67,9 @@
             android:contentDescription="@string/volume"
             android:max="100"
             android:progress="50"
-            android:progressBackgroundTint="@color/volumeLight"
-            android:progressTint="@color/colorAccent"
-            android:thumbTint="@color/colorAccent" />
+            android:progressBackgroundTint="@color/light_pink"
+            android:progressTint="@color/pink"
+            android:thumbTint="@color/pink" />
 
         <ImageView
             android:layout_width="32dp"
