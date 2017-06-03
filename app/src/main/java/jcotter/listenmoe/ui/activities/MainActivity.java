@@ -155,13 +155,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
                 if (AuthUtil.isAuthenticated(this)) {
                     startActivity(new Intent(this, SearchActivity.class));
                 } else {
-                    showLoginDialog();
+                    showLoginDialog(new OnLoginListener() {
+                        @Override
+                        public void onLogin() {
+                            onOptionsItemSelected(item);
+                        }
+                    });
                 }
                 return true;
 
@@ -262,7 +267,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getBaseContext(), getString(R.string.success), Toast.LENGTH_LONG).show();
                         dialog.dismiss();
                         invalidateOptionsMenu();
 

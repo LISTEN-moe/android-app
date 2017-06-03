@@ -25,8 +25,8 @@
     <!-- Auth -->
     <string name="login">Login</string>
     <string name="logout">Logout</string>
-    <string name="username">Username:</string>
-    <string name="password">Password:</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
     <string name="error_general">Error: login failed</string>
     <string name="error_name">Error: invalid username</string>
     <string name="error_pass">Error: incorrect password</string>

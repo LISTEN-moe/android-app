@@ -5,37 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingTop="8dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
-    <TextView
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/username"
-        android:textSize="18sp"
-        android:textStyle="normal|bold" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/login_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:maxLines="1"
-        tools:ignore="LabelFor" />
+        <EditText
+            android:id="@+id/login_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/username"
+            android:inputType="text"
+            android:maxLines="1"
+            tools:ignore="LabelFor" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/password"
-        android:textSize="18sp"
-        android:textStyle="normal|bold" />
+    </android.support.design.widget.TextInputLayout>
 
-    <EditText
-        android:id="@+id/login_password"
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        tools:ignore="LabelFor" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            tools:ignore="LabelFor" />
+
+    </android.support.design.widget.TextInputLayout>
+
 </LinearLayout>
