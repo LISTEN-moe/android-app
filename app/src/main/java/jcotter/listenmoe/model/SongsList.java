@@ -18,4 +18,16 @@ public class SongsList {
     public SongsExtra getExtra() {
         return extra;
     }
+
+    public class SongsExtra {
+        private int requests;
+
+        public SongsExtra(int requests) {
+            this.requests = requests;
+        }
+
+        public int getRequests() {
+            return requests;
+        }
+    }
 }
