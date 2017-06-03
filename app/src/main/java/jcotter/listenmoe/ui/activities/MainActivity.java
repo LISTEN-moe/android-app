@@ -200,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle(R.string.login)
                 .setView(layout)
                 .setPositiveButton(R.string.login, null)
-                .setNegativeButton(R.string.cancel, null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .create();
 
         // Override the positive button listener so it won't automatically be dismissed even with
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
                         logout();
                     }
                 })
-                .setNegativeButton(R.string.cancel, null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .create()
                 .show();
     }

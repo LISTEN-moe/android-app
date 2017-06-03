@@ -88,7 +88,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setMessage(R.string.req_dialog_message)
-                .setPositiveButton(R.string.cancel, null)
+                .setPositiveButton(android.R.string.cancel, null)
                 .setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int in) {

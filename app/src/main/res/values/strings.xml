@@ -4,7 +4,6 @@
 
     <!-- Generic strings -->
     <string name="close">Close</string>
-    <string name="cancel">Cancel</string>
     <string name="success">Success!</string>
     <string name="error">An error occurred</string>
     <string name="sending">Sending…</string>
