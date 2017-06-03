@@ -9,14 +9,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
-import jcotter.listenmoe.interfaces.OnSongItemClickListener;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
 import jcotter.listenmoe.interfaces.UserForumInfoCallback;
 import jcotter.listenmoe.interfaces.UserInfoCallback;
@@ -30,7 +28,7 @@ import jcotter.listenmoe.util.AuthUtil;
 import jcotter.listenmoe.util.DownloadImageTask;
 import jcotter.listenmoe.util.SongActionsUtil;
 
-public class UserFragment extends TabFragment implements OnSongItemClickListener {
+public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
 
     // UI views
     private LinearLayout mLoginMsg;

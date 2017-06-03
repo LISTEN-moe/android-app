@@ -17,13 +17,12 @@ import java.util.List;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
-import jcotter.listenmoe.interfaces.OnSongItemClickListener;
 import jcotter.listenmoe.interfaces.SearchCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.SongActionsUtil;
 
-public class SearchActivity extends AppCompatActivity implements OnSongItemClickListener {
+public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 
     private RecyclerView mResultsList;
     private LinearLayout mNoResults;
