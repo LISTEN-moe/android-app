@@ -15,7 +15,8 @@
         <activity
             android:name=".ui.activities.MainActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -25,9 +26,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.activities.SearchActivity"
-            android:parentActivityName=".ui.activities.MainActivity"
-            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".ui.activities.SearchActivity"
+            android:configChanges="orientation|screenSize"
+            android:parentActivityName=".ui.activities.MainActivity" />
 
         <meta-data
             android:name="android.max_aspect"
