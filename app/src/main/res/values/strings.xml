@@ -8,6 +8,7 @@
     <string name="success">Success!</string>
     <string name="error">An error occurred</string>
     <string name="sending">Sending…</string>
+    <string name="loading">Loading…</string>
 
     <!-- Actions (notification, dialogs) -->
     <string name="action_play">Play</string>

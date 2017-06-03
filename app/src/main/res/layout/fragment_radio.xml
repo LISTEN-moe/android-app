@@ -23,7 +23,7 @@
         android:id="@+id/track_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
+        android:text="@string/loading"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
@@ -32,7 +32,6 @@
         android:id="@+id/track_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
@@ -41,8 +40,8 @@
         android:id="@+id/requested_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"
         android:layout_margin="8dp"
+        android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textColorLink="@color/colorAccent"
         android:textSize="14sp" />
@@ -50,8 +49,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:gravity="center">
 
         <ImageView
             android:layout_width="32dp"
@@ -89,12 +88,12 @@
             android:id="@+id/play_pause_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_margin="8dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/play_pause"
             android:foreground="@android:color/transparent"
             android:foregroundTint="@android:color/transparent"
-            android:layout_margin="8dp"
             android:scaleType="fitXY"
             android:visibility="visible"
             app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
@@ -103,10 +102,10 @@
             android:id="@+id/favorite_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_margin="8dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:contentDescription="@string/favorite"
-            android:layout_margin="8dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_star_border_white_24dp" />
 
