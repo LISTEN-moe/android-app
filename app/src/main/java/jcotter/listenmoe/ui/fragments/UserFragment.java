@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import jcotter.listenmoe.R;
@@ -21,6 +23,7 @@ import jcotter.listenmoe.interfaces.UserInfoCallback;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.model.SongsList;
 import jcotter.listenmoe.model.UserInfo;
+import jcotter.listenmoe.ui.activities.MainActivity;
 import jcotter.listenmoe.ui.fragments.base.TabFragment;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
@@ -30,6 +33,8 @@ import jcotter.listenmoe.util.SongActionsUtil;
 public class UserFragment extends TabFragment implements OnSongItemClickListener {
 
     // UI views
+    private LinearLayout mLoginMsg;
+    private LinearLayout mContent;
     private ImageView mUserAvatar;
     private TextView mUserName;
     private TextView mUserRequests;
@@ -47,10 +52,24 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
         final View rootView = inflater.inflate(R.layout.fragment_user, container, false);
 
         // Get UI views
+        mLoginMsg = (LinearLayout) rootView.findViewById(R.id.login_msg);
+        mContent = (LinearLayout) rootView.findViewById(R.id.content);
         mUserAvatar = (ImageView) rootView.findViewById(R.id.user_avatar);
         mUserName = (TextView) rootView.findViewById(R.id.user_name);
         mUserRequests = (TextView) rootView.findViewById(R.id.user_requests);
         mUserFavorites = (RecyclerView) rootView.findViewById(R.id.user_favorites);
+
+        rootView.findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((MainActivity) getActivity()).showLoginDialog(new MainActivity.OnLoginListener() {
+                    @Override
+                    public void onLogin() {
+                        initData();
+                    }
+                });
+            }
+        });
 
         // Set up favorites list
         adapter = new SongAdapter(this);
@@ -64,10 +83,11 @@ public class UserFragment extends TabFragment implements OnSongItemClickListener
     }
 
     private void initData() {
-        if (!AuthUtil.isAuthenticated(getContext())) {
-            // TODO: show login required message
-            return;
-        }
+        final boolean loggedIn = AuthUtil.isAuthenticated(getContext());
+        mLoginMsg.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
+        mContent.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
+
+        if (!loggedIn) return;
 
         APIUtil.getUserInfo(getContext(), new UserInfoCallback() {
             @Override

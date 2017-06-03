@@ -50,18 +50,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Show error view if there's no Internet connection
         if (!NetworkUtil.isNetworkAvailable(this)) {
-            findViewById(R.id.no_internet).setVisibility(View.VISIBLE);
-            findViewById(R.id.content).setVisibility(View.GONE);
-
-            final Button mRetry = (Button) findViewById(R.id.btn_retry);
-            mRetry.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    recreate();
-                }
-            });
+            showConnectionErrorView();
+            return;
         }
 
         // Init app/tab bar
@@ -94,6 +85,22 @@ public class MainActivity extends AppCompatActivity {
         final Intent intent = new Intent(getBaseContext(), StreamService.class);
         intent.putExtra(StreamService.KILLABLE, true);
         startService(intent);
+    }
+
+
+    // Connection error view
+
+    public void showConnectionErrorView() {
+        findViewById(R.id.no_internet).setVisibility(View.VISIBLE);
+        findViewById(R.id.content).setVisibility(View.GONE);
+
+        final Button mRetry = (Button) findViewById(R.id.btn_retry);
+        mRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                recreate();
+            }
+        });
     }
 
 

@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
@@ -19,22 +19,30 @@
         app:srcCompat="@drawable/main_logo"
         tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/track_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/loading"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/track_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
+        <TextView
+            android:id="@+id/track_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/loading"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/track_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/requested_by"

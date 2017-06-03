@@ -33,7 +33,7 @@
     <string name="logout_confirmation">Are you sure you want to logout?\n\nYou have been logged in for %d days.</string>
     <string name="logged_out">Logged out</string>
     <string name="token_expired">Token expired</string>
-    <string name="login_required">You must log in to use this feature</string>
+    <string name="login_required">You must log in to use this feature.</string>
 
     <!-- About dialog -->
     <string name="about">About</string>

@@ -2,59 +2,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.fragments.UserFragment">
 
     <LinearLayout
+        android:id="@+id/login_msg"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:background="@color/colorPrimary"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:visibility="gone">
 
         <TextView
-            android:id="@+id/user_name"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="64dp"
-            android:text="@string/loading"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:text="@string/login_required"
+            android:textColor="@android:color/white" />
 
-        <TextView
-            android:id="@+id/user_requests"
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="sans-serif-light"
-            android:textAlignment="center"
-            android:textColor="@android:color/white"
-            android:textSize="14sp" />
+            android:text="@string/login" />
 
     </LinearLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/user_avatar"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="-170dp"
-        app:civ_border_color="@color/colorAccent"
-        app:civ_border_width="2dp" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/user_favorites"
+    <LinearLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- TODO: pull to refresh -->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="48dp"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="64dp"
+                android:text="@string/loading"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/user_requests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_avatar"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="-170dp"
+            app:civ_border_color="@color/colorAccent"
+            app:civ_border_width="2dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/user_favorites"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="100dp" />
+
+    </LinearLayout>
 
 </LinearLayout>
