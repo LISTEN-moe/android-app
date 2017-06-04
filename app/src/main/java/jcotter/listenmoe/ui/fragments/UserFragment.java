@@ -148,12 +148,14 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
                             @Override
                             public void onSuccess(final String avatarUrl) {
-                                getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        new DownloadImageTask(mUserAvatar).execute(avatarUrl);
-                                    }
-                                });
+                                if (avatarUrl != null) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            new DownloadImageTask(mUserAvatar).execute(avatarUrl);
+                                        }
+                                    });
+                                }
                             }
                         });
                     }
