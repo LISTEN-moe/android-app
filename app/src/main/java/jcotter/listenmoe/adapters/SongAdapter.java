@@ -46,10 +46,9 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((SongHolder) holder).mSubtitle.setText(song.getArtistAndAnime());
         ((SongHolder) holder).mFavorited.setVisibility(song.isFavorite() ? View.VISIBLE : View.GONE);
 
-        if (!song.isEnabled()) {
-            ((SongHolder) holder).mTitle.setTypeface(null, Typeface.ITALIC);
-            ((SongHolder) holder).mSubtitle.setTypeface(null, Typeface.ITALIC);
-        }
+        final int typeface = song.isEnabled() ? Typeface.NORMAL : Typeface.ITALIC;
+        ((SongHolder) holder).mTitle.setTypeface(null, typeface);
+        ((SongHolder) holder).mSubtitle.setTypeface(null, typeface);
     }
 
     @Override
