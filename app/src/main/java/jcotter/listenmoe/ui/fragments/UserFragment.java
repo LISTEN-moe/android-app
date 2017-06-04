@@ -6,12 +6,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
@@ -36,8 +43,11 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     private ImageView mUserAvatar;
     private TextView mUserName;
     private TextView mUserRequests;
+    private EditText mUserFavoritesFilter;
     private RecyclerView mUserFavorites;
 
+    // Favorites
+    private List<Song> favorites;
     private SongAdapter adapter;
 
     public static Fragment newInstance(int sectionNumber) {
@@ -55,6 +65,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         mUserAvatar = (ImageView) rootView.findViewById(R.id.user_avatar);
         mUserName = (TextView) rootView.findViewById(R.id.user_name);
         mUserRequests = (TextView) rootView.findViewById(R.id.user_requests);
+        mUserFavoritesFilter = (EditText) rootView.findViewById(R.id.filter_query);
         mUserFavorites = (RecyclerView) rootView.findViewById(R.id.user_favorites);
 
         rootView.findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
@@ -73,6 +84,35 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         adapter = new SongAdapter(this);
         mUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         mUserFavorites.setAdapter(adapter);
+
+        // Set up favorites filtering
+        mUserFavoritesFilter.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                final String query = editable.toString().trim().toLowerCase();
+
+                if (query.isEmpty()) {
+                    adapter.setSongs(favorites);
+                } else {
+                    final List<Song> filteredFavorites = new ArrayList<>();
+                    for (final Song song : favorites) {
+                        if (song.getTitle().toLowerCase().contains(query) ||
+                            song.getArtistAndAnime().toLowerCase().contains(query)) {
+                            filteredFavorites.add(song);
+                        }
+                    }
+                    adapter.setSongs(filteredFavorites);
+                }
+            }
+        });
 
         // Show info
         initData();
@@ -131,7 +171,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        adapter.setSongs(songsList.getSongs());
+                        favorites = songsList.getSongs();
+                        adapter.setSongs(favorites);
                         mUserRequests.setText(String.format(getString(R.string.user_requests), songsList.getExtra().getRequests()));
                     }
                 });

@@ -56,8 +56,8 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         final EditText mSearchQuery = (EditText) findViewById(R.id.search_query);
         mSearchQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                final String query = v.getText().toString().trim();
+            public boolean onEditorAction(TextView textView, int i, KeyEvent event) {
+                final String query = textView.getText().toString().trim();
                 APIUtil.search(getBaseContext(), query, new SearchCallback() {
                     @Override
                     public void onFailure(final String result) {
