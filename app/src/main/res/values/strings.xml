@@ -50,7 +50,7 @@
     <string name="favorite">Favorite</string>
     <string name="volume">Volume</string>
     <string name="requested_by"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>
-    <string name="current_listeners">Current listeners: %d</string>
+    <string name="current_listeners">%d users listening</string>
 
     <!-- User tab -->
     <string name="user_requests">%d requests remaining</string>

@@ -23,6 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:gravity="center"
         android:orientation="vertical">
 
         <TextView
@@ -91,20 +92,18 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp">
 
         <ImageButton
             android:id="@+id/play_pause_btn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="8dp"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
+            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/play_pause"
-            android:foreground="@android:color/transparent"
-            android:foregroundTint="@android:color/transparent"
             android:scaleType="fitXY"
-            android:visibility="visible"
             app:srcCompat="@drawable/ic_play_arrow_white_24dp" />
 
         <ImageButton
@@ -112,8 +111,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="8dp"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
+            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/favorite"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/ic_star_border_white_24dp" />

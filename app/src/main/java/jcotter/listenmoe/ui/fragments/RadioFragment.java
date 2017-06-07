@@ -138,7 +138,7 @@ public class RadioFragment extends TabFragment {
                             trackSubtitle = currentSong.getArtistAndAnime();
 
                             // Song requester
-                            if (!requester.equals("")) {
+                            if (!requester.isEmpty()) {
                                 requesterBuilder.append(String.format(getResources().getString(R.string.requested_by), requester));
                             }
                         } else {
@@ -148,7 +148,6 @@ public class RadioFragment extends TabFragment {
 
                         // Current listeners
                         final String listeners = String.format(getResources().getString(R.string.current_listeners), intent.getIntExtra(StreamService.UPDATE_PLAYING_LISTENERS, 0));
-
                         final String requestedBy = requesterBuilder.toString();
 
                         getActivity().runOnUiThread(new Runnable() {
@@ -158,13 +157,14 @@ public class RadioFragment extends TabFragment {
                                 mTrackSubtitle.setText(trackSubtitle);
                                 mListenersTxt.setText(listeners);
 
-                                if (requestedBy.equals("")) {
+                                if (requestedBy.isEmpty()) {
                                     mRequestedByTxt.setVisibility(View.INVISIBLE);
                                 } else {
                                     mRequestedByTxt.setVisibility(View.VISIBLE);
                                     mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
                                     mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
                                 }
+
                                 final int favDrawable = favorite ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
                                 mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
                             }

@@ -66,7 +66,7 @@ public class Song implements Parcelable {
         final StringBuilder textBuilder = new StringBuilder();
         textBuilder.append(artist);
 
-        if (!anime.equals("")) {
+        if (!anime.isEmpty()) {
             textBuilder.append(String.format(" [ %s ]", anime));
         }
 
@@ -79,7 +79,7 @@ public class Song implements Parcelable {
 
         builder.append(String.format("%s - %s", artist, title));
 
-        if (anime != null && !anime.equals("")) {
+        if (anime != null && !anime.isEmpty()) {
             builder.append(String.format(" [ %s ]", anime));
         }
 
