@@ -11,14 +11,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.model.Song;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public interface OnSongItemClickListener {
-        void onSongItemClick(final Song song);
-    }
-
     private List<Song> songs;
     private OnSongItemClickListener listener;
 
@@ -42,13 +40,15 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         final Song song = songs.get(position);
 
-        ((SongHolder) holder).mTitle.setText(song.getTitle());
-        ((SongHolder) holder).mSubtitle.setText(song.getArtistAndAnime());
-        ((SongHolder) holder).mFavorited.setVisibility(song.isFavorite() ? View.VISIBLE : View.GONE);
+        final SongHolder songHolder = (SongHolder) holder;
+
+        songHolder.mTitle.setText(song.getTitle());
+        songHolder.mSubtitle.setText(song.getArtistAndAnime());
+        songHolder.mFavorited.setVisibility(song.isFavorite() ? View.VISIBLE : View.GONE);
 
         final int typeface = song.isEnabled() ? Typeface.NORMAL : Typeface.ITALIC;
-        ((SongHolder) holder).mTitle.setTypeface(null, typeface);
-        ((SongHolder) holder).mSubtitle.setTypeface(null, typeface);
+        songHolder.mTitle.setTypeface(null, typeface);
+        songHolder.mSubtitle.setTypeface(null, typeface);
     }
 
     @Override
@@ -56,19 +56,23 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return songs.size();
     }
 
-    public class SongHolder extends RecyclerView.ViewHolder {
-        public TextView mTitle;
-        public TextView mSubtitle;
-        public LinearLayout mFavorited;
+    public interface OnSongItemClickListener {
+        void onSongItemClick(final Song song);
+    }
 
-        public SongHolder(final View itemView, final List<Song> songs, final OnSongItemClickListener listener) {
-            super(itemView);
+    static class SongHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.title)
+        TextView mTitle;
+        @BindView(R.id.subtitle)
+        TextView mSubtitle;
+        @BindView(R.id.favorited)
+        LinearLayout mFavorited;
 
-            mTitle = (TextView) itemView.findViewById(R.id.title);
-            mSubtitle = (TextView) itemView.findViewById(R.id.subtitle);
-            mFavorited = (LinearLayout) itemView.findViewById(R.id.favorited);
+        SongHolder(final View view, final List<Song> songs, final OnSongItemClickListener listener) {
+            super(view);
+            ButterKnife.bind(this, view);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
+            view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (getAdapterPosition() != RecyclerView.NO_POSITION) {

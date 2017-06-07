@@ -52,7 +52,8 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textColorLink="@color/colorAccent"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:visibility="invisible" />
 
     <LinearLayout
         android:layout_width="wrap_content"

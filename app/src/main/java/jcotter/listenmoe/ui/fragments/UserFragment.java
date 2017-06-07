@@ -8,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
 import jcotter.listenmoe.interfaces.UserFavoritesCallback;
@@ -37,14 +39,20 @@ import jcotter.listenmoe.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
 
-    // UI views
-    private LinearLayout mLoginMsg;
-    private LinearLayout mContent;
-    private ImageView mUserAvatar;
-    private TextView mUserName;
-    private TextView mUserRequests;
-    private EditText mUserFavoritesFilter;
-    private RecyclerView mUserFavorites;
+    @BindView(R.id.login_msg)
+    LinearLayout mLoginMsg;
+    @BindView(R.id.content)
+    LinearLayout mContent;
+    @BindView(R.id.user_avatar)
+    ImageView mUserAvatar;
+    @BindView(R.id.user_name)
+    TextView mUserName;
+    @BindView(R.id.user_requests)
+    TextView mUserRequests;
+    @BindView(R.id.filter_query)
+    EditText mUserFavoritesFilter;
+    @BindView(R.id.user_favorites)
+    RecyclerView mUserFavorites;
 
     // Favorites
     private List<Song> favorites;
@@ -57,30 +65,10 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_user, container, false);
+        final View view = inflater.inflate(R.layout.fragment_user, container, false);
+        ButterKnife.bind(this, view);
 
-        // Get UI views
-        mLoginMsg = (LinearLayout) rootView.findViewById(R.id.login_msg);
-        mContent = (LinearLayout) rootView.findViewById(R.id.content);
-        mUserAvatar = (ImageView) rootView.findViewById(R.id.user_avatar);
-        mUserName = (TextView) rootView.findViewById(R.id.user_name);
-        mUserRequests = (TextView) rootView.findViewById(R.id.user_requests);
-        mUserFavoritesFilter = (EditText) rootView.findViewById(R.id.filter_query);
-        mUserFavorites = (RecyclerView) rootView.findViewById(R.id.user_favorites);
-
-        rootView.findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ((MainActivity) getActivity()).showLoginDialog(new MainActivity.OnLoginListener() {
-                    @Override
-                    public void onLogin() {
-                        initData();
-                    }
-                });
-            }
-        });
-
-        // Set up favorites list
+        // Favorites list adapter
         adapter = new SongAdapter(this);
         mUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         mUserFavorites.setAdapter(adapter);
@@ -105,7 +93,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                     final List<Song> filteredFavorites = new ArrayList<>();
                     for (final Song song : favorites) {
                         if (song.getTitle().toLowerCase().contains(query) ||
-                            song.getArtistAndAnime().toLowerCase().contains(query)) {
+                                song.getArtistAndAnime().toLowerCase().contains(query)) {
                             filteredFavorites.add(song);
                         }
                     }
@@ -117,7 +105,17 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         // Show info
         initData();
 
-        return rootView;
+        return view;
+    }
+
+    @OnClick(R.id.btn_login)
+    public void promptLogin() {
+        ((MainActivity) getActivity()).showLoginDialog(new MainActivity.OnLoginListener() {
+            @Override
+            public void onLogin() {
+                initData();
+            }
+        });
     }
 
     private void initData() {

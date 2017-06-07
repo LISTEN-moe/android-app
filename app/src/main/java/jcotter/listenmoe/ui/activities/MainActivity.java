@@ -20,9 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.OnClick;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.ViewPagerAdapter;
 import jcotter.listenmoe.constants.ResponseMessages;
@@ -34,11 +38,11 @@ import jcotter.listenmoe.util.NetworkUtil;
 import jcotter.listenmoe.util.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
-    public interface OnLoginListener {
-        void onLogin();
-    }
-
     public static final String TRIGGER_LOGIN = "trigger_login";
+    @BindView(R.id.no_internet)
+    LinearLayout mNoInternet;
+    @BindView(R.id.content)
+    RelativeLayout mContent;
 
     private BroadcastReceiver broadcastReceiver;
     private boolean receiverRegistered = false;
@@ -91,16 +95,13 @@ public class MainActivity extends AppCompatActivity {
     // Connection error view
 
     public void showConnectionErrorView() {
-        findViewById(R.id.no_internet).setVisibility(View.VISIBLE);
-        findViewById(R.id.content).setVisibility(View.GONE);
+        mNoInternet.setVisibility(View.VISIBLE);
+        mContent.setVisibility(View.GONE);
+    }
 
-        final Button mRetry = (Button) findViewById(R.id.btn_retry);
-        mRetry.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recreate();
-            }
-        });
+    @OnClick(R.id.btn_retry)
+    public void retry() {
+        recreate();
     }
 
 
@@ -332,5 +333,9 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView textContent = (TextView) mAboutDialog.findViewById(android.R.id.message);
         textContent.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public interface OnLoginListener {
+        void onLogin();
     }
 }

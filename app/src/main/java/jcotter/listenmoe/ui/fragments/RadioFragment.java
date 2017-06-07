@@ -19,6 +19,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.ResponseMessages;
 import jcotter.listenmoe.interfaces.FavoriteSongCallback;
@@ -32,14 +35,20 @@ import jcotter.listenmoe.util.SDKUtil;
 
 public class RadioFragment extends TabFragment {
 
-    // UI views
-    private TextView mTrackTitle;
-    private TextView mTrackSubtitle;
-    private TextView mRequestedByTxt;
-    private SeekBar mVolumeBar;
-    private ImageButton mPlayPauseBtn;
-    private ImageButton mFavoriteBtn;
-    private TextView mListenersTxt;
+    @BindView(R.id.track_title)
+    TextView mTrackTitle;
+    @BindView(R.id.track_subtitle)
+    TextView mTrackSubtitle;
+    @BindView(R.id.requested_by)
+    TextView mRequestedByTxt;
+    @BindView(R.id.volume_seekbar)
+    SeekBar mVolumeBar;
+    @BindView(R.id.play_pause_btn)
+    ImageButton mPlayPauseBtn;
+    @BindView(R.id.favorite_btn)
+    ImageButton mFavoriteBtn;
+    @BindView(R.id.current_listeners)
+    TextView mListenersTxt;
 
     // Radio things
     private int songID;
@@ -53,16 +62,8 @@ public class RadioFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_radio, container, false);
-
-        // Get UI views
-        mTrackTitle = (TextView) rootView.findViewById(R.id.track_title);
-        mTrackSubtitle = (TextView) rootView.findViewById(R.id.track_subtitle);
-        mRequestedByTxt = (TextView) rootView.findViewById(R.id.requested_by);
-        mVolumeBar = (SeekBar) rootView.findViewById(R.id.volume_seekbar);
-        mPlayPauseBtn = (ImageButton) rootView.findViewById(R.id.play_pause_btn);
-        mFavoriteBtn = (ImageButton) rootView.findViewById(R.id.favorite_btn);
-        mListenersTxt = (TextView) rootView.findViewById(R.id.current_listeners);
+        final View view = inflater.inflate(R.layout.fragment_radio, container, false);
+        ButterKnife.bind(this, view);
 
         // Set font to OpenSans
         final Typeface openSans = Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Regular.ttf");
@@ -71,25 +72,7 @@ public class RadioFragment extends TabFragment {
         mRequestedByTxt.setTypeface(openSans);
         mListenersTxt.setTypeface(openSans);
 
-        mRequestedByTxt.setVisibility(View.INVISIBLE);
-
-        // Set up view listeners
-        volumeSliderListener();
-        mPlayPauseBtn.setOnClickListener(mOnClickListener);
-        mFavoriteBtn.setOnClickListener(mOnClickListener);
-
-        socketDisplay();
-
-        return rootView;
-    }
-
-
-    // UI methods
-
-    /**
-     * Listener for volume slider progress changed.
-     */
-    private void volumeSliderListener() {
+        // Volume bar
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mVolumeBar.setProgress((int) (sharedPreferences.getFloat(StreamService.VOLUME, 0.5f) * 100));
         mVolumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -113,22 +96,16 @@ public class RadioFragment extends TabFragment {
                 editor.apply();
             }
         });
-    }
 
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            if (v == mPlayPauseBtn) {
-                togglePlayPause();
-            } else if (v == mFavoriteBtn) {
-                favorite();
-            }
-        }
-    };
+        connectToSocket();
+
+        return view;
+    }
 
     /**
      * Displays data received from websocket and checks if stream is playing.
      */
-    private void socketDisplay() {
+    private void connectToSocket() {
         songID = -1;
         favorite = false;
 
@@ -221,7 +198,8 @@ public class RadioFragment extends TabFragment {
         getActivity().startService(intent);
     }
 
-    private void togglePlayPause() {
+    @OnClick(R.id.play_pause_btn)
+    public void togglePlayPause() {
         if (songID == -1) return;
 
         final Intent intent = new Intent(getActivity(), StreamService.class);
@@ -230,7 +208,8 @@ public class RadioFragment extends TabFragment {
         getActivity().startService(intent);
     }
 
-    private void favorite() {
+    @OnClick(R.id.favorite_btn)
+    public void favorite() {
         if (!AuthUtil.isAuthenticated(getActivity())) {
             ((MainActivity) getActivity()).showLoginDialog(new MainActivity.OnLoginListener() {
                 @Override

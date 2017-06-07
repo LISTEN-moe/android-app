@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnEditorAction;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
 import jcotter.listenmoe.interfaces.SearchCallback;
@@ -24,9 +26,12 @@ import jcotter.listenmoe.util.SongActionsUtil;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 
-    private RecyclerView mResultsList;
-    private LinearLayout mNoResults;
-    private TextView mNoResultsMsg;
+    @BindView(R.id.search_results)
+    RecyclerView mResultsList;
+    @BindView(R.id.no_results)
+    LinearLayout mNoResults;
+    @BindView(R.id.no_results_msg)
+    TextView mNoResultsMsg;
 
     private SongAdapter adapter;
 
@@ -34,49 +39,39 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        ButterKnife.bind(this);
 
         // Set up app bar
         setSupportActionBar((Toolbar) findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // UI view references
-        mResultsList = (RecyclerView) findViewById(R.id.search_results);
-        mNoResults = (LinearLayout) findViewById(R.id.no_results);
-        mNoResultsMsg = (TextView) findViewById(R.id.no_results_msg);
-
-        initSearch();
-    }
-
-    private void initSearch() {
+        // Results list adapter
         adapter = new SongAdapter(this);
-
         mResultsList.setLayoutManager(new LinearLayoutManager(this));
         mResultsList.setAdapter(adapter);
+    }
 
-        final EditText mSearchQuery = (EditText) findViewById(R.id.search_query);
-        mSearchQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+    @OnEditorAction(R.id.search_query)
+    public boolean onEditorAction(TextView textView, int i, KeyEvent event) {
+        final String query = textView.getText().toString().trim();
+        APIUtil.search(getBaseContext(), query, new SearchCallback() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent event) {
-                final String query = textView.getText().toString().trim();
-                APIUtil.search(getBaseContext(), query, new SearchCallback() {
-                    @Override
-                    public void onFailure(final String result) {
-                    }
+            public void onFailure(final String result) {
+            }
 
+            @Override
+            public void onSuccess(final List<Song> results) {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void onSuccess(final List<Song> results) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                adapter.setSongs(results);
-                                toggleEmptyView(results.size() == 0, query);
-                            }
-                        });
+                    public void run() {
+                        adapter.setSongs(results);
+                        toggleEmptyView(results.size() == 0, query);
                     }
                 });
-                return true;
             }
         });
+
+        return true;
     }
 
     @Override
