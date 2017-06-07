@@ -30,7 +30,7 @@ import butterknife.OnClick;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.ViewPagerAdapter;
 import jcotter.listenmoe.constants.ResponseMessages;
-import jcotter.listenmoe.interfaces.AuthCallback;
+import jcotter.listenmoe.interfaces.AuthListener;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
      * @param listener Used to run something after a successful login.
      */
     private void login(final String user, final String pass, final DialogInterface dialog, final OnLoginListener listener) {
-        APIUtil.authenticate(this, user, pass, new AuthCallback() {
+        APIUtil.authenticate(this, user, pass, new AuthListener() {
             @Override
             public void onFailure(final String result) {
                 runOnUiThread(new Runnable() {

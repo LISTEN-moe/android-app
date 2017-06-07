@@ -10,13 +10,13 @@ import java.net.URLEncoder;
 
 import jcotter.listenmoe.constants.Endpoints;
 import jcotter.listenmoe.constants.ResponseMessages;
-import jcotter.listenmoe.interfaces.AuthCallback;
-import jcotter.listenmoe.interfaces.FavoriteSongCallback;
-import jcotter.listenmoe.interfaces.RequestSongCallback;
-import jcotter.listenmoe.interfaces.SearchCallback;
-import jcotter.listenmoe.interfaces.UserFavoritesCallback;
-import jcotter.listenmoe.interfaces.UserForumInfoCallback;
-import jcotter.listenmoe.interfaces.UserInfoCallback;
+import jcotter.listenmoe.interfaces.AuthListener;
+import jcotter.listenmoe.interfaces.FavoriteSongListener;
+import jcotter.listenmoe.interfaces.RequestSongListener;
+import jcotter.listenmoe.interfaces.SearchListener;
+import jcotter.listenmoe.interfaces.UserFavoritesListener;
+import jcotter.listenmoe.interfaces.UserForumInfoListener;
+import jcotter.listenmoe.interfaces.UserInfoListener;
 import jcotter.listenmoe.model.AuthResponse;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.model.SongsList;
@@ -44,9 +44,9 @@ public class APIUtil {
      * @param context  Android context to fetch SharedPreferences.
      * @param username User's username.
      * @param password User's password.
-     * @param callback Listener to handle the response.
+     * @param listener Listener to handle the response.
      */
-    public static void authenticate(final Context context, final String username, final String password, final AuthCallback callback) {
+    public static void authenticate(final Context context, final String username, final String password, final AuthListener listener) {
         try {
             final String usernameE = URLEncoder.encode(username.trim(), "UTF-8");
             final String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
@@ -60,7 +60,7 @@ public class APIUtil {
                 @Override
                 public void onFailure(final Call call, final IOException e) {
                     e.printStackTrace();
-                    callback.onFailure(ResponseMessages.ERROR);
+                    listener.onFailure(ResponseMessages.ERROR);
                 }
 
                 @Override
@@ -69,13 +69,13 @@ public class APIUtil {
 
                     // Handle error messages
                     if (body.contains(ResponseMessages.INVALID_PASS)) {
-                        callback.onFailure(ResponseMessages.INVALID_PASS);
+                        listener.onFailure(ResponseMessages.INVALID_PASS);
                         return;
                     } else if (body.contains(ResponseMessages.INVALID_USER)) {
-                        callback.onFailure(ResponseMessages.INVALID_USER);
+                        listener.onFailure(ResponseMessages.INVALID_USER);
                         return;
                     } else if (!body.contains(ResponseMessages.SUCCESS)) {
-                        callback.onFailure(ResponseMessages.ERROR);
+                        listener.onFailure(ResponseMessages.ERROR);
                         return;
                     }
 
@@ -83,12 +83,12 @@ public class APIUtil {
                     final String userToken = gson.fromJson(body, AuthResponse.class).getToken();
                     AuthUtil.setAuthToken(context, userToken);
 
-                    callback.onSuccess(userToken);
+                    listener.onSuccess(userToken);
                 }
             });
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            callback.onFailure(ResponseMessages.ERROR);
+            listener.onFailure(ResponseMessages.ERROR);
         }
     }
 
@@ -97,11 +97,11 @@ public class APIUtil {
      * /api/user
      *
      * @param context  Android context to fetch SharedPreferences.
-     * @param callback Listener to handle the response.
+     * @param listener Listener to handle the response.
      */
-    public static void getUserInfo(final Context context, final UserInfoCallback callback) {
+    public static void getUserInfo(final Context context, final UserInfoListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
@@ -113,12 +113,12 @@ public class APIUtil {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
-                callback.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                callback.onSuccess(gson.fromJson(response.body().string(), UserInfo.class));
+                listener.onSuccess(gson.fromJson(response.body().string(), UserInfo.class));
             }
         });
     }
@@ -128,11 +128,11 @@ public class APIUtil {
      *
      * @param context  Android context to fetch SharedPreferences.
      * @param username The user's username.
-     * @param callback Listener to handle the response.
+     * @param listener Listener to handle the response.
      */
-    public static void getUserAvatar(final Context context, final String username, final UserForumInfoCallback callback) {
+    public static void getUserAvatar(final Context context, final String username, final UserForumInfoListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
@@ -145,12 +145,12 @@ public class APIUtil {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
-                callback.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                callback.onSuccess(gson.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
+                listener.onSuccess(gson.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
             }
         });
     }
@@ -160,11 +160,11 @@ public class APIUtil {
      * /api/user/favorites
      *
      * @param context  Android context to fetch SharedPreferences.
-     * @param callback Listener to handle the response.
+     * @param listener Listener to handle the response.
      */
-    public static void getUserFavorites(final Context context, final UserFavoritesCallback callback) {
+    public static void getUserFavorites(final Context context, final UserFavoritesListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
@@ -176,7 +176,7 @@ public class APIUtil {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
-                callback.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
@@ -185,7 +185,7 @@ public class APIUtil {
                 for (final Song song : songsList.getSongs()) {
                     song.setFavorite(true);
                 }
-                callback.onSuccess(songsList);
+                listener.onSuccess(songsList);
             }
         });
     }
@@ -196,11 +196,11 @@ public class APIUtil {
      *
      * @param context  Android context to fetch SharedPreferences.
      * @param songId   Song to toggle.
-     * @param callback Listener to handle the response.
+     * @param listener Listener to handle the response.
      */
-    public static void favoriteSong(final Context context, final int songId, final FavoriteSongCallback callback) {
+    public static void favoriteSong(final Context context, final int songId, final FavoriteSongListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
@@ -212,7 +212,7 @@ public class APIUtil {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
-                callback.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
@@ -220,11 +220,11 @@ public class APIUtil {
                 final String jsonResult = response.body().string();
 
                 if (jsonResult.contains(ResponseMessages.SUCCESS)) {
-                    callback.onSuccess(jsonResult.contains(ResponseMessages.FAVORITED));
+                    listener.onSuccess(jsonResult.contains(ResponseMessages.FAVORITED));
                 } else if (jsonResult.contains(ResponseMessages.AUTH_FAILURE)) {
-                    callback.onFailure(ResponseMessages.AUTH_FAILURE);
+                    listener.onFailure(ResponseMessages.AUTH_FAILURE);
                 } else {
-                    callback.onFailure(ResponseMessages.ERROR);
+                    listener.onFailure(ResponseMessages.ERROR);
                 }
             }
         });
@@ -236,11 +236,11 @@ public class APIUtil {
      *
      * @param context  Android context to fetch SharedPreferences.
      * @param songId   Song to request.
-     * @param callback Listener to handle the response.
+     * @param listener Listener to handle the response.
      */
-    public static void requestSong(final Context context, final int songId, final RequestSongCallback callback) {
+    public static void requestSong(final Context context, final int songId, final RequestSongListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
@@ -252,7 +252,7 @@ public class APIUtil {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
-                callback.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
@@ -260,12 +260,12 @@ public class APIUtil {
                 final String jsonResult = response.body().string();
 
                 if (jsonResult.contains(ResponseMessages.SUCCESS)) {
-                    callback.onSuccess();
+                    listener.onSuccess();
                 } else {
                     if (jsonResult.contains(ResponseMessages.USER_NOT_SUPPORTER)) {
-                        callback.onFailure(ResponseMessages.USER_NOT_SUPPORTER);
+                        listener.onFailure(ResponseMessages.USER_NOT_SUPPORTER);
                     } else {
-                        callback.onFailure(ResponseMessages.ERROR);
+                        listener.onFailure(ResponseMessages.ERROR);
                     }
                 }
             }
@@ -278,11 +278,11 @@ public class APIUtil {
      *
      * @param context  Android context to fetch SharedPreferences.
      * @param query    Search query string.
-     * @param callback Listener to handle the response.
+     * @param listener Listener to handle the response.
      */
-    public static void search(final Context context, final String query, final SearchCallback callback) {
+    public static void search(final Context context, final String query, final SearchListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            callback.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(ResponseMessages.AUTH_ERROR);
             return;
         }
 
@@ -294,13 +294,13 @@ public class APIUtil {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
-                callback.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(ResponseMessages.ERROR);
             }
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 final SongsList songsList = APIUtil.parseSongJson(response.body().string());
-                callback.onSuccess(songsList.getSongs());
+                listener.onSuccess(songsList.getSongs());
             }
         });
     }

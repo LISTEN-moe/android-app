@@ -44,7 +44,7 @@ import com.neovisionaries.ws.client.WebSocketFrame;
 import java.io.IOException;
 
 import jcotter.listenmoe.constants.Endpoints;
-import jcotter.listenmoe.interfaces.FavoriteSongCallback;
+import jcotter.listenmoe.interfaces.FavoriteSongListener;
 import jcotter.listenmoe.model.PlaybackInfo;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.notification.AppNotification;
@@ -154,7 +154,7 @@ public class StreamService extends Service {
                         } else {
                             // Toggle favorite status of current song
                             if (intent.hasExtra(StreamService.FAVORITE)) {
-                                APIUtil.favoriteSong(getApplicationContext(), currentSong.getId(), new FavoriteSongCallback() {
+                                APIUtil.favoriteSong(getApplicationContext(), currentSong.getId(), new FavoriteSongListener() {
                                     @Override
                                     public void onFailure(final String result) {
                                     }

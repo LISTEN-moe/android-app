@@ -1,7 +1,7 @@
 package jcotter.listenmoe.interfaces;
 
-public interface RequestSongCallback {
+public interface AuthListener {
     void onFailure(final String result);
 
-    void onSuccess();
+    void onSuccess(final String result);
 }

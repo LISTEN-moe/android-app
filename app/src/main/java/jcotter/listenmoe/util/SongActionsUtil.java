@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.ResponseMessages;
-import jcotter.listenmoe.interfaces.FavoriteSongCallback;
-import jcotter.listenmoe.interfaces.RequestSongCallback;
+import jcotter.listenmoe.interfaces.FavoriteSongListener;
+import jcotter.listenmoe.interfaces.RequestSongListener;
 import jcotter.listenmoe.model.Song;
 
 public class SongActionsUtil {
@@ -18,7 +18,7 @@ public class SongActionsUtil {
      * @param song The song to update the favorite status of.
      */
     public static void favorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
-        APIUtil.favoriteSong(activity, song.getId(), new FavoriteSongCallback() {
+        APIUtil.favoriteSong(activity, song.getId(), new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
                 activity.runOnUiThread(new Runnable() {
@@ -48,7 +48,7 @@ public class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
-        APIUtil.requestSong(activity, song.getId(), new RequestSongCallback() {
+        APIUtil.requestSong(activity, song.getId(), new RequestSongListener() {
             @Override
             public void onFailure(final String result) {
                 activity.runOnUiThread(new Runnable() {

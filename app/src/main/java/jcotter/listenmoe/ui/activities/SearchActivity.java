@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnEditorAction;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
-import jcotter.listenmoe.interfaces.SearchCallback;
+import jcotter.listenmoe.interfaces.SearchListener;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.SongActionsUtil;
@@ -54,7 +54,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
     @OnEditorAction(R.id.search_query)
     public boolean onEditorAction(TextView textView, int i, KeyEvent event) {
         final String query = textView.getText().toString().trim();
-        APIUtil.search(getBaseContext(), query, new SearchCallback() {
+        APIUtil.search(getBaseContext(), query, new SearchListener() {
             @Override
             public void onFailure(final String result) {
             }

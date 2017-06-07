@@ -24,9 +24,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
-import jcotter.listenmoe.interfaces.UserFavoritesCallback;
-import jcotter.listenmoe.interfaces.UserForumInfoCallback;
-import jcotter.listenmoe.interfaces.UserInfoCallback;
+import jcotter.listenmoe.interfaces.UserFavoritesListener;
+import jcotter.listenmoe.interfaces.UserForumInfoListener;
+import jcotter.listenmoe.interfaces.UserInfoListener;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.model.SongsList;
 import jcotter.listenmoe.model.UserInfo;
@@ -125,7 +125,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
         if (!loggedIn) return;
 
-        APIUtil.getUserInfo(getContext(), new UserInfoCallback() {
+        APIUtil.getUserInfo(getContext(), new UserInfoListener() {
             @Override
             public void onFailure(final String result) {
             }
@@ -139,7 +139,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
                         mUserName.setText(userName);
 
-                        APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoCallback() {
+                        APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
                             @Override
                             public void onFailure(final String result) {
                             }
@@ -161,7 +161,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
         });
 
-        APIUtil.getUserFavorites(getContext(), new UserFavoritesCallback() {
+        APIUtil.getUserFavorites(getContext(), new UserFavoritesListener() {
             @Override
             public void onFailure(final String result) {
             }

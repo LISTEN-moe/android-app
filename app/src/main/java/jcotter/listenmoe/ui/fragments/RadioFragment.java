@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.ResponseMessages;
-import jcotter.listenmoe.interfaces.FavoriteSongCallback;
+import jcotter.listenmoe.interfaces.FavoriteSongListener;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.ui.activities.MainActivity;
@@ -222,7 +222,7 @@ public class RadioFragment extends TabFragment {
 
         if (songID == -1) return;
 
-        APIUtil.favoriteSong(getActivity(), songID, new FavoriteSongCallback() {
+        APIUtil.favoriteSong(getActivity(), songID, new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
                 getActivity().runOnUiThread(new Runnable() {
