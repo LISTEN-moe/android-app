@@ -103,7 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_retry)
     public void retry() {
-        recreate();
+        if (NetworkUtil.isNetworkAvailable(this)) {
+            recreate();
+        }
     }
 
 
