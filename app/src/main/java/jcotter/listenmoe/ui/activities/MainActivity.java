@@ -285,9 +285,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void broadcastAuthEvent() {
-        final Intent loggedInIntent = new Intent();
-        loggedInIntent.setAction(MainActivity.AUTH_EVENT);
-        sendBroadcast(loggedInIntent);
+        final Intent authEventIntent = new Intent();
+        authEventIntent.setAction(MainActivity.AUTH_EVENT);
+        sendBroadcast(authEventIntent);
     }
 
     private void showLogoutDialog() {

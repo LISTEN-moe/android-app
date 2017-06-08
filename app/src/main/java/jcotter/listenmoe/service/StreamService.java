@@ -48,6 +48,7 @@ import jcotter.listenmoe.interfaces.FavoriteSongListener;
 import jcotter.listenmoe.model.PlaybackInfo;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.notification.AppNotification;
+import jcotter.listenmoe.ui.activities.MainActivity;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
 
@@ -367,16 +368,25 @@ public class StreamService extends Service {
 
         isStreamStarted = true;
 
-        final IntentFilter intentFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        intentFilter.addAction(MainActivity.AUTH_EVENT);
+
         final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (AudioManager.ACTION_AUDIO_BECOMING_NOISY.equals(intent.getAction())) {
-                    voiceOfKanacchi.setPlayWhenReady(false);
-                    final Intent update = new Intent(getPackageName());
-                    update.putExtra(StreamService.RUNNING, false);
-                    sendBroadcast(update);
-                    updateNotification();
+                switch (intent.getAction()) {
+                    case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
+                        voiceOfKanacchi.setPlayWhenReady(false);
+                        final Intent update = new Intent(getPackageName());
+                        update.putExtra(StreamService.RUNNING, false);
+                        sendBroadcast(update);
+                        updateNotification();
+                        break;
+
+                    case MainActivity.AUTH_EVENT:
+                        updateNotification();
+                        break;
                 }
             }
         };
