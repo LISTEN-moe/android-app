@@ -39,6 +39,8 @@ import jcotter.listenmoe.util.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TRIGGER_LOGIN = "trigger_login";
+    public static final String AUTH_EVENT = "auth_event";
+
     @BindView(R.id.no_internet)
     LinearLayout mNoInternet;
     @BindView(R.id.content)
@@ -275,11 +277,17 @@ public class MainActivity extends AppCompatActivity {
                             listener.onLogin();
                         }
 
-                        // TODO: update notification?
+                        broadcastAuthEvent();
                     }
                 });
             }
         });
+    }
+
+    private void broadcastAuthEvent() {
+        final Intent loggedInIntent = new Intent();
+        loggedInIntent.setAction(MainActivity.AUTH_EVENT);
+        sendBroadcast(loggedInIntent);
     }
 
     private void showLogoutDialog() {
@@ -310,6 +318,8 @@ public class MainActivity extends AppCompatActivity {
         AuthUtil.clearAuthToken(this);
         Toast.makeText(getBaseContext(), getString(R.string.logged_out), Toast.LENGTH_LONG).show();
         invalidateOptionsMenu();
+
+        broadcastAuthEvent();
     }
 
     // TODO: actual activity with LICENSEs and stuff?

@@ -1,6 +1,10 @@
 package jcotter.listenmoe.ui.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -58,6 +62,10 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     private List<Song> favorites;
     private SongAdapter adapter;
 
+    // Receiver
+    private IntentFilter intentFilter;
+    private BroadcastReceiver receiver;
+
     public static Fragment newInstance(int sectionNumber) {
         return TabFragment.newInstance(sectionNumber, new UserFragment());
     }
@@ -102,28 +110,59 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
         });
 
-        // Show info
-        initData();
+        // Broadcast receiver
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(MainActivity.AUTH_EVENT);
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (!intent.getAction().equals(MainActivity.AUTH_EVENT)) {
+                    return;
+                }
+
+                showViews();
+            }
+        };
+
+        showViews();
 
         return view;
     }
 
-    @OnClick(R.id.btn_login)
-    public void promptLogin() {
-        ((MainActivity) getActivity()).showLoginDialog(new MainActivity.OnLoginListener() {
-            @Override
-            public void onLogin() {
-                initData();
-            }
-        });
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getContext().registerReceiver(receiver, intentFilter);
     }
 
-    private void initData() {
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getContext().unregisterReceiver(receiver);
+    }
+
+    @OnClick(R.id.btn_login)
+    public void promptLogin() {
+        ((MainActivity) getActivity()).showLoginDialog();
+    }
+
+    private void showViews() {
         final boolean loggedIn = AuthUtil.isAuthenticated(getContext());
         mLoginMsg.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
         mContent.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
 
-        if (!loggedIn) return;
+        if (loggedIn) {
+            initData();
+        }
+    }
+
+    private void initData() {
+        if (!AuthUtil.isAuthenticated(getContext())) {
+            return;
+        }
 
         APIUtil.getUserInfo(getContext(), new UserInfoListener() {
             @Override
