@@ -68,6 +68,8 @@ public class RadioFragment extends TabFragment {
         final View view = inflater.inflate(R.layout.fragment_radio, container, false);
         unbinder = ButterKnife.bind(this, view);
 
+        // TODO: use support v26 to handle this
+        // Typeface nunito = ResourcesCompat.getFont(this, R.font.nunito);
         // Set font to OpenSans
         final Typeface openSans = Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Regular.ttf");
         mTrackTitle.setTypeface(openSans);

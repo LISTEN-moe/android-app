@@ -12,6 +12,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ui.fragments.RadioFragment">
 
+    <!-- TODO: fix for smaller screens -->
+
     <ImageView
         android:layout_width="326dp"
         android:layout_height="133dp"
@@ -42,6 +44,8 @@
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
+
+        <!-- TODO: history -->
 
     </LinearLayout>
 

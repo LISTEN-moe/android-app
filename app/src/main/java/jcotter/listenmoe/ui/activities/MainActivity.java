@@ -115,6 +115,8 @@ public class MainActivity extends AppCompatActivity {
         broadcastReceiver = receiver;
         registerReceiver(broadcastReceiver, intentFilter);
         receiverRegistered = true;
+
+        // TODO: need to listen for TRIGGER_LOGIN while it's open for notification favorite
     }
 
 

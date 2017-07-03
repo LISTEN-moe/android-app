@@ -107,6 +107,8 @@ public class StreamService extends Service {
             }
         }
 
+        // TODO: clean this up
+
         // Starts WebSocket
         if (intent.hasExtra(StreamService.RECEIVER)) {
             connectWebSocket();

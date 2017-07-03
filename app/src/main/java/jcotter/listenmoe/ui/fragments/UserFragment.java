@@ -43,6 +43,7 @@ import jcotter.listenmoe.util.DownloadImageTask;
 import jcotter.listenmoe.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
+    public static final String FAV_EVENT = "fav_event";
 
     @BindView(R.id.login_msg)
     LinearLayout mLoginMsg;
@@ -78,6 +79,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_user, container, false);
         unbinder = ButterKnife.bind(this, view);
+
+        // TODO: favorites list should update
 
         // Favorites list adapter
         adapter = new SongAdapter(this);

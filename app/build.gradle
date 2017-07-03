@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId 'jcotter.listenmoe'
         minSdkVersion 21  // TODO: 19 in the future, possibly
-        targetSdkVersion 25
+        targetSdkVersion 25 // TODO: bump everything up to 26 once the support library finalizes
         versionCode 14
         versionName '1.4'
 

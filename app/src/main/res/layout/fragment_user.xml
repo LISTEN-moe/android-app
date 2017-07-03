@@ -79,6 +79,8 @@
 
             </LinearLayout>
 
+            <!-- TODO: default image -->
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_avatar"
                 android:layout_width="96dp"
