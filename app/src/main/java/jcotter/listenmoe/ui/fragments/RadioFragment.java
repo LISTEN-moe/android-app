@@ -22,6 +22,7 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.ResponseMessages;
 import jcotter.listenmoe.interfaces.FavoriteSongListener;
@@ -50,6 +51,8 @@ public class RadioFragment extends TabFragment {
     @BindView(R.id.current_listeners)
     TextView mListenersTxt;
 
+    private Unbinder unbinder;
+
     // Radio things
     private int songID;
     private boolean favorite;
@@ -63,7 +66,7 @@ public class RadioFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_radio, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         // Set font to OpenSans
         final Typeface openSans = Typeface.createFromAsset(getActivity().getAssets(), "fonts/OpenSans-Regular.ttf");
@@ -100,6 +103,12 @@ public class RadioFragment extends TabFragment {
         connectToSocket();
 
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     /**

@@ -26,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.SongAdapter;
 import jcotter.listenmoe.interfaces.UserFavoritesListener;
@@ -58,6 +59,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     @BindView(R.id.user_favorites)
     RecyclerView mUserFavorites;
 
+    private Unbinder unbinder;
+
     // Favorites
     private List<Song> favorites;
     private SongAdapter adapter;
@@ -74,7 +77,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_user, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
 
         // Favorites list adapter
         adapter = new SongAdapter(this);
@@ -142,6 +145,12 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         super.onPause();
 
         getContext().unregisterReceiver(receiver);
+    }
+
+    @Override
+    public void onDestroyView() {
+        unbinder.unbind();
+        super.onDestroyView();
     }
 
     @OnClick(R.id.btn_login)
