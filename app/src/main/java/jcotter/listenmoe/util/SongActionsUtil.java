@@ -21,22 +21,14 @@ public class SongActionsUtil {
         APIUtil.favoriteSong(activity, song.getId(), new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                activity.runOnUiThread(() -> Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show());
             }
 
             @Override
             public void onSuccess(final boolean favorited) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        song.setFavorite(favorited);
-                        adapter.notifyDataSetChanged();
-                    }
+                activity.runOnUiThread(() -> {
+                    song.setFavorite(favorited);
+                    adapter.notifyDataSetChanged();
                 });
             }
         });
@@ -51,28 +43,22 @@ public class SongActionsUtil {
         APIUtil.requestSong(activity, song.getId(), new RequestSongListener() {
             @Override
             public void onFailure(final String result) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (result.equals(ResponseMessages.USER_NOT_SUPPORTER)) {
-                            Toast.makeText(activity, R.string.supporter_required, Toast.LENGTH_LONG).show();
-                        } else {
-                            Toast.makeText(activity, R.string.error, Toast.LENGTH_LONG).show();
-                        }
+                activity.runOnUiThread(() -> {
+                    if (result.equals(ResponseMessages.USER_NOT_SUPPORTER)) {
+                        Toast.makeText(activity, R.string.supporter_required, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(activity, R.string.error, Toast.LENGTH_LONG).show();
                     }
                 });
             }
 
             @Override
             public void onSuccess() {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, R.string.success, Toast.LENGTH_LONG).show();
+                activity.runOnUiThread(() -> {
+                    Toast.makeText(activity, R.string.success, Toast.LENGTH_LONG).show();
 
-                        song.setEnabled(false);
-                        adapter.notifyDataSetChanged();
-                    }
+                    song.setEnabled(false);
+                    adapter.notifyDataSetChanged();
                 });
             }
         });

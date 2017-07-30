@@ -42,7 +42,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         ButterKnife.bind(this);
 
         // Set up app bar
-        setSupportActionBar((Toolbar) findViewById(R.id.appbar));
+        setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Results list adapter
@@ -61,12 +61,9 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
             @Override
             public void onSuccess(final List<Song> results) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.setSongs(results);
-                        toggleEmptyView(results.size() == 0, query);
-                    }
+                runOnUiThread(() -> {
+                    adapter.setSongs(results);
+                    toggleEmptyView(results.size() == 0, query);
                 });
             }
         });
@@ -84,21 +81,11 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         final AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setMessage(R.string.req_dialog_message)
                 .setPositiveButton(android.R.string.cancel, null)
-                .setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int in) {
-                        SongActionsUtil.favorite(SearchActivity.this, adapter, song);
-                    }
-                });
+                .setNegativeButton(favoriteAction, (dialogInterface, in) -> SongActionsUtil.favorite(SearchActivity.this, adapter, song));
 
         if (song.isEnabled()) {
             // Create button "Request"
-            builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int im) {
-                    SongActionsUtil.request(SearchActivity.this, adapter, song);
-                }
-            });
+            builder.setNeutralButton(getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(SearchActivity.this, adapter, song));
         }
 
         builder.create().show();

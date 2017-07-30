@@ -6,13 +6,14 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import java.io.InputStream;
+import java.lang.ref.WeakReference;
 
 // Based on https://stackoverflow.com/a/9288544
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-    private ImageView mImage;
+    private WeakReference<ImageView> imageViewRef;
 
-    public DownloadImageTask(ImageView bmImage) {
-        this.mImage = bmImage;
+    public DownloadImageTask(ImageView imageView) {
+        this.imageViewRef = new WeakReference<>(imageView);
     }
 
     protected Bitmap doInBackground(String... urls) {
@@ -29,6 +30,9 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        mImage.setImageBitmap(result);
+        ImageView imageView = imageViewRef.get();
+        if (imageView != null) {
+            imageView.setImageBitmap(result);
+        }
     }
 }

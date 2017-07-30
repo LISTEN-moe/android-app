@@ -152,28 +152,26 @@ public class RadioFragment extends TabFragment {
                         final String listeners = String.format(getResources().getString(R.string.current_listeners), intent.getIntExtra(StreamService.UPDATE_PLAYING_LISTENERS, 0));
                         final String requestedBy = requesterBuilder.toString();
 
-                        getActivity().runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mTrackTitle.setText(trackTitle);
-                                mTrackSubtitle.setText(trackSubtitle);
-                                mListenersTxt.setText(listeners);
+                        getActivity().runOnUiThread(() -> {
+                            mTrackTitle.setText(trackTitle);
+                            mTrackSubtitle.setText(trackSubtitle);
+                            mListenersTxt.setText(listeners);
 
-                                if (requestedBy.isEmpty()) {
-                                    mRequestedByTxt.setVisibility(View.INVISIBLE);
-                                } else {
-                                    mRequestedByTxt.setVisibility(View.VISIBLE);
-                                    mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
-                                    mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
-                                }
-
-                                final int favDrawable = favorite ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
-                                mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
+                            if (requestedBy.isEmpty()) {
+                                mRequestedByTxt.setVisibility(View.INVISIBLE);
+                            } else {
+                                mRequestedByTxt.setVisibility(View.VISIBLE);
+                                mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
+                                mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
                             }
+
+                            final int favDrawable = favorite ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
+                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
                         });
                         break;
 
                     default:
+                        // TODO: this doesn't work very reliably
                         if (intent.hasExtra(StreamService.RUNNING)) {
                             playing = intent.getBooleanExtra(StreamService.RUNNING, false);
                             final int playDrawable = playing ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp;
@@ -213,12 +211,7 @@ public class RadioFragment extends TabFragment {
     @OnClick(R.id.favorite_btn)
     public void favorite() {
         if (!AuthUtil.isAuthenticated(getActivity())) {
-            ((MainActivity) getActivity()).showLoginDialog(new MainActivity.OnLoginListener() {
-                @Override
-                public void onLogin() {
-                    favorite();
-                }
-            });
+            ((MainActivity) getActivity()).showLoginDialog(this::favorite);
             return;
         }
 
@@ -227,34 +220,28 @@ public class RadioFragment extends TabFragment {
         APIUtil.favoriteSong(getActivity(), songID, new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (result.equals(ResponseMessages.AUTH_FAILURE)) {
-                            Toast.makeText(getActivity(), getString(R.string.token_expired), Toast.LENGTH_SHORT).show();
-                            ((MainActivity) getActivity()).showLoginDialog();
-                        }
+                getActivity().runOnUiThread(() -> {
+                    if (result.equals(ResponseMessages.AUTH_FAILURE)) {
+                        Toast.makeText(getActivity(), getString(R.string.token_expired), Toast.LENGTH_SHORT).show();
+                        ((MainActivity) getActivity()).showLoginDialog();
                     }
                 });
             }
 
             @Override
             public void onSuccess(final boolean favorited) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        favorite = favorited;
-                        if (favorited) {
-                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_white_24dp));
-                        } else {
-                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_border_white_24dp));
-                        }
+                getActivity().runOnUiThread(() -> {
+                    favorite = favorited;
+                    if (favorited) {
+                        mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_white_24dp));
+                    } else {
+                        mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_border_white_24dp));
+                    }
 
-                        if (StreamService.isServiceRunning) {
-                            Intent favUpdate = new Intent(getActivity(), StreamService.class)
-                                    .putExtra(StreamService.TOGGLE_FAVORITE, favorited);
-                            getActivity().startService(favUpdate);
-                        }
+                    if (StreamService.isServiceRunning) {
+                        Intent favUpdate = new Intent(getActivity(), StreamService.class)
+                                .putExtra(StreamService.TOGGLE_FAVORITE, favorited);
+                        getActivity().startService(favUpdate);
                     }
                 });
             }
@@ -262,11 +249,6 @@ public class RadioFragment extends TabFragment {
 
         final Toast toast = Toast.makeText(getActivity(), getString(R.string.sending), Toast.LENGTH_SHORT);
         toast.show();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                toast.cancel();
-            }
-        }, 750);
+        new Handler().postDelayed(toast::cancel, 750);
     }
 }

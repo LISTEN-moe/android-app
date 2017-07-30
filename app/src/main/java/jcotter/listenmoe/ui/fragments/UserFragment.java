@@ -183,31 +183,23 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
             @Override
             public void onSuccess(final UserInfo userInfo) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final String userName = userInfo.getUsername();
+                getActivity().runOnUiThread(() -> {
+                    final String userName = userInfo.getUsername();
 
-                        mUserName.setText(userName);
+                    mUserName.setText(userName);
 
-                        APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
-                            @Override
-                            public void onFailure(final String result) {
+                    APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
+                        @Override
+                        public void onFailure(final String result) {
+                        }
+
+                        @Override
+                        public void onSuccess(final String avatarUrl) {
+                            if (avatarUrl != null) {
+                                getActivity().runOnUiThread(() -> new DownloadImageTask(mUserAvatar).execute(avatarUrl));
                             }
-
-                            @Override
-                            public void onSuccess(final String avatarUrl) {
-                                if (avatarUrl != null) {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            new DownloadImageTask(mUserAvatar).execute(avatarUrl);
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    }
+                        }
+                    });
                 });
             }
         });
@@ -219,13 +211,10 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
             @Override
             public void onSuccess(final SongsList songsList) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        favorites = songsList.getSongs();
-                        adapter.setSongs(favorites);
-                        mUserRequests.setText(String.format(getString(R.string.user_requests), songsList.getExtra().getRequests()));
-                    }
+                getActivity().runOnUiThread(() -> {
+                    favorites = songsList.getSongs();
+                    adapter.setSongs(favorites);
+                    mUserRequests.setText(String.format(getString(R.string.user_requests), songsList.getExtra().getRequests()));
                 });
             }
         });
@@ -241,21 +230,11 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
                 .setMessage(R.string.req_dialog_message)
                 .setPositiveButton(android.R.string.cancel, null)
-                .setNegativeButton(favoriteAction, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int in) {
-                        SongActionsUtil.favorite(getActivity(), adapter, song);
-                    }
-                });
+                .setNegativeButton(favoriteAction, (dialogInterface, in) -> SongActionsUtil.favorite(getActivity(), adapter, song));
 
         if (song.isEnabled()) {
             // Create button "Request"
-            builder.setNeutralButton(getString(R.string.action_request), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int im) {
-                    SongActionsUtil.request(getActivity(), adapter, song);
-                }
-            });
+            builder.setNeutralButton(getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(getActivity(), adapter, song));
         }
 
         builder.create().show();

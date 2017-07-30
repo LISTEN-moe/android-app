@@ -72,13 +72,10 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(view);
             ButterKnife.bind(this, view);
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                        final Song song = songs.get(getLayoutPosition());
-                        listener.onSongItemClick(song);
-                    }
+            view.setOnClickListener(v -> {
+                if (getAdapterPosition() != RecyclerView.NO_POSITION) {
+                    final Song song = songs.get(getLayoutPosition());
+                    listener.onSongItemClick(song);
                 }
             });
         }

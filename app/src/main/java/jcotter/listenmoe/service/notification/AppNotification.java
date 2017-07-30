@@ -75,7 +75,7 @@ public class AppNotification {
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        final NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentTitle(song.getTitle())
                 .setContentText(text)

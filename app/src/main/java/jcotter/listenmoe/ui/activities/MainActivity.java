@@ -127,16 +127,16 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initAppbar() {
         // Set up app bar
-        setSupportActionBar((Toolbar) findViewById(R.id.appbar));
+        setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Set up ViewPager and adapter
-        final ViewPager mViewPager = (ViewPager) findViewById(R.id.pager);
+        final ViewPager mViewPager = findViewById(R.id.pager);
         final ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mViewPagerAdapter);
 
         // Set up tabs
-        final TabLayout mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        final TabLayout mTabLayout = findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
 
@@ -168,12 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 if (AuthUtil.isAuthenticated(this)) {
                     startActivity(new Intent(this, SearchActivity.class));
                 } else {
-                    showLoginDialog(new OnLoginListener() {
-                        @Override
-                        public void onLogin() {
-                            onOptionsItemSelected(item);
-                        }
-                    });
+                    showLoginDialog(() -> onOptionsItemSelected(item));
                 }
                 return true;
 
@@ -199,9 +194,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showLoginDialog(@Nullable final OnLoginListener listener) {
-        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, (ViewGroup) findViewById(R.id.layout_root));
-        final EditText mLoginUser = (EditText) layout.findViewById(R.id.login_username);
-        final EditText mLoginPass = (EditText) layout.findViewById(R.id.login_password);
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, findViewById(R.id.layout_root));
+        final EditText mLoginUser = layout.findViewById(R.id.login_username);
+        final EditText mLoginPass = layout.findViewById(R.id.login_password);
 
         final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
                 .setTitle(R.string.login)
@@ -212,24 +207,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Override the positive button listener so it won't automatically be dismissed even with
         // an error
-        loginDialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(final DialogInterface dialog) {
-                final Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final String user = mLoginUser.getText().toString().trim();
-                        final String pass = mLoginPass.getText().toString().trim();
+        loginDialog.setOnShowListener(dialog -> {
+            final Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
+                final String user = mLoginUser.getText().toString().trim();
+                final String pass = mLoginPass.getText().toString().trim();
 
-                        if (user.length() == 0 || pass.length() == 0) {
-                            return;
-                        }
+                if (user.length() == 0 || pass.length() == 0) {
+                    return;
+                }
 
-                        login(user, pass, dialog, listener);
-                    }
-                });
-            }
+                login(user, pass, dialog, listener);
+            });
         });
 
         loginDialog.show();
@@ -247,42 +236,36 @@ public class MainActivity extends AppCompatActivity {
         APIUtil.authenticate(this, user, pass, new AuthListener() {
             @Override
             public void onFailure(final String result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String errorMsg = "";
+                runOnUiThread(() -> {
+                    String errorMsg = "";
 
-                        switch (result) {
-                            case ResponseMessages.INVALID_USER:
-                                errorMsg = getString(R.string.error_name);
-                                break;
-                            case ResponseMessages.INVALID_PASS:
-                                errorMsg = getString(R.string.error_pass);
-                                break;
-                            case ResponseMessages.ERROR:
-                                errorMsg = getString(R.string.error_general);
-                                break;
-                        }
-
-                        Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    switch (result) {
+                        case ResponseMessages.INVALID_USER:
+                            errorMsg = getString(R.string.error_name);
+                            break;
+                        case ResponseMessages.INVALID_PASS:
+                            errorMsg = getString(R.string.error_pass);
+                            break;
+                        case ResponseMessages.ERROR:
+                            errorMsg = getString(R.string.error_general);
+                            break;
                     }
+
+                    Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_LONG).show();
                 });
             }
 
             @Override
             public void onSuccess(final String result) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog.dismiss();
-                        invalidateOptionsMenu();
+                runOnUiThread(() -> {
+                    dialog.dismiss();
+                    invalidateOptionsMenu();
 
-                        if (listener != null) {
-                            listener.onLogin();
-                        }
-
-                        broadcastAuthEvent();
+                    if (listener != null) {
+                        listener.onLogin();
                     }
+
+                    broadcastAuthEvent();
                 });
             }
         });
@@ -300,12 +283,7 @@ public class MainActivity extends AppCompatActivity {
         new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
                 .setTitle(R.string.logout)
                 .setMessage(String.format(getString(R.string.logout_confirmation), Math.round((System.currentTimeMillis() / 1000 - tokenAge) / 86400.0)))
-                .setPositiveButton(R.string.logout, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        logout();
-                    }
-                })
+                .setPositiveButton(R.string.logout, (dialogInterface, i) -> logout())
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
                 .show();
@@ -345,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
 
         mAboutDialog.show();
 
-        final TextView textContent = (TextView) mAboutDialog.findViewById(android.R.id.message);
+        final TextView textContent = mAboutDialog.findViewById(android.R.id.message);
         textContent.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
