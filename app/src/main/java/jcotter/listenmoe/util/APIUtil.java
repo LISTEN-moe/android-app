@@ -150,7 +150,13 @@ public class APIUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                listener.onSuccess(gson.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
+                if (response.isSuccessful()) {
+                    // TODO: check if avatar exists
+                    listener.onSuccess(gson.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
+                } else {
+                    // TODO: pass back default avatar
+                    listener.onFailure(ResponseMessages.ERROR);
+                }
             }
         });
     }
@@ -182,6 +188,10 @@ public class APIUtil {
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 final SongsList songsList = APIUtil.parseSongJson(response.body().string());
+                if (songsList == null) {
+                    listener.onFailure(ResponseMessages.ERROR);
+                    return;
+                }
                 for (final Song song : songsList.getSongs()) {
                     song.setFavorite(true);
                 }
@@ -309,9 +319,13 @@ public class APIUtil {
      * For internal use: parses the JSON with a list of songs.
      *
      * @param jsonString JSON returned from the API.
-     * @return A SongsList object.
+     * @return A SongsList object, or null if there was an authentication error.
      */
     private static SongsList parseSongJson(final String jsonString) {
+        if (jsonString.contains(ResponseMessages.AUTH_FAILURE)) {
+            // TODO: log user out?
+            return null;
+        }
         return gson.fromJson(jsonString, SongsList.class);
     }
 }
