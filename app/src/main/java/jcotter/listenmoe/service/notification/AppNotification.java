@@ -4,7 +4,8 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.model.Song;
@@ -13,7 +14,8 @@ import jcotter.listenmoe.ui.activities.MainActivity;
 import jcotter.listenmoe.util.AuthUtil;
 
 public class AppNotification {
-    private int NOTIFICATION_ID = 1;
+    private static final String NOTIFICATION_CHANNEL = "notif_channel";
+    private static final int NOTIFICATION_ID = 1;
     private StreamService service;
 
     private int actionRequestCode;
@@ -73,7 +75,7 @@ public class AppNotification {
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        final NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(service)
+        final NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentTitle(song.getTitle())
                 .setContentText(text)
@@ -92,7 +94,7 @@ public class AppNotification {
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
 
             // Special media style
-            builder.setStyle(new NotificationCompat.MediaStyle().setShowActionsInCompactView(0, 1, 2));
+            builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1, 2));
 
             // Text/icon color
             builder.setColor(ContextCompat.getColor(service, R.color.colorAccent));
