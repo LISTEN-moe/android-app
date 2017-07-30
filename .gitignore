@@ -22,6 +22,11 @@ local.properties
 # Signing files
 .signing/
 
+# Eclipse
+.settings
+.classpath
+.project
+
 # User-specific configurations
 .idea/
 *.iml
