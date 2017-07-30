@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -42,8 +41,6 @@ public class RadioFragment extends TabFragment {
     TextView mTrackSubtitle;
     @BindView(R.id.requested_by)
     TextView mRequestedByTxt;
-    @BindView(R.id.volume_seekbar)
-    SeekBar mVolumeBar;
     @BindView(R.id.play_pause_btn)
     ImageButton mPlayPauseBtn;
     @BindView(R.id.favorite_btn)
@@ -70,28 +67,6 @@ public class RadioFragment extends TabFragment {
 
         // Volume bar
         final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        mVolumeBar.setProgress((int) (sharedPreferences.getFloat(StreamService.VOLUME, 0.5f) * 100));
-        mVolumeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (StreamService.isServiceRunning) {
-                    Intent intent = new Intent(getActivity(), StreamService.class)
-                            .putExtra(StreamService.VOLUME, seekBar.getProgress() / 100.0f);
-                    getActivity().startService(intent);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                SharedPreferences.Editor editor = sharedPreferences.edit()
-                        .putFloat(StreamService.VOLUME, seekBar.getProgress() / 100.0f);
-                editor.apply();
-            }
-        });
 
         connectToSocket();
 
@@ -204,7 +179,6 @@ public class RadioFragment extends TabFragment {
 
         final Intent intent = new Intent(getActivity(), StreamService.class);
         intent.putExtra(StreamService.PLAY, !playing);
-        intent.putExtra(StreamService.VOLUME, mVolumeBar.getProgress() / 100.0f);
         getActivity().startService(intent);
     }
 

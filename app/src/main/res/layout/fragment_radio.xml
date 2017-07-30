@@ -64,39 +64,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/ic_volume_down_white_24dp"
-            tools:ignore="ContentDescription" />
-
-        <SeekBar
-            android:id="@+id/volume_seekbar"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/volume"
-            android:max="100"
-            android:progress="50"
-            android:progressBackgroundTint="@color/light_pink"
-            android:progressTint="@color/pink"
-            android:thumbTint="@color/pink" />
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/ic_volume_up_white_24dp"
-            tools:ignore="ContentDescription" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp">
 

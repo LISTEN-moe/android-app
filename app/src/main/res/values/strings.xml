@@ -48,7 +48,6 @@
     <!-- Radio tab -->
     <string name="play_pause">Play/pause</string>
     <string name="favorite">Favorite</string>
-    <string name="volume">Volume</string>
     <string name="requested_by"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>
     <string name="current_listeners">%d users listening</string>
 

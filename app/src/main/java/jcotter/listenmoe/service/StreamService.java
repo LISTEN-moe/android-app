@@ -59,7 +59,6 @@ public class StreamService extends Service {
     public static final String UPDATE_PLAYING_LISTENERS = UPDATE_PLAYING + ".listeners";
     public static final String UPDATE_PLAYING_REQUESTER = UPDATE_PLAYING + ".requester";
 
-    public static final String VOLUME = "volume";
     public static final String RECEIVER = "receiver";
     public static final String KILLABLE = "killable";
     public static final String REQUEST = "re:re";
@@ -99,13 +98,6 @@ public class StreamService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
         isServiceRunning = true;
-
-        // Volume control
-        if (intent.hasExtra(StreamService.VOLUME)) {
-            if (voiceOfKanacchi != null) {
-                voiceOfKanacchi.setVolume(intent.getFloatExtra(StreamService.VOLUME, 0.5f));
-            }
-        }
 
         // TODO: clean this up
 
@@ -365,7 +357,6 @@ public class StreamService extends Service {
         voiceOfKanacchi = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
         voiceOfKanacchi.prepare(streamSource);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        voiceOfKanacchi.setVolume(sharedPreferences.getFloat(StreamService.VOLUME, 0.5f));
         voiceOfKanacchi.setPlayWhenReady(true);
 
         isStreamStarted = true;
