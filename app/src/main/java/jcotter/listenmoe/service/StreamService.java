@@ -54,7 +54,6 @@ import jcotter.listenmoe.util.AuthUtil;
 
 public class StreamService extends Service {
 
-    public static final String UPDATE_PLAYING = "update_playing";
     public static final String REQUEST = "re:re";
     public static final String PLAY = "play";
     public static final String STOP = "stop";
@@ -302,11 +301,6 @@ public class StreamService extends Service {
 
         App.STATE.listeners.set(playbackInfo.getListeners());
         App.STATE.requester.set(playbackInfo.getRequestedBy());
-
-        // Send the updated info to the MainActivity
-        final Intent intent = new Intent();
-        intent.setAction(StreamService.UPDATE_PLAYING);
-        sendBroadcast(intent);
 
         // Update notification
         updateNotification();

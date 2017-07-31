@@ -1,9 +1,7 @@
 package jcotter.listenmoe.ui.activities;
 
-import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -43,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.content)
     RelativeLayout mContent;
 
-    private BroadcastReceiver broadcastReceiver;
-    private boolean receiverRegistered = false;
-
     private AlertDialog mAboutDialog;
 
     @Override
@@ -67,22 +62,14 @@ public class MainActivity extends AppCompatActivity {
         // Invalidate token if needed
         AuthUtil.checkAuthTokenValidity(this);
 
+        // TODO: need to listen for TRIGGER_LOGIN while it's open for notification favorite
+
         if (getIntent() != null) {
             final String action = getIntent().getAction();
 
             if (action != null && action.equals(MainActivity.TRIGGER_LOGIN)) {
                 showLoginDialog();
             }
-        }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        if (receiverRegistered) {
-            unregisterReceiver(broadcastReceiver);
-            receiverRegistered = false;
         }
     }
 
@@ -99,17 +86,6 @@ public class MainActivity extends AppCompatActivity {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
         }
-    }
-
-
-    // Broadcast receiver
-
-    public void registerBroadcastReceiver(BroadcastReceiver receiver, IntentFilter intentFilter) {
-        broadcastReceiver = receiver;
-        registerReceiver(broadcastReceiver, intentFilter);
-        receiverRegistered = true;
-
-        // TODO: need to listen for TRIGGER_LOGIN while it's open for notification favorite
     }
 
 

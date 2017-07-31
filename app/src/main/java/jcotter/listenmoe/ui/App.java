@@ -12,7 +12,6 @@ import android.databinding.ObservableInt;
 import android.os.IBinder;
 
 import jcotter.listenmoe.model.Song;
-import jcotter.listenmoe.model.UserInfo;
 import jcotter.listenmoe.service.StreamService;
 
 public class App extends Application {
