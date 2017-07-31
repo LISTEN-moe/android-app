@@ -76,7 +76,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_user, container, false);
+        final View view = inflater.inflate(R.layout.user_fragment, container, false);
         unbinder = ButterKnife.bind(this, view);
 
         // TODO: favorites list should update

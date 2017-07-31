@@ -4,17 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +22,11 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.constants.ResponseMessages;
+import jcotter.listenmoe.databinding.RadioFragmentBinding;
 import jcotter.listenmoe.interfaces.FavoriteSongListener;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
+import jcotter.listenmoe.ui.App;
 import jcotter.listenmoe.ui.activities.MainActivity;
 import jcotter.listenmoe.ui.fragments.base.TabFragment;
 import jcotter.listenmoe.util.APIUtil;
@@ -35,25 +35,14 @@ import jcotter.listenmoe.util.SDKUtil;
 
 public class RadioFragment extends TabFragment {
 
-    @BindView(R.id.track_title)
-    TextView mTrackTitle;
-    @BindView(R.id.track_subtitle)
-    TextView mTrackSubtitle;
     @BindView(R.id.requested_by)
     TextView mRequestedByTxt;
     @BindView(R.id.play_pause_btn)
     ImageButton mPlayPauseBtn;
     @BindView(R.id.favorite_btn)
     ImageButton mFavoriteBtn;
-    @BindView(R.id.current_listeners)
-    TextView mListenersTxt;
 
     private Unbinder unbinder;
-
-    // Radio things
-    private int songID;
-    private boolean favorite;
-    private boolean playing;
 
     public static Fragment newInstance(int sectionNumber) {
         return TabFragment.newInstance(sectionNumber, new RadioFragment());
@@ -62,13 +51,17 @@ public class RadioFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_radio, container, false);
+        final RadioFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.radio_fragment, container, false);
+        binding.setSong(App.STATE.currentSong);
+        binding.setListeners(App.STATE.listeners);
+        binding.setPlaying(App.STATE.playing);
+
+        final View view = binding.getRoot();
         unbinder = ButterKnife.bind(this, view);
 
-        // Volume bar
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
 
-        connectToSocket();
+        setupIntentFilter();
 
         return view;
     }
@@ -82,10 +75,7 @@ public class RadioFragment extends TabFragment {
     /**
      * Displays data received from websocket and checks if stream is playing.
      */
-    private void connectToSocket() {
-        songID = -1;
-        favorite = false;
-
+    private void setupIntentFilter() {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(getActivity().getPackageName());
         intentFilter.addAction(StreamService.UPDATE_PLAYING);
@@ -97,89 +87,29 @@ public class RadioFragment extends TabFragment {
                 switch (intent.getAction()) {
                     // Updating current song info from StreamService
                     case StreamService.UPDATE_PLAYING:
-                        // TODO: clean this up a bit more
-                        final String trackTitle;
-                        final String trackSubtitle;
-                        final StringBuilder requesterBuilder = new StringBuilder();
-
-                        // Fetch data from intent
-                        if (intent.hasExtra(StreamService.UPDATE_PLAYING_SONG)) {
-                            final Song currentSong = intent.getParcelableExtra(StreamService.UPDATE_PLAYING_SONG);
-                            final String requester = intent.getStringExtra(StreamService.UPDATE_PLAYING_REQUESTER);
-
-                            songID = currentSong.getId();
-                            favorite = currentSong.isFavorite();
-
-                            // Current song info
-                            trackTitle = currentSong.getTitle();
-                            trackSubtitle = currentSong.getArtistAndAnime();
-
-                            // Song requester
-                            if (!requester.isEmpty()) {
-                                requesterBuilder.append(String.format(getResources().getString(R.string.requested_by), requester));
-                            }
-                        } else {
-                            trackTitle = getString(R.string.api_failure);
-                            trackSubtitle = "";
-                        }
-
-                        // Current listeners
-                        final String listeners = String.format(getResources().getString(R.string.current_listeners), intent.getIntExtra(StreamService.UPDATE_PLAYING_LISTENERS, 0));
-                        final String requestedBy = requesterBuilder.toString();
-
-                        getActivity().runOnUiThread(() -> {
-                            mTrackTitle.setText(trackTitle);
-                            mTrackSubtitle.setText(trackSubtitle);
-                            mListenersTxt.setText(listeners);
-
-                            if (requestedBy.isEmpty()) {
-                                mRequestedByTxt.setVisibility(View.INVISIBLE);
-                            } else {
-                                mRequestedByTxt.setVisibility(View.VISIBLE);
-                                mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
-                                mRequestedByTxt.setText(SDKUtil.fromHtml(requestedBy));
-                            }
-
-                            final int favDrawable = favorite ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
-                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
-                        });
-                        break;
-
-                    default:
-                        // TODO: this doesn't work very reliably
-                        if (intent.hasExtra(StreamService.RUNNING)) {
-                            playing = intent.getBooleanExtra(StreamService.RUNNING, false);
-                            final int playDrawable = playing ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp;
-                            mPlayPauseBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), playDrawable));
-                        }
-
-                        if (intent.hasExtra(StreamService.FAVORITE)) {
-                            favorite = intent.getBooleanExtra(StreamService.FAVORITE, false);
-                            final int favDrawable = favorite ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
-                            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
-                        }
+                        updateSongInfo();
                         break;
                 }
             }
         }, intentFilter);
+    }
 
-        final Intent intent = new Intent(getActivity(), StreamService.class);
-        if (StreamService.isServiceRunning) {
-            intent.putExtra(StreamService.REQUEST, true); // Requests socket update
-        } else {
-            intent.putExtra(StreamService.RECEIVER, true); // Start service
-        }
-        intent.putExtra(StreamService.PROBE, true); // Checks if stream is playing
-        getActivity().startService(intent);
+    private void updateSongInfo() {
+        final StringBuilder requesterBuilder = new StringBuilder();
+
+        final Song currentSong = App.STATE.currentSong.get();
+
+        getActivity().runOnUiThread(() -> {
+            final int favDrawable = currentSong.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp;
+            mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), favDrawable));
+        });
     }
 
     @OnClick(R.id.play_pause_btn)
     public void togglePlayPause() {
-        if (songID == -1) return;
+        if (App.STATE.currentSong.get() == null) return;
 
-        final Intent intent = new Intent(getActivity(), StreamService.class);
-        intent.putExtra(StreamService.PLAY, !playing);
-        getActivity().startService(intent);
+        App.getService().togglePlayPause();
     }
 
     @OnClick(R.id.favorite_btn)
@@ -189,9 +119,13 @@ public class RadioFragment extends TabFragment {
             return;
         }
 
-        if (songID == -1) return;
+        final Song currentSong = App.STATE.currentSong.get();
+        if (currentSong == null) return;
 
-        APIUtil.favoriteSong(getActivity(), songID, new FavoriteSongListener() {
+        final int songId = currentSong.getId();
+        if (songId == -1) return;
+
+        APIUtil.favoriteSong(getActivity(), songId, new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
                 getActivity().runOnUiThread(() -> {
@@ -204,20 +138,7 @@ public class RadioFragment extends TabFragment {
 
             @Override
             public void onSuccess(final boolean favorited) {
-                getActivity().runOnUiThread(() -> {
-                    favorite = favorited;
-                    if (favorited) {
-                        mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_white_24dp));
-                    } else {
-                        mFavoriteBtn.setImageDrawable(SDKUtil.getDrawable(getActivity(), R.drawable.ic_star_border_white_24dp));
-                    }
-
-                    if (StreamService.isServiceRunning) {
-                        Intent favUpdate = new Intent(getActivity(), StreamService.class)
-                                .putExtra(StreamService.TOGGLE_FAVORITE, favorited);
-                        getActivity().startService(favUpdate);
-                    }
-                });
+                App.STATE.currentSong.get().setFavorite(favorited);
             }
         });
 

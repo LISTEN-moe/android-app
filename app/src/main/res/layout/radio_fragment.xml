@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.databinding.ObservableField"/>
+        <import type="android.databinding.ObservableInt" />
+        <import type="android.databinding.ObservableBoolean" />
+        <import type="jcotter.listenmoe.util.SDKUtil" />
+
+        <variable name="song" type="ObservableField&lt;jcotter.listenmoe.model.Song&gt;" />
+        <variable name="listeners" type="ObservableInt" />
+        <variable name="playing" type="ObservableBoolean" />
+        <variable name="requester" type="ObservableField&lt;String&gt;" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".ui.fragments.RadioFragment">
+
+        <!-- TODO: fix for smaller screens -->
+
+        <ImageView
+            android:layout_width="326dp"
+            android:layout_height="133dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/main_logo"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/track_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{song.getTitle() ?? @string/loading}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/track_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{song.getArtistAndAnime()}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <!-- TODO: history -->
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/requested_by"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text='@{requester.isEmpty() ? "" : SDKUtil.fromHtml(@string/requested_by(requester))}'
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textColorLink="@color/colorAccent"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <ImageButton
+                android:id="@+id/play_pause_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/play_pause"
+                android:scaleType="fitXY"
+                android:src="@{playing ? @drawable/ic_pause_white_24dp : @drawable/ic_play_arrow_white_24dp}" />
+
+            <ImageButton
+                android:id="@+id/favorite_btn"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/favorite"
+                android:scaleType="fitXY"
+                android:src="@{song.isFavorite() ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/current_listeners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{@string/current_listeners(listeners)}"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+</layout>

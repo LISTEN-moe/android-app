@@ -12,12 +12,10 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -31,7 +29,6 @@ import jcotter.listenmoe.R;
 import jcotter.listenmoe.adapters.ViewPagerAdapter;
 import jcotter.listenmoe.constants.ResponseMessages;
 import jcotter.listenmoe.interfaces.AuthListener;
-import jcotter.listenmoe.service.StreamService;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
 import jcotter.listenmoe.util.NetworkUtil;
@@ -54,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.main_activity);
 
         if (!NetworkUtil.isNetworkAvailable(this)) {
             showConnectionErrorView();
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         if (getIntent() != null) {
             final String action = getIntent().getAction();
 
-            if (action.equals(MainActivity.TRIGGER_LOGIN)) {
+            if (action != null && action.equals(MainActivity.TRIGGER_LOGIN)) {
                 showLoginDialog();
             }
         }
@@ -87,10 +84,6 @@ public class MainActivity extends AppCompatActivity {
             unregisterReceiver(broadcastReceiver);
             receiverRegistered = false;
         }
-
-        final Intent intent = new Intent(getBaseContext(), StreamService.class);
-        intent.putExtra(StreamService.KILLABLE, true);
-        startService(intent);
     }
 
 
@@ -298,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         AuthUtil.clearAuthToken(this);
-        Toast.makeText(getBaseContext(), getString(R.string.logged_out), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, getString(R.string.logged_out), Toast.LENGTH_LONG).show();
         invalidateOptionsMenu();
 
         broadcastAuthEvent();

@@ -10,6 +10,7 @@ import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import jcotter.listenmoe.R;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.StreamService;
+import jcotter.listenmoe.ui.App;
 import jcotter.listenmoe.ui.activities.MainActivity;
 import jcotter.listenmoe.util.AuthUtil;
 
@@ -25,12 +26,12 @@ public class AppNotification {
     }
 
     public void update() {
-        if (!StreamService.isStreamStarted) {
+        if (!service.isStreamStarted()) {
             return;
         }
 
         // Get current song info
-        final Song song = service.getCurrentSong();
+        final Song song = App.STATE.currentSong.get();
         if (song == null) {
             return;
         }
@@ -83,7 +84,7 @@ public class AppNotification {
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(clickIntent)
-                .setOngoing(StreamService.isStreamStarted)
+                .setOngoing(service.isStreamStarted())
                 .setShowWhen(false)
                 .addAction(playPauseAction)
                 .addAction(favoriteAction)

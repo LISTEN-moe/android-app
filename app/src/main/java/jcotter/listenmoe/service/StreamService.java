@@ -5,12 +5,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.preference.PreferenceManager;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -48,6 +47,7 @@ import jcotter.listenmoe.interfaces.FavoriteSongListener;
 import jcotter.listenmoe.model.PlaybackInfo;
 import jcotter.listenmoe.model.Song;
 import jcotter.listenmoe.service.notification.AppNotification;
+import jcotter.listenmoe.ui.App;
 import jcotter.listenmoe.ui.activities.MainActivity;
 import jcotter.listenmoe.util.APIUtil;
 import jcotter.listenmoe.util.AuthUtil;
@@ -55,135 +55,97 @@ import jcotter.listenmoe.util.AuthUtil;
 public class StreamService extends Service {
 
     public static final String UPDATE_PLAYING = "update_playing";
-    public static final String UPDATE_PLAYING_SONG = UPDATE_PLAYING + ".song";
-    public static final String UPDATE_PLAYING_LISTENERS = UPDATE_PLAYING + ".listeners";
-    public static final String UPDATE_PLAYING_REQUESTER = UPDATE_PLAYING + ".requester";
-
-    public static final String RECEIVER = "receiver";
-    public static final String KILLABLE = "killable";
     public static final String REQUEST = "re:re";
     public static final String PLAY = "play";
-    public static final String RUNNING = "running";
     public static final String STOP = "stop";
     public static final String FAVORITE = "favorite";
-    public static final String TOGGLE_FAVORITE = "favUpdate";
-    public static final String PROBE = "probe";
 
-    public static boolean isServiceRunning = false;
-    public static boolean isStreamStarted = false;
-
-
-    private SimpleExoPlayer voiceOfKanacchi;
-    private WebSocket ws;
+    private SimpleExoPlayer player;
+    private WebSocket socket;
     private boolean uiOpen;
 
     private AppNotification notification;
 
-    private Gson gson;
-    private Song currentSong;
+    private final IBinder mBinder = new LocalBinder();
+    public class LocalBinder extends Binder {
+        public StreamService getService() {
+            return StreamService.this;
+        }
+    }
+
+    private static final Gson gson = new Gson();
 
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return mBinder;
     }
 
     @Override
     public void onCreate() {
-        gson = new Gson();
         notification = new AppNotification(this);
 
         uiOpen = true;
+
+        connectWebSocket();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
-        isServiceRunning = true;
-
         // TODO: clean this up
 
-        // Starts WebSocket
-        if (intent.hasExtra(StreamService.RECEIVER)) {
-            connectWebSocket();
-        } else {
-            // Allows service to be killed
-            if (intent.hasExtra(StreamService.KILLABLE)) {
-                uiOpen = false;
-                if (voiceOfKanacchi != null && !voiceOfKanacchi.getPlayWhenReady()) {
-                    stopForeground(true);
-                    stopSelf();
-                }
+        // Allows service to be killed
+//        if (intent.hasExtra(StreamService.KILLABLE)) {
+//            uiOpen = false;
+//            if (player != null && !player.getPlayWhenReady()) {
+//                stopForeground(true);
+//                stopSelf();
+//            }
+//        } else {
+
+        // Requests WebSocket update
+        if (intent.hasExtra(StreamService.REQUEST)) {
+            uiOpen = true;
+            final String authToken = AuthUtil.getAuthToken(getApplicationContext());
+            if (authToken == null && socket != null) {
+                socket.sendText("update");
+            } else if (socket != null) {
+                socket.sendText("{\"token\":\"" + authToken + "\"}");
             } else {
-                // Requests WebSocket update
-                if (intent.hasExtra(StreamService.REQUEST)) {
-                    uiOpen = true;
-                    final String authToken = AuthUtil.getAuthToken(getApplicationContext());
-                    if (authToken == null && ws != null) {
-                        ws.sendText("update");
-                    } else if (ws != null) {
-                        ws.sendText("{\"token\":\"" + authToken + "\"}");
-                    } else {
-                        connectWebSocket();
+                connectWebSocket();
+            }
+        } else {
+            if (intent.hasExtra(StreamService.PLAY)) {
+                togglePlayPause();
+            }
+
+            // Stop Stream & Foreground ( & Service (Depends))
+            if (intent.hasExtra(StreamService.STOP)) {
+                stop();
+            }
+
+            // Toggle favorite status of current song
+            if (intent.hasExtra(StreamService.FAVORITE)) {
+                APIUtil.favoriteSong(getApplicationContext(), App.STATE.currentSong.get().getId(), new FavoriteSongListener() {
+                    @Override
+                    public void onFailure(final String result) {
                     }
-                } else {
-                    // Play/pause music stream
-                    if (intent.hasExtra(StreamService.PLAY)) {
-                        final Intent returnIntent = new Intent(getPackageName());
-                        if (intent.getBooleanExtra(StreamService.PLAY, false)) {
-                            isStreamStarted = true;
-                            if (voiceOfKanacchi == null) {
-                                startStream();
-                            } else {
-                                voiceOfKanacchi.setPlayWhenReady(true);
-                                voiceOfKanacchi.seekToDefaultPosition();
-                            }
-                            returnIntent.putExtra(StreamService.RUNNING, true);
-                        } else {
-                            voiceOfKanacchi.setPlayWhenReady(false);
-                            returnIntent.putExtra(StreamService.RUNNING, false);
+
+                    @Override
+                    public void onSuccess(final boolean favorited) {
+                        App.STATE.currentSong.get().setFavorite(favorited);
+
+                        if (uiOpen) {
+                            final Intent favIntent = new Intent(getPackageName());
+                            favIntent.putExtra(StreamService.FAVORITE, favorited);
+                            sendBroadcast(favIntent);
                         }
-                        sendBroadcast(returnIntent);
-                    } else {
-                        // Stop Stream & Foreground ( & Service (Depends))
-                        if (intent.hasExtra(StreamService.STOP)) {
-                            stop();
-                        } else {
-                            // Toggle favorite status of current song
-                            if (intent.hasExtra(StreamService.FAVORITE)) {
-                                APIUtil.favoriteSong(getApplicationContext(), currentSong.getId(), new FavoriteSongListener() {
-                                    @Override
-                                    public void onFailure(final String result) {
-                                    }
 
-                                    @Override
-                                    public void onSuccess(final boolean favorited) {
-                                        currentSong.setFavorite(favorited);
-
-                                        if (uiOpen) {
-                                            final Intent favIntent = new Intent(getPackageName());
-                                            favIntent.putExtra(StreamService.FAVORITE, favorited);
-                                            sendBroadcast(favIntent);
-                                        }
-
-                                        updateNotification();
-                                    }
-                                });
-                            } else if (intent.hasExtra(StreamService.TOGGLE_FAVORITE)) {
-                                currentSong.setFavorite(intent.getBooleanExtra(StreamService.TOGGLE_FAVORITE, false));
-                            }
-                        }
+                        updateNotification();
                     }
-                }
+                });
             }
         }
 
-        // Returns music stream state to MainActivity
-        if (intent.hasExtra(StreamService.PROBE)) {
-            final Intent returnIntent = new Intent(getPackageName());
-            returnIntent.putExtra(StreamService.RUNNING, voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady());
-            sendBroadcast(returnIntent);
-        }
-
-        // Update notification
         updateNotification();
 
         return START_NOT_STICKY;
@@ -191,21 +153,15 @@ public class StreamService extends Service {
 
     @Override
     public void onDestroy() {
-        isServiceRunning = false;
-        isStreamStarted = false;
+        stop();
 
-        if (ws != null) {
-            ws.disconnect();
+        if (socket != null) {
+            socket.disconnect();
         }
     }
 
-    /**
-     * Gets the currently playing song.
-     *
-     * @return The current song.
-     */
-    public Song getCurrentSong() {
-        return currentSong;
+    public boolean isStreamStarted() {
+        return player != null;
     }
 
     /**
@@ -214,33 +170,47 @@ public class StreamService extends Service {
      * @return Whether the player is playing something.
      */
     public boolean isPlaying() {
-        return voiceOfKanacchi != null && voiceOfKanacchi.getPlayWhenReady();
+        return player != null && player.getPlayWhenReady();
+    }
+
+    /**
+     * Toggles the stream's play state.
+     */
+    public void togglePlayPause() {
+        if (player != null && player.getPlayWhenReady()) {
+            player.setPlayWhenReady(false);
+        } else {
+            if (player == null) {
+                startStream();
+            } else {
+                player.setPlayWhenReady(true);
+                player.seekToDefaultPosition();
+            }
+        }
+
+        App.STATE.playing.set(isPlaying());
+        updateNotification();
     }
 
     /**
      * Stops the stream and kills the service.
      */
     public void stop() {
-        isStreamStarted = false;
-
-        if (voiceOfKanacchi != null) {
-            voiceOfKanacchi.setPlayWhenReady(false);
+        if (player != null) {
+            player.setPlayWhenReady(false);
         }
 
         stopForeground(true);
         if (!uiOpen) {
             stopSelf();
         }
-
-        final Intent returnIntent = new Intent(getPackageName());
-        returnIntent.putExtra(StreamService.RUNNING, false);
-        sendBroadcast(returnIntent);
     }
 
     /**
      * Updates the notification if there is a song playing.
      */
     private void updateNotification() {
+        final Song currentSong = App.STATE.currentSong.get();
         if (currentSong != null && currentSong.getId() != -1) {
             notification.update();
         }
@@ -252,11 +222,11 @@ public class StreamService extends Service {
     private void connectWebSocket() {
         final String url = Endpoints.SOCKET;
         // Create Web Socket
-        ws = null;
+        socket = null;
         final WebSocketFactory factory = new WebSocketFactory();
         try {
-            ws = factory.createSocket(url, 900000);
-            ws.addListener(new WebSocketAdapter() {
+            socket = factory.createSocket(url, 900000);
+            socket.addListener(new WebSocketAdapter() {
                 @Override
                 public void onFrame(WebSocket websocket, WebSocketFrame frame) throws Exception {
                     if (frame.getPayloadText().contains("listeners")) {
@@ -264,7 +234,7 @@ public class StreamService extends Service {
                         if (!frame.getPayloadText().contains("\"extended\":{")) {
                             final String authToken = AuthUtil.getAuthToken(getBaseContext());
                             if (authToken != null) {
-                                ws.sendText("{\"token\":\"" + authToken + "\"}");
+                                socket.sendText("{\"token\":\"" + authToken + "\"}");
                             }
                         }
 
@@ -296,12 +266,12 @@ public class StreamService extends Service {
                 }
             });
             // Connect to the socket
-            ws.connectAsynchronously();
+            socket.connectAsynchronously();
         } catch (IOException ex) {
             ex.printStackTrace();
-            parseJSON("NULL");
-            if (ws.isOpen()) {
-                ws.disconnect();
+            parseJSON("NULL");  // TODO
+            if (socket.isOpen()) {
+                socket.disconnect();
             }
             connectWebSocket();
         }
@@ -316,26 +286,26 @@ public class StreamService extends Service {
         final PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
 
         if (playbackInfo.getSongId() != 0) {
-            currentSong = new Song(
+            App.STATE.currentSong.set(new Song(
                     playbackInfo.getSongId(),
                     playbackInfo.getArtistName().trim(),
                     playbackInfo.getSongName().trim(),
                     playbackInfo.getAnimeName().trim()
-            );
+            ));
 
             if (playbackInfo.hasExtended()) {
-                currentSong.setFavorite(playbackInfo.getExtended().isFavorite());
+                App.STATE.currentSong.get().setFavorite(playbackInfo.getExtended().isFavorite());
             }
         } else {
-            currentSong = null;
+            App.STATE.currentSong.set(null);
         }
+
+        App.STATE.listeners.set(playbackInfo.getListeners());
+        App.STATE.requester.set(playbackInfo.getRequestedBy());
 
         // Send the updated info to the MainActivity
         final Intent intent = new Intent();
         intent.setAction(StreamService.UPDATE_PLAYING);
-        intent.putExtra(StreamService.UPDATE_PLAYING_SONG, currentSong);
-        intent.putExtra(StreamService.UPDATE_PLAYING_LISTENERS, playbackInfo.getListeners());
-        intent.putExtra(StreamService.UPDATE_PLAYING_REQUESTER, playbackInfo.getRequestedBy());
         sendBroadcast(intent);
 
         // Update notification
@@ -354,12 +324,9 @@ public class StreamService extends Service {
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
 
-        voiceOfKanacchi = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
-        voiceOfKanacchi.prepare(streamSource);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        voiceOfKanacchi.setPlayWhenReady(true);
-
-        isStreamStarted = true;
+        player = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
+        player.prepare(streamSource);
+        player.setPlayWhenReady(true);
 
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
@@ -370,10 +337,7 @@ public class StreamService extends Service {
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()) {
                     case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                        voiceOfKanacchi.setPlayWhenReady(false);
-                        final Intent update = new Intent(getPackageName());
-                        update.putExtra(StreamService.RUNNING, false);
-                        sendBroadcast(update);
+                        player.setPlayWhenReady(false);
                         updateNotification();
                         break;
 
@@ -384,11 +348,11 @@ public class StreamService extends Service {
             }
         };
 
-        voiceOfKanacchi.addListener(new ExoPlayer.EventListener() {
+        player.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
-                voiceOfKanacchi.release();
-                voiceOfKanacchi = null;
+                player.release();
+                player = null;
                 startStream();
             }
 
