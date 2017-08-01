@@ -17,6 +17,7 @@ import me.echeung.listenmoe.service.StreamService;
 
 public class App extends Application {
 
+    // Data binding state
     public static final AppState STATE = new AppState();
 
     private static StreamService mService;
@@ -45,7 +46,8 @@ public class App extends Application {
         public final ObservableField<String> requester = new ObservableField<>();
 
         // User
-        public final ObservableField<UserInfo> user = new ObservableField<>();
+        public final ObservableField<String> userName = new ObservableField<>();
+        public final ObservableInt userRequests = new ObservableInt();
 //        public final ObservableList<Song> favorites
     }
 

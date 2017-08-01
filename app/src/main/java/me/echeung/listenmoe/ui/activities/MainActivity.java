@@ -17,14 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import me.echeung.listenmoe.R;
 import me.echeung.listenmoe.adapters.ViewPagerAdapter;
 import me.echeung.listenmoe.constants.ResponseMessages;
@@ -40,21 +35,23 @@ public class MainActivity extends AppCompatActivity {
     public static final String TRIGGER_LOGIN = "trigger_login";
     public static final String AUTH_EVENT = "auth_event";
 
-    private AlertDialog mAboutDialog;
+    private AlertDialog aboutDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         MainActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
-        ButterKnife.bind(this);
         binding.setHasNetworkConnection(App.STATE.hasNetworkConnection);
 
+        // Check network connectivity
+        binding.btnRetry.setOnClickListener(this::retry);
         if (!NetworkUtil.isNetworkAvailable(this)) {
             return;
         }
 
         // Init app/tab bar
-        initAppbar();
+        initAppbar(binding);
 
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -73,46 +70,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-    // Connection error view
-
-    @OnClick(R.id.btn_retry)
-    public void retry() {
+    /**
+     * For retry button in no internet view.
+     */
+    private void retry(View v) {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
             App.getService().connect();
         }
     }
 
-
-    // Tabs
-
     /**
      * Initializes everything for the tabs: the adapter, icons, and title handler
      */
-    private void initAppbar() {
+    private void initAppbar(MainActivityBinding binding) {
         // Set up app bar
-        setSupportActionBar(findViewById(R.id.appbar));
+        setSupportActionBar(binding.appbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Set up ViewPager and adapter
-        final ViewPager mViewPager = findViewById(R.id.pager);
+        final ViewPager viewPager = binding.pager;
         final ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(mViewPagerAdapter);
+        viewPager.setAdapter(mViewPagerAdapter);
 
         // Set up tabs
-        final TabLayout mTabLayout = findViewById(R.id.tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        final TabLayout tabLayout = binding.tabs;
+        tabLayout.setupWithViewPager(viewPager);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        final int tabCount = mTabLayout.getTabCount();
+        final int tabCount = tabLayout.getTabCount();
         for (int i = 0; i < tabCount; i++) {
-            mTabLayout.getTabAt(i).setIcon(mViewPagerAdapter.getIcon(i));
+            tabLayout.getTabAt(i).setIcon(mViewPagerAdapter.getIcon(i));
         }
     }
 
-
-    // Overflow menu
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,8 +151,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void showLoginDialog(@Nullable final OnLoginListener listener) {
         final View layout = getLayoutInflater().inflate(R.layout.dialog_login, findViewById(R.id.layout_root));
-        final TextInputEditText mLoginUser = layout.findViewById(R.id.login_username);
-        final TextInputEditText mLoginPass = layout.findViewById(R.id.login_password);
+        final TextInputEditText loginUser = layout.findViewById(R.id.login_username);
+        final TextInputEditText loginPass = layout.findViewById(R.id.login_password);
 
         final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
                 .setTitle(R.string.login)
@@ -175,8 +166,8 @@ public class MainActivity extends AppCompatActivity {
         loginDialog.setOnShowListener(dialog -> {
             final Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
             button.setOnClickListener(view -> {
-                final String user = mLoginUser.getText().toString().trim();
-                final String pass = mLoginPass.getText().toString().trim();
+                final String user = loginUser.getText().toString().trim();
+                final String pass = loginPass.getText().toString().trim();
 
                 if (user.length() == 0 || pass.length() == 0) {
                     return;
@@ -271,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
 
     // TODO: actual activity with LICENSEs and stuff?
     private void showAboutDialog() {
-        if (mAboutDialog == null) {
+        if (aboutDialog == null) {
             String version;
             try {
                 version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -279,16 +270,16 @@ public class MainActivity extends AppCompatActivity {
                 version = "";
             }
 
-            mAboutDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+            aboutDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
                     .setTitle(R.string.about)
                     .setMessage(SDKUtil.fromHtml(getString(R.string.about_content, getString(R.string.app_name), version)))
                     .setPositiveButton(R.string.close, null)
                     .create();
         }
 
-        mAboutDialog.show();
+        aboutDialog.show();
 
-        final TextView textContent = mAboutDialog.findViewById(android.R.id.message);
+        final TextView textContent = aboutDialog.findViewById(android.R.id.message);
         textContent.setMovementMethod(LinkMovementMethod.getInstance());
     }
 

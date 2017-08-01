@@ -1,24 +1,20 @@
 package me.echeung.listenmoe.ui.activities;
 
+import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnEditorAction;
 import me.echeung.listenmoe.R;
 import me.echeung.listenmoe.adapters.SongAdapter;
-import me.echeung.listenmoe.databinding.MainActivityBinding;
 import me.echeung.listenmoe.databinding.SearchActivityBinding;
 import me.echeung.listenmoe.interfaces.SearchListener;
 import me.echeung.listenmoe.model.Song;
@@ -27,44 +23,46 @@ import me.echeung.listenmoe.util.SongActionsUtil;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 
-    @BindView(R.id.search_results)
-    RecyclerView mResultsList;
-    @BindView(R.id.no_results)
-    LinearLayout mNoResults;
-    @BindView(R.id.no_results_msg)
-    TextView mNoResultsMsg;
-
     private SongAdapter adapter;
+    private SearchState state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         SearchActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.search_activity);
-        ButterKnife.bind(this);
+
+        // Data binding state
+        state = new SearchState();
+        binding.setHasResults(state.hasResults);
+        binding.setQuery(state.query);
 
         // Set up app bar
-        setSupportActionBar(findViewById(R.id.appbar));
+        setSupportActionBar(binding.appbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        binding.searchQuery.setOnEditorActionListener(this::onEditorAction);
 
         // Results list adapter
         adapter = new SongAdapter(this);
-        mResultsList.setLayoutManager(new LinearLayoutManager(this));
-        mResultsList.setAdapter(adapter);
+        binding.resultsList.setLayoutManager(new LinearLayoutManager(this));
+        binding.resultsList.setAdapter(adapter);
     }
 
-    @OnEditorAction(R.id.search_query)
-    public boolean onEditorAction(TextView textView, int i, KeyEvent event) {
+    private boolean onEditorAction(TextView textView, int i, KeyEvent event) {
         final String query = textView.getText().toString().trim();
+
         APIUtil.search(getBaseContext(), query, new SearchListener() {
             @Override
             public void onFailure(final String result) {
+                state.query.set(query);
             }
 
             @Override
             public void onSuccess(final List<Song> results) {
                 runOnUiThread(() -> {
                     adapter.setSongs(results);
-                    toggleEmptyView(results.size() == 0, query);
+                    state.query.set(query);
+                    state.hasResults.set(results.size() != 0);
                 });
             }
         });
@@ -82,22 +80,20 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         final AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setMessage(R.string.req_dialog_message)
                 .setPositiveButton(android.R.string.cancel, null)
-                .setNegativeButton(favoriteAction, (dialogInterface, in) -> SongActionsUtil.favorite(SearchActivity.this, adapter, song));
+                .setNegativeButton(favoriteAction,
+                        (dialogInterface, in) -> SongActionsUtil.favorite(SearchActivity.this, adapter, song));
 
         if (song.isEnabled()) {
             // Create button "Request"
-            builder.setNeutralButton(getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(SearchActivity.this, adapter, song));
+            builder.setNeutralButton(getString(R.string.action_request),
+                    (dialogInterface, im) -> SongActionsUtil.request(SearchActivity.this, adapter, song));
         }
 
         builder.create().show();
     }
 
-    private void toggleEmptyView(boolean isEmpty, String query) {
-        mResultsList.setVisibility(isEmpty ? View.GONE : View.VISIBLE);
-        mNoResults.setVisibility(isEmpty ? View.VISIBLE : View.GONE);
-
-        if (isEmpty) {
-            mNoResultsMsg.setText(String.format(getString(R.string.no_results), query));
-        }
+    private class SearchState extends BaseObservable {
+        public final ObservableBoolean hasResults = new ObservableBoolean(true);
+        public final ObservableField<String> query = new ObservableField<>();
     }
 }

@@ -5,7 +5,7 @@
     tools:context=".ui.activities.MainActivity">
 
     <data>
-        <import type="android.view.View"/>
+        <import type="android.view.View" />
         <import type="android.databinding.ObservableBoolean" />
 
         <variable name="hasNetworkConnection" type="ObservableBoolean" />
@@ -18,7 +18,6 @@
         android:fitsSystemWindows="true">
 
         <LinearLayout
-            android:id="@+id/no_internet"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"

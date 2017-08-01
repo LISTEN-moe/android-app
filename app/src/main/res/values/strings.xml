@@ -51,6 +51,7 @@
     <string name="current_listeners">%d users listening</string>
 
     <!-- User tab -->
+    <!-- TODO: plurals -->
     <string name="user_requests">%d requests remaining</string>
     <string name="filter_favorites">Filter favorites</string>
 

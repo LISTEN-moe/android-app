@@ -7,13 +7,8 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import me.echeung.listenmoe.R;
 import me.echeung.listenmoe.constants.ResponseMessages;
 import me.echeung.listenmoe.databinding.RadioFragmentBinding;
@@ -26,11 +21,6 @@ import me.echeung.listenmoe.util.APIUtil;
 import me.echeung.listenmoe.util.AuthUtil;
 
 public class RadioFragment extends TabFragment {
-
-    @BindView(R.id.requested_by)
-    TextView mRequestedByTxt;
-
-    private Unbinder unbinder;
 
     public static Fragment newInstance(int sectionNumber) {
         return TabFragment.newInstance(sectionNumber, new RadioFragment());
@@ -46,28 +36,21 @@ public class RadioFragment extends TabFragment {
         binding.setRequester(App.STATE.requester);
 
         final View view = binding.getRoot();
-        unbinder = ButterKnife.bind(this, view);
 
-        mRequestedByTxt.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.requestedBy.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.playPauseBtn.setOnClickListener(v -> togglePlayPause());
+        binding.favoriteBtn.setOnClickListener(v -> favorite());
 
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
-    }
-
-    @OnClick(R.id.play_pause_btn)
-    public void togglePlayPause() {
+    private void togglePlayPause() {
         if (App.STATE.currentSong.get() == null) return;
 
         App.getService().togglePlayPause();
     }
 
-    @OnClick(R.id.favorite_btn)
-    public void favorite() {
+    private void favorite() {
         if (!AuthUtil.isAuthenticated(getActivity())) {
             ((MainActivity) getActivity()).showLoginDialog(this::favorite);
             return;

@@ -5,6 +5,11 @@
     tools:context=".ui.fragments.UserFragment">
 
     <data>
+        <import type="android.databinding.ObservableField" />
+        <import type="android.databinding.ObservableInt" />
+
+        <variable name="userName" type="ObservableField&lt;String&gt;" />
+        <variable name="userRequests" type="ObservableInt" />
     </data>
 
     <LinearLayout
@@ -41,7 +46,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -63,21 +67,20 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/user_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="56dp"
-                        android:text="@string/loading"
+                        android:text="@{userName ?? @string/loading}"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/user_requests"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-light"
+                        android:text="@{@string/user_requests(userRequests)}"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="14sp" />
@@ -93,6 +96,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="-170dp"
                     android:elevation="3dp"
+                    android:src="@mipmap/ic_launcher"
                     app:civ_border_color="@color/colorAccent"
                     app:civ_border_width="2dp" />
 

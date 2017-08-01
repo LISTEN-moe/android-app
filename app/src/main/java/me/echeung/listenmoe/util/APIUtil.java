@@ -22,7 +22,6 @@ import me.echeung.listenmoe.model.Song;
 import me.echeung.listenmoe.model.SongsList;
 import me.echeung.listenmoe.model.UserForumInfo;
 import me.echeung.listenmoe.model.UserInfo;
-import me.echeung.listenmoe.ui.App;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;

@@ -4,6 +4,12 @@
     tools:context=".ui.activities.SearchActivity">
 
     <data>
+        <import type="android.view.View" />
+        <import type="android.databinding.ObservableBoolean" />
+        <import type="android.databinding.ObservableField" />
+
+        <variable name="hasResults" type="ObservableBoolean" />
+        <variable name="query" type="ObservableField&lt;String&gt;" />
     </data>
 
     <LinearLayout
@@ -41,24 +47,24 @@
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/search_results"
+            android:id="@+id/results_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="@{hasResults ? View.VISIBLE : View.GONE}" />
 
         <LinearLayout
-            android:id="@+id/no_results"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="@{hasResults ? View.GONE : View.VISIBLE}">
 
             <TextView
-                android:id="@+id/no_results_msg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
+                android:text="@{@string/no_results(query)}"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>

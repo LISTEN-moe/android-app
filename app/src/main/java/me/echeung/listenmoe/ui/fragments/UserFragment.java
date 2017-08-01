@@ -9,24 +9,16 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 import me.echeung.listenmoe.R;
 import me.echeung.listenmoe.adapters.SongAdapter;
 import me.echeung.listenmoe.databinding.UserFragmentBinding;
@@ -36,6 +28,7 @@ import me.echeung.listenmoe.interfaces.UserInfoListener;
 import me.echeung.listenmoe.model.Song;
 import me.echeung.listenmoe.model.SongsList;
 import me.echeung.listenmoe.model.UserInfo;
+import me.echeung.listenmoe.ui.App;
 import me.echeung.listenmoe.ui.activities.MainActivity;
 import me.echeung.listenmoe.ui.fragments.base.TabFragment;
 import me.echeung.listenmoe.util.APIUtil;
@@ -44,24 +37,10 @@ import me.echeung.listenmoe.util.DownloadImageTask;
 import me.echeung.listenmoe.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
+
     public static final String FAV_EVENT = "fav_event";
 
-    @BindView(R.id.login_msg)
-    LinearLayout mLoginMsg;
-    @BindView(R.id.content)
-    LinearLayout mContent;
-    @BindView(R.id.user_avatar)
-    ImageView mUserAvatar;
-    @BindView(R.id.user_name)
-    TextView mUserName;
-    @BindView(R.id.user_requests)
-    TextView mUserRequests;
-    @BindView(R.id.filter_query)
-    EditText mUserFavoritesFilter;
-    @BindView(R.id.user_favorites)
-    RecyclerView mUserFavorites;
-
-    private Unbinder unbinder;
+    private ImageView userAvatar;
 
     // Favorites
     private List<Song> favorites;
@@ -79,19 +58,22 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final UserFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_fragment, container, false);
+        binding.setUserName(App.STATE.userName);
+        binding.setUserRequests(App.STATE.userRequests);
 
         final View view = binding.getRoot();
-        unbinder = ButterKnife.bind(this, view);
+        userAvatar = binding.userAvatar;
+        binding.btnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showLoginDialog());
 
         // TODO: favorites list should update
 
         // Favorites list adapter
         adapter = new SongAdapter(this);
-        mUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
-        mUserFavorites.setAdapter(adapter);
+        binding.userFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.userFavorites.setAdapter(adapter);
 
         // Set up favorites filtering
-        mUserFavoritesFilter.addTextChangedListener(new TextWatcher() {
+        binding.filterQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }
@@ -153,21 +135,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         getContext().unregisterReceiver(receiver);
     }
 
-    @Override
-    public void onDestroyView() {
-        unbinder.unbind();
-        super.onDestroyView();
-    }
-
-    @OnClick(R.id.btn_login)
-    public void promptLogin() {
-        ((MainActivity) getActivity()).showLoginDialog();
-    }
-
     private void showViews() {
         final boolean loggedIn = AuthUtil.isAuthenticated(getContext());
-        mLoginMsg.setVisibility(loggedIn ? View.GONE : View.VISIBLE);
-        mContent.setVisibility(loggedIn ? View.VISIBLE : View.GONE);
 
         if (loggedIn) {
             initData();
@@ -189,20 +158,21 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getActivity().runOnUiThread(() -> {
                     final String userName = userInfo.getUsername();
 
-                    mUserName.setText(userName);
+                    App.STATE.userName.set(userName);
 
-                    APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
-                        @Override
-                        public void onFailure(final String result) {
-                        }
-
-                        @Override
-                        public void onSuccess(final String avatarUrl) {
-                            if (avatarUrl != null) {
-                                getActivity().runOnUiThread(() -> new DownloadImageTask(mUserAvatar).execute(avatarUrl));
-                            }
-                        }
-                    });
+                    // TODO: Proper user profile/avatars are coming in v4
+//                    APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
+//                        @Override
+//                        public void onFailure(final String result) {
+//                        }
+//
+//                        @Override
+//                        public void onSuccess(final String avatarUrl) {
+//                            if (avatarUrl != null) {
+//                                getActivity().runOnUiThread(() -> new DownloadImageTask(userAvatar).execute(avatarUrl));
+//                            }
+//                        }
+//                    });
                 });
             }
         });
@@ -217,7 +187,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getActivity().runOnUiThread(() -> {
                     favorites = songsList.getSongs();
                     adapter.setSongs(favorites);
-                    mUserRequests.setText(String.format(getString(R.string.user_requests), songsList.getExtra().getRequests()));
+                    App.STATE.userRequests.set(songsList.getExtra().getRequests());
                 });
             }
         });
