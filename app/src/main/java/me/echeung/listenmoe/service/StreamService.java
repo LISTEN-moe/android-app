@@ -90,15 +90,6 @@ public class StreamService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
-        // Allows service to be killed
-//        if (intent.hasExtra(StreamService.KILLABLE)) {
-//            uiOpen = false;
-//            if (player != null && !player.getPlayWhenReady()) {
-//                stopForeground(true);
-//                stopSelf();
-//            }
-//        } else {
-
         // Requests WebSocket update
         if (intent.hasExtra(StreamService.REQUEST)) {
             uiOpen = true;
@@ -195,6 +186,7 @@ public class StreamService extends Service {
     public void stop() {
         if (player != null) {
             player.setPlayWhenReady(false);
+            player = null;
         }
 
         stopForeground(true);

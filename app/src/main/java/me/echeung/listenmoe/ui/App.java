@@ -12,7 +12,6 @@ import android.databinding.ObservableInt;
 import android.os.IBinder;
 
 import me.echeung.listenmoe.model.Song;
-import me.echeung.listenmoe.model.UserInfo;
 import me.echeung.listenmoe.service.StreamService;
 
 public class App extends Application {

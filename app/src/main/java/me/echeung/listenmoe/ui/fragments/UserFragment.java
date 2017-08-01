@@ -23,7 +23,6 @@ import me.echeung.listenmoe.R;
 import me.echeung.listenmoe.adapters.SongAdapter;
 import me.echeung.listenmoe.databinding.UserFragmentBinding;
 import me.echeung.listenmoe.interfaces.UserFavoritesListener;
-import me.echeung.listenmoe.interfaces.UserForumInfoListener;
 import me.echeung.listenmoe.interfaces.UserInfoListener;
 import me.echeung.listenmoe.model.Song;
 import me.echeung.listenmoe.model.SongsList;
@@ -33,7 +32,6 @@ import me.echeung.listenmoe.ui.activities.MainActivity;
 import me.echeung.listenmoe.ui.fragments.base.TabFragment;
 import me.echeung.listenmoe.util.APIUtil;
 import me.echeung.listenmoe.util.AuthUtil;
-import me.echeung.listenmoe.util.DownloadImageTask;
 import me.echeung.listenmoe.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
