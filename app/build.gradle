@@ -5,11 +5,11 @@ android {
     buildToolsVersion '26.0.1'
 
     defaultConfig {
-        applicationId 'jcotter.listenmoe'
+        applicationId 'me.echeung.listenmoe'
         minSdkVersion 21  // TODO: 19 in the future, possibly
         targetSdkVersion 26
-        versionCode 14
-        versionName '1.4'
+        versionCode 15
+        versionName '2.0'
 
         vectorDrawables.useSupportLibrary = true
     }

@@ -27,6 +27,6 @@
 #-keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class jcotter.listenmoe.model.** { *; }
+-keep class me.echeung.listenmoe.model.** { *; }
 
 ##---------------End:   proguard configuration for Gson  ----------

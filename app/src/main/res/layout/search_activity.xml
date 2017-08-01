@@ -1,61 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/light_grey"
-    android:orientation="vertical"
     tools:context=".ui.activities.SearchActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="fill_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/grey">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
-            <EditText
-                android:id="@+id/search_query"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:background="@null"
-                android:hint="@string/search"
-                android:imeOptions="actionSearch"
-                android:inputType="textNoSuggestions"
-                android:maxLines="1"
-                android:paddingRight="16dp"
-                android:textColorHint="@color/lighter_grey"
-                android:textSize="16sp" />
-
-        </android.support.v7.widget.Toolbar>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/search_results"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <data>
+    </data>
 
     <LinearLayout
-        android:id="@+id/no_results"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/no_results_msg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-light"
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="fill_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/grey">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+                <EditText
+                    android:id="@+id/search_query"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:background="@null"
+                    android:hint="@string/search"
+                    android:imeOptions="actionSearch"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
+                    android:paddingRight="16dp"
+                    android:textColorHint="@color/lighter_grey"
+                    android:textSize="16sp" />
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/search_results"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/no_results"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:gravity="center"
-            android:textColor="@android:color/white" />
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/no_results_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:gravity="center"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</layout>

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.fragments.RadioFragment">
 
     <data>
         <import type="android.databinding.ObservableField"/>
         <import type="android.databinding.ObservableInt" />
         <import type="android.databinding.ObservableBoolean" />
-        <import type="jcotter.listenmoe.util.SDKUtil" />
+        <import type="me.echeung.listenmoe.util.SDKUtil" />
 
-        <variable name="song" type="ObservableField&lt;jcotter.listenmoe.model.Song&gt;" />
+        <variable name="song" type="ObservableField&lt;me.echeung.listenmoe.model.Song&gt;" />
         <variable name="listeners" type="ObservableInt" />
         <variable name="playing" type="ObservableBoolean" />
         <variable name="requester" type="ObservableField&lt;String&gt;" />
@@ -23,8 +24,7 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".ui.fragments.RadioFragment">
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <!-- TODO: fix for smaller screens -->
 
@@ -32,7 +32,7 @@
             android:layout_width="326dp"
             android:layout_height="133dp"
             android:layout_gravity="center_horizontal"
-            app:srcCompat="@drawable/main_logo"
+            app:srcCompat="@drawable/logo"
             tools:ignore="ContentDescription" />
 
         <LinearLayout
@@ -43,18 +43,18 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/track_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:text="@{song.getTitle() ?? @string/loading}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/track_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
                 android:text="@{song.getArtistAndAnime()}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
@@ -105,7 +105,6 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/current_listeners"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{@string/current_listeners(listeners)}"
