@@ -78,15 +78,27 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            android:layout_gravity="center"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
+            android:gravity="center">
 
             <ImageButton
+                android:id="@+id/history_btn"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_margin="16dp"
+                android:padding="8dp"
+                android:background="?android:attr/selectableItemBackground"
+                android:contentDescription="@string/history"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_history_white_24dp" />
+
+            <android.support.design.widget.FloatingActionButton
                 android:id="@+id/play_pause_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_margin="16dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="fitXY"
@@ -94,9 +106,10 @@
 
             <ImageButton
                 android:id="@+id/favorite_btn"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_margin="8dp"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_margin="16dp"
+                android:padding="8dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/favorite"
                 android:scaleType="fitXY"
@@ -107,7 +120,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{@string/current_listeners(listeners)}"
+            android:text="@{@plurals/current_listeners(listeners, listeners)}"
             android:textAlignment="center"
             android:textColor="@android:color/white" />
 

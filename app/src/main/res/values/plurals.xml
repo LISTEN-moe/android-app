@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="user_requests">
+        <item quantity="one">%d request remaining</item>
+        <item quantity="other">%d requests remaining</item>
+    </plurals>
+
+    <plurals name="current_listeners">
+        <item quantity="one">%d user listening</item>
+        <item quantity="other">%d users listening</item>
+    </plurals>
+</resources>

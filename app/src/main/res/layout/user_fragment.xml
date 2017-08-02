@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-light"
-                        android:text="@{@string/user_requests(userRequests)}"
+                        android:text="@{@plurals/user_requests(userRequests, userRequests)}"
                         android:textAlignment="center"
                         android:textColor="@android:color/white"
                         android:textSize="14sp" />
