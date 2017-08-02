@@ -234,11 +234,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLogoutDialog() {
-        final long tokenAge = AuthUtil.getTokenAge(this);
-
         new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
                 .setTitle(R.string.logout)
-                .setMessage(String.format(getString(R.string.logout_confirmation), Math.round((System.currentTimeMillis() / 1000 - tokenAge) / 86400.0)))
+                .setMessage(getString(R.string.logout_confirmation))
                 .setPositiveButton(R.string.logout, (dialogInterface, i) -> logout())
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
