@@ -91,6 +91,7 @@ public class StreamService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
         // Requests WebSocket update
+        // TODO: when am I supposed to do this?
         if (intent.hasExtra(StreamService.REQUEST)) {
             uiOpen = true;
             final String authToken = AuthUtil.getAuthToken(getApplicationContext());
@@ -193,6 +194,8 @@ public class StreamService extends Service {
         if (!uiOpen) {
             stopSelf();
         }
+
+        App.STATE.playing.set(false);
     }
 
     /**

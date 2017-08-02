@@ -33,7 +33,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_item, parent, false);
-        return new SongHolder(v, songs, listener);
+        return new SongHolder(v, this);
     }
 
     @Override
@@ -56,6 +56,14 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return songs.size();
     }
 
+    protected List<Song> getSongs() {
+        return songs;
+    }
+
+    protected OnSongItemClickListener getListener() {
+        return listener;
+    }
+
     public interface OnSongItemClickListener {
         void onSongItemClick(final Song song);
     }
@@ -68,14 +76,14 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         @BindView(R.id.favorited)
         LinearLayout mFavorited;
 
-        SongHolder(final View view, final List<Song> songs, final OnSongItemClickListener listener) {
+        SongHolder(final View view, final SongAdapter adapter) {
             super(view);
             ButterKnife.bind(this, view);
 
             view.setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    final Song song = songs.get(getLayoutPosition());
-                    listener.onSongItemClick(song);
+                    final Song song = adapter.getSongs().get(getLayoutPosition());
+                    adapter.getListener().onSongItemClick(song);
                 }
             });
         }
