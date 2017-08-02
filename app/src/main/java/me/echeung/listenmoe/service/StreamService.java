@@ -72,7 +72,7 @@ public class StreamService extends Service {
         }
     }
 
-    private static final Gson gson = new Gson();
+    private static final Gson GSON = new Gson();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -274,7 +274,7 @@ public class StreamService extends Service {
      * @param jsonString Response from the LISTEN.moe websocket.
      */
     private void parseJSON(final String jsonString) {
-        final PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
+        final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
         if (playbackInfo.getSongId() != 0) {
             App.STATE.currentSong.set(new Song(

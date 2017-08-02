@@ -77,11 +77,9 @@ public class Song implements Parcelable {
     public String toString() {
         final StringBuilder builder = new StringBuilder();
 
-        builder.append(String.format("%s - %s", artist, title));
-
-        if (anime != null && !anime.isEmpty()) {
-            builder.append(String.format(" [ %s ]", anime));
-        }
+        builder.append(title);
+        builder.append("\n");
+        builder.append(getArtistAndAnime());
 
         return builder.toString();
     }

@@ -78,7 +78,8 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
                 getString(R.string.action_favorite);
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setMessage(R.string.req_dialog_message)
+                .setTitle(song.getTitle())
+                .setMessage(song.getArtistAndAnime())
                 .setPositiveButton(android.R.string.cancel, null)
                 .setNegativeButton(favoriteAction,
                         (dialogInterface, in) -> SongActionsUtil.favorite(SearchActivity.this, adapter, song));

@@ -56,7 +56,6 @@
     <string name="filter_favorites">Filter favorites</string>
 
     <!-- Song item actions -->
-    <string name="req_dialog_message">What action would you like to take?</string>
     <string name="supporter_required">Supporter status required</string>
 
     <!-- WebSocket -->
