@@ -6,7 +6,7 @@
     <string name="close">Close</string>
     <string name="success">Success!</string>
     <string name="error">An error occurred</string>
-    <string name="loading">Loading…</string>
+    <string name="connecting">Connecting…</string>
 
     <!-- Actions (notification, dialogs) -->
     <string name="action_play">Play</string>
@@ -41,7 +41,7 @@
         Powered by: <a href="https://listen.moe">LISTEN.moe</a>
         <br/>
         <br/>
-        Report bugs or request features on <a href=\'https://github.com/J-Cotter/LISTEN.moe-Unofficial-Android-App\'>GitHub</a>.
+        Report bugs or request features on <a href=\'https://github.com/arkon/listen-moe-android\'>GitHub</a>.
     ]]></string>
 
     <!-- Radio tab -->
@@ -56,10 +56,7 @@
     <!-- Song item actions -->
     <string name="supporter_required">Supporter status required</string>
 
-    <!-- WebSocket -->
-    <string name="api_failure">Unable to connect to the API.\n Please check your internet connection.\n If you are connected stop the app and then try again.\n If the problem persists the radio might be down for maintenance</string>
-
     <!-- No Internet view -->
-    <string name="no_internet">Can\'t connect to LISTEN.moe!\nPlease check your Internet connection.</string>
+    <string name="no_internet">Can\'t connect to LISTEN.moe!\n\nPlease check your Internet connection.</string>
     <string name="retry">Retry</string>
 </resources>
