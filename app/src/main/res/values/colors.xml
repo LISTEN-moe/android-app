@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/grey</color>
+    <color name="colorPrimary">@color/pink</color>
     <color name="colorAccent">@color/pink</color>
 
     <color name="grey">#1D1F2B</color>
