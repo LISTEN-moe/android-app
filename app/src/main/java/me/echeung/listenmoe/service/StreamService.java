@@ -218,6 +218,8 @@ public class StreamService extends Service {
             socket = null;
         }
 
+        // TODO: handle disconnects/network changes gracefully
+
         final WebSocketFactory factory = new WebSocketFactory();
         try {
             socket = factory.createSocket(Endpoints.SOCKET, 900000);
@@ -283,6 +285,7 @@ public class StreamService extends Service {
                     playbackInfo.getAnimeName().trim()
             ));
 
+            // TODO: clean up how favorited track is handled
             if (playbackInfo.hasExtended()) {
                 final boolean favorited = playbackInfo.getExtended().isFavorite();
                 App.STATE.currentSong.get().setFavorite(favorited);
@@ -318,6 +321,8 @@ public class StreamService extends Service {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         intentFilter.addAction(MainActivity.AUTH_EVENT);
+
+        // TODO: pause when headphones unplugged
 
         final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -361,6 +366,7 @@ public class StreamService extends Service {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                // TODO: clean this up
                 try {
                     if (playWhenReady) {
                         registerReceiver(broadcastReceiver, intentFilter);

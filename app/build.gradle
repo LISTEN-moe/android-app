@@ -8,8 +8,8 @@ android {
         applicationId 'me.echeung.listenmoe'
         minSdkVersion 21  // TODO: 19 in the future, possibly
         targetSdkVersion 26
-        versionCode 15
-        versionName '2.0'
+        versionCode 1
+        versionName '0.1'
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -57,6 +57,8 @@ dependencies {
     compile 'com.google.android.exoplayer:exoplayer:r2.3.1'
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'de.hdodenhof:circleimageview:2.1.0'
+
+    // TODO: use Retrofit for API stuff
 
     // TODO: remove this
     compile 'com.jakewharton:butterknife:8.6.0'

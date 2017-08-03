@@ -40,6 +40,8 @@ public class RadioFragment extends TabFragment {
 
         binding.requestedBy.setMovementMethod(LinkMovementMethod.getInstance());
         binding.playPauseBtn.setOnClickListener(v -> togglePlayPause());
+        // TODO: show history items in bottom sheet?
+//        binding.historyBtn.setOnClickListener(v -> favorite());
         binding.favoriteBtn.setOnClickListener(v -> favorite());
 
         return view;
