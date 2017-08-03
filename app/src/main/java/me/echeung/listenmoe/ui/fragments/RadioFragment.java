@@ -32,6 +32,7 @@ public class RadioFragment extends TabFragment {
         final RadioFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.radio_fragment, container, false);
         binding.setPlaying(App.STATE.playing);
         binding.setSong(App.STATE.currentSong);
+        binding.setFavorited(App.STATE.currentFavorited);
         binding.setListeners(App.STATE.listeners);
         binding.setRequester(App.STATE.requester);
 
@@ -75,7 +76,10 @@ public class RadioFragment extends TabFragment {
 
             @Override
             public void onSuccess(final boolean favorited) {
-                App.STATE.currentSong.get().setFavorite(favorited);
+                if (App.STATE.currentSong.get().getId() == songId) {
+                    currentSong.setFavorite(favorited);
+                    App.STATE.currentFavorited.set(favorited);
+                }
             }
         });
     }

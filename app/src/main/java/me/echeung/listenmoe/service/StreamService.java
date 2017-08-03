@@ -122,6 +122,7 @@ public class StreamService extends Service {
                 @Override
                 public void onSuccess(final boolean favorited) {
                     App.STATE.currentSong.get().setFavorite(favorited);
+                    App.STATE.currentFavorited.set(favorited);
 
                     if (uiOpen) {
                         final Intent favIntent = new Intent(getPackageName());
@@ -233,14 +234,14 @@ public class StreamService extends Service {
                         }
 
                         // Parses the API information
-                        parseJSON(frame.getPayloadText());
+                        parseWebSocketResponse(frame.getPayloadText());
                     }
                 }
 
                 @Override
                 public void onConnectError(WebSocket websocket, WebSocketException exception) throws Exception {
                     exception.printStackTrace();
-                    parseJSON("NULL");
+                    parseWebSocketResponse("NULL");
                     SystemClock.sleep(6000);
                     connect();
                 }
@@ -263,7 +264,7 @@ public class StreamService extends Service {
             socket.connectAsynchronously();
         } catch (IOException ex) {
             ex.printStackTrace();
-            parseJSON("NULL");  // TODO
+            parseWebSocketResponse("NULL");  // TODO
             if (socket.isOpen()) {
                 socket.disconnect();
             }
@@ -271,12 +272,7 @@ public class StreamService extends Service {
         }
     }
 
-    /**
-     * Parses JSON resposne from websocket.
-     *
-     * @param jsonString Response from the LISTEN.moe websocket.
-     */
-    private void parseJSON(final String jsonString) {
+    private void parseWebSocketResponse(final String jsonString) {
         final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
         if (playbackInfo.getSongId() != 0) {
@@ -288,7 +284,9 @@ public class StreamService extends Service {
             ));
 
             if (playbackInfo.hasExtended()) {
-                App.STATE.currentSong.get().setFavorite(playbackInfo.getExtended().isFavorite());
+                final boolean favorited = playbackInfo.getExtended().isFavorite();
+                App.STATE.currentSong.get().setFavorite(favorited);
+                App.STATE.currentFavorited.set(favorited);
             }
         } else {
             App.STATE.currentSong.set(null);

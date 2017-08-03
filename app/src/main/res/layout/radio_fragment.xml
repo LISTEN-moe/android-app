@@ -11,6 +11,7 @@
         <import type="me.echeung.listenmoe.util.SDKUtil" />
 
         <variable name="song" type="ObservableField&lt;me.echeung.listenmoe.model.Song&gt;" />
+        <variable name="favorited" type="ObservableBoolean" />
         <variable name="listeners" type="ObservableInt" />
         <variable name="playing" type="ObservableBoolean" />
         <variable name="requester" type="ObservableField&lt;String&gt;" />
@@ -96,8 +97,8 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/play_pause_btn"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
+                android:layout_width="@dimen/fab_size"
+                android:layout_height="@dimen/fab_size"
                 android:layout_margin="16dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/play_pause"
@@ -113,7 +114,7 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:contentDescription="@string/favorite"
                 android:scaleType="fitXY"
-                android:src="@{song.isFavorite() ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}" />
+                android:src="@{favorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}" />
 
         </LinearLayout>
 

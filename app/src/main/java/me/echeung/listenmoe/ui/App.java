@@ -41,6 +41,7 @@ public class App extends Application {
         // Play state
         public final ObservableBoolean playing = new ObservableBoolean();
         public final ObservableField<Song> currentSong = new ObservableField<>();
+        public final ObservableBoolean currentFavorited = new ObservableBoolean();
         public final ObservableInt listeners = new ObservableInt();
         public final ObservableField<String> requester = new ObservableField<>();
 
