@@ -8,9 +8,9 @@
         <import type="android.databinding.ObservableField"/>
         <import type="android.databinding.ObservableInt" />
         <import type="android.databinding.ObservableBoolean" />
-        <import type="me.echeung.listenmoe.util.SDKUtil" />
+        <import type="me.echeung.moemoekyun.util.SDKUtil" />
 
-        <variable name="song" type="ObservableField&lt;me.echeung.listenmoe.model.Song&gt;" />
+        <variable name="song" type="ObservableField&lt;me.echeung.moemoekyun.model.Song&gt;" />
         <variable name="favorited" type="ObservableBoolean" />
         <variable name="listeners" type="ObservableInt" />
         <variable name="playing" type="ObservableBoolean" />

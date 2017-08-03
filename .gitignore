@@ -1,5 +1,6 @@
 # Built application files
 build/
+release/
 *.apk
 *.ap_
 bin/

@@ -5,7 +5,7 @@ android {
     buildToolsVersion '26.0.1'
 
     defaultConfig {
-        applicationId 'me.echeung.listenmoe'
+        applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21  // TODO: 19 in the future, possibly
         targetSdkVersion 26
         versionCode 1
@@ -25,7 +25,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            // TODO: this breaks the release build :(
+//            minifyEnabled true
             useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
