@@ -36,6 +36,7 @@ import me.echeung.moemoekyun.util.NetworkUtil;
 import me.echeung.moemoekyun.util.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
+
     public static final String TRIGGER_LOGIN = "trigger_login";
     public static final String AUTH_EVENT = "auth_event";
 

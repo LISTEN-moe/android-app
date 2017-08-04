@@ -42,8 +42,6 @@ import me.echeung.moemoekyun.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
 
-    public static final String FAV_EVENT = "fav_event";
-
     // Data binding state
     public static final UserFragment.UserState USER_STATE = new UserFragment.UserState();
 
@@ -153,6 +151,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
                             initUserContent();
+
+                            // TODO: update favorite = false when logged out
                             break;
                     }
                 }

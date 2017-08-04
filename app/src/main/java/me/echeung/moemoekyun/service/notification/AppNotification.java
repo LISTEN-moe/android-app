@@ -15,6 +15,7 @@ import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.util.AuthUtil;
 
 public class AppNotification {
+
     private static final String NOTIFICATION_CHANNEL = "notif_channel";
     private static final int NOTIFICATION_ID = 1;
     private StreamService service;

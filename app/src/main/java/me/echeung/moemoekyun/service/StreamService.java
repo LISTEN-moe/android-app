@@ -76,6 +76,8 @@ public class StreamService extends Service {
 
     private static final Gson GSON = new Gson();
 
+    private BroadcastReceiver intentReceiver;
+
     @Override
     public IBinder onBind(Intent intent) {
         return mBinder;
@@ -87,6 +89,7 @@ public class StreamService extends Service {
 
         uiOpen = true;
 
+        initBroadcastReceiver();
         connect();
     }
 
@@ -94,17 +97,17 @@ public class StreamService extends Service {
     public int onStartCommand(Intent intent, int flags, int startID) {
         // Requests WebSocket update
         // TODO: when am I supposed to do this?
-        if (intent.hasExtra(StreamService.REQUEST)) {
-            uiOpen = true;
-            final String authToken = AuthUtil.getAuthToken(getApplicationContext());
-            if (authToken == null && socket != null) {
-                socket.sendText("update");
-            } else if (socket != null) {
-                socket.sendText("{\"token\":\"" + authToken + "\"}");
-            } else {
-                connect();
-            }
-        }
+//        if (intent.hasExtra(StreamService.REQUEST)) {
+//            uiOpen = true;
+//            final String authToken = AuthUtil.getAuthToken(getApplicationContext());
+//            if (authToken == null && socket != null) {
+//                socket.sendText("update");
+//            } else if (socket != null) {
+//                socket.sendText("{\"token\":\"" + authToken + "\"}");
+//            } else {
+//                connect();
+//            }
+//        }
 
         if (intent.hasExtra(StreamService.PLAY)) {
             togglePlayPause();
@@ -131,7 +134,39 @@ public class StreamService extends Service {
             socket.disconnect();
         }
 
+        LocalBroadcastManager.getInstance(this)
+                .unregisterReceiver(intentReceiver);
+
         super.onDestroy();
+    }
+
+    private void initBroadcastReceiver() {
+        intentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (intent.getAction()) {
+                    case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
+                        if (player != null) {
+                            player.setPlayWhenReady(false);
+                        }
+                        updateNotification();
+                        break;
+
+                    case MainActivity.AUTH_EVENT:
+                        updateNotification();
+                        break;
+                }
+            }
+        };
+
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        intentFilter.addAction(MainActivity.AUTH_EVENT);
+
+        // TODO: pause when headphones unplugged
+
+        LocalBroadcastManager.getInstance(this).
+            registerReceiver(intentReceiver, intentFilter);
     }
 
     public boolean isStreamStarted() {
@@ -199,6 +234,7 @@ public class StreamService extends Service {
             @Override
             public void onFailure(final String result) {
                 if (result.equals(ResponseMessages.AUTH_FAILURE)) {
+                    // TODO: should favorite after logging in
                     promptLogin();
                 }
             }
@@ -216,22 +252,22 @@ public class StreamService extends Service {
     }
 
     /**
+     * Updates the notification if there is a song playing.
+     */
+    public void updateNotification() {
+        final Song currentSong = App.STATE.currentSong.get();
+        if (currentSong != null && currentSong.getId() != -1) {
+            notification.update();
+        }
+    }
+
+    /**
      * Opens up the login dialog in MainActivity.
      */
     private void promptLogin() {
         final Intent loginIntent = new Intent(MainActivity.TRIGGER_LOGIN);
         LocalBroadcastManager.getInstance(this)
                 .sendBroadcast(loginIntent);
-    }
-
-    /**
-     * Updates the notification if there is a song playing.
-     */
-    private void updateNotification() {
-        final Song currentSong = App.STATE.currentSong.get();
-        if (currentSong != null && currentSong.getId() != -1) {
-            notification.update();
-        }
     }
 
     /**
@@ -343,28 +379,6 @@ public class StreamService extends Service {
         player.prepare(streamSource);
         player.setPlayWhenReady(true);
 
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-        intentFilter.addAction(MainActivity.AUTH_EVENT);
-
-        // TODO: pause when headphones unplugged
-
-        final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                        player.setPlayWhenReady(false);
-                        updateNotification();
-                        break;
-
-                    case MainActivity.AUTH_EVENT:
-                        updateNotification();
-                        break;
-                }
-            }
-        };
-
         player.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
@@ -391,15 +405,6 @@ public class StreamService extends Service {
 
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                // TODO: clean this up
-                try {
-                    if (playWhenReady) {
-                        registerReceiver(broadcastReceiver, intentFilter);
-                    } else {
-                        unregisterReceiver(broadcastReceiver);
-                    }
-                } catch (IllegalArgumentException ignored) {
-                }
             }
         });
     }
