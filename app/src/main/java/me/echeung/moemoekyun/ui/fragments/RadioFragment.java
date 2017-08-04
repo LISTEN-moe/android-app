@@ -1,23 +1,21 @@
 package me.echeung.moemoekyun.ui.fragments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.databinding.RadioFragmentBinding;
-import me.echeung.moemoekyun.interfaces.FavoriteSongListener;
-import me.echeung.moemoekyun.model.Song;
+import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
-import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.AuthUtil;
 
 public class RadioFragment extends TabFragment {
@@ -59,30 +57,8 @@ public class RadioFragment extends TabFragment {
             return;
         }
 
-        final Song currentSong = App.STATE.currentSong.get();
-        if (currentSong == null) return;
-
-        final int songId = currentSong.getId();
-        if (songId == -1) return;
-
-        APIUtil.favoriteSong(getActivity(), songId, new FavoriteSongListener() {
-            @Override
-            public void onFailure(final String result) {
-                getActivity().runOnUiThread(() -> {
-                    if (result.equals(ResponseMessages.AUTH_FAILURE)) {
-                        Toast.makeText(getActivity(), getString(R.string.token_expired), Toast.LENGTH_SHORT).show();
-                        ((MainActivity) getActivity()).showLoginDialog();
-                    }
-                });
-            }
-
-            @Override
-            public void onSuccess(final boolean favorited) {
-                if (App.STATE.currentSong.get().getId() == songId) {
-                    currentSong.setFavorite(favorited);
-                    App.STATE.currentFavorited.set(favorited);
-                }
-            }
-        });
+        final Intent favIntent = new Intent(StreamService.FAVORITE);
+        LocalBroadcastManager.getInstance(getActivity())
+                .sendBroadcast(favIntent);
     }
 }

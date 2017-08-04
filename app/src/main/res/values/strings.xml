@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">LISTEN.moe</string>
+    <string name="app_name" translatable="false">Listen.moe</string>
 
     <!-- Generic strings -->
     <string name="close">Close</string>
@@ -30,7 +30,6 @@
     <string name="error_pass">Error: incorrect password</string>
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="logged_out">Logged out</string>
-    <string name="token_expired">Token expired</string>
     <string name="login_required">You must log in to use this feature.</string>
 
     <!-- About dialog -->

@@ -1,7 +1,10 @@
 package me.echeung.moemoekyun.ui.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog aboutDialog;
 
+    private BroadcastReceiver intentReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,15 +65,24 @@ public class MainActivity extends AppCompatActivity {
         // Invalidate token if needed
         AuthUtil.checkAuthTokenValidity(this);
 
-        // TODO: need to listen for TRIGGER_LOGIN while it's open for notification favorite
+        // Handle intent actions
+        initBroadcastReceiver();
+        handleIntentAction(getIntent());
+    }
 
-        if (getIntent() != null) {
-            final String action = getIntent().getAction();
+    @Override
+    protected void onNewIntent(Intent intent) {
+        handleIntentAction(intent);
+    }
 
-            if (action != null && action.equals(MainActivity.TRIGGER_LOGIN)) {
-                showLoginDialog();
-            }
-        }
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this)
+            .unregisterReceiver(intentReceiver);
+
+        // TODO: kill service/notification if killing activity and paused?
+
+        super.onDestroy();
     }
 
     /**
@@ -77,6 +92,32 @@ public class MainActivity extends AppCompatActivity {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
             App.getService().connect();
+        }
+    }
+
+    private void initBroadcastReceiver() {
+        intentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                handleIntentAction(intent);
+            }
+        };
+
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MainActivity.TRIGGER_LOGIN);
+
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(intentReceiver, intentFilter);
+    }
+
+    private void handleIntentAction(Intent intent) {
+        final String action = intent.getAction();
+        if (action != null) {
+            switch (action) {
+                case MainActivity.TRIGGER_LOGIN:
+                    showLoginDialog();
+                    break;
+            }
         }
     }
 
@@ -228,9 +269,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void broadcastAuthEvent() {
-        final Intent authEventIntent = new Intent();
-        authEventIntent.setAction(MainActivity.AUTH_EVENT);
-        sendBroadcast(authEventIntent);
+        final Intent authEventIntent = new Intent(MainActivity.AUTH_EVENT);
+        LocalBroadcastManager.getInstance(this)
+                .sendBroadcast(authEventIntent);
     }
 
     private void showLogoutDialog() {

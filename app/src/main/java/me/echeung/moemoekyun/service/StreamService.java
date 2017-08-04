@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -43,6 +44,7 @@ import com.neovisionaries.ws.client.WebSocketFrame;
 import java.io.IOException;
 
 import me.echeung.moemoekyun.constants.Endpoints;
+import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.model.PlaybackInfo;
 import me.echeung.moemoekyun.model.Song;
@@ -114,25 +116,7 @@ public class StreamService extends Service {
 
         // Toggle favorite status of current song
         if (intent.hasExtra(StreamService.FAVORITE)) {
-            APIUtil.favoriteSong(getApplicationContext(), App.STATE.currentSong.get().getId(), new FavoriteSongListener() {
-                @Override
-                public void onFailure(final String result) {
-                }
-
-                @Override
-                public void onSuccess(final boolean favorited) {
-                    App.STATE.currentSong.get().setFavorite(favorited);
-                    App.STATE.currentFavorited.set(favorited);
-
-                    if (uiOpen) {
-                        final Intent favIntent = new Intent(getPackageName());
-                        favIntent.putExtra(StreamService.FAVORITE, favorited);
-                        sendBroadcast(favIntent);
-                    }
-
-                    updateNotification();
-                }
-            });
+            favoriteCurrentSong();
         }
 
         updateNotification();
@@ -197,6 +181,47 @@ public class StreamService extends Service {
         }
 
         App.STATE.playing.set(false);
+    }
+
+    public void favoriteCurrentSong() {
+        final Song currentSong = App.STATE.currentSong.get();
+        if (currentSong == null) return;
+
+        final int songId = currentSong.getId();
+        if (songId == -1) return;
+
+        if (!AuthUtil.isAuthenticated(getApplicationContext())) {
+            promptLogin();
+            return;
+        }
+
+        APIUtil.favoriteSong(getApplicationContext(), songId, new FavoriteSongListener() {
+            @Override
+            public void onFailure(final String result) {
+                if (result.equals(ResponseMessages.AUTH_FAILURE)) {
+                    promptLogin();
+                }
+            }
+
+            @Override
+            public void onSuccess(final boolean favorited) {
+                if (App.STATE.currentSong.get().getId() == songId) {
+                    App.STATE.currentSong.get().setFavorite(favorited);
+                    App.STATE.currentFavorited.set(favorited);
+                }
+
+                updateNotification();
+            }
+        });
+    }
+
+    /**
+     * Opens up the login dialog in MainActivity.
+     */
+    private void promptLogin() {
+        final Intent loginIntent = new Intent(MainActivity.TRIGGER_LOGIN);
+        LocalBroadcastManager.getInstance(this)
+                .sendBroadcast(loginIntent);
     }
 
     /**

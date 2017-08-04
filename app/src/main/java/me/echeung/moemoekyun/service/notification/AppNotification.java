@@ -74,6 +74,7 @@ public class AppNotification {
         // Build the notification
         final Intent action = new Intent(service, MainActivity.class);
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
@@ -91,13 +92,8 @@ public class AppNotification {
                 .addAction(stopAction);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            // Visibility
             builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-            // Special media style
             builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1, 2));
-
-            // Text/icon color
             builder.setColor(ContextCompat.getColor(service, R.color.colorAccent));
         }
 
@@ -111,7 +107,6 @@ public class AppNotification {
         return PendingIntent.getService(service, ++actionRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    // TODO: possibly move this since it's related to the activity instead of the service
     private PendingIntent getPlaybackActionActivity(final Class target, final String action) {
         final Intent intent = new Intent(service, target);
         intent.setAction(action);
