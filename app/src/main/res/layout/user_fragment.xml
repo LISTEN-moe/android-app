@@ -97,7 +97,7 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="-170dp"
                     android:elevation="3dp"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/kanna"
                     app:civ_border_color="@color/colorAccent"
                     app:civ_border_width="2dp" />
 
