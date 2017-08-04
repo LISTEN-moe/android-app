@@ -44,11 +44,6 @@ public class App extends Application {
         public final ObservableBoolean currentFavorited = new ObservableBoolean();
         public final ObservableInt listeners = new ObservableInt();
         public final ObservableField<String> requester = new ObservableField<>();
-
-        // User
-        public final ObservableField<String> userName = new ObservableField<>();
-        public final ObservableInt userRequests = new ObservableInt();
-//        public final ObservableList<Song> favorites
     }
 
     public boolean isServiceBound() {

@@ -4,9 +4,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
@@ -39,6 +44,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
     public static final String FAV_EVENT = "fav_event";
 
+    // Data binding state
+    public static final UserFragment.UserState USER_STATE = new UserFragment.UserState();
+
     private LinearLayout vLoginMsg;
     private LinearLayout vUserContent;
     private ImageView vUserAvatar;
@@ -49,7 +57,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
     // Receiver
     private IntentFilter intentFilter;
-    private BroadcastReceiver receiver;
+    private BroadcastReceiver intentReceiver;
 
     public static Fragment newInstance(int sectionNumber) {
         return TabFragment.newInstance(sectionNumber, new UserFragment());
@@ -59,8 +67,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final UserFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_fragment, container, false);
-        binding.setUserName(App.STATE.userName);
-        binding.setUserRequests(App.STATE.userRequests);
+        binding.setUserName(USER_STATE.userName);
+        binding.setUserRequests(USER_STATE.userRequests);
 
         vLoginMsg = binding.loginMsg;
         vUserContent = binding.userContent;
@@ -106,19 +114,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         });
 
         // Broadcast receiver
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(MainActivity.AUTH_EVENT);
-
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case MainActivity.AUTH_EVENT:
-                        initUserContent();
-                        break;
-                }
-            }
-        };
+        initBroadcastReceiver();
 
         initUserContent();
         return view;
@@ -128,14 +124,46 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public void onResume() {
         super.onResume();
 
-        getContext().registerReceiver(receiver, intentFilter);
+        LocalBroadcastManager.getInstance(getContext())
+                .registerReceiver(intentReceiver, intentFilter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        getContext().unregisterReceiver(receiver);
+        LocalBroadcastManager.getInstance(getContext())
+                .unregisterReceiver(intentReceiver);
+    }
+
+    @Override
+    public void onDestroy() {
+        LocalBroadcastManager.getInstance(getContext())
+                .unregisterReceiver(intentReceiver);
+
+        super.onDestroy();
+    }
+
+    private void initBroadcastReceiver() {
+        intentReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+                if (action != null) {
+                    switch (action) {
+                        case MainActivity.AUTH_EVENT:
+                            initUserContent();
+                            break;
+                    }
+                }
+            }
+        };
+
+        intentFilter = new IntentFilter();
+        intentFilter.addAction(MainActivity.AUTH_EVENT);
+
+        LocalBroadcastManager.getInstance(getContext())
+                .registerReceiver(intentReceiver, intentFilter);
     }
 
     private void initUserContent() {
@@ -158,7 +186,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getActivity().runOnUiThread(() -> {
                     final String userName = userInfo.getUsername();
 
-                    App.STATE.userName.set(userName);
+                    USER_STATE.userName.set(userName);
 
                     // TODO: user avatars/banners are coming in v4
 //                    APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
@@ -187,7 +215,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getActivity().runOnUiThread(() -> {
                     favorites = songsList.getSongs();
                     adapter.setSongs(favorites);
-                    App.STATE.userRequests.set(songsList.getExtra().getRequests());
+                    USER_STATE.userRequests.set(songsList.getExtra().getRequests());
                 });
             }
         });
@@ -212,5 +240,11 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         }
 
         builder.create().show();
+    }
+
+    public static class UserState extends BaseObservable {
+        public final ObservableField<String> userName = new ObservableField<>();
+        public final ObservableInt userRequests = new ObservableInt();
+//        public final ObservableList<Song> favorites
     }
 }

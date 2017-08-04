@@ -35,7 +35,7 @@ import okhttp3.Response;
  */
 public class APIUtil {
     private static OkHttpClient http = new OkHttpClient();
-    private static Gson gson = new Gson();
+    private static Gson GSON = new Gson();
 
     /**
      * Authenticates to the radio.
@@ -80,7 +80,7 @@ public class APIUtil {
                     }
 
                     // Get auth token from response
-                    final String userToken = gson.fromJson(body, AuthResponse.class).getToken();
+                    final String userToken = GSON.fromJson(body, AuthResponse.class).getToken();
                     AuthUtil.setAuthToken(context, userToken);
 
                     listener.onSuccess(userToken);
@@ -118,7 +118,7 @@ public class APIUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                listener.onSuccess(gson.fromJson(response.body().string(), UserInfo.class));
+                listener.onSuccess(GSON.fromJson(response.body().string(), UserInfo.class));
             }
         });
     }
@@ -152,7 +152,7 @@ public class APIUtil {
             public void onResponse(final Call call, final Response response) throws IOException {
                 if (response.isSuccessful()) {
                     // TODO: check if avatar exists
-                    listener.onSuccess(gson.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
+                    listener.onSuccess(GSON.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
                 } else {
                     // TODO: pass back default avatar
                     listener.onFailure(ResponseMessages.ERROR);
@@ -326,6 +326,12 @@ public class APIUtil {
             // TODO: log user out?
             return null;
         }
-        return gson.fromJson(jsonString, SongsList.class);
+        try {
+            return GSON.fromJson(jsonString, SongsList.class);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

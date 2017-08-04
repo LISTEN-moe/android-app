@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         binding.setHasNetworkConnection(App.STATE.hasNetworkConnection);
 
         // Check network connectivity
-        binding.btnRetry.setOnClickListener(this::retry);
+        binding.btnRetry.setOnClickListener(v -> retry());
         if (!NetworkUtil.isNetworkAvailable(this)) {
             return;
         }
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * For retry button in no internet view.
      */
-    private void retry(View v) {
+    private void retry() {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
             App.getService().connect();
