@@ -11,6 +11,7 @@ import okhttp3.Request;
  * and actions requiring it.
  */
 public class AuthUtil {
+
     private static final String USER_TOKEN = "user_token";
     private static final String LAST_AUTH = "last_auth";
 

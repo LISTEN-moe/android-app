@@ -25,10 +25,10 @@ android {
 
     buildTypes {
         release {
-            // TODO: this breaks the release build :(
+            // TODO: fix minification/Proguard
 //            minifyEnabled true
-            useProguard false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            useProguard true
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
             applicationIdSuffix '.debug'

@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.model;
 import java.util.List;
 
 public class SongsList {
+
     private List<Song> songs;
     private SongsExtra extra;
 

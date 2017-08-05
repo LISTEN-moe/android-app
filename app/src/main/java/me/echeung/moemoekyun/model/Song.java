@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Song implements Parcelable {
+
     private int id;
     private String artist;
     private String title;

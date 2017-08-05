@@ -31,6 +31,7 @@ import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.databinding.MainActivityBinding;
 import me.echeung.moemoekyun.interfaces.AuthListener;
+import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.AuthUtil;
@@ -85,7 +86,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Kill service/notification if killing activity and not playing
         if (!App.getService().isPlaying()) {
-            App.getService().stop();
+            final Intent stopIntent = new Intent(StreamService.STOP);
+            LocalBroadcastManager.getInstance(this)
+                    .sendBroadcast(stopIntent);
         }
 
         super.onDestroy();

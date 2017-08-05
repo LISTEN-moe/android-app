@@ -10,6 +10,7 @@ import java.lang.ref.WeakReference;
 
 // Based on https://stackoverflow.com/a/9288544
 public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+
     private WeakReference<ImageView> imageViewRef;
 
     public DownloadImageTask(ImageView imageView) {

@@ -9,7 +9,8 @@ import me.echeung.moemoekyun.ui.fragments.RadioFragment;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public class ViewPagerAdapter extends FragmentStatePagerAdapter {
-    final private int[] ICONS = new int[]{
+
+    private final int[] ICONS = new int[]{
             R.drawable.ic_radio_white_24dp,
             R.drawable.ic_person_white_24dp
     };

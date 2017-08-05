@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.model;
 import com.google.gson.annotations.SerializedName;
 
 public class BasicTrack {
+
     @SerializedName("artist_name")
     private String artistName;
     @SerializedName("song_name")

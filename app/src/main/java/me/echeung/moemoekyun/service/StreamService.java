@@ -144,6 +144,7 @@ public class StreamService extends Service {
                     favoriteCurrentSong();
                     break;
 
+                // TODO: should pause when headphones unplugged
                 case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
                     if (player != null) {
                         player.setPlayWhenReady(false);
@@ -173,8 +174,6 @@ public class StreamService extends Service {
         intentFilter.addAction(StreamService.STOP);
         intentFilter.addAction(StreamService.TOGGLE_FAVORITE);
 
-        // TODO: pause when headphones unplugged
-
         LocalBroadcastManager.getInstance(this)
                 .registerReceiver(intentReceiver, intentFilter);
     }
@@ -195,7 +194,7 @@ public class StreamService extends Service {
     /**
      * Toggles the stream's play state.
      */
-    public void togglePlayPause() {
+    private void togglePlayPause() {
         if (player == null) {
             startStream();
         } else if (player.getPlayWhenReady()) {
@@ -212,7 +211,7 @@ public class StreamService extends Service {
     /**
      * Stops the stream and kills the service.
      */
-    public void stop() {
+    private void stop() {
         if (player != null) {
             player.setPlayWhenReady(false);
             player = null;
@@ -224,7 +223,7 @@ public class StreamService extends Service {
         App.STATE.playing.set(false);
     }
 
-    public void favoriteCurrentSong() {
+    private void favoriteCurrentSong() {
         final Song currentSong = App.STATE.currentSong.get();
         if (currentSong == null) return;
 

@@ -17,6 +17,7 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.model.Song;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private List<Song> songs;
     private OnSongItemClickListener listener;
 

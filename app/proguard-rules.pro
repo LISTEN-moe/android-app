@@ -30,3 +30,18 @@
 -keep class me.echeung.listenmoe.model.** { *; }
 
 ##---------------End:   proguard configuration for Gson  ----------
+
+
+## Support libraries
+
+-keep class android.support.v4.app.** { *; }
+-keep interface android.support.v4.app.** { *; }
+-keep class android.support.v7.app.** { *; }
+-keep interface android.support.v7.app.** { *; }
+
+
+## okhttp
+
+-dontwarn okio.**
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault

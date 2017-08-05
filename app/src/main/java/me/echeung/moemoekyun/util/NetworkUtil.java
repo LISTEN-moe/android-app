@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import me.echeung.moemoekyun.ui.App;
 
 public class NetworkUtil {
+
     /**
      * Checks if there's an Internet connection and returns true iff there is.
      *

@@ -31,7 +31,6 @@ public class AppNotification {
             return;
         }
 
-        // Get current song info
         final Song song = App.STATE.currentSong.get();
         if (song == null) {
             return;

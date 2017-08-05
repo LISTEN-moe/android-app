@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.model;
 
 public class UserInfo {
+
     private int id;
     private String username;
 

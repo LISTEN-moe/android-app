@@ -36,7 +36,7 @@
     <!-- About dialog -->
     <string name="about">About</string>
     <string name="about_content"><![CDATA[
-        <b>%1$s %2$s</b>
+        <b>%1$s v%2$s</b>
         <br/>
         Powered by: <a href="https://listen.moe">LISTEN.moe</a>
         <br/>

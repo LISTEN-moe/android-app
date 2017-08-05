@@ -18,7 +18,7 @@ public class TabFragment extends Fragment {
      * @return The fragment with the section number in its arguments.
      */
     public static Fragment newInstance(int sectionNumber, Fragment fragment) {
-        Bundle args = new Bundle();
+        final Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;

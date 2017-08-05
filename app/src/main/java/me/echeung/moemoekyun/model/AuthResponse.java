@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.model;
 
 public class AuthResponse {
+
     private boolean success;
     private String token;
 

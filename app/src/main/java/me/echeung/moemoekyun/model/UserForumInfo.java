@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.model;
 
 public class UserForumInfo {
+
     private UserForumInfoData data;
 
     public UserForumInfo(UserForumInfoData data) {

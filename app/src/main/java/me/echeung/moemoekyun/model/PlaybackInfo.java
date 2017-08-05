@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PlaybackInfo extends BasicTrack {
+
     @SerializedName("song_id")
     private int songId;
     @SerializedName("anime_name")
