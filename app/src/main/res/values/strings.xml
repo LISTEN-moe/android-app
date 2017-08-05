@@ -7,6 +7,7 @@
     <string name="success">Success!</string>
     <string name="error">An error occurred</string>
     <string name="connecting">Connecting…</string>
+    <string name="open_in_browser">Open in browser</string>
 
     <!-- Actions (notification, dialogs) -->
     <string name="action_play">Play</string>

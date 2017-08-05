@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
+import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.databinding.MainActivityBinding;
 import me.echeung.moemoekyun.interfaces.AuthListener;
@@ -183,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_about:
                 showAboutDialog();
+                return true;
+
+            case R.id.action_browser:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Endpoints.SITE));
+                startActivity(browserIntent);
                 return true;
 
             default:

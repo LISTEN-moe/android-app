@@ -1,8 +1,8 @@
 package me.echeung.moemoekyun.constants;
 
 public class Endpoints {
-    // Vorbis: /stream, Opus: /opus, mp3: /fallback
-    public static final String STREAM = "https://listen.moe/fallback";
+    public static final String SITE  = "https://listen.moe/";
+    public static final String STREAM = "https://listen.moe/fallback";  // Vorbis: /stream, Opus: /opus, mp3: /fallback
     public static final String SOCKET = "wss://listen.moe/api/v2/socket";
     public static final String AUTH = "https://listen.moe/api/authenticate";
     public static final String USER = "https://listen.moe/api/user";
