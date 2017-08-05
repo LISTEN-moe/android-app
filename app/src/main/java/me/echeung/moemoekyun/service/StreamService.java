@@ -68,6 +68,7 @@ public class StreamService extends Service {
     private AppNotification notification;
 
     private final IBinder mBinder = new LocalBinder();
+    private boolean isServiceBound = false;
     public class LocalBinder extends Binder {
         public StreamService getService() {
             return StreamService.this;
@@ -80,8 +81,24 @@ public class StreamService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
+        isServiceBound = true;
         return mBinder;
     }
+
+    @Override
+    public void onRebind(Intent intent) {
+        isServiceBound = true;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        isServiceBound = false;
+        if (!isPlaying()) {
+            stopSelf();
+        }
+        return true;
+    }
+
 
     @Override
     public void onCreate() {

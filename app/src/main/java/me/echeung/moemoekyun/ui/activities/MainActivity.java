@@ -81,7 +81,10 @@ public class MainActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this)
             .unregisterReceiver(intentReceiver);
 
-        // TODO: kill service/notification if killing activity and paused?
+        // Kill service/notification if killing activity and not playing
+        if (!App.getService().isPlaying()) {
+            App.getService().stop();
+        }
 
         super.onDestroy();
     }
