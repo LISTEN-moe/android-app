@@ -53,6 +53,7 @@ import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.AuthUtil;
+import me.echeung.moemoekyun.util.NetworkUtil;
 
 public class StreamService extends Service {
 
@@ -61,7 +62,7 @@ public class StreamService extends Service {
     public static final String TOGGLE_FAVORITE = "toggle_favorite";
 
     private static final int SOCKET_TIMEOUT = 900000;
-    private static final int RETRY_TIME = 3000;
+    private static final int RETRY_TIME = 1500;
 
     private SimpleExoPlayer player;
     private WebSocket socket;
@@ -103,8 +104,6 @@ public class StreamService extends Service {
 
     @Override
     public void onCreate() {
-        notification = new AppNotification(this);
-
         initBroadcastReceiver();
         connect();
     }
@@ -197,10 +196,10 @@ public class StreamService extends Service {
      * Toggles the stream's play state.
      */
     public void togglePlayPause() {
-        if (player != null && player.getPlayWhenReady()) {
-            player.setPlayWhenReady(false);
-        } else if (player == null) {
+        if (player == null) {
             startStream();
+        } else if (player.getPlayWhenReady()) {
+            player.setPlayWhenReady(false);
         } else {
             player.setPlayWhenReady(true);
             player.seekToDefaultPosition();
@@ -248,8 +247,9 @@ public class StreamService extends Service {
 
             @Override
             public void onSuccess(final boolean favorited) {
-                if (App.STATE.currentSong.get().getId() == songId) {
-                    App.STATE.currentSong.get().setFavorite(favorited);
+                final Song currentSong = App.STATE.currentSong.get();
+                if (currentSong.getId() == songId) {
+                    currentSong.setFavorite(favorited);
                     App.STATE.currentFavorited.set(favorited);
                 }
 
@@ -261,10 +261,16 @@ public class StreamService extends Service {
     /**
      * Updates the notification if there is a song playing.
      */
-    public void updateNotification() {
+    private void updateNotification() {
         final Song currentSong = App.STATE.currentSong.get();
         if (currentSong != null && currentSong.getId() != -1) {
+            if (notification == null) {
+                notification = new AppNotification(this);
+            }
+
             notification.update();
+        } else {
+            stopForeground(true);
         }
     }
 
@@ -281,16 +287,14 @@ public class StreamService extends Service {
      * Connects to the websocket and retrieves playback info.
      */
     public void connect() {
-        if (socket != null) {
-            socket.disconnect();
-            socket = null;
+        disconnect();
+
+        if (!NetworkUtil.isNetworkAvailable(getBaseContext())) {
+            return;
         }
 
-        // TODO: handle disconnects/network changes gracefully
-
-        final WebSocketFactory factory = new WebSocketFactory();
         try {
-            socket = factory.createSocket(Endpoints.SOCKET, SOCKET_TIMEOUT);
+            socket = new WebSocketFactory().createSocket(Endpoints.SOCKET, SOCKET_TIMEOUT);
             socket.addListener(new WebSocketAdapter() {
                 @Override
                 public void onFrame(WebSocket websocket, WebSocketFrame frame) throws Exception {
@@ -312,9 +316,7 @@ public class StreamService extends Service {
                 @Override
                 public void onConnectError(WebSocket websocket, WebSocketException e) throws Exception {
                     e.printStackTrace();
-                    parseWebSocketResponse(null);
-                    SystemClock.sleep(RETRY_TIME);
-                    connect();
+                    reconnect();
                 }
 
                 @Override
@@ -324,9 +326,8 @@ public class StreamService extends Service {
 
                 @Override
                 public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer) throws Exception {
-                    SystemClock.sleep(RETRY_TIME);
                     if (closedByServer) {
-                        connect();
+                        reconnect();
                     } else {
                         stopSelf();
                     }
@@ -337,44 +338,54 @@ public class StreamService extends Service {
             socket.sendText("update");
         } catch (IOException e) {
             e.printStackTrace();
-            parseWebSocketResponse(null);
-            if (socket.isOpen()) {
-                socket.disconnect();
-            }
-            connect();
+            reconnect();
         }
+    }
+
+    private void disconnect() {
+        if (socket != null && socket.isOpen()) {
+            socket.disconnect();
+        }
+        socket = null;
+        parseWebSocketResponse(null);
+    }
+
+    private void reconnect() {
+        disconnect();
+        SystemClock.sleep(RETRY_TIME);
+        connect();
     }
 
     private void parseWebSocketResponse(final String jsonString) {
         if (jsonString == null) {
-            // TODO
-            return;
-        }
-
-        final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
-
-        if (playbackInfo.getSongId() != 0) {
-            App.STATE.currentSong.set(new Song(
-                    playbackInfo.getSongId(),
-                    playbackInfo.getArtistName().trim(),
-                    playbackInfo.getSongName().trim(),
-                    playbackInfo.getAnimeName().trim()
-            ));
-
-            // TODO: clean up how favorited track is handled
-            if (playbackInfo.hasExtended()) {
-                final boolean favorited = playbackInfo.getExtended().isFavorite();
-                App.STATE.currentSong.get().setFavorite(favorited);
-                App.STATE.currentFavorited.set(favorited);
-            }
-        } else {
             App.STATE.currentSong.set(null);
+            App.STATE.listeners.set(0);
+            App.STATE.requester.set(null);
+        } else {
+            final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
+
+            if (playbackInfo.getSongId() != 0) {
+                App.STATE.currentSong.set(new Song(
+                        playbackInfo.getSongId(),
+                        playbackInfo.getArtistName().trim(),
+                        playbackInfo.getSongName().trim(),
+                        playbackInfo.getAnimeName().trim()
+                ));
+
+                // TODO: clean up how favorited track is handled
+                if (playbackInfo.hasExtended()) {
+                    final boolean favorited = playbackInfo.getExtended().isFavorite();
+                    App.STATE.currentSong.get().setFavorite(favorited);
+                    App.STATE.currentFavorited.set(favorited);
+                }
+            } else {
+                App.STATE.currentSong.set(null);
+            }
+
+            App.STATE.listeners.set(playbackInfo.getListeners());
+            App.STATE.requester.set(playbackInfo.getRequestedBy());
         }
 
-        App.STATE.listeners.set(playbackInfo.getListeners());
-        App.STATE.requester.set(playbackInfo.getRequestedBy());
-
-        // Update notification
         updateNotification();
     }
 
@@ -400,6 +411,7 @@ public class StreamService extends Service {
                 // Try to reconnect to the stream
                 player.release();
                 player = null;
+                reconnect();
                 startStream();
             }
 
