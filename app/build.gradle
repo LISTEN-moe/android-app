@@ -60,8 +60,4 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
 
     // TODO: use Retrofit for API stuff
-
-    // TODO: remove this
-    compile 'com.jakewharton:butterknife:8.6.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 }

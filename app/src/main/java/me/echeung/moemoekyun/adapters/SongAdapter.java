@@ -1,19 +1,17 @@
 package me.echeung.moemoekyun.adapters;
 
+import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.databinding.SongItemBinding;
 import me.echeung.moemoekyun.model.Song;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -33,8 +31,9 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.song_item, parent, false);
-        return new SongHolder(v, this);
+        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        final SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
+        return new SongHolder(binding, this);
     }
 
     @Override
@@ -43,13 +42,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         final SongHolder songHolder = (SongHolder) holder;
 
-        songHolder.mTitle.setText(song.getTitle());
-        songHolder.mSubtitle.setText(song.getArtistAndAnime());
-        songHolder.mFavorited.setVisibility(song.isFavorite() ? View.VISIBLE : View.GONE);
-
-        final int typeface = song.isEnabled() ? Typeface.NORMAL : Typeface.ITALIC;
-        songHolder.mTitle.setTypeface(null, typeface);
-        songHolder.mSubtitle.setTypeface(null, typeface);
+        songHolder.bind(song);
     }
 
     @Override
@@ -70,23 +63,32 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     static class SongHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.title)
-        TextView mTitle;
-        @BindView(R.id.subtitle)
-        TextView mSubtitle;
-        @BindView(R.id.favorited)
-        LinearLayout mFavorited;
 
-        SongHolder(final View view, final SongAdapter adapter) {
-            super(view);
-            ButterKnife.bind(this, view);
+        private SongItemBinding binding;
 
-            view.setOnClickListener(v -> {
+        SongHolder(final SongItemBinding binding, final SongAdapter adapter) {
+            super(binding.getRoot());
+
+            this.binding = binding;
+
+            binding.getRoot().setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION) {
                     final Song song = adapter.getSongs().get(getLayoutPosition());
                     adapter.getListener().onSongItemClick(song);
                 }
             });
+        }
+
+        public void bind(final Song song) {
+            binding.setVariable(BR.item_title, song.getTitle());
+            binding.setVariable(BR.item_subtitle, song.getArtistAndAnime());
+            binding.setVariable(BR.item_favorited, song.isFavorite());
+
+            final int typeface = song.isEnabled() ? Typeface.NORMAL : Typeface.ITALIC;
+            binding.title.setTypeface(null, typeface);
+            binding.subtitle.setTypeface(null, typeface);
+
+            binding.executePendingBindings();
         }
     }
 }
