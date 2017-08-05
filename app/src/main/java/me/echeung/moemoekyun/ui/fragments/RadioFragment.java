@@ -46,9 +46,9 @@ public class RadioFragment extends TabFragment {
     }
 
     private void togglePlayPause() {
-        if (App.STATE.currentSong.get() == null) return;
-
-        App.getService().togglePlayPause();
+        final Intent playPauseIntent = new Intent(StreamService.PLAY_PAUSE);
+        LocalBroadcastManager.getInstance(getContext())
+                .sendBroadcast(playPauseIntent);
     }
 
     private void favorite() {
@@ -57,8 +57,8 @@ public class RadioFragment extends TabFragment {
             return;
         }
 
-        final Intent favIntent = new Intent(StreamService.FAVORITE);
-        LocalBroadcastManager.getInstance(getActivity())
+        final Intent favIntent = new Intent(StreamService.TOGGLE_FAVORITE);
+        LocalBroadcastManager.getInstance(getContext())
                 .sendBroadcast(favIntent);
     }
 }

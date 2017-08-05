@@ -56,14 +56,15 @@ import me.echeung.moemoekyun.util.AuthUtil;
 
 public class StreamService extends Service {
 
-    public static final String REQUEST = "re:re";
-    public static final String PLAY = "play";
+    public static final String PLAY_PAUSE = "play_pause";
     public static final String STOP = "stop";
-    public static final String FAVORITE = "favorite";
+    public static final String TOGGLE_FAVORITE = "toggle_favorite";
+
+    private static final int SOCKET_TIMEOUT = 900000;
+    private static final int RETRY_TIME = 3000;
 
     private SimpleExoPlayer player;
     private WebSocket socket;
-    private boolean uiOpen;
 
     private AppNotification notification;
 
@@ -104,42 +105,13 @@ public class StreamService extends Service {
     public void onCreate() {
         notification = new AppNotification(this);
 
-        uiOpen = true;
-
         initBroadcastReceiver();
         connect();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startID) {
-        // Requests WebSocket update
-        // TODO: when am I supposed to do this?
-//        if (intent.hasExtra(StreamService.REQUEST)) {
-//            uiOpen = true;
-//            final String authToken = AuthUtil.getAuthToken(getApplicationContext());
-//            if (authToken == null && socket != null) {
-//                socket.sendText("update");
-//            } else if (socket != null) {
-//                socket.sendText("{\"token\":\"" + authToken + "\"}");
-//            } else {
-//                connect();
-//            }
-//        }
-
-        if (intent.hasExtra(StreamService.PLAY)) {
-            togglePlayPause();
-        }
-
-        if (intent.hasExtra(StreamService.STOP)) {
-            stop();
-        }
-
-        // Toggle favorite status of current song
-        if (intent.hasExtra(StreamService.FAVORITE)) {
-            favoriteCurrentSong();
-        }
-
-        updateNotification();
+        handleIntent(intent);
 
         return START_NOT_STICKY;
     }
@@ -157,33 +129,55 @@ public class StreamService extends Service {
         super.onDestroy();
     }
 
+    private void handleIntent(Intent intent) {
+        final String action = intent.getAction();
+        if (action != null) {
+            switch (action) {
+                case StreamService.PLAY_PAUSE:
+                    togglePlayPause();
+                    break;
+
+                case StreamService.STOP:
+                    stop();
+                    break;
+
+                case StreamService.TOGGLE_FAVORITE:
+                    favoriteCurrentSong();
+                    break;
+
+                case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
+                    if (player != null) {
+                        player.setPlayWhenReady(false);
+                    }
+                    break;
+
+                case MainActivity.AUTH_EVENT:
+                    break;
+            }
+        }
+
+        updateNotification();
+    }
+
     private void initBroadcastReceiver() {
         intentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                switch (intent.getAction()) {
-                    case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                        if (player != null) {
-                            player.setPlayWhenReady(false);
-                        }
-                        updateNotification();
-                        break;
-
-                    case MainActivity.AUTH_EVENT:
-                        updateNotification();
-                        break;
-                }
+                handleIntent(intent);
             }
         };
 
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         intentFilter.addAction(MainActivity.AUTH_EVENT);
+        intentFilter.addAction(StreamService.PLAY_PAUSE);
+        intentFilter.addAction(StreamService.STOP);
+        intentFilter.addAction(StreamService.TOGGLE_FAVORITE);
 
         // TODO: pause when headphones unplugged
 
-        LocalBroadcastManager.getInstance(this).
-            registerReceiver(intentReceiver, intentFilter);
+        LocalBroadcastManager.getInstance(this)
+                .registerReceiver(intentReceiver, intentFilter);
     }
 
     public boolean isStreamStarted() {
@@ -205,13 +199,11 @@ public class StreamService extends Service {
     public void togglePlayPause() {
         if (player != null && player.getPlayWhenReady()) {
             player.setPlayWhenReady(false);
+        } else if (player == null) {
+            startStream();
         } else {
-            if (player == null) {
-                startStream();
-            } else {
-                player.setPlayWhenReady(true);
-                player.seekToDefaultPosition();
-            }
+            player.setPlayWhenReady(true);
+            player.seekToDefaultPosition();
         }
 
         App.STATE.playing.set(isPlaying());
@@ -228,9 +220,7 @@ public class StreamService extends Service {
         }
 
         stopForeground(true);
-        if (!uiOpen) {
-            stopSelf();
-        }
+        stopSelf();
 
         App.STATE.playing.set(false);
     }
@@ -300,12 +290,13 @@ public class StreamService extends Service {
 
         final WebSocketFactory factory = new WebSocketFactory();
         try {
-            socket = factory.createSocket(Endpoints.SOCKET, 900000);
+            socket = factory.createSocket(Endpoints.SOCKET, SOCKET_TIMEOUT);
             socket.addListener(new WebSocketAdapter() {
                 @Override
                 public void onFrame(WebSocket websocket, WebSocketFrame frame) throws Exception {
+                    // TODO: clean this up
                     if (frame.getPayloadText().contains("listeners")) {
-                        // Get userToken from shared preferences if socket not authenticated //
+                        // Get user token from shared preferences if socket not authenticated
                         if (!frame.getPayloadText().contains("\"extended\":{")) {
                             final String authToken = AuthUtil.getAuthToken(getBaseContext());
                             if (authToken != null) {
@@ -319,32 +310,34 @@ public class StreamService extends Service {
                 }
 
                 @Override
-                public void onConnectError(WebSocket websocket, WebSocketException exception) throws Exception {
-                    exception.printStackTrace();
-                    parseWebSocketResponse("NULL");
-                    SystemClock.sleep(6000);
+                public void onConnectError(WebSocket websocket, WebSocketException e) throws Exception {
+                    e.printStackTrace();
+                    parseWebSocketResponse(null);
+                    SystemClock.sleep(RETRY_TIME);
                     connect();
                 }
 
                 @Override
-                public void onMessageDecompressionError(WebSocket websocket, WebSocketException cause, byte[] compressed) throws Exception {
-                    cause.printStackTrace();
+                public void onMessageDecompressionError(WebSocket websocket, WebSocketException e, byte[] compressed) throws Exception {
+                    e.printStackTrace();
                 }
 
                 @Override
                 public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer) throws Exception {
-                    SystemClock.sleep(6000);
-                    if (closedByServer)
+                    SystemClock.sleep(RETRY_TIME);
+                    if (closedByServer) {
                         connect();
-                    else
+                    } else {
                         stopSelf();
+                    }
                 }
             });
 
             socket.connectAsynchronously();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            parseWebSocketResponse("NULL");  // TODO
+            socket.sendText("update");
+        } catch (IOException e) {
+            e.printStackTrace();
+            parseWebSocketResponse(null);
             if (socket.isOpen()) {
                 socket.disconnect();
             }
@@ -353,6 +346,11 @@ public class StreamService extends Service {
     }
 
     private void parseWebSocketResponse(final String jsonString) {
+        if (jsonString == null) {
+            // TODO
+            return;
+        }
+
         final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
         if (playbackInfo.getSongId() != 0) {
@@ -399,6 +397,7 @@ public class StreamService extends Service {
         player.addListener(new ExoPlayer.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
+                // Try to reconnect to the stream
                 player.release();
                 player = null;
                 startStream();

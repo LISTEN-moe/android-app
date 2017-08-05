@@ -46,7 +46,7 @@ public class AppNotification {
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
                 isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp,
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
-                getPlaybackActionService(StreamService.class, StreamService.PLAY, !isPlaying)
+                getPlaybackActionService(StreamService.class, StreamService.PLAY_PAUSE)
         );
 
         // Favorite action
@@ -55,7 +55,7 @@ public class AppNotification {
             favoriteAction = new NotificationCompat.Action(
                     song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
                     song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
-                    getPlaybackActionService(StreamService.class, StreamService.FAVORITE, true)
+                    getPlaybackActionService(StreamService.class, StreamService.TOGGLE_FAVORITE)
             );
         } else {
             favoriteAction = new NotificationCompat.Action(
@@ -69,7 +69,7 @@ public class AppNotification {
         final NotificationCompat.Action stopAction = new NotificationCompat.Action(
                 R.drawable.ic_stop_white_24dp,
                 service.getString(R.string.action_stop),
-                getPlaybackActionService(StreamService.class, StreamService.STOP, true)
+                getPlaybackActionService(StreamService.class, StreamService.STOP)
         );
 
         // Build the notification
@@ -101,9 +101,9 @@ public class AppNotification {
         service.startForeground(NOTIFICATION_ID, builder.build());
     }
 
-    private PendingIntent getPlaybackActionService(final Class target, final String action, final boolean value) {
+    private PendingIntent getPlaybackActionService(final Class target, final String action) {
         final Intent intent = new Intent(service, target);
-        intent.putExtra(action, value);
+        intent.setAction(action);
 
         return PendingIntent.getService(service, ++actionRequestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(this)
-            .unregisterReceiver(intentReceiver);
+                .unregisterReceiver(intentReceiver);
 
         // Kill service/notification if killing activity and not playing
         if (!App.getService().isPlaying()) {
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction(MainActivity.TRIGGER_LOGIN);
 
         LocalBroadcastManager.getInstance(this)
-            .registerReceiver(intentReceiver, intentFilter);
+                .registerReceiver(intentReceiver, intentFilter);
     }
 
     private void handleIntentAction(Intent intent) {

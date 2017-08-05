@@ -155,7 +155,6 @@ public class APIUtil {
                     // TODO: check if avatar exists
                     listener.onSuccess(GSON.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
                 } else {
-                    // TODO: pass back default avatar
                     listener.onFailure(ResponseMessages.ERROR);
                 }
             }
