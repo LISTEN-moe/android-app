@@ -35,13 +35,6 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
-import com.neovisionaries.ws.client.WebSocket;
-import com.neovisionaries.ws.client.WebSocketAdapter;
-import com.neovisionaries.ws.client.WebSocketException;
-import com.neovisionaries.ws.client.WebSocketFactory;
-import com.neovisionaries.ws.client.WebSocketFrame;
-
-import java.io.IOException;
 
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.constants.ResponseMessages;
@@ -54,6 +47,11 @@ import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.AuthUtil;
 import me.echeung.moemoekyun.util.NetworkUtil;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 
 public class StreamService extends Service {
 
@@ -61,11 +59,8 @@ public class StreamService extends Service {
     public static final String STOP = "stop";
     public static final String TOGGLE_FAVORITE = "toggle_favorite";
 
-    private static final int SOCKET_TIMEOUT = 900000;
-    private static final int RETRY_TIME = 1500;
-
     private SimpleExoPlayer player;
-    private WebSocket socket;
+    private RadioSocket socket;
 
     private AppNotification notification;
 
@@ -105,7 +100,9 @@ public class StreamService extends Service {
     @Override
     public void onCreate() {
         initBroadcastReceiver();
-        connect();
+
+        socket = new RadioSocket();
+        socket.connect();
     }
 
     @Override
@@ -118,14 +115,16 @@ public class StreamService extends Service {
     @Override
     public void onDestroy() {
         stop();
-        if (socket != null) {
-            socket.disconnect();
-        }
+        socket.disconnect();
 
         LocalBroadcastManager.getInstance(this)
                 .unregisterReceiver(intentReceiver);
 
         super.onDestroy();
+    }
+
+    public void reconnect() {
+        socket.reconnect();
     }
 
     private void handleIntent(Intent intent) {
@@ -283,112 +282,6 @@ public class StreamService extends Service {
     }
 
     /**
-     * Connects to the websocket and retrieves playback info.
-     */
-    public void connect() {
-        disconnect();
-
-        if (!NetworkUtil.isNetworkAvailable(getBaseContext())) {
-            return;
-        }
-
-        try {
-            socket = new WebSocketFactory().createSocket(Endpoints.SOCKET, SOCKET_TIMEOUT);
-            socket.addListener(new WebSocketAdapter() {
-                @Override
-                public void onFrame(WebSocket websocket, WebSocketFrame frame) throws Exception {
-                    // TODO: clean this up
-                    if (frame.getPayloadText().contains("listeners")) {
-                        // Get user token from shared preferences if socket not authenticated
-                        if (!frame.getPayloadText().contains("\"extended\":{")) {
-                            final String authToken = AuthUtil.getAuthToken(getBaseContext());
-                            if (authToken != null) {
-                                socket.sendText("{\"token\":\"" + authToken + "\"}");
-                            }
-                        }
-
-                        // Parses the API information
-                        parseWebSocketResponse(frame.getPayloadText());
-                    }
-                }
-
-                @Override
-                public void onConnectError(WebSocket websocket, WebSocketException e) throws Exception {
-                    e.printStackTrace();
-                    reconnect();
-                }
-
-                @Override
-                public void onMessageDecompressionError(WebSocket websocket, WebSocketException e, byte[] compressed) throws Exception {
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer) throws Exception {
-                    if (closedByServer) {
-                        reconnect();
-                    } else {
-                        stopSelf();
-                    }
-                }
-            });
-
-            socket.connectAsynchronously();
-            socket.sendText("update");
-        } catch (IOException e) {
-            e.printStackTrace();
-            reconnect();
-        }
-    }
-
-    private void disconnect() {
-        if (socket != null && socket.isOpen()) {
-            socket.disconnect();
-        }
-        socket = null;
-        parseWebSocketResponse(null);
-    }
-
-    private void reconnect() {
-        disconnect();
-        SystemClock.sleep(RETRY_TIME);
-        connect();
-    }
-
-    private void parseWebSocketResponse(final String jsonString) {
-        if (jsonString == null) {
-            App.STATE.currentSong.set(null);
-            App.STATE.listeners.set(0);
-            App.STATE.requester.set(null);
-        } else {
-            final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
-
-            if (playbackInfo.getSongId() != 0) {
-                App.STATE.currentSong.set(new Song(
-                        playbackInfo.getSongId(),
-                        playbackInfo.getArtistName().trim(),
-                        playbackInfo.getSongName().trim(),
-                        playbackInfo.getAnimeName().trim()
-                ));
-
-                // TODO: clean up how favorited track is handled
-                if (playbackInfo.hasExtended()) {
-                    final boolean favorited = playbackInfo.getExtended().isFavorite();
-                    App.STATE.currentSong.get().setFavorite(favorited);
-                    App.STATE.currentFavorited.set(favorited);
-                }
-            } else {
-                App.STATE.currentSong.set(null);
-            }
-
-            App.STATE.listeners.set(playbackInfo.getListeners());
-            App.STATE.requester.set(playbackInfo.getRequestedBy());
-        }
-
-        updateNotification();
-    }
-
-    /**
      * Creates and starts the stream.
      */
     private void startStream() {
@@ -410,7 +303,7 @@ public class StreamService extends Service {
                 // Try to reconnect to the stream
                 player.release();
                 player = null;
-                reconnect();
+                socket.reconnect();
                 startStream();
             }
 
@@ -434,5 +327,102 @@ public class StreamService extends Service {
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
             }
         });
+    }
+
+    private final class RadioSocket extends WebSocketListener {
+
+        private static final int RETRY_TIME = 1500;
+
+        private WebSocket socket;
+
+        void connect() {
+            if (!NetworkUtil.isNetworkAvailable(getBaseContext())) {
+                return;
+            }
+
+            final Request request = new Request.Builder().url(Endpoints.SOCKET).build();
+            socket = new OkHttpClient().newWebSocket(request, this);
+        }
+
+        void disconnect() {
+            if (socket != null) {
+                socket.cancel();
+                socket = null;
+            }
+            parseWebSocketResponse(null);
+        }
+
+        void reconnect() {
+            disconnect();
+            SystemClock.sleep(RETRY_TIME);
+            connect();
+        }
+
+        @Override
+        public void onOpen(WebSocket socket, Response response) {
+            socket.send("update");
+        }
+
+        @Override
+        public void onMessage(WebSocket webSocket, String text) {
+            // TODO: clean this up
+            if (text.contains("listeners")) {
+                // Get user token from shared preferences if socket not authenticated
+                if (!text.contains("\"extended\":{")) {
+                    final String authToken = AuthUtil.getAuthToken(getBaseContext());
+                    if (authToken != null) {
+                        socket.send("{\"token\":\"" + authToken + "\"}");
+                    }
+                }
+
+                // Parses the API information
+                parseWebSocketResponse(text);
+            }
+        }
+
+        @Override
+        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
+            t.printStackTrace();
+            reconnect();
+        }
+
+        @Override
+        public void	onClosed(WebSocket webSocket, int code, String reason) {
+            // Try to reconnect
+            reconnect();
+        }
+
+        private void parseWebSocketResponse(final String jsonString) {
+            if (jsonString == null) {
+                App.STATE.currentSong.set(null);
+                App.STATE.listeners.set(0);
+                App.STATE.requester.set(null);
+            } else {
+                final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
+
+                if (playbackInfo.getSongId() != 0) {
+                    App.STATE.currentSong.set(new Song(
+                            playbackInfo.getSongId(),
+                            playbackInfo.getArtistName().trim(),
+                            playbackInfo.getSongName().trim(),
+                            playbackInfo.getAnimeName().trim()
+                    ));
+
+                    // TODO: clean up how favorited track is handled
+                    if (playbackInfo.hasExtended()) {
+                        final boolean favorited = playbackInfo.getExtended().isFavorite();
+                        App.STATE.currentSong.get().setFavorite(favorited);
+                        App.STATE.currentFavorited.set(favorited);
+                    }
+                } else {
+                    App.STATE.currentSong.set(null);
+                }
+
+                App.STATE.listeners.set(playbackInfo.getListeners());
+                App.STATE.requester.set(playbackInfo.getRequestedBy());
+            }
+
+            updateNotification();
+        }
     }
 }

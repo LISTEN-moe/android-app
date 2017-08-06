@@ -79,7 +79,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
         }
 
-        public void bind(final Song song) {
+        void bind(final Song song) {
             binding.setVariable(BR.item_title, song.getTitle());
             binding.setVariable(BR.item_subtitle, song.getArtistAndAnime());
             binding.setVariable(BR.item_favorited, song.isFavorite());

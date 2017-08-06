@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private void retry() {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
-            App.getService().connect();
+            App.getService().reconnect();
         }
     }
 

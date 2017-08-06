@@ -53,7 +53,6 @@ dependencies {
     compile "com.android.support:design:$supportLibVersion"
     compile "com.android.support:recyclerview-v7:$supportLibVersion"
 
-    compile 'com.neovisionaries:nv-websocket-client:1.31'
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.google.android.exoplayer:exoplayer:r2.3.1'
     compile 'com.google.code.gson:gson:2.8.0'
