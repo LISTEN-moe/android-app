@@ -10,7 +10,6 @@ import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
@@ -120,22 +119,19 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public void onResume() {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getContext())
-                .registerReceiver(intentReceiver, intentFilter);
+        getActivity().registerReceiver(intentReceiver, intentFilter);
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        LocalBroadcastManager.getInstance(getContext())
-                .unregisterReceiver(intentReceiver);
+        getActivity().unregisterReceiver(intentReceiver);
     }
 
     @Override
     public void onDestroy() {
-        LocalBroadcastManager.getInstance(getContext())
-                .unregisterReceiver(intentReceiver);
+        getActivity().unregisterReceiver(intentReceiver);
 
         super.onDestroy();
     }
@@ -160,8 +156,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         intentFilter = new IntentFilter();
         intentFilter.addAction(MainActivity.AUTH_EVENT);
 
-        LocalBroadcastManager.getInstance(getContext())
-                .registerReceiver(intentReceiver, intentFilter);
+        getActivity().registerReceiver(intentReceiver, intentFilter);
     }
 
     private void initUserContent() {

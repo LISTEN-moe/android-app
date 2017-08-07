@@ -10,7 +10,7 @@ import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.SystemClock;
-import android.support.v4.content.LocalBroadcastManager;
+import android.view.KeyEvent;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -59,20 +59,15 @@ public class StreamService extends Service {
     public static final String STOP = "stop";
     public static final String TOGGLE_FAVORITE = "toggle_favorite";
 
+    private static final Gson GSON = new Gson();
+
     private SimpleExoPlayer player;
     private RadioSocket socket;
 
     private AppNotification notification;
 
-    private final IBinder mBinder = new LocalBinder();
+    private final IBinder mBinder = new ServiceBinder();
     private boolean isServiceBound = false;
-    public class LocalBinder extends Binder {
-        public StreamService getService() {
-            return StreamService.this;
-        }
-    }
-
-    private static final Gson GSON = new Gson();
 
     private BroadcastReceiver intentReceiver;
 
@@ -117,8 +112,7 @@ public class StreamService extends Service {
         stop();
         socket.disconnect();
 
-        LocalBroadcastManager.getInstance(this)
-                .unregisterReceiver(intentReceiver);
+        unregisterReceiver(intentReceiver);
 
         super.onDestroy();
     }
@@ -143,12 +137,36 @@ public class StreamService extends Service {
                     favoriteCurrentSong();
                     break;
 
-                // TODO: should pause when headphones unplugged
+                // Pause when headphones unplugged
                 case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                    if (player != null) {
-                        player.setPlayWhenReady(false);
+                    pause();
+                    break;
+
+                // Headphone media button action
+                case Intent.ACTION_MEDIA_BUTTON:
+                    final KeyEvent keyEvent = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
+                    if (keyEvent == null || keyEvent.getAction() != KeyEvent.ACTION_DOWN) {
+                        return;
+                    }
+
+                    switch (keyEvent.getKeyCode()) {
+                        case KeyEvent.KEYCODE_HEADSETHOOK:
+                        case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                            togglePlayPause();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_PLAY:
+                            play();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_PAUSE:
+                            pause();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_STOP:
+                            stop();
+                            break;
                     }
                     break;
+
+                // TODO: audio ducking
 
                 case MainActivity.AUTH_EVENT:
                     break;
@@ -167,14 +185,14 @@ public class StreamService extends Service {
         };
 
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
-        intentFilter.addAction(MainActivity.AUTH_EVENT);
         intentFilter.addAction(StreamService.PLAY_PAUSE);
         intentFilter.addAction(StreamService.STOP);
         intentFilter.addAction(StreamService.TOGGLE_FAVORITE);
+        intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON);
+        intentFilter.addAction(MainActivity.AUTH_EVENT);
 
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(intentReceiver, intentFilter);
+        registerReceiver(intentReceiver, intentFilter);
     }
 
     public boolean isStreamStarted() {
@@ -194,16 +212,31 @@ public class StreamService extends Service {
      * Toggles the stream's play state.
      */
     private void togglePlayPause() {
+        if (isPlaying()) {
+            pause();
+        } else {
+            play();
+        }
+    }
+
+    private void play() {
         if (player == null) {
             startStream();
-        } else if (player.getPlayWhenReady()) {
-            player.setPlayWhenReady(false);
         } else {
             player.setPlayWhenReady(true);
             player.seekToDefaultPosition();
         }
 
-        App.STATE.playing.set(isPlaying());
+        App.STATE.playing.set(true);
+        updateNotification();
+    }
+
+    private void pause() {
+        if (player != null && player.getPlayWhenReady()) {
+            player.setPlayWhenReady(false);
+        }
+
+        App.STATE.playing.set(false);
         updateNotification();
     }
 
@@ -277,8 +310,7 @@ public class StreamService extends Service {
      */
     private void promptLogin() {
         final Intent loginIntent = new Intent(MainActivity.TRIGGER_LOGIN);
-        LocalBroadcastManager.getInstance(this)
-                .sendBroadcast(loginIntent);
+        sendBroadcast(loginIntent);
     }
 
     /**
@@ -289,7 +321,7 @@ public class StreamService extends Service {
         final TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         final TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
         final LoadControl loadControl = new DefaultLoadControl();
-        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "LISTEN.moe"));
+        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, getPackageName()));
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
 
@@ -423,6 +455,12 @@ public class StreamService extends Service {
             }
 
             updateNotification();
+        }
+    }
+
+    public class ServiceBinder extends Binder {
+        public StreamService getService() {
+            return StreamService.this;
         }
     }
 }

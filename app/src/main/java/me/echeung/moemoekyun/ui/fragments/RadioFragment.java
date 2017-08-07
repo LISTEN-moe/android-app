@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,8 +46,7 @@ public class RadioFragment extends TabFragment {
 
     private void togglePlayPause() {
         final Intent playPauseIntent = new Intent(StreamService.PLAY_PAUSE);
-        LocalBroadcastManager.getInstance(getContext())
-                .sendBroadcast(playPauseIntent);
+        getActivity().sendBroadcast(playPauseIntent);
     }
 
     private void favorite() {
@@ -58,7 +56,6 @@ public class RadioFragment extends TabFragment {
         }
 
         final Intent favIntent = new Intent(StreamService.TOGGLE_FAVORITE);
-        LocalBroadcastManager.getInstance(getContext())
-                .sendBroadcast(favIntent);
+        getActivity().sendBroadcast(favIntent);
     }
 }

@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -81,14 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        LocalBroadcastManager.getInstance(this)
-                .unregisterReceiver(intentReceiver);
+        unregisterReceiver(intentReceiver);
 
         // Kill service/notification if killing activity and not playing
         if (!App.getService().isPlaying()) {
             final Intent stopIntent = new Intent(StreamService.STOP);
-            LocalBroadcastManager.getInstance(this)
-                    .sendBroadcast(stopIntent);
+            sendBroadcast(stopIntent);
         }
 
         super.onDestroy();
@@ -115,8 +112,7 @@ public class MainActivity extends AppCompatActivity {
         final IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MainActivity.TRIGGER_LOGIN);
 
-        LocalBroadcastManager.getInstance(this)
-                .registerReceiver(intentReceiver, intentFilter);
+        registerReceiver(intentReceiver, intentFilter);
     }
 
     private void handleIntentAction(Intent intent) {
@@ -284,8 +280,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void broadcastAuthEvent() {
         final Intent authEventIntent = new Intent(MainActivity.AUTH_EVENT);
-        LocalBroadcastManager.getInstance(this)
-                .sendBroadcast(authEventIntent);
+        sendBroadcast(authEventIntent);
     }
 
     private void showLogoutDialog() {

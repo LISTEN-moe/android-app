@@ -56,7 +56,7 @@ public class App extends Application {
         public void onServiceConnected(ComponentName className,
                                        IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            StreamService.LocalBinder binder = (StreamService.LocalBinder) service;
+            StreamService.ServiceBinder binder = (StreamService.ServiceBinder) service;
             mService = binder.getService();
             mBound = true;
         }
