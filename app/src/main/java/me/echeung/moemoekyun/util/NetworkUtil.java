@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import me.echeung.moemoekyun.ui.App;
+import me.echeung.moemoekyun.state.AppState;
 
 public class NetworkUtil {
 
@@ -21,7 +21,7 @@ public class NetworkUtil {
 
             boolean isAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
-            App.STATE.hasNetworkConnection.set(isAvailable);
+            AppState.getInstance().hasNetworkConnection.set(isAvailable);
 
             return isAvailable;
         }

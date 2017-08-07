@@ -42,7 +42,7 @@ import me.echeung.moemoekyun.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.model.PlaybackInfo;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.service.notification.AppNotification;
-import me.echeung.moemoekyun.ui.App;
+import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.AuthUtil;
@@ -61,20 +61,18 @@ public class StreamService extends Service {
 
     private static final Gson GSON = new Gson();
 
-    private SimpleExoPlayer player;
-    private RadioSocket socket;
-
-    private AppNotification notification;
-
-    private final IBinder mBinder = new ServiceBinder();
+    private final IBinder binder = new ServiceBinder();
     private boolean isServiceBound = false;
 
+    private AppNotification notification;
     private BroadcastReceiver intentReceiver;
+    private SimpleExoPlayer player;
+    private RadioSocket socket;
 
     @Override
     public IBinder onBind(Intent intent) {
         isServiceBound = true;
-        return mBinder;
+        return binder;
     }
 
     @Override
@@ -90,7 +88,6 @@ public class StreamService extends Service {
         }
         return true;
     }
-
 
     @Override
     public void onCreate() {
@@ -169,6 +166,7 @@ public class StreamService extends Service {
                 // TODO: audio ducking
 
                 case MainActivity.AUTH_EVENT:
+                    // TODO: update when logged in or logged out?
                     break;
             }
         }
@@ -199,18 +197,10 @@ public class StreamService extends Service {
         return player != null;
     }
 
-    /**
-     * Gets the status of the music player and whether or not it's currently playing something.
-     *
-     * @return Whether the player is playing something.
-     */
     public boolean isPlaying() {
         return player != null && player.getPlayWhenReady();
     }
 
-    /**
-     * Toggles the stream's play state.
-     */
     private void togglePlayPause() {
         if (isPlaying()) {
             pause();
@@ -227,7 +217,7 @@ public class StreamService extends Service {
             player.seekToDefaultPosition();
         }
 
-        App.STATE.playing.set(true);
+        AppState.getInstance().playing.set(true);
         updateNotification();
     }
 
@@ -236,13 +226,10 @@ public class StreamService extends Service {
             player.setPlayWhenReady(false);
         }
 
-        App.STATE.playing.set(false);
+        AppState.getInstance().playing.set(false);
         updateNotification();
     }
 
-    /**
-     * Stops the stream and kills the service.
-     */
     private void stop() {
         if (player != null) {
             player.setPlayWhenReady(false);
@@ -252,11 +239,11 @@ public class StreamService extends Service {
         stopForeground(true);
         stopSelf();
 
-        App.STATE.playing.set(false);
+        AppState.getInstance().playing.set(false);
     }
 
     private void favoriteCurrentSong() {
-        final Song currentSong = App.STATE.currentSong.get();
+        final Song currentSong = AppState.getInstance().currentSong.get();
         if (currentSong == null) return;
 
         final int songId = currentSong.getId();
@@ -278,10 +265,9 @@ public class StreamService extends Service {
 
             @Override
             public void onSuccess(final boolean favorited) {
-                final Song currentSong = App.STATE.currentSong.get();
+                final Song currentSong = AppState.getInstance().currentSong.get();
                 if (currentSong.getId() == songId) {
-                    currentSong.setFavorite(favorited);
-                    App.STATE.currentFavorited.set(favorited);
+                    AppState.getInstance().setFavorited(favorited);
                 }
 
                 updateNotification();
@@ -289,11 +275,8 @@ public class StreamService extends Service {
         });
     }
 
-    /**
-     * Updates the notification if there is a song playing.
-     */
     private void updateNotification() {
-        final Song currentSong = App.STATE.currentSong.get();
+        final Song currentSong = AppState.getInstance().currentSong.get();
         if (currentSong != null && currentSong.getId() != -1) {
             if (notification == null) {
                 notification = new AppNotification(this);
@@ -426,32 +409,29 @@ public class StreamService extends Service {
 
         private void parseWebSocketResponse(final String jsonString) {
             if (jsonString == null) {
-                App.STATE.currentSong.set(null);
-                App.STATE.listeners.set(0);
-                App.STATE.requester.set(null);
+                AppState.getInstance().currentSong.set(null);
+                AppState.getInstance().listeners.set(0);
+                AppState.getInstance().requester.set(null);
             } else {
                 final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
                 if (playbackInfo.getSongId() != 0) {
-                    App.STATE.currentSong.set(new Song(
+                    AppState.getInstance().currentSong.set(new Song(
                             playbackInfo.getSongId(),
                             playbackInfo.getArtistName().trim(),
                             playbackInfo.getSongName().trim(),
                             playbackInfo.getAnimeName().trim()
                     ));
 
-                    // TODO: clean up how favorited track is handled
                     if (playbackInfo.hasExtended()) {
-                        final boolean favorited = playbackInfo.getExtended().isFavorite();
-                        App.STATE.currentSong.get().setFavorite(favorited);
-                        App.STATE.currentFavorited.set(favorited);
+                        AppState.getInstance().setFavorited(playbackInfo.getExtended().isFavorite());
                     }
                 } else {
-                    App.STATE.currentSong.set(null);
+                    AppState.getInstance().currentSong.set(null);
                 }
 
-                App.STATE.listeners.set(playbackInfo.getListeners());
-                App.STATE.requester.set(playbackInfo.getRequestedBy());
+                AppState.getInstance().listeners.set(playbackInfo.getListeners());
+                AppState.getInstance().requester.set(playbackInfo.getRequestedBy());
             }
 
             updateNotification();

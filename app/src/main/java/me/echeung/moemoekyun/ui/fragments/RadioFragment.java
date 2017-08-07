@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.RadioFragmentBinding;
 import me.echeung.moemoekyun.service.StreamService;
-import me.echeung.moemoekyun.ui.App;
+import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.util.AuthUtil;
@@ -27,11 +27,11 @@ public class RadioFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final RadioFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.radio_fragment, container, false);
-        binding.setPlaying(App.STATE.playing);
-        binding.setSong(App.STATE.currentSong);
-        binding.setFavorited(App.STATE.currentFavorited);
-        binding.setListeners(App.STATE.listeners);
-        binding.setRequester(App.STATE.requester);
+        binding.setPlaying(AppState.getInstance().playing);
+        binding.setSong(AppState.getInstance().currentSong);
+        binding.setFavorited(AppState.getInstance().currentFavorited);
+        binding.setListeners(AppState.getInstance().listeners);
+        binding.setRequester(AppState.getInstance().requester);
 
         final View view = binding.getRoot();
 

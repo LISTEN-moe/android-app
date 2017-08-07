@@ -31,6 +31,7 @@ import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.databinding.MainActivityBinding;
 import me.echeung.moemoekyun.interfaces.AuthListener;
 import me.echeung.moemoekyun.service.StreamService;
+import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.AuthUtil;
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         MainActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
-        binding.setHasNetworkConnection(App.STATE.hasNetworkConnection);
+        binding.setHasNetworkConnection(AppState.getInstance().hasNetworkConnection);
 
         // Check network connectivity
         binding.btnRetry.setOnClickListener(v -> retry());
@@ -308,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
         broadcastAuthEvent();
     }
 
-    // TODO: actual activity with LICENSEs and stuff?
+    // TODO: actual activity with LICENSEs and stuff
     private void showAboutDialog() {
         if (aboutDialog == null) {
             String version;

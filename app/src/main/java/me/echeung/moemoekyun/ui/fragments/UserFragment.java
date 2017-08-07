@@ -4,10 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -31,6 +28,7 @@ import me.echeung.moemoekyun.interfaces.UserInfoListener;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.model.SongsList;
 import me.echeung.moemoekyun.model.UserInfo;
+import me.echeung.moemoekyun.state.UserState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.util.APIUtil;
@@ -38,9 +36,6 @@ import me.echeung.moemoekyun.util.AuthUtil;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
-
-    // Data binding state
-    public static final UserFragment.UserState USER_STATE = new UserFragment.UserState();
 
     private LinearLayout vLoginMsg;
     private LinearLayout vUserContent;
@@ -62,8 +57,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final UserFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_fragment, container, false);
-        binding.setUserName(USER_STATE.userName);
-        binding.setUserRequests(USER_STATE.userRequests);
+        binding.setUserName(UserState.getInstance().userName);
+        binding.setUserRequests(UserState.getInstance().userRequests);
 
         vLoginMsg = binding.loginMsg;
         vUserContent = binding.userContent;
@@ -179,7 +174,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getActivity().runOnUiThread(() -> {
                     final String userName = userInfo.getUsername();
 
-                    USER_STATE.userName.set(userName);
+                    UserState.getInstance().userName.set(userName);
 
                     // TODO: user avatars/banners are coming in v4
 //                    APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
@@ -208,7 +203,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getActivity().runOnUiThread(() -> {
                     favorites = songsList.getSongs();
                     adapter.setSongs(favorites);
-                    USER_STATE.userRequests.set(songsList.getExtra().getRequests());
+                    UserState.getInstance().userRequests.set(songsList.getExtra().getRequests());
                 });
             }
         });
@@ -233,11 +228,5 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         }
 
         builder.create().show();
-    }
-
-    public static class UserState extends BaseObservable {
-        public final ObservableField<String> userName = new ObservableField<>();
-        public final ObservableInt userRequests = new ObservableInt();
-//        public final ObservableList<Song> favorites
     }
 }

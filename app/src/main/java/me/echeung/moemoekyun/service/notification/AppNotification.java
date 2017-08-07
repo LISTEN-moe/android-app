@@ -10,7 +10,7 @@ import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.service.StreamService;
-import me.echeung.moemoekyun.ui.App;
+import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.util.AuthUtil;
 
@@ -31,7 +31,7 @@ public class AppNotification {
             return;
         }
 
-        final Song song = App.STATE.currentSong.get();
+        final Song song = AppState.getInstance().currentSong.get();
         if (song == null) {
             return;
         }

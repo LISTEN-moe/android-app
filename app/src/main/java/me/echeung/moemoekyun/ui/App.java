@@ -5,19 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.databinding.BaseObservable;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
 import android.os.IBinder;
 
-import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.service.StreamService;
 
 public class App extends Application {
-
-    // Data binding state
-    public static final AppState STATE = new AppState();
 
     private static StreamService mService;
     private static boolean mBound = false;
@@ -32,18 +24,6 @@ public class App extends Application {
 
     public static StreamService getService() {
         return mService;
-    }
-
-    public static class AppState extends BaseObservable {
-        // Network state
-        public final ObservableBoolean hasNetworkConnection = new ObservableBoolean();
-
-        // Play state
-        public final ObservableBoolean playing = new ObservableBoolean();
-        public final ObservableField<Song> currentSong = new ObservableField<>();
-        public final ObservableBoolean currentFavorited = new ObservableBoolean();
-        public final ObservableInt listeners = new ObservableInt();
-        public final ObservableField<String> requester = new ObservableField<>();
     }
 
     public boolean isServiceBound() {
