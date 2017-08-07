@@ -20,7 +20,6 @@
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.APP_MUSIC" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -35,6 +34,9 @@
         <meta-data
             android:name="android.max_aspect"
             android:value="2.1" />
+        <meta-data
+            android:name="com.lge.support.SPLIT_WINDOW"
+            android:value="true" />
 
         <service
             android:name=".service.StreamService"
