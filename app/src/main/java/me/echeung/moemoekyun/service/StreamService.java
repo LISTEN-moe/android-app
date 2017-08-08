@@ -382,7 +382,8 @@ public class StreamService extends Service {
 
         @Override
         public void onOpen(WebSocket socket, Response response) {
-            socket.send("update");
+            // This actually causes a MALFORMED-JSON error
+            // socket.send("update");
         }
 
         @Override
