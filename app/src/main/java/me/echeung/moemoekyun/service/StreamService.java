@@ -70,7 +70,7 @@ public class StreamService extends Service {
     private RadioSocket socket;
 
     private BroadcastReceiver intentReceiver;
-    private boolean intentReceiverRegistered = false;
+    private boolean receiverRegistered = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -112,9 +112,9 @@ public class StreamService extends Service {
         stop();
         socket.disconnect();
 
-        if (intentReceiverRegistered) {
+        if (receiverRegistered) {
             unregisterReceiver(intentReceiver);
-            intentReceiverRegistered = false;
+            receiverRegistered = false;
         }
 
         super.onDestroy();
@@ -197,7 +197,7 @@ public class StreamService extends Service {
         intentFilter.addAction(MainActivity.AUTH_EVENT);
 
         registerReceiver(intentReceiver, intentFilter);
-        intentReceiverRegistered = true;
+        receiverRegistered = true;
     }
 
     public boolean isStreamStarted() {
@@ -390,14 +390,13 @@ public class StreamService extends Service {
             // TODO: clean this up
             if (text.contains("listeners")) {
                 // Get user token from shared preferences if socket not authenticated
-                if (!text.contains("\"extended\":{")) {
+                if (!text.contains("\"extended\":{") && AuthUtil.isAuthenticated(getBaseContext())) {
                     final String authToken = AuthUtil.getAuthToken(getBaseContext());
                     if (authToken != null) {
                         socket.send("{\"token\":\"" + authToken + "\"}");
                     }
                 }
 
-                // Parses the API information
                 parseWebSocketResponse(text);
             }
         }
@@ -410,20 +409,19 @@ public class StreamService extends Service {
 
         @Override
         public void	onClosed(WebSocket webSocket, int code, String reason) {
-            // Try to reconnect
             reconnect();
         }
 
         private void parseWebSocketResponse(final String jsonString) {
             final AppState state = AppState.getInstance();
 
-            state.currentSong.set(null);
-            state.listeners.set(0);
-            state.requester.set(null);
-            state.lastSong.set(null);
-            state.secondLastSong.set(null);
-
-            if (jsonString != null) {
+            if (jsonString == null) {
+                state.currentSong.set(null);
+                state.listeners.set(0);
+                state.requester.set(null);
+                state.lastSong.set(null);
+                state.secondLastSong.set(null);
+            } else {
                 final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
                 if (playbackInfo.getSongId() != 0) {
