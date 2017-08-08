@@ -65,9 +65,12 @@ public class StreamService extends Service {
     private boolean isServiceBound = false;
 
     private AppNotification notification;
-    private BroadcastReceiver intentReceiver;
+
     private SimpleExoPlayer player;
     private RadioSocket socket;
+
+    private BroadcastReceiver intentReceiver;
+    private boolean intentReceiverRegistered = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -109,7 +112,10 @@ public class StreamService extends Service {
         stop();
         socket.disconnect();
 
-        unregisterReceiver(intentReceiver);
+        if (intentReceiverRegistered) {
+            unregisterReceiver(intentReceiver);
+            intentReceiverRegistered = false;
+        }
 
         super.onDestroy();
     }
@@ -191,6 +197,7 @@ public class StreamService extends Service {
         intentFilter.addAction(MainActivity.AUTH_EVENT);
 
         registerReceiver(intentReceiver, intentFilter);
+        intentReceiverRegistered = true;
     }
 
     public boolean isStreamStarted() {

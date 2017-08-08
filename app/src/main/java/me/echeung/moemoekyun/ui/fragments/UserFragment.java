@@ -48,6 +48,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     // Receiver
     private IntentFilter intentFilter;
     private BroadcastReceiver intentReceiver;
+    private boolean intentReceiverRegistered = false;
 
     public static Fragment newInstance(int sectionNumber) {
         return TabFragment.newInstance(sectionNumber, new UserFragment());
@@ -114,19 +115,28 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public void onResume() {
         super.onResume();
 
-        getActivity().registerReceiver(intentReceiver, intentFilter);
+        if (!intentReceiverRegistered) {
+            getActivity().registerReceiver(intentReceiver, intentFilter);
+            intentReceiverRegistered = true;
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        getActivity().unregisterReceiver(intentReceiver);
+        if (intentReceiverRegistered) {
+            getActivity().unregisterReceiver(intentReceiver);
+            intentReceiverRegistered = false;
+        }
     }
 
     @Override
     public void onDestroy() {
-        getActivity().unregisterReceiver(intentReceiver);
+        if (intentReceiverRegistered) {
+            getActivity().unregisterReceiver(intentReceiver);
+            intentReceiverRegistered = false;
+        }
 
         super.onDestroy();
     }
@@ -152,6 +162,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         intentFilter.addAction(MainActivity.AUTH_EVENT);
 
         getActivity().registerReceiver(intentReceiver, intentFilter);
+        intentReceiverRegistered = true;
     }
 
     private void initUserContent() {
