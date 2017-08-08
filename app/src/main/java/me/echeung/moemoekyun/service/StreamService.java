@@ -408,30 +408,35 @@ public class StreamService extends Service {
         }
 
         private void parseWebSocketResponse(final String jsonString) {
-            if (jsonString == null) {
-                AppState.getInstance().currentSong.set(null);
-                AppState.getInstance().listeners.set(0);
-                AppState.getInstance().requester.set(null);
-            } else {
+            final AppState state = AppState.getInstance();
+
+            state.currentSong.set(null);
+            state.listeners.set(0);
+            state.requester.set(null);
+            state.lastSong.set(null);
+            state.secondLastSong.set(null);
+
+            if (jsonString != null) {
                 final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
                 if (playbackInfo.getSongId() != 0) {
-                    AppState.getInstance().currentSong.set(new Song(
+                    state.currentSong.set(new Song(
                             playbackInfo.getSongId(),
                             playbackInfo.getArtistName().trim(),
                             playbackInfo.getSongName().trim(),
                             playbackInfo.getAnimeName().trim()
                     ));
 
+                    state.lastSong.set(playbackInfo.getLast().toString());
+                    state.secondLastSong.set(playbackInfo.getSecondLast().toString());
+
                     if (playbackInfo.hasExtended()) {
-                        AppState.getInstance().setFavorited(playbackInfo.getExtended().isFavorite());
+                        state.setFavorited(playbackInfo.getExtended().isFavorite());
                     }
-                } else {
-                    AppState.getInstance().currentSong.set(null);
                 }
 
-                AppState.getInstance().listeners.set(playbackInfo.getListeners());
-                AppState.getInstance().requester.set(playbackInfo.getRequestedBy());
+                state.listeners.set(playbackInfo.getListeners());
+                state.requester.set(playbackInfo.getRequestedBy());
             }
 
             updateNotification();

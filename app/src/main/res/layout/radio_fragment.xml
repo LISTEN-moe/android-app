@@ -5,6 +5,7 @@
     tools:context=".ui.fragments.RadioFragment">
 
     <data>
+        <import type="android.view.View" />
         <import type="android.databinding.ObservableField"/>
         <import type="android.databinding.ObservableInt" />
         <import type="android.databinding.ObservableBoolean" />
@@ -15,12 +16,14 @@
         <variable name="listeners" type="ObservableInt" />
         <variable name="playing" type="ObservableBoolean" />
         <variable name="requester" type="ObservableField&lt;String&gt;" />
+        <variable name="showHistory" type="ObservableBoolean" />
+        <variable name="lastSong" type="ObservableField&lt;String&gt;" />
+        <variable name="secondLastSong" type="ObservableField&lt;String&gt;" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -30,8 +33,8 @@
         <!-- TODO: fix for smaller screens -->
 
         <ImageView
-            android:layout_width="326dp"
-            android:layout_height="133dp"
+            android:layout_width="320dp"
+            android:layout_height="130dp"
             android:layout_gravity="center_horizontal"
             app:srcCompat="@drawable/logo"
             tools:ignore="ContentDescription" />
@@ -61,7 +64,36 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
-            <!-- TODO: history -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="24dp"
+                android:orientation="vertical"
+                android:visibility="@{showHistory ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text='@{lastSong == null || lastSong.isEmpty() ? "" : lastSong}'
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:alpha="0.7" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text='@{secondLastSong == null || secondLastSong.isEmpty() ? "" : secondLastSong}'
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:alpha="0.5" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -70,7 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text='@{requester.isEmpty() ? "" : SDKUtil.fromHtml(@string/requested_by(requester))}'
+            android:text='@{requester == null || requester.isEmpty() ? "" : SDKUtil.fromHtml(@string/requested_by(requester))}'
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textColorLink="@color/colorAccent"

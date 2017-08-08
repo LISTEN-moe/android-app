@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.ui.fragments;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
@@ -27,18 +28,21 @@ public class RadioFragment extends TabFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final RadioFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.radio_fragment, container, false);
-        binding.setPlaying(AppState.getInstance().playing);
-        binding.setSong(AppState.getInstance().currentSong);
-        binding.setFavorited(AppState.getInstance().currentFavorited);
-        binding.setListeners(AppState.getInstance().listeners);
-        binding.setRequester(AppState.getInstance().requester);
+        final AppState state = AppState.getInstance();
+        binding.setPlaying(state.playing);
+        binding.setSong(state.currentSong);
+        binding.setFavorited(state.currentFavorited);
+        binding.setListeners(state.listeners);
+        binding.setRequester(state.requester);
+        binding.setShowHistory(state.showHistory);
+        binding.setLastSong(state.lastSong);
+        binding.setSecondLastSong(state.secondLastSong);
 
         final View view = binding.getRoot();
 
         binding.requestedBy.setMovementMethod(LinkMovementMethod.getInstance());
         binding.playPauseBtn.setOnClickListener(v -> togglePlayPause());
-        // TODO: show history items in bottom sheet?
-//        binding.historyBtn.setOnClickListener(v -> favorite());
+        binding.historyBtn.setOnClickListener(v -> showHistory());
         binding.favoriteBtn.setOnClickListener(v -> favorite());
 
         return view;
@@ -57,5 +61,11 @@ public class RadioFragment extends TabFragment {
 
         final Intent favIntent = new Intent(StreamService.TOGGLE_FAVORITE);
         getActivity().sendBroadcast(favIntent);
+    }
+
+    private void showHistory() {
+        final ObservableBoolean showHistory = AppState.getInstance().showHistory;
+
+        showHistory.set(!showHistory.get());
     }
 }

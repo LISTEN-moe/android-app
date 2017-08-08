@@ -21,4 +21,9 @@ public class BasicTrack {
     public String getSongName() {
         return songName;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s", songName, artistName);
+    }
 }

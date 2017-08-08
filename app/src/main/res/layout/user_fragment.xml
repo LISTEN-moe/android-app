@@ -12,10 +12,11 @@
         <variable name="userRequests" type="ObservableInt" />
     </data>
 
+    <!-- TODO: portrait layout -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">

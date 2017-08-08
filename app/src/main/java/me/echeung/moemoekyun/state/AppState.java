@@ -11,6 +11,8 @@ public class AppState extends BaseObservable {
 
     private static final AppState INSTANCE = new AppState();
 
+    // TODO: use regular variables/manually trigger change
+
     // Network state
     public final ObservableBoolean hasNetworkConnection = new ObservableBoolean();
 
@@ -20,6 +22,11 @@ public class AppState extends BaseObservable {
     public final ObservableBoolean currentFavorited = new ObservableBoolean();
     public final ObservableInt listeners = new ObservableInt();
     public final ObservableField<String> requester = new ObservableField<>();
+
+    // History
+    public final ObservableBoolean showHistory = new ObservableBoolean();
+    public final ObservableField<String> lastSong = new ObservableField<>();
+    public final ObservableField<String> secondLastSong = new ObservableField<>();
 
     private AppState() {}
 
