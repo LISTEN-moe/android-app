@@ -44,6 +44,7 @@ import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.service.notification.AppNotification;
 import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
+import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.AuthUtil;
 import me.echeung.moemoekyun.util.NetworkUtil;
@@ -281,6 +282,9 @@ public class StreamService extends Service {
                 if (currentSong.getId() == songId) {
                     AppState.getInstance().setFavorited(favorited);
                 }
+
+                final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
+                sendBroadcast(favIntent);
 
                 updateNotification();
             }

@@ -37,6 +37,8 @@ import me.echeung.moemoekyun.util.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
 
+    public static final String FAVORITE_EVENT = "fav_event";
+
     private LinearLayout vLoginMsg;
     private LinearLayout vUserContent;
     private ImageView vUserAvatar;
@@ -67,8 +69,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         final View view = binding.getRoot();
         vUserAvatar = binding.userAvatar;
         binding.btnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showLoginDialog());
-
-        // TODO: favorites list should update
 
         // Favorites list adapter
         adapter = new SongAdapter(this);
@@ -149,6 +149,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 if (action != null) {
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
+                        case UserFragment.FAVORITE_EVENT:
                             initUserContent();
                             break;
                     }
@@ -158,6 +159,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(MainActivity.AUTH_EVENT);
+        intentFilter.addAction(UserFragment.FAVORITE_EVENT);
 
         getActivity().registerReceiver(intentReceiver, intentFilter);
         receiverRegistered = true;

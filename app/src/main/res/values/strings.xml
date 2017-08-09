@@ -16,6 +16,7 @@
     <string name="action_favorite">Favorite</string>
     <string name="action_unfavorite">Unfavorite</string>
     <string name="action_request">Request</string>
+    <string name="action_undo">Undo</string>
 
     <!-- Search -->
     <string name="search">Search</string>
@@ -52,6 +53,7 @@
 
     <!-- User tab -->
     <string name="filter_favorites">Filter favorites</string>
+    <string name="unfavorited">Unfavorited %s</string>
 
     <!-- Song item actions -->
     <string name="supporter_required">Supporter status required</string>
