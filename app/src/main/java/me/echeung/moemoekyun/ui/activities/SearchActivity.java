@@ -67,7 +67,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
                 runOnUiThread(() -> {
                     adapter.setSongs(results);
                     SearchState.getInstance().query.set(query);
-                    SearchState.getInstance().hasResults.set(results.size() != 0);
+                    SearchState.getInstance().hasResults.set(results != null && results.size() != 0);
                 });
             }
         });
