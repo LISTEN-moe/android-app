@@ -17,4 +17,9 @@ public class UserState extends BaseObservable {
     public static UserState getInstance() {
         return INSTANCE;
     }
+
+    public void clear() {
+        userName.set(null);
+        userRequests.set(0);
+    }
 }

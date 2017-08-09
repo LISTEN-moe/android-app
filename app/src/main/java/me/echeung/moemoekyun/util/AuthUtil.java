@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import me.echeung.moemoekyun.state.UserState;
 import okhttp3.Request;
 
 /**
@@ -80,6 +81,8 @@ public class AuthUtil {
                 .putString(USER_TOKEN, null)
                 .putLong(LAST_AUTH, 0);
         editor.apply();
+
+        UserState.getInstance().clear();
     }
 
     /**

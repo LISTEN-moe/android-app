@@ -187,7 +187,7 @@ public class APIUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                final SongsList songsList = APIUtil.parseSongJson(response.body().string());
+                final SongsList songsList = APIUtil.parseSongJson(context, response.body().string());
                 if (songsList == null) {
                     listener.onFailure(ResponseMessages.ERROR);
                     return;
@@ -309,7 +309,7 @@ public class APIUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                final SongsList songsList = APIUtil.parseSongJson(response.body().string());
+                final SongsList songsList = APIUtil.parseSongJson(context, response.body().string());
                 listener.onSuccess(songsList.getSongs());
             }
         });
@@ -318,14 +318,16 @@ public class APIUtil {
     /**
      * For internal use: parses the JSON with a list of songs.
      *
+     * @param context    Android context to fetch SharedPreferences.
      * @param jsonString JSON returned from the API.
      * @return A SongsList object, or null if there was an authentication error.
      */
-    private static SongsList parseSongJson(final String jsonString) {
+    private static SongsList parseSongJson(final Context context, final String jsonString) {
         if (jsonString.contains(ResponseMessages.AUTH_FAILURE)) {
-            // TODO: log user out?
+            AuthUtil.clearAuthToken(context);
             return null;
         }
+
         try {
             return GSON.fromJson(jsonString, SongsList.class);
         }
