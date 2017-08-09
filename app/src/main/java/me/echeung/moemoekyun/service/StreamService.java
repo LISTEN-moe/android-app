@@ -174,8 +174,10 @@ public class StreamService extends Service {
                 case MainActivity.AUTH_EVENT:
                     if (!AuthUtil.isAuthenticated(this)) {
                         AppState.getInstance().setFavorited(false);
+                        updateNotification();
+                    } else {
+                        radioSocket.update();
                     }
-                    updateNotification();
                     break;
             }
         }
@@ -384,6 +386,15 @@ public class StreamService extends Service {
             connect();
         }
 
+        void update() {
+            if (AuthUtil.isAuthenticated(getBaseContext())) {
+                final String authToken = AuthUtil.getAuthToken(getBaseContext());
+                if (authToken != null) {
+                    socket.send("{\"token\":\"" + authToken + "\"}");
+                }
+            }
+        }
+
         @Override
         public void onOpen(WebSocket socket, Response response) {
             // This actually causes a MALFORMED-JSON error
@@ -395,11 +406,8 @@ public class StreamService extends Service {
             // TODO: clean this up
             if (text.contains("listeners")) {
                 // Get user token from shared preferences if socket not authenticated
-                if (!text.contains("\"extended\":{") && AuthUtil.isAuthenticated(getBaseContext())) {
-                    final String authToken = AuthUtil.getAuthToken(getBaseContext());
-                    if (authToken != null) {
-                        socket.send("{\"token\":\"" + authToken + "\"}");
-                    }
+                if (!text.contains("\"extended\":{")) {
+                    update();
                 }
 
                 parseWebSocketResponse(text);
