@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     private AlertDialog aboutDialog;
 
+    private ViewPager viewPager;
+
     private BroadcastReceiver intentReceiver;
 
     @Override
@@ -92,6 +94,15 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    @Override
+    public void onBackPressed() {
+        if (viewPager.getCurrentItem() != 0) {
+            viewPager.setCurrentItem(0, true);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     /**
      * For retry button in no internet view.
      */
@@ -136,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Set up ViewPager and adapter
-        final ViewPager viewPager = binding.pager;
+        viewPager = binding.pager;
         final ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(mViewPagerAdapter);
 
