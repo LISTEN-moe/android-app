@@ -60,8 +60,11 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final UserFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_fragment, container, false);
-        binding.setUserName(UserState.getInstance().userName);
-        binding.setUserRequests(UserState.getInstance().userRequests);
+        final UserState state = UserState.getInstance();
+        binding.setUserName(state.userName);
+        binding.setUserRequests(state.userRequests);
+        binding.setQueueSize(state.queueSize);
+        binding.setQueueSize(state.queuePosition);
 
         vLoginMsg = binding.loginMsg;
         vUserContent = binding.userContent;

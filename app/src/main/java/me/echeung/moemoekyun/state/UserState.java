@@ -10,7 +10,8 @@ public class UserState extends BaseObservable {
 
     public final ObservableField<String> userName = new ObservableField<>();
     public final ObservableInt userRequests = new ObservableInt();
-//        public final ObservableList<Song> favorites
+    public final ObservableInt queueSize = new ObservableInt();
+    public final ObservableInt queuePosition = new ObservableInt();
 
     private UserState() {}
 
@@ -21,5 +22,7 @@ public class UserState extends BaseObservable {
     public void clear() {
         userName.set(null);
         userRequests.set(0);
+        queueSize.set(0);
+        queuePosition.set(0);
     }
 }

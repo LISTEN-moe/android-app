@@ -10,6 +10,8 @@
 
         <variable name="userName" type="ObservableField&lt;String&gt;" />
         <variable name="userRequests" type="ObservableInt" />
+        <variable name="queueSize" type="ObservableInt" />
+        <variable name="queuePosition" type="ObservableInt" />
     </data>
 
     <!-- TODO: portrait layout -->
@@ -85,7 +87,27 @@
                         android:textColor="@android:color/white"
                         android:textSize="14sp" />
 
-                    <!-- TODO: queue status -->
+                    <!-- TODO: queue info -->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="8dp"-->
+                        <!--android:fontFamily="sans-serif-light"-->
+                        <!--android:text="@{@plurals/queue_size(queueSize, queueSize)}"-->
+                        <!--android:textAlignment="center"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textSize="14sp" />-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_marginTop="8dp"-->
+                        <!--android:fontFamily="sans-serif-light"-->
+                        <!--android:text="@{@plurals/queue_position(queuePosition, queuePosition, queuePosition)}"-->
+                        <!--android:textAlignment="center"-->
+                        <!--android:textColor="@android:color/white"-->
+                        <!--android:textSize="14sp" />-->
 
                 </LinearLayout>
 

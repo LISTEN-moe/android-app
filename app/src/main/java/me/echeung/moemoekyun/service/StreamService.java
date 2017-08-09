@@ -43,6 +43,7 @@ import me.echeung.moemoekyun.model.PlaybackInfo;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.service.notification.AppNotification;
 import me.echeung.moemoekyun.state.AppState;
+import me.echeung.moemoekyun.state.UserState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.util.APIUtil;
@@ -456,7 +457,12 @@ public class StreamService extends Service {
                     state.secondLastSong.set(playbackInfo.getSecondLast().toString());
 
                     if (playbackInfo.hasExtended()) {
-                        state.setFavorited(playbackInfo.getExtended().isFavorite());
+                        final PlaybackInfo.ExtendedInfo extended = playbackInfo.getExtended();
+
+                        state.setFavorited(extended.isFavorite());
+
+                        UserState.getInstance().queueSize.set(extended.getQueue().getSongsInQueue());
+                        UserState.getInstance().queuePosition.set(extended.getQueue().getInQueueBeforeUserSong());
                     }
                 }
 
