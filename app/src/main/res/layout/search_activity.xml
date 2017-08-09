@@ -12,63 +12,70 @@
         <variable name="query" type="ObservableField&lt;String&gt;" />
     </data>
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/light_grey"
-        android:orientation="vertical">
-
-        <android.support.design.widget.AppBarLayout
-            android:layout_width="fill_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/grey">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/appbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark">
-
-                <EditText
-                    android:id="@+id/search_query"
-                    android:layout_width="fill_parent"
-                    android:layout_height="match_parent"
-                    android:background="@null"
-                    android:hint="@string/search"
-                    android:imeOptions="actionSearch"
-                    android:inputType="textNoSuggestions"
-                    android:maxLines="1"
-                    android:paddingRight="16dp"
-                    android:textColorHint="@color/lighter_grey"
-                    android:textSize="16sp" />
-
-            </android.support.v7.widget.Toolbar>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/results_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{hasResults ? View.VISIBLE : View.GONE}" />
+        android:background="@color/light_grey">
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="@{hasResults ? View.GONE : View.VISIBLE}">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="fill_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/grey">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+                    <EditText
+                        android:id="@+id/search_query"
+                        android:layout_width="fill_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:hint="@string/search"
+                        android:imeOptions="actionSearch"
+                        android:inputType="textNoSuggestions"
+                        android:maxLines="1"
+                        android:paddingRight="16dp"
+                        android:textColorHint="@color/lighter_grey"
+                        android:textSize="16sp" />
+
+                </android.support.v7.widget.Toolbar>
+
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/results_list"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
+                android:visibility="@{hasResults ? View.VISIBLE : View.GONE}" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:gravity="center"
-                android:text="@{@string/no_results(query)}"
-                android:textColor="@android:color/white" />
+                android:orientation="vertical"
+                android:visibility="@{hasResults ? View.GONE : View.VISIBLE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@{@string/no_results(query)}"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
 </layout>
