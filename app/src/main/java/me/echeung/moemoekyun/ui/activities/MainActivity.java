@@ -40,7 +40,7 @@ import me.echeung.moemoekyun.util.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TRIGGER_LOGIN = "trigger_login";
+    public static final String TRIGGER_LOGIN_AND_FAVORITE = "fav_after_login";
     public static final String AUTH_EVENT = "auth_event";
 
     private AlertDialog aboutDialog;
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MainActivity.TRIGGER_LOGIN);
+        intentFilter.addAction(MainActivity.TRIGGER_LOGIN_AND_FAVORITE);
 
         registerReceiver(intentReceiver, intentFilter);
     }
@@ -131,8 +131,8 @@ public class MainActivity extends AppCompatActivity {
         final String action = intent.getAction();
         if (action != null) {
             switch (action) {
-                case MainActivity.TRIGGER_LOGIN:
-                    showLoginDialog();
+                case MainActivity.TRIGGER_LOGIN_AND_FAVORITE:
+                    showLoginDialog(this::favoriteSong);
                     break;
             }
         }
@@ -293,6 +293,11 @@ public class MainActivity extends AppCompatActivity {
     private void broadcastAuthEvent() {
         final Intent authEventIntent = new Intent(MainActivity.AUTH_EVENT);
         sendBroadcast(authEventIntent);
+    }
+
+    private void favoriteSong() {
+        final Intent favIntent = new Intent(StreamService.TOGGLE_FAVORITE);
+        sendBroadcast(favIntent);
     }
 
     private void showLogoutDialog() {

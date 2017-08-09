@@ -119,7 +119,8 @@ public class APIUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                listener.onSuccess(GSON.fromJson(response.body().string(), UserInfo.class));
+                final String jsonString = response.body().string();
+                listener.onSuccess(GSON.fromJson(jsonString, UserInfo.class));
             }
         });
     }

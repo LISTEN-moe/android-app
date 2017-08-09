@@ -1,15 +1,14 @@
 package me.echeung.moemoekyun.ui.activities;
 
-import android.databinding.BaseObservable;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.KeyEvent;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -18,13 +17,13 @@ import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.SearchActivityBinding;
 import me.echeung.moemoekyun.interfaces.SearchListener;
 import me.echeung.moemoekyun.model.Song;
+import me.echeung.moemoekyun.state.SearchState;
 import me.echeung.moemoekyun.util.APIUtil;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 
     private SongAdapter adapter;
-    private SearchState state;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,8 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         SearchActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.search_activity);
 
         // Data binding state
-        state = new SearchState();
+        final SearchState state = SearchState.getInstance();
+        state.reset();
         binding.setHasResults(state.hasResults);
         binding.setQuery(state.query);
 
@@ -46,6 +46,11 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         adapter = new SongAdapter(this);
         binding.resultsList.setLayoutManager(new LinearLayoutManager(this));
         binding.resultsList.setAdapter(adapter);
+
+        // No results image
+        Glide.with(this)
+                .load(R.drawable.kanna_dancing)
+                .into(binding.searchPlaceholder);
     }
 
     private boolean onEditorAction(TextView textView, int i, KeyEvent event) {
@@ -54,15 +59,15 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         APIUtil.search(getBaseContext(), query, new SearchListener() {
             @Override
             public void onFailure(final String result) {
-                state.query.set(query);
+                SearchState.getInstance().query.set(query);
             }
 
             @Override
             public void onSuccess(final List<Song> results) {
                 runOnUiThread(() -> {
                     adapter.setSongs(results);
-                    state.query.set(query);
-                    state.hasResults.set(results.size() != 0);
+                    SearchState.getInstance().query.set(query);
+                    SearchState.getInstance().hasResults.set(results.size() != 0);
                 });
             }
         });
@@ -91,10 +96,5 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         }
 
         builder.create().show();
-    }
-
-    private class SearchState extends BaseObservable {
-        public final ObservableBoolean hasResults = new ObservableBoolean(true);
-        public final ObservableField<String> query = new ObservableField<>();
     }
 }

@@ -52,8 +52,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <!-- TODO: pull to refresh -->
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,8 +88,6 @@
                     <!-- TODO: queue status -->
 
                 </LinearLayout>
-
-                <!-- TODO: default image -->
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/user_avatar"

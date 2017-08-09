@@ -60,7 +60,7 @@ public class AppNotification {
             favoriteAction = new NotificationCompat.Action(
                     R.drawable.ic_star_border_white_24dp,
                     service.getString(R.string.action_favorite),
-                    getPlaybackActionActivity(MainActivity.class, MainActivity.TRIGGER_LOGIN)
+                    getPlaybackActionActivity(MainActivity.class, MainActivity.TRIGGER_LOGIN_AND_FAVORITE)
             );
         }
 

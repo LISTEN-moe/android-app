@@ -196,6 +196,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 //                        @Override
 //                        public void onSuccess(final String avatarUrl) {
 //                            if (avatarUrl != null) {
+//                                // TODO: use Glide to load avatar
 //                                getActivity().runOnUiThread(() -> new DownloadImageTask(userAvatar).execute(avatarUrl));
 //                            }
 //                        }

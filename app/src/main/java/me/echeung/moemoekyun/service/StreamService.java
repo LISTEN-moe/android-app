@@ -263,7 +263,7 @@ public class StreamService extends Service {
         if (songId == -1) return;
 
         if (!AuthUtil.isAuthenticated(getApplicationContext())) {
-            promptLogin();
+            promptLoginFavorite();
             return;
         }
 
@@ -271,8 +271,7 @@ public class StreamService extends Service {
             @Override
             public void onFailure(final String result) {
                 if (result.equals(ResponseMessages.AUTH_FAILURE)) {
-                    // TODO: should favorite after logging in
-                    promptLogin();
+                    promptLoginFavorite();
                 }
             }
 
@@ -307,8 +306,8 @@ public class StreamService extends Service {
     /**
      * Opens up the login dialog in MainActivity.
      */
-    private void promptLogin() {
-        final Intent loginIntent = new Intent(MainActivity.TRIGGER_LOGIN);
+    private void promptLoginFavorite() {
+        final Intent loginIntent = new Intent(MainActivity.TRIGGER_LOGIN_AND_FAVORITE);
         sendBroadcast(loginIntent);
     }
 
