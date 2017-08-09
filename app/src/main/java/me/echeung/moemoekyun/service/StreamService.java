@@ -375,6 +375,7 @@ public class StreamService extends Service {
         }
 
         void reconnect() {
+            // TODO: exponential backoff
             disconnect();
             SystemClock.sleep(RETRY_TIME);
             connect();
@@ -399,6 +400,9 @@ public class StreamService extends Service {
                 }
 
                 parseWebSocketResponse(text);
+            } else if (text.contains("\"reason\"")) {
+                // We get a "CLEANUP" disconnect message after a while
+                reconnect();
             }
         }
 
@@ -418,10 +422,11 @@ public class StreamService extends Service {
 
             if (jsonString == null) {
                 state.currentSong.set(null);
-                state.listeners.set(0);
-                state.requester.set(null);
                 state.lastSong.set(null);
                 state.secondLastSong.set(null);
+
+                state.listeners.set(0);
+                state.requester.set(null);
             } else {
                 final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
