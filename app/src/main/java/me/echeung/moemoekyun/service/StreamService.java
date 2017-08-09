@@ -67,7 +67,7 @@ public class StreamService extends Service {
     private AppNotification notification;
 
     private SimpleExoPlayer player;
-    private RadioSocket socket;
+    private RadioSocket radioSocket;
 
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
@@ -96,8 +96,8 @@ public class StreamService extends Service {
     public void onCreate() {
         initBroadcastReceiver();
 
-        socket = new RadioSocket();
-        socket.connect();
+        radioSocket = new RadioSocket();
+        radioSocket.connect();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class StreamService extends Service {
     @Override
     public void onDestroy() {
         stop();
-        socket.disconnect();
+        radioSocket.disconnect();
 
         if (receiverRegistered) {
             unregisterReceiver(intentReceiver);
@@ -121,7 +121,7 @@ public class StreamService extends Service {
     }
 
     public void reconnect() {
-        socket.reconnect();
+        radioSocket.reconnect();
     }
 
     private void handleIntent(Intent intent) {
@@ -172,7 +172,10 @@ public class StreamService extends Service {
                 // TODO: audio ducking
 
                 case MainActivity.AUTH_EVENT:
-                    // TODO: update when logged in or logged out?
+                    if (!AuthUtil.isAuthenticated(this)) {
+                        AppState.getInstance().setFavorited(false);
+                    }
+                    updateNotification();
                     break;
             }
         }
@@ -325,7 +328,7 @@ public class StreamService extends Service {
                 // Try to reconnect to the stream
                 player.release();
                 player = null;
-                socket.reconnect();
+                radioSocket.reconnect();
                 startStream();
             }
 

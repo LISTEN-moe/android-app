@@ -150,8 +150,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
                             initUserContent();
-
-                            // TODO: update favorite = false when logged out
                             break;
                     }
                 }
