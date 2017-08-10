@@ -37,9 +37,10 @@
     <!-- About dialog -->
     <string name="about">About</string>
     <string name="about_content"><![CDATA[
-        <b>%1$s v%2$s</b>
+        <b>%1$s</b> v%2$s
         <br/>
-        Powered by: <a href="https://listen.moe">LISTEN.moe</a>
+        <br/>
+        This is an unofficial app powered by <a href="https://listen.moe">Listen.moe</a>.
         <br/>
         <br/>
         Report bugs or request features on <a href=\'https://github.com/arkon/listen-moe-android\'>GitHub</a>.
