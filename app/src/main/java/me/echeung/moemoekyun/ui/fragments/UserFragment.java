@@ -192,7 +192,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
             @Override
             public void onSuccess(final UserInfo userInfo) {
-                getActivity().runOnUiThread(() -> {
+                runOnUiThread(() -> {
                     final String userName = userInfo.getUsername();
 
                     UserState.getInstance().userName.set(userName);
@@ -222,7 +222,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
             @Override
             public void onSuccess(final SongsList songsList) {
-                getActivity().runOnUiThread(() -> {
+                runOnUiThread(() -> {
                     favorites = songsList.getSongs();
                     adapter.setSongs(favorites);
                     UserState.getInstance().userRequests.set(songsList.getExtra().getRequests());

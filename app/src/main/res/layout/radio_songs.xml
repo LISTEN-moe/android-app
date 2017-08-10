@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="android.databinding.ObservableField"/>
+        <import type="android.databinding.ObservableBoolean" />
+
+        <variable name="song" type="ObservableField&lt;me.echeung.moemoekyun.model.Song&gt;" />
+        <variable name="lastSong" type="ObservableField&lt;String&gt;" />
+        <variable name="secondLastSong" type="ObservableField&lt;String&gt;" />
+        <variable name="showHistory" type="ObservableBoolean" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="130dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/logo"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="@{song.getTitle() ?? @string/connecting}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:text="@{song.getArtistAndAnime()}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:visibility="@{showHistory ? View.VISIBLE : View.GONE}">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text='@{lastSong == null || lastSong.isEmpty() ? "" : lastSong}'
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:alpha="0.5" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text='@{secondLastSong == null || secondLastSong.isEmpty() ? "" : secondLastSong}'
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:alpha="0.25" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

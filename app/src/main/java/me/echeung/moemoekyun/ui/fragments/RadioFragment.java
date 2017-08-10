@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.RadioFragmentBinding;
@@ -40,10 +43,17 @@ public class RadioFragment extends TabFragment {
 
         final View view = binding.getRoot();
 
-        binding.requestedBy.setMovementMethod(LinkMovementMethod.getInstance());
-        binding.playPauseBtn.setOnClickListener(v -> togglePlayPause());
-        binding.historyBtn.setOnClickListener(v -> showHistory());
-        binding.favoriteBtn.setOnClickListener(v -> favorite());
+        final TextView vRequestBy = view.findViewById(R.id.requested_by);
+        vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
+
+        final FloatingActionButton vPlayPauseBtn = view.findViewById(R.id.play_pause_btn);
+        vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
+
+        final ImageButton vHistoryBtn = view.findViewById(R.id.history_btn);
+        vHistoryBtn.setOnClickListener(v -> showHistory());
+
+        final ImageButton vFavoriteBtn = view.findViewById(R.id.favorite_btn);
+        vFavoriteBtn.setOnClickListener(v -> favorite());
 
         return view;
     }
