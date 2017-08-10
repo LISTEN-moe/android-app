@@ -102,11 +102,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text='@{requester == null || requester.isEmpty() ? "" : SDKUtil.fromHtml(@string/requested_by(requester))}'
+            android:text='@{SDKUtil.fromHtml(@string/requested_by(requester))}'
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textColorLink="@color/colorAccent"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:visibility="@{requester == null || requester.isEmpty() ? View.GONE : View.VISIBLE}" />
 
         <LinearLayout
             android:layout_width="wrap_content"
