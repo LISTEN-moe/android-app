@@ -362,9 +362,11 @@ public class StreamService extends Service {
 
     private final class RadioSocket extends WebSocketListener {
 
-        private static final int RETRY_TIME = 1500;
+        private static final int RETRY_TIME_MIN = 250;
+        private static final int RETRY_TIME_MAX = 4000;
 
         private WebSocket socket;
+        private int retryTime = RETRY_TIME_MIN;
 
         void connect() {
             if (!NetworkUtil.isNetworkAvailable(getBaseContext())) {
@@ -384,9 +386,14 @@ public class StreamService extends Service {
         }
 
         void reconnect() {
-            // TODO: exponential backoff
             disconnect();
-            SystemClock.sleep(RETRY_TIME);
+
+            // Exponential backoff
+            SystemClock.sleep(retryTime);
+            if (retryTime < RETRY_TIME_MAX) {
+                retryTime *= 2;
+            }
+
             connect();
         }
 
@@ -401,6 +408,8 @@ public class StreamService extends Service {
 
         @Override
         public void onOpen(WebSocket socket, Response response) {
+            retryTime = RETRY_TIME_MIN;
+
             // This actually causes a MALFORMED-JSON error
             // socket.send("update");
         }
