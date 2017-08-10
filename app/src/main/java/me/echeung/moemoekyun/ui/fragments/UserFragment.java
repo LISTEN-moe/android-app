@@ -9,11 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -66,20 +69,24 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         binding.setQueueSize(state.queueSize);
         binding.setQueueSize(state.queuePosition);
 
-        vLoginMsg = binding.loginMsg;
-        vUserContent = binding.userContent;
-
         final View view = binding.getRoot();
-        vUserAvatar = binding.userAvatar;
-        binding.btnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showLoginDialog());
+        vLoginMsg = view.findViewById(R.id.user_login_msg);
+        vUserContent = view.findViewById(R.id.user_content);
+        vUserAvatar = view.findViewById(R.id.user_avatar);
+
+        // Login view
+        final Button vBtnLogin = vLoginMsg.findViewById(R.id.btn_login);
+        vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showLoginDialog());
 
         // Favorites list adapter
         adapter = new SongAdapter(this);
-        binding.userFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.userFavorites.setAdapter(adapter);
+        final RecyclerView vUserFavorites = view.findViewById(R.id.user_favorites);
+        vUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
+        vUserFavorites.setAdapter(adapter);
 
         // Set up favorites filtering
-        binding.filterQuery.addTextChangedListener(new TextWatcher() {
+        final EditText vFilterQuery = view.findViewById(R.id.filter_query);
+        vFilterQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
             }

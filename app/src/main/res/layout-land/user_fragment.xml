@@ -26,11 +26,12 @@
             android:id="@+id/user_content"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="240dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
                 android:orientation="vertical">
 
                 <include layout="@layout/user_card"
