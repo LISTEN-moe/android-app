@@ -68,6 +68,10 @@ public class StreamService extends Service {
 
     private AppNotification notification;
 
+    private AudioManager audioManager;
+    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
+    private boolean wasPlaying;
+
     private SimpleExoPlayer player;
     private RadioSocket radioSocket;
 
@@ -96,6 +100,29 @@ public class StreamService extends Service {
 
     @Override
     public void onCreate() {
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioFocusChangeListener = focusChange -> {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    player.setVolume(1f);
+                    if (wasPlaying) {
+                        play();
+                    }
+                    break;
+
+                case AudioManager.AUDIOFOCUS_LOSS:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    wasPlaying = isPlaying();
+                    pause();
+                    break;
+
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    wasPlaying = isPlaying();
+                    player.setVolume(0.5f);
+                    break;
+            }
+        };
+
         initBroadcastReceiver();
 
         radioSocket = new RadioSocket();
@@ -171,8 +198,6 @@ public class StreamService extends Service {
                     }
                     break;
 
-                // TODO: audio ducking
-
                 case MainActivity.AUTH_EVENT:
                     if (!AuthUtil.isAuthenticated(this)) {
                         AppState.getInstance().setFavorited(false);
@@ -225,26 +250,39 @@ public class StreamService extends Service {
 
     private void play() {
         if (player == null) {
-            startStream();
-        } else {
-            player.setPlayWhenReady(true);
-            player.seekToDefaultPosition();
+            initStream();
         }
 
-        AppState.getInstance().playing.set(true);
-        updateNotification();
+        if (!isPlaying()) {
+            // Request audio focus for playback
+            int result = audioManager.requestAudioFocus(audioFocusChangeListener,
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.AUDIOFOCUS_GAIN);
+
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                player.setPlayWhenReady(true);
+                player.seekToDefaultPosition();
+
+                AppState.getInstance().playing.set(true);
+                updateNotification();
+            }
+        }
     }
 
     private void pause() {
-        if (player != null && player.getPlayWhenReady()) {
+        if (isPlaying()) {
             player.setPlayWhenReady(false);
-        }
 
-        AppState.getInstance().playing.set(false);
-        updateNotification();
+            AppState.getInstance().playing.set(false);
+            updateNotification();
+        }
     }
 
     private void stop() {
+        if (isPlaying()) {
+            audioManager.abandonAudioFocus(audioFocusChangeListener);
+        }
+
         if (player != null) {
             player.setPlayWhenReady(false);
             player = null;
@@ -315,7 +353,7 @@ public class StreamService extends Service {
     /**
      * Creates and starts the stream.
      */
-    private void startStream() {
+    private void initStream() {
         final BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         final TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         final TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -326,7 +364,6 @@ public class StreamService extends Service {
 
         player = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
         player.prepare(streamSource);
-        player.setPlayWhenReady(true);
 
         player.addListener(new ExoPlayer.EventListener() {
             @Override
@@ -335,7 +372,8 @@ public class StreamService extends Service {
                 player.release();
                 player = null;
                 radioSocket.reconnect();
-                startStream();
+                initStream();
+                play();
             }
 
             @Override
