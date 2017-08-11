@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Listen.moe</string>
+    <string name="app_name" translatable="false">LISTEN.moe</string>
 
     <!-- Generic strings -->
     <string name="close">Close</string>
@@ -40,7 +40,7 @@
         <b>%1$s</b> v%2$s
         <br/>
         <br/>
-        This is an unofficial app powered by <a href="https://listen.moe">Listen.moe</a>.
+        This is an unofficial app powered by <a href="https://listen.moe">LISTEN.moe</a>.
         <br/>
         <br/>
         Report bugs or request features on <a href=\'https://github.com/arkon/listen-moe-android\'>GitHub</a>.
