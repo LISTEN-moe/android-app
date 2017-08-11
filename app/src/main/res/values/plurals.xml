@@ -9,15 +9,4 @@
         <item quantity="one">1 user listening</item>
         <item quantity="other">%d users listening</item>
     </plurals>
-
-    <plurals name="queue_size">
-        <item quantity="one">1 song in queue</item>
-        <item quantity="other">%d songs in queue</item>
-    </plurals>
-
-    <plurals name="queue_position">
-        <item quantity="zero">Your song is next</item>
-        <item quantity="one">1 song before your next song</item>
-        <item quantity="other">%d songs before your next song</item>
-    </plurals>
 </resources>

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View" />
         <import type="android.databinding.ObservableField" />
         <import type="android.databinding.ObservableInt" />
 
@@ -45,27 +46,16 @@
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
 
-            <!-- TODO: queue info -->
-
-            <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:fontFamily="sans-serif-light"-->
-            <!--android:text="@{@plurals/queue_size(queueSize, queueSize)}"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textSize="14sp" />-->
-
-            <!--<TextView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:fontFamily="sans-serif-light"-->
-            <!--android:text="@{@plurals/queue_position(queuePosition, queuePosition, queuePosition)}"-->
-            <!--android:textAlignment="center"-->
-            <!--android:textColor="@android:color/white"-->
-            <!--android:textSize="14sp" />-->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@{@string/queue_info(queueSize, queuePosition)}"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:visibility="@{queueSize == 0 ? View.GONE : View.VISIBLE}" />
 
         </LinearLayout>
 

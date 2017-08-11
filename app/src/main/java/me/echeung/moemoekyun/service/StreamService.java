@@ -417,14 +417,14 @@ public class StreamService extends Service {
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             // TODO: clean this up
-            if (text.contains("listeners")) {
+            if (text.contains("\"listeners\":")) {
                 // Get user token from shared preferences if socket not authenticated
-                if (!text.contains("\"extended\":{")) {
+                if (!text.contains("\"extended\":")) {
                     update();
                 }
 
                 parseWebSocketResponse(text);
-            } else if (text.contains("\"reason\"")) {
+            } else if (text.contains("\"reason\":")) {
                 // We get a "CLEANUP" disconnect message after a while
                 reconnect();
             }

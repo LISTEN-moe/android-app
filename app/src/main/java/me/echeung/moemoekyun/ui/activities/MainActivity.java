@@ -325,7 +325,6 @@ public class MainActivity extends AppCompatActivity {
         broadcastAuthEvent();
     }
 
-    // TODO: actual activity with LICENSEs and stuff
     private void showAboutDialog() {
         if (aboutDialog == null) {
             String version;

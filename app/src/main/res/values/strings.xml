@@ -55,6 +55,7 @@
     <!-- User tab -->
     <string name="filter_favorites">Filter favorites</string>
     <string name="unfavorited">Unfavorited %s</string>
+    <string name="queue_info">%d in queue, %d before yours</string>
 
     <!-- Song item actions -->
     <string name="supporter_required">Supporter status required</string>
