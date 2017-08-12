@@ -198,19 +198,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                     UserState.getInstance().userName.set(userName);
 
                     // TODO: user avatars/banners are coming in v4
-//                    APIUtil.getUserAvatar(getContext(), userName, new UserForumInfoListener() {
-//                        @Override
-//                        public void onFailure(final String result) {
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(final String avatarUrl) {
-//                            if (avatarUrl != null) {
-//                                // TODO: use Glide to load avatar
-//                                getActivity().runOnUiThread(() -> new DownloadImageTask(userAvatar).execute(avatarUrl));
-//                            }
-//                        }
-//                    });
                 });
             }
         });
