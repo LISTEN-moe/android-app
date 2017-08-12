@@ -29,7 +29,7 @@ import me.echeung.moemoekyun.databinding.UserFragmentBinding;
 import me.echeung.moemoekyun.interfaces.UserFavoritesListener;
 import me.echeung.moemoekyun.interfaces.UserInfoListener;
 import me.echeung.moemoekyun.model.Song;
-import me.echeung.moemoekyun.model.SongsList;
+import me.echeung.moemoekyun.model.UserFavorites;
 import me.echeung.moemoekyun.model.UserInfo;
 import me.echeung.moemoekyun.state.UserState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
@@ -67,7 +67,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         binding.setUserName(state.userName);
         binding.setUserRequests(state.userRequests);
         binding.setQueueSize(state.queueSize);
-        binding.setQueueSize(state.queuePosition);
+        binding.setQueuePosition(state.queuePosition);
 
         final View view = binding.getRoot();
         vLoginMsg = view.findViewById(R.id.user_login_msg);
@@ -221,11 +221,11 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
 
             @Override
-            public void onSuccess(final SongsList songsList) {
+            public void onSuccess(final UserFavorites userFavorites) {
                 runOnUiThread(() -> {
-                    favorites = songsList.getSongs();
+                    favorites = userFavorites.getSongs();
                     adapter.setSongs(favorites);
-                    UserState.getInstance().userRequests.set(songsList.getExtra().getRequests());
+                    UserState.getInstance().userRequests.set(userFavorites.getExtra().getRequests());
                 });
             }
         });

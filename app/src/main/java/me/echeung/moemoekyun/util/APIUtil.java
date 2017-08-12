@@ -15,12 +15,10 @@ import me.echeung.moemoekyun.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.interfaces.RequestSongListener;
 import me.echeung.moemoekyun.interfaces.SearchListener;
 import me.echeung.moemoekyun.interfaces.UserFavoritesListener;
-import me.echeung.moemoekyun.interfaces.UserForumInfoListener;
 import me.echeung.moemoekyun.interfaces.UserInfoListener;
 import me.echeung.moemoekyun.model.AuthResponse;
 import me.echeung.moemoekyun.model.Song;
-import me.echeung.moemoekyun.model.SongsList;
-import me.echeung.moemoekyun.model.UserForumInfo;
+import me.echeung.moemoekyun.model.UserFavorites;
 import me.echeung.moemoekyun.model.UserInfo;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -126,43 +124,6 @@ public class APIUtil {
     }
 
     /**
-     * Gets a user's avatar URL from the forum.
-     *
-     * @param context  Android context to fetch SharedPreferences.
-     * @param username The user's username.
-     * @param listener Listener to handle the response.
-     */
-    public static void getUserAvatar(final Context context, final String username, final UserForumInfoListener listener) {
-        if (!AuthUtil.isAuthenticated(context)) {
-            listener.onFailure(ResponseMessages.AUTH_ERROR);
-            return;
-        }
-
-        final Request request = new Request.Builder()
-                .url(String.format(Endpoints.FORUM_USER, username))
-                .get()
-                .build();
-
-        http.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(final Call call, final IOException e) {
-                e.printStackTrace();
-                listener.onFailure(ResponseMessages.ERROR);
-            }
-
-            @Override
-            public void onResponse(final Call call, final Response response) throws IOException {
-                if (response.isSuccessful()) {
-                    // TODO: check if avatar exists
-                    listener.onSuccess(GSON.fromJson(response.body().string(), UserForumInfo.class).getAvatarUrl());
-                } else {
-                    listener.onFailure(ResponseMessages.ERROR);
-                }
-            }
-        });
-    }
-
-    /**
      * Gets a list of all the user's favorited songs.
      * /api/user/favorites
      *
@@ -188,15 +149,15 @@ public class APIUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                final SongsList songsList = APIUtil.parseSongJson(context, response.body().string());
-                if (songsList == null) {
+                final UserFavorites userFavorites = APIUtil.parseSongJson(context, response.body().string());
+                if (userFavorites == null) {
                     listener.onFailure(ResponseMessages.ERROR);
                     return;
                 }
-                for (final Song song : songsList.getSongs()) {
+                for (final Song song : userFavorites.getSongs()) {
                     song.setFavorite(true);
                 }
-                listener.onSuccess(songsList);
+                listener.onSuccess(userFavorites);
             }
         });
     }
@@ -310,8 +271,8 @@ public class APIUtil {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                final SongsList songsList = APIUtil.parseSongJson(context, response.body().string());
-                listener.onSuccess(songsList.getSongs());
+                final UserFavorites userFavorites = APIUtil.parseSongJson(context, response.body().string());
+                listener.onSuccess(userFavorites.getSongs());
             }
         });
     }
@@ -321,18 +282,17 @@ public class APIUtil {
      *
      * @param context    Android context to fetch SharedPreferences.
      * @param jsonString JSON returned from the API.
-     * @return A SongsList object, or null if there was an authentication error.
+     * @return A UserFavorites object, or null if there was an authentication error.
      */
-    private static SongsList parseSongJson(final Context context, final String jsonString) {
+    private static UserFavorites parseSongJson(final Context context, final String jsonString) {
         if (jsonString.contains(ResponseMessages.AUTH_FAILURE)) {
             AuthUtil.clearAuthToken(context);
             return null;
         }
 
         try {
-            return GSON.fromJson(jsonString, SongsList.class);
-        }
-        catch (Exception e) {
+            return GSON.fromJson(jsonString, UserFavorites.class);
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

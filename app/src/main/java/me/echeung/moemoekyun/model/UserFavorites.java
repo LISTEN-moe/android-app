@@ -2,12 +2,12 @@ package me.echeung.moemoekyun.model;
 
 import java.util.List;
 
-public class SongsList {
+public class UserFavorites {
 
     private List<Song> songs;
     private SongsExtra extra;
 
-    public SongsList(List<Song> songs, SongsExtra extra) {
+    public UserFavorites(List<Song> songs, SongsExtra extra) {
         this.songs = songs;
         this.extra = extra;
     }
