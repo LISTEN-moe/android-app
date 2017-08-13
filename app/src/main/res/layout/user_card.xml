@@ -55,7 +55,7 @@
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:visibility="@{queueSize == 0 ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{queuePosition == 0 ? View.GONE : View.VISIBLE}" />
 
         </LinearLayout>
 

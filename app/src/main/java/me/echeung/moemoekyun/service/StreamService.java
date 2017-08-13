@@ -104,7 +104,9 @@ public class StreamService extends Service {
         audioFocusChangeListener = focusChange -> {
             switch (focusChange) {
                 case AudioManager.AUDIOFOCUS_GAIN:
-                    player.setVolume(1f);
+                    if (player != null) {
+                        player.setVolume(1f);
+                    }
                     if (wasPlaying) {
                         play();
                     }
@@ -113,12 +115,16 @@ public class StreamService extends Service {
                 case AudioManager.AUDIOFOCUS_LOSS:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     wasPlaying = isPlaying();
-                    pause();
+                    if (wasPlaying) {
+                        pause();
+                    }
                     break;
 
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     wasPlaying = isPlaying();
-                    player.setVolume(0.5f);
+                    if (player != null) {
+                        player.setVolume(0.5f);
+                    }
                     break;
             }
         };

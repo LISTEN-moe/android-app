@@ -32,6 +32,10 @@ public class APIClient {
         return authService;
     }
 
+    public FavoritesService getFavoritesService() {
+        return favoritesService;
+    }
+
     public SongsService getSongsService() {
         return songsService;
     }
