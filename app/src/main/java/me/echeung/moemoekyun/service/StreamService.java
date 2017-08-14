@@ -517,6 +517,8 @@ public class StreamService extends Service {
                         UserState.getInstance().queueSize.set(extended.getQueue().getSongsInQueue());
                         UserState.getInstance().queuePosition.set(extended.getQueue().getInQueueBeforeUserSong());
                     }
+
+                    // TODO: Last.fm scrobbling/musicxmatch
                 }
 
                 state.listeners.set(playbackInfo.getListeners());
