@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
@@ -215,6 +216,11 @@ public class StreamService extends Service {
                         radioSocket.update();
                     }
                     break;
+
+                case ConnectivityManager.CONNECTIVITY_ACTION:
+                    if (NetworkUtil.isNetworkAvailable(this)) {
+                        radioSocket.update();
+                    }
             }
         }
 
@@ -237,6 +243,7 @@ public class StreamService extends Service {
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON);
         intentFilter.addAction(MainActivity.AUTH_EVENT);
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
         registerReceiver(intentReceiver, intentFilter);
         receiverRegistered = true;
@@ -474,9 +481,6 @@ public class StreamService extends Service {
         @Override
         public void onOpen(WebSocket socket, Response response) {
             retryTime = RETRY_TIME_MIN;
-
-            // This actually causes a MALFORMED-JSON error
-            // socket.send("update");
         }
 
         @Override
