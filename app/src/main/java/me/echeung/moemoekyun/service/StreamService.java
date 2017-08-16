@@ -13,10 +13,13 @@ import android.os.SystemClock;
 import android.view.KeyEvent;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
-import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -366,24 +369,21 @@ public class StreamService extends Service {
         final LoadControl loadControl = new DefaultLoadControl();
         final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, getPackageName()));
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        final RenderersFactory renderersFactory = new DefaultRenderersFactory(getApplicationContext());
         final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
 
-        player = ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
+        player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
         player.prepare(streamSource);
 
-        player.addListener(new ExoPlayer.EventListener() {
+        player.addListener(new Player.EventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 // Try to reconnect to the stream
                 player.release();
                 player = null;
-                radioSocket.reconnect();
+                radioSocket.reconnect();  // TODO
                 initStream();
                 play();
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
             }
 
             @Override
@@ -392,6 +392,18 @@ public class StreamService extends Service {
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
             }
 
             @Override
