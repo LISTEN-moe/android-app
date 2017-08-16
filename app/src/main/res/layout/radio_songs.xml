@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="android.view.View" />
@@ -29,10 +29,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
             android:layout_gravity="center"
-            android:gravity="center">
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
@@ -55,8 +55,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
                 android:layout_marginTop="16dp"
+                android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="@{showHistory ? View.VISIBLE : View.GONE}">
 
@@ -64,22 +64,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
+                    android:alpha="0.5"
                     android:fontFamily="sans-serif-light"
                     android:text='@{lastSong == null || lastSong.isEmpty() ? "" : lastSong}'
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:alpha="0.5" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:alpha="0.25"
                     android:fontFamily="sans-serif-light"
                     android:text='@{secondLastSong == null || secondLastSong.isEmpty() ? "" : secondLastSong}'
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    android:alpha="0.25" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
 

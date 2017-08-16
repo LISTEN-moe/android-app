@@ -25,7 +25,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.databinding.UserFragmentBinding;
+import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.interfaces.UserFavoritesListener;
 import me.echeung.moemoekyun.interfaces.UserInfoListener;
 import me.echeung.moemoekyun.model.Song;
@@ -62,30 +62,31 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final UserFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.user_fragment, container, false);
+        final FragmentUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
         final UserState state = UserState.getInstance();
-        binding.setUserName(state.userName);
-        binding.setUserRequests(state.userRequests);
-        binding.setQueueSize(state.queueSize);
-        binding.setQueuePosition(state.queuePosition);
+
+        binding.userCard.setUserName(state.userName);
+        binding.userCard.setUserRequests(state.userRequests);
+        binding.userCard.setQueueSize(state.queueSize);
+        binding.userCard.setQueuePosition(state.queuePosition);
 
         final View view = binding.getRoot();
-        vLoginMsg = view.findViewById(R.id.user_login_msg);
-        vUserContent = view.findViewById(R.id.user_content);
-        vUserAvatar = view.findViewById(R.id.user_avatar);
+        vLoginMsg = binding.loginMsg.container;
+        vUserContent = binding.userContent;
+        vUserAvatar = binding.userCard.userAvatar;
 
         // Login view
-        final Button vBtnLogin = vLoginMsg.findViewById(R.id.btn_login);
+        final Button vBtnLogin = binding.loginMsg.btnLogin;
         vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showLoginDialog());
 
         // Favorites list adapter
         adapter = new SongAdapter(this);
-        final RecyclerView vUserFavorites = view.findViewById(R.id.user_favorites);
+        final RecyclerView vUserFavorites = binding.favorites.favoritesList;
         vUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         vUserFavorites.setAdapter(adapter);
 
         // Set up favorites filtering
-        final EditText vFilterQuery = view.findViewById(R.id.filter_query);
+        final EditText vFilterQuery = binding.favorites.filterQuery;
         vFilterQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

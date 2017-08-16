@@ -14,7 +14,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.databinding.SearchActivityBinding;
+import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
 import me.echeung.moemoekyun.interfaces.SearchListener;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.state.SearchState;
@@ -29,11 +29,10 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SearchActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.search_activity);
-
-        // Data binding state
+        final ActivitySearchBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         final SearchState state = SearchState.getInstance();
         state.reset();
+
         binding.setHasResults(state.hasResults);
         binding.setQuery(state.query);
 

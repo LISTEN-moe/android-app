@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.databinding.RadioFragmentBinding;
+import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
 import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
@@ -30,16 +30,18 @@ public class RadioFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final RadioFragmentBinding binding = DataBindingUtil.inflate(inflater, R.layout.radio_fragment, container, false);
+        final FragmentRadioBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
         final AppState state = AppState.getInstance();
-        binding.setPlaying(state.playing);
-        binding.setSong(state.currentSong);
-        binding.setFavorited(state.currentFavorited);
-        binding.setListeners(state.listeners);
-        binding.setRequester(state.requester);
-        binding.setShowHistory(state.showHistory);
-        binding.setLastSong(state.lastSong);
-        binding.setSecondLastSong(state.secondLastSong);
+
+        binding.radioSongs.setSong(state.currentSong);
+        binding.radioSongs.setLastSong(state.lastSong);
+        binding.radioSongs.setSecondLastSong(state.secondLastSong);
+        binding.radioSongs.setShowHistory(state.showHistory);
+
+        binding.radioControls.setPlaying(state.playing);
+        binding.radioControls.setFavorited(state.currentFavorited);
+        binding.radioControls.setListeners(state.listeners);
+        binding.radioControls.setRequester(state.requester);
 
         final View view = binding.getRoot();
 

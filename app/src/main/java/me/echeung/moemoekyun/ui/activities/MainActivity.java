@@ -28,7 +28,7 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.constants.ResponseMessages;
-import me.echeung.moemoekyun.databinding.MainActivityBinding;
+import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.interfaces.AuthListener;
 import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.state.AppState;
@@ -53,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        MainActivityBinding binding = DataBindingUtil.setContentView(this, R.layout.main_activity);
+        final ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
         binding.setHasNetworkConnection(AppState.getInstance().hasNetworkConnection);
 
         // Check network connectivity
@@ -143,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initializes everything for the tabs: the adapter, icons, and title handler
      */
-    private void initAppbar(MainActivityBinding binding) {
+    private void initAppbar(ActivityMainBinding binding) {
         // Set up app bar
         setSupportActionBar(binding.appbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
