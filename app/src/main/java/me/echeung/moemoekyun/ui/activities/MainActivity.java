@@ -109,7 +109,9 @@ public class MainActivity extends AppCompatActivity {
     private void retry() {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
-            App.getService().reconnect();
+
+            final Intent updateIntent = new Intent(StreamService.UPDATE);
+            sendBroadcast(updateIntent);
         }
     }
 

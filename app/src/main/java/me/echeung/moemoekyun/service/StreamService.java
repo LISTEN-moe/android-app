@@ -63,6 +63,7 @@ public class StreamService extends Service {
     public static final String PLAY_PAUSE = "play_pause";
     public static final String STOP = "stop";
     public static final String TOGGLE_FAVORITE = "toggle_favorite";
+    public static final String UPDATE = "update";
 
     private static final Gson GSON = new Gson();
 
@@ -73,7 +74,7 @@ public class StreamService extends Service {
 
     private AudioManager audioManager;
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
-    private boolean wasPlaying;
+    private boolean wasPlayingBeforeLoss;
 
     private SimpleExoPlayer player;
     private RadioSocket radioSocket;
@@ -110,21 +111,21 @@ public class StreamService extends Service {
                     if (player != null) {
                         player.setVolume(1f);
                     }
-                    if (wasPlaying) {
+                    if (wasPlayingBeforeLoss) {
                         play();
                     }
                     break;
 
                 case AudioManager.AUDIOFOCUS_LOSS:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                    wasPlaying = isPlaying();
-                    if (wasPlaying) {
+                    wasPlayingBeforeLoss = isPlaying();
+                    if (wasPlayingBeforeLoss) {
                         pause();
                     }
                     break;
 
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    wasPlaying = isPlaying();
+                    wasPlayingBeforeLoss = isPlaying();
                     if (player != null) {
                         player.setVolume(0.5f);
                     }
@@ -157,11 +158,6 @@ public class StreamService extends Service {
 
         super.onDestroy();
     }
-
-    public void reconnect() {
-        radioSocket.reconnect();
-    }
-
     private void handleIntent(Intent intent) {
         final String action = intent.getAction();
         if (action != null) {
@@ -176,6 +172,10 @@ public class StreamService extends Service {
 
                 case StreamService.TOGGLE_FAVORITE:
                     favoriteCurrentSong();
+                    break;
+
+                case StreamService.UPDATE:
+                    radioSocket.update();
                     break;
 
                 // Pause when headphones unplugged
@@ -233,6 +233,7 @@ public class StreamService extends Service {
         intentFilter.addAction(StreamService.PLAY_PAUSE);
         intentFilter.addAction(StreamService.STOP);
         intentFilter.addAction(StreamService.TOGGLE_FAVORITE);
+        intentFilter.addAction(StreamService.UPDATE);
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON);
         intentFilter.addAction(MainActivity.AUTH_EVENT);
@@ -379,11 +380,15 @@ public class StreamService extends Service {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 // Try to reconnect to the stream
+                final boolean wasPlaying = isPlaying();
+
                 player.release();
                 player = null;
-                radioSocket.reconnect();  // TODO
+
                 initStream();
-                play();
+                if (wasPlaying) {
+                    play();
+                }
             }
 
             @Override
@@ -411,7 +416,7 @@ public class StreamService extends Service {
             }
 
             @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
             }
         });
     }
@@ -454,6 +459,10 @@ public class StreamService extends Service {
         }
 
         void update() {
+            if (socket == null) {
+                connect();
+            }
+
             if (AuthUtil.isAuthenticated(getBaseContext())) {
                 final String authToken = AuthUtil.getAuthToken(getBaseContext());
                 if (authToken != null) {
