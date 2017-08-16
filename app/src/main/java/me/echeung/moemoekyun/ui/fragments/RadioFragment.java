@@ -43,21 +43,19 @@ public class RadioFragment extends TabFragment {
         binding.radioControls.setListeners(state.listeners);
         binding.radioControls.setRequester(state.requester);
 
-        final View view = binding.getRoot();
-
-        final TextView vRequestBy = view.findViewById(R.id.requested_by);
+        final TextView vRequestBy = binding.radioControls.requestedBy;
         vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
 
-        final FloatingActionButton vPlayPauseBtn = view.findViewById(R.id.play_pause_btn);
+        final FloatingActionButton vPlayPauseBtn = binding.radioControls.playPauseBtn;
         vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
 
-        final ImageButton vHistoryBtn = view.findViewById(R.id.history_btn);
+        final ImageButton vHistoryBtn = binding.radioControls.historyBtn;
         vHistoryBtn.setOnClickListener(v -> showHistory());
 
-        final ImageButton vFavoriteBtn = view.findViewById(R.id.favorite_btn);
+        final ImageButton vFavoriteBtn = binding.radioControls.favoriteBtn;
         vFavoriteBtn.setOnClickListener(v -> favorite());
 
-        return view;
+        return binding.getRoot();
     }
 
     private void togglePlayPause() {

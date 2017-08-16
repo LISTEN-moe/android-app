@@ -70,7 +70,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         binding.userCard.setQueueSize(state.queueSize);
         binding.userCard.setQueuePosition(state.queuePosition);
 
-        final View view = binding.getRoot();
         vLoginMsg = binding.loginMsg.container;
         vUserContent = binding.userContent;
         vUserAvatar = binding.userCard.userAvatar;
@@ -119,7 +118,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         initBroadcastReceiver();
 
         initUserContent();
-        return view;
+
+        return binding.getRoot();
     }
 
     @Override
