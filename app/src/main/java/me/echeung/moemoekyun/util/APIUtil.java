@@ -23,7 +23,6 @@ import me.echeung.moemoekyun.model.UserInfo;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -33,7 +32,6 @@ import okhttp3.Response;
  */
 public class APIUtil {
 
-    private static final OkHttpClient http = new OkHttpClient();
     private static final Gson GSON = new Gson();
 
     /**
@@ -50,12 +48,11 @@ public class APIUtil {
             final String usernameE = URLEncoder.encode(username.trim(), "UTF-8");
             final String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
 
-            final Request request = new Request.Builder()
-                    .url(Endpoints.AUTH)
+            final Request request = RequestUtil.builder(Endpoints.AUTH)
                     .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "username=" + usernameE + "&password=" + passwordE))
                     .build();
 
-            http.newCall(request).enqueue(new Callback() {
+            RequestUtil.getClient().newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(final Call call, final IOException e) {
                     e.printStackTrace();
@@ -104,11 +101,11 @@ public class APIUtil {
             return;
         }
 
-        final Request request = AuthUtil.createAuthRequest(context, Endpoints.USER)
+        final Request request = RequestUtil.authBuilder(context, Endpoints.USER)
                 .get()
                 .build();
 
-        http.newCall(request).enqueue(new Callback() {
+        RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
@@ -136,11 +133,11 @@ public class APIUtil {
             return;
         }
 
-        final Request request = AuthUtil.createAuthRequest(context, Endpoints.USER_FAVORITES)
+        final Request request = RequestUtil.authBuilder(context, Endpoints.USER_FAVORITES)
                 .get()
                 .build();
 
-        http.newCall(request).enqueue(new Callback() {
+        RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
@@ -176,11 +173,11 @@ public class APIUtil {
             return;
         }
 
-        final Request request = AuthUtil.createAuthRequest(context, Endpoints.FAVORITE)
+        final Request request = RequestUtil.authBuilder(context, Endpoints.FAVORITE)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
                 .build();
 
-        http.newCall(request).enqueue(new Callback() {
+        RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
@@ -216,11 +213,11 @@ public class APIUtil {
             return;
         }
 
-        final Request request = AuthUtil.createAuthRequest(context, Endpoints.REQUEST)
+        final Request request = RequestUtil.authBuilder(context, Endpoints.REQUEST)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "song=" + String.valueOf(songId)))
                 .build();
 
-        http.newCall(request).enqueue(new Callback() {
+        RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();
@@ -258,11 +255,11 @@ public class APIUtil {
             return;
         }
 
-        final Request request = AuthUtil.createAuthRequest(context, Endpoints.SEARCH)
+        final Request request = RequestUtil.authBuilder(context, Endpoints.SEARCH)
                 .post(RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), "query=" + query))
                 .build();
 
-        http.newCall(request).enqueue(new Callback() {
+        RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 e.printStackTrace();

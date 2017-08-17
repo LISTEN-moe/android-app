@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import me.echeung.moemoekyun.state.UserState;
-import okhttp3.Request;
 
 /**
  * Helper class for handling authorization-related tasks. Helps with the storage of the auth token
@@ -94,19 +93,5 @@ public class AuthUtil {
     public static long getTokenAge(final Context context) {
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getLong(LAST_AUTH, 0);
-    }
-
-    /**
-     * Creates a Request.Builder for performing requests to the API with the auth token added as a
-     * header value.
-     *
-     * @param context  Android context to fetch SharedPreferences.
-     * @param endpoint The API endpoint to hit.
-     * @return A Request.Builder object configured with the provided endpoint and the auth token.
-     */
-    public static Request.Builder createAuthRequest(final Context context, final String endpoint) {
-        return new Request.Builder()
-                .url(endpoint)
-                .addHeader("authorization", AuthUtil.getAuthToken(context));
     }
 }
