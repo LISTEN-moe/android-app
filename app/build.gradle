@@ -25,8 +25,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            useProguard true
+            minifyEnabled false
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
@@ -44,7 +44,7 @@ ext {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:support-v4:$supportLibVersion"

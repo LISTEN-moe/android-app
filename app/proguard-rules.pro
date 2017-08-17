@@ -24,15 +24,33 @@
 ##---------------End:   proguard configuration for Gson  ----------
 
 
-## Support libraries
-
+# support-v4
+-dontwarn android.support.v4.**
 -keep class android.support.v4.app.** { *; }
 -keep interface android.support.v4.app.** { *; }
--keep class android.support.v7.app.** { *; }
--keep interface android.support.v7.app.** { *; }
+-keep class android.support.v4.** { *; }
 
+# support-v7
+-dontwarn android.support.v7.**
+-keep class android.support.v7.internal.** { *; }
+-keep interface android.support.v7.internal.** { *; }
+-keep class android.support.v7.** { *; }
 
-## okhttp
+# support design
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
+
+# Data binding
+-keep class android.databinding.** { *; }
+-keepattributes *Annotation*
+-keepattributes javax.xml.bind.annotation.*
+-keepattributes javax.annotation.processing.*
+-keepclassmembers class ** {
+    @android.databinding.BindingAdapter public *;
+}
+-dontwarn android.databinding.**
 
 # okhttp
 -dontwarn okio.**
