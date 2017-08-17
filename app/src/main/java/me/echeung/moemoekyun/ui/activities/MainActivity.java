@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
 
     private BroadcastReceiver intentReceiver;
+    private boolean receiverRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(intentReceiver);
+        if (receiverRegistered) {
+            unregisterReceiver(intentReceiver);
+            receiverRegistered = false;
+        }
 
         // Kill service/notification if killing activity and not playing
         if (!App.getService().isPlaying()) {
@@ -128,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         intentFilter.addAction(MainActivity.TRIGGER_LOGIN_AND_FAVORITE);
 
         registerReceiver(intentReceiver, intentFilter);
+        receiverRegistered = true;
     }
 
     private void handleIntentAction(Intent intent) {
