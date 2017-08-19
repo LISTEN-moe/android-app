@@ -21,9 +21,14 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="320dp"
-            android:layout_height="130dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:maxHeight="100dp"
+            android:maxWidth="300dp"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/logo"
             tools:ignore="ContentDescription" />
 
