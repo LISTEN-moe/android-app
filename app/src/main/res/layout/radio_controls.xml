@@ -3,6 +3,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
         <import type="android.databinding.ObservableField"/>
         <import type="android.databinding.ObservableInt" />
         <import type="android.databinding.ObservableBoolean" />
@@ -24,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text='@{requester == null || requester.isEmpty() ? "" : SDKUtil.fromHtml(@string/requested_by(requester))}'
+            android:text='@{TextUtils.isEmpty(requester) ? "" : SDKUtil.fromHtml(@string/requested_by(requester))}'
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textColorLink="@color/colorAccent"

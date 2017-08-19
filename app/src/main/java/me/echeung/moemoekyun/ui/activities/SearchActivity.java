@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -63,7 +64,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
     private boolean onEditorAction(TextView textView, int i, KeyEvent event) {
         final String query = textView.getText().toString().trim();
 
-        if (!query.isEmpty()) {
+        if (!TextUtils.isEmpty(query)) {
             APIUtil.search(getBaseContext(), query, new SearchListener() {
                 @Override
                 public void onFailure(final String result) {

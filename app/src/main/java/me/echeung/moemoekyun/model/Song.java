@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 public class Song implements Parcelable {
 
@@ -67,7 +68,7 @@ public class Song implements Parcelable {
         final StringBuilder textBuilder = new StringBuilder();
         textBuilder.append(artist);
 
-        if (!anime.isEmpty()) {
+        if (!TextUtils.isEmpty(anime)) {
             textBuilder.append(String.format(" [ %s ]", anime));
         }
 

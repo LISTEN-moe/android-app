@@ -5,6 +5,7 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="android.text.TextUtils" />
         <import type="android.databinding.ObservableBoolean" />
         <import type="android.databinding.ObservableField" />
 
@@ -64,7 +65,7 @@
                             android:padding="16dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_close_white_24dp"
-                            android:visibility="@{query == null || query.isEmpty() ? View.GONE : View.VISIBLE}" />
+                            android:visibility="@{TextUtils.isEmpty(query) ? View.GONE : View.VISIBLE}" />
 
                     </LinearLayout>
 
@@ -97,7 +98,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center"
-                    android:text='@{query == null || query.isEmpty() ? "" :  @string/no_results(query)}'
+                    android:text='@{TextUtils.isEmpty(query) ? "" :  @string/no_results(query)}'
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

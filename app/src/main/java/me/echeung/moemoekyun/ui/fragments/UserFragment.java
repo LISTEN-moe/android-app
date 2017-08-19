@@ -11,6 +11,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -99,7 +100,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             public void afterTextChanged(Editable editable) {
                 final String query = editable.toString().trim().toLowerCase();
 
-                if (query.isEmpty()) {
+                if (TextUtils.isEmpty(query)) {
                     adapter.setSongs(favorites);
                 } else {
                     final List<Song> filteredFavorites = new ArrayList<>();
