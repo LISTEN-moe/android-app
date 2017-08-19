@@ -1,9 +1,11 @@
 package me.echeung.moemoekyun.api;
 
-import me.echeung.moemoekyun.api.service.AuthService;
-import me.echeung.moemoekyun.api.service.FavoritesService;
-import me.echeung.moemoekyun.api.service.SongsService;
-import me.echeung.moemoekyun.api.service.UsersService;
+import me.echeung.moemoekyun.api.services.AuthService;
+import me.echeung.moemoekyun.api.services.FavoritesService;
+import me.echeung.moemoekyun.api.services.SongsService;
+import me.echeung.moemoekyun.api.services.UsersService;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -11,14 +13,31 @@ public class APIClient {
 
     private static final String BASE_URL = "https://listen.moe/api/";
 
+    private static final String HEADER_USER_AGENT = "User-Agent";
+    private static final String USER_AGENT = "me.echeung.moemoekyun";
+
     private AuthService authService;
     private FavoritesService favoritesService;
     private SongsService songsService;
     private UsersService usersService;
 
     public APIClient() {
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(chain -> {
+                    Request request = chain.request();
+
+                    Request newRequest = request.newBuilder()
+                            .addHeader(HEADER_USER_AGENT, USER_AGENT)
+                            .build();
+
+                    return chain.proceed(newRequest);
+                })
+                .build();
+
         final Retrofit restAdapter = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -43,4 +62,33 @@ public class APIClient {
     public UsersService getUsersService() {
         return usersService;
     }
+
+    /*
+    MyCall<Ip> ip = service.getIp();
+    ip.enqueue(new MyCallback<Ip>() {
+      @Override public void success(Response<Ip> response) {
+        System.out.println("SUCCESS! " + response.body().origin);
+      }
+
+      @Override public void unauthenticated(Response<?> response) {
+        System.out.println("UNAUTHENTICATED");
+      }
+
+      @Override public void clientError(Response<?> response) {
+        System.out.println("CLIENT ERROR " + response.code() + " " + response.message());
+      }
+
+      @Override public void serverError(Response<?> response) {
+        System.out.println("SERVER ERROR " + response.code() + " " + response.message());
+      }
+
+      @Override public void networkError(IOException e) {
+        System.err.println("NETOWRK ERROR " + e.getMessage());
+      }
+
+      @Override public void unexpectedError(Throwable t) {
+        System.err.println("FATAL ERROR " + t.getMessage());
+      }
+    });
+     */
 }

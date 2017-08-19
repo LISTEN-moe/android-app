@@ -5,7 +5,7 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 
-import me.echeung.moemoekyun.model.Song;
+import me.echeung.moemoekyun.api.old.model.Song;
 
 public class AppState extends BaseObservable {
 

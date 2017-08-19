@@ -7,7 +7,7 @@
         <import type="android.databinding.ObservableField"/>
         <import type="android.databinding.ObservableInt" />
         <import type="android.databinding.ObservableBoolean" />
-        <import type="me.echeung.moemoekyun.util.SDKUtil" />
+        <import type="me.echeung.moemoekyun.utils.SDKUtil" />
 
         <variable name="favorited" type="ObservableBoolean" />
         <variable name="listeners" type="ObservableInt" />

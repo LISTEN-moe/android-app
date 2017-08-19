@@ -26,18 +26,18 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
+import me.echeung.moemoekyun.api.old.APIUtil;
+import me.echeung.moemoekyun.api.old.interfaces.UserFavoritesListener;
+import me.echeung.moemoekyun.api.old.interfaces.UserInfoListener;
+import me.echeung.moemoekyun.api.old.model.Song;
+import me.echeung.moemoekyun.api.old.model.UserFavorites;
+import me.echeung.moemoekyun.api.old.model.UserInfo;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
-import me.echeung.moemoekyun.interfaces.UserFavoritesListener;
-import me.echeung.moemoekyun.interfaces.UserInfoListener;
-import me.echeung.moemoekyun.model.Song;
-import me.echeung.moemoekyun.model.UserFavorites;
-import me.echeung.moemoekyun.model.UserInfo;
 import me.echeung.moemoekyun.state.UserState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
-import me.echeung.moemoekyun.util.APIUtil;
-import me.echeung.moemoekyun.util.AuthUtil;
-import me.echeung.moemoekyun.util.SongActionsUtil;
+import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
 

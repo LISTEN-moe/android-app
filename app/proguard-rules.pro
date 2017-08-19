@@ -19,7 +19,7 @@
 -keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class me.echeung.moemoekyun.model.** { *; }
+-keep class me.echeung.moemoekyun.api.old.model.** { *; }
 
 ##---------------End:   proguard configuration for Gson  ----------
 

@@ -26,17 +26,17 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
+import me.echeung.moemoekyun.api.old.APIUtil;
+import me.echeung.moemoekyun.api.old.interfaces.AuthListener;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
-import me.echeung.moemoekyun.interfaces.AuthListener;
-import me.echeung.moemoekyun.service.StreamService;
+import me.echeung.moemoekyun.services.StreamService;
 import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.App;
-import me.echeung.moemoekyun.util.APIUtil;
-import me.echeung.moemoekyun.util.AuthUtil;
-import me.echeung.moemoekyun.util.NetworkUtil;
-import me.echeung.moemoekyun.util.SDKUtil;
+import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.utils.NetworkUtil;
+import me.echeung.moemoekyun.utils.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
 

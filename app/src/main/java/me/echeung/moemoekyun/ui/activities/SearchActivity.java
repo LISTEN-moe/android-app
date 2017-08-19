@@ -16,12 +16,12 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
+import me.echeung.moemoekyun.api.old.APIUtil;
+import me.echeung.moemoekyun.api.old.interfaces.SearchListener;
+import me.echeung.moemoekyun.api.old.model.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
-import me.echeung.moemoekyun.interfaces.SearchListener;
-import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.state.SearchState;
-import me.echeung.moemoekyun.util.APIUtil;
-import me.echeung.moemoekyun.util.SongActionsUtil;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 
