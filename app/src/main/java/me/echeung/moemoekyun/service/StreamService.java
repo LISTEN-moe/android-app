@@ -6,11 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.media.session.MediaSession;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.os.SystemClock;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -78,6 +80,8 @@ public class StreamService extends Service {
 
     private AppNotification notification;
 
+    private MediaSessionCompat mediaSession;
+
     private AudioManager audioManager;
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
     private boolean wasPlayingBeforeLoss;
@@ -139,6 +143,8 @@ public class StreamService extends Service {
             }
         };
 
+        initMediaSession();
+
         initBroadcastReceiver();
 
         radioSocket = new RadioSocket();
@@ -162,9 +168,13 @@ public class StreamService extends Service {
             receiverRegistered = false;
         }
 
+        mediaSession.setActive(false);
+        mediaSession.release();
+
         super.onDestroy();
     }
-    private void handleIntent(Intent intent) {
+
+    private boolean handleIntent(Intent intent) {
         final String action = intent.getAction();
         if (action != null) {
             switch (action) {
@@ -193,7 +203,7 @@ public class StreamService extends Service {
                 case Intent.ACTION_MEDIA_BUTTON:
                     final KeyEvent keyEvent = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
                     if (keyEvent == null || keyEvent.getAction() != KeyEvent.ACTION_DOWN) {
-                        return;
+                        return false;
                     }
 
                     switch (keyEvent.getKeyCode()) {
@@ -209,6 +219,10 @@ public class StreamService extends Service {
                             break;
                         case KeyEvent.KEYCODE_MEDIA_STOP:
                             stop();
+                            break;
+                        case KeyEvent.KEYCODE_MEDIA_NEXT:
+                        case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+                            // Do nothing
                             break;
                     }
                     break;
@@ -230,6 +244,49 @@ public class StreamService extends Service {
         }
 
         updateNotification();
+        return true;
+    }
+
+    private void initMediaSession() {
+        mediaSession = new MediaSessionCompat(this, APP_PACKAGE_NAME, null, null);
+        mediaSession.setCallback(new MediaSessionCompat.Callback() {
+            @Override
+            public void onPlay() {
+                play();
+            }
+
+            @Override
+            public void onPause() {
+                pause();
+            }
+
+            @Override
+            public void onStop() {
+                stop();
+            }
+
+            @Override
+            public void onSkipToNext() {
+            }
+
+            @Override
+            public void onSkipToPrevious() {
+            }
+
+            @Override
+            public void onSeekTo(long pos) {
+            }
+
+            @Override
+            public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
+                return handleIntent(mediaButtonEvent);
+            }
+        });
+
+        mediaSession.setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
+                | MediaSession.FLAG_HANDLES_MEDIA_BUTTONS);
+
+        mediaSession.setActive(true);
     }
 
     private void initBroadcastReceiver() {
@@ -439,22 +496,22 @@ public class StreamService extends Service {
     /**
      * Sends an intent out for services like Last.fm or musicxmatch.
      *
-     * @param event The broadcast event.
+     * @param action The broadcast event.
      */
-    private void sendPublicIntent(final String event) {
-//        // TODO: add more information when v4 gives it to us
-//        final Intent intent = new Intent(event.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
+    private void sendPublicIntent(final String action) {
+        // TODO: broadcast song info to Last.fm/musicmxmatch
+//        final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
 //
 //        final Song song = AppState.getInstance().currentSong.get();
 //
 //        intent.putExtra("id", song.getId());
 //
 //        intent.putExtra("artist", song.getArtist());
-////            intent.putExtra("album", song.getAlbum());
+//        intent.putExtra("album", song.getAlbum());
 //        intent.putExtra("track", song.getTitle());
 //
-////            intent.putExtra("duration", song.duration);
-////            intent.putExtra("position", (long) getSongProgressMillis());
+//        intent.putExtra("duration", song.duration);
+//        intent.putExtra("position", (long) getSongProgressMillis());
 //
 //        intent.putExtra("playing", isPlaying());
 //
