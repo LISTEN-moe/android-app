@@ -47,6 +47,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         binding.resultsList.setAdapter(adapter);
 
         // TODO: the GIF looks pretty bad
+        // https://github.com/bumptech/glide/issues/2271
         // No results image
         Glide.with(this)
                 .load(R.drawable.kanna_dancing)

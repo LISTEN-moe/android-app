@@ -66,6 +66,11 @@ public class StreamService extends Service {
     public static final String TOGGLE_FAVORITE = "toggle_favorite";
     public static final String UPDATE = "update";
 
+    private static final String APP_PACKAGE_NAME = "me.echeung.moemoekyun";
+    private static final String MUSIC_PACKAGE_NAME = "com.android.music";
+    private static final String META_CHANGED = APP_PACKAGE_NAME + ".metachanged";
+    private static final String PLAY_STATE_CHANGED = APP_PACKAGE_NAME + ".playstatechanged";
+
     private static final Gson GSON = new Gson();
 
     private final IBinder binder = new ServiceBinder();
@@ -282,6 +287,7 @@ public class StreamService extends Service {
 
                 AppState.getInstance().playing.set(true);
                 updateNotification();
+                sendPublicIntent(PLAY_STATE_CHANGED);
             }
         }
     }
@@ -292,6 +298,7 @@ public class StreamService extends Service {
 
             AppState.getInstance().playing.set(false);
             updateNotification();
+            sendPublicIntent(PLAY_STATE_CHANGED);
         }
     }
 
@@ -309,6 +316,7 @@ public class StreamService extends Service {
         stopSelf();
 
         AppState.getInstance().playing.set(false);
+        sendPublicIntent(PLAY_STATE_CHANGED);
     }
 
     private void favoriteCurrentSong() {
@@ -428,6 +436,33 @@ public class StreamService extends Service {
         });
     }
 
+    /**
+     * Sends an intent out for services like Last.fm or musicxmatch.
+     *
+     * @param event The broadcast event.
+     */
+    private void sendPublicIntent(final String event) {
+//        // TODO: add more information when v4 gives it to us
+//        final Intent intent = new Intent(event.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
+//
+//        final Song song = AppState.getInstance().currentSong.get();
+//
+//        intent.putExtra("id", song.getId());
+//
+//        intent.putExtra("artist", song.getArtist());
+////            intent.putExtra("album", song.getAlbum());
+//        intent.putExtra("track", song.getTitle());
+//
+////            intent.putExtra("duration", song.duration);
+////            intent.putExtra("position", (long) getSongProgressMillis());
+//
+//        intent.putExtra("playing", isPlaying());
+//
+//        intent.putExtra("scrobbling_source", APP_PACKAGE_NAME);
+//
+//        sendStickyBroadcast(intent);
+    }
+
     private final class RadioSocket extends WebSocketListener {
 
         private static final int RETRY_TIME_MIN = 250;
@@ -543,7 +578,7 @@ public class StreamService extends Service {
                         UserState.getInstance().queuePosition.set(extended.getQueue().getInQueueBeforeUserSong());
                     }
 
-                    // TODO: Last.fm scrobbling/musicxmatch
+                    sendPublicIntent(META_CHANGED);
                 }
 
                 state.listeners.set(playbackInfo.getListeners());
