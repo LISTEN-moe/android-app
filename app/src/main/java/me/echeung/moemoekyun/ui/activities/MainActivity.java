@@ -288,11 +288,11 @@ public class MainActivity extends AppCompatActivity {
                     dialog.dismiss();
                     invalidateOptionsMenu();
 
+                    broadcastAuthEvent();
+
                     if (listener != null) {
                         listener.onLogin();
                     }
-
-                    broadcastAuthEvent();
                 });
             }
         });
