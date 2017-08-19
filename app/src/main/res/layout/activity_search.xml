@@ -51,7 +51,6 @@
                             android:imeOptions="actionSearch"
                             android:inputType="textNoSuggestions"
                             android:maxLines="1"
-                            android:paddingRight="16dp"
                             android:textColorHint="@color/lighter_grey"
                             android:textSize="16sp" />
 
@@ -64,7 +63,7 @@
                             android:contentDescription="@string/clear_query"
                             android:padding="16dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/ic_close_white_24dp"
+                            android:src="@drawable/ic_cancel_white_24dp"
                             android:visibility="@{TextUtils.isEmpty(query) ? View.GONE : View.VISIBLE}" />
 
                     </LinearLayout>
