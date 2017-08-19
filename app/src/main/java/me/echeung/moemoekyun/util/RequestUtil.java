@@ -22,7 +22,7 @@ public class RequestUtil {
      */
     public static Request.Builder builder(final String endpoint) {
         return new Request.Builder()
-                .addHeader("User-Agent", USER_AGENT)
+                .header("User-Agent", USER_AGENT)
                 .url(endpoint);
     }
 
@@ -36,6 +36,6 @@ public class RequestUtil {
      */
     public static Request.Builder authBuilder(final Context context, final String endpoint) {
         return builder(endpoint)
-                .addHeader("authorization", AuthUtil.getAuthToken(context));
+                .header("authorization", AuthUtil.getAuthToken(context));
     }
 }

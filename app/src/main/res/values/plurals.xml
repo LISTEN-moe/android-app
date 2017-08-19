@@ -6,7 +6,7 @@
     </plurals>
 
     <plurals name="current_listeners">
-        <item quantity="one">1 user listening</item>
-        <item quantity="other">%d users listening</item>
+        <item quantity="one">1 listener</item>
+        <item quantity="other">%d listeners</item>
     </plurals>
 </resources>
