@@ -144,7 +144,6 @@ public class StreamService extends Service {
         };
 
         initMediaSession();
-
         initBroadcastReceiver();
 
         radioSocket = new RadioSocket();

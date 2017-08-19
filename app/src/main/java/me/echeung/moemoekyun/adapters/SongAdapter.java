@@ -80,13 +80,13 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
 
         void bind(final Song song) {
-            binding.setVariable(BR.item_title, song.getTitle());
-            binding.setVariable(BR.item_subtitle, song.getArtistAndAnime());
-            binding.setVariable(BR.item_favorited, song.isFavorite());
+            binding.setVariable(BR.title, song.getTitle());
+            binding.setVariable(BR.subtitle, song.getArtistAndAnime());
+            binding.setVariable(BR.favorited, song.isFavorite());
 
             final int typeface = song.isEnabled() ? Typeface.NORMAL : Typeface.ITALIC;
-            binding.title.setTypeface(null, typeface);
-            binding.subtitle.setTypeface(null, typeface);
+            binding.txtTitle.setTypeface(null, typeface);
+            binding.txtSubtitle.setTypeface(null, typeface);
 
             binding.executePendingBindings();
         }

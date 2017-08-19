@@ -4,9 +4,9 @@
     <data>
         <import type="android.view.View" />
 
-        <variable name="item_title" type="String" />
-        <variable name="item_subtitle" type="String" />
-        <variable name="item_favorited" type="boolean" />
+        <variable name="title" type="String" />
+        <variable name="subtitle" type="String" />
+        <variable name="favorited" type="boolean" />
     </data>
 
     <LinearLayout
@@ -28,19 +28,19 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/txt_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{item_title}"
+                android:text="@{title}"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/subtitle"
+                android:id="@+id/txt_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
-                android:text="@{item_subtitle}"
+                android:text="@{subtitle}"
                 android:textColor="@android:color/white" />
 
         </LinearLayout>
@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="8dp"
-            android:visibility="@{item_favorited ? View.VISIBLE : View.GONE}">
+            android:visibility="@{favorited ? View.VISIBLE : View.GONE}">
 
             <ImageView
                 android:layout_width="match_parent"
