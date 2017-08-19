@@ -21,17 +21,16 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <LinearLayout
+            <FrameLayout
                 android:layout_width="240dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:orientation="vertical">
+                android:layout_marginEnd="8dp">
 
                 <include
                     android:id="@+id/user_card"
                     layout="@layout/user_card" />
 
-            </LinearLayout>
+            </FrameLayout>
 
             <include
                 android:id="@+id/favorites"
