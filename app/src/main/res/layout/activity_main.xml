@@ -56,7 +56,7 @@
                 android:layout_alignParentTop="true"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/backgroundgraphic"
+                android:src="@drawable/background"
                 tools:ignore="ContentDescription" />
 
             <android.support.design.widget.AppBarLayout
