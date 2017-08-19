@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.ui.activities;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,8 +39,13 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
         // Set up app bar
         setSupportActionBar(binding.appbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ActionBar appBar = getSupportActionBar();
+        appBar.setDisplayHomeAsUpEnabled(true);
+        appBar.setDisplayShowTitleEnabled(false);
+
+        // Set up search
         binding.searchQuery.setOnEditorActionListener(this::onEditorAction);
+        binding.btnClearSearch.setOnClickListener(v -> binding.searchQuery.setText(null));
 
         // Results list adapter
         adapter = new SongAdapter(this);
@@ -57,23 +63,29 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
     private boolean onEditorAction(TextView textView, int i, KeyEvent event) {
         final String query = textView.getText().toString().trim();
 
-        APIUtil.search(getBaseContext(), query, new SearchListener() {
-            @Override
-            public void onFailure(final String result) {
-                SearchState.getInstance().query.set(query);
-            }
+        if (!query.isEmpty()) {
+            APIUtil.search(getBaseContext(), query, new SearchListener() {
+                @Override
+                public void onFailure(final String result) {
+                    updateResults(query, null);
+                }
 
-            @Override
-            public void onSuccess(final List<Song> results) {
-                runOnUiThread(() -> {
-                    adapter.setSongs(results);
-                    SearchState.getInstance().query.set(query);
-                    SearchState.getInstance().hasResults.set(results != null && results.size() != 0);
-                });
-            }
-        });
+                @Override
+                public void onSuccess(final List<Song> results) {
+                    runOnUiThread(() -> {
+                        updateResults(query, results);
+                    });
+                }
+            });
+        }
 
         return true;
+    }
+
+    private void updateResults(final String query, final List<Song> results) {
+        adapter.setSongs(results);
+        SearchState.getInstance().query.set(query);
+        SearchState.getInstance().hasResults.set(results != null && results.size() != 0);
     }
 
     @Override

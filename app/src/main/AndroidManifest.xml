@@ -31,6 +31,7 @@
         <activity
             android:name=".ui.activities.SearchActivity"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateVisible"
             android:parentActivityName=".ui.activities.MainActivity" />
 
         <meta-data
