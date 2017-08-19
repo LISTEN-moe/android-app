@@ -17,6 +17,7 @@
             android:id="@+id/login_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="username"
             android:hint="@string/username"
             android:inputType="text"
             android:maxLines="1"
@@ -32,6 +33,7 @@
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autofillHints="password"
             android:hint="@string/password"
             android:inputType="textPassword"
             tools:ignore="LabelFor" />

@@ -507,11 +507,11 @@ public class StreamService extends Service {
 //        intent.putExtra("id", song.getId());
 //
 //        intent.putExtra("artist", song.getArtist());
-//        intent.putExtra("album", song.getAlbum());
+//        // intent.putExtra("album", song.getAlbum());
 //        intent.putExtra("track", song.getTitle());
 //
-//        intent.putExtra("duration", song.duration);
-//        intent.putExtra("position", (long) getSongProgressMillis());
+//        // intent.putExtra("duration", song.duration);
+//        // intent.putExtra("position", (long) getSongProgressMillis());
 //
 //        intent.putExtra("playing", isPlaying());
 //
