@@ -16,10 +16,10 @@ import android.widget.TextView;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
 import me.echeung.moemoekyun.services.StreamService;
-import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.viewmodels.AppState;
 
 public class RadioFragment extends TabFragment {
 

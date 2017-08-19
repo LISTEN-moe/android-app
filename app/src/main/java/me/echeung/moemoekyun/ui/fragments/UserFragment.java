@@ -33,11 +33,11 @@ import me.echeung.moemoekyun.api.old.model.Song;
 import me.echeung.moemoekyun.api.old.model.UserFavorites;
 import me.echeung.moemoekyun.api.old.model.UserInfo;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
-import me.echeung.moemoekyun.state.UserState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
+import me.echeung.moemoekyun.viewmodels.UserState;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
 

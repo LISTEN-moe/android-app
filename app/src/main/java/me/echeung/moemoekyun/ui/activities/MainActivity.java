@@ -32,11 +32,11 @@ import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.services.StreamService;
-import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.SDKUtil;
+import me.echeung.moemoekyun.viewmodels.AppState;
 
 public class MainActivity extends AppCompatActivity {
 

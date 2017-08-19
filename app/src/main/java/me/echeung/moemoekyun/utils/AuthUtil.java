@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import me.echeung.moemoekyun.state.UserState;
+import me.echeung.moemoekyun.viewmodels.UserState;
 
 /**
  * Helper class for handling authorization-related tasks. Helps with the storage of the auth token

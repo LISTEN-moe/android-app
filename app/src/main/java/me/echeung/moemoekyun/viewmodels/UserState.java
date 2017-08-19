@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.state;
+package me.echeung.moemoekyun.viewmodels;
 
 import android.databinding.BaseObservable;
 import android.databinding.ObservableField;

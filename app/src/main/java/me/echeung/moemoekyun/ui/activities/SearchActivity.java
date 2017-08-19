@@ -20,8 +20,8 @@ import me.echeung.moemoekyun.api.old.APIUtil;
 import me.echeung.moemoekyun.api.old.interfaces.SearchListener;
 import me.echeung.moemoekyun.api.old.model.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
-import me.echeung.moemoekyun.state.SearchState;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
+import me.echeung.moemoekyun.viewmodels.SearchState;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 

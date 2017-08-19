@@ -12,10 +12,9 @@ import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.old.model.Song;
-import me.echeung.moemoekyun.services.StreamService;
-import me.echeung.moemoekyun.state.AppState;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.viewmodels.AppState;
 
 public class AppNotification {
 
