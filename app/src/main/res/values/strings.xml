@@ -20,6 +20,7 @@
 
     <!-- Search -->
     <string name="search">Search</string>
+    <string name="clear_query">Clear query</string>
     <string name="no_results">No results for \"%s\"</string>
 
     <!-- Auth -->

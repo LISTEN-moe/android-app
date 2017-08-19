@@ -60,7 +60,7 @@
                             android:layout_height="wrap_content"
                             android:alpha="0.5"
                             android:background="@drawable/round_selector"
-                            android:contentDescription="@string/favorite"
+                            android:contentDescription="@string/clear_query"
                             android:padding="16dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_close_white_24dp"
