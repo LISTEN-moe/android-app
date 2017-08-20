@@ -12,6 +12,9 @@ android {
         versionName '0.6'
 
         vectorDrawables.useSupportLibrary = true
+
+        // Remove this if we ever support other locales
+        resConfigs "en"
     }
 
     dataBinding {
@@ -25,9 +28,17 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            useProguard false
+            shrinkResources true
+            minifyEnabled true
+
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+            pseudoLocalesEnabled false
+            zipAlignEnabled true
         }
         debug {
             applicationIdSuffix '.debug'

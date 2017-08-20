@@ -14,60 +14,39 @@
 # removes such information by default, so configure it to keep all of it.
 -keepattributes Signature
 
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
 # Gson-specific classes
 -keep class sun.misc.Unsafe { *; }
--keep class com.google.gson.stream.** { *; }
 
 # Application classes that will be serialized/deserialized over Gson
 -keep class me.echeung.moemoekyun.api.old.model.** { *; }
 
+# Prevent proguard from stripping interface information from TypeAdapterFactory,
+# JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
 ##---------------End:   proguard configuration for Gson  ----------
-
-
-# support-v4
--dontwarn android.support.v4.**
--keep class android.support.v4.app.** { *; }
--keep interface android.support.v4.app.** { *; }
--keep class android.support.v4.** { *; }
-
-# support-v7
--dontwarn android.support.v7.**
--keep class android.support.v7.internal.** { *; }
--keep interface android.support.v7.internal.** { *; }
--keep class android.support.v7.** { *; }
-
-# support design
--dontwarn android.support.design.**
--keep class android.support.design.** { *; }
--keep interface android.support.design.** { *; }
--keep public class android.support.design.R$* { *; }
-
-# Data binding
--keep class android.databinding.** { *; }
--keepattributes *Annotation*
--keepattributes javax.xml.bind.annotation.*
--keepattributes javax.annotation.processing.*
--keepclassmembers class ** {
-    @android.databinding.BindingAdapter public *;
-}
--dontwarn android.databinding.**
 
 # okhttp
 -dontwarn okio.**
 -dontwarn javax.annotation.Nullable
 -dontwarn javax.annotation.ParametersAreNonnullByDefault
 
-# Glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.AppGlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-  **[] $VALUES;
-  public *;
-}
-
 # Retrofit
 -dontnote retrofit2.Platform
 -dontwarn retrofit2.Platform$Java8
 -keepattributes Signature
 -keepattributes Exceptions
--dontwarn okio.**
+-dontwarn javax.annotation.**
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
