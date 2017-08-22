@@ -1,5 +1,8 @@
 package me.echeung.moemoekyun.ui.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
@@ -12,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
@@ -55,6 +59,10 @@ public class RadioFragment extends TabFragment {
         final ImageButton vFavoriteBtn = binding.radioControls.favoriteBtn;
         vFavoriteBtn.setOnClickListener(v -> favorite());
 
+        binding.radioSongs.songList1.setOnLongClickListener(v -> copyToClipboard(state.currentSong.get().toString()));
+        binding.radioSongs.songList2.setOnLongClickListener(v -> copyToClipboard(state.lastSong.get()));
+        binding.radioSongs.songList3.setOnLongClickListener(v -> copyToClipboard(state.secondLastSong.get()));
+
         return binding.getRoot();
     }
 
@@ -77,5 +85,14 @@ public class RadioFragment extends TabFragment {
         final ObservableBoolean showHistory = AppState.getInstance().showHistory;
 
         showHistory.set(!showHistory.get());
+    }
+
+    private boolean copyToClipboard(String songInfo) {
+        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("song", songInfo);
+        clipboard.setPrimaryClip(clip);
+
+        Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+        return true;
     }
 }

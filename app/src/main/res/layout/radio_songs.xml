@@ -40,23 +40,31 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/songList1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:text="@{song.getTitle() ?? @string/connecting}"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="24sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:text="@{song.getArtistAndAnime()}"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:text="@{song.getTitle() ?? @string/connecting}"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@{song.getArtistAndAnime()}"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,6 +75,7 @@
                 android:visibility="@{showHistory ? View.VISIBLE : View.GONE}">
 
                 <TextView
+                    android:id="@+id/songList2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
@@ -78,6 +87,7 @@
                     android:textSize="14sp" />
 
                 <TextView
+                    android:id="@+id/songList3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.25"
