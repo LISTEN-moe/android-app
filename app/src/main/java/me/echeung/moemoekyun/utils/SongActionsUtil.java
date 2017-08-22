@@ -7,11 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.old.APIUtil;
-import me.echeung.moemoekyun.api.old.interfaces.FavoriteSongListener;
-import me.echeung.moemoekyun.api.old.interfaces.RequestSongListener;
-import me.echeung.moemoekyun.api.old.model.Song;
-import me.echeung.moemoekyun.constants.ResponseMessages;
+import me.echeung.moemoekyun.api.v3.APIUtil;
+import me.echeung.moemoekyun.api.v3.interfaces.FavoriteSongListener;
+import me.echeung.moemoekyun.api.v3.interfaces.RequestSongListener;
+import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.viewmodels.AppState;
 

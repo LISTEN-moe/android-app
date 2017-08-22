@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.old.model;
+package me.echeung.moemoekyun.api.v3.model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -24,6 +24,6 @@ public class BasicTrack {
 
     @Override
     public String toString() {
-        return String.format("%s - %s", songName, artistName);
+        return songName + " - " + artistName;
     }
 }

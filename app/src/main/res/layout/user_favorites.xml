@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/lighter_grey"
             android:hint="@string/filter_favorites"
+            android:importantForAutofill="no"
             android:inputType="textNoSuggestions"
             android:maxLines="1"
             android:padding="16dp"

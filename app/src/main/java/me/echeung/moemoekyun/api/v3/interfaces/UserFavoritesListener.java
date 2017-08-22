@@ -1,6 +1,6 @@
-package me.echeung.moemoekyun.api.old.interfaces;
+package me.echeung.moemoekyun.api.v3.interfaces;
 
-import me.echeung.moemoekyun.api.old.model.UserFavorites;
+import me.echeung.moemoekyun.api.v3.model.UserFavorites;
 
 public interface UserFavoritesListener {
     void onFailure(final String result);

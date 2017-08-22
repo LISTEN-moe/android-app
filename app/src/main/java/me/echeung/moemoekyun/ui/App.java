@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import me.echeung.moemoekyun.services.StreamService;
+import me.echeung.moemoekyun.service.StreamService;
 
 public class App extends Application {
 

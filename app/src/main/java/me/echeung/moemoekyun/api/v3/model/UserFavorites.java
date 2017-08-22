@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.old.model;
+package me.echeung.moemoekyun.api.v3.model;
 
 import java.util.List;
 

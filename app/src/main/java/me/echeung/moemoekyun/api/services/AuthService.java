@@ -1,13 +1,14 @@
 package me.echeung.moemoekyun.api.services;
 
-import me.echeung.moemoekyun.api.models.NewUser;
-import me.echeung.moemoekyun.api.responses.AuthResponse;
-import me.echeung.moemoekyun.api.responses.BasicResponse;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+
+import me.echeung.moemoekyun.api.models.NewUser;
+import me.echeung.moemoekyun.api.responses.AuthResponse;
+import me.echeung.moemoekyun.api.responses.BasicResponse;
 
 public interface AuthService {
     @POST("auth/login")

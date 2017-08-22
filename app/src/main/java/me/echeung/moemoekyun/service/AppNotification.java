@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.services;
+package me.echeung.moemoekyun.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -11,7 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.old.model.Song;
+import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.viewmodels.AppState;

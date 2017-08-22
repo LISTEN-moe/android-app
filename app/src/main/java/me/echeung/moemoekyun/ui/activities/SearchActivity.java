@@ -16,9 +16,9 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.api.old.APIUtil;
-import me.echeung.moemoekyun.api.old.interfaces.SearchListener;
-import me.echeung.moemoekyun.api.old.model.Song;
+import me.echeung.moemoekyun.api.v3.APIUtil;
+import me.echeung.moemoekyun.api.v3.interfaces.SearchListener;
+import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.SearchState;

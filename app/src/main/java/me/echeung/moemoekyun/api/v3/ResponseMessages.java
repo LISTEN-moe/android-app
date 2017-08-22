@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.constants;
+package me.echeung.moemoekyun.api.v3;
 
 public class ResponseMessages {
     public static final String SUCCESS = "success\":true";

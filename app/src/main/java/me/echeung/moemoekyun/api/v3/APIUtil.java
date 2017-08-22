@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.old;
+package me.echeung.moemoekyun.api.v3;
 
 import android.content.Context;
 
@@ -8,25 +8,14 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import me.echeung.moemoekyun.api.old.interfaces.AuthListener;
-import me.echeung.moemoekyun.api.old.interfaces.FavoriteSongListener;
-import me.echeung.moemoekyun.api.old.interfaces.RequestSongListener;
-import me.echeung.moemoekyun.api.old.interfaces.SearchListener;
-import me.echeung.moemoekyun.api.old.interfaces.UserFavoritesListener;
-import me.echeung.moemoekyun.api.old.interfaces.UserInfoListener;
-import me.echeung.moemoekyun.api.old.model.AuthResponse;
-import me.echeung.moemoekyun.api.old.model.Song;
-import me.echeung.moemoekyun.api.old.model.UserFavorites;
-import me.echeung.moemoekyun.api.old.model.UserInfo;
+import me.echeung.moemoekyun.api.v3.interfaces.*;
+import me.echeung.moemoekyun.api.v3.model.AuthResponse;
+import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.api.v3.model.UserFavorites;
+import me.echeung.moemoekyun.api.v3.model.UserInfo;
 import me.echeung.moemoekyun.constants.Endpoints;
-import me.echeung.moemoekyun.constants.ResponseMessages;
 import me.echeung.moemoekyun.utils.AuthUtil;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 
 /**
  * Helper class for performing LISTEN.moe API calls.

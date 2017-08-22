@@ -18,8 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
-import me.echeung.moemoekyun.services.StreamService;
+import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;

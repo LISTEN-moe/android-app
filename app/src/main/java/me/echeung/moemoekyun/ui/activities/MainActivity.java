@@ -1,10 +1,6 @@
 package me.echeung.moemoekyun.ui.activities;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.*;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
@@ -26,12 +22,12 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
-import me.echeung.moemoekyun.api.old.APIUtil;
-import me.echeung.moemoekyun.api.old.interfaces.AuthListener;
+import me.echeung.moemoekyun.api.v3.APIUtil;
+import me.echeung.moemoekyun.api.v3.interfaces.AuthListener;
 import me.echeung.moemoekyun.constants.Endpoints;
-import me.echeung.moemoekyun.constants.ResponseMessages;
+import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
-import me.echeung.moemoekyun.services.StreamService;
+import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;

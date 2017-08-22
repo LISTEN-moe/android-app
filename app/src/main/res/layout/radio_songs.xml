@@ -9,7 +9,7 @@
         <import type="android.databinding.ObservableField"/>
         <import type="android.databinding.ObservableBoolean" />
 
-        <variable name="song" type="ObservableField&lt;me.echeung.moemoekyun.api.old.model.Song&gt;" />
+        <variable name="song" type="ObservableField&lt;me.echeung.moemoekyun.api.v3.model.Song&gt;" />
         <variable name="lastSong" type="ObservableField&lt;String&gt;" />
         <variable name="secondLastSong" type="ObservableField&lt;String&gt;" />
         <variable name="showHistory" type="ObservableBoolean" />

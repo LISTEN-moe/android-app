@@ -42,7 +42,7 @@
             android:value="true" />
 
         <service
-            android:name=".services.StreamService"
+            android:name=".service.StreamService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

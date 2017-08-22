@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.old.model;
+package me.echeung.moemoekyun.api.v3.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -80,7 +80,7 @@ public class Song implements Parcelable {
         final StringBuilder builder = new StringBuilder();
 
         builder.append(title);
-        builder.append("\n");
+        builder.append(" - ");
         builder.append(getArtistAndAnime());
 
         return builder.toString();
