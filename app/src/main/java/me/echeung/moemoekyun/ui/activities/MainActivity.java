@@ -343,8 +343,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
             aboutDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-                    .setTitle(R.string.about)
-                    .setMessage(SDKUtil.fromHtml(getString(R.string.about_content, getString(R.string.app_name), version)))
+                    .setTitle(getString(R.string.about_app_title, getString(R.string.app_name), version))
+                    .setMessage(SDKUtil.fromHtml(getString(R.string.about_content)))
                     .setPositiveButton(R.string.close, null)
                     .create();
         }

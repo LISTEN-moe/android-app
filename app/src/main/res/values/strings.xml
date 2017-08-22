@@ -38,10 +38,8 @@
 
     <!-- About dialog -->
     <string name="about">About</string>
+    <string name="about_app_title">%1$s v%2$s</string>
     <string name="about_content"><![CDATA[
-        <b>%1$s</b> v%2$s
-        <br/>
-        <br/>
         This is an unofficial app powered by <a href="https://listen.moe">LISTEN.moe</a>.
         <br/>
         <br/>
