@@ -10,6 +10,7 @@ public class SearchState extends BaseObservable {
 
     public final ObservableBoolean hasResults = new ObservableBoolean(false);
     public final ObservableField<String> query = new ObservableField<>();
+    public final ObservableBoolean showClear = new ObservableBoolean(false);
 
     private SearchState() {}
 
@@ -19,6 +20,7 @@ public class SearchState extends BaseObservable {
 
     public void reset() {
         hasResults.set(false);
+        showClear.set(false);
         query.set(null);
     }
 }

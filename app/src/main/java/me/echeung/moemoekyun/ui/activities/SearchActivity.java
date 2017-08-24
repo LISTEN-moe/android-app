@@ -6,7 +6,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.widget.TextView;
 
@@ -37,6 +39,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
         binding.setHasResults(state.hasResults);
         binding.setQuery(state.query);
+        binding.setShowClear(state.showClear);
 
         // Set up app bar
         setSupportActionBar(binding.appbar);
@@ -45,8 +48,22 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         appBar.setDisplayShowTitleEnabled(false);
 
         // Set up search
+        binding.btnClearSearch.setOnClickListener(v -> binding.searchQuery.setText(""));
         binding.searchQuery.setOnEditorActionListener(this::onEditorAction);
-        binding.btnClearSearch.setOnClickListener(v -> binding.searchQuery.setText(null));
+        binding.searchQuery.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                state.showClear.set(editable.length() != 0);
+            }
+        });
 
         // Results list adapter
         adapter = new SongAdapter(this);
