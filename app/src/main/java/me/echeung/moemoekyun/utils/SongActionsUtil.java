@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
@@ -46,11 +47,14 @@ public class SongActionsUtil {
 
                     // Undo action
                     if (!favorited) {
-                        final Snackbar undoBar = Snackbar.make(activity.findViewById(R.id.coordinator_layout),
-                                String.format(activity.getString(R.string.unfavorited), song.getTitle()),
-                                Snackbar.LENGTH_LONG);
-                        undoBar.setAction(R.string.action_undo, (v) -> favorite(activity, adapter, song));
-                        undoBar.show();
+                        final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
+                        if (coordinatorLayout != null) {
+                            final Snackbar undoBar = Snackbar.make(coordinatorLayout,
+                                    String.format(activity.getString(R.string.unfavorited), song.getTitle()),
+                                    Snackbar.LENGTH_LONG);
+                            undoBar.setAction(R.string.action_undo, (v) -> favorite(activity, adapter, song));
+                            undoBar.show();
+                        }
                     }
                 });
             }

@@ -436,8 +436,10 @@ public class StreamService extends Service {
                 // Try to reconnect to the stream
                 final boolean wasPlaying = isPlaying();
 
-                player.release();
-                player = null;
+                if (player != null) {
+                    player.release();
+                    player = null;
+                }
 
                 initStream();
                 if (wasPlaying) {
