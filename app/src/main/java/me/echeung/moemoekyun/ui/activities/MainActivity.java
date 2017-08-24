@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String TRIGGER_LOGIN_AND_FAVORITE = "fav_after_login";
     public static final String AUTH_EVENT = "auth_event";
 
+    private ActivityMainBinding binding;
+
     private AlertDialog aboutDialog;
 
     private ViewPager viewPager;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
         binding.setHasNetworkConnection(AppState.getInstance().hasNetworkConnection);
 
@@ -91,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
             final Intent stopIntent = new Intent(StreamService.STOP);
             sendBroadcast(stopIntent);
         }
+
+        binding.unbind();
 
         super.onDestroy();
     }

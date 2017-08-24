@@ -28,6 +28,8 @@ import me.echeung.moemoekyun.viewmodels.AppState;
 
 public class RadioFragment extends TabFragment {
 
+    private FragmentRadioBinding binding;
+
     public static Fragment newInstance(int sectionNumber) {
         return TabFragment.newInstance(sectionNumber, new RadioFragment());
     }
@@ -35,7 +37,8 @@ public class RadioFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final FragmentRadioBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
+
         final AppState state = AppState.getInstance();
 
         binding.radioSongs.setSong(state.currentSong);
@@ -65,6 +68,13 @@ public class RadioFragment extends TabFragment {
         binding.radioSongs.songList3.setOnLongClickListener(v -> copyToClipboard(state.secondLastSong.get()));
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroy() {
+        binding.unbind();
+
+        super.onDestroy();
     }
 
     private void togglePlayPause() {

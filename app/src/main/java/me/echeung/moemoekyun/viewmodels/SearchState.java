@@ -19,8 +19,8 @@ public class SearchState extends BaseObservable {
     }
 
     public void reset() {
-        hasResults.set(false);
-        showClear.set(false);
-        query.set(null);
+        INSTANCE.hasResults.set(false);
+        INSTANCE.showClear.set(false);
+        INSTANCE.query.set(null);
     }
 }

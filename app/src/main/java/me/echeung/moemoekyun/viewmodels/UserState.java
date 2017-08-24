@@ -20,9 +20,9 @@ public class UserState extends BaseObservable {
     }
 
     public void clear() {
-        userName.set(null);
-        userRequests.set(0);
-        queueSize.set(0);
-        queuePosition.set(0);
+        INSTANCE.userName.set(null);
+        INSTANCE.userRequests.set(0);
+        INSTANCE.queueSize.set(0);
+        INSTANCE.queuePosition.set(0);
     }
 }

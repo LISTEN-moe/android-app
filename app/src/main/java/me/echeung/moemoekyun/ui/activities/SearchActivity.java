@@ -27,13 +27,16 @@ import me.echeung.moemoekyun.viewmodels.SearchState;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 
+    private ActivitySearchBinding binding;
+
     private SongAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ActivitySearchBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+
         final SearchState state = SearchState.getInstance();
         state.reset();
 
@@ -76,6 +79,13 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         Glide.with(this)
                 .load(R.drawable.kanna_dancing)
                 .into(binding.searchPlaceholder);
+    }
+
+    @Override
+    protected void onDestroy() {
+        binding.unbind();
+
+        super.onDestroy();
     }
 
     private boolean onEditorAction(TextView textView, int i, KeyEvent event) {

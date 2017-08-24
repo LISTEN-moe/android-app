@@ -43,6 +43,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
     public static final String FAVORITE_EVENT = "fav_event";
 
+    private FragmentUserBinding binding;
+
     private LinearLayout vLoginMsg;
     private LinearLayout vUserContent;
     private ImageView vUserAvatar;
@@ -63,7 +65,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final FragmentUserBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
+
         final UserState state = UserState.getInstance();
 
         binding.userCard.setUserName(state.userName);
@@ -149,6 +152,8 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             getActivity().unregisterReceiver(intentReceiver);
             receiverRegistered = false;
         }
+
+        binding.unbind();
 
         super.onDestroy();
     }
