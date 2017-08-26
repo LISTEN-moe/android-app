@@ -60,7 +60,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, true);
 
         final UserState state = UserState.getInstance();
 

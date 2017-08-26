@@ -22,6 +22,8 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public SongAdapter(OnSongItemClickListener listener) {
         this.songs = new ArrayList<>();
         this.listener = listener;
+
+        setHasStableIds(true);
     }
 
     public void setSongs(List<Song> songs) {
@@ -43,6 +45,11 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         final SongHolder songHolder = (SongHolder) holder;
 
         songHolder.bind(song);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return songs.get(position).getId();
     }
 
     @Override
