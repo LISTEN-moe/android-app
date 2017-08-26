@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Init app/tab bar
-        initAppbar(binding);
+        initAppbar();
 
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity {
             final Intent stopIntent = new Intent(StreamService.STOP);
             sendBroadcast(stopIntent);
         }
+
+        viewPager.setAdapter(null);
 
         binding.unbind();
 
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Initializes everything for the tabs: the adapter, icons, and title handler
      */
-    private void initAppbar(ActivityMainBinding binding) {
+    private void initAppbar() {
         // Set up app bar
         setSupportActionBar(binding.appbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
