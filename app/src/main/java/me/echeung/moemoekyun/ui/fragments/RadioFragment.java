@@ -97,7 +97,7 @@ public class RadioFragment extends TabFragment {
         ClipData clip = ClipData.newPlainText("song", songInfo);
         clipboard.setPrimaryClip(clip);
 
-        Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
         return true;
     }
 }

@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-                    Toast.makeText(getBaseContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                 });
             }
 
@@ -333,7 +333,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         AuthUtil.clearAuthToken(this);
-        Toast.makeText(this, getString(R.string.logged_out), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), getString(R.string.logged_out), Toast.LENGTH_LONG).show();
         invalidateOptionsMenu();
 
         broadcastAuthEvent();
