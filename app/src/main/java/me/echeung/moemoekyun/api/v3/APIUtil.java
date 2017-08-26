@@ -8,14 +8,24 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import me.echeung.moemoekyun.api.v3.interfaces.*;
+import me.echeung.moemoekyun.api.v3.interfaces.AuthListener;
+import me.echeung.moemoekyun.api.v3.interfaces.FavoriteSongListener;
+import me.echeung.moemoekyun.api.v3.interfaces.RequestSongListener;
+import me.echeung.moemoekyun.api.v3.interfaces.SearchListener;
+import me.echeung.moemoekyun.api.v3.interfaces.UserFavoritesListener;
+import me.echeung.moemoekyun.api.v3.interfaces.UserInfoListener;
 import me.echeung.moemoekyun.api.v3.model.AuthResponse;
 import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.api.v3.model.UserFavorites;
 import me.echeung.moemoekyun.api.v3.model.UserInfo;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.utils.AuthUtil;
-import okhttp3.*;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Helper class for performing LISTEN.moe API calls.

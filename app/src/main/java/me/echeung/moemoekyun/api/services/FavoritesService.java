@@ -1,13 +1,12 @@
 package me.echeung.moemoekyun.api.services;
 
+import me.echeung.moemoekyun.api.responses.BasicResponse;
+import me.echeung.moemoekyun.api.responses.SongsResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-
-import me.echeung.moemoekyun.api.responses.BasicResponse;
-import me.echeung.moemoekyun.api.responses.SongsResponse;
 
 public interface FavoritesService {
     @GET("favorites/@me")

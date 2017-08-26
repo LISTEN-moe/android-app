@@ -1,10 +1,9 @@
 package me.echeung.moemoekyun.api.services;
 
+import me.echeung.moemoekyun.api.responses.SongsResponse;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
-
-import me.echeung.moemoekyun.api.responses.SongsResponse;
 
 public interface SongsService {
     @GET("songs")

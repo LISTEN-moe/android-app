@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -57,10 +56,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     private IntentFilter intentFilter;
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
-
-    public static Fragment newInstance(int sectionNumber) {
-        return TabFragment.newInstance(sectionNumber, new UserFragment());
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

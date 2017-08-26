@@ -15,13 +15,26 @@ import android.os.SystemClock;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
-import com.google.android.exoplayer2.*;
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.RenderersFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.TrackGroupArray;
-import com.google.android.exoplayer2.trackselection.*;
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
+import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
@@ -30,18 +43,22 @@ import com.google.android.exoplayer2.util.Util;
 import com.google.gson.Gson;
 
 import me.echeung.moemoekyun.api.v3.APIUtil;
+import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.api.v3.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.v3.model.PlaybackInfo;
 import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.constants.Endpoints;
-import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.viewmodels.AppState;
 import me.echeung.moemoekyun.viewmodels.UserState;
-import okhttp3.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
 
 // TODO: split up into smaller pieces
 public class StreamService extends Service {
@@ -426,6 +443,15 @@ public class StreamService extends Service {
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         final RenderersFactory renderersFactory = new DefaultRenderersFactory(getApplicationContext());
         final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
+
+        // TODO: simplify exoplayer init, possible memory leaks?
+//        DataSource dataSource = new DefaultHttpDataSource(Util.getUserAgent(this, getPackageName()), null);
+//        ExtractorMediaSource sampleSource = new ExtractorMediaSource(
+//                Uri.parse(Endpoints.STREAM), dataSource, new Mp3Extractor(), 1, 5000);
+//
+//        MediaCodecAudioRenderer audioRenderer = new MediaCodecAudioRenderer(sampleSource);
+//
+//        player = ExoPlayerFactory.newInstance(audioRenderer);
 
         player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
         player.prepare(streamSource);

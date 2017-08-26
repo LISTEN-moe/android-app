@@ -11,10 +11,10 @@ import java.lang.ref.WeakReference;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.v3.APIUtil;
+import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.api.v3.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.v3.interfaces.RequestSongListener;
 import me.echeung.moemoekyun.api.v3.model.Song;
-import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.viewmodels.AppState;
 

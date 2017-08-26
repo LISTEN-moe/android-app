@@ -1,14 +1,13 @@
 package me.echeung.moemoekyun.api;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
 import me.echeung.moemoekyun.api.services.AuthService;
 import me.echeung.moemoekyun.api.services.FavoritesService;
 import me.echeung.moemoekyun.api.services.SongsService;
 import me.echeung.moemoekyun.api.services.UsersService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 

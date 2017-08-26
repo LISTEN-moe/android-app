@@ -8,7 +8,6 @@ import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
 import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
@@ -29,10 +27,6 @@ import me.echeung.moemoekyun.viewmodels.AppState;
 public class RadioFragment extends TabFragment {
 
     private FragmentRadioBinding binding;
-
-    public static Fragment newInstance(int sectionNumber) {
-        return TabFragment.newInstance(sectionNumber, new RadioFragment());
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
