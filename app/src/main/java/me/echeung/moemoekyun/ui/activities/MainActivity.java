@@ -1,6 +1,10 @@
 package me.echeung.moemoekyun.ui.activities;
 
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
@@ -23,9 +27,9 @@ import android.widget.Toast;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.api.v3.APIUtil;
+import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.api.v3.interfaces.AuthListener;
 import me.echeung.moemoekyun.constants.Endpoints;
-import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.StreamService;
 import me.echeung.moemoekyun.ui.App;
@@ -103,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (viewPager.getCurrentItem() != 0) {
+        if (viewPager != null && viewPager.getCurrentItem() != 0) {
             viewPager.setCurrentItem(0, true);
         } else {
             super.onBackPressed();
@@ -158,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Set up ViewPager and adapter
         viewPager = binding.pager;
-        final ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        final ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(mViewPagerAdapter);
 
         // Set up tabs

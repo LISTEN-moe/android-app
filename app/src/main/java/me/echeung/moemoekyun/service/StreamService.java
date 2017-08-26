@@ -542,13 +542,13 @@ public class StreamService extends Service {
         }
 
         void update() {
-            if (socket == null) {
-                connect();
-            }
-
             if (AuthUtil.isAuthenticated(getBaseContext())) {
                 final String authToken = AuthUtil.getAuthToken(getBaseContext());
                 if (authToken != null) {
+                    if (socket == null) {
+                        connect();
+                    }
+
                     socket.send("{\"token\":\"" + authToken + "\"}");
                 }
             }
