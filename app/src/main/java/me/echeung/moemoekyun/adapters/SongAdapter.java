@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,11 @@ import me.echeung.moemoekyun.databinding.SongItemBinding;
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Song> songs;
-    private OnSongItemClickListener listener;
+    private WeakReference<OnSongItemClickListener> listener;
 
     public SongAdapter(OnSongItemClickListener listener) {
         this.songs = new ArrayList<>();
-        this.listener = listener;
+        this.listener = new WeakReference<>(listener);
 
         setHasStableIds(true);
     }
@@ -62,14 +63,14 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     protected OnSongItemClickListener getListener() {
-        return listener;
+        return listener.get();
     }
 
     public interface OnSongItemClickListener {
         void onSongItemClick(final Song song);
     }
 
-    static class SongHolder extends RecyclerView.ViewHolder {
+    private static class SongHolder extends RecyclerView.ViewHolder {
 
         private SongItemBinding binding;
 
@@ -80,8 +81,11 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             binding.getRoot().setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    final Song song = adapter.getSongs().get(getLayoutPosition());
-                    adapter.getListener().onSongItemClick(song);
+                    final OnSongItemClickListener listener = adapter.getListener();
+                    if (listener != null) {
+                        final Song song = adapter.getSongs().get(getLayoutPosition());
+                        listener.onSongItemClick(song);
+                    }
                 }
             });
         }
