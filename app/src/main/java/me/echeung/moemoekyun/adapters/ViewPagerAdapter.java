@@ -19,64 +19,37 @@ import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private final SparseArray<WeakReference<Fragment>> mFragmentArray = new SparseArray<>();
-    private final List<Holder> mHolderList = new ArrayList<>();
+    private final SparseArray<WeakReference<Fragment>> fragments = new SparseArray<>();
+    private final List<Holder> holders = new ArrayList<>();
 
     @NonNull
-    private final Context mContext;
-
-    private final int[] icons;
+    private final Context context;
 
     public ViewPagerAdapter(@NonNull final Context context, final FragmentManager fragmentManager) {
         super(fragmentManager);
-        mContext = context;
+        this.context = context;
 
-        icons = new int[]{
-                R.drawable.ic_radio_white_24dp,
-                R.drawable.ic_person_white_24dp
-        };
-
-        // TODO: clean up
-        final AppFragments[] fragments = AppFragments.values();
-        for (final AppFragments fragment : fragments) {
-            add(fragment.getFragmentClass(), null);
-        }
-    }
-
-    @SuppressWarnings("synthetic-access")
-    public void add(@NonNull final Class<? extends Fragment> className, final Bundle params) {
-        final Holder mHolder = new Holder();
-        mHolder.mClassName = className.getName();
-        mHolder.mParams = params;
-
-        final int mPosition = mHolderList.size();
-        mHolderList.add(mPosition, mHolder);
-        notifyDataSetChanged();
+        // Tabs
+        add(RadioFragment.class, R.drawable.ic_radio_white_24dp);
+        add(UserFragment.class, R.drawable.ic_person_white_24dp);
     }
 
     @NonNull
     @Override
     public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
-        final Fragment mFragment = (Fragment) super.instantiateItem(container, position);
-        final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
-        if (mWeakFragment != null) {
-            mWeakFragment.clear();
+        final Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        final WeakReference<Fragment> fragmentRef = fragments.get(position);
+        if (fragmentRef != null) {
+            fragmentRef.clear();
         }
-        mFragmentArray.put(position, new WeakReference<>(mFragment));
-        return mFragment;
-    }
-
-    @Override
-    public Fragment getItem(final int position) {
-        final Holder mCurrentHolder = mHolderList.get(position);
-        return Fragment.instantiate(mContext,
-                mCurrentHolder.mClassName, mCurrentHolder.mParams);
+        fragments.put(position, new WeakReference<>(fragment));
+        return fragment;
     }
 
     @Override
     public void destroyItem(final ViewGroup container, final int position, final Object object) {
         super.destroyItem(container, position, object);
-        final WeakReference<Fragment> mWeakFragment = mFragmentArray.get(position);
+        final WeakReference<Fragment> mWeakFragment = fragments.get(position);
         if (mWeakFragment != null) {
             mWeakFragment.clear();
         }
@@ -84,7 +57,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return mHolderList.size();
+        return holders.size();
+    }
+
+    @Override
+    public Fragment getItem(final int position) {
+        final Holder holder = holders.get(position);
+        return Fragment.instantiate(context, holder.className, holder.params);
     }
 
     @Override
@@ -93,26 +72,22 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     public int getIcon(int position) {
-        return icons[position];
+        return holders.get(position).drawableId;
     }
 
-    public enum AppFragments {
-        SONG(RadioFragment.class),
-        ALBUM(UserFragment.class);
+    private void add(@NonNull final Class<? extends Fragment> className, final int drawableId) {
+        final Holder holder = new Holder();
+        holder.className = className.getName();
+        holder.drawableId = drawableId;
+        holder.params = null;
 
-        private final Class<? extends Fragment> mFragmentClass;
-
-        AppFragments(final Class<? extends Fragment> fragmentClass) {
-            mFragmentClass = fragmentClass;
-        }
-
-        public Class<? extends Fragment> getFragmentClass() {
-            return mFragmentClass;
-        }
+        holders.add(holder);
+        notifyDataSetChanged();
     }
 
     private final static class Holder {
-        String mClassName;
-        Bundle mParams;
+        String className;
+        int drawableId;
+        Bundle params;
     }
 }

@@ -31,7 +31,7 @@ public class RadioFragment extends TabFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, true);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
 
         final AppState state = AppState.getInstance();
 
