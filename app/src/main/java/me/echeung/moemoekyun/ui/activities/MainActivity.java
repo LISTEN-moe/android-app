@@ -93,7 +93,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Kill service/notification if killing activity and not playing
-        if (!App.getService().isPlaying()) {
+        final RadioService service = App.getService();
+        if (service != null && !service.isPlaying()) {
             final Intent stopIntent = new Intent(RadioService.STOP);
             sendBroadcast(stopIntent);
         }
