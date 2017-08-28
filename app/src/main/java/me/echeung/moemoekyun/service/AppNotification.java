@@ -21,10 +21,10 @@ public class AppNotification {
     private static final String NOTIFICATION_CHANNEL = "notif_channel";
     private static final int NOTIFICATION_ID = 1;
 
-    private StreamService service;
+    private RadioService service;
     private NotificationManager notificationManager;
 
-    public AppNotification(StreamService service) {
+    public AppNotification(RadioService service) {
         this.service = service;
         notificationManager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
     }
@@ -46,7 +46,7 @@ public class AppNotification {
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
                 isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp,
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
-                getPlaybackActionService(StreamService.PLAY_PAUSE)
+                getPlaybackActionService(RadioService.PLAY_PAUSE)
         );
 
         // Favorite action
@@ -55,7 +55,7 @@ public class AppNotification {
             favoriteAction = new NotificationCompat.Action(
                     song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
                     song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
-                    getPlaybackActionService(StreamService.TOGGLE_FAVORITE)
+                    getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
             );
         } else {
             favoriteAction = new NotificationCompat.Action(
@@ -70,7 +70,7 @@ public class AppNotification {
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
-        final PendingIntent deleteIntent = getPlaybackActionService(StreamService.STOP);
+        final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.icon_notification)
@@ -103,7 +103,7 @@ public class AppNotification {
     }
 
     private PendingIntent getPlaybackActionService(final String action) {
-        final Intent intent = new Intent(service, StreamService.class);
+        final Intent intent = new Intent(service, RadioService.class);
         intent.setAction(action);
 
         return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

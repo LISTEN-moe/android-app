@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
-import me.echeung.moemoekyun.service.StreamService;
+import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
@@ -72,7 +72,7 @@ public class RadioFragment extends TabFragment {
     }
 
     private void togglePlayPause() {
-        final Intent playPauseIntent = new Intent(StreamService.PLAY_PAUSE);
+        final Intent playPauseIntent = new Intent(RadioService.PLAY_PAUSE);
         getActivity().sendBroadcast(playPauseIntent);
     }
 
@@ -82,7 +82,7 @@ public class RadioFragment extends TabFragment {
             return;
         }
 
-        final Intent favIntent = new Intent(StreamService.TOGGLE_FAVORITE);
+        final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
         getActivity().sendBroadcast(favIntent);
     }
 

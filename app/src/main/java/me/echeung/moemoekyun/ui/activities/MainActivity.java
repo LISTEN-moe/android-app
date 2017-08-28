@@ -31,7 +31,7 @@ import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.api.v3.interfaces.AuthListener;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
-import me.echeung.moemoekyun.service.StreamService;
+import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Kill service/notification if killing activity and not playing
         if (!App.getService().isPlaying()) {
-            final Intent stopIntent = new Intent(StreamService.STOP);
+            final Intent stopIntent = new Intent(RadioService.STOP);
             sendBroadcast(stopIntent);
         }
 
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
 
-            final Intent updateIntent = new Intent(StreamService.UPDATE);
+            final Intent updateIntent = new Intent(RadioService.UPDATE);
             sendBroadcast(updateIntent);
         }
     }
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void favoriteSong() {
-        final Intent favIntent = new Intent(StreamService.TOGGLE_FAVORITE);
+        final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
         sendBroadcast(favIntent);
     }
 

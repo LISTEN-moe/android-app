@@ -43,7 +43,7 @@
             android:value="true" />
 
         <service
-            android:name=".service.StreamService"
+            android:name=".service.RadioService"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
