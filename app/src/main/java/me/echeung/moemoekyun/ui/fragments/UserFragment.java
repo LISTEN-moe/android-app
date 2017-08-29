@@ -96,19 +96,21 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
             @Override
             public void afterTextChanged(Editable editable) {
-                final String query = editable.toString().trim().toLowerCase();
+                if (favorites != null && !favorites.isEmpty()) {
+                    final String query = editable.toString().trim().toLowerCase();
 
-                if (TextUtils.isEmpty(query)) {
-                    adapter.setSongs(favorites);
-                } else {
-                    final List<Song> filteredFavorites = new ArrayList<>();
-                    for (final Song song : favorites) {
-                        if (song.getTitle().toLowerCase().contains(query) ||
-                                song.getArtistAndAnime().toLowerCase().contains(query)) {
-                            filteredFavorites.add(song);
+                    if (TextUtils.isEmpty(query)) {
+                        adapter.setSongs(favorites);
+                    } else {
+                        final List<Song> filteredFavorites = new ArrayList<>();
+                        for (final Song song : favorites) {
+                            if (song.getTitle().toLowerCase().contains(query) ||
+                                    song.getArtistAndAnime().toLowerCase().contains(query)) {
+                                filteredFavorites.add(song);
+                            }
                         }
+                        adapter.setSongs(filteredFavorites);
                     }
-                    adapter.setSongs(filteredFavorites);
                 }
             }
         });
