@@ -13,6 +13,7 @@ import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
+import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.api.v3.APIUtil;
 import me.echeung.moemoekyun.api.v3.ResponseMessages;
 import me.echeung.moemoekyun.api.v3.interfaces.FavoriteSongListener;
@@ -25,12 +26,13 @@ import me.echeung.moemoekyun.viewmodels.AppState;
 
 public class RadioService extends Service {
 
-    public static final String PLAY_PAUSE = "play_pause";
-    public static final String STOP = "stop";
-    public static final String TOGGLE_FAVORITE = "toggle_favorite";
-    public static final String UPDATE = "update";
+    private static final String APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID;
 
-    private static final String APP_PACKAGE_NAME = "me.echeung.moemoekyun";
+    public static final String PLAY_PAUSE = APP_PACKAGE_NAME + ".play_pause";
+    public static final String STOP = APP_PACKAGE_NAME + ".stop";
+    public static final String TOGGLE_FAVORITE = APP_PACKAGE_NAME + ".toggle_favorite";
+    public static final String UPDATE = APP_PACKAGE_NAME + ".update";
+
     private static final String MUSIC_PACKAGE_NAME = "com.android.music";
     public static final String META_CHANGED = APP_PACKAGE_NAME + ".metachanged";
     public static final String PLAY_STATE_CHANGED = APP_PACKAGE_NAME + ".playstatechanged";
