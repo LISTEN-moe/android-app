@@ -19,7 +19,7 @@ public class App extends Application {
         super.onCreate();
 
         Intent intent = new Intent(this, RadioService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT );
     }
 
     public static RadioService getService() {
