@@ -4,15 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.view.View" />
         <import type="android.text.TextUtils" />
-        <import type="android.databinding.ObservableField"/>
-        <import type="android.databinding.ObservableBoolean" />
 
-        <variable name="song" type="ObservableField&lt;me.echeung.moemoekyun.api.v3.model.Song&gt;" />
-        <variable name="lastSong" type="ObservableField&lt;String&gt;" />
-        <variable name="secondLastSong" type="ObservableField&lt;String&gt;" />
-        <variable name="showHistory" type="ObservableBoolean" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.AppViewModel" />
     </data>
 
     <LinearLayout
@@ -50,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="@{song.getTitle() ?? @string/connecting}"
+                    android:text="@{vm.currentSong.getTitle() ?? @string/connecting}"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="24sp" />
@@ -59,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="@{song.getArtistAndAnime()}"
+                    android:text="@{vm.currentSong.getArtistAndAnime()}"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="18sp" />
@@ -72,7 +66,7 @@
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="@{showHistory ? View.VISIBLE : View.GONE}">
+                android:visibility="@{vm.showHistory}">
 
                 <TextView
                     android:id="@+id/songList2"
@@ -81,7 +75,7 @@
                     android:layout_marginBottom="16dp"
                     android:alpha="0.5"
                     android:fontFamily="sans-serif-light"
-                    android:text='@{TextUtils.isEmpty(lastSong) ? "" : lastSong}'
+                    android:text='@{TextUtils.isEmpty(vm.lastSong) ? "" : vm.lastSong}'
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
@@ -92,7 +86,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.25"
                     android:fontFamily="sans-serif-light"
-                    android:text='@{TextUtils.isEmpty(secondLastSong) ? "" : secondLastSong}'
+                    android:text='@{TextUtils.isEmpty(vm.secondLastSong) ? "" : vm.secondLastSong}'
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />

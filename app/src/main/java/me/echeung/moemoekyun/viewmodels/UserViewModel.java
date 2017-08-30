@@ -4,18 +4,18 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 
-public class UserState extends BaseObservable {
+public class UserViewModel extends BaseObservable {
 
-    private static final UserState INSTANCE = new UserState();
+    private static final UserViewModel INSTANCE = new UserViewModel();
 
     public final ObservableField<String> userName = new ObservableField<>();
     public final ObservableInt userRequests = new ObservableInt();
     public final ObservableInt queueSize = new ObservableInt();
     public final ObservableInt queuePosition = new ObservableInt();
 
-    private UserState() {}
+    private UserViewModel() {}
 
-    public static UserState getInstance() {
+    public static UserViewModel getInstance() {
         return INSTANCE;
     }
 

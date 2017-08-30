@@ -6,9 +6,8 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="android.databinding.ObservableBoolean" />
 
-        <variable name="hasNetworkConnection" type="ObservableBoolean" />
+        <variable name="isConnected" type="boolean" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -23,7 +22,7 @@
             android:background="@color/grey"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{hasNetworkConnection ? View.GONE : View.VISIBLE}">
+            android:visibility="@{isConnected ? View.GONE : View.VISIBLE}">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,7 +44,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:visibility="@{hasNetworkConnection ? View.VISIBLE : View.GONE}">
+            android:visibility="@{isConnected ? View.VISIBLE : View.GONE}">
 
             <ImageView
                 android:layout_width="0dp"

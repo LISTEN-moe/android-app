@@ -2,17 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <import type="android.view.View" />
         <import type="android.text.TextUtils" />
-        <import type="android.databinding.ObservableField"/>
-        <import type="android.databinding.ObservableInt" />
-        <import type="android.databinding.ObservableBoolean" />
         <import type="me.echeung.moemoekyun.utils.SDKUtil" />
 
-        <variable name="favorited" type="ObservableBoolean" />
-        <variable name="listeners" type="ObservableInt" />
-        <variable name="playing" type="ObservableBoolean" />
-        <variable name="requester" type="ObservableField&lt;String&gt;" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.AppViewModel" />
     </data>
 
     <LinearLayout
@@ -25,7 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text='@{TextUtils.isEmpty(requester) ? "" : SDKUtil.fromHtml(@string/requested_by(requester))}'
+            android:text='@{TextUtils.isEmpty(vm.requester) ? "" : SDKUtil.fromHtml(@string/requested_by(vm.requester))}'
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textColorLink="@color/colorAccent"
@@ -57,7 +50,7 @@
                 android:layout_margin="16dp"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="fitXY"
-                android:src="@{playing ? @drawable/ic_pause_white_24dp : @drawable/ic_play_arrow_white_24dp}" />
+                android:src="@{vm.isPlaying ? @drawable/ic_pause_white_24dp : @drawable/ic_play_arrow_white_24dp}" />
 
             <ImageButton
                 android:id="@+id/favorite_btn"
@@ -68,14 +61,14 @@
                 android:contentDescription="@string/favorite"
                 android:padding="8dp"
                 android:scaleType="fitXY"
-                android:src="@{favorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}" />
+                android:src="@{vm.isFavorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}" />
 
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{@plurals/current_listeners(listeners, listeners)}"
+            android:text="@{@plurals/current_listeners(vm.listeners, vm.listeners)}"
             android:textAlignment="center"
             android:textColor="@android:color/white" />
 

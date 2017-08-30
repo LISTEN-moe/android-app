@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.databinding.ObservableBoolean;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.method.LinkMovementMethod;
@@ -22,7 +21,7 @@ import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
-import me.echeung.moemoekyun.viewmodels.AppState;
+import me.echeung.moemoekyun.viewmodels.AppViewModel;
 
 public class RadioFragment extends TabFragment {
 
@@ -33,17 +32,10 @@ public class RadioFragment extends TabFragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
 
-        final AppState state = AppState.getInstance();
+        final AppViewModel viewModel = AppViewModel.getInstance();
 
-        binding.radioSongs.setSong(state.currentSong);
-        binding.radioSongs.setLastSong(state.lastSong);
-        binding.radioSongs.setSecondLastSong(state.secondLastSong);
-        binding.radioSongs.setShowHistory(state.showHistory);
-
-        binding.radioControls.setPlaying(state.playing);
-        binding.radioControls.setFavorited(state.currentFavorited);
-        binding.radioControls.setListeners(state.listeners);
-        binding.radioControls.setRequester(state.requester);
+        binding.radioSongs.setVm(viewModel);
+        binding.radioControls.setVm(viewModel);
 
         final TextView vRequestBy = binding.radioControls.requestedBy;
         vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
@@ -57,9 +49,9 @@ public class RadioFragment extends TabFragment {
         final ImageButton vFavoriteBtn = binding.radioControls.favoriteBtn;
         vFavoriteBtn.setOnClickListener(v -> favorite());
 
-        binding.radioSongs.songList1.setOnLongClickListener(v -> copyToClipboard(state.currentSong.get().toString()));
-        binding.radioSongs.songList2.setOnLongClickListener(v -> copyToClipboard(state.lastSong.get()));
-        binding.radioSongs.songList3.setOnLongClickListener(v -> copyToClipboard(state.secondLastSong.get()));
+        binding.radioSongs.songList1.setOnLongClickListener(v -> copyToClipboard(viewModel.getCurrentSong().toString()));
+        binding.radioSongs.songList2.setOnLongClickListener(v -> copyToClipboard(viewModel.getLastSong()));
+        binding.radioSongs.songList3.setOnLongClickListener(v -> copyToClipboard(viewModel.getSecondLastSong()));
 
         return binding.getRoot();
     }
@@ -87,9 +79,7 @@ public class RadioFragment extends TabFragment {
     }
 
     private void showHistory() {
-        final ObservableBoolean showHistory = AppState.getInstance().showHistory;
-
-        showHistory.set(!showHistory.get());
+        AppViewModel.getInstance().toggleShowHistory();
     }
 
     private boolean copyToClipboard(String songInfo) {

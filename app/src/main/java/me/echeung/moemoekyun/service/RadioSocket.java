@@ -9,8 +9,8 @@ import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
-import me.echeung.moemoekyun.viewmodels.AppState;
-import me.echeung.moemoekyun.viewmodels.UserState;
+import me.echeung.moemoekyun.viewmodels.AppViewModel;
+import me.echeung.moemoekyun.viewmodels.UserViewModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -108,43 +108,49 @@ public class RadioSocket  extends WebSocketListener {
     }
 
     private void parseWebSocketResponse(final String jsonString) {
-        final AppState state = AppState.getInstance();
+        final AppViewModel state = AppViewModel.getInstance();
 
         if (jsonString == null) {
-            state.currentSong.set(null);
-            state.lastSong.set(null);
-            state.secondLastSong.set(null);
+            state.setCurrentSong(null);
+            state.setLastSong(null);
+            state.setSecondLastSong(null);
 
-            state.listeners.set(0);
-            state.requester.set(null);
+            state.setListeners(0);
+            state.setRequester(null);
         } else {
             final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
             if (playbackInfo.getSongId() != 0) {
-                state.currentSong.set(new Song(
+                state.setCurrentSong(new Song(
                         playbackInfo.getSongId(),
                         playbackInfo.getArtistName().trim(),
                         playbackInfo.getSongName().trim(),
                         playbackInfo.getAnimeName().trim()
                 ));
 
-                state.lastSong.set(playbackInfo.getLast().toString());
-                state.secondLastSong.set(playbackInfo.getSecondLast().toString());
+                state.setLastSong(playbackInfo.getLast().toString());
+                state.setSecondLastSong(playbackInfo.getSecondLast().toString());
 
                 if (playbackInfo.hasExtended()) {
                     final PlaybackInfo.ExtendedInfo extended = playbackInfo.getExtended();
 
-                    state.setFavorited(extended.isFavorite());
+                    state.setIsFavorited(extended.isFavorite());
 
-                    UserState.getInstance().queueSize.set(extended.getQueue().getSongsInQueue());
-                    UserState.getInstance().queuePosition.set(extended.getQueue().getInQueueBeforeUserSong());
+                    UserViewModel.getInstance().queueSize.set(extended.getQueue().getSongsInQueue());
+                    UserViewModel.getInstance().queuePosition.set(extended.getQueue().getInQueueBeforeUserSong());
                 }
 
                 service.sendPublicIntent(RadioService.META_CHANGED);
             }
 
-            state.listeners.set(playbackInfo.getListeners());
-            state.requester.set(playbackInfo.getRequestedBy());
+            state.setListeners(playbackInfo.getListeners());
+
+            final String requestedBy = playbackInfo.getRequestedBy();
+//            if (requestedBy.contains(" ")) {
+//
+//            } else {
+                state.setRequester(requestedBy);
+//            }
         }
 
         service.updateNotification();

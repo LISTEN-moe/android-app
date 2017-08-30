@@ -22,7 +22,7 @@ import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
-import me.echeung.moemoekyun.viewmodels.AppState;
+import me.echeung.moemoekyun.viewmodels.AppViewModel;
 
 public class RadioService extends Service {
 
@@ -134,7 +134,7 @@ public class RadioService extends Service {
     }
 
     public void updateNotification() {
-        final Song currentSong = AppState.getInstance().currentSong.get();
+        final Song currentSong = AppViewModel.getInstance().getCurrentSong();
         if (currentSong != null && currentSong.getId() != -1) {
             if (notification == null) {
                 notification = new AppNotification(this);
@@ -209,7 +209,7 @@ public class RadioService extends Service {
 
                 case MainActivity.AUTH_EVENT:
                     if (!AuthUtil.isAuthenticated(this)) {
-                        AppState.getInstance().setFavorited(false);
+                        AppViewModel.getInstance().setIsFavorited(false);
                         updateNotification();
                     } else {
                         socket.update();
@@ -300,10 +300,6 @@ public class RadioService extends Service {
     }
 
     private void play() {
-        if (stream.isStarted()) {
-            stream.init();
-        }
-
         if (!stream.isPlaying()) {
             // Request audio focus for playback
             int result = audioManager.requestAudioFocus(audioFocusChangeListener,
@@ -313,7 +309,7 @@ public class RadioService extends Service {
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 stream.play();
 
-                AppState.getInstance().playing.set(true);
+                AppViewModel.getInstance().setIsPlaying(true);
                 updateNotification();
                 sendPublicIntent(PLAY_STATE_CHANGED);
             }
@@ -324,7 +320,7 @@ public class RadioService extends Service {
         if (stream.isPlaying()) {
             stream.pause();
 
-            AppState.getInstance().playing.set(false);
+            AppViewModel.getInstance().setIsPlaying(false);
             updateNotification();
             sendPublicIntent(PLAY_STATE_CHANGED);
         }
@@ -342,12 +338,12 @@ public class RadioService extends Service {
         stopForeground(true);
         stopSelf();
 
-        AppState.getInstance().playing.set(false);
+        AppViewModel.getInstance().setIsPlaying(false);
         sendPublicIntent(PLAY_STATE_CHANGED);
     }
 
     private void favoriteCurrentSong() {
-        final Song currentSong = AppState.getInstance().currentSong.get();
+        final Song currentSong = AppViewModel.getInstance().getCurrentSong();
         if (currentSong == null) return;
 
         final int songId = currentSong.getId();
@@ -368,9 +364,9 @@ public class RadioService extends Service {
 
             @Override
             public void onSuccess(final boolean favorited) {
-                final Song currentSong = AppState.getInstance().currentSong.get();
+                final Song currentSong = AppViewModel.getInstance().getCurrentSong();
                 if (currentSong.getId() == songId) {
-                    AppState.getInstance().setFavorited(favorited);
+                    AppViewModel.getInstance().setIsFavorited(favorited);
                 }
 
                 final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
@@ -398,7 +394,7 @@ public class RadioService extends Service {
         // TODO: broadcast song info to Last.fm/musicmxmatch
 //        final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
 //
-//        final Song song = AppState.getInstance().currentSong.get();
+//        final Song song = AppViewModel.getInstance().currentSong.get();
 //
 //        intent.putExtra("id", song.getId());
 //

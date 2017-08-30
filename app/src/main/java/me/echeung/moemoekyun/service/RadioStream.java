@@ -124,10 +124,12 @@ public class RadioStream {
     }
 
     public void play() {
-        if (player != null) {
-            player.setPlayWhenReady(true);
-            player.seekToDefaultPosition();
+        if (player == null) {
+            init();
         }
+
+        player.setPlayWhenReady(true);
+        player.seekToDefaultPosition();
     }
 
     public void pause() {

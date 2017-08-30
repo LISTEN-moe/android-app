@@ -4,17 +4,17 @@ import android.databinding.BaseObservable;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
-public class SearchState extends BaseObservable {
+public class SearchViewModel extends BaseObservable {
 
-    private static final SearchState INSTANCE = new SearchState();
+    private static final SearchViewModel INSTANCE = new SearchViewModel();
 
     public final ObservableBoolean hasResults = new ObservableBoolean(false);
     public final ObservableField<String> query = new ObservableField<>();
     public final ObservableBoolean showClear = new ObservableBoolean(false);
 
-    private SearchState() {}
+    private SearchViewModel() {}
 
-    public static SearchState getInstance() {
+    public static SearchViewModel getInstance() {
         return INSTANCE;
     }
 

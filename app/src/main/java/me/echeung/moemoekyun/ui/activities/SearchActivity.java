@@ -23,7 +23,7 @@ import me.echeung.moemoekyun.api.v3.interfaces.SearchListener;
 import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
-import me.echeung.moemoekyun.viewmodels.SearchState;
+import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
 
@@ -37,7 +37,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
-        final SearchState state = SearchState.getInstance();
+        final SearchViewModel state = SearchViewModel.getInstance();
         state.reset();
 
         binding.setHasResults(state.hasResults);
@@ -112,8 +112,8 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
     private void updateResults(final String query, final List<Song> results) {
         adapter.setSongs(results);
-        SearchState.getInstance().query.set(query);
-        SearchState.getInstance().hasResults.set(results != null && results.size() != 0);
+        SearchViewModel.getInstance().query.set(query);
+        SearchViewModel.getInstance().hasResults.set(results != null && results.size() != 0);
     }
 
     @Override

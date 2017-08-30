@@ -36,7 +36,7 @@ import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
-import me.echeung.moemoekyun.viewmodels.UserState;
+import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
 
@@ -62,7 +62,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
 
-        final UserState state = UserState.getInstance();
+        final UserViewModel state = UserViewModel.getInstance();
 
         binding.userCard.setUserName(state.userName);
         binding.userCard.setUserRequests(state.userRequests);
@@ -199,7 +199,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 runOnUiThread(() -> {
                     final String userName = userInfo.getUsername();
 
-                    UserState.getInstance().userName.set(userName);
+                    UserViewModel.getInstance().userName.set(userName);
 
                     // TODO: user avatars/banners are coming in v4
                 });
@@ -216,7 +216,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 runOnUiThread(() -> {
                     favorites = userFavorites.getSongs();
                     adapter.setSongs(favorites);
-                    UserState.getInstance().userRequests.set(userFavorites.getExtra().getRequests());
+                    UserViewModel.getInstance().userRequests.set(userFavorites.getExtra().getRequests());
                 });
             }
         });

@@ -14,7 +14,7 @@ import me.echeung.moemoekyun.api.v3.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.v3.interfaces.RequestSongListener;
 import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
-import me.echeung.moemoekyun.viewmodels.AppState;
+import me.echeung.moemoekyun.viewmodels.AppViewModel;
 
 public class SongActionsUtil {
 
@@ -35,8 +35,8 @@ public class SongActionsUtil {
 
             @Override
             public void onSuccess(final boolean favorited) {
-                if (AppState.getInstance().currentSong.get().getId() == songId) {
-                    AppState.getInstance().setFavorited(favorited);
+                if (AppViewModel.getInstance().getCurrentSong().getId() == songId) {
+                    AppViewModel.getInstance().setIsFavorited(favorited);
                 }
 
                 if (activity != null) {
