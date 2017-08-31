@@ -127,4 +127,17 @@ public class RadioViewModel extends BaseViewModel {
         this.secondLastSong = secondLastSong;
         notifyPropertyChanged(BR.secondLastSong);
     }
+
+
+    // Helpers
+    // ========================================================================
+    
+    public void clear() {
+        setCurrentSong(null);
+        setLastSong(null);
+        setSecondLastSong(null);
+
+        setListeners(0);
+        setRequester(null);
+    }
 }

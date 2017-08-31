@@ -324,9 +324,6 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    /**
-     * Logs the user out.
-     */
     private void logout() {
         if (!AuthUtil.isAuthenticated(this)) {
             return;

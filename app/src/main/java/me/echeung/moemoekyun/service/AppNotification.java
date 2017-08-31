@@ -16,7 +16,7 @@ import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AuthUtil;
 
-public class AppNotification {
+class AppNotification {
 
     private static final String NOTIFICATION_CHANNEL = "notif_channel";
     private static final int NOTIFICATION_ID = 1;
@@ -24,12 +24,12 @@ public class AppNotification {
     private RadioService service;
     private NotificationManager notificationManager;
 
-    public AppNotification(RadioService service) {
+    AppNotification(RadioService service) {
         this.service = service;
         notificationManager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
-    public void update() {
+    void update() {
         if (!service.isStreamStarted()) {
             return;
         }

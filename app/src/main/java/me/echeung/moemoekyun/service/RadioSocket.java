@@ -17,7 +17,7 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class RadioSocket  extends WebSocketListener {
+public class RadioSocket extends WebSocketListener {
 
     private static final Gson GSON = new Gson();
 
@@ -29,11 +29,11 @@ public class RadioSocket  extends WebSocketListener {
     private WebSocket socket;
     private int retryTime = RETRY_TIME_MIN;
 
-    public RadioSocket(RadioService service) {
+    RadioSocket(RadioService service) {
         this.service = service;
     }
 
-    public void connect() {
+    void connect() {
         if (!NetworkUtil.isNetworkAvailable(service)) {
             return;
         }
@@ -42,7 +42,7 @@ public class RadioSocket  extends WebSocketListener {
         socket = new OkHttpClient().newWebSocket(request, this);
     }
 
-    public void disconnect() {
+    void disconnect() {
         if (socket != null) {
             socket.cancel();
             socket = null;
@@ -50,7 +50,7 @@ public class RadioSocket  extends WebSocketListener {
         parseWebSocketResponse(null);
     }
 
-    public void reconnect() {
+    void reconnect() {
         disconnect();
 
         // Exponential backoff
@@ -62,7 +62,7 @@ public class RadioSocket  extends WebSocketListener {
         connect();
     }
 
-    public void update() {
+    void update() {
         if (AuthUtil.isAuthenticated(service)) {
             final String authToken = AuthUtil.getAuthToken(service);
             if (authToken != null) {
@@ -108,33 +108,28 @@ public class RadioSocket  extends WebSocketListener {
     }
 
     private void parseWebSocketResponse(final String jsonString) {
-        final RadioViewModel state = App.getRadioViewModel();
+        final RadioViewModel viewModel = App.getRadioViewModel();
 
         if (jsonString == null) {
-            state.setCurrentSong(null);
-            state.setLastSong(null);
-            state.setSecondLastSong(null);
-
-            state.setListeners(0);
-            state.setRequester(null);
+            viewModel.clear();
         } else {
             final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
             if (playbackInfo.getSongId() != 0) {
-                state.setCurrentSong(new Song(
+                viewModel.setCurrentSong(new Song(
                         playbackInfo.getSongId(),
                         playbackInfo.getArtistName().trim(),
                         playbackInfo.getSongName().trim(),
                         playbackInfo.getAnimeName().trim()
                 ));
 
-                state.setLastSong(playbackInfo.getLast().toString());
-                state.setSecondLastSong(playbackInfo.getSecondLast().toString());
+                viewModel.setLastSong(playbackInfo.getLast().toString());
+                viewModel.setSecondLastSong(playbackInfo.getSecondLast().toString());
 
                 if (playbackInfo.hasExtended()) {
                     final PlaybackInfo.ExtendedInfo extended = playbackInfo.getExtended();
 
-                    state.setIsFavorited(extended.isFavorite());
+                    viewModel.setIsFavorited(extended.isFavorite());
 
                     App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
                     App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
@@ -143,14 +138,8 @@ public class RadioSocket  extends WebSocketListener {
                 service.sendPublicIntent(RadioService.META_CHANGED);
             }
 
-            state.setListeners(playbackInfo.getListeners());
-
-            final String requestedBy = playbackInfo.getRequestedBy();
-//            if (requestedBy.contains(" ")) {
-//
-//            } else {
-                state.setRequester(requestedBy);
-//            }
+            viewModel.setListeners(playbackInfo.getListeners());
+            viewModel.setRequester(playbackInfo.getRequestedBy());
         }
 
         service.updateNotification();

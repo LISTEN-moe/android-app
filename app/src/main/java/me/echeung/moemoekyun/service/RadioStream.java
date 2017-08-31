@@ -29,14 +29,49 @@ import me.echeung.moemoekyun.constants.Endpoints;
 public class RadioStream {
 
     private RadioService service;
-
     private SimpleExoPlayer player;
 
-    public RadioStream(RadioService service) {
+    RadioStream(RadioService service) {
         this.service = service;
     }
 
-    public void init() {
+    public boolean isPlaying() {
+        return player != null && player.getPlayWhenReady();
+    }
+
+    boolean isStarted() {
+        return player != null;
+    }
+
+    void setVolume(float volume) {
+        if (player != null) {
+            player.setVolume(volume);
+        }
+    }
+
+    void play() {
+        if (player == null) {
+            init();
+        }
+
+        player.setPlayWhenReady(true);
+        player.seekToDefaultPosition();
+    }
+
+    void pause() {
+        if (player != null) {
+            player.setPlayWhenReady(false);
+        }
+    }
+
+    void stop() {
+        if (player != null) {
+            player.setPlayWhenReady(false);
+            player = null;
+        }
+    }
+
+    private void init() {
         final BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         final TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         final TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
@@ -93,41 +128,5 @@ public class RadioStream {
             public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
             }
         });
-    }
-
-    public boolean isStarted() {
-        return player != null;
-    }
-
-    public boolean isPlaying() {
-        return player != null && player.getPlayWhenReady();
-    }
-
-    public void setVolume(float volume) {
-        if (player != null) {
-            player.setVolume(volume);
-        }
-    }
-
-    public void play() {
-        if (player == null) {
-            init();
-        }
-
-        player.setPlayWhenReady(true);
-        player.seekToDefaultPosition();
-    }
-
-    public void pause() {
-        if (player != null) {
-            player.setPlayWhenReady(false);
-        }
-    }
-
-    public void stop() {
-        if (player != null) {
-            player.setPlayWhenReady(false);
-            player = null;
-        }
     }
 }
