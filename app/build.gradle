@@ -51,7 +51,7 @@ android {
 }
 
 ext {
-    supportLibVersion = '26.0.1'
+    supportLibVersion = '26.0.2'
 }
 
 dependencies {
@@ -61,9 +61,9 @@ dependencies {
     compile "com.android.support:support-media-compat:$supportLibVersion"
     compile "com.android.support:support-fragment:$supportLibVersion"
     compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile "com.android.support:design:$supportLibVersion"
     compile "com.android.support:recyclerview-v7:$supportLibVersion"
-    // com.android.support:palette-v7:26.0.2
+    // compile "com.android.support:palette-v7:$supportLibVersion"
+    compile "com.android.support:design:$supportLibVersion"
 
     compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.google.android.exoplayer:exoplayer-core:r2.5.1'
