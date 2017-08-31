@@ -104,10 +104,9 @@ public class RadioService extends Service {
         initBroadcastReceiver();
 
         socket = new RadioSocket(this);
-        socket.connect();
-
         stream = new RadioStream(this);
-        stream.init();
+
+        socket.connect();
     }
 
     @Override
