@@ -5,9 +5,7 @@
     tools:context=".ui.activities.MainActivity">
 
     <data>
-        <import type="android.view.View" />
-
-        <variable name="isConnected" type="boolean" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -22,7 +20,7 @@
             android:background="@color/grey"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{isConnected ? View.GONE : View.VISIBLE}">
+            android:visibility="@{!vm.isConnected}">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,7 +42,7 @@
         <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:visibility="@{isConnected ? View.VISIBLE : View.GONE}">
+            android:visibility="@{vm.isConnected}">
 
             <ImageView
                 android:layout_width="0dp"

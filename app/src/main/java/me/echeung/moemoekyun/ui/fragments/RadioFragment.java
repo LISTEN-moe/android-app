@@ -18,10 +18,11 @@ import android.widget.Toast;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
 import me.echeung.moemoekyun.service.RadioService;
+import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
-import me.echeung.moemoekyun.viewmodels.AppViewModel;
+import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioFragment extends TabFragment {
 
@@ -32,7 +33,7 @@ public class RadioFragment extends TabFragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
 
-        final AppViewModel viewModel = AppViewModel.getInstance();
+        final RadioViewModel viewModel = App.getRadioViewModel();
 
         binding.radioSongs.setVm(viewModel);
         binding.radioControls.setVm(viewModel);
@@ -79,7 +80,7 @@ public class RadioFragment extends TabFragment {
     }
 
     private void showHistory() {
-        AppViewModel.getInstance().toggleShowHistory();
+        App.getRadioViewModel().toggleShowHistory();
     }
 
     private boolean copyToClipboard(String songInfo) {

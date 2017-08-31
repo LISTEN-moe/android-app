@@ -1,28 +1,67 @@
 package me.echeung.moemoekyun.viewmodels;
 
-import android.databinding.BaseObservable;
-import android.databinding.ObservableField;
-import android.databinding.ObservableInt;
+import android.content.Context;
+import android.databinding.Bindable;
 
-public class UserViewModel extends BaseObservable {
+import com.android.databinding.library.baseAdapters.BR;
 
-    private static final UserViewModel INSTANCE = new UserViewModel();
+import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
-    public final ObservableField<String> userName = new ObservableField<>();
-    public final ObservableInt userRequests = new ObservableInt();
-    public final ObservableInt queueSize = new ObservableInt();
-    public final ObservableInt queuePosition = new ObservableInt();
+public class UserViewModel extends BaseViewModel {
 
-    private UserViewModel() {}
-
-    public static UserViewModel getInstance() {
-        return INSTANCE;
+    public UserViewModel(Context context) {
+        super(context);
     }
 
-    public void clear() {
-        INSTANCE.userName.set(null);
-        INSTANCE.userRequests.set(0);
-        INSTANCE.queueSize.set(0);
-        INSTANCE.queuePosition.set(0);
+    private String userName;
+    private int userRequests;
+    private int queueSize;
+    private int queuePosition;
+
+    @Bindable
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+        notifyPropertyChanged(BR.userName);
+    }
+
+    @Bindable
+    public int getUserRequests() {
+        return userRequests;
+    }
+
+    public void setUserRequests(int userRequests) {
+        this.userRequests = userRequests;
+        notifyPropertyChanged(BR.userRequests);
+    }
+
+    @Bindable
+    public int getQueueSize() {
+        return queueSize;
+    }
+
+    public void setQueueSize(int queueSize) {
+        this.queueSize = queueSize;
+        notifyPropertyChanged(BR.queueSize);
+    }
+
+    @Bindable
+    public int getQueuePosition() {
+        return queuePosition;
+    }
+
+    public void setQueuePosition(int queuePosition) {
+        this.queuePosition = queuePosition;
+        notifyPropertyChanged(BR.queuePosition);
+    }
+
+    public void reset() {
+        setUserName(null);
+        setUserRequests(0);
+        setQueueSize(0);
+        setQueuePosition(0);
     }
 }

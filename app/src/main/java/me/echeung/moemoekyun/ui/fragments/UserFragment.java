@@ -32,6 +32,7 @@ import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.api.v3.model.UserFavorites;
 import me.echeung.moemoekyun.api.v3.model.UserInfo;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
+import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
@@ -62,12 +63,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
 
-        final UserViewModel state = UserViewModel.getInstance();
+        final UserViewModel viewModel = App.getUserViewModel();
 
-        binding.userCard.setUserName(state.userName);
-        binding.userCard.setUserRequests(state.userRequests);
-        binding.userCard.setQueueSize(state.queueSize);
-        binding.userCard.setQueuePosition(state.queuePosition);
+        binding.userCard.setVm(viewModel);
 
         vLoginMsg = binding.loginMsg.container;
         vUserContent = binding.userContent;
@@ -199,7 +197,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 runOnUiThread(() -> {
                     final String userName = userInfo.getUsername();
 
-                    UserViewModel.getInstance().userName.set(userName);
+                    App.getUserViewModel().setUserName(userName);
 
                     // TODO: user avatars/banners are coming in v4
                 });
@@ -216,7 +214,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 runOnUiThread(() -> {
                     favorites = userFavorites.getSongs();
                     adapter.setSongs(favorites);
-                    UserViewModel.getInstance().userRequests.set(userFavorites.getExtra().getRequests());
+                    App.getUserViewModel().setUserRequests(userFavorites.getExtra().getRequests());
                 });
             }
         });

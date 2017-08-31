@@ -7,10 +7,10 @@ import com.google.gson.Gson;
 import me.echeung.moemoekyun.api.v3.model.PlaybackInfo;
 import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.constants.Endpoints;
+import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
-import me.echeung.moemoekyun.viewmodels.AppViewModel;
-import me.echeung.moemoekyun.viewmodels.UserViewModel;
+import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -108,7 +108,7 @@ public class RadioSocket  extends WebSocketListener {
     }
 
     private void parseWebSocketResponse(final String jsonString) {
-        final AppViewModel state = AppViewModel.getInstance();
+        final RadioViewModel state = App.getRadioViewModel();
 
         if (jsonString == null) {
             state.setCurrentSong(null);
@@ -136,8 +136,8 @@ public class RadioSocket  extends WebSocketListener {
 
                     state.setIsFavorited(extended.isFavorite());
 
-                    UserViewModel.getInstance().queueSize.set(extended.getQueue().getSongsInQueue());
-                    UserViewModel.getInstance().queuePosition.set(extended.getQueue().getInQueueBeforeUserSong());
+                    App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
+                    App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
                 }
 
                 service.sendPublicIntent(RadioService.META_CHANGED);

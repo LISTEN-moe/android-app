@@ -36,7 +36,6 @@ import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.SDKUtil;
-import me.echeung.moemoekyun.viewmodels.AppViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -58,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        binding.setIsConnected(AppViewModel.getInstance().getIsConnected());
+        binding.setVm(App.getRadioViewModel());
 
         // Check network connectivity
         binding.btnRetry.setOnClickListener(v -> retry());

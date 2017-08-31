@@ -4,14 +4,7 @@
     tools:context=".ui.activities.SearchActivity">
 
     <data>
-        <import type="android.view.View" />
-        <import type="android.text.TextUtils" />
-        <import type="android.databinding.ObservableBoolean" />
-        <import type="android.databinding.ObservableField" />
-
-        <variable name="hasResults" type="ObservableBoolean" />
-        <variable name="query" type="ObservableField&lt;String&gt;" />
-        <variable name="showClear" type="ObservableBoolean" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.SearchViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -65,7 +58,7 @@
                             android:padding="16dp"
                             android:scaleType="fitCenter"
                             android:src="@drawable/ic_cancel_white_24dp"
-                            android:visibility="@{showClear ? View.VISIBLE : View.GONE}" />
+                            android:visibility="@{vm.showClearButton}" />
 
                     </LinearLayout>
 
@@ -77,14 +70,14 @@
                 android:id="@+id/results_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{hasResults ? View.VISIBLE : View.GONE}" />
+                android:visibility="@{vm.hasResults}" />
 
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="@{hasResults ? View.GONE : View.VISIBLE}">
+                android:visibility="@{!vm.hasResults}">
 
                 <ImageView
                     android:id="@+id/search_placeholder"
@@ -98,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:gravity="center"
-                    android:text='@{TextUtils.isEmpty(query) ? "" :  @string/no_results(query)}'
+                    android:text='@{vm.query}'
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

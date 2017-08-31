@@ -1,26 +1,62 @@
 package me.echeung.moemoekyun.viewmodels;
 
-import android.databinding.BaseObservable;
-import android.databinding.ObservableBoolean;
-import android.databinding.ObservableField;
+import android.content.Context;
+import android.databinding.Bindable;
+import android.text.TextUtils;
 
-public class SearchViewModel extends BaseObservable {
+import com.android.databinding.library.baseAdapters.BR;
 
-    private static final SearchViewModel INSTANCE = new SearchViewModel();
+import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
-    public final ObservableBoolean hasResults = new ObservableBoolean(false);
-    public final ObservableField<String> query = new ObservableField<>();
-    public final ObservableBoolean showClear = new ObservableBoolean(false);
+public class SearchViewModel extends BaseViewModel {
 
-    private SearchViewModel() {}
+    public SearchViewModel(Context context) {
+        super(context);
+    }
 
-    public static SearchViewModel getInstance() {
-        return INSTANCE;
+    private boolean hasResults = false;
+    private String query;
+    private boolean showClearButton = false;
+
+    @Bindable
+    public boolean getHasResults() {
+        return hasResults;
+    }
+
+    public void setHasResults(boolean hasResults) {
+        this.hasResults = hasResults;
+        notifyPropertyChanged(BR.hasResults);
+    }
+
+    @Bindable
+    public String getQuery() {
+        final Context context = contextRef.get();
+        if (context == null || TextUtils.isEmpty(query)) {
+            return null;
+        }
+
+        return String.format(context.getString(R.string.no_results), query);
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
+        notifyPropertyChanged(BR.query);
+    }
+
+    @Bindable
+    public boolean getShowClearButton() {
+        return showClearButton;
+    }
+
+    public void setShowClearButton(boolean showClearButton) {
+        this.showClearButton = showClearButton;
+        notifyPropertyChanged(BR.showClearButton);
     }
 
     public void reset() {
-        INSTANCE.hasResults.set(false);
-        INSTANCE.showClear.set(false);
-        INSTANCE.query.set(null);
+        setHasResults(false);
+        setShowClearButton(false);
+        setQuery(null);
     }
 }

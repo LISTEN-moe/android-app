@@ -12,9 +12,9 @@ import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AuthUtil;
-import me.echeung.moemoekyun.viewmodels.AppViewModel;
 
 public class AppNotification {
 
@@ -34,7 +34,7 @@ public class AppNotification {
             return;
         }
 
-        final Song song = AppViewModel.getInstance().getCurrentSong();
+        final Song song = App.getRadioViewModel().getCurrentSong();
         if (song == null) {
             return;
         }

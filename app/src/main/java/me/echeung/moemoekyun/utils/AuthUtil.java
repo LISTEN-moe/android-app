@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import me.echeung.moemoekyun.viewmodels.UserViewModel;
+import me.echeung.moemoekyun.ui.App;
 
 /**
  * Helper class for handling authorization-related tasks. Helps with the storage of the auth token
@@ -81,7 +81,7 @@ public class AuthUtil {
                 .putLong(LAST_AUTH, 0);
         editor.apply();
 
-        UserViewModel.getInstance().clear();
+        App.getUserViewModel().reset();
     }
 
     /**

@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="android.text.TextUtils" />
-
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.AppViewModel" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
     </data>
 
     <LinearLayout
@@ -75,7 +73,7 @@
                     android:layout_marginBottom="16dp"
                     android:alpha="0.5"
                     android:fontFamily="sans-serif-light"
-                    android:text='@{TextUtils.isEmpty(vm.lastSong) ? "" : vm.lastSong}'
+                    android:text='@{vm.lastSong}'
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
@@ -86,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:alpha="0.25"
                     android:fontFamily="sans-serif-light"
-                    android:text='@{TextUtils.isEmpty(vm.secondLastSong) ? "" : vm.secondLastSong}'
+                    android:text='@{vm.secondLastSong}'
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />

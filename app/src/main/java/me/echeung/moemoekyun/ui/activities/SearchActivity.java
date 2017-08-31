@@ -22,6 +22,7 @@ import me.echeung.moemoekyun.api.v3.APIUtil;
 import me.echeung.moemoekyun.api.v3.interfaces.SearchListener;
 import me.echeung.moemoekyun.api.v3.model.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
+import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 
@@ -37,12 +38,10 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
-        final SearchViewModel state = SearchViewModel.getInstance();
-        state.reset();
+        final SearchViewModel viewModel = App.getSearchViewModel();
+        viewModel.reset();
 
-        binding.setHasResults(state.hasResults);
-        binding.setQuery(state.query);
-        binding.setShowClear(state.showClear);
+        binding.setVm(viewModel);
 
         // Set up app bar
         setSupportActionBar(binding.appbar);
@@ -64,7 +63,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
             @Override
             public void afterTextChanged(Editable editable) {
-                state.showClear.set(editable.length() != 0);
+                viewModel.setShowClearButton(editable.length() != 0);
             }
         });
 
@@ -112,8 +111,8 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
     private void updateResults(final String query, final List<Song> results) {
         adapter.setSongs(results);
-        SearchViewModel.getInstance().query.set(query);
-        SearchViewModel.getInstance().hasResults.set(results != null && results.size() != 0);
+        App.getSearchViewModel().setQuery(query);
+        App.getSearchViewModel().setHasResults(results != null && results.size() != 0);
     }
 
     @Override

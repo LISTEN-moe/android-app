@@ -1,42 +1,21 @@
 package me.echeung.moemoekyun.viewmodels;
 
-import android.databinding.BaseObservable;
+import android.content.Context;
 import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
-import android.view.View;
+import android.text.Spanned;
+import android.text.SpannedString;
+import android.text.TextUtils;
 
 import me.echeung.moemoekyun.BR;
+import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.utils.SDKUtil;
+import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
-public class AppViewModel extends BaseObservable {
+public class RadioViewModel extends BaseViewModel {
 
-    private static final AppViewModel INSTANCE = new AppViewModel();
-
-    public static AppViewModel getInstance() {
-        return INSTANCE;
-    }
-
-    private AppViewModel() {}
-
-
-    // Network connection
-    // ========================================================================
-
-    private boolean isConnected;
-
-    @Bindable
-    public boolean getIsConnected() {
-        return isConnected;
-    }
-
-    public void setIsConnected(boolean isConnected) {
-        this.isConnected = isConnected;
-        notifyPropertyChanged(BR.isConnected);
-    }
-
-    @BindingAdapter("android:visibility")
-    public static void setVisibility(View view, boolean visible) {
-        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    public RadioViewModel(Context context) {
+        super(context);
     }
 
 
@@ -44,7 +23,7 @@ public class AppViewModel extends BaseObservable {
     // ========================================================================
 
     private Song currentSong;
-    private boolean isPlaying;
+    private boolean isPlaying = false;
     private boolean isFavorited;
     private int listeners;
     private String requester;
@@ -91,8 +70,19 @@ public class AppViewModel extends BaseObservable {
     }
 
     @Bindable
-    public String getRequester() {
-        return requester;
+    public Spanned getRequester() {
+        final Context context = contextRef.get();
+        if (context == null || TextUtils.isEmpty(requester)) {
+            return null;
+        }
+
+        // If there's a space, it's probably an event
+        if (requester.contains(" ")) {
+            return new SpannedString(requester);
+        }
+
+        // Actual user requester
+        return SDKUtil.fromHtml(String.format(context.getString(R.string.requested_by), requester));
     }
 
     public void setRequester(String requester) {
@@ -120,7 +110,7 @@ public class AppViewModel extends BaseObservable {
 
     @Bindable
     public String getLastSong() {
-        return lastSong;
+        return TextUtils.isEmpty(lastSong) ? null : lastSong;
     }
 
     public void setLastSong(String lastSong) {
@@ -130,7 +120,7 @@ public class AppViewModel extends BaseObservable {
 
     @Bindable
     public String getSecondLastSong() {
-        return secondLastSong;
+        return TextUtils.isEmpty(secondLastSong) ? null : secondLastSong;
     }
 
     public void setSecondLastSong(String secondLastSong) {

@@ -3,14 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View" />
-        <import type="android.databinding.ObservableField" />
-        <import type="android.databinding.ObservableInt" />
-
-        <variable name="userName" type="ObservableField&lt;String&gt;" />
-        <variable name="userRequests" type="ObservableInt" />
-        <variable name="queueSize" type="ObservableInt" />
-        <variable name="queuePosition" type="ObservableInt" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
     </data>
 
     <RelativeLayout
@@ -31,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
-                android:text="@{userName ?? @string/connecting}"
+                android:text="@{vm.userName ?? @string/connecting}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
@@ -41,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@{@plurals/user_requests(userRequests, userRequests)}"
+                android:text="@{@plurals/user_requests(vm.userRequests, vm.userRequests)}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="14sp" />
@@ -51,11 +44,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-light"
-                android:text="@{@string/queue_info(queueSize, queuePosition)}"
+                android:text="@{@string/queue_info(vm.queueSize, vm.queuePosition)}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:visibility="@{queuePosition == 0 ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{vm.queuePosition != 0}" />
 
         </LinearLayout>
 
