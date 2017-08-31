@@ -2,14 +2,10 @@ package me.echeung.moemoekyun.service;
 
 import android.net.Uri;
 
-import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
-import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -44,22 +40,12 @@ public class RadioStream {
         final BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         final TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         final TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-        final LoadControl loadControl = new DefaultLoadControl();
+
         final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(service, Util.getUserAgent(service, service.getPackageName()));
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        final RenderersFactory renderersFactory = new DefaultRenderersFactory(service);
         final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
 
-        // TODO: simplify exoplayer init, possible memory leaks?
-//        DataSource dataSource = new DefaultHttpDataSource(Util.getUserAgent(this, getPackageName()), null);
-//        ExtractorMediaSource sampleSource = new ExtractorMediaSource(
-//                Uri.parse(Endpoints.STREAM), dataSource, new Mp3Extractor(), 1, 5000);
-//
-//        MediaCodecAudioRenderer audioRenderer = new MediaCodecAudioRenderer(sampleSource);
-//
-//        player = ExoPlayerFactory.newInstance(audioRenderer);
-
-        player = ExoPlayerFactory.newSimpleInstance(renderersFactory, trackSelector, loadControl);
+        player = ExoPlayerFactory.newSimpleInstance(service, trackSelector);
         player.prepare(streamSource);
 
         player.addListener(new Player.EventListener() {
