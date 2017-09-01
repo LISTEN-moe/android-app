@@ -98,9 +98,13 @@ public class MainActivity extends AppCompatActivity {
             sendBroadcast(stopIntent);
         }
 
-        viewPager.setAdapter(null);
+        if (viewPager != null) {
+            viewPager.setAdapter(null);
+        }
 
-        binding.unbind();
+        if (binding != null) {
+            binding.unbind();
+        }
 
         super.onDestroy();
     }

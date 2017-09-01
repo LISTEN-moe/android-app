@@ -148,7 +148,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             receiverRegistered = false;
         }
 
-        binding.unbind();
+        if (binding != null) {
+            binding.unbind();
+        }
 
         super.onDestroy();
     }

@@ -82,7 +82,9 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
     @Override
     protected void onDestroy() {
-        binding.unbind();
+        if (binding != null) {
+            binding.unbind();
+        }
 
         super.onDestroy();
     }

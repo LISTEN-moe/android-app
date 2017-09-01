@@ -59,7 +59,9 @@ public class RadioFragment extends TabFragment {
 
     @Override
     public void onDestroy() {
-        binding.unbind();
+        if (binding != null) {
+            binding.unbind();
+        }
 
         super.onDestroy();
     }
