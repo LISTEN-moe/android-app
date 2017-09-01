@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.api.v3;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -32,6 +33,8 @@ import okhttp3.Response;
  */
 public class APIUtil {
 
+    private static final String TAG = APIUtil.class.getSimpleName();
+
     private static final Gson GSON = new Gson();
 
     /**
@@ -55,7 +58,7 @@ public class APIUtil {
             RequestUtil.getClient().newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(final Call call, final IOException e) {
-                    e.printStackTrace();
+                    Log.e(TAG, e.getMessage(), e);
                     listener.onFailure(ResponseMessages.ERROR);
                 }
 
@@ -83,7 +86,7 @@ public class APIUtil {
                 }
             });
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
             listener.onFailure(ResponseMessages.ERROR);
         }
     }
@@ -108,7 +111,7 @@ public class APIUtil {
         RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
                 listener.onFailure(ResponseMessages.ERROR);
             }
 
@@ -140,7 +143,7 @@ public class APIUtil {
         RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
                 listener.onFailure(ResponseMessages.ERROR);
             }
 
@@ -180,7 +183,7 @@ public class APIUtil {
         RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
                 listener.onFailure(ResponseMessages.ERROR);
             }
 
@@ -220,7 +223,7 @@ public class APIUtil {
         RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
                 listener.onFailure(ResponseMessages.ERROR);
             }
 
@@ -262,7 +265,7 @@ public class APIUtil {
         RequestUtil.getClient().newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(final Call call, final IOException e) {
-                e.printStackTrace();
+                Log.e(TAG, e.getMessage(), e);
                 listener.onFailure(ResponseMessages.ERROR);
             }
 
@@ -290,7 +293,7 @@ public class APIUtil {
         try {
             return GSON.fromJson(jsonString, UserFavorites.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, e.getMessage(), e);
             return null;
         }
     }

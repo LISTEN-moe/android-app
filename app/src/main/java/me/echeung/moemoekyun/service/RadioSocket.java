@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.service;
 
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -18,6 +19,8 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 public class RadioSocket extends WebSocketListener {
+
+    private static final String TAG = RadioSocket.class.getSimpleName();
 
     private static final Gson GSON = new Gson();
 
@@ -47,19 +50,8 @@ public class RadioSocket extends WebSocketListener {
             socket.cancel();
             socket = null;
         }
+
         parseWebSocketResponse(null);
-    }
-
-    void reconnect() {
-        disconnect();
-
-        // Exponential backoff
-        SystemClock.sleep(retryTime);
-        if (retryTime < RETRY_TIME_MAX) {
-            retryTime *= 2;
-        }
-
-        connect();
     }
 
     void update() {
@@ -98,13 +90,25 @@ public class RadioSocket extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        t.printStackTrace();
+        Log.e(TAG, t.getMessage(), t);
         reconnect();
     }
 
     @Override
     public void	onClosed(WebSocket webSocket, int code, String reason) {
         reconnect();
+    }
+
+    private void reconnect() {
+        disconnect();
+
+        // Exponential backoff
+        SystemClock.sleep(retryTime);
+        if (retryTime < RETRY_TIME_MAX) {
+            retryTime *= 2;
+        }
+
+        connect();
     }
 
     private void parseWebSocketResponse(final String jsonString) {
