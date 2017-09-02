@@ -65,7 +65,7 @@ public class Song implements Parcelable {
     }
 
     public String getArtistAndAnime() {
-        final StringBuilder textBuilder = new StringBuilder();
+        final StringBuilder textBuilder = new StringBuilder("");
         textBuilder.append(artist);
 
         if (!TextUtils.isEmpty(anime)) {
