@@ -9,14 +9,21 @@ import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
 public class UserViewModel extends BaseViewModel {
 
-    public UserViewModel(Context context) {
-        super(context);
-    }
-
     private String userName;
     private int userRequests;
     private int queueSize;
     private int queuePosition;
+
+    public UserViewModel(Context context) {
+        super(context);
+    }
+
+    public void reset() {
+        setUserName(null);
+        setUserRequests(0);
+        setQueueSize(0);
+        setQueuePosition(0);
+    }
 
     @Bindable
     public String getUserName() {
@@ -56,12 +63,5 @@ public class UserViewModel extends BaseViewModel {
     public void setQueuePosition(int queuePosition) {
         this.queuePosition = queuePosition;
         notifyPropertyChanged(BR.queuePosition);
-    }
-
-    public void reset() {
-        setUserName(null);
-        setUserRequests(0);
-        setQueueSize(0);
-        setQueuePosition(0);
     }
 }

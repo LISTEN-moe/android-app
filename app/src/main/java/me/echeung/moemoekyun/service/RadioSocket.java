@@ -115,7 +115,7 @@ public class RadioSocket extends WebSocketListener {
         final RadioViewModel viewModel = App.getRadioViewModel();
 
         if (jsonString == null) {
-            viewModel.clear();
+            viewModel.reset();
         } else {
             final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 

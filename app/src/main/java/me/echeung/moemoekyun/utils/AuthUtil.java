@@ -63,10 +63,10 @@ public class AuthUtil {
      */
     public static void setAuthToken(final Context context, final String token) {
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        final SharedPreferences.Editor editor = sharedPrefs.edit()
+        sharedPrefs.edit()
                 .putString(USER_TOKEN, token)
-                .putLong(LAST_AUTH, System.currentTimeMillis() / 1000);
-        editor.apply();
+                .putLong(LAST_AUTH, System.currentTimeMillis() / 1000)
+                .apply();
     }
 
     /**
@@ -76,10 +76,10 @@ public class AuthUtil {
      */
     public static void clearAuthToken(final Context context) {
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        final SharedPreferences.Editor editor = sharedPrefs.edit()
+        sharedPrefs.edit()
                 .putString(USER_TOKEN, null)
-                .putLong(LAST_AUTH, 0);
-        editor.apply();
+                .putLong(LAST_AUTH, 0)
+                .apply();
 
         App.getUserViewModel().reset();
     }

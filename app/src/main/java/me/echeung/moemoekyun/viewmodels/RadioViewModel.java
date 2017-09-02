@@ -1,7 +1,9 @@
 package me.echeung.moemoekyun.viewmodels;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.databinding.Bindable;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import me.echeung.moemoekyun.BR;
@@ -11,19 +13,42 @@ import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
 public class RadioViewModel extends BaseViewModel {
 
+    private static final String SHOW_HISTORY = "pref_show_history";
+
+    private final SharedPreferences sharedPrefs;
+
+    private Song currentSong;
+    private boolean isPlaying;
+    private boolean isFavorited;
+    private int listeners;
+    private String requester;
+
+    private boolean showHistory;
+    private String lastSong;
+    private String secondLastSong;
+
     public RadioViewModel(Context context) {
         super(context);
+
+        // Defaults
+        isPlaying = false;
+
+        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        showHistory = sharedPrefs.getBoolean(SHOW_HISTORY, false);
+    }
+
+    public void reset() {
+        setCurrentSong(null);
+        setLastSong(null);
+        setSecondLastSong(null);
+
+        setListeners(0);
+        setRequester(null);
     }
 
 
     // Play state
     // ========================================================================
-
-    private Song currentSong;
-    private boolean isPlaying = false;
-    private boolean isFavorited;
-    private int listeners;
-    private String requester;
 
     @Bindable
     public Song getCurrentSong() {
@@ -91,10 +116,6 @@ public class RadioViewModel extends BaseViewModel {
     // History
     // ========================================================================
 
-    private boolean showHistory;
-    private String lastSong;
-    private String secondLastSong;
-
     @Bindable
     public boolean getShowHistory() {
         return showHistory;
@@ -103,6 +124,10 @@ public class RadioViewModel extends BaseViewModel {
     public void toggleShowHistory() {
         showHistory = !showHistory;
         notifyPropertyChanged(BR.showHistory);
+
+        sharedPrefs.edit()
+                .putBoolean(SHOW_HISTORY, showHistory)
+                .apply();
     }
 
     @Bindable
@@ -123,18 +148,5 @@ public class RadioViewModel extends BaseViewModel {
     public void setSecondLastSong(String secondLastSong) {
         this.secondLastSong = secondLastSong;
         notifyPropertyChanged(BR.secondLastSong);
-    }
-
-
-    // Helpers
-    // ========================================================================
-    
-    public void clear() {
-        setCurrentSong(null);
-        setLastSong(null);
-        setSecondLastSong(null);
-
-        setListeners(0);
-        setRequester(null);
     }
 }

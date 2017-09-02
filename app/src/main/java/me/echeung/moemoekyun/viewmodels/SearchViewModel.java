@@ -11,13 +11,23 @@ import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
 public class SearchViewModel extends BaseViewModel {
 
+    private boolean hasResults;
+    private String query;
+    private boolean showClearButton;
+
     public SearchViewModel(Context context) {
         super(context);
+
+        // Defaults
+        hasResults = false;
+        showClearButton = false;
     }
 
-    private boolean hasResults = false;
-    private String query;
-    private boolean showClearButton = false;
+    public void reset() {
+        setHasResults(false);
+        setShowClearButton(false);
+        setQuery(null);
+    }
 
     @Bindable
     public boolean getHasResults() {
@@ -52,11 +62,5 @@ public class SearchViewModel extends BaseViewModel {
     public void setShowClearButton(boolean showClearButton) {
         this.showClearButton = showClearButton;
         notifyPropertyChanged(BR.showClearButton);
-    }
-
-    public void reset() {
-        setHasResults(false);
-        setShowClearButton(false);
-        setQuery(null);
     }
 }
