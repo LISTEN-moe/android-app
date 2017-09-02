@@ -53,6 +53,7 @@
     <string name="requested_by">Requested by: %s</string>
 
     <!-- User tab -->
+    <string name="no_favorites">No favorites yet</string>
     <string name="filter_favorites">Filter favorites</string>
     <string name="unfavorited">Unfavorited %s</string>
     <string name="queue_info">%d in queue, %d before yours</string>

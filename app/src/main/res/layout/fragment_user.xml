@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.UserFragment">
 
-    <data />
+    <data>
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
+    </data>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,13 +30,15 @@
 
                 <include
                     android:id="@+id/user_card"
-                    layout="@layout/user_card" />
+                    layout="@layout/user_card"
+                    binding:vm="@{vm}" />
 
             </FrameLayout>
 
             <include
                 android:id="@+id/favorites"
-                layout="@layout/user_favorites" />
+                layout="@layout/user_favorites"
+                binding:vm="@{vm}" />
 
         </LinearLayout>
 

@@ -65,7 +65,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
         final UserViewModel viewModel = App.getUserViewModel();
 
-        binding.userCard.setVm(viewModel);
+        binding.setVm(viewModel);
 
         vLoginMsg = binding.loginMsg.container;
         vUserContent = binding.userContent;
@@ -216,7 +216,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 runOnUiThread(() -> {
                     favorites = userFavorites.getSongs();
                     adapter.setSongs(favorites);
+
                     App.getUserViewModel().setUserRequests(userFavorites.getExtra().getRequests());
+                    App.getUserViewModel().setHasFavorites(!favorites.isEmpty());
                 });
             }
         });

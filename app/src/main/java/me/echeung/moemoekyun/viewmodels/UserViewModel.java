@@ -13,6 +13,7 @@ public class UserViewModel extends BaseViewModel {
     private int userRequests;
     private int queueSize;
     private int queuePosition;
+    private boolean hasFavorites;
 
     public UserViewModel(Context context) {
         super(context);
@@ -23,6 +24,7 @@ public class UserViewModel extends BaseViewModel {
         setUserRequests(0);
         setQueueSize(0);
         setQueuePosition(0);
+        setHasFavorites(false);
     }
 
     @Bindable
@@ -63,5 +65,15 @@ public class UserViewModel extends BaseViewModel {
     public void setQueuePosition(int queuePosition) {
         this.queuePosition = queuePosition;
         notifyPropertyChanged(BR.queuePosition);
+    }
+
+    @Bindable
+    public boolean getHasFavorites() {
+        return hasFavorites;
+    }
+
+    public void setHasFavorites(boolean hasFavorites) {
+        this.hasFavorites = hasFavorites;
+        notifyPropertyChanged(BR.hasFavorites);
     }
 }
