@@ -50,7 +50,7 @@
     <string name="play_pause">Play/pause</string>
     <string name="history">History</string>
     <string name="favorite">Favorite</string>
-    <string name="requested_by"><![CDATA[Requested by: <a href="https://forum.listen.moe/u/%1$s">%1$s</a>]]></string>
+    <string name="requested_by">Requested by: %s</string>
 
     <!-- User tab -->
     <string name="filter_favorites">Filter favorites</string>

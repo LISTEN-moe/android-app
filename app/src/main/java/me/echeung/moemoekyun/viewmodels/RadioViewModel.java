@@ -2,14 +2,11 @@ package me.echeung.moemoekyun.viewmodels;
 
 import android.content.Context;
 import android.databinding.Bindable;
-import android.text.Spanned;
-import android.text.SpannedString;
 import android.text.TextUtils;
 
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.v3.model.Song;
-import me.echeung.moemoekyun.utils.SDKUtil;
 import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
 public class RadioViewModel extends BaseViewModel {
@@ -70,7 +67,7 @@ public class RadioViewModel extends BaseViewModel {
     }
 
     @Bindable
-    public Spanned getRequester() {
+    public String getRequester() {
         final Context context = contextRef.get();
         if (context == null || TextUtils.isEmpty(requester)) {
             return null;
@@ -78,11 +75,11 @@ public class RadioViewModel extends BaseViewModel {
 
         // If there's a space, it's probably an event
         if (requester.contains(" ")) {
-            return new SpannedString(requester);
+            return requester;
         }
 
         // Actual user requester
-        return SDKUtil.fromHtml(String.format(context.getString(R.string.requested_by), requester));
+        return String.format(context.getString(R.string.requested_by), requester);
     }
 
     public void setRequester(String requester) {
