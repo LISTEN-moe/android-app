@@ -73,24 +73,21 @@ class AppNotification {
         final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setShowWhen(false)
+                .setOnlyAlertOnce(true)
+                .setStyle(new MediaStyle().setShowActionsInCompactView(0, 1))
+                .setColor(ContextCompat.getColor(service, R.color.colorAccent))
                 .setSmallIcon(R.drawable.icon_notification)
                 .setContentTitle(song.getTitle())
                 .setContentText(text)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .setOngoing(isPlaying)
-                .setShowWhen(false)
                 .addAction(playPauseAction)
                 .addAction(favoriteAction);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            builder.setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-            builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1));
-            builder.setColor(ContextCompat.getColor(service, R.color.colorAccent));
-        }
 
         final Notification notification = builder.build();
 
