@@ -14,10 +14,10 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
 import me.echeung.moemoekyun.BuildConfig;
-import me.echeung.moemoekyun.api.v3.APIUtil;
-import me.echeung.moemoekyun.api.v3.ResponseMessages;
-import me.echeung.moemoekyun.api.v3.interfaces.FavoriteSongListener;
-import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.api.APIClient;
+import me.echeung.moemoekyun.api.ResponseMessages;
+import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
+import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
@@ -353,7 +353,7 @@ public class RadioService extends Service {
             return;
         }
 
-        APIUtil.favoriteSong(getApplicationContext(), songId, new FavoriteSongListener() {
+        APIClient.favoriteSong(getApplicationContext(), songId, new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
                 if (result.equals(ResponseMessages.AUTH_FAILURE)) {

@@ -25,12 +25,12 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.api.v3.APIUtil;
-import me.echeung.moemoekyun.api.v3.interfaces.UserFavoritesListener;
-import me.echeung.moemoekyun.api.v3.interfaces.UserInfoListener;
-import me.echeung.moemoekyun.api.v3.model.Song;
-import me.echeung.moemoekyun.api.v3.model.UserFavorites;
-import me.echeung.moemoekyun.api.v3.model.UserInfo;
+import me.echeung.moemoekyun.api.APIClient;
+import me.echeung.moemoekyun.api.interfaces.UserFavoritesListener;
+import me.echeung.moemoekyun.api.interfaces.UserInfoListener;
+import me.echeung.moemoekyun.api.models.Song;
+import me.echeung.moemoekyun.api.models.UserFavorites;
+import me.echeung.moemoekyun.api.models.UserInfo;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
@@ -189,7 +189,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             return;
         }
 
-        APIUtil.getUserInfo(getContext(), new UserInfoListener() {
+        APIClient.getUserInfo(getContext(), new UserInfoListener() {
             @Override
             public void onFailure(final String result) {
             }
@@ -206,7 +206,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
         });
 
-        APIUtil.getUserFavorites(getContext(), new UserFavoritesListener() {
+        APIClient.getUserFavorites(getContext(), new UserFavoritesListener() {
             @Override
             public void onFailure(final String result) {
             }

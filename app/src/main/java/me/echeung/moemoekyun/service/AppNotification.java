@@ -5,13 +5,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AuthUtil;

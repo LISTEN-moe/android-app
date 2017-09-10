@@ -18,9 +18,9 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.api.v3.APIUtil;
-import me.echeung.moemoekyun.api.v3.interfaces.SearchListener;
-import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.api.APIClient;
+import me.echeung.moemoekyun.api.interfaces.SearchListener;
+import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
@@ -93,7 +93,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         final String query = textView.getText().toString().trim();
 
         if (!TextUtils.isEmpty(query)) {
-            APIUtil.search(getBaseContext(), query, new SearchListener() {
+            APIClient.search(getBaseContext(), query, new SearchListener() {
                 @Override
                 public void onFailure(final String result) {
                     updateResults(query, null);

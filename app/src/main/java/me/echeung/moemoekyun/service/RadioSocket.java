@@ -5,8 +5,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import me.echeung.moemoekyun.api.v3.model.PlaybackInfo;
-import me.echeung.moemoekyun.api.v3.model.Song;
+import me.echeung.moemoekyun.api.models.PlaybackInfo;
+import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.AuthUtil;

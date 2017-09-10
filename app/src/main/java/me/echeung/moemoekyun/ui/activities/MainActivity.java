@@ -26,9 +26,9 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
-import me.echeung.moemoekyun.api.v3.APIUtil;
-import me.echeung.moemoekyun.api.v3.ResponseMessages;
-import me.echeung.moemoekyun.api.v3.interfaces.AuthListener;
+import me.echeung.moemoekyun.api.APIClient;
+import me.echeung.moemoekyun.api.ResponseMessages;
+import me.echeung.moemoekyun.api.interfaces.AuthListener;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
      * @param listener Used to run something after a successful login.
      */
     private void login(final String user, final String pass, final DialogInterface dialog, final OnLoginListener listener) {
-        APIUtil.authenticate(this, user, pass, new AuthListener() {
+        APIClient.authenticate(this, user, pass, new AuthListener() {
             @Override
             public void onFailure(final String result) {
                 runOnUiThread(() -> {
