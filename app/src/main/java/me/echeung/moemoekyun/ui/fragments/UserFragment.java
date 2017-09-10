@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.api.APIClient;
@@ -32,7 +33,6 @@ import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.api.models.UserFavorites;
 import me.echeung.moemoekyun.api.models.UserInfo;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
-import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;

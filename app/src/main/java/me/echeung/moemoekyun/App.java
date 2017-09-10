@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.ui;
+package me.echeung.moemoekyun;
 
 import android.app.Application;
 import android.content.ComponentName;

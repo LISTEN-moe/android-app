@@ -4,7 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import me.echeung.moemoekyun.ui.App;
+import me.echeung.moemoekyun.App;
 
 public class NetworkUtil {
 

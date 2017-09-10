@@ -5,10 +5,10 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.api.models.PlaybackInfo;
 import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.constants.Endpoints;
-import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;

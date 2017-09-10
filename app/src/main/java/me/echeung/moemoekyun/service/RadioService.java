@@ -13,12 +13,12 @@ import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.api.responses.Messages;
-import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;

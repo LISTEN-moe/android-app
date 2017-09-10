@@ -16,13 +16,13 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.interfaces.SearchListener;
 import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
-import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 

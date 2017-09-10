@@ -7,13 +7,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.interfaces.RequestSongListener;
 import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.api.responses.Messages;
-import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public class SongActionsUtil {
