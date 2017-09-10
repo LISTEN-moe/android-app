@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.interfaces.RequestSongListener;
 import me.echeung.moemoekyun.api.models.Song;
@@ -25,7 +24,7 @@ public class SongActionsUtil {
      */
     public static void favorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
         final int songId = song.getId();
-        APIClient.favoriteSong(activity, songId, new FavoriteSongListener() {
+        App.getApiClient().favoriteSong(activity, songId, new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
                 if (activity != null) {
@@ -71,7 +70,7 @@ public class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
-        APIClient.requestSong(activity, song.getId(), new RequestSongListener() {
+        App.getApiClient().requestSong(activity, song.getId(), new RequestSongListener() {
             @Override
             public void onFailure(final String result) {
                 if (activity != null) {

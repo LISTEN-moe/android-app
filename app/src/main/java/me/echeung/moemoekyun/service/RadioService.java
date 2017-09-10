@@ -15,7 +15,6 @@ import android.view.KeyEvent;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
-import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.api.responses.Messages;
@@ -355,7 +354,7 @@ public class RadioService extends Service {
             return;
         }
 
-        APIClient.favoriteSong(getApplicationContext(), songId, new FavoriteSongListener() {
+        App.getApiClient().favoriteSong(getApplicationContext(), songId, new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
                 if (result.equals(Messages.AUTH_FAILURE)) {

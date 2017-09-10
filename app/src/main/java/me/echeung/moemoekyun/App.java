@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
+import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
@@ -17,6 +18,8 @@ public class App extends Application {
     private static RadioService service;
     private static boolean isServiceBound = false;
 
+    private static APIClient apiClient;
+
     private static RadioViewModel radioViewModel;
     private static SearchViewModel searchViewModel;
     private static UserViewModel userViewModel;
@@ -25,14 +28,21 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // Initialize the service
+        // Music player service
         Intent intent = new Intent(this, RadioService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT );
 
-        // Initialize the view models
+        // API client
+        apiClient = new APIClient();
+
+        // UI view models
         radioViewModel = new RadioViewModel(this);
         searchViewModel = new SearchViewModel(this);
         userViewModel = new UserViewModel(this);
+    }
+
+    public static APIClient getApiClient() {
+        return apiClient;
     }
 
     public static RadioViewModel getRadioViewModel() {

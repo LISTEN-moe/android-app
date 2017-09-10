@@ -26,7 +26,6 @@ import java.util.List;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.interfaces.UserFavoritesListener;
 import me.echeung.moemoekyun.api.interfaces.UserInfoListener;
 import me.echeung.moemoekyun.api.models.Song;
@@ -189,7 +188,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             return;
         }
 
-        APIClient.getUserInfo(getContext(), new UserInfoListener() {
+        App.getApiClient().getUserInfo(getContext(), new UserInfoListener() {
             @Override
             public void onFailure(final String result) {
             }
@@ -206,7 +205,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
         });
 
-        APIClient.getUserFavorites(getContext(), new UserFavoritesListener() {
+        App.getApiClient().getUserFavorites(getContext(), new UserFavoritesListener() {
             @Override
             public void onFailure(final String result) {
             }

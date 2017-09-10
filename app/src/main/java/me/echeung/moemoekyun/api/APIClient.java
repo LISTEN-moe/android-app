@@ -128,7 +128,7 @@ public class APIClient {
      * @param password User's password.
      * @param listener Listener to handle the response.
      */
-    public static void authenticate(final Context context, final String username, final String password, final AuthListener listener) {
+    public void authenticate(final Context context, final String username, final String password, final AuthListener listener) {
         try {
             final String usernameE = URLEncoder.encode(username.trim(), "UTF-8");
             final String passwordE = URLEncoder.encode(password.trim(), "UTF-8");
@@ -180,7 +180,7 @@ public class APIClient {
      * @param context  Android context to fetch SharedPreferences.
      * @param listener Listener to handle the response.
      */
-    public static void getUserInfo(final Context context, final UserInfoListener listener) {
+    public void getUserInfo(final Context context, final UserInfoListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
             listener.onFailure(Messages.AUTH_ERROR);
             return;
@@ -212,7 +212,7 @@ public class APIClient {
      * @param context  Android context to fetch SharedPreferences.
      * @param listener Listener to handle the response.
      */
-    public static void getUserFavorites(final Context context, final UserFavoritesListener listener) {
+    public void getUserFavorites(final Context context, final UserFavoritesListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
             listener.onFailure(Messages.AUTH_ERROR);
             return;
@@ -231,7 +231,7 @@ public class APIClient {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                final UserFavorites userFavorites = APIClient.parseSongJson(context, response.body().string());
+                final UserFavorites userFavorites = parseSongJson(context, response.body().string());
                 if (userFavorites == null) {
                     listener.onFailure(Messages.ERROR);
                     return;
@@ -252,7 +252,7 @@ public class APIClient {
      * @param songId   Song to toggle.
      * @param listener Listener to handle the response.
      */
-    public static void favoriteSong(final Context context, final int songId, final FavoriteSongListener listener) {
+    public void favoriteSong(final Context context, final int songId, final FavoriteSongListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
             listener.onFailure(Messages.AUTH_ERROR);
             return;
@@ -292,7 +292,7 @@ public class APIClient {
      * @param songId   Song to request.
      * @param listener Listener to handle the response.
      */
-    public static void requestSong(final Context context, final int songId, final RequestSongListener listener) {
+    public void requestSong(final Context context, final int songId, final RequestSongListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
             listener.onFailure(Messages.AUTH_ERROR);
             return;
@@ -334,7 +334,7 @@ public class APIClient {
      * @param query    Search query string.
      * @param listener Listener to handle the response.
      */
-    public static void search(final Context context, final String query, final SearchListener listener) {
+    public void search(final Context context, final String query, final SearchListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
             listener.onFailure(Messages.AUTH_ERROR);
             return;
@@ -353,7 +353,7 @@ public class APIClient {
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
-                final UserFavorites userFavorites = APIClient.parseSongJson(context, response.body().string());
+                final UserFavorites userFavorites = parseSongJson(context, response.body().string());
                 listener.onSuccess(userFavorites.getSongs());
             }
         });
@@ -366,7 +366,7 @@ public class APIClient {
      * @param jsonString JSON returned from the API.
      * @return A UserFavorites object, or null if there was an authentication error.
      */
-    private static UserFavorites parseSongJson(final Context context, final String jsonString) {
+    private UserFavorites parseSongJson(final Context context, final String jsonString) {
         if (jsonString.contains(Messages.AUTH_FAILURE)) {
             AuthUtil.clearAuthToken(context);
             return null;
