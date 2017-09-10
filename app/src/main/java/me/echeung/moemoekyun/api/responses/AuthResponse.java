@@ -1,17 +1,17 @@
-package me.echeung.moemoekyun.api.models;
+package me.echeung.moemoekyun.api.responses;
 
 public class AuthResponse {
 
     private boolean success;
+    private String message;
     private String token;
-
-    public AuthResponse(boolean success, String token) {
-        this.success = success;
-        this.token = token;
-    }
 
     public boolean isSuccess() {
         return success;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     public String getToken() {

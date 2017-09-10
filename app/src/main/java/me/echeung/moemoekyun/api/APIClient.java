@@ -15,18 +15,24 @@ import me.echeung.moemoekyun.api.interfaces.RequestSongListener;
 import me.echeung.moemoekyun.api.interfaces.SearchListener;
 import me.echeung.moemoekyun.api.interfaces.UserFavoritesListener;
 import me.echeung.moemoekyun.api.interfaces.UserInfoListener;
-import me.echeung.moemoekyun.api.models.AuthResponse;
 import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.api.models.UserFavorites;
 import me.echeung.moemoekyun.api.models.UserInfo;
+import me.echeung.moemoekyun.api.responses.AuthResponse;
+import me.echeung.moemoekyun.api.services.AuthService;
+import me.echeung.moemoekyun.api.services.SongsService;
+import me.echeung.moemoekyun.api.services.UserService;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Helper class for performing LISTEN.moe API calls.
@@ -34,6 +40,82 @@ import okhttp3.Response;
 public class APIClient {
 
     private static final String TAG = APIClient.class.getSimpleName();
+
+    private static final String BASE_URL = "https://listen.moe/api/";
+
+    private static final String HEADER_USER_AGENT = "User-Agent";
+    private static final String USER_AGENT = "me.echeung.moemoekyun";
+
+    private final AuthService authService;
+    private final SongsService songsService;
+    private final UserService userService;
+
+    public APIClient() {
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addNetworkInterceptor(chain -> {
+                    final Request request = chain.request();
+
+                    final Request newRequest = request.newBuilder()
+                            .addHeader(HEADER_USER_AGENT, USER_AGENT)
+                            .build();
+
+                    return chain.proceed(newRequest);
+                })
+                .build();
+
+        final Retrofit restAdapter = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(okHttpClient)
+                .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        authService = restAdapter.create(AuthService.class);
+        songsService = restAdapter.create(SongsService.class);
+        userService = restAdapter.create(UserService.class);
+    }
+
+    public AuthService getAuthService() {
+        return authService;
+    }
+
+    public SongsService getSongsService() {
+        return songsService;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    /*
+    MyCall<Ip> ip = service.getIp();
+    ip.enqueue(new MyCallback<Ip>() {
+      @Override public void success(Response<Ip> response) {
+        System.out.println("SUCCESS! " + response.body().origin);
+      }
+
+      @Override public void unauthenticated(Response<?> response) {
+        System.out.println("UNAUTHENTICATED");
+      }
+
+      @Override public void clientError(Response<?> response) {
+        System.out.println("CLIENT ERROR " + response.code() + " " + response.message());
+      }
+
+      @Override public void serverError(Response<?> response) {
+        System.out.println("SERVER ERROR " + response.code() + " " + response.message());
+      }
+
+      @Override public void networkError(IOException e) {
+        System.err.println("NETOWRK ERROR " + e.getMessage());
+      }
+
+      @Override public void unexpectedError(Throwable t) {
+        System.err.println("FATAL ERROR " + t.getMessage());
+      }
+    });
+     */
+
 
     private static final Gson GSON = new Gson();
 

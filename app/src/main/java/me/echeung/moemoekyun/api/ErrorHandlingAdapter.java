@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.v4;
+package me.echeung.moemoekyun.api;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
