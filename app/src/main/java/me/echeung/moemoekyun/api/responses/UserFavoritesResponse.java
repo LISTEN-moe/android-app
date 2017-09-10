@@ -1,9 +1,10 @@
-package me.echeung.moemoekyun.api.models;
+package me.echeung.moemoekyun.api.responses;
 
 import java.util.List;
 
-public class UserFavorites {
+import me.echeung.moemoekyun.api.models.Song;
 
+public class UserFavoritesResponse extends BaseResponse {
     private List<Song> songs;
     private SongsExtra extra;
 

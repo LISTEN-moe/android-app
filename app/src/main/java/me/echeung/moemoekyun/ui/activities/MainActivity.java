@@ -29,7 +29,6 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.api.interfaces.AuthListener;
 import me.echeung.moemoekyun.api.responses.Messages;
-import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.AuthUtil;
@@ -216,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_browser:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(Endpoints.SITE));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://listen.moe/"));
                 startActivity(browserIntent);
                 return true;
 
@@ -240,6 +239,8 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(R.string.login, null)
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
+
+        // TODO: don't close dialog if login failed
 
         // Override the positive button listener so it won't automatically be dismissed even with
         // an error

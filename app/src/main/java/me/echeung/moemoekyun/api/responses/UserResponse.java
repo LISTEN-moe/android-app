@@ -1,7 +1,6 @@
-package me.echeung.moemoekyun.api.models;
+package me.echeung.moemoekyun.api.responses;
 
-public class UserInfo {
-
+public class UserResponse extends BaseResponse {
     private int id;
     private String username;
 

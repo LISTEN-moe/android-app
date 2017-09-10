@@ -1,15 +1,15 @@
 package me.echeung.moemoekyun.api.services;
 
-import me.echeung.moemoekyun.api.models.UserFavorites;
-import me.echeung.moemoekyun.api.models.UserInfo;
-import retrofit2.Call;
+import me.echeung.moemoekyun.api.ErrorHandlingAdapter;
+import me.echeung.moemoekyun.api.responses.UserFavoritesResponse;
+import me.echeung.moemoekyun.api.responses.UserResponse;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 
 public interface UserService {
     @GET("user")
-    Call<UserInfo> user(@Header("authorization") String token);
+    ErrorHandlingAdapter.WrappedCall<UserResponse> getUserInfo(@Header("authorization") String token);
 
     @GET("user/favorites")
-    Call<UserFavorites> favorites(@Header("authorization") String token);
+    ErrorHandlingAdapter.WrappedCall<UserFavoritesResponse> getFavorites(@Header("authorization") String token);
 }

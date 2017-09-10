@@ -1,6 +1,6 @@
 package me.echeung.moemoekyun.api.responses;
 
-public class FavoriteResponse {
+public class FavoriteResponse extends BaseResponse {
     private boolean favorite;
 
     public boolean isFavorite() {

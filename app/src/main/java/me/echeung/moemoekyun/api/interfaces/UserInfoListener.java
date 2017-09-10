@@ -1,8 +1,8 @@
 package me.echeung.moemoekyun.api.interfaces;
 
-import me.echeung.moemoekyun.api.models.UserInfo;
+import me.echeung.moemoekyun.api.responses.UserResponse;
 
 public interface UserInfoListener {
     void onFailure(final String result);
-    void onSuccess(final UserInfo userInfo);
+    void onSuccess(final UserResponse userResponse);
 }

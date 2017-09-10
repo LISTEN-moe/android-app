@@ -24,9 +24,10 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import me.echeung.moemoekyun.constants.Endpoints;
-
 public class RadioStream {
+
+    // Vorbis: /stream, Opus: /opus, mp3: /fallback
+    private static final String STREAM_URL = "https://listen.moe/fallback";
 
     private RadioService service;
     private SimpleExoPlayer player;
@@ -78,7 +79,7 @@ public class RadioStream {
 
         final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(service, Util.getUserAgent(service, service.getPackageName()));
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(Endpoints.STREAM), dataSourceFactory, extractorsFactory, null, null);
+        final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(STREAM_URL), dataSourceFactory, extractorsFactory, null, null);
 
         player = ExoPlayerFactory.newSimpleInstance(service, trackSelector);
         player.prepare(streamSource);

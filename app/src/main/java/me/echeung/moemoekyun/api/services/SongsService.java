@@ -1,20 +1,24 @@
 package me.echeung.moemoekyun.api.services;
 
-import me.echeung.moemoekyun.api.models.UserFavorites;
+import me.echeung.moemoekyun.api.ErrorHandlingAdapter;
+import me.echeung.moemoekyun.api.responses.BaseResponse;
 import me.echeung.moemoekyun.api.responses.FavoriteResponse;
-import me.echeung.moemoekyun.api.responses.RequestResponse;
-import retrofit2.Call;
+import me.echeung.moemoekyun.api.responses.SearchResponse;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 public interface SongsService {
-    @POST("songs/favourite")
-    Call<FavoriteResponse> favorite(@Header("authorization") String token, @Query("song") int songId);
+    @FormUrlEncoded
+    @POST("songs/favorite")
+    ErrorHandlingAdapter.WrappedCall<FavoriteResponse> favorite(@Header("authorization") String token, @Field("song") int songId);
 
+    @FormUrlEncoded
     @POST("songs/request")
-    Call<RequestResponse> request(@Header("authorization") String token, @Query("song") int songId);
+    ErrorHandlingAdapter.WrappedCall<BaseResponse> request(@Header("authorization") String token, @Field("song") int songId);
 
+    @FormUrlEncoded
     @POST("songs/search")
-    Call<UserFavorites> search(@Header("authorization") String token, @Query("query") String query);
+    ErrorHandlingAdapter.WrappedCall<SearchResponse> search(@Header("authorization") String token, @Field("query") String query);
 }

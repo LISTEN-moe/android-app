@@ -8,7 +8,6 @@ import com.google.gson.Gson;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.api.models.PlaybackInfo;
 import me.echeung.moemoekyun.api.models.Song;
-import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
@@ -22,10 +21,12 @@ public class RadioSocket extends WebSocketListener {
 
     private static final String TAG = RadioSocket.class.getSimpleName();
 
-    private static final Gson GSON = new Gson();
+    private static final String SOCKET_URL = "wss://listen.moe/api/v2/socket";
 
     private static final int RETRY_TIME_MIN = 250;
     private static final int RETRY_TIME_MAX = 4000;
+
+    private static final Gson GSON = new Gson();
 
     private RadioService service;
 
@@ -41,7 +42,7 @@ public class RadioSocket extends WebSocketListener {
             return;
         }
 
-        final Request request = new Request.Builder().url(Endpoints.SOCKET).build();
+        final Request request = new Request.Builder().url(SOCKET_URL).build();
         socket = new OkHttpClient().newWebSocket(request, this);
     }
 

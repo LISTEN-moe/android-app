@@ -29,8 +29,8 @@ import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.api.interfaces.UserFavoritesListener;
 import me.echeung.moemoekyun.api.interfaces.UserInfoListener;
 import me.echeung.moemoekyun.api.models.Song;
-import me.echeung.moemoekyun.api.models.UserFavorites;
-import me.echeung.moemoekyun.api.models.UserInfo;
+import me.echeung.moemoekyun.api.responses.UserFavoritesResponse;
+import me.echeung.moemoekyun.api.responses.UserResponse;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
@@ -194,9 +194,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
 
             @Override
-            public void onSuccess(final UserInfo userInfo) {
+            public void onSuccess(final UserResponse userResponse) {
                 runOnUiThread(() -> {
-                    final String userName = userInfo.getUsername();
+                    final String userName = userResponse.getUsername();
 
                     App.getUserViewModel().setUserName(userName);
 
@@ -211,7 +211,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
 
             @Override
-            public void onSuccess(final UserFavorites userFavorites) {
+            public void onSuccess(final UserFavoritesResponse userFavorites) {
                 runOnUiThread(() -> {
                     favorites = userFavorites.getSongs();
                     adapter.setSongs(favorites);
