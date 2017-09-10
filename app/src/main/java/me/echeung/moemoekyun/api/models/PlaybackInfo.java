@@ -20,27 +20,6 @@ public class PlaybackInfo extends BasicTrack {
     private BasicTrack secondLast;
     private ExtendedInfo extended;
 
-    public PlaybackInfo(String artistName, String songName, int songId, String animeName, String requestedBy, int listeners, BasicTrack last, BasicTrack secondLast) {
-        super(artistName, songName);
-        this.songId = songId;
-        this.animeName = animeName;
-        this.requestedBy = requestedBy;
-        this.listeners = listeners;
-        this.last = last;
-        this.secondLast = secondLast;
-    }
-
-    public PlaybackInfo(String artistName, String songName, int songId, String animeName, String requestedBy, int listeners, BasicTrack last, BasicTrack secondLast, ExtendedInfo extended) {
-        super(artistName, songName);
-        this.songId = songId;
-        this.animeName = animeName;
-        this.requestedBy = requestedBy;
-        this.listeners = listeners;
-        this.last = last;
-        this.secondLast = secondLast;
-        this.extended = extended;
-    }
-
     public int getSongId() {
         return songId;
     }
@@ -81,11 +60,6 @@ public class PlaybackInfo extends BasicTrack {
         private boolean favorite;
         private QueueInfo queue;
 
-        public ExtendedInfo(boolean favorite, QueueInfo queue) {
-            this.favorite = favorite;
-            this.queue = queue;
-        }
-
         public boolean isFavorite() {
             return favorite;
         }
@@ -100,13 +74,6 @@ public class PlaybackInfo extends BasicTrack {
         private boolean hasSongInQueue;
         private int inQueueBeforeUserSong;
         private int userSongsInQueue;
-
-        public QueueInfo(int songsInQueue, boolean hasSongInQueue, int inQueueBeforeUserSong, int userSongsInQueue) {
-            this.songsInQueue = songsInQueue;
-            this.hasSongInQueue = hasSongInQueue;
-            this.inQueueBeforeUserSong = inQueueBeforeUserSong;
-            this.userSongsInQueue = userSongsInQueue;
-        }
 
         public int getSongsInQueue() {
             return songsInQueue;

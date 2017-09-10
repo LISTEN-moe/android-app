@@ -22,15 +22,6 @@ public class Song implements Parcelable {
         this.favorite = 0;
     }
 
-    public Song(Parcel in) {
-        this.id = in.readInt();
-        this.artist = in.readString();
-        this.title = in.readString();
-        this.anime = in.readString();
-        this.enabled = in.readByte() != 0;
-        this.favorite = in.readInt();
-    }
-
     public int getId() {
         return id;
     }
@@ -99,6 +90,15 @@ public class Song implements Parcelable {
         parcel.writeString(anime);
         parcel.writeByte((byte) (enabled ? 1 : 0));
         parcel.writeInt(favorite);
+    }
+
+    public Song(Parcel in) {
+        this.id = in.readInt();
+        this.artist = in.readString();
+        this.title = in.readString();
+        this.anime = in.readString();
+        this.enabled = in.readByte() != 0;
+        this.favorite = in.readInt();
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {

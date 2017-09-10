@@ -9,11 +9,6 @@ public class BasicTrack {
     @SerializedName("song_name")
     private String songName;
 
-    public BasicTrack(String artistName, String songName) {
-        this.artistName = artistName;
-        this.songName = songName;
-    }
-
     public String getArtistName() {
         return artistName;
     }
