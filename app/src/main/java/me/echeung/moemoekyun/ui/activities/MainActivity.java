@@ -27,8 +27,8 @@ import android.widget.Toast;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.api.APIClient;
-import me.echeung.moemoekyun.api.ResponseMessages;
 import me.echeung.moemoekyun.api.interfaces.AuthListener;
+import me.echeung.moemoekyun.api.responses.Messages;
 import me.echeung.moemoekyun.constants.Endpoints;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
@@ -277,13 +277,13 @@ public class MainActivity extends AppCompatActivity {
                     String errorMsg = "";
 
                     switch (result) {
-                        case ResponseMessages.INVALID_USER:
+                        case Messages.INVALID_USER:
                             errorMsg = getString(R.string.error_name);
                             break;
-                        case ResponseMessages.INVALID_PASS:
+                        case Messages.INVALID_PASS:
                             errorMsg = getString(R.string.error_pass);
                             break;
-                        case ResponseMessages.ERROR:
+                        case Messages.ERROR:
                             errorMsg = getString(R.string.error_general);
                             break;
                     }

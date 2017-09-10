@@ -1,6 +1,6 @@
-package me.echeung.moemoekyun.api;
+package me.echeung.moemoekyun.api.responses;
 
-public class ResponseMessages {
+public class Messages {
     public static final String SUCCESS = "success\":true";
     public static final String FAVORITED = "favorite\":true";
 

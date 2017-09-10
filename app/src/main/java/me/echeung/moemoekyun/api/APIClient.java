@@ -19,6 +19,7 @@ import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.api.models.UserFavorites;
 import me.echeung.moemoekyun.api.models.UserInfo;
 import me.echeung.moemoekyun.api.responses.AuthResponse;
+import me.echeung.moemoekyun.api.responses.Messages;
 import me.echeung.moemoekyun.api.services.AuthService;
 import me.echeung.moemoekyun.api.services.SongsService;
 import me.echeung.moemoekyun.api.services.UserService;
@@ -107,7 +108,7 @@ public class APIClient {
       }
 
       @Override public void networkError(IOException e) {
-        System.err.println("NETOWRK ERROR " + e.getMessage());
+        System.err.println("NETWORK ERROR " + e.getMessage());
       }
 
       @Override public void unexpectedError(Throwable t) {
@@ -115,7 +116,6 @@ public class APIClient {
       }
     });
      */
-
 
     private static final Gson GSON = new Gson();
 
@@ -141,7 +141,7 @@ public class APIClient {
                 @Override
                 public void onFailure(final Call call, final IOException e) {
                     Log.e(TAG, e.getMessage(), e);
-                    listener.onFailure(ResponseMessages.ERROR);
+                    listener.onFailure(Messages.ERROR);
                 }
 
                 @Override
@@ -149,14 +149,14 @@ public class APIClient {
                     final String body = response.body().string();
 
                     // Handle error messages
-                    if (body.contains(ResponseMessages.INVALID_PASS)) {
-                        listener.onFailure(ResponseMessages.INVALID_PASS);
+                    if (body.contains(Messages.INVALID_PASS)) {
+                        listener.onFailure(Messages.INVALID_PASS);
                         return;
-                    } else if (body.contains(ResponseMessages.INVALID_USER)) {
-                        listener.onFailure(ResponseMessages.INVALID_USER);
+                    } else if (body.contains(Messages.INVALID_USER)) {
+                        listener.onFailure(Messages.INVALID_USER);
                         return;
-                    } else if (!body.contains(ResponseMessages.SUCCESS)) {
-                        listener.onFailure(ResponseMessages.ERROR);
+                    } else if (!body.contains(Messages.SUCCESS)) {
+                        listener.onFailure(Messages.ERROR);
                         return;
                     }
 
@@ -169,7 +169,7 @@ public class APIClient {
             });
         } catch (UnsupportedEncodingException e) {
             Log.e(TAG, e.getMessage(), e);
-            listener.onFailure(ResponseMessages.ERROR);
+            listener.onFailure(Messages.ERROR);
         }
     }
 
@@ -182,7 +182,7 @@ public class APIClient {
      */
     public static void getUserInfo(final Context context, final UserInfoListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            listener.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
@@ -194,7 +194,7 @@ public class APIClient {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 Log.e(TAG, e.getMessage(), e);
-                listener.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(Messages.ERROR);
             }
 
             @Override
@@ -214,7 +214,7 @@ public class APIClient {
      */
     public static void getUserFavorites(final Context context, final UserFavoritesListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            listener.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
@@ -226,14 +226,14 @@ public class APIClient {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 Log.e(TAG, e.getMessage(), e);
-                listener.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(Messages.ERROR);
             }
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 final UserFavorites userFavorites = APIClient.parseSongJson(context, response.body().string());
                 if (userFavorites == null) {
-                    listener.onFailure(ResponseMessages.ERROR);
+                    listener.onFailure(Messages.ERROR);
                     return;
                 }
                 for (final Song song : userFavorites.getSongs()) {
@@ -254,7 +254,7 @@ public class APIClient {
      */
     public static void favoriteSong(final Context context, final int songId, final FavoriteSongListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            listener.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
@@ -266,19 +266,19 @@ public class APIClient {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 Log.e(TAG, e.getMessage(), e);
-                listener.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(Messages.ERROR);
             }
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 final String jsonResult = response.body().string();
 
-                if (jsonResult.contains(ResponseMessages.SUCCESS)) {
-                    listener.onSuccess(jsonResult.contains(ResponseMessages.FAVORITED));
-                } else if (jsonResult.contains(ResponseMessages.AUTH_FAILURE)) {
-                    listener.onFailure(ResponseMessages.AUTH_FAILURE);
+                if (jsonResult.contains(Messages.SUCCESS)) {
+                    listener.onSuccess(jsonResult.contains(Messages.FAVORITED));
+                } else if (jsonResult.contains(Messages.AUTH_FAILURE)) {
+                    listener.onFailure(Messages.AUTH_FAILURE);
                 } else {
-                    listener.onFailure(ResponseMessages.ERROR);
+                    listener.onFailure(Messages.ERROR);
                 }
             }
         });
@@ -294,7 +294,7 @@ public class APIClient {
      */
     public static void requestSong(final Context context, final int songId, final RequestSongListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            listener.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
@@ -306,20 +306,20 @@ public class APIClient {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 Log.e(TAG, e.getMessage(), e);
-                listener.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(Messages.ERROR);
             }
 
             @Override
             public void onResponse(final Call call, final Response response) throws IOException {
                 final String jsonResult = response.body().string();
 
-                if (jsonResult.contains(ResponseMessages.SUCCESS)) {
+                if (jsonResult.contains(Messages.SUCCESS)) {
                     listener.onSuccess();
                 } else {
-                    if (jsonResult.contains(ResponseMessages.USER_NOT_SUPPORTER)) {
-                        listener.onFailure(ResponseMessages.USER_NOT_SUPPORTER);
+                    if (jsonResult.contains(Messages.USER_NOT_SUPPORTER)) {
+                        listener.onFailure(Messages.USER_NOT_SUPPORTER);
                     } else {
-                        listener.onFailure(ResponseMessages.ERROR);
+                        listener.onFailure(Messages.ERROR);
                     }
                 }
             }
@@ -336,7 +336,7 @@ public class APIClient {
      */
     public static void search(final Context context, final String query, final SearchListener listener) {
         if (!AuthUtil.isAuthenticated(context)) {
-            listener.onFailure(ResponseMessages.AUTH_ERROR);
+            listener.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
@@ -348,7 +348,7 @@ public class APIClient {
             @Override
             public void onFailure(final Call call, final IOException e) {
                 Log.e(TAG, e.getMessage(), e);
-                listener.onFailure(ResponseMessages.ERROR);
+                listener.onFailure(Messages.ERROR);
             }
 
             @Override
@@ -367,7 +367,7 @@ public class APIClient {
      * @return A UserFavorites object, or null if there was an authentication error.
      */
     private static UserFavorites parseSongJson(final Context context, final String jsonString) {
-        if (jsonString.contains(ResponseMessages.AUTH_FAILURE)) {
+        if (jsonString.contains(Messages.AUTH_FAILURE)) {
             AuthUtil.clearAuthToken(context);
             return null;
         }

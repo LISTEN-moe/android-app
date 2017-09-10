@@ -9,10 +9,10 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.APIClient;
-import me.echeung.moemoekyun.api.ResponseMessages;
 import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
 import me.echeung.moemoekyun.api.interfaces.RequestSongListener;
 import me.echeung.moemoekyun.api.models.Song;
+import me.echeung.moemoekyun.api.responses.Messages;
 import me.echeung.moemoekyun.ui.App;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
@@ -76,7 +76,7 @@ public class SongActionsUtil {
             public void onFailure(final String result) {
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-                        final int message = result.equals(ResponseMessages.USER_NOT_SUPPORTER) ?
+                        final int message = result.equals(Messages.USER_NOT_SUPPORTER) ?
                                 R.string.supporter_required :
                                 R.string.error;
 
