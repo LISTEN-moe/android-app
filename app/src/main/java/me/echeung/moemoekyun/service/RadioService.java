@@ -154,6 +154,8 @@ public class RadioService extends Service {
     }
 
     private boolean handleIntent(Intent intent) {
+        if (intent == null) return true;
+
         final String action = intent.getAction();
         if (action != null) {
             switch (action) {
