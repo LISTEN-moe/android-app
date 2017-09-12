@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.service;
+package me.echeung.moemoekyun.api;
 
 import android.os.SystemClock;
 import android.util.Log;
@@ -7,9 +7,6 @@ import com.google.gson.Gson;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.api.models.PlaybackInfo;
-import me.echeung.moemoekyun.api.models.Song;
-import me.echeung.moemoekyun.utils.AuthUtil;
-import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,25 +25,21 @@ public class RadioSocket extends WebSocketListener {
 
     private static final Gson GSON = new Gson();
 
-    private RadioService service;
+    private SocketListener listener;
 
     private WebSocket socket;
     private int retryTime = RETRY_TIME_MIN;
 
-    RadioSocket(RadioService service) {
-        this.service = service;
+    public RadioSocket(SocketListener listener) {
+        this.listener = listener;
     }
 
-    void connect() {
-        if (!NetworkUtil.isNetworkAvailable(service)) {
-            return;
-        }
-
+    public void connect() {
         final Request request = new Request.Builder().url(SOCKET_URL).build();
         socket = new OkHttpClient().newWebSocket(request, this);
     }
 
-    void disconnect() {
+    public void disconnect() {
         if (socket != null) {
             socket.cancel();
             socket = null;
@@ -55,17 +48,17 @@ public class RadioSocket extends WebSocketListener {
         parseWebSocketResponse(null);
     }
 
-    void update() {
-        if (AuthUtil.isAuthenticated(service)) {
-            final String authToken = AuthUtil.getAuthToken(service);
-            if (authToken != null) {
-                if (socket == null) {
-                    connect();
-                }
-
-                socket.send("{\"token\":\"" + authToken + "\"}");
-            }
+    public void update() {
+        final String authToken = listener.getAuthToken();
+        if (authToken == null || authToken.isEmpty()) {
+            return;
         }
+
+        if (socket == null) {
+            connect();
+        }
+
+        socket.send("{\"token\":\"" + authToken + "\"}");
     }
 
     @Override
@@ -116,37 +109,19 @@ public class RadioSocket extends WebSocketListener {
         final RadioViewModel viewModel = App.getRadioViewModel();
 
         if (jsonString == null) {
+            listener.onSocketFailure();
             viewModel.reset();
         } else {
             final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
 
-            if (playbackInfo.getSongId() != 0) {
-                viewModel.setCurrentSong(new Song(
-                        playbackInfo.getSongId(),
-                        playbackInfo.getArtistName().trim(),
-                        playbackInfo.getSongName().trim(),
-                        playbackInfo.getAnimeName().trim()
-                ));
-
-                viewModel.setLastSong(playbackInfo.getLast().toString());
-                viewModel.setSecondLastSong(playbackInfo.getSecondLast().toString());
-
-                if (playbackInfo.hasExtended()) {
-                    final PlaybackInfo.ExtendedInfo extended = playbackInfo.getExtended();
-
-                    viewModel.setIsFavorited(extended.isFavorite());
-
-                    App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
-                    App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
-                }
-
-                service.sendPublicIntent(RadioService.META_CHANGED);
-            }
-
-            viewModel.setListeners(playbackInfo.getListeners());
-            viewModel.setRequester(playbackInfo.getRequestedBy());
+            listener.onSocketReceive(playbackInfo);
         }
+    }
 
-        service.updateNotification();
+    public interface SocketListener {
+        void onSocketReceive(PlaybackInfo info);
+        void onSocketFailure();
+
+        String getAuthToken();
     }
 }

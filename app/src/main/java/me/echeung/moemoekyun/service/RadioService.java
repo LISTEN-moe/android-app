@@ -15,13 +15,17 @@ import android.view.KeyEvent;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
+import me.echeung.moemoekyun.api.RadioSocket;
+import me.echeung.moemoekyun.api.RadioStream;
 import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
+import me.echeung.moemoekyun.api.models.PlaybackInfo;
 import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.api.responses.Messages;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
+import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service {
 
@@ -102,8 +106,53 @@ public class RadioService extends Service {
         initMediaSession();
         initBroadcastReceiver();
 
-        socket = new RadioSocket(this);
         stream = new RadioStream(this);
+
+        socket = new RadioSocket(new RadioSocket.SocketListener() {
+            @Override
+            public void onSocketReceive(PlaybackInfo info) {
+                final RadioViewModel viewModel = App.getRadioViewModel();
+
+                if (info.getSongId() != 0) {
+                    viewModel.setCurrentSong(new Song(
+                            info.getSongId(),
+                            info.getArtistName().trim(),
+                            info.getSongName().trim(),
+                            info.getAnimeName().trim()
+                    ));
+
+                    viewModel.setLastSong(info.getLast().toString());
+                    viewModel.setSecondLastSong(info.getSecondLast().toString());
+
+                    if (info.hasExtended()) {
+                        final PlaybackInfo.ExtendedInfo extended = info.getExtended();
+
+                        viewModel.setIsFavorited(extended.isFavorite());
+
+                        App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
+                        App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
+                    }
+
+                    sendPublicIntent(RadioService.META_CHANGED);
+                }
+
+                viewModel.setListeners(info.getListeners());
+                viewModel.setRequester(info.getRequestedBy());
+
+                updateNotification();
+            }
+
+            @Override
+            public void onSocketFailure() {
+                App.getRadioViewModel().reset();
+                updateNotification();
+            }
+
+            @Override
+            public String getAuthToken() {
+                return AuthUtil.getAuthToken(getBaseContext());
+            }
+        });
 
         socket.connect();
     }
@@ -208,11 +257,11 @@ public class RadioService extends Service {
                     break;
 
                 case MainActivity.AUTH_EVENT:
-                    if (!AuthUtil.isAuthenticated(this)) {
+                    if (AuthUtil.isAuthenticated(this)) {
+                        socket.update();
+                    } else {
                         App.getRadioViewModel().setIsFavorited(false);
                         updateNotification();
-                    } else {
-                        socket.update();
                     }
                     break;
 

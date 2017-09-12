@@ -1,5 +1,6 @@
-package me.echeung.moemoekyun.service;
+package me.echeung.moemoekyun.api;
 
+import android.content.Context;
 import android.net.Uri;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -29,28 +30,28 @@ public class RadioStream {
     // Vorbis: /stream, Opus: /opus, mp3: /fallback
     private static final String STREAM_URL = "https://listen.moe/fallback";
 
-    private RadioService service;
+    private Context context;
     private SimpleExoPlayer player;
 
-    RadioStream(RadioService service) {
-        this.service = service;
+    public RadioStream(Context context) {
+        this.context = context;
     }
 
     public boolean isPlaying() {
         return player != null && player.getPlayWhenReady();
     }
 
-    boolean isStarted() {
+    public boolean isStarted() {
         return player != null;
     }
 
-    void setVolume(float volume) {
+    public void setVolume(float volume) {
         if (player != null) {
             player.setVolume(volume);
         }
     }
 
-    void play() {
+    public void play() {
         if (player == null) {
             init();
         }
@@ -59,13 +60,13 @@ public class RadioStream {
         player.seekToDefaultPosition();
     }
 
-    void pause() {
+    public void pause() {
         if (player != null) {
             player.setPlayWhenReady(false);
         }
     }
 
-    void stop() {
+    public void stop() {
         if (player != null) {
             player.setPlayWhenReady(false);
             player = null;
@@ -77,11 +78,11 @@ public class RadioStream {
         final TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
         final TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
 
-        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(service, Util.getUserAgent(service, service.getPackageName()));
+        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, Util.getUserAgent(context, context.getPackageName()));
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(STREAM_URL), dataSourceFactory, extractorsFactory, null, null);
 
-        player = ExoPlayerFactory.newSimpleInstance(service, trackSelector);
+        player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
         player.prepare(streamSource);
 
         player.addListener(new Player.EventListener() {
