@@ -10,9 +10,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.databinding.SongItemBinding;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {

@@ -57,6 +57,8 @@ ext {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
+    compile project(':listenmoe-api')
+
     compile "com.android.support:support-core-ui:$supportLibVersion"
     compile "com.android.support:support-media-compat:$supportLibVersion"
     compile "com.android.support:support-fragment:$supportLibVersion"
@@ -65,12 +67,6 @@ dependencies {
     // compile "com.android.support:palette-v7:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
-    compile 'com.squareup.okhttp3:okhttp:3.8.0'
-    compile 'com.google.android.exoplayer:exoplayer-core:r2.5.1'
-
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.github.bumptech.glide:glide:4.0.0'
-
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
 }

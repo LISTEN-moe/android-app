@@ -23,14 +23,14 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.echeung.listenmoeapi.interfaces.UserFavoritesListener;
+import me.echeung.listenmoeapi.interfaces.UserInfoListener;
+import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.responses.UserFavoritesResponse;
+import me.echeung.listenmoeapi.responses.UserResponse;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.api.interfaces.UserFavoritesListener;
-import me.echeung.moemoekyun.api.interfaces.UserInfoListener;
-import me.echeung.moemoekyun.api.models.Song;
-import me.echeung.moemoekyun.api.responses.UserFavoritesResponse;
-import me.echeung.moemoekyun.api.responses.UserResponse;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
@@ -188,7 +188,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             return;
         }
 
-        App.getApiClient().getUserInfo(getContext(), new UserInfoListener() {
+        App.getApiClient().getUserInfo(new UserInfoListener() {
             @Override
             public void onFailure(final String result) {
             }
@@ -205,7 +205,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             }
         });
 
-        App.getApiClient().getUserFavorites(getContext(), new UserFavoritesListener() {
+        App.getApiClient().getUserFavorites(new UserFavoritesListener() {
             @Override
             public void onFailure(final String result) {
             }

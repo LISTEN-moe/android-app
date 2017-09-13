@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import me.echeung.moemoekyun.api.APIClient;
+import me.echeung.listenmoeapi.APIClient;
 import me.echeung.moemoekyun.service.RadioService;
+import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
@@ -33,7 +34,17 @@ public class App extends Application {
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT );
 
         // API client
-        apiClient = new APIClient();
+        apiClient = new APIClient(new APIClient.APIHelper() {
+            @Override
+            public boolean isAuthenticated() {
+                return AuthUtil.isAuthenticated(getApplicationContext());
+            }
+
+            @Override
+            public String getAuthToken() {
+                return AuthUtil.getAuthToken(getApplicationContext());
+            }
+        });
 
         // UI view models
         radioViewModel = new RadioViewModel(this);

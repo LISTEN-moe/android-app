@@ -24,11 +24,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import me.echeung.listenmoeapi.interfaces.AuthListener;
+import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
-import me.echeung.moemoekyun.api.interfaces.AuthListener;
-import me.echeung.moemoekyun.api.responses.Messages;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.AuthUtil;
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
      * @param listener Used to run something after a successful login.
      */
     private void login(final String user, final String pass, final DialogInterface dialog, final OnLoginListener listener) {
-        App.getApiClient().authenticate(this, user, pass, new AuthListener() {
+        App.getApiClient().authenticate(user, pass, new AuthListener() {
             @Override
             public void onFailure(final String result) {
                 runOnUiThread(() -> {
@@ -298,6 +298,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.dismiss();
                     invalidateOptionsMenu();
 
+                    AuthUtil.setAuthToken(getApplicationContext(), result);
                     broadcastAuthEvent();
 
                     if (listener != null) {

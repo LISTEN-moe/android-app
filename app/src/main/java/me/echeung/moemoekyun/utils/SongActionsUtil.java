@@ -7,12 +7,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
+import me.echeung.listenmoeapi.interfaces.FavoriteSongListener;
+import me.echeung.listenmoeapi.interfaces.RequestSongListener;
+import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.interfaces.FavoriteSongListener;
-import me.echeung.moemoekyun.api.interfaces.RequestSongListener;
-import me.echeung.moemoekyun.api.models.Song;
-import me.echeung.moemoekyun.api.responses.Messages;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public class SongActionsUtil {
@@ -24,7 +24,7 @@ public class SongActionsUtil {
      */
     public static void favorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
         final int songId = song.getId();
-        App.getApiClient().favoriteSong(activity, songId, new FavoriteSongListener() {
+        App.getApiClient().favoriteSong(songId, new FavoriteSongListener() {
             @Override
             public void onFailure(final String result) {
                 if (activity != null) {
@@ -70,7 +70,7 @@ public class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
-        App.getApiClient().requestSong(activity, song.getId(), new RequestSongListener() {
+        App.getApiClient().requestSong(song.getId(), new RequestSongListener() {
             @Override
             public void onFailure(final String result) {
                 if (activity != null) {

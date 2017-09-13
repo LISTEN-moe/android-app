@@ -6,9 +6,9 @@ import android.databinding.Bindable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
 public class RadioViewModel extends BaseViewModel {

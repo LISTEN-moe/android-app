@@ -16,11 +16,11 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import me.echeung.listenmoeapi.interfaces.SearchListener;
+import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.api.interfaces.SearchListener;
-import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
@@ -92,7 +92,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         final String query = textView.getText().toString().trim();
 
         if (!TextUtils.isEmpty(query)) {
-            App.getApiClient().search(getBaseContext(), query, new SearchListener() {
+            App.getApiClient().search(query, new SearchListener() {
                 @Override
                 public void onFailure(final String result) {
                     updateResults(query, null);
