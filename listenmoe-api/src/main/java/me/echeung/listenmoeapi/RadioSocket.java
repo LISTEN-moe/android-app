@@ -115,11 +115,11 @@ public class RadioSocket extends WebSocketListener {
 
         if (jsonString == null) {
             listener.onSocketFailure();
-        } else {
-            final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
-
-            listener.onSocketReceive(playbackInfo);
+            return;
         }
+
+        final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
+        listener.onSocketReceive(playbackInfo);
     }
 
     public interface SocketListener {
