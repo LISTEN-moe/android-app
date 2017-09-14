@@ -23,8 +23,8 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.echeung.listenmoeapi.interfaces.UserFavoritesListener;
-import me.echeung.listenmoeapi.interfaces.UserInfoListener;
+import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
+import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.UserFavoritesResponse;
 import me.echeung.listenmoeapi.responses.UserResponse;
@@ -188,11 +188,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             return;
         }
 
-        App.getApiClient().getUserInfo(new UserInfoListener() {
-            @Override
-            public void onFailure(final String result) {
-            }
-
+        App.getApiClient().getUserInfo(new UserInfoCallback() {
             @Override
             public void onSuccess(final UserResponse userResponse) {
                 runOnUiThread(() -> {
@@ -203,13 +199,13 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                     // TODO: user avatars/banners are coming in v4
                 });
             }
+
+            @Override
+            public void onFailure(final String message) {
+            }
         });
 
-        App.getApiClient().getUserFavorites(new UserFavoritesListener() {
-            @Override
-            public void onFailure(final String result) {
-            }
-
+        App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
             @Override
             public void onSuccess(final UserFavoritesResponse userFavorites) {
                 runOnUiThread(() -> {
@@ -219,6 +215,10 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                     App.getUserViewModel().setUserRequests(userFavorites.getExtra().getRequests());
                     App.getUserViewModel().setHasFavorites(!favorites.isEmpty());
                 });
+            }
+
+            @Override
+            public void onFailure(final String message) {
             }
         });
     }

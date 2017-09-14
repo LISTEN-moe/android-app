@@ -15,7 +15,7 @@ import android.view.KeyEvent;
 
 import me.echeung.listenmoeapi.RadioSocket;
 import me.echeung.listenmoeapi.RadioStream;
-import me.echeung.listenmoeapi.interfaces.FavoriteSongListener;
+import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
 import me.echeung.listenmoeapi.models.PlaybackInfo;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.Messages;
@@ -108,7 +108,7 @@ public class RadioService extends Service {
 
         stream = new RadioStream(this);
 
-        socket = new RadioSocket(new RadioSocket.SocketListener() {
+        socket = new RadioSocket(App.getApiClient(), new RadioSocket.SocketListener() {
             @Override
             public void onSocketReceive(PlaybackInfo info) {
                 final RadioViewModel viewModel = App.getRadioViewModel();
@@ -146,11 +146,6 @@ public class RadioService extends Service {
             public void onSocketFailure() {
                 App.getRadioViewModel().reset();
                 updateNotification();
-            }
-
-            @Override
-            public String getAuthToken() {
-                return AuthUtil.getAuthToken(getBaseContext());
             }
         });
 
@@ -403,14 +398,7 @@ public class RadioService extends Service {
             return;
         }
 
-        App.getApiClient().favoriteSong(songId, new FavoriteSongListener() {
-            @Override
-            public void onFailure(final String result) {
-                if (result.equals(Messages.AUTH_FAILURE)) {
-                    promptLoginFavorite();
-                }
-            }
-
+        App.getApiClient().favoriteSong(songId, new FavoriteSongCallback() {
             @Override
             public void onSuccess(final boolean favorited) {
                 final Song currentSong = App.getRadioViewModel().getCurrentSong();
@@ -422,6 +410,13 @@ public class RadioService extends Service {
                 sendBroadcast(favIntent);
 
                 updateNotification();
+            }
+
+            @Override
+            public void onFailure(final String message) {
+                if (message.equals(Messages.AUTH_FAILURE)) {
+                    promptLoginFavorite();
+                }
             }
         });
     }

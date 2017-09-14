@@ -24,7 +24,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import me.echeung.listenmoeapi.interfaces.AuthListener;
+import me.echeung.listenmoeapi.callbacks.AuthCallback;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
@@ -270,28 +270,7 @@ public class MainActivity extends AppCompatActivity {
      * @param listener Used to run something after a successful login.
      */
     private void login(final String user, final String pass, final DialogInterface dialog, final OnLoginListener listener) {
-        App.getApiClient().authenticate(user, pass, new AuthListener() {
-            @Override
-            public void onFailure(final String result) {
-                runOnUiThread(() -> {
-                    String errorMsg = "";
-
-                    switch (result) {
-                        case Messages.INVALID_USER:
-                            errorMsg = getString(R.string.error_name);
-                            break;
-                        case Messages.INVALID_PASS:
-                            errorMsg = getString(R.string.error_pass);
-                            break;
-                        case Messages.ERROR:
-                            errorMsg = getString(R.string.error_general);
-                            break;
-                    }
-
-                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
-                });
-            }
-
+        App.getApiClient().authenticate(user, pass, new AuthCallback() {
             @Override
             public void onSuccess(final String result) {
                 runOnUiThread(() -> {
@@ -304,6 +283,27 @@ public class MainActivity extends AppCompatActivity {
                     if (listener != null) {
                         listener.onLogin();
                     }
+                });
+            }
+
+            @Override
+            public void onFailure(final String message) {
+                runOnUiThread(() -> {
+                    String errorMsg = "";
+
+                    switch (message) {
+                        case Messages.INVALID_USER:
+                            errorMsg = getString(R.string.error_name);
+                            break;
+                        case Messages.INVALID_PASS:
+                            errorMsg = getString(R.string.error_pass);
+                            break;
+                        case Messages.ERROR:
+                            errorMsg = getString(R.string.error_general);
+                            break;
+                    }
+
+                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
                 });
             }
         });

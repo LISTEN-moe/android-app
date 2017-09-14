@@ -1,10 +1,9 @@
-package me.echeung.listenmoeapi.interfaces;
+package me.echeung.listenmoeapi.callbacks;
 
 import java.util.List;
 
 import me.echeung.listenmoeapi.models.Song;
 
-public interface SearchListener {
-    void onFailure(final String result);
+public interface SearchCallback extends BaseCallback {
     void onSuccess(final List<Song> favorites);
 }

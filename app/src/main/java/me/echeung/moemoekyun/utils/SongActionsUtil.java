@@ -7,8 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
 
-import me.echeung.listenmoeapi.interfaces.FavoriteSongListener;
-import me.echeung.listenmoeapi.interfaces.RequestSongListener;
+import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
+import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
@@ -24,14 +24,7 @@ public class SongActionsUtil {
      */
     public static void favorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
         final int songId = song.getId();
-        App.getApiClient().favoriteSong(songId, new FavoriteSongListener() {
-            @Override
-            public void onFailure(final String result) {
-                if (activity != null) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show());
-                }
-            }
-
+        App.getApiClient().favoriteSong(songId, new FavoriteSongCallback() {
             @Override
             public void onSuccess(final boolean favorited) {
                 if (App.getRadioViewModel().getCurrentSong().getId() == songId) {
@@ -61,6 +54,13 @@ public class SongActionsUtil {
                     });
                 }
             }
+
+            @Override
+            public void onFailure(final String message) {
+                if (activity != null) {
+                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show());
+                }
+            }
         });
     }
 
@@ -70,20 +70,7 @@ public class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
-        App.getApiClient().requestSong(song.getId(), new RequestSongListener() {
-            @Override
-            public void onFailure(final String result) {
-                if (activity != null) {
-                    activity.runOnUiThread(() -> {
-                        final int message = result.equals(Messages.USER_NOT_SUPPORTER) ?
-                                R.string.supporter_required :
-                                R.string.error;
-
-                        Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_LONG).show();
-                    });
-                }
-            }
-
+        App.getApiClient().requestSong(song.getId(), new RequestSongCallback() {
             @Override
             public void onSuccess() {
                 if (activity != null) {
@@ -92,6 +79,19 @@ public class SongActionsUtil {
 
                         song.setEnabled(false);
                         adapter.notifyDataSetChanged();
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(final String message) {
+                if (activity != null) {
+                    activity.runOnUiThread(() -> {
+                        final int toastMsg = message.equals(Messages.USER_NOT_SUPPORTER) ?
+                                R.string.supporter_required :
+                                R.string.error;
+
+                        Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_LONG).show();
                     });
                 }
             }

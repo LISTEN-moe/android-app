@@ -2,12 +2,12 @@ package me.echeung.listenmoeapi;
 
 import android.util.Log;
 
-import me.echeung.listenmoeapi.interfaces.AuthListener;
-import me.echeung.listenmoeapi.interfaces.FavoriteSongListener;
-import me.echeung.listenmoeapi.interfaces.RequestSongListener;
-import me.echeung.listenmoeapi.interfaces.SearchListener;
-import me.echeung.listenmoeapi.interfaces.UserFavoritesListener;
-import me.echeung.listenmoeapi.interfaces.UserInfoListener;
+import me.echeung.listenmoeapi.callbacks.AuthCallback;
+import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
+import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
+import me.echeung.listenmoeapi.callbacks.SearchCallback;
+import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
+import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.AuthResponse;
 import me.echeung.listenmoeapi.responses.BaseResponse;
@@ -72,21 +72,21 @@ public class APIClient {
      *
      * @param username User's username.
      * @param password User's password.
-     * @param listener Listener to handle the response.
+     * @param callback Listener to handle the response.
      */
-    public void authenticate(final String username, final String password, final AuthListener listener) {
+    public void authenticate(final String username, final String password, final AuthCallback callback) {
         authService.login(username, password)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
-                    public void success(Response<AuthResponse> response) {
+                    public void success(final Response<AuthResponse> response) {
                         final String userToken = response.body().getToken();
-                        listener.onSuccess(userToken);
+                        callback.onSuccess(userToken);
                     }
 
                     @Override
-                    public void error(String message) {
+                    public void error(final String message) {
                         Log.e(TAG, message);
-                        listener.onFailure(message);
+                        callback.onFailure(message);
                     }
                 });
     }
@@ -94,25 +94,25 @@ public class APIClient {
     /**
      * Gets the user information (id and username).
      *
-     * @param listener Listener to handle the response.
+     * @param callback Listener to handle the response.
      */
-    public void getUserInfo(final UserInfoListener listener) {
+    public void getUserInfo(final UserInfoCallback callback) {
         if (!helper.isAuthenticated()) {
-            listener.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
         userService.getUserInfo(helper.getAuthToken())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>() {
                     @Override
-                    public void success(Response<UserResponse> response) {
-                        listener.onSuccess(response.body());
+                    public void success(final Response<UserResponse> response) {
+                        callback.onSuccess(response.body());
                     }
 
                     @Override
-                    public void error(String message) {
+                    public void error(final String message) {
                         Log.e(TAG, message);
-                        listener.onFailure(message);
+                        callback.onFailure(message);
                     }
                 });
     }
@@ -120,29 +120,29 @@ public class APIClient {
     /**
      * Gets a list of all the user's favorited songs.
      *
-     * @param listener Listener to handle the response.
+     * @param callback Listener to handle the response.
      */
-    public void getUserFavorites(final UserFavoritesListener listener) {
+    public void getUserFavorites(final UserFavoritesCallback callback) {
         if (!helper.isAuthenticated()) {
-            listener.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
         userService.getFavorites(helper.getAuthToken())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserFavoritesResponse>() {
                     @Override
-                    public void success(Response<UserFavoritesResponse> response) {
+                    public void success(final Response<UserFavoritesResponse> response) {
                         final UserFavoritesResponse userFavorites = response.body();
                         for (final Song song : userFavorites.getSongs()) {
                             song.setFavorite(true);
                         }
-                        listener.onSuccess(userFavorites);
+                        callback.onSuccess(userFavorites);
                     }
 
                     @Override
-                    public void error(String message) {
+                    public void error(final String message) {
                         Log.e(TAG, message);
-                        listener.onFailure(message);
+                        callback.onFailure(message);
                     }
                 });
     }
@@ -151,25 +151,25 @@ public class APIClient {
      * Toggles the favorited status of a song. If the song is already favorited, it will remove it and vice-versa.
      *
      * @param songId   Song to toggle.
-     * @param listener Listener to handle the response.
+     * @param callback Listener to handle the response.
      */
-    public void favoriteSong(final int songId, final FavoriteSongListener listener) {
+    public void favoriteSong(final int songId, final FavoriteSongCallback callback) {
         if (!helper.isAuthenticated()) {
-            listener.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
         songsService.favorite(helper.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoriteResponse>() {
                     @Override
-                    public void success(Response<FavoriteResponse> response) {
-                        listener.onSuccess(response.body().isFavorite());
+                    public void success(final Response<FavoriteResponse> response) {
+                        callback.onSuccess(response.body().isFavorite());
                     }
 
                     @Override
-                    public void error(String message) {
+                    public void error(final String message) {
                         Log.e(TAG, message);
-                        listener.onFailure(message);
+                        callback.onFailure(message);
                     }
                 });
     }
@@ -178,25 +178,25 @@ public class APIClient {
      * Sends a song request to the queue.
      *
      * @param songId   Song to request.
-     * @param listener Listener to handle the response.
+     * @param callback Listener to handle the response.
      */
-    public void requestSong(final int songId, final RequestSongListener listener) {
+    public void requestSong(final int songId, final RequestSongCallback callback) {
         if (!helper.isAuthenticated()) {
-            listener.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
         songsService.request(helper.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
-                    public void success(Response<BaseResponse> response) {
-                        listener.onSuccess();
+                    public void success(final Response<BaseResponse> response) {
+                        callback.onSuccess();
                     }
 
                     @Override
-                    public void error(String message) {
+                    public void error(final String message) {
                         Log.e(TAG, message);
-                        listener.onFailure(message);
+                        callback.onFailure(message);
                     }
                 });
     }
@@ -205,27 +205,31 @@ public class APIClient {
      * Searches for songs.
      *
      * @param query    Search query string.
-     * @param listener Listener to handle the response.
+     * @param callback Listener to handle the response.
      */
-    public void search(final String query, final SearchListener listener) {
+    public void search(final String query, final SearchCallback callback) {
         if (!helper.isAuthenticated()) {
-            listener.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
         songsService.search(helper.getAuthToken(), query)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SearchResponse>() {
                     @Override
-                    public void success(Response<SearchResponse> response) {
-                        listener.onSuccess(response.body().getSongs());
+                    public void success(final Response<SearchResponse> response) {
+                        callback.onSuccess(response.body().getSongs());
                     }
 
                     @Override
-                    public void error(String message) {
+                    public void error(final String message) {
                         Log.e(TAG, message);
-                        listener.onFailure(message);
+                        callback.onFailure(message);
                     }
                 });
+    }
+
+    protected APIHelper getApiHelper() {
+        return helper;
     }
 
     public interface APIHelper {

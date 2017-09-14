@@ -23,12 +23,14 @@ public class RadioSocket extends WebSocketListener {
 
     private static final Gson GSON = new Gson();
 
+    private APIClient apiClient;
     private SocketListener listener;
 
     private WebSocket socket;
     private int retryTime = RETRY_TIME_MIN;
 
-    public RadioSocket(SocketListener listener) {
+    public RadioSocket(APIClient apiClient, SocketListener listener) {
+        this.apiClient = apiClient;
         this.listener = listener;
     }
 
@@ -47,7 +49,7 @@ public class RadioSocket extends WebSocketListener {
     }
 
     public void update() {
-        final String authToken = listener.getAuthToken();
+        final String authToken = apiClient.getApiHelper().getAuthToken();
         if (authToken == null || authToken.isEmpty()) {
             return;
         }
@@ -116,7 +118,5 @@ public class RadioSocket extends WebSocketListener {
     public interface SocketListener {
         void onSocketReceive(PlaybackInfo info);
         void onSocketFailure();
-
-        String getAuthToken();
     }
 }

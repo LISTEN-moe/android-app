@@ -1,8 +1,7 @@
-package me.echeung.listenmoeapi.interfaces;
+package me.echeung.listenmoeapi.callbacks;
 
 import me.echeung.listenmoeapi.responses.UserFavoritesResponse;
 
-public interface UserFavoritesListener {
-    void onFailure(final String result);
+public interface UserFavoritesCallback extends BaseCallback {
     void onSuccess(final UserFavoritesResponse userFavorites);
 }
