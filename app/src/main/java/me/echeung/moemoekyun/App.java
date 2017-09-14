@@ -34,7 +34,7 @@ public class App extends Application {
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT );
 
         // API client
-        apiClient = new APIClient(new APIClient.APIHelper() {
+        apiClient = new APIClient(this, new APIClient.APIHelper() {
             @Override
             public boolean isAuthenticated() {
                 return AuthUtil.isAuthenticated(getApplicationContext());
@@ -77,19 +77,21 @@ public class App extends Application {
     }
 
     private ServiceConnection mConnection = new ServiceConnection() {
-
         @Override
-        public void onServiceConnected(ComponentName className,
-                                       IBinder service) {
+        public void onServiceConnected(ComponentName className, IBinder service) {
             // We've bound to LocalService, cast the IBinder and get LocalService instance
-            RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
-            App.service = binder.getService();
-            isServiceBound = true;
+            final RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
+            final RadioService radioService = binder.getService();
+
+            App.service = radioService;
+            App.isServiceBound = true;
+            App.apiClient.getSocket().setListener(radioService);
         }
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
             isServiceBound = false;
+            App.apiClient.getSocket().setListener(null);
         }
     };
 }

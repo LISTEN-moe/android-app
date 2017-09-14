@@ -1,5 +1,6 @@
 package me.echeung.listenmoeapi;
 
+import android.content.Context;
 import android.util.Log;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
@@ -40,7 +41,10 @@ public class APIClient {
     private final SongsService songsService;
     private final UserService userService;
 
-    public APIClient(APIHelper helper) {
+    private final RadioSocket socket;
+    private final RadioStream stream;
+
+    public APIClient(Context context, APIHelper helper) {
         this.helper = helper;
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -65,6 +69,9 @@ public class APIClient {
         authService = restAdapter.create(AuthService.class);
         songsService = restAdapter.create(SongsService.class);
         userService = restAdapter.create(UserService.class);
+
+        socket = new RadioSocket(okHttpClient, helper);
+        stream = new RadioStream(context);
     }
 
     /**
@@ -228,8 +235,12 @@ public class APIClient {
                 });
     }
 
-    protected APIHelper getApiHelper() {
-        return helper;
+    public RadioSocket getSocket() {
+        return socket;
+    }
+
+    public RadioStream getStream() {
+        return stream;
     }
 
     public interface APIHelper {

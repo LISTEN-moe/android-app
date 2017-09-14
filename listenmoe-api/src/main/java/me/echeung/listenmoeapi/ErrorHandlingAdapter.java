@@ -1,5 +1,7 @@
 package me.echeung.listenmoeapi;
 
+import android.support.annotation.NonNull;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -27,8 +29,8 @@ public class ErrorHandlingAdapter {
 
     public static class ErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
         @Override
-        public CallAdapter<?, ?> get(Type returnType, Annotation[] annotations,
-                                               Retrofit retrofit) {
+        public CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations,
+                                     @NonNull Retrofit retrofit) {
             if (getRawType(returnType) != WrappedCall.class) {
                 return null;
             }
@@ -53,7 +55,7 @@ public class ErrorHandlingAdapter {
             }
 
             @Override
-            public WrappedCall<R> adapt(Call<R> call) {
+            public WrappedCall<R> adapt(@NonNull Call<R> call) {
                 return new WrappedCallAdapter<>(call);
             }
         }
@@ -76,13 +78,17 @@ public class ErrorHandlingAdapter {
         public void enqueue(final WrappedCallback<T> callback) {
             call.enqueue(new Callback<T>() {
                 @Override
-                public void onResponse(Call<T> call, Response<T> response) {
-                    if (!response.isSuccessful() || response.body() == null) {
-                        callback.error("Unexpected response: " + response);
+                public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
+                    final T body = response.body();
+
+                    if (!response.isSuccessful() || body == null) {
+                        callback.error("Unsuccessful response: " + response);
+                        return;
                     }
 
-                    if (!response.body().isSuccess()) {
-                        callback.error(response.body().getMessage());
+                    if (!body.isSuccess()) {
+                        callback.error(body.getMessage());
+                        return;
                     }
 
                     int code = response.code();
@@ -94,7 +100,7 @@ public class ErrorHandlingAdapter {
                 }
 
                 @Override
-                public void onFailure(Call<T> call, Throwable t) {
+                public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
                     callback.error(t.getMessage());
                 }
             });

@@ -27,7 +27,7 @@ import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
-public class RadioService extends Service {
+public class RadioService extends Service implements RadioSocket.SocketListener {
 
     private static final String APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID;
 
@@ -70,7 +70,7 @@ public class RadioService extends Service {
     @Override
     public boolean onUnbind(Intent intent) {
         isServiceBound = false;
-        if (!stream.isPlaying()) {
+        if (!isPlaying()) {
             stopSelf();
         }
         return true;
@@ -90,15 +90,15 @@ public class RadioService extends Service {
 
                 case AudioManager.AUDIOFOCUS_LOSS:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                    wasPlayingBeforeLoss = stream.isPlaying();
+                    wasPlayingBeforeLoss = isPlaying();
                     if (wasPlayingBeforeLoss) {
                         pause();
                     }
                     break;
 
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    wasPlayingBeforeLoss = stream.isPlaying();
-                    stream.setVolume(0.5f);
+                    wasPlayingBeforeLoss = isPlaying();
+                    App.getApiClient().getStream().setVolume(0.5f);
                     break;
             }
         };
@@ -106,50 +106,10 @@ public class RadioService extends Service {
         initMediaSession();
         initBroadcastReceiver();
 
-        stream = new RadioStream(this);
+        stream = App.getApiClient().getStream();
+        socket = App.getApiClient().getSocket();
 
-        socket = new RadioSocket(App.getApiClient(), new RadioSocket.SocketListener() {
-            @Override
-            public void onSocketReceive(PlaybackInfo info) {
-                final RadioViewModel viewModel = App.getRadioViewModel();
-
-                if (info.getSongId() != 0) {
-                    viewModel.setCurrentSong(new Song(
-                            info.getSongId(),
-                            info.getArtistName().trim(),
-                            info.getSongName().trim(),
-                            info.getAnimeName().trim()
-                    ));
-
-                    viewModel.setLastSong(info.getLast().toString());
-                    viewModel.setSecondLastSong(info.getSecondLast().toString());
-
-                    if (info.hasExtended()) {
-                        final PlaybackInfo.ExtendedInfo extended = info.getExtended();
-
-                        viewModel.setIsFavorited(extended.isFavorite());
-
-                        App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
-                        App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
-                    }
-
-                    sendPublicIntent(RadioService.META_CHANGED);
-                }
-
-                viewModel.setListeners(info.getListeners());
-                viewModel.setRequester(info.getRequestedBy());
-
-                updateNotification();
-            }
-
-            @Override
-            public void onSocketFailure() {
-                App.getRadioViewModel().reset();
-                updateNotification();
-            }
-        });
-
-        socket.connect();
+        App.getApiClient().getSocket().connect();
     }
 
     @Override
@@ -194,6 +154,45 @@ public class RadioService extends Service {
 
     public boolean isPlaying() {
         return stream.isPlaying();
+    }
+
+    @Override
+    public void onSocketReceive(PlaybackInfo info) {
+        final RadioViewModel viewModel = App.getRadioViewModel();
+
+        if (info.getSongId() != 0) {
+            viewModel.setCurrentSong(new Song(
+                    info.getSongId(),
+                    info.getArtistName().trim(),
+                    info.getSongName().trim(),
+                    info.getAnimeName().trim()
+            ));
+
+            viewModel.setLastSong(info.getLast().toString());
+            viewModel.setSecondLastSong(info.getSecondLast().toString());
+
+            if (info.hasExtended()) {
+                final PlaybackInfo.ExtendedInfo extended = info.getExtended();
+
+                viewModel.setIsFavorited(extended.isFavorite());
+
+                App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
+                App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
+            }
+
+            sendPublicIntent(RadioService.META_CHANGED);
+        }
+
+        viewModel.setListeners(info.getListeners());
+        viewModel.setRequester(info.getRequestedBy());
+
+        updateNotification();
+    }
+
+    @Override
+    public void onSocketFailure() {
+        App.getRadioViewModel().reset();
+        updateNotification();
     }
 
     private boolean handleIntent(Intent intent) {
@@ -336,7 +335,7 @@ public class RadioService extends Service {
     }
 
     private void togglePlayPause() {
-        if (stream.isPlaying()) {
+        if (isPlaying()) {
             pause();
         } else {
             play();
@@ -344,7 +343,7 @@ public class RadioService extends Service {
     }
 
     private void play() {
-        if (!stream.isPlaying()) {
+        if (!isPlaying()) {
             // Request audio focus for playback
             int result = audioManager.requestAudioFocus(audioFocusChangeListener,
                     AudioManager.STREAM_MUSIC,
@@ -361,7 +360,7 @@ public class RadioService extends Service {
     }
 
     private void pause() {
-        if (stream.isPlaying()) {
+        if (isPlaying()) {
             stream.pause();
 
             App.getRadioViewModel().setIsPlaying(false);
@@ -371,11 +370,11 @@ public class RadioService extends Service {
     }
 
     private void stop() {
-        if (stream.isPlaying()) {
+        if (isPlaying()) {
             audioManager.abandonAudioFocus(audioFocusChangeListener);
         }
 
-        if (stream.isStarted()) {
+        if (isStreamStarted()) {
             stream.stop();
         }
 

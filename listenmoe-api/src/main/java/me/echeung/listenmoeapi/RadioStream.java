@@ -33,7 +33,7 @@ public class RadioStream {
     private Context context;
     private SimpleExoPlayer player;
 
-    public RadioStream(Context context) {
+    RadioStream(Context context) {
         this.context = context;
     }
 

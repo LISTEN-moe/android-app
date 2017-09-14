@@ -20,23 +20,28 @@ public class RadioSocket extends WebSocketListener {
 
     private static final int RETRY_TIME_MIN = 250;
     private static final int RETRY_TIME_MAX = 4000;
+    private int retryTime = RETRY_TIME_MIN;
 
     private static final Gson GSON = new Gson();
 
-    private APIClient apiClient;
-    private SocketListener listener;
+    private final OkHttpClient client;
+    private final APIClient.APIHelper apiHelper;
 
     private WebSocket socket;
-    private int retryTime = RETRY_TIME_MIN;
+    private SocketListener listener;
 
-    public RadioSocket(APIClient apiClient, SocketListener listener) {
-        this.apiClient = apiClient;
+    RadioSocket(OkHttpClient client, APIClient.APIHelper apiClient) {
+        this.client = client;
+        this.apiHelper = apiClient;
+    }
+
+    public void setListener(SocketListener listener) {
         this.listener = listener;
     }
 
     public void connect() {
         final Request request = new Request.Builder().url(SOCKET_URL).build();
-        socket = new OkHttpClient().newWebSocket(request, this);
+        socket = client.newWebSocket(request, this);
     }
 
     public void disconnect() {
@@ -49,7 +54,7 @@ public class RadioSocket extends WebSocketListener {
     }
 
     public void update() {
-        final String authToken = apiClient.getApiHelper().getAuthToken();
+        final String authToken = apiHelper.getAuthToken();
         if (authToken == null || authToken.isEmpty()) {
             return;
         }
@@ -106,6 +111,8 @@ public class RadioSocket extends WebSocketListener {
     }
 
     private void parseWebSocketResponse(final String jsonString) {
+        if (listener == null) return;
+
         if (jsonString == null) {
             listener.onSocketFailure();
         } else {
