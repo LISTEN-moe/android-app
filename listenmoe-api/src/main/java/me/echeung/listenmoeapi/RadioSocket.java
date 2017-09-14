@@ -73,7 +73,6 @@ public class RadioSocket extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        // TODO: clean this up
         if (text.contains("\"listeners\":")) {
             // Get user token from shared preferences if socket not authenticated
             if (!text.contains("\"extended\":")) {
