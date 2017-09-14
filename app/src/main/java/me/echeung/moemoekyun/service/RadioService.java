@@ -434,9 +434,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
      * @param action The broadcast event.
      */
     public void sendPublicIntent(final String action) {
-        final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
-
         final Song song = App.getRadioViewModel().getCurrentSong();
+        if (song == null) return;
+
+        final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
 
         intent.putExtra("id", song.getId());
 
