@@ -31,9 +31,56 @@ public class RadioStream {
 
     private Context context;
     private SimpleExoPlayer player;
+    private Player.EventListener eventListener;
 
     RadioStream(Context context) {
         this.context = context;
+
+        eventListener = new Player.EventListener() {
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+                // Try to reconnect to the stream
+                final boolean wasPlaying = isPlaying();
+
+                if (player != null) {
+                    player.release();
+                    player = null;
+                }
+
+                init();
+                if (wasPlaying) {
+                    play();
+                }
+            }
+
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest) {
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+            }
+
+            @Override
+            public void onPositionDiscontinuity() {
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+            }
+        };
     }
 
     public boolean isPlaying() {
@@ -83,51 +130,6 @@ public class RadioStream {
 
         player = ExoPlayerFactory.newSimpleInstance(context, trackSelector);
         player.prepare(streamSource);
-
-        player.addListener(new Player.EventListener() {
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-                // Try to reconnect to the stream
-                final boolean wasPlaying = isPlaying();
-
-                if (player != null) {
-                    player.release();
-                    player = null;
-                }
-
-                init();
-                if (wasPlaying) {
-                    play();
-                }
-            }
-
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest) {
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-            }
-
-            @Override
-            public void onPositionDiscontinuity() {
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
-            }
-        });
+        player.addListener(eventListener);
     }
 }
