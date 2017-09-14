@@ -195,8 +195,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                     final String userName = userResponse.getUsername();
 
                     App.getUserViewModel().setUserName(userName);
-
-                    // TODO: user avatars/banners are coming in v4
                 });
             }
 

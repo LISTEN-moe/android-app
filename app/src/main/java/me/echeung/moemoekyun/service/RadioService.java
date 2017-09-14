@@ -429,30 +429,30 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     }
 
     /**
-     * Sends an intent out for services like Last.fm or musicxmatch.
+     * Sends an intent out for services like Last.fm or Musicxmatch.
      *
      * @param action The broadcast event.
      */
     public void sendPublicIntent(final String action) {
-        // TODO: broadcast song info to Last.fm/musicmxmatch
-//        final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
-//
-//        final Song song = App.getRadioViewModel().currentSong.get();
-//
-//        intent.putExtra("id", song.getId());
-//
-//        intent.putExtra("artist", song.getArtist());
-//        // intent.putExtra("album", song.getAlbum());
-//        intent.putExtra("track", song.getTitle());
-//
-//        // intent.putExtra("duration", song.duration);
-//        // intent.putExtra("position", (long) getSongProgressMillis());
-//
-//        intent.putExtra("playing", isPlaying());
-//
-//        intent.putExtra("scrobbling_source", APP_PACKAGE_NAME);
-//
-//        sendStickyBroadcast(intent);
+        final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
+
+        final Song song = App.getRadioViewModel().getCurrentSong();
+
+        intent.putExtra("id", song.getId());
+
+        intent.putExtra("artist", song.getArtist());
+        // intent.putExtra("album", song.getAlbum());
+        intent.putExtra("track", song.getTitle());
+
+        // TODO: duration/position is needed to work properly with Last.fm and synced Musicxmatch lyrics
+        // intent.putExtra("duration", song.duration);
+        // intent.putExtra("position", (long) getSongProgressMillis());
+
+        intent.putExtra("playing", isPlaying());
+
+        intent.putExtra("scrobbling_source", APP_PACKAGE_NAME);
+
+        sendStickyBroadcast(intent);
     }
 
     public class ServiceBinder extends Binder {
