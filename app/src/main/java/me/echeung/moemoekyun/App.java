@@ -25,8 +25,6 @@ public class App extends Application {
     private static SearchViewModel searchViewModel;
     private static UserViewModel userViewModel;
 
-    // TODO: Chromecast support
-
     @Override
     public void onCreate() {
         super.onCreate();

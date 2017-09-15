@@ -82,7 +82,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         audioFocusChangeListener = focusChange -> {
             switch (focusChange) {
                 case AudioManager.AUDIOFOCUS_GAIN:
-                    stream.setVolume(1f);
+                    stream.unduck();
                     if (wasPlayingBeforeLoss) {
                         play();
                     }
@@ -98,7 +98,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
 
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     wasPlayingBeforeLoss = isPlaying();
-                    App.getApiClient().getStream().setVolume(0.5f);
+                    stream.duck();
                     break;
             }
         };
