@@ -22,7 +22,6 @@ import me.echeung.listenmoeapi.services.SongsService;
 import me.echeung.listenmoeapi.services.UserService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -33,8 +32,9 @@ public class APIClient {
     private static final String BASE_URL = "https://listen.moe/api/";
 
     private static final String HEADER_USER_AGENT = "User-Agent";
-    protected static final String USER_AGENT = "me.echeung.moemoekyun";
+    static final String USER_AGENT = "me.echeung.moemoekyun";
 
+    private final Context context;
     private final APIHelper helper;
 
     private final AuthService authService;
@@ -45,6 +45,7 @@ public class APIClient {
     private final RadioStream stream;
 
     public APIClient(Context context, APIHelper helper) {
+        this.context = context;
         this.helper = helper;
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -85,15 +86,15 @@ public class APIClient {
         authService.login(username, password)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
-                    public void success(final Response<AuthResponse> response) {
-                        final String userToken = response.body().getToken();
+                    public void success(final AuthResponse response) {
+                        final String userToken = response.getToken();
                         callback.onSuccess(userToken);
                     }
 
                     @Override
                     public void error(final String message) {
                         Log.e(TAG, message);
-                        callback.onFailure(message);
+                        callback.onFailure(Messages.getMessage(context, message));
                     }
                 });
     }
@@ -112,8 +113,8 @@ public class APIClient {
         userService.getUserInfo(helper.getAuthToken())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>() {
                     @Override
-                    public void success(final Response<UserResponse> response) {
-                        callback.onSuccess(response.body());
+                    public void success(final UserResponse response) {
+                        callback.onSuccess(response);
                     }
 
                     @Override
@@ -138,12 +139,11 @@ public class APIClient {
         userService.getFavorites(helper.getAuthToken())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserFavoritesResponse>() {
                     @Override
-                    public void success(final Response<UserFavoritesResponse> response) {
-                        final UserFavoritesResponse userFavorites = response.body();
-                        for (final Song song : userFavorites.getSongs()) {
+                    public void success(final UserFavoritesResponse response) {
+                        for (final Song song : response.getSongs()) {
                             song.setFavorite(true);
                         }
-                        callback.onSuccess(userFavorites);
+                        callback.onSuccess(response);
                     }
 
                     @Override
@@ -169,8 +169,8 @@ public class APIClient {
         songsService.favorite(helper.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoriteResponse>() {
                     @Override
-                    public void success(final Response<FavoriteResponse> response) {
-                        callback.onSuccess(response.body().isFavorite());
+                    public void success(final FavoriteResponse response) {
+                        callback.onSuccess(response.isFavorite());
                     }
 
                     @Override
@@ -196,7 +196,7 @@ public class APIClient {
         songsService.request(helper.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
-                    public void success(final Response<BaseResponse> response) {
+                    public void success(final BaseResponse response) {
                         callback.onSuccess();
                     }
 
@@ -223,8 +223,8 @@ public class APIClient {
         songsService.search(helper.getAuthToken(), query)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SearchResponse>() {
                     @Override
-                    public void success(final Response<SearchResponse> response) {
-                        callback.onSuccess(response.body().getSongs());
+                    public void success(final SearchResponse response) {
+                        callback.onSuccess(response.getSongs());
                     }
 
                     @Override

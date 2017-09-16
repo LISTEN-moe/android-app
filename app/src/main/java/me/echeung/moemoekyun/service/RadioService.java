@@ -109,7 +109,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         stream = App.getApiClient().getStream();
         socket = App.getApiClient().getSocket();
 
-        App.getApiClient().getSocket().connect();
+        socket.connect();
     }
 
     @Override

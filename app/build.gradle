@@ -55,17 +55,17 @@ ext {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile project(':listenmoe-api')
+    implementation project(':listenmoe-api')
 
-    compile "com.android.support:support-core-ui:$supportLibVersion"
-    compile "com.android.support:support-media-compat:$supportLibVersion"
-    compile "com.android.support:support-fragment:$supportLibVersion"
-    compile "com.android.support:appcompat-v7:$supportLibVersion"
-    compile "com.android.support:recyclerview-v7:$supportLibVersion"
-    compile "com.android.support:design:$supportLibVersion"
+    implementation "com.android.support:support-core-ui:$supportLibVersion"
+    implementation "com.android.support:support-media-compat:$supportLibVersion"
+    implementation "com.android.support:support-fragment:$supportLibVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:recyclerview-v7:$supportLibVersion"
+    implementation "com.android.support:design:$supportLibVersion"
 
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.github.bumptech.glide:glide:4.0.0'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.0.0'
 }

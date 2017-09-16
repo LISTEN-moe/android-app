@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_general">Error: login failed</string>
+    <string name="error_name">Error: invalid username</string>
+    <string name="error_pass">Error: incorrect password</string>
+</resources>

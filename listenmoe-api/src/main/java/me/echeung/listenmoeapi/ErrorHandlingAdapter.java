@@ -23,7 +23,7 @@ public class ErrorHandlingAdapter {
     }
 
     interface WrappedCallback<T extends BaseResponse> {
-        void success(Response<T> response);
+        void success(T response);
         void error(String message);
     }
 
@@ -93,7 +93,7 @@ public class ErrorHandlingAdapter {
 
                     int code = response.code();
                     if (code >= 200 && code < 300) {
-                        callback.success(response);
+                        callback.success(body);
                     } else {
                         callback.error("Response returned with non-200 code: " + response);
                     }

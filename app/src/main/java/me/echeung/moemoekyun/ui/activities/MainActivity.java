@@ -25,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
-import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
@@ -289,21 +288,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(final String message) {
                 runOnUiThread(() -> {
-                    String errorMsg = "";
-
-                    switch (message) {
-                        case Messages.INVALID_USER:
-                            errorMsg = getString(R.string.error_name);
-                            break;
-                        case Messages.INVALID_PASS:
-                            errorMsg = getString(R.string.error_pass);
-                            break;
-                        case Messages.ERROR:
-                            errorMsg = getString(R.string.error_general);
-                            break;
-                    }
-
-                    Toast.makeText(getApplicationContext(), errorMsg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
                 });
             }
         });
