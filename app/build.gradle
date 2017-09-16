@@ -8,8 +8,8 @@ android {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 13
-        versionName '0.13'
+        versionCode 14
+        versionName '0.14'
 
         vectorDrawables.useSupportLibrary = true
 
@@ -64,7 +64,6 @@ dependencies {
     compile "com.android.support:support-fragment:$supportLibVersion"
     compile "com.android.support:appcompat-v7:$supportLibVersion"
     compile "com.android.support:recyclerview-v7:$supportLibVersion"
-    // compile "com.android.support:palette-v7:$supportLibVersion"
     compile "com.android.support:design:$supportLibVersion"
 
     compile 'de.hdodenhof:circleimageview:2.1.0'
