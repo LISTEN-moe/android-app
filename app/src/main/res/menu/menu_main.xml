@@ -25,9 +25,4 @@
         android:title="@string/about"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_browser"
-        android:title="@string/open_in_browser"
-        app:showAsAction="never" />
-
 </menu>

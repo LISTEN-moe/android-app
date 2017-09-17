@@ -11,7 +11,7 @@
 
         <item name="android:windowBackground">@color/light_grey</item>
         <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/lighter_grey</item>
 
         <item name="android:textAppearanceButton">@style/ButtonTheme</item>
     </style>
@@ -34,4 +34,21 @@
         <item name="android:textColorLink">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <!-- Licenses dialog -->
+    <string name="licenses_css" translatable="false">
+        body {
+            background: #1D1F2B;
+            color: #FFF;
+            overflow-wrap: break-word;
+        }
+        a {
+            color: #EC1A55;
+        }
+        pre {
+            background-color: #2B2E41;
+            padding: 1em;
+            white-space: pre-wrap;
+        }
+    </string>
 </resources>

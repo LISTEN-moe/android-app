@@ -3,7 +3,6 @@
     <string name="app_name" translatable="false">LISTEN.moe</string>
 
     <!-- Generic strings -->
-    <string name="close">Close</string>
     <string name="success">Success!</string>
     <string name="error">An error occurred</string>
     <string name="connecting">Connecting…</string>
@@ -33,16 +32,6 @@
     <string name="logged_out">Logged out</string>
     <string name="login_required">You must log in to use this feature.</string>
 
-    <!-- About dialog -->
-    <string name="about">About</string>
-    <string name="about_app_title">%1$s v%2$s</string>
-    <string name="about_content"><![CDATA[
-        This is an unofficial app powered by <a href="https://listen.moe">LISTEN.moe</a>. You can support LISTEN.moe on <a href="https://www.patreon.com/odysseyradio">Patreon</a>.
-        <br/>
-        <br/>
-        Report bugs or request features on <a href=\'https://github.com/arkon/listen-moe-android\'>GitHub</a>.
-    ]]></string>
-
     <!-- Radio tab -->
     <string name="play_pause">Play/pause</string>
     <string name="history">History</string>
@@ -61,4 +50,13 @@
     <!-- No Internet view -->
     <string name="no_internet">Can\'t connect to LISTEN.moe!\n\nPlease check your Internet connection.</string>
     <string name="retry">Retry</string>
+
+    <!-- About activity -->
+    <string name="about">About</string>
+    <string name="version">Version %s (unofficial app)</string>
+    <string name="rate">Rate on Google Play</string>
+    <string name="github">Fork on GitHub</string>
+    <string name="licenses">Licenses</string>
+    <string name="discord">Join us on Discord</string>
+    <string name="patreon">Support on Patreon</string>
 </resources>

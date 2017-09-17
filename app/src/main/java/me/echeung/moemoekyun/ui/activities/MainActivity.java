@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -16,12 +14,10 @@ import android.support.design.widget.TextInputEditText;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
@@ -32,7 +28,6 @@ import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
-import me.echeung.moemoekyun.utils.SDKUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     public static final String AUTH_EVENT = "auth_event";
 
     private ActivityMainBinding binding;
-
-    private AlertDialog aboutDialog;
 
     private ViewPager viewPager;
 
@@ -177,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -210,12 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_about:
-                showAboutDialog();
-                return true;
-
-            case R.id.action_browser:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://listen.moe/"));
-                startActivity(browserIntent);
+                startActivity(new Intent(this, AboutActivity.class));
                 return true;
 
             default:
@@ -324,28 +311,6 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
 
         broadcastAuthEvent();
-    }
-
-    private void showAboutDialog() {
-        if (aboutDialog == null) {
-            String version;
-            try {
-                version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            } catch (PackageManager.NameNotFoundException e) {
-                version = "";
-            }
-
-            aboutDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
-                    .setTitle(getString(R.string.about_app_title, getString(R.string.app_name), version))
-                    .setMessage(SDKUtil.fromHtml(getString(R.string.about_content)))
-                    .setPositiveButton(R.string.close, null)
-                    .create();
-        }
-
-        aboutDialog.show();
-
-        final TextView textContent = aboutDialog.findViewById(android.R.id.message);
-        textContent.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public interface OnLoginListener {
