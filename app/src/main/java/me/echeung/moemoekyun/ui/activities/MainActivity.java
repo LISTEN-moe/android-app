@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -226,8 +227,6 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
 
-        // TODO: don't close dialog if login failed
-
         // Override the positive button listener so it won't automatically be dismissed even with
         // an error
         loginDialog.setOnShowListener(dialog -> {
@@ -242,6 +241,15 @@ public class MainActivity extends AppCompatActivity {
 
                 login(user, pass, dialog, listener);
             });
+        });
+
+        // Login when keyboard "done" action is pressed on password field
+        loginPass.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                loginDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
+                return true;
+            }
+            return false;
         });
 
         loginDialog.show();
