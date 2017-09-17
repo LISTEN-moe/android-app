@@ -228,7 +228,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 getString(R.string.action_unfavorite) :
                 getString(R.string.action_favorite);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext())
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
                 .setTitle(song.getTitle())
                 .setMessage(song.getArtistAndAnime())
                 .setPositiveButton(android.R.string.cancel, null)

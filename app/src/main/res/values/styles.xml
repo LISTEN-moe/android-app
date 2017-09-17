@@ -8,6 +8,17 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:windowBackground">@color/light_grey</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+
+        <item name="android:textAppearanceButton">@style/ButtonTheme</item>
+    </style>
+
+    <!-- Buttons -->
+    <style name="ButtonTheme" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <!-- TabHost -->
@@ -17,8 +28,9 @@
     </style>
 
     <!-- Dialogs -->
-    <style name="AppCompatAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColorPrimary">@android:color/black</item>
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/grey</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
         <item name="android:textColorLink">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>

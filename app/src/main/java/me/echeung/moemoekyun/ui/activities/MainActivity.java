@@ -232,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         final TextInputEditText loginUser = layout.findViewById(R.id.login_username);
         final TextInputEditText loginPass = layout.findViewById(R.id.login_password);
 
-        final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle(R.string.login)
                 .setView(layout)
                 .setPositiveButton(R.string.login, null)
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showLogoutDialog() {
-        new AlertDialog.Builder(this, R.style.AppCompatAlertDialogStyle)
+        new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle(R.string.logout)
                 .setMessage(getString(R.string.logout_confirmation))
                 .setPositiveButton(R.string.logout, (dialogInterface, i) -> logout())

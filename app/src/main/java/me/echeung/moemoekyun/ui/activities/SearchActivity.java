@@ -44,7 +44,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
         // Set up app bar
         setSupportActionBar(binding.appbar);
-        ActionBar appBar = getSupportActionBar();
+        final ActionBar appBar = getSupportActionBar();
         appBar.setDisplayHomeAsUpEnabled(true);
         appBar.setDisplayShowTitleEnabled(false);
 
@@ -121,7 +121,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
                 getString(R.string.action_unfavorite) :
                 getString(R.string.action_favorite);
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this)
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle(song.getTitle())
                 .setMessage(song.getArtistAndAnime())
                 .setPositiveButton(android.R.string.cancel, null)
