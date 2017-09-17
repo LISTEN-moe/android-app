@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.adapters;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -17,19 +18,27 @@ import me.echeung.moemoekyun.databinding.SongItemBinding;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Song> songs;
+    public static final String SORT_NAME = "song_sort_name";
+    public static final String SORT_NAME_DESC = SORT_NAME + ".desc";
+    public static final String SORT_ARTIST = "song_sort_artist";
+    public static final String SORT_ARTIST_DESC = SORT_ARTIST + ".desc";
+
+    private List<Song> allSongs;
+    private List<Song> filteredSongs;
+
+    private String filterQuery;
+
     private WeakReference<OnSongItemClickListener> listener;
 
     public SongAdapter(OnSongItemClickListener listener) {
-        this.songs = new ArrayList<>();
         this.listener = new WeakReference<>(listener);
 
         setHasStableIds(true);
     }
 
     public void setSongs(List<Song> songs) {
-        this.songs = songs;
-        notifyDataSetChanged();
+        this.allSongs = songs;
+        filter(filterQuery);
     }
 
     @Override
@@ -41,25 +50,43 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final Song song = songs.get(position);
-
+        final Song song = filteredSongs.get(position);
         final SongHolder songHolder = (SongHolder) holder;
-
         songHolder.bind(song);
     }
 
     @Override
     public long getItemId(int position) {
-        return songs.get(position).getId();
+        return filteredSongs.get(position).getId();
     }
 
     @Override
     public int getItemCount() {
-        return songs != null ? songs.size() : 0;
+        return filteredSongs != null ? filteredSongs.size() : 0;
+    }
+
+    public void filter(String query) {
+        this.filterQuery = query;
+
+        if (allSongs == null || allSongs.isEmpty()) return;
+
+        if (TextUtils.isEmpty(filterQuery)) {
+            filteredSongs = allSongs;
+        } else {
+            filteredSongs = new ArrayList<>();
+            for (final Song song : allSongs) {
+                if (song.getTitle().toLowerCase().contains(query) ||
+                        song.getArtistAndAnime().toLowerCase().contains(query)) {
+                    filteredSongs.add(song);
+                }
+            }
+        }
+
+        notifyDataSetChanged();
     }
 
     protected List<Song> getSongs() {
-        return songs;
+        return filteredSongs;
     }
 
     protected OnSongItemClickListener getListener() {

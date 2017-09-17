@@ -10,7 +10,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
@@ -48,8 +46,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     private LinearLayout vUserContent;
     private ImageView vUserAvatar;
 
+    private UserViewModel viewModel;
+
     // Favorites
-    private List<Song> favorites;
     private SongAdapter adapter;
 
     // Receiver
@@ -62,7 +61,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
 
-        final UserViewModel viewModel = App.getUserViewModel();
+        viewModel = App.getUserViewModel();
 
         binding.setVm(viewModel);
 
@@ -93,28 +92,12 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (favorites != null && !favorites.isEmpty()) {
-                    final String query = editable.toString().trim().toLowerCase();
-
-                    if (TextUtils.isEmpty(query)) {
-                        adapter.setSongs(favorites);
-                    } else {
-                        final List<Song> filteredFavorites = new ArrayList<>();
-                        for (final Song song : favorites) {
-                            if (song.getTitle().toLowerCase().contains(query) ||
-                                    song.getArtistAndAnime().toLowerCase().contains(query)) {
-                                filteredFavorites.add(song);
-                            }
-                        }
-                        adapter.setSongs(filteredFavorites);
-                    }
-                }
+                final String query = editable.toString().trim().toLowerCase();
+                adapter.filter(query);
             }
         });
 
-        // Broadcast receiver
         initBroadcastReceiver();
-
         initUserContent();
 
         return binding.getRoot();
@@ -194,7 +177,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 runOnUiThread(() -> {
                     final String userName = userResponse.getUsername();
 
-                    App.getUserViewModel().setUserName(userName);
+                    viewModel.setUserName(userName);
                 });
             }
 
@@ -207,11 +190,11 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             @Override
             public void onSuccess(final UserFavoritesResponse userFavorites) {
                 runOnUiThread(() -> {
-                    favorites = userFavorites.getSongs();
+                    final List<Song> favorites = userFavorites.getSongs();
                     adapter.setSongs(favorites);
 
-                    App.getUserViewModel().setUserRequests(userFavorites.getExtra().getRequests());
-                    App.getUserViewModel().setHasFavorites(!favorites.isEmpty());
+                    viewModel.setUserRequests(userFavorites.getExtra().getRequests());
+                    viewModel.setHasFavorites(!favorites.isEmpty());
                 });
             }
 
