@@ -16,7 +16,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     private static final String URL_GOOGLEPLAY = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
     private static final String URL_GITHUB = "https://github.com/arkon/listen-moe-android";
     private static final String URL_LISTENMOE = "https://listen.moe";
-    private static final String URL_DISCORD = "https://listen.moe/discord";
+    private static final String URL_DISCORD = "https://discordapp.com/invite/4S8JYr8"; // https://listen.moe/discord
     private static final String URL_PATREON = "https://www.patreon.com/odysseyradio";
 
     @Override
