@@ -23,6 +23,13 @@
     <string name="clear_query">Clear query</string>
     <string name="no_results">No results for \"%s\"</string>
 
+    <!-- Sort -->
+    <string name="sort">Sort</string>
+    <string name="sort_title">Title</string>
+    <string name="sort_title_desc">Title (desc)</string>
+    <string name="sort_artist">Artist</string>
+    <string name="sort_artist_desc">Artist (desc)</string>
+
     <!-- Auth -->
     <string name="login">Login</string>
     <string name="logout">Logout</string>
@@ -57,6 +64,7 @@
     <string name="rate">Rate on Google Play</string>
     <string name="github">Fork on GitHub</string>
     <string name="licenses">Licenses</string>
+    <string name="listenmoe">LISTEN.moe radio</string>
     <string name="discord">Join us on Discord</string>
     <string name="patreon">Support on Patreon</string>
 </resources>

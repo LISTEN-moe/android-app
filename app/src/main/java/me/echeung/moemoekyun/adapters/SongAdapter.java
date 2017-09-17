@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import me.echeung.listenmoeapi.models.Song;
@@ -18,15 +19,16 @@ import me.echeung.moemoekyun.databinding.SongItemBinding;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final String SORT_NAME = "song_sort_name";
-    public static final String SORT_NAME_DESC = SORT_NAME + ".desc";
+    public static final String SORT_TITLE = "song_sort_title";
+    public static final String SORT_TITLE_DESC = SORT_TITLE + ".desc";
     public static final String SORT_ARTIST = "song_sort_artist";
     public static final String SORT_ARTIST_DESC = SORT_ARTIST + ".desc";
 
     private List<Song> allSongs;
-    private List<Song> filteredSongs;
+    private List<Song> visibleSongs;
 
     private String filterQuery;
+    private String sortType;
 
     private WeakReference<OnSongItemClickListener> listener;
 
@@ -38,7 +40,17 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public void setSongs(List<Song> songs) {
         this.allSongs = songs;
-        filter(filterQuery);
+        updateSongs();
+    }
+
+    public void filter(String query) {
+        this.filterQuery = query;
+        updateSongs();
+    }
+
+    public void sort(String sortType) {
+        this.sortType = sortType;
+        updateSongs();
     }
 
     @Override
@@ -50,35 +62,54 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final Song song = filteredSongs.get(position);
+        final Song song = visibleSongs.get(position);
         final SongHolder songHolder = (SongHolder) holder;
         songHolder.bind(song);
     }
 
     @Override
     public long getItemId(int position) {
-        return filteredSongs.get(position).getId();
+        return visibleSongs.get(position).getId();
     }
 
     @Override
     public int getItemCount() {
-        return filteredSongs != null ? filteredSongs.size() : 0;
+        return visibleSongs != null ? visibleSongs.size() : 0;
     }
 
-    public void filter(String query) {
-        this.filterQuery = query;
-
+    private void updateSongs() {
         if (allSongs == null || allSongs.isEmpty()) return;
 
-        if (TextUtils.isEmpty(filterQuery)) {
-            filteredSongs = allSongs;
-        } else {
-            filteredSongs = new ArrayList<>();
+        visibleSongs = allSongs;
+
+        if (!TextUtils.isEmpty(filterQuery)) {
+            visibleSongs = new ArrayList<>();
             for (final Song song : allSongs) {
-                if (song.getTitle().toLowerCase().contains(query) ||
-                        song.getArtistAndAnime().toLowerCase().contains(query)) {
-                    filteredSongs.add(song);
+                if (song.getTitle().toLowerCase().contains(filterQuery) ||
+                        song.getArtistAndAnime().toLowerCase().contains(filterQuery)) {
+                    visibleSongs.add(song);
                 }
+            }
+        }
+
+        if (sortType != null) {
+            switch (sortType) {
+                case SORT_ARTIST:
+                    Collections.sort(visibleSongs, (song, t1) -> song.getArtist().compareToIgnoreCase(t1.getArtist()));
+                    break;
+
+                case SORT_ARTIST_DESC:
+                    Collections.sort(visibleSongs, (song, t1) -> t1.getArtist().compareToIgnoreCase(song.getArtist()));
+                    break;
+
+                case SORT_TITLE_DESC:
+                    Collections.sort(visibleSongs, (song, t1) -> t1.getTitle().compareToIgnoreCase(song.getTitle()));
+                    break;
+
+                case SORT_TITLE:
+                default:
+                    Collections.sort(visibleSongs, (song, t1) -> song.getTitle().compareToIgnoreCase(t1.getTitle()));
+                    break;
             }
         }
 
@@ -86,7 +117,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     protected List<Song> getSongs() {
-        return filteredSongs;
+        return visibleSongs;
     }
 
     protected OnSongItemClickListener getListener() {

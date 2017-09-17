@@ -10,6 +10,8 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -29,6 +31,8 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
     private ActivitySearchBinding binding;
 
+    private SearchViewModel viewModel;
+
     private SongAdapter adapter;
 
     @Override
@@ -37,7 +41,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
-        final SearchViewModel viewModel = App.getSearchViewModel();
+        viewModel = App.getSearchViewModel();
         viewModel.reset();
 
         binding.setVm(viewModel);
@@ -86,6 +90,43 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         super.onDestroy();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+        menu.findItem(R.id.action_sort_type_title).setChecked(true);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sort_type_title:
+                adapter.sort(SongAdapter.SORT_TITLE);
+                item.setChecked(true);
+                return true;
+
+            case R.id.action_sort_type_title_desc:
+                adapter.sort(SongAdapter.SORT_TITLE_DESC);
+                item.setChecked(true);
+                return true;
+
+            case R.id.action_sort_type_artist:
+                adapter.sort(SongAdapter.SORT_ARTIST);
+                item.setChecked(true);
+                return true;
+
+            case R.id.action_sort_type_artist_desc:
+                adapter.sort(SongAdapter.SORT_ARTIST_DESC);
+                item.setChecked(true);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private boolean onEditorAction(TextView textView, int i, KeyEvent event) {
         final String query = textView.getText().toString().trim();
 
@@ -110,8 +151,8 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
     private void updateResults(final String query, final List<Song> results) {
         adapter.setSongs(results);
-        App.getSearchViewModel().setQuery(query);
-        App.getSearchViewModel().setHasResults(results != null && results.size() != 0);
+        viewModel.setQuery(query);
+        viewModel.setHasResults(results != null && !results.isEmpty());
     }
 
     @Override

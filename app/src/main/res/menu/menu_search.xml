@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.activities.SearchActivity">
+
+    <item
+        android:title="@string/sort"
+        android:icon="@drawable/ic_sort_white_24dp"
+        app:showAsAction="ifRoom">
+        <menu>
+            <group
+                android:checkableBehavior="single"
+                tools:ignore="HardcodedText">
+                <item
+                    android:id="@+id/action_sort_type_title"
+                    android:title="@string/sort_title" />
+                <item
+                    android:id="@+id/action_sort_type_title_desc"
+                    android:title="@string/sort_title_desc" />
+                <item
+                    android:id="@+id/action_sort_type_artist"
+                    android:title="@string/sort_artist" />
+                <item
+                    android:id="@+id/action_sort_type_artist_desc"
+                    android:title="@string/sort_artist_desc" />
+            </group>
+        </menu>
+    </item>
+
+</menu>
