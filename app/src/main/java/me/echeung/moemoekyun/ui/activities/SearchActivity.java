@@ -25,9 +25,12 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
+import me.echeung.moemoekyun.utils.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 
 public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
+
+    private static final String LIST_ID = "SEARCH_LIST";
 
     private ActivitySearchBinding binding;
 
@@ -71,7 +74,7 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
         });
 
         // Results list adapter
-        adapter = new SongAdapter(this);
+        adapter = new SongAdapter(this, LIST_ID, this);
         binding.resultsList.setLayoutManager(new LinearLayoutManager(this));
         binding.resultsList.setAdapter(adapter);
 
@@ -94,37 +97,18 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_search, menu);
 
-        menu.findItem(R.id.action_sort_type_title).setChecked(true);
+        SongSortUtil.initSortMenu(this, LIST_ID, menu);
 
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_sort_type_title:
-                adapter.sort(SongAdapter.SORT_TITLE);
-                item.setChecked(true);
-                return true;
-
-            case R.id.action_sort_type_title_desc:
-                adapter.sort(SongAdapter.SORT_TITLE_DESC);
-                item.setChecked(true);
-                return true;
-
-            case R.id.action_sort_type_artist:
-                adapter.sort(SongAdapter.SORT_ARTIST);
-                item.setChecked(true);
-                return true;
-
-            case R.id.action_sort_type_artist_desc:
-                adapter.sort(SongAdapter.SORT_ARTIST_DESC);
-                item.setChecked(true);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (SongSortUtil.handleSortMenuItem(item, adapter)) {
+            return true;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private boolean onEditorAction(TextView textView, int i, KeyEvent event) {

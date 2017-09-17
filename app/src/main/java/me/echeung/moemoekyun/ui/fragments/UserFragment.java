@@ -8,6 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -34,9 +35,12 @@ import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
+import me.echeung.moemoekyun.utils.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
 public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
+
+    private static final String LIST_ID = "USER_FAVORITES_LIST";
 
     public static final String FAVORITE_EVENT = "fav_event";
 
@@ -74,13 +78,13 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showLoginDialog());
 
         // Favorites list adapter
-        adapter = new SongAdapter(this);
+        adapter = new SongAdapter(getContext(), LIST_ID, this);
         final RecyclerView vUserFavorites = binding.favorites.favoritesList;
         vUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         vUserFavorites.setAdapter(adapter);
 
         // Set up favorites filtering
-        final EditText vFilterQuery = binding.favorites.filterQuery;
+        final EditText vFilterQuery = binding.favorites.favoritesFilterQuery;
         vFilterQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -95,6 +99,15 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
                 final String query = editable.toString().trim().toLowerCase();
                 adapter.filter(query);
             }
+        });
+
+        // Set up favorites sorting
+        binding.favorites.favoritesSortBtn.setOnClickListener(v -> {
+            final PopupMenu popupMenu = new PopupMenu(getActivity(), binding.favorites.favoritesSortBtn);
+            popupMenu.inflate(R.menu.menu_sort);
+            SongSortUtil.initSortMenu(getContext(), LIST_ID, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(item -> SongSortUtil.handleSortMenuItem(item, adapter));
+            popupMenu.show();
         });
 
         initBroadcastReceiver();

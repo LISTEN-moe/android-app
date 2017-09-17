@@ -41,19 +41,41 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true" />
 
-            <EditText
-                android:id="@+id/filter_query"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/lighter_grey"
-                android:hint="@string/filter_favorites"
-                android:importantForAutofill="no"
-                android:inputType="textNoSuggestions"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/lighter_grey"
-                android:textSize="16sp" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/favorites_filter_query"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignEnd="@id/favorites_sort_btn"
+                    android:layout_alignParentStart="true"
+                    android:backgroundTint="@color/lighter_grey"
+                    android:hint="@string/filter_favorites"
+                    android:importantForAutofill="no"
+                    android:inputType="textNoSuggestions"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/lighter_grey"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:id="@+id/favorites_sort_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/round_selector"
+                    android:contentDescription="@string/sort"
+                    android:padding="8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_sort_white_24dp"
+                    android:tint="@color/lighter_grey" />
+
+            </RelativeLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/favorites_list"

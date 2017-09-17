@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.adapters;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
@@ -9,30 +10,28 @@ import android.view.ViewGroup;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.SongItemBinding;
+import me.echeung.moemoekyun.utils.SongSortUtil;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final String SORT_TITLE = "song_sort_title";
-    public static final String SORT_TITLE_DESC = SORT_TITLE + ".desc";
-    public static final String SORT_ARTIST = "song_sort_artist";
-    public static final String SORT_ARTIST_DESC = SORT_ARTIST + ".desc";
+    private Context context;
+    private String listId;
+    private WeakReference<OnSongItemClickListener> listener;
 
     private List<Song> allSongs;
     private List<Song> visibleSongs;
 
     private String filterQuery;
-    private String sortType;
 
-    private WeakReference<OnSongItemClickListener> listener;
-
-    public SongAdapter(OnSongItemClickListener listener) {
+    public SongAdapter(Context context, String listId, OnSongItemClickListener listener) {
+        this.context = context;
+        this.listId = listId;
         this.listener = new WeakReference<>(listener);
 
         setHasStableIds(true);
@@ -49,7 +48,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void sort(String sortType) {
-        this.sortType = sortType;
+        SongSortUtil.setListSort(context, listId, sortType);
         updateSongs();
     }
 
@@ -92,26 +91,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
 
-        if (sortType != null) {
-            switch (sortType) {
-                case SORT_ARTIST:
-                    Collections.sort(visibleSongs, (song, t1) -> song.getArtist().compareToIgnoreCase(t1.getArtist()));
-                    break;
-
-                case SORT_ARTIST_DESC:
-                    Collections.sort(visibleSongs, (song, t1) -> t1.getArtist().compareToIgnoreCase(song.getArtist()));
-                    break;
-
-                case SORT_TITLE_DESC:
-                    Collections.sort(visibleSongs, (song, t1) -> t1.getTitle().compareToIgnoreCase(song.getTitle()));
-                    break;
-
-                case SORT_TITLE:
-                default:
-                    Collections.sort(visibleSongs, (song, t1) -> song.getTitle().compareToIgnoreCase(t1.getTitle()));
-                    break;
-            }
-        }
+        SongSortUtil.sort(context, listId, visibleSongs);
 
         notifyDataSetChanged();
     }
