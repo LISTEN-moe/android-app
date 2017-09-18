@@ -26,9 +26,8 @@
     <!-- Sort -->
     <string name="sort">Sort</string>
     <string name="sort_title">Title</string>
-    <string name="sort_title_desc">Title (desc)</string>
     <string name="sort_artist">Artist</string>
-    <string name="sort_artist_desc">Artist (desc)</string>
+    <string name="sort_desc">Descending</string>
 
     <!-- Auth -->
     <string name="login">Login</string>

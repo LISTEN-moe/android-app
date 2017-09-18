@@ -47,8 +47,13 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         updateSongs();
     }
 
-    public void sort(String sortType) {
-        SongSortUtil.setListSort(context, listId, sortType);
+    public void sortType(String sortType) {
+        SongSortUtil.setListSortType(context, listId, sortType);
+        updateSongs();
+    }
+
+    public void sortDescending(boolean descending) {
+        SongSortUtil.setListSortDescending(context, listId, descending);
         updateSongs();
     }
 

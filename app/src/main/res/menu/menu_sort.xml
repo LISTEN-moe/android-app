@@ -6,13 +6,12 @@
             android:id="@+id/action_sort_type_title"
             android:title="@string/sort_title" />
         <item
-            android:id="@+id/action_sort_type_title_desc"
-            android:title="@string/sort_title_desc" />
-        <item
             android:id="@+id/action_sort_type_artist"
             android:title="@string/sort_artist" />
-        <item
-            android:id="@+id/action_sort_type_artist_desc"
-            android:title="@string/sort_artist_desc" />
     </group>
+
+    <item
+        android:id="@+id/action_sort_desc"
+        android:checkable="true"
+        android:title="@string/sort_desc" />
 </menu>
