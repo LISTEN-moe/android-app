@@ -89,6 +89,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
 
     private void showLicensesDialog() {
         new LicensesDialog.Builder(this)
+                .setTitle(R.string.licenses)
                 .setNotices(R.raw.notices)
                 .setIncludeOwnLicense(true)
                 .setThemeResourceId(R.style.DialogTheme)
