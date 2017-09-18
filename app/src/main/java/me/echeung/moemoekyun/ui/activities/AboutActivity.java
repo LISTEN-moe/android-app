@@ -15,6 +15,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
 
     private static final String URL_GOOGLEPLAY = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
     private static final String URL_GITHUB = "https://github.com/arkon/listen-moe-android";
+    private static final String URL_TRANSLATE = "https://osfmofb.oneskyapp.com/collaboration/project?id=271507";
     private static final String URL_LISTENMOE = "https://listen.moe";
     private static final String URL_DISCORD = "https://discordapp.com/invite/4S8JYr8"; // https://listen.moe/discord
     private static final String URL_PATREON = "https://www.patreon.com/odysseyradio";
@@ -46,6 +47,7 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     private void setupClickListeners() {
         findViewById(R.id.about_app_rate).setOnClickListener(this);
         findViewById(R.id.about_app_github).setOnClickListener(this);
+        findViewById(R.id.about_app_translate).setOnClickListener(this);
         findViewById(R.id.about_app_licenses).setOnClickListener(this);
 
         findViewById(R.id.about_listenmoe_website).setOnClickListener(this);
@@ -62,6 +64,10 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
 
             case R.id.about_app_github:
                 openUrl(URL_GITHUB);
+                break;
+
+            case R.id.about_app_translate:
+                openUrl(URL_TRANSLATE);
                 break;
 
             case R.id.about_app_licenses:
