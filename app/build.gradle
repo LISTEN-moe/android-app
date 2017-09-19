@@ -8,8 +8,8 @@ android {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 16
-        versionName '0.16'
+        versionCode 17
+        versionName '0.17'
 
         vectorDrawables.useSupportLibrary = true
     }
@@ -44,6 +44,13 @@ android {
             minifyEnabled false
             useProguard false
         }
+    }
+
+    lintOptions {
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
+
+        abortOnError false
     }
 }
 

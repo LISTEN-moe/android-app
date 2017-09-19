@@ -56,7 +56,4 @@
     <string name="open_in_browser">Öppna i webbläsare</string>
     <string name="discord">Joina oss på Discord</string>
     <string name="patreon">Stöd på Patreon</string>
-    <!-- Generic strings -->
-    <string name="success">Success!</string>
-    <string name="connecting">Ansluter...</string>
 </resources>

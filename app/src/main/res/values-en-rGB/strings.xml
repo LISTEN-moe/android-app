@@ -61,7 +61,4 @@
     <string name="open_in_browser">Open in browser</string>
     <string name="discord">Join us on Discord</string>
     <string name="patreon">Support on Patreon</string>
-    <!-- Generic strings -->
-    <string name="success">Success!</string>
-    <string name="connecting">Connecting...</string>
 </resources>
