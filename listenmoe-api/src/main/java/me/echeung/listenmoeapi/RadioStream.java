@@ -29,11 +29,13 @@ public class RadioStream {
     // Vorbis: /stream, Opus: /opus, mp3: /fallback
     private static final String STREAM_URL = "https://listen.moe/fallback";
 
-    private Context context;
-    private SimpleExoPlayer player;
-    private Player.EventListener eventListener;
+    private static final String WIFI_LOCK_TAG = "listenmoe_wifi_lock";
 
+    private final Context context;
+    private final Player.EventListener eventListener;
     private final WifiManager.WifiLock wifiLock;
+
+    private SimpleExoPlayer player;
 
     RadioStream(Context context) {
         this.context = context;
@@ -41,7 +43,7 @@ public class RadioStream {
         this.wifiLock =
                 ((WifiManager) context.getApplicationContext()
                         .getSystemService(Context.WIFI_SERVICE))
-                        .createWifiLock(WifiManager.WIFI_MODE_FULL, "listenmoe_wifi_lock");
+                        .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
 
         this.eventListener = new Player.EventListener() {
             @Override
@@ -49,7 +51,7 @@ public class RadioStream {
                 // Try to reconnect to the stream
                 final boolean wasPlaying = isPlaying();
 
-                releaseResources(true);
+                releasePlayer(true);
 
                 init();
                 if (wasPlaying) {
@@ -110,7 +112,7 @@ public class RadioStream {
         if (player != null) {
             player.setPlayWhenReady(false);
 
-            releaseResources(false);
+            releaseWifiLock();
         }
     }
 
@@ -118,7 +120,8 @@ public class RadioStream {
         if (player != null) {
             player.setPlayWhenReady(false);
 
-            releaseResources(true);
+            releaseWifiLock();
+            releasePlayer();
         }
     }
 
@@ -150,13 +153,15 @@ public class RadioStream {
         player.setAudioAttributes(audioAttributes);
     }
 
-    private void releaseResources(boolean releasePlayer) {
-        if (releasePlayer && player != null) {
+    private void releasePlayer() {
+        if (player != null) {
             player.release();
             player.removeListener(eventListener);
             player = null;
         }
+    }
 
+    private void releaseWifiLock() {
         if (wifiLock.isHeld()) {
             wifiLock.release();
         }
