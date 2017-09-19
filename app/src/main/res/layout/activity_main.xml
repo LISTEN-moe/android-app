@@ -78,12 +78,21 @@
 
             </android.support.design.widget.AppBarLayout>
 
+            <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:indeterminate="true"
+                android:visibility="@{vm.currentSong == null}" />
+
             <android.support.v4.view.ViewPager
                 android:id="@+id/pager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="?attr/actionBarSize"
-                android:clipToPadding="false" />
+                android:clipToPadding="false"
+                android:visibility="@{vm.currentSong != null}"/>
 
         </RelativeLayout>
 

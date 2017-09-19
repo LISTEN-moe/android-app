@@ -32,19 +32,11 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <ProgressBar
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:visibility="@{vm.currentSong == null}" />
-
             <LinearLayout
                 android:id="@+id/songList1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="@{vm.currentSong != null}">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
