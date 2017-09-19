@@ -1,8 +1,6 @@
 package me.echeung.moemoekyun.ui.activities;
 
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,12 +8,14 @@ import android.widget.TextView;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.utils.UrlUtil;
 
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String URL_GOOGLEPLAY = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
     private static final String URL_GITHUB = "https://github.com/arkon/listen-moe-android";
     private static final String URL_TRANSLATE = "https://osfmofb.oneskyapp.com/collaboration/project?id=271507";
+
     private static final String URL_LISTENMOE = "https://listen.moe";
     private static final String URL_DISCORD = "https://discordapp.com/invite/4S8JYr8"; // https://listen.moe/discord
     private static final String URL_PATREON = "https://www.patreon.com/odysseyradio";
@@ -59,15 +59,15 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.about_app_rate:
-                openUrl(URL_GOOGLEPLAY);
+                UrlUtil.openUrl(this, URL_GOOGLEPLAY);
                 break;
 
             case R.id.about_app_github:
-                openUrl(URL_GITHUB);
+                UrlUtil.openUrl(this, URL_GITHUB);
                 break;
 
             case R.id.about_app_translate:
-                openUrl(URL_TRANSLATE);
+                UrlUtil.openUrl(this, URL_TRANSLATE);
                 break;
 
             case R.id.about_app_licenses:
@@ -75,22 +75,17 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
                 break;
 
             case R.id.about_listenmoe_website:
-                openUrl(URL_LISTENMOE);
+                UrlUtil.openUrl(this, URL_LISTENMOE);
                 break;
 
             case R.id.about_listenmoe_discord:
-                openUrl(URL_DISCORD);
+                UrlUtil.openUrl(this, URL_DISCORD);
                 break;
 
             case R.id.about_listenmoe_patreon:
-                openUrl(URL_PATREON);
+                UrlUtil.openUrl(this, URL_PATREON);
                 break;
         }
-    }
-
-    private void openUrl(String url) {
-        final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
     }
 
     private void showLicensesDialog() {

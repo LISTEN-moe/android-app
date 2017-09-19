@@ -29,11 +29,14 @@ import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
+import me.echeung.moemoekyun.utils.UrlUtil;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TRIGGER_LOGIN_AND_FAVORITE = "fav_after_login";
     public static final String AUTH_EVENT = "auth_event";
+
+    private static final String URL_REGISTER = "https://listen.moe/#/register";
 
     private ActivityMainBinding binding;
 
@@ -178,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         // Toggle visibility of login/logout items based on authentication status
         final boolean authenticated = AuthUtil.isAuthenticated(this);
         menu.findItem(R.id.action_login).setVisible(!authenticated);
+        menu.findItem(R.id.action_register).setVisible(!authenticated);
         menu.findItem(R.id.action_logout).setVisible(authenticated);
 
         return true;
@@ -196,6 +200,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_login:
                 showLoginDialog();
+                return true;
+
+            case R.id.action_register:
+                UrlUtil.openUrl(this, URL_REGISTER);
                 return true;
 
             case R.id.action_logout:

@@ -30,6 +30,7 @@
     <string name="sort_desc">Descending</string>
 
     <!-- Auth -->
+    <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="username">Username</string>
