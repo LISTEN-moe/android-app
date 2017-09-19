@@ -51,7 +51,7 @@ public class RadioStream {
                 // Try to reconnect to the stream
                 final boolean wasPlaying = isPlaying();
 
-                releasePlayer(true);
+                releasePlayer();
 
                 init();
                 if (wasPlaying) {

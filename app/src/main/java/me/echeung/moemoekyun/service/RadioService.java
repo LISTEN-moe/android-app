@@ -56,6 +56,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
+    // TODO: move audio focus and ducking to RadioStream
+
     @Override
     public IBinder onBind(Intent intent) {
         isServiceBound = true;
