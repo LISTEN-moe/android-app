@@ -75,7 +75,7 @@ public class SongActionsUtil {
             public void onSuccess() {
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-                        Toast.makeText(activity.getApplicationContext(), R.string.success, Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.requested_song, song.getArtist()), Toast.LENGTH_LONG).show();
 
                         song.setEnabled(false);
                         adapter.notifyDataSetChanged();
