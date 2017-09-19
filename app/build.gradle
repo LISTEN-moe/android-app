@@ -12,9 +12,6 @@ android {
         versionName '0.16'
 
         vectorDrawables.useSupportLibrary = true
-
-        // Remove this if we ever support other locales
-        resConfigs 'en'
     }
 
     dataBinding {
