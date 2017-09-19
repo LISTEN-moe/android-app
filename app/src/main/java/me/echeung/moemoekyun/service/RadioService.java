@@ -120,6 +120,13 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     }
 
     @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        if (!isPlaying()) {
+            stopSelf();
+        }
+    }
+
+    @Override
     public void onDestroy() {
         stop();
         socket.disconnect();
