@@ -59,7 +59,7 @@
 
     <!-- About activity -->
     <string name="about">About</string>
-    <string name="version">Version %s (unofficial app)</string>
+    <string name="version">Version %s</string>
     <string name="rate">Rate on Google Play</string>
     <string name="github">Fork on GitHub</string>
     <string name="translate">Help translate the app</string>
