@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="error">Er is een fout opgetreden</string>
+    <string name="copied_to_clipboard">Gekopieerd</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_play">Afspelen</string>
+    <string name="action_pause">Pauze</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_favorite">Favorieten</string>
+    <string name="action_unfavorite">Verwijder als favoriet</string>
+    <string name="action_request">Aanvragen</string>
+    <string name="action_undo">Ongedaan maken</string>
+    <!-- == Search == -->
+    <string name="search">Zoek</string>
+    <string name="clear_query">Rij vrijmaken</string>
+    <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">Geen resultaten voor \"%s\"</string>
+    <!-- == Sort == -->
+    <string name="sort">Sorteren</string>
+    <string name="sort_title">Titel</string>
+    <string name="sort_artist">Artiest</string>
+    <string name="sort_desc">Aflopend</string>
+    <!-- == Auth == -->
+    <string name="register">Registreren</string>
+    <string name="login">Aanmelden</string>
+    <string name="logout">Afmelden</string>
+    <string name="username">Gebruikersnaam</string>
+    <string name="password">Wachtwoord</string>
+    <string name="logout_confirmation">Weet je zeker dat je wil afmelden?</string>
+    <string name="logged_out">Afgemeld</string>
+    <string name="login_required">Je moet je aanmelden om deze functie te gebruiken.</string>
+    <!-- == Radio tab == -->
+    <string name="play_pause">Start/pauze</string>
+    <string name="history">Geschiedenis</string>
+    <string name="favorite">Favorieten</string>
+    <!-- e.g. Requested by: username -->
+    <string name="requested_by">Aangevraagd door: %s</string>
+    <!-- == User tab == -->
+    <string name="no_favorites">Nog geen favorieten</string>
+    <string name="filter_favorites">Favorieten sorteren</string>
+    <!-- e.g. Unfavorited song title -->
+    <string name="unfavorited">"Verwijder %s als favoriet "</string>
+    <string name="queue_info">"%d in de rij, %d voor jouw verzoek "</string>
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <string name="supporter_required">Supporterstatus vereist</string>
+    <!-- == No Internet view == -->
+    <string name="no_internet">"Kan geen verbinding maken met LISTEN.MOE!\n\nControleer uw internet verbinding. "</string>
+    <string name="retry">Opnieuw proberen</string>
+    <!-- == About == -->
+    <string name="about">Over ons</string>
+    <!-- e.g. Version 1.0 -->
+    <string name="version">Versie %s</string>
+    <string name="rate">Op Google Play beoordelen</string>
+    <string name="github">Geef het een ster op Github</string>
+    <string name="translate">Help de app te vertalen</string>
+    <string name="licenses">Licenties</string>
+    <string name="listenmoe">LISTEN.moe radio</string>
+    <string name="open_in_browser">Openen in de browser</string>
+    <string name="discord">Doe mee op Discord</string>
+    <string name="patreon">Steun ons op Patreon</string>
+    <!-- Generic strings -->
+    <string name="success">"Succes! "</string>
+    <string name="connecting">"Verbinden... "</string>
+</resources>

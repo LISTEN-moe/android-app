@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="user_requests">
+        <item quantity="one">1 Musikwunsch verbleibend</item>
+        <item quantity="other">%d Musikwünsche verbleibend</item>
+    </plurals>
+    <plurals name="current_listeners">
+        <item quantity="one">1 Zuhörer</item>
+        <item quantity="other">%d Zuhörer</item>
+    </plurals>
+</resources>

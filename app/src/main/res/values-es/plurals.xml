@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="user_requests">
+        <item quantity="one">te queda 1 request</item>
+        <item quantity="other">te quedan %d requests</item>
+    </plurals>
+    <plurals name="current_listeners">
+        <item quantity="one">1 oyente</item>
+        <item quantity="other">%d oyentes</item>
+    </plurals>
+</resources>

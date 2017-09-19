@@ -1,44 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="app_name" translatable="false">LISTEN.moe</string>
-
-
     <!-- == Generic strings == -->
-
     <string name="error">An error occurred</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
-
-
     <!-- == Actions (notification, dialogs) == -->
-
     <string name="action_play">Play</string>
     <string name="action_pause">Pause</string>
     <string name="action_stop">Stop</string>
-    <string name="action_favorite">Favorite</string>
-    <string name="action_unfavorite">Unfavorite</string>
+    <string name="action_favorite">Favourite</string>
+    <string name="action_unfavorite">Unfavourite</string>
     <string name="action_request">Request</string>
     <string name="action_undo">Undo</string>
-
-
     <!-- == Search == -->
-
     <string name="search">Search</string>
     <string name="clear_query">Clear query</string>
     <!-- e.g. No results for "user's search query" -->
     <string name="no_results">No results for \"%s\"</string>
-
-
     <!-- == Sort == -->
-
     <string name="sort">Sort</string>
     <string name="sort_title">Title</string>
     <string name="sort_artist">Artist</string>
     <string name="sort_desc">Descending</string>
-
-
     <!-- == Auth == -->
-
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
@@ -47,42 +30,26 @@
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="logged_out">Logged out</string>
     <string name="login_required">You must log in to use this feature.</string>
-
-
     <!-- == Radio tab == -->
-
-    <string name="play_pause">Play/pause</string>
+    <string name="play_pause">Play/Pause</string>
     <string name="history">History</string>
-    <string name="favorite">Favorite</string>
+    <string name="favorite">Favourite</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Requested by: %s</string>
-
-
     <!-- == User tab == -->
-
-    <string name="no_favorites">No favorites yet</string>
-    <string name="filter_favorites">Filter favorites</string>
+    <string name="no_favorites">No favourites yet</string>
+    <string name="filter_favorites">Filter favourites</string>
     <!-- e.g. Unfavorited song title -->
-    <string name="unfavorited">Unfavorited %s</string>
-    <!-- e.g. 2 in queue, 10 before yours -->
+    <string name="unfavorited">Unfavourited %s</string>
     <string name="queue_info">%d in queue, %d before yours</string>
-
-
     <!-- == Song item actions == -->
-
     <!-- Requested song title -->
     <string name="requested_song">Requested %s</string>
     <string name="supporter_required">Supporter status required</string>
-
-
     <!-- == No Internet view == -->
-
     <string name="no_internet">Can\'t connect to LISTEN.moe\n\nCheck your Internet connection</string>
     <string name="retry">Retry</string>
-
-
     <!-- == About == -->
-
     <string name="about">About</string>
     <!-- e.g. Version 1.0 -->
     <string name="version">Version %s</string>
@@ -94,5 +61,7 @@
     <string name="open_in_browser">Open in browser</string>
     <string name="discord">Join us on Discord</string>
     <string name="patreon">Support on Patreon</string>
-
+    <!-- Generic strings -->
+    <string name="success">Success!</string>
+    <string name="connecting">Connecting...</string>
 </resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="current_listeners">
+        <item quantity="one">1 lyssnare</item>
+        <item quantity="other">%d lyssnare</item>
+    </plurals>
+</resources>

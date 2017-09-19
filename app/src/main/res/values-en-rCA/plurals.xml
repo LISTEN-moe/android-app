@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <plurals name="user_requests">
         <item quantity="one">1 request remaining</item>
-        <!-- e.g. 10 requests remaining -->
         <item quantity="other">%d requests remaining</item>
     </plurals>
-
     <plurals name="current_listeners">
         <item quantity="one">1 listener</item>
-        <!-- e.g. 420 listeners -->
         <item quantity="other">%d listeners</item>
     </plurals>
-
 </resources>

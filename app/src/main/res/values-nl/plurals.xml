@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="user_requests">
+        <item quantity="one">1 verzoek resterend</item>
+        <item quantity="other">%d resterende verzoeken</item>
+    </plurals>
+    <plurals name="current_listeners">
+        <item quantity="one">1 luisteraar</item>
+        <item quantity="other">%d luisteraars</item>
+    </plurals>
+</resources>

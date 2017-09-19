@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="error">Une erreur s\'est produite</string>
+    <string name="copied_to_clipboard">Copié dans le presse-papier</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_play">Play</string>
+    <string name="action_pause">Pause</string>
+    <string name="action_stop">Stop</string>
+    <string name="action_favorite">Favori</string>
+    <string name="action_unfavorite">Retirer des favoris</string>
+    <string name="action_request">Requête</string>
+    <string name="action_undo">Annuler</string>
+    <!-- == Search == -->
+    <string name="search">Rechercher</string>
+    <string name="clear_query">Supprimer la requête</string>
+    <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">Pas de résultats pour \"%s\"</string>
+    <!-- == Sort == -->
+    <string name="sort">Trier</string>
+    <string name="sort_title">Titre</string>
+    <string name="sort_artist">Artiste</string>
+    <string name="sort_desc">Décroissant</string>
+    <!-- == Auth == -->
+    <string name="register">S\'enregistrer</string>
+    <string name="login">Se connecter</string>
+    <string name="logout">Se déconnecter</string>
+    <string name="username">Nom d\'utilisateur</string>
+    <string name="password">Mot de passe</string>
+    <string name="logout_confirmation">Êtes-vous sûr de vouloir vous déconnecter ?</string>
+    <string name="logged_out">Déconnecté</string>
+    <string name="login_required">Vous devez vous connecter pour utiliser cette fonctionnalité.</string>
+    <!-- == Radio tab == -->
+    <string name="play_pause">Play/pause</string>
+    <string name="history">Historique</string>
+    <string name="favorite">Favori</string>
+    <!-- e.g. Requested by: username -->
+    <string name="requested_by">Demandé par : %s</string>
+    <!-- == User tab == -->
+    <string name="no_favorites">Pas encore de favoris</string>
+    <string name="filter_favorites">Filtrer les favoris</string>
+    <!-- e.g. Unfavorited song title -->
+    <string name="unfavorited">%s retiré des favoris</string>
+    <string name="queue_info">%d dans la file, %d avant la votre</string>
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <string name="supporter_required">Grade Supporteur requis</string>
+    <!-- == No Internet view == -->
+    <string name="no_internet">Impossible de se connecter à LISTEN.moe !\n\nMerci de vérifier votre connexion internet.</string>
+    <string name="retry">Réessayez</string>
+    <!-- == About == -->
+    <string name="about">À propos</string>
+    <!-- e.g. Version 1.0 -->
+    <string name="version">Version %s</string>
+    <string name="rate">Noter sur le Google Play</string>
+    <string name="github">Star on GitHub</string>
+    <string name="translate">Aidez à traduire l\'application</string>
+    <string name="licenses">Licenses</string>
+    <string name="listenmoe">LISTEN.moe radio</string>
+    <string name="open_in_browser">Ouvrir dans le navigateur</string>
+    <string name="discord">Rejoignez-nous sur Discord</string>
+    <string name="patreon">Supportez sur Patreon</string>
+    <!-- Generic strings -->
+    <string name="success">Réussi !</string>
+    <string name="connecting">Connexion...</string>
+</resources>
