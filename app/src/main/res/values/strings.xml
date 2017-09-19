@@ -5,7 +5,6 @@
     <!-- Generic strings -->
     <string name="success">Success!</string>
     <string name="error">An error occurred</string>
-    <string name="connecting">Connecting…</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="copied_to_clipboard">Copied to clipboard</string>
 

@@ -32,17 +32,25 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <ProgressBar
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="@{vm.currentSong == null}" />
+
             <LinearLayout
                 android:id="@+id/songList1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="@{vm.currentSong != null}">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:text="@{vm.currentSong.getTitle() ?? @string/connecting}"
+                    android:text="@{vm.currentSong.getTitle()}"
                     android:textAlignment="center"
                     android:textColor="@android:color/white"
                     android:textSize="24sp" />

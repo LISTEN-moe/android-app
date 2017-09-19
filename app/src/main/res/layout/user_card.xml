@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="56dp"
-                android:text="@{vm.userName ?? @string/connecting}"
+                android:text="@{vm.userName}"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
