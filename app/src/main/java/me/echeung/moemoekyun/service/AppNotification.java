@@ -79,7 +79,7 @@ class AppNotification {
                 .setOnlyAlertOnce(true)
                 .setStyle(new MediaStyle().setShowActionsInCompactView(0, 1))
                 .setColor(ContextCompat.getColor(service, R.color.colorAccent))
-                .setSmallIcon(R.drawable.icon_notification)
+                .setSmallIcon(R.drawable.ic_icon)
                 .setContentTitle(song.getTitle())
                 .setContentText(text)
                 .setContentIntent(clickIntent)
