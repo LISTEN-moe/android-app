@@ -102,7 +102,9 @@ public class RadioStream {
             init();
         }
 
-        wifiLock.acquire();
+        if (wifiLock != null) {
+            wifiLock.acquire();
+        }
 
         player.setPlayWhenReady(true);
         player.seekToDefaultPosition();
@@ -162,7 +164,7 @@ public class RadioStream {
     }
 
     private void releaseWifiLock() {
-        if (wifiLock.isHeld()) {
+        if (wifiLock != null && wifiLock.isHeld()) {
             wifiLock.release();
         }
     }
