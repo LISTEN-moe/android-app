@@ -16,6 +16,7 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.SongItemBinding;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -130,6 +131,12 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                         listener.onSongItemClick(song);
                     }
                 }
+            });
+
+            binding.getRoot().setOnLongClickListener(v -> {
+                final Song song = adapter.getSongs().get(getLayoutPosition());
+                SongActionsUtil.copyToClipboard(adapter.context, song);
+                return true;
             });
         }
 

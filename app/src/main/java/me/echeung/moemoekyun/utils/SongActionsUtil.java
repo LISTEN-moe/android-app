@@ -1,6 +1,9 @@
 package me.echeung.moemoekyun.utils;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -96,5 +99,17 @@ public class SongActionsUtil {
                 }
             }
         });
+    }
+
+    public static void copyToClipboard(final Context context, final Song song) {
+        copyToClipboard(context, song.toString());
+    }
+
+    public static void copyToClipboard(final Context context, final String songInfo) {
+        ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("song", songInfo);
+        clipboard.setPrimaryClip(clip);
+
+        Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
     }
 }

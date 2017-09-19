@@ -22,6 +22,7 @@ import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioFragment extends TabFragment {
@@ -50,9 +51,18 @@ public class RadioFragment extends TabFragment {
         final ImageButton vFavoriteBtn = binding.radioControls.favoriteBtn;
         vFavoriteBtn.setOnClickListener(v -> favorite());
 
-        binding.radioSongs.songList1.setOnLongClickListener(v -> copyToClipboard(viewModel.getCurrentSong().toString()));
-        binding.radioSongs.songList2.setOnLongClickListener(v -> copyToClipboard(viewModel.getLastSong()));
-        binding.radioSongs.songList3.setOnLongClickListener(v -> copyToClipboard(viewModel.getSecondLastSong()));
+        binding.radioSongs.songList1.setOnLongClickListener(v -> {
+            SongActionsUtil.copyToClipboard(getActivity(), viewModel.getCurrentSong());
+            return true;
+        });
+        binding.radioSongs.songList2.setOnLongClickListener(v -> {
+            SongActionsUtil.copyToClipboard(getActivity(), viewModel.getLastSong());
+            return true;
+        });
+        binding.radioSongs.songList3.setOnLongClickListener(v -> {
+            SongActionsUtil.copyToClipboard(getActivity(), viewModel.getSecondLastSong());
+            return true;
+        });
 
         return binding.getRoot();
     }
