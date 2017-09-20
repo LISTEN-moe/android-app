@@ -63,6 +63,8 @@ dependencies {
 
     implementation project(':listenmoe-api')
 
+    // TODO: add Cast support
+
     implementation "com.android.support:support-core-ui:$supportLibVersion"
     implementation "com.android.support:support-media-compat:$supportLibVersion"
     implementation "com.android.support:support-fragment:$supportLibVersion"

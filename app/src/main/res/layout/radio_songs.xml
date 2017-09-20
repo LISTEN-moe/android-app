@@ -32,6 +32,8 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <!-- TODO: fix this for small viewports -->
+
             <LinearLayout
                 android:id="@+id/songList1"
                 android:layout_width="match_parent"
