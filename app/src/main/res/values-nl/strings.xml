@@ -41,9 +41,11 @@
     <string name="filter_favorites">Favorieten sorteren</string>
     <!-- e.g. Unfavorited song title -->
     <string name="unfavorited">"Verwijder %s als favoriet "</string>
+    <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">"%d in de rij, %d voor jouw verzoek "</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
+    <string name="requested_song">Verzocht %s</string>
     <string name="supporter_required">Supporterstatus vereist</string>
     <!-- == No Internet view == -->
     <string name="no_internet">"Kan geen verbinding maken met LISTEN.MOE!\n\nControleer uw internet verbinding. "</string>

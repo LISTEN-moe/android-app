@@ -31,7 +31,7 @@
     <string name="logged_out">Logged out</string>
     <string name="login_required">You must log in to use this feature.</string>
     <!-- == Radio tab == -->
-    <string name="play_pause">Play/Pause</string>
+    <string name="play_pause">Play/pause</string>
     <string name="history">History</string>
     <string name="favorite">Favourite</string>
     <!-- e.g. Requested by: username -->
@@ -41,6 +41,7 @@
     <string name="filter_favorites">Filter favourites</string>
     <!-- e.g. Unfavorited song title -->
     <string name="unfavorited">Unfavourited %s</string>
+    <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d in queue, %d before yours</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->

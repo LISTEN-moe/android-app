@@ -38,6 +38,7 @@
     <string name="filter_favorites">Filtrera favoriter</string>
     <!-- e.g. Unfavorited song title -->
     <string name="unfavorited">Tog bort %s från favoriter</string>
+    <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d i kön, %d före din</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->

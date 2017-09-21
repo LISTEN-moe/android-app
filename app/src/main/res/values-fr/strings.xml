@@ -41,9 +41,11 @@
     <string name="filter_favorites">Filtrer les favoris</string>
     <!-- e.g. Unfavorited song title -->
     <string name="unfavorited">%s retiré des favoris</string>
+    <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d dans la file, %d avant la votre</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
+    <string name="requested_song">Une requête à été faite pour %s</string>
     <string name="supporter_required">Grade Supporteur requis</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Impossible de se connecter à LISTEN.moe !\n\nMerci de vérifier votre connexion internet.</string>

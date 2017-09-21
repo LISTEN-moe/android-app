@@ -41,6 +41,7 @@
     <string name="filter_favorites">Filter favourites</string>
     <!-- e.g. Unfavorited song title -->
     <string name="unfavorited">Unfavourited %s</string>
+    <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d in queue, %d before yours</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->

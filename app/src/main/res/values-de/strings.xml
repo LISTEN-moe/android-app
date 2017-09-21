@@ -41,12 +41,13 @@
     <string name="filter_favorites">Favoriten filtern</string>
     <!-- e.g. Unfavorited song title -->
     <string name="unfavorited">%s von Favoriten entfernt</string>
+    <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d in der Warteschlange, %d vor deinen</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
     <string name="supporter_required">Supporter Status benötigt</string>
     <!-- == No Internet view == -->
-    <string name="no_internet">Konnte keine Verbindung zu LISTEN.moe herstellen.\n\nÜberprüfe deine Internet Verbindung.</string>
+    <string name="no_internet">Konnte keine Verbindung zu LISTEN.moe herstellen.\nÜberprüfe deine Internet Verbindung.</string>
     <string name="retry">Erneut versuchen</string>
     <!-- == About == -->
     <string name="about">Über</string>
