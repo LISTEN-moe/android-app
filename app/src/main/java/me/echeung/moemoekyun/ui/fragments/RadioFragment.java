@@ -1,8 +1,5 @@
 package me.echeung.moemoekyun.ui.fragments;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -13,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
@@ -93,14 +89,5 @@ public class RadioFragment extends TabFragment {
 
     private void showHistory() {
         App.getRadioViewModel().toggleShowHistory();
-    }
-
-    private boolean copyToClipboard(String songInfo) {
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("song", songInfo);
-        clipboard.setPrimaryClip(clip);
-
-        Toast.makeText(getActivity().getApplicationContext(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
-        return true;
     }
 }
