@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{title}"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="18sp" />
 
             <TextView
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:text="@{subtitle}"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

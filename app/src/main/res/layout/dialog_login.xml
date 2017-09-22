@@ -12,7 +12,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/lighter_grey">
+        android:textColorHint="@color/light_grey">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/login_username"
@@ -29,7 +29,7 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColorHint="@color/lighter_grey">
+        android:textColorHint="@color/light_grey">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/login_password"

@@ -23,7 +23,7 @@
                 android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:text="@string/no_favorites"
-                android:textColor="@android:color/white" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -52,14 +52,14 @@
                     android:layout_height="wrap_content"
                     android:layout_alignEnd="@id/favorites_sort_btn"
                     android:layout_alignParentStart="true"
-                    android:backgroundTint="@color/lighter_grey"
+                    android:backgroundTint="@color/light_grey"
                     android:hint="@string/filter_favorites"
                     android:importantForAutofill="no"
                     android:inputType="textNoSuggestions"
                     android:maxLines="1"
                     android:padding="16dp"
-                    android:textColor="@android:color/white"
-                    android:textColorHint="@color/lighter_grey"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/light_grey"
                     android:textSize="16sp" />
 
                 <ImageButton
@@ -73,7 +73,7 @@
                     android:padding="8dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_sort_white_24dp"
-                    android:tint="@color/lighter_grey" />
+                    android:tint="@color/light_grey" />
 
             </RelativeLayout>
 

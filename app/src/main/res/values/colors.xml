@@ -5,10 +5,12 @@
 
     <color name="ic_launcher_background">#353953</color>
 
-    <color name="grey">#1D1F2B</color>
-    <color name="light_grey">#2B2E41</color>
-    <color name="lighter_grey">#747574</color>
+    <color name="transparent">#00FFFFFF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="light_grey">#747574</color>
+    <color name="grey">#2B2E41</color>
+    <color name="dark_grey">#1D1F2B</color>
 
-    <color name="pink">#EC1A55</color>
     <color name="light_pink">#F75E7E</color>
+    <color name="pink">#EC1A55</color>
 </resources>

@@ -16,7 +16,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center"
             android:text="@string/login_required"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_login"

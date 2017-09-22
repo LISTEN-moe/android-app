@@ -21,7 +21,7 @@
             <android.support.design.widget.AppBarLayout
                 android:layout_width="fill_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/grey">
+                android:background="@color/dark_grey">
 
                 <android.support.v7.widget.Toolbar
                     android:id="@+id/appbar"
@@ -45,7 +45,7 @@
                             android:imeOptions="actionSearch"
                             android:inputType="textNoSuggestions"
                             android:maxLines="1"
-                            android:textColorHint="@color/lighter_grey"
+                            android:textColorHint="@color/light_grey"
                             android:textSize="16sp" />
 
                         <ImageButton
@@ -97,7 +97,7 @@
                     android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:text='@{vm.query}'
-                    android:textColor="@android:color/white" />
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 

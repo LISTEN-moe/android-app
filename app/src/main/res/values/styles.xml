@@ -9,9 +9,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-        <item name="android:windowBackground">@color/light_grey</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="android:textColorSecondary">@color/lighter_grey</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/light_grey</item>
 
         <item name="android:textAppearanceButton">@style/ButtonTheme</item>
 
@@ -21,25 +21,25 @@
     <!-- TabHost -->
     <style name="TabWidgetTheme" parent="AppTheme">
         <item name="android:textColorPrimary">@color/colorAccent</item>
-        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="android:textColorSecondary">@color/white</item>
     </style>
 
     <!-- Dialogs -->
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:background">@color/grey</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:background">@color/dark_grey</item>
+        <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorLink">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Buttons -->
     <style name="ButtonTheme" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@color/dark_grey</item>
     </style>
 
     <!-- Custom menus -->
     <style name="PopupMenu" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:popupBackground">@color/grey</item>
+        <item name="android:popupBackground">@color/dark_grey</item>
     </style>
 
     <!-- Licenses dialog -->

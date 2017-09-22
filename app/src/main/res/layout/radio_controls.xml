@@ -17,7 +17,7 @@
             android:layout_margin="8dp"
             android:text='@{vm.requester}'
             android:textAlignment="center"
-            android:textColor="@android:color/white"
+            android:textColor="@color/white"
             android:textColorLink="@color/colorAccent"
             android:textSize="14sp" />
 
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:text="@{@plurals/current_listeners(vm.listeners, vm.listeners)}"
             android:textAlignment="center"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

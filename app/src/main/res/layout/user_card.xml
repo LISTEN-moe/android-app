@@ -26,7 +26,7 @@
                 android:layout_marginTop="56dp"
                 android:text="@{vm.userName}"
                 android:textAlignment="center"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
             <TextView
@@ -36,7 +36,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@{@plurals/user_requests(vm.userRequests, vm.userRequests)}"
                 android:textAlignment="center"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
 
             <TextView
@@ -46,7 +46,7 @@
                 android:fontFamily="sans-serif-light"
                 android:text="@{@string/queue_info(vm.queueSize, vm.queuePosition)}"
                 android:textAlignment="center"
-                android:textColor="@android:color/white"
+                android:textColor="@color/white"
                 android:textSize="14sp"
                 android:visibility="@{vm.queuePosition != 0}" />
 
