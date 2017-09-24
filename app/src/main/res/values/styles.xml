@@ -39,7 +39,7 @@
 
     <!-- Custom menus -->
     <style name="PopupMenu" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:popupBackground">@color/dark_grey</item>
+        <item name="android:popupBackground">@color/popup_menu_bg</item>
     </style>
 
     <!-- Licenses dialog -->
