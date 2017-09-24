@@ -1,6 +1,7 @@
 package me.echeung.listenmoeapi;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 
@@ -37,6 +38,10 @@ public class RadioStream {
 
     private SimpleExoPlayer player;
 
+    private AudioManager audioManager;
+    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
+    private boolean wasPlayingBeforeLoss;
+
     RadioStream(Context context) {
         this.context = context;
 
@@ -44,6 +49,31 @@ public class RadioStream {
                 ((WifiManager) context.getApplicationContext()
                         .getSystemService(Context.WIFI_SERVICE))
                         .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
+
+        audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        audioFocusChangeListener = focusChange -> {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    unduck();
+                    if (wasPlayingBeforeLoss) {
+                        play();
+                    }
+                    break;
+
+                case AudioManager.AUDIOFOCUS_LOSS:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    wasPlayingBeforeLoss = isPlaying();
+                    if (wasPlayingBeforeLoss) {
+                        pause();
+                    }
+                    break;
+
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    wasPlayingBeforeLoss = isPlaying();
+                    duck();
+                    break;
+            }
+        };
 
         this.eventListener = new Player.EventListener() {
             @Override
@@ -97,41 +127,66 @@ public class RadioStream {
         return player != null;
     }
 
-    public void play() {
+    public boolean play() {
         if (player == null) {
             init();
         }
 
-        acquireWifiLock();
+        if (!isPlaying()) {
+            // Request audio focus for playback
+            int result = audioManager.requestAudioFocus(audioFocusChangeListener,
+                    AudioManager.STREAM_MUSIC,
+                    AudioManager.AUDIOFOCUS_GAIN);
 
-        player.setPlayWhenReady(true);
-        player.seekToDefaultPosition();
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                acquireWifiLock();
+
+                player.setPlayWhenReady(true);
+                player.seekToDefaultPosition();
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    public void pause() {
+    public boolean pause() {
         if (player != null) {
             player.setPlayWhenReady(false);
 
             releaseWifiLock();
+
+            return true;
         }
+
+        return false;
     }
 
-    public void stop() {
+    public boolean stop() {
         if (player != null) {
+            if (isPlaying()) {
+                audioManager.abandonAudioFocus(audioFocusChangeListener);
+            }
+
             player.setPlayWhenReady(false);
 
             releaseWifiLock();
             releasePlayer();
+
+            return true;
         }
+
+        return false;
     }
 
-    public void duck() {
+    private void duck() {
         if (player != null) {
             player.setVolume(0.5f);
         }
     }
 
-    public void unduck() {
+    private void unduck() {
         if (player != null) {
             player.setVolume(1f);
         }
