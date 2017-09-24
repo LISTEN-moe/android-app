@@ -2,6 +2,8 @@ package me.echeung.moemoekyun.ui.fragments;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.Observable;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.text.method.LinkMovementMethod;
@@ -12,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import me.echeung.moemoekyun.App;
+import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
 import me.echeung.moemoekyun.service.RadioService;
@@ -24,13 +27,19 @@ import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 public class RadioFragment extends TabFragment {
 
     private FragmentRadioBinding binding;
+    private RadioViewModel viewModel;
+
+    private Observable.OnPropertyChangedCallback playPauseCallback;
+    private FloatingActionButton vPlayPauseBtn;
+    private AnimatedVectorDrawable playToPause;
+    private AnimatedVectorDrawable pauseToPlay;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
 
-        final RadioViewModel viewModel = App.getRadioViewModel();
+        viewModel = App.getRadioViewModel();
 
         binding.radioSongs.setVm(viewModel);
         binding.radioControls.setVm(viewModel);
@@ -38,8 +47,7 @@ public class RadioFragment extends TabFragment {
         final TextView vRequestBy = binding.radioControls.requestedBy;
         vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
 
-        final FloatingActionButton vPlayPauseBtn = binding.radioControls.playPauseBtn;
-        vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
+        initPlayPause();
 
         final ImageButton vHistoryBtn = binding.radioControls.historyBtn;
         vHistoryBtn.setOnClickListener(v -> showHistory());
@@ -69,7 +77,38 @@ public class RadioFragment extends TabFragment {
             binding.unbind();
         }
 
+        if (playPauseCallback != null) {
+            viewModel.removeOnPropertyChangedCallback(playPauseCallback);
+        }
+
         super.onDestroy();
+    }
+
+    private void initPlayPause() {
+        vPlayPauseBtn = binding.radioControls.playPauseBtn;
+        vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
+
+        playToPause = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_play_to_pause);
+        pauseToPlay = (AnimatedVectorDrawable) getActivity().getDrawable(R.drawable.avd_pause_to_play);
+
+        setPlayPauseDrawable();
+
+        playPauseCallback = new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if (propertyId == BR.isPlaying) {
+                    setPlayPauseDrawable();
+                }
+            }
+        };
+
+        viewModel.addOnPropertyChangedCallback(playPauseCallback);
+    }
+
+    private void setPlayPauseDrawable() {
+        final AnimatedVectorDrawable drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
+        vPlayPauseBtn.setImageDrawable(drawable);
+        drawable.start();
     }
 
     private void togglePlayPause() {

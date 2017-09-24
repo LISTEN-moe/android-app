@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Adapted from https://stackoverflow.com/a/35391277 -->
+
+    <!-- Geometry -->
+    <integer name="viewport_size">48</integer>
+    <integer name="viewport_center">24</integer>
+    <string name="path_play">M16,24L38,24L27.3,30.8L16,38ZM16,10L27.3,17.2L38,24L16,24Z</string>
+    <string name="path_pause">M12,10L20,10L20,38L12,38ZM28,10L36,10L36,38L28,38Z</string>
+
+    <!-- Names -->
+    <string name="state_play">play</string>
+    <string name="state_pause">pause</string>
+    <string name="group_play_pause">groupPlayPause</string>
+
+    <!-- Timing -->
+    <integer name="duration">450</integer>
+
+</resources>

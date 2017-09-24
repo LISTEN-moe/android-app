@@ -47,7 +47,7 @@
                 android:layout_margin="16dp"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="fitXY"
-                android:src="@{vm.isPlaying ? @drawable/ic_pause_white_24dp : @drawable/ic_play_arrow_white_24dp}" />
+                android:src="@drawable/ic_anim_play" />
 
             <ImageButton
                 android:id="@+id/favorite_btn"
