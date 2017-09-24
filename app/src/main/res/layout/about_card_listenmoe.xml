@@ -20,25 +20,17 @@
             android:padding="16dp"
             android:text="@string/listenmoe"
             android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="?android:textColorSecondary" />
+            android:textColor="@color/light_grey" />
 
         <LinearLayout
             android:id="@+id/about_listenmoe_website"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            style="@style/AboutItem">
 
             <ImageView
                 android:layout_width="@dimen/md_listitem_height"
                 android:layout_height="@dimen/md_listitem_height"
                 android:src="@drawable/ic_radio_white_24dp"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -61,21 +53,13 @@
 
         <LinearLayout
             android:id="@+id/about_listenmoe_discord"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            style="@style/AboutItem">
 
             <ImageView
                 android:layout_width="@dimen/md_listitem_height"
                 android:layout_height="@dimen/md_listitem_height"
                 android:src="@drawable/ic_person_white_24dp"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -98,21 +82,13 @@
 
         <LinearLayout
             android:id="@+id/about_listenmoe_patreon"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            style="@style/AboutItem">
 
             <ImageView
                 android:layout_width="@dimen/md_listitem_height"
                 android:layout_height="@dimen/md_listitem_height"
                 android:src="@drawable/ic_card_giftcard_white_24dp"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout

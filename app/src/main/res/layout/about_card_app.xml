@@ -54,21 +54,13 @@
 
         <LinearLayout
             android:id="@+id/about_app_rate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            style="@style/AboutItem">
 
             <ImageView
                 android:layout_width="@dimen/md_listitem_height"
                 android:layout_height="@dimen/md_listitem_height"
                 android:src="@drawable/ic_star_white_24dp"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -91,21 +83,13 @@
 
         <LinearLayout
             android:id="@+id/about_app_github"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            style="@style/AboutItem">
 
             <ImageView
                 android:layout_width="@dimen/md_listitem_height"
                 android:layout_height="@dimen/md_listitem_height"
                 android:src="@drawable/ic_code_white_24dp"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -128,21 +112,13 @@
 
         <LinearLayout
             android:id="@+id/about_app_translate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            style="@style/AboutItem">
 
             <ImageView
                 android:layout_width="@dimen/md_listitem_height"
                 android:layout_height="@dimen/md_listitem_height"
                 android:src="@drawable/ic_language_white_24dp"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -165,21 +141,13 @@
 
         <LinearLayout
             android:id="@+id/about_app_licenses"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
-            android:clickable="true"
-            android:gravity="center_vertical"
-            android:minHeight="@dimen/md_listitem_height"
-            android:orientation="horizontal"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
+            style="@style/AboutItem">
 
             <ImageView
                 android:layout_width="@dimen/md_listitem_height"
                 android:layout_height="@dimen/md_listitem_height"
                 android:src="@drawable/ic_description_white_24dp"
-                android:tint="?android:textColorSecondary"
+                android:tint="@color/light_grey"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout

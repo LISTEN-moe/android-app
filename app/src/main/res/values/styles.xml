@@ -42,6 +42,20 @@
         <item name="android:popupBackground">@color/popup_menu_bg</item>
     </style>
 
+    <!-- About card item -->
+    <style name="AboutItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:minHeight">@dimen/md_listitem_height</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:theme">@style/Base.ThemeOverlay.AppCompat.Dark</item>
+    </style>
+
     <!-- Licenses dialog -->
     <string name="licenses_css" translatable="false">
         body {
