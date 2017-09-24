@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.BR;
@@ -100,6 +101,10 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         SongSortUtil.sort(context, listId, visibleSongs);
 
         notifyDataSetChanged();
+    }
+
+    public Song getRandomSong() {
+        return visibleSongs != null ? visibleSongs.get(new Random().nextInt(visibleSongs.size())) : null;
     }
 
     protected List<Song> getSongs() {
