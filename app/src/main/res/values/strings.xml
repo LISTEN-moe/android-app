@@ -66,6 +66,7 @@
     <string name="unfavorited">Unfavorited %s</string>
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d in queue, %d before yours</string>
+    <string name="random_request">Request random song</string>
 
 
     <!-- == Song item actions == -->

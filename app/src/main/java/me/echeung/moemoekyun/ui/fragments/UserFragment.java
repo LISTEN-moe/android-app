@@ -13,12 +13,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -48,7 +49,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
     private LinearLayout vLoginMsg;
     private LinearLayout vUserContent;
-    private ImageView vUserAvatar;
 
     private UserViewModel viewModel;
 
@@ -71,7 +71,6 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
         vLoginMsg = binding.loginMsg.container;
         vUserContent = binding.userContent;
-        vUserAvatar = binding.userCard.userAvatar;
 
         // Login view
         final Button vBtnLogin = binding.loginMsg.btnLogin;
@@ -105,8 +104,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         binding.favorites.favoritesSortBtn.setOnClickListener(v -> {
             final PopupMenu popupMenu = new PopupMenu(getActivity(), binding.favorites.favoritesSortBtn);
             popupMenu.inflate(R.menu.menu_sort);
+
             SongSortUtil.initSortMenu(getContext(), LIST_ID, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(item -> SongSortUtil.handleSortMenuItem(item, adapter));
+            popupMenu.setOnMenuItemClickListener(this::handleMenuItemClick);
             popupMenu.show();
         });
 
@@ -148,6 +148,20 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         }
 
         super.onDestroy();
+    }
+
+    private boolean handleMenuItemClick(MenuItem item) {
+        if (SongSortUtil.handleSortMenuItem(item, adapter)) {
+            return true;
+        }
+
+        if (item.getItemId() == R.id.action_random_request) {
+            // TODO: request random favorite
+            Toast.makeText(getActivity(), "Yay", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        return false;
     }
 
     private void initBroadcastReceiver() {
