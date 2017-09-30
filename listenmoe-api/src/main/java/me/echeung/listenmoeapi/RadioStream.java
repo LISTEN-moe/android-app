@@ -193,6 +193,9 @@ public class RadioStream {
     }
 
     private void init() {
+        // In case there's already an instance somehow
+        releasePlayer();
+
         final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, APIClient.USER_AGENT);
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(STREAM_URL), dataSourceFactory, extractorsFactory, null, null);
