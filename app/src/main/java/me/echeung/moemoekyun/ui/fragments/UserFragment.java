@@ -155,7 +155,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         }
 
         if (item.getItemId() == R.id.action_random_request) {
-            final Song randomSong = adapter.getRandomSong();
+            final Song randomSong = adapter.getRandomRequestSong();
             if (randomSong != null) {
                 SongActionsUtil.request(getActivity(), adapter, randomSong);
                 return true;
