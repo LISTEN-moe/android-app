@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -158,8 +159,10 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
             final Song randomSong = adapter.getRandomRequestSong();
             if (randomSong != null) {
                 SongActionsUtil.request(getActivity(), adapter, randomSong);
-                return true;
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.all_cooldown), Toast.LENGTH_SHORT).show();
             }
+            return true;
         }
 
         return false;

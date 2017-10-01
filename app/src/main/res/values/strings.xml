@@ -67,6 +67,7 @@
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d in queue, %d before yours</string>
     <string name="random_request">Request random song</string>
+    <string name="all_cooldown">All songs are on cool down</string>
 
 
     <!-- == Song item actions == -->
