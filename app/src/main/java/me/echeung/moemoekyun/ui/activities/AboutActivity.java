@@ -34,14 +34,12 @@ public class AboutActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void setupVersion() {
-        String version = "";
         try {
-            version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            final String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            final TextView txtVersion = findViewById(R.id.app_version);
+            txtVersion.setText(getString(R.string.version, version));
         } catch (PackageManager.NameNotFoundException e) {
         }
-
-        final TextView txtVersion = findViewById(R.id.app_version);
-        txtVersion.setText(getString(R.string.version, version));
     }
 
     private void setupClickListeners() {

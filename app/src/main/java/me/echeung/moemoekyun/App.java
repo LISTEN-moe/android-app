@@ -30,7 +30,7 @@ public class App extends Application {
         super.onCreate();
 
         // Music player service
-        Intent intent = new Intent(this, RadioService.class);
+        final Intent intent = new Intent(this, RadioService.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT );
 
         // API client
@@ -79,7 +79,6 @@ public class App extends Application {
     private ServiceConnection mConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            // We've bound to LocalService, cast the IBinder and get LocalService instance
             final RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
             final RadioService radioService = binder.getService();
 
@@ -90,7 +89,7 @@ public class App extends Application {
 
         @Override
         public void onServiceDisconnected(ComponentName arg0) {
-            isServiceBound = false;
+            App.isServiceBound = false;
             App.apiClient.getSocket().setListener(null);
         }
     };

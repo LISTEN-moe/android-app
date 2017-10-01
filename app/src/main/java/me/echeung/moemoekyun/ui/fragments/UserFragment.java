@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -33,13 +34,12 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
-public class UserFragment extends TabFragment implements SongAdapter.OnSongItemClickListener {
+public class UserFragment extends Fragment implements SongAdapter.OnSongItemClickListener {
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
 
@@ -52,7 +52,7 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
 
     private UserViewModel viewModel;
 
-    // Favorites
+    // Favorites list
     private SongAdapter adapter;
 
     // Receiver
@@ -61,8 +61,13 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
     private boolean receiverRegistered = false;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
 
         viewModel = App.getUserViewModel();
@@ -205,11 +210,9 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         App.getApiClient().getUserInfo(new UserInfoCallback() {
             @Override
             public void onSuccess(final UserResponse userResponse) {
-                runOnUiThread(() -> {
-                    final String userName = userResponse.getUsername();
+                final String userName = userResponse.getUsername();
 
-                    viewModel.setUserName(userName);
-                });
+                viewModel.setUserName(userName);
             }
 
             @Override
@@ -220,13 +223,11 @@ public class UserFragment extends TabFragment implements SongAdapter.OnSongItemC
         App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
             @Override
             public void onSuccess(final UserFavoritesResponse userFavorites) {
-                runOnUiThread(() -> {
-                    final List<Song> favorites = userFavorites.getSongs();
-                    adapter.setSongs(favorites);
+                final List<Song> favorites = userFavorites.getSongs();
+                adapter.setSongs(favorites);
 
-                    viewModel.setUserRequests(userFavorites.getExtra().getRequests());
-                    viewModel.setHasFavorites(!favorites.isEmpty());
-                });
+                viewModel.setUserRequests(userFavorites.getExtra().getRequests());
+                viewModel.setHasFavorites(!favorites.isEmpty());
             }
 
             @Override

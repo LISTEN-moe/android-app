@@ -141,7 +141,6 @@ public class SearchActivity extends AppCompatActivity implements SongAdapter.OnS
 
     @Override
     public void onSongItemClick(final Song song) {
-        // Create button "Favorite"/"Unfavorite"
         final String favoriteAction = song.isFavorite() ?
                 getString(R.string.action_unfavorite) :
                 getString(R.string.action_favorite);

@@ -6,6 +6,7 @@ import android.databinding.Observable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +20,14 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.ui.fragments.base.TabFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
-public class RadioFragment extends TabFragment {
+public class RadioFragment extends Fragment {
 
     private FragmentRadioBinding binding;
+
     private RadioViewModel viewModel;
 
     private Observable.OnPropertyChangedCallback playPauseCallback;
@@ -35,8 +36,13 @@ public class RadioFragment extends TabFragment {
     private AnimatedVectorDrawable pauseToPlay;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_radio, container, false);
 
         viewModel = App.getRadioViewModel();

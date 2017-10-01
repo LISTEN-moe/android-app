@@ -22,8 +22,7 @@ public class AuthUtil {
      * @return Whether the user is authenticated.
      */
     public static boolean isAuthenticated(final Context context) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getString(USER_TOKEN, null) != null;
+        return getAuthToken(context) != null;
     }
 
     /**
@@ -50,20 +49,20 @@ public class AuthUtil {
      * @return The user's auth token.
      */
     public static String getAuthToken(final Context context) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getString(USER_TOKEN, null);
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(USER_TOKEN, null);
     }
 
     /**
      * Stores the auth token, also tracking the time that it was stored.
      * Android context to fetch SharedPreferences.
      *
-     * @param context
+     * @param context Android context to fetch SharedPreferences.
      * @param token   The auth token to store, provided via the LISTEN.moe API.
      */
     public static void setAuthToken(final Context context, final String token) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
                 .putString(USER_TOKEN, token)
                 .putLong(LAST_AUTH, System.currentTimeMillis() / 1000)
                 .apply();
@@ -75,8 +74,8 @@ public class AuthUtil {
      * @param context Android context to fetch SharedPreferences.
      */
     public static void clearAuthToken(final Context context) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPrefs.edit()
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
                 .putString(USER_TOKEN, null)
                 .putLong(LAST_AUTH, 0)
                 .apply();
@@ -90,8 +89,8 @@ public class AuthUtil {
      * @param context Android context to fetch SharedPreferences.
      * @return The time in seconds since the stored auth token was stored.
      */
-    public static long getTokenAge(final Context context) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPrefs.getLong(LAST_AUTH, 0);
+    private static long getTokenAge(final Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getLong(LAST_AUTH, 0);
     }
 }
