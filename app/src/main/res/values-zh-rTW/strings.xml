@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="error">錯誤發生</string>
+    <string name="copied_to_clipboard">複製到剪貼板</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_play">播放</string>
+    <string name="action_pause">暫停</string>
+    <string name="action_stop">停止</string>
+    <string name="action_favorite">你的最愛</string>
+    <string name="action_unfavorite">不喜愛</string>
+    <string name="action_request">請求</string>
+    <string name="action_undo">取消</string>
+    <!-- == Search == -->
+    <string name="search">搜尋</string>
+</resources>

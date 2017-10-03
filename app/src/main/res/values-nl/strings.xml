@@ -23,6 +23,7 @@
     <string name="sort_desc">Aflopend</string>
     <!-- == Auth == -->
     <string name="register">Registreren</string>
+    <!-- Auth -->
     <string name="login">Aanmelden</string>
     <string name="logout">Afmelden</string>
     <string name="username">Gebruikersnaam</string>
@@ -43,9 +44,11 @@
     <string name="unfavorited">"Verwijder %s als favoriet "</string>
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">"%d in de rij, %d voor jouw verzoek "</string>
-    <!-- == Song item actions == -->
+    <string name="random_request">Willekeurig nummer aanvragen</string>
+    <string name="all_cooldown">Je kan tijdelijk geen nummers aanvragen</string>
     <!-- Requested song title -->
     <string name="requested_song">Verzocht %s</string>
+    <!-- Song item actions -->
     <string name="supporter_required">Supporterstatus vereist</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Kan geen verbinding maken met LISTEN.moe\n\nControleer uw internet verbinding</string>

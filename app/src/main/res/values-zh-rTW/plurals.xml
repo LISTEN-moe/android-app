@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="user_requests">
+        <item quantity="other">點播歌曲剩餘 %d 首</item>
+    </plurals>
+    <plurals name="current_listeners">
+        <item quantity="other">%d 位聆聽者</item>
+    </plurals>
+</resources>
