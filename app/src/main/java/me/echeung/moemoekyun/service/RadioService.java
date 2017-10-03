@@ -45,6 +45,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     public static final String META_CHANGED = APP_PACKAGE_NAME + ".metachanged";
     public static final String PLAY_STATE_CHANGED = APP_PACKAGE_NAME + ".playstatechanged";
 
+    private static final long MEDIA_SESSION_ACTIONS = PlaybackStateCompat.ACTION_PLAY
+            | PlaybackStateCompat.ACTION_PAUSE
+            | PlaybackStateCompat.ACTION_PLAY_PAUSE
+            | PlaybackStateCompat.ACTION_STOP;
+
     private final IBinder binder = new ServiceBinder();
     private boolean isServiceBound = false;
 
@@ -138,6 +143,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         }
 
         final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
+                .setActions(MEDIA_SESSION_ACTIONS)
                 .setState(isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED, 0, 1);
         mediaSession.setPlaybackState(stateBuilder.build());
     }
