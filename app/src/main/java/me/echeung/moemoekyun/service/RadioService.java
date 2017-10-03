@@ -11,10 +11,13 @@ import android.media.AudioManager;
 import android.media.session.MediaSession;
 import android.net.ConnectivityManager;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import me.echeung.listenmoeapi.RadioSocket;
@@ -33,6 +36,8 @@ import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service implements RadioSocket.SocketListener {
+
+    private static final String TAG = RadioService.class.getSimpleName();
 
     private static final String APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID;
 
@@ -130,24 +135,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         super.onDestroy();
     }
 
-    public void updateNotification() {
-        final Song currentSong = App.getRadioViewModel().getCurrentSong();
-        if (currentSong != null && currentSong.getId() != -1) {
-            if (notification == null) {
-                notification = new AppNotification(this);
-            }
-
-            notification.update();
-        } else {
-            stopForeground(true);
-        }
-
-        final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
-                .setActions(MEDIA_SESSION_ACTIONS)
-                .setState(isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED, 0, 1);
-        mediaSession.setPlaybackState(stateBuilder.build());
-    }
-
     public boolean isStreamStarted() {
         return stream.isStarted();
     }
@@ -213,6 +200,38 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, background);
 
         mediaSession.setMetadata(metaData.build());
+    }
+
+    private void updateMediaSessionPlaybackState() {
+        // Play/pause state
+        final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
+            .setActions(MEDIA_SESSION_ACTIONS)
+            .setState(isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED, 0, 1);
+
+        // Favorite action
+        final Song currentSong = App.getRadioViewModel().getCurrentSong();
+        final int favoriteIcon = currentSong == null || !currentSong.isFavorite() ?
+                R.drawable.ic_star_border_white_24dp :
+                R.drawable.ic_star_white_24dp;
+
+        stateBuilder.addCustomAction(new PlaybackStateCompat.CustomAction.Builder(
+                TOGGLE_FAVORITE, getString(R.string.favorite), favoriteIcon)
+                .build());
+
+        mediaSession.setPlaybackState(stateBuilder.build());
+    }
+
+    private void updateNotification() {
+        final Song currentSong = App.getRadioViewModel().getCurrentSong();
+        if (currentSong != null && currentSong.getId() != -1) {
+            if (notification == null) {
+                notification = new AppNotification(this);
+            }
+
+            notification.update();
+        } else {
+            stopForeground(true);
+        }
     }
 
     private boolean handleIntent(Intent intent) {
@@ -324,6 +343,20 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
             public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
                 return handleIntent(mediaButtonEvent);
             }
+
+            @Override
+            public void onCustomAction(@NonNull String action, Bundle extras) {
+                switch (action) {
+                    case TOGGLE_FAVORITE:
+                        favoriteCurrentSong();
+                        updateMediaSessionPlaybackState();
+                        break;
+
+                    default:
+                        Log.d(TAG, "Unsupported action: " + action);
+                        break;
+                }
+            }
         });
 
         mediaSession.setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
@@ -365,7 +398,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     private void play() {
         if (stream.play()) {
             App.getRadioViewModel().setIsPlaying(true);
+
             updateNotification();
+            updateMediaSessionPlaybackState();
+
             sendPublicIntent(PLAY_STATE_CHANGED);
         }
     }
@@ -373,7 +409,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     private void pause() {
         if (stream.pause()) {
             App.getRadioViewModel().setIsPlaying(false);
+
             updateNotification();
+            updateMediaSessionPlaybackState();
+
             sendPublicIntent(PLAY_STATE_CHANGED);
         }
     }
@@ -384,6 +423,9 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
             stopSelf();
 
             App.getRadioViewModel().setIsPlaying(false);
+
+            updateMediaSessionPlaybackState();
+
             sendPublicIntent(PLAY_STATE_CHANGED);
         }
     }

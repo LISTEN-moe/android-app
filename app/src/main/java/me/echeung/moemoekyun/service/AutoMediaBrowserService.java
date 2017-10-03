@@ -27,7 +27,6 @@ public class AutoMediaBrowserService extends MediaBrowserServiceCompat {
     @Nullable
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
-        // TODO: filter packages
         return new MediaBrowserServiceCompat.BrowserRoot("listen-moe-root", null);
     }
 
