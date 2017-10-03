@@ -94,7 +94,7 @@ public class APIClient {
                     @Override
                     public void error(final String message) {
                         Log.e(TAG, message);
-                        callback.onFailure(Messages.getMessage(context, message));
+                        callback.onFailure(message);
                     }
                 });
     }

@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
+import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
@@ -291,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(final String message) {
                 runOnUiThread(() -> {
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), getAuthMessage(message), Toast.LENGTH_LONG).show();
                 });
             }
         });
@@ -327,6 +328,19 @@ public class MainActivity extends AppCompatActivity {
         invalidateOptionsMenu();
 
         broadcastAuthEvent();
+    }
+
+    private String getAuthMessage(final String message) {
+        switch (message) {
+            case Messages.INVALID_USER:
+                return getString(R.string.auth_error_name);
+            case Messages.INVALID_PASS:
+                return getString(R.string.auth_error_pass);
+            case Messages.ERROR:
+                return getString(R.string.auth_error_general);
+            default:
+                return message;
+        }
     }
 
     public interface OnLoginListener {
