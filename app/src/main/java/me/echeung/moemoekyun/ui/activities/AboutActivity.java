@@ -13,7 +13,7 @@ import me.echeung.moemoekyun.utils.UrlUtil;
 public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String URL_GOOGLEPLAY = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
-    private static final String URL_GITHUB = "https://github.com/LISTEN-moe/listen-moe-android";
+    private static final String URL_GITHUB = "https://github.com/LISTEN-moe/android-app";
     private static final String URL_TRANSLATE = "https://osfmofb.oneskyapp.com/collaboration/project?id=271507";
 
     private static final String URL_LISTENMOE = "https://listen.moe";

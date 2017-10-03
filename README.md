@@ -1,4 +1,4 @@
-# LISTEN.moe Android
+# LISTEN.moe Android app
 
 <a href="https://play.google.com/store/apps/details?id=me.echeung.moemoekyun">
   <img height="50" alt="Get it on Google Play"
