@@ -14,7 +14,7 @@ import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
-public class App extends Application {
+public class App extends Application implements ServiceConnection {
 
     private static RadioService service;
     private static boolean isServiceBound = false;
@@ -31,7 +31,7 @@ public class App extends Application {
 
         // Music player service
         final Intent intent = new Intent(this, RadioService.class);
-        bindService(intent, mConnection, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT );
+        bindService(intent, this, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
 
         // API client
         apiClient = new APIClient(this, new APIClient.APIHelper() {
@@ -76,21 +76,19 @@ public class App extends Application {
         return isServiceBound;
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            final RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
-            final RadioService radioService = binder.getService();
+    @Override
+    public void onServiceConnected(ComponentName className, IBinder service) {
+        final RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
+        final RadioService radioService = binder.getService();
 
-            App.service = radioService;
-            App.isServiceBound = true;
-            App.apiClient.getSocket().setListener(radioService);
-        }
+        App.service = radioService;
+        App.isServiceBound = true;
+        App.apiClient.getSocket().setListener(radioService);
+    }
 
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            App.isServiceBound = false;
-            App.apiClient.getSocket().setListener(null);
-        }
-    };
+    @Override
+    public void onServiceDisconnected(ComponentName arg0) {
+        App.isServiceBound = false;
+        App.apiClient.getSocket().setListener(null);
+    }
 }

@@ -5,12 +5,16 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.session.MediaSession;
 import android.net.ConnectivityManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.view.KeyEvent;
 
 import me.echeung.listenmoeapi.RadioSocket;
@@ -21,6 +25,7 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
+import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
@@ -52,6 +57,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
+    private Bitmap background;
+
     @Override
     public IBinder onBind(Intent intent) {
         isServiceBound = true;
@@ -81,6 +88,9 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         socket = App.getApiClient().getSocket();
 
         socket.connect();
+
+        // Preload background image for media session
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
     }
 
     @Override
@@ -107,8 +117,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
             receiverRegistered = false;
         }
 
-        mediaSession.setActive(false);
-        mediaSession.release();
+        if (mediaSession != null) {
+            mediaSession.setActive(false);
+            mediaSession.release();
+        }
 
         super.onDestroy();
     }
@@ -124,6 +136,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         } else {
             stopForeground(true);
         }
+
+        final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
+                .setState(isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED, 0, 1);
+        mediaSession.setPlaybackState(stateBuilder.build());
     }
 
     public boolean isStreamStarted() {
@@ -141,9 +157,9 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         if (info.getSongId() != 0) {
             viewModel.setCurrentSong(new Song(
                     info.getSongId(),
-                    info.getArtistName().trim(),
-                    info.getSongName().trim(),
-                    info.getAnimeName().trim()
+                    info.getArtistName(),
+                    info.getSongName(),
+                    info.getAnimeName()
             ));
 
             viewModel.setLastSong(info.getLast().toString());
@@ -157,20 +173,40 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
                 App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
                 App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
             }
-
-            sendPublicIntent(RadioService.META_CHANGED);
         }
 
         viewModel.setListeners(info.getListeners());
         viewModel.setRequester(info.getRequestedBy());
 
+        updateMediaSession(info);
         updateNotification();
+
+        sendPublicIntent(RadioService.META_CHANGED);
     }
 
     @Override
     public void onSocketFailure() {
         App.getRadioViewModel().reset();
         updateNotification();
+    }
+
+    public MediaSessionCompat getMediaSession() {
+        return mediaSession;
+    }
+
+    private void updateMediaSession(PlaybackInfo info) {
+        if (info.getSongId() == 0) {
+            mediaSession.setMetadata(null);
+            return;
+        }
+
+        final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, info.getSongName())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, info.getArtistName())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, info.getAnimeName())
+                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, background);
+
+        mediaSession.setMetadata(metaData.build());
     }
 
     private boolean handleIntent(Intent intent) {

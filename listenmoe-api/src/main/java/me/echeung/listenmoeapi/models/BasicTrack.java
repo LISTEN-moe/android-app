@@ -10,11 +10,11 @@ public class BasicTrack {
     private String songName;
 
     public String getArtistName() {
-        return artistName;
+        return artistName != null ? artistName.trim() : null;
     }
 
     public String getSongName() {
-        return songName;
+        return songName != null ? songName.trim() : null;
     }
 
     @Override

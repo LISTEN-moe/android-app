@@ -40,13 +40,6 @@
             android:label="@string/about"
             android:parentActivityName=".ui.activities.MainActivity" />
 
-        <meta-data
-            android:name="android.max_aspect"
-            android:value="2.1" />
-        <meta-data
-            android:name="com.lge.support.SPLIT_WINDOW"
-            android:value="true" />
-
         <service
             android:name=".service.RadioService"
             android:enabled="true"
@@ -56,6 +49,28 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".service.AutoMediaBrowserService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
+        <meta-data
+            android:name="com.lge.support.SPLIT_WINDOW"
+            android:value="true" />
+
+        <meta-data
+            android:name="com.google.android.gms.car.application"
+            android:resource="@xml/automotive_app_desc" />
+        <meta-data
+            android:name="com.google.android.gms.car.notification.SmallIcon"
+            android:resource="@drawable/ic_icon" />
 
     </application>
 

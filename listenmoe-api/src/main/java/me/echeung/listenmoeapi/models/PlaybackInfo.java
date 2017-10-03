@@ -25,7 +25,7 @@ public class PlaybackInfo extends BasicTrack {
     }
 
     public String getAnimeName() {
-        return animeName;
+        return animeName != null ? animeName.trim() : null;
     }
 
     public String getRequestedBy() {
