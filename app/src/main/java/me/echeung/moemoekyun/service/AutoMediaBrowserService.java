@@ -35,6 +35,4 @@ public class AutoMediaBrowserService extends MediaBrowserServiceCompat {
         // TODO: favorites
         result.sendResult(Collections.emptyList());
     }
-
-    // TODO: voice commands/search
 }

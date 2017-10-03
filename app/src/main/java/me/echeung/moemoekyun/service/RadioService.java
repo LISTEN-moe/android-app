@@ -357,6 +357,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
                         break;
                 }
             }
+
+            @Override
+            public void onPlayFromSearch(String query, Bundle extras) {
+                togglePlayPause();
+            }
         });
 
         mediaSession.setFlags(MediaSession.FLAG_HANDLES_TRANSPORT_CONTROLS
