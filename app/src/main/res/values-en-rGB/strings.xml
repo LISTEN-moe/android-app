@@ -23,7 +23,6 @@
     <string name="sort_desc">Descending</string>
     <!-- == Auth == -->
     <string name="register">Register</string>
-    <!-- Auth -->
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="username">Username</string>
@@ -31,6 +30,9 @@
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="logged_out">Logged out</string>
     <string name="login_required">You must log in to use this feature.</string>
+    <string name="auth_error_general">Error: login failed</string>
+    <string name="auth_error_name">Error: invalid username</string>
+    <string name="auth_error_pass">Error: incorrect password</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/pause</string>
     <string name="history">History</string>
@@ -46,9 +48,9 @@
     <string name="queue_info">%d in queue, %d before yours</string>
     <string name="random_request">Request random song</string>
     <string name="all_cooldown">All songs are on cool down</string>
+    <!-- == Song item actions == -->
     <!-- Requested song title -->
     <string name="requested_song">Requested %s</string>
-    <!-- Song item actions -->
     <string name="supporter_required">Supporter status required</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Can\'t connect to LISTEN.moe\n\nCheck your Internet connection</string>

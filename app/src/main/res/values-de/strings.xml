@@ -23,7 +23,6 @@
     <string name="sort_desc">Absteigend</string>
     <!-- == Auth == -->
     <string name="register">Registrieren</string>
-    <!-- Auth -->
     <string name="login">Anmelden</string>
     <string name="logout">Abmelden</string>
     <string name="username">Benutzername</string>
@@ -44,7 +43,8 @@
     <string name="unfavorited">%s von Favoriten entfernt</string>
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d in der Warteschlange, %d vor deinen</string>
-    <!-- Song item actions -->
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
     <string name="supporter_required">Supporter Status benötigt</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Konnte keine Verbindung zu LISTEN.moe herstellen.\nÜberprüfe deine Internet Verbindung.</string>

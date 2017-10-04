@@ -23,7 +23,6 @@
     <string name="sort_desc">Descendiente</string>
     <!-- == Auth == -->
     <string name="register">Registrar</string>
-    <!-- Auth -->
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="username">Usuario</string>
@@ -45,9 +44,9 @@
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d en cola. %d antes de tu pedido</string>
     <string name="random_request">Pedir una canción aleatoria</string>
+    <!-- == Song item actions == -->
     <!-- Requested song title -->
     <string name="requested_song">Has pedido %s</string>
-    <!-- Song item actions -->
     <string name="supporter_required">Necesitas ser supporter</string>
     <!-- == No Internet view == -->
     <string name="no_internet">No se pudo conectar a LISTEN.moe\nPor favor asegúrate de estar conectado a internet</string>

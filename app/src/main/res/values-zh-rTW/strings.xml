@@ -13,4 +13,17 @@
     <string name="action_undo">取消</string>
     <!-- == Search == -->
     <string name="search">搜尋</string>
+    <!-- e.g. No results for "user's search query" -->
+    <!-- == Sort == -->
+    <!-- == Auth == -->
+    <!-- == Radio tab == -->
+    <!-- e.g. Requested by: username -->
+    <!-- == User tab == -->
+    <!-- e.g. Unfavorited song title -->
+    <!-- e.g. 2 in queue, 10 before yours -->
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <!-- == No Internet view == -->
+    <!-- == About == -->
+    <!-- e.g. Version 1.0 -->
 </resources>

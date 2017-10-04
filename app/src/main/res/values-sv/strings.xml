@@ -21,7 +21,6 @@
     <string name="sort_artist">Artist</string>
     <!-- == Auth == -->
     <string name="register">Registrera</string>
-    <!-- Auth -->
     <string name="login">Logga in</string>
     <string name="logout">Logga ut</string>
     <string name="username">Användarnamn</string>
@@ -33,6 +32,7 @@
     <string name="play_pause">Spela/pausa</string>
     <string name="history">Historik</string>
     <string name="favorite">Favorit</string>
+    <!-- e.g. Requested by: username -->
     <!-- == User tab == -->
     <string name="no_favorites">Inga favoriter ännu</string>
     <string name="filter_favorites">Filtrera favoriter</string>
@@ -40,7 +40,8 @@
     <string name="unfavorited">Tog bort %s från favoriter</string>
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d i kön, %d före din</string>
-    <!-- Song item actions -->
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
     <string name="supporter_required">Supporter status krävs</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Kan inte ansluta till LISTEN.moe\n\nKolla din ansluting</string>
