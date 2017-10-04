@@ -14,25 +14,24 @@ import me.echeung.moemoekyun.App;
 
 public class AutoMediaBrowserService extends MediaBrowserServiceCompat {
 
-    private MediaSessionCompat mediaSession;
+    private static final String MEDIA_ID_ROOT = "media_root";
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mediaSession = App.getService().getMediaSession();
+        final MediaSessionCompat mediaSession = App.getService().getMediaSession();
         setSessionToken(mediaSession.getSessionToken());
     }
 
     @Nullable
     @Override
     public BrowserRoot onGetRoot(@NonNull String clientPackageName, int clientUid, @Nullable Bundle rootHints) {
-        return new MediaBrowserServiceCompat.BrowserRoot("listen-moe-root", null);
+        return new MediaBrowserServiceCompat.BrowserRoot(MEDIA_ID_ROOT, null);
     }
 
     @Override
     public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
-        // TODO: favorites
         result.sendResult(Collections.emptyList());
     }
 }

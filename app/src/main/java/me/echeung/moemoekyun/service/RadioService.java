@@ -209,14 +209,16 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
             .setState(isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED, 0, 1);
 
         // Favorite action
-        final Song currentSong = App.getRadioViewModel().getCurrentSong();
-        final int favoriteIcon = currentSong == null || !currentSong.isFavorite() ?
-                R.drawable.ic_star_border_white_24dp :
-                R.drawable.ic_star_white_24dp;
+        if (AuthUtil.isAuthenticated(this)) {
+            final Song currentSong = App.getRadioViewModel().getCurrentSong();
+            final int favoriteIcon = currentSong == null || !currentSong.isFavorite() ?
+                    R.drawable.ic_star_border_white_24dp :
+                    R.drawable.ic_star_white_24dp;
 
-        stateBuilder.addCustomAction(new PlaybackStateCompat.CustomAction.Builder(
-                TOGGLE_FAVORITE, getString(R.string.favorite), favoriteIcon)
-                .build());
+            stateBuilder.addCustomAction(new PlaybackStateCompat.CustomAction.Builder(
+                    TOGGLE_FAVORITE, getString(R.string.favorite), favoriteIcon)
+                    .build());
+        }
 
         mediaSession.setPlaybackState(stateBuilder.build());
     }
