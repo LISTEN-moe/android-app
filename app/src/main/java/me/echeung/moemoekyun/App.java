@@ -30,8 +30,7 @@ public class App extends Application implements ServiceConnection {
         super.onCreate();
 
         // Music player service
-        final Intent intent = new Intent(this, RadioService.class);
-        bindService(intent, this, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
+        initService();
 
         // API client
         apiClient = new APIClient(this, new APIClient.APIHelper() {
@@ -72,23 +71,36 @@ public class App extends Application implements ServiceConnection {
         return service;
     }
 
-    public boolean isServiceBound() {
+    public static void setService(RadioService radioService) {
+        if (!isServiceBound()) {
+            service = radioService;
+            isServiceBound = true;
+            apiClient.getSocket().setListener(radioService);
+        }
+    }
+
+    public static void clearService() {
+        isServiceBound = false;
+        apiClient.getSocket().setListener(null);
+    }
+
+    public static boolean isServiceBound() {
         return isServiceBound;
+    }
+
+    private void initService() {
+        final Intent intent = new Intent(getApplicationContext(), RadioService.class);
+        getApplicationContext().bindService(intent, this, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
     }
 
     @Override
     public void onServiceConnected(ComponentName className, IBinder service) {
         final RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
-        final RadioService radioService = binder.getService();
-
-        App.service = radioService;
-        App.isServiceBound = true;
-        App.apiClient.getSocket().setListener(radioService);
+        setService(binder.getService());
     }
 
     @Override
     public void onServiceDisconnected(ComponentName arg0) {
-        App.isServiceBound = false;
-        App.apiClient.getSocket().setListener(null);
+        clearService();
     }
 }

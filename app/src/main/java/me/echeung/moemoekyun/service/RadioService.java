@@ -200,6 +200,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
                 .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, background);
 
         mediaSession.setMetadata(metaData.build());
+
+        updateMediaSessionPlaybackState();
     }
 
     private void updateMediaSessionPlaybackState() {
