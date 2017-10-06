@@ -27,7 +27,7 @@ public class RadioSocket extends WebSocketListener {
     private final OkHttpClient client;
     private final APIClient.APIHelper apiHelper;
 
-    private WebSocket socket;
+    private volatile WebSocket socket;
     private SocketListener listener;
 
     RadioSocket(OkHttpClient client, APIClient.APIHelper apiClient) {
@@ -39,12 +39,12 @@ public class RadioSocket extends WebSocketListener {
         this.listener = listener;
     }
 
-    public void connect() {
+    public synchronized void connect() {
         final Request request = new Request.Builder().url(SOCKET_URL).build();
         socket = client.newWebSocket(request, this);
     }
 
-    public void disconnect() {
+    public synchronized void disconnect() {
         if (socket != null) {
             socket.cancel();
             socket = null;
