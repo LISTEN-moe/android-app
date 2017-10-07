@@ -446,6 +446,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
                 sendBroadcast(favIntent);
 
                 updateNotification();
+                updateMediaSessionPlaybackState();
             }
 
             @Override
