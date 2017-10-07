@@ -29,7 +29,8 @@ public class ErrorHandlingAdapter {
 
     public static class ErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
         @Override
-        public CallAdapter<?, ?> get(@NonNull Type returnType, @NonNull Annotation[] annotations,
+        public CallAdapter<?, ?> get(@NonNull Type returnType,
+                                     @NonNull Annotation[] annotations,
                                      @NonNull Retrofit retrofit) {
             if (getRawType(returnType) != WrappedCall.class) {
                 return null;

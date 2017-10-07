@@ -210,8 +210,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     }
 
     private void updateNotification() {
-        final Song currentSong = App.getRadioViewModel().getCurrentSong();
-        if (currentSong != null && currentSong.getId() != -1) {
+        if (isStreamStarted()) {
             if (notification == null) {
                 notification = new AppNotification(this);
             }

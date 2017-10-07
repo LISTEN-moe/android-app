@@ -38,7 +38,8 @@
                 android:contentDescription="@string/history"
                 android:padding="8dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_history_white_24dp" />
+                android:src="@drawable/ic_history_white_24dp"
+                android:visibility="@{vm.currentSong != null}" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/play_pause_btn"
@@ -58,7 +59,8 @@
                 android:contentDescription="@string/favorite"
                 android:padding="8dp"
                 android:scaleType="fitXY"
-                android:src="@{vm.isFavorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}" />
+                android:src="@{vm.isFavorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}"
+                android:visibility="@{vm.currentSong != null}" />
 
         </LinearLayout>
 
@@ -67,7 +69,8 @@
             android:layout_height="wrap_content"
             android:text="@{@plurals/current_listeners(vm.listeners, vm.listeners)}"
             android:textAlignment="center"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:visibility="@{vm.listeners != 0}" />
 
     </LinearLayout>
 

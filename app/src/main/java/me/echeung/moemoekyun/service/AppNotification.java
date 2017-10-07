@@ -34,12 +34,7 @@ class AppNotification {
         }
 
         final Song song = App.getRadioViewModel().getCurrentSong();
-        if (song == null) {
-            return;
-        }
-
         final boolean isPlaying = service.isPlaying();
-        final String text = song.getArtistAndAnime();
 
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
@@ -47,22 +42,6 @@ class AppNotification {
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
                 getPlaybackActionService(RadioService.PLAY_PAUSE)
         );
-
-        // Favorite action
-        NotificationCompat.Action favoriteAction;
-        if (AuthUtil.isAuthenticated(service)) {
-            favoriteAction = new NotificationCompat.Action(
-                    song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
-                    song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
-                    getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
-            );
-        } else {
-            favoriteAction = new NotificationCompat.Action(
-                    R.drawable.ic_star_border_white_24dp,
-                    service.getString(R.string.action_favorite),
-                    getPlaybackActionActivity(MainActivity.TRIGGER_LOGIN_AND_FAVORITE)
-            );
-        }
 
         // Build the notification
         final Intent action = new Intent(service, MainActivity.class);
@@ -77,16 +56,37 @@ class AppNotification {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setShowWhen(false)
                 .setOnlyAlertOnce(true)
-                .setStyle(new MediaStyle().setShowActionsInCompactView(0, 1))
                 .setColor(ContextCompat.getColor(service, R.color.colorAccent))
                 .setSmallIcon(R.drawable.ic_icon)
-                .setContentTitle(song.getTitle())
-                .setContentText(text)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .setOngoing(isPlaying)
                 .addAction(playPauseAction)
-                .addAction(favoriteAction);
+                .setStyle(new MediaStyle().setShowActionsInCompactView(0));
+
+        if (song != null) {
+            builder.setContentTitle(song.getTitle());
+            builder.setContentText(song.getArtistAndAnime());
+
+            // Favorite action
+            NotificationCompat.Action favoriteAction;
+            if (AuthUtil.isAuthenticated(service)) {
+                favoriteAction = new NotificationCompat.Action(
+                        song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
+                        song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
+                        getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
+                );
+            } else {
+                favoriteAction = new NotificationCompat.Action(
+                        R.drawable.ic_star_border_white_24dp,
+                        service.getString(R.string.action_favorite),
+                        getPlaybackActionActivity(MainActivity.TRIGGER_LOGIN_AND_FAVORITE)
+                );
+            }
+
+            builder.addAction(favoriteAction);
+            builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1));
+        }
 
         final Notification notification = builder.build();
 
