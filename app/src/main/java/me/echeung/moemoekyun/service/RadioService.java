@@ -56,7 +56,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
             | PlaybackStateCompat.ACTION_STOP;
 
     private final IBinder binder = new ServiceBinder();
-    private boolean isServiceBound = false;
 
     private AppNotification notification;
     private RadioStream stream;
@@ -71,22 +70,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
 
     @Override
     public IBinder onBind(Intent intent) {
-        isServiceBound = true;
         return binder;
-    }
-
-    @Override
-    public void onRebind(Intent intent) {
-        isServiceBound = true;
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        isServiceBound = false;
-        if (!isPlaying()) {
-            stopSelf();
-        }
-        return true;
     }
 
     @Override

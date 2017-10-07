@@ -34,7 +34,6 @@ public class APIClient {
     private static final String HEADER_USER_AGENT = "User-Agent";
     static final String USER_AGENT = "me.echeung.moemoekyun";
 
-    private final Context context;
     private final APIHelper helper;
 
     private final AuthService authService;
@@ -45,7 +44,6 @@ public class APIClient {
     private final RadioStream stream;
 
     public APIClient(Context context, APIHelper helper) {
-        this.context = context;
         this.helper = helper;
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
