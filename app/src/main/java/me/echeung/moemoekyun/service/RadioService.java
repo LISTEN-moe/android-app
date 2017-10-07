@@ -347,6 +347,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
 
             @Override
             public void onPlayFromSearch(String query, Bundle extras) {
+                // We don't support searching for specific things since it's just a radio stream
+                // so just toggle playback
                 togglePlayPause();
             }
         });
