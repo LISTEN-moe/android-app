@@ -1,0 +1,8 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_audio_duck"
+        android:title="@string/pref_title_audio_duck" />
+
+</PreferenceScreen>

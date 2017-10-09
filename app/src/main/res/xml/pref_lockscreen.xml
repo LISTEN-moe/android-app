@@ -1,0 +1,14 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="pref_lockscreen_albumart"
+        android:title="@string/pref_title_lockscreen_albumart" />
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:dependency="pref_lockscreen_albumart"
+        android:key="pref_lockscreen_albumart_blur"
+        android:title="@string/pref_title_lockscreen_albumart_blur" />
+
+</PreferenceScreen>
