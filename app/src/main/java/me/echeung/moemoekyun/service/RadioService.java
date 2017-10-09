@@ -180,8 +180,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, info.getSongName())
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, info.getArtistName())
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, info.getAnimeName())
-                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, background);
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, info.getAnimeName());
+//                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, background);  // TODO: make this a setting
 
         mediaSession.setMetadata(metaData.build());
 

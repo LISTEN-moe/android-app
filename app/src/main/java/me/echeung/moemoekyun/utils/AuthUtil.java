@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.utils;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
 import me.echeung.moemoekyun.App;
