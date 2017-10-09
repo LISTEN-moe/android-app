@@ -11,10 +11,6 @@
     <color name="grey">#2B2E41</color>
     <color name="dark_grey">#1D1F2B</color>
 
-    <!-- Matches the regular overflow menu -->
-    <!-- TODO: there must be a better way to style PopupMenus with the default bgcolor -->
-    <color name="popup_menu_bg">#2F302F</color>
-
     <color name="light_pink">#F75E7E</color>
     <color name="pink">#EC1A55</color>
 </resources>

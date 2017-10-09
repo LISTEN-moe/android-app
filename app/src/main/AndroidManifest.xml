@@ -40,12 +40,14 @@
         <activity
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".ui.activities.MainActivity" />
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:theme="@style/BaseTheme" />
 
         <activity
             android:name=".ui.activities.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".ui.activities.MainActivity" />
+            android:parentActivityName=".ui.activities.MainActivity"
+            android:theme="@style/BaseTheme" />
 
         <service
             android:name=".service.RadioService"
