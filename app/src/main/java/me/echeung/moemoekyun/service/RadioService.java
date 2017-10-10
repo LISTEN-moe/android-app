@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -33,9 +34,10 @@ import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
+import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
-public class RadioService extends Service implements RadioSocket.SocketListener {
+public class RadioService extends Service implements RadioSocket.SocketListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = RadioService.class.getSimpleName();
 
@@ -66,6 +68,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
+    private PreferenceUtil preferenceUtil;
+
     private Bitmap background;
 
     @Override
@@ -85,6 +89,9 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
 
         // Preload background image for media session
         background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
+
+        preferenceUtil = PreferenceUtil.getInstance(getApplicationContext());
+        preferenceUtil.registerListener(this);
     }
 
     @Override
@@ -115,6 +122,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
             mediaSession.setActive(false);
             mediaSession.release();
         }
+
+        preferenceUtil.unregisterListener(this);
 
         super.onDestroy();
     }
@@ -155,7 +164,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         viewModel.setListeners(info.getListeners());
         viewModel.setRequester(info.getRequestedBy());
 
-        updateMediaSession(info);
+        updateMediaSession();
         updateNotification();
 
         sendPublicIntent(RadioService.META_CHANGED);
@@ -171,17 +180,27 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         return mediaSession;
     }
 
-    private void updateMediaSession(PlaybackInfo info) {
-        if (info.getSongId() == 0) {
+    private void updateMediaSession() {
+        final Song currentSong = App.getRadioViewModel().getCurrentSong();
+
+        if (currentSong == null) {
             mediaSession.setMetadata(null);
             return;
         }
 
         final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, info.getSongName())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, info.getArtistName())
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, info.getAnimeName());
-//                .putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, background);  // TODO: make this a setting
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtist())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAnime());
+
+        if (preferenceUtil.getLockscreenAlbumArt()) {
+            Bitmap albumArt = background;
+            if (preferenceUtil.getLockscreenAlbumArtBlur()) {
+                // TODO: blur album art
+            }
+
+            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
+        }
 
         mediaSession.setMetadata(metaData.build());
 
@@ -494,6 +513,16 @@ public class RadioService extends Service implements RadioSocket.SocketListener 
         intent.putExtra("scrobbling_source", APP_PACKAGE_NAME);
 
         sendStickyBroadcast(intent);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART:
+            case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART_BLUR:
+                updateMediaSession();
+                break;
+        }
     }
 
     public class ServiceBinder extends Binder {

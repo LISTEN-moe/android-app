@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Base application theme -->
-    <style name="BaseTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -13,14 +13,14 @@
         <item name="android:textAppearanceButton">@style/ButtonTheme</item>
     </style>
 
-    <!-- Main app theme (no toolbar) -->
-    <style name="AppTheme" parent="BaseTheme">
+    <!-- Theme with no toolbar -->
+    <style name="AppThemeNoTitle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <!-- TabHost -->
-    <style name="TabWidgetTheme" parent="AppTheme">
+    <style name="TabWidgetTheme" parent="AppThemeNoTitle">
         <item name="android:textColorPrimary">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>

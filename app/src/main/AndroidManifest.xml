@@ -13,7 +13,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppThemeNoTitle">
 
         <activity
             android:name=".ui.activities.MainActivity"
@@ -41,13 +41,13 @@
             android:name=".ui.activities.SettingsActivity"
             android:label="@string/settings"
             android:parentActivityName=".ui.activities.MainActivity"
-            android:theme="@style/BaseTheme" />
+            android:theme="@style/AppTheme" />
 
         <activity
             android:name=".ui.activities.AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".ui.activities.MainActivity"
-            android:theme="@style/BaseTheme" />
+            android:theme="@style/AppTheme" />
 
         <service
             android:name=".service.RadioService"
