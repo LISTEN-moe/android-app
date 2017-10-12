@@ -2,6 +2,11 @@
 
     <SwitchPreference
         android:defaultValue="true"
+        android:key="pref_audio_pause_on_noisy"
+        android:title="@string/pref_title_pause_on_noisy" />
+
+    <SwitchPreference
+        android:defaultValue="true"
         android:key="pref_audio_duck"
         android:title="@string/pref_title_audio_duck" />
 

@@ -68,7 +68,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private AudioManager audioManager;
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
     private boolean wasPlayingBeforeLoss;
-    private boolean shouldDuck;
 
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
@@ -98,8 +97,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         preferenceUtil = PreferenceUtil.getInstance(getApplicationContext());
         preferenceUtil.registerListener(this);
-
-        shouldDuck = preferenceUtil.getAudioDuck();
     }
 
     @Override
@@ -272,7 +269,9 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 // Pause when headphones unplugged
                 case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                    pause();
+                    if (preferenceUtil.getAudioPauseOnNoisy()) {
+                        pause();
+                    }
                     break;
 
                 // Headphone media button action
@@ -429,7 +428,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     wasPlayingBeforeLoss = isPlaying();
-                    if (shouldDuck) {
+                    if (preferenceUtil.getAudioDuck()) {
                         stream.duck();
                     }
                     break;
@@ -565,10 +564,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART:
             case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART_BLUR:
                 updateMediaSession();
-                break;
-
-            case PreferenceUtil.PREF_AUDIO_DUCK:
-                shouldDuck = preferenceUtil.getAudioDuck();
                 break;
         }
     }
