@@ -34,6 +34,7 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.utils.BitmapUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
@@ -203,7 +204,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         if (preferenceUtil.getLockscreenAlbumArt()) {
             Bitmap albumArt = background;
             if (preferenceUtil.getLockscreenAlbumArtBlur()) {
-                // TODO: blur album art
+                albumArt = BitmapUtil.blur(albumArt);
             }
 
             metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
