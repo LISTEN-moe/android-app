@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
@@ -55,7 +56,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private static final long MEDIA_SESSION_ACTIONS = PlaybackStateCompat.ACTION_PLAY
             | PlaybackStateCompat.ACTION_PAUSE
             | PlaybackStateCompat.ACTION_PLAY_PAUSE
-            | PlaybackStateCompat.ACTION_STOP;
+            | PlaybackStateCompat.ACTION_STOP
+            | PlaybackStateCompat.ACTION_SET_RATING;
 
     private final IBinder binder = new ServiceBinder();
 
@@ -83,8 +85,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     @Override
     public void onCreate() {
-        initMediaSession();
         initBroadcastReceiver();
+        initMediaSession();
         initAudioManager();
 
         stream = App.getApiClient().getStream();
@@ -324,6 +326,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     private void initMediaSession() {
         mediaSession = new MediaSessionCompat(this, APP_PACKAGE_NAME, null, null);
+        mediaSession.setRatingType(RatingCompat.RATING_HEART);
         mediaSession.setCallback(new MediaSessionCompat.Callback() {
             @Override
             public void onPlay() {
@@ -350,6 +353,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
             @Override
             public void onSeekTo(long pos) {
+            }
+
+            @Override
+            public void onSetRating(RatingCompat rating) {
+                favoriteCurrentSong();
             }
 
             @Override
