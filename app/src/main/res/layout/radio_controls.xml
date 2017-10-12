@@ -67,10 +67,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{@plurals/current_listeners(vm.listeners, vm.listeners)}"
+            android:text='@{vm.listeners == 0 ? "" : @plurals/current_listeners(vm.listeners, vm.listeners)}'
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:visibility="@{vm.listeners != 0}" />
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
