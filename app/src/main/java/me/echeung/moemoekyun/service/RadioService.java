@@ -218,7 +218,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         // Play/pause state
         final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
             .setActions(MEDIA_SESSION_ACTIONS)
-            .setState(isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED, 0, 1);
+            .setState(isStreamStarted()
+                    ? isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED
+                    : PlaybackStateCompat.STATE_STOPPED,
+                    0, 1);
 
         // Favorite action
         if (AuthUtil.isAuthenticated(this)) {
