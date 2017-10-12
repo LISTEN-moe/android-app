@@ -13,7 +13,9 @@ import java.util.List;
 import me.echeung.moemoekyun.R;
 
 public class SettingsActivity extends AppCompatPreferenceActivity {
-    
+
+    // TODO: show as a single view instead of subviews
+
     private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;

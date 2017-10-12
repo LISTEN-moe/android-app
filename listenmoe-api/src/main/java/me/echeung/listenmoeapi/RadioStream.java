@@ -1,7 +1,6 @@
 package me.echeung.listenmoeapi;
 
 import android.content.Context;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 
@@ -38,10 +37,6 @@ public class RadioStream {
 
     private SimpleExoPlayer player;
 
-    private AudioManager audioManager;
-    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
-    private boolean wasPlayingBeforeLoss;
-
     RadioStream(Context context) {
         this.context = context;
 
@@ -49,31 +44,6 @@ public class RadioStream {
                 ((WifiManager) context.getApplicationContext()
                         .getSystemService(Context.WIFI_SERVICE))
                         .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
-
-        audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        audioFocusChangeListener = focusChange -> {
-            switch (focusChange) {
-                case AudioManager.AUDIOFOCUS_GAIN:
-                    unduck();
-                    if (wasPlayingBeforeLoss) {
-                        play();
-                    }
-                    break;
-
-                case AudioManager.AUDIOFOCUS_LOSS:
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                    wasPlayingBeforeLoss = isPlaying();
-                    if (wasPlayingBeforeLoss) {
-                        pause();
-                    }
-                    break;
-
-                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    wasPlayingBeforeLoss = isPlaying();
-                    duck();
-                    break;
-            }
-        };
 
         this.eventListener = new Player.EventListener() {
             @Override
@@ -133,19 +103,12 @@ public class RadioStream {
         }
 
         if (!isPlaying()) {
-            // Request audio focus for playback
-            int result = audioManager.requestAudioFocus(audioFocusChangeListener,
-                    AudioManager.STREAM_MUSIC,
-                    AudioManager.AUDIOFOCUS_GAIN);
+            acquireWifiLock();
 
-            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                acquireWifiLock();
+            player.setPlayWhenReady(true);
+            player.seekToDefaultPosition();
 
-                player.setPlayWhenReady(true);
-                player.seekToDefaultPosition();
-
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -165,10 +128,6 @@ public class RadioStream {
 
     public boolean stop() {
         if (player != null) {
-            if (isPlaying()) {
-                audioManager.abandonAudioFocus(audioFocusChangeListener);
-            }
-
             player.setPlayWhenReady(false);
 
             releaseWifiLock();
@@ -180,13 +139,13 @@ public class RadioStream {
         return false;
     }
 
-    private void duck() {
+    public void duck() {
         if (player != null) {
             player.setVolume(0.5f);
         }
     }
 
-    private void unduck() {
+    public void unduck() {
         if (player != null) {
             player.setVolume(1f);
         }

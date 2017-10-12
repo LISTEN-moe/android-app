@@ -65,6 +65,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     private MediaSessionCompat mediaSession;
 
+    private AudioManager audioManager;
+    private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
+    private boolean wasPlayingBeforeLoss;
+    private boolean shouldDuck;
+
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
@@ -81,6 +86,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     public void onCreate() {
         initMediaSession();
         initBroadcastReceiver();
+        initAudioManager();
 
         stream = App.getApiClient().getStream();
         socket = App.getApiClient().getSocket();
@@ -92,6 +98,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         preferenceUtil = PreferenceUtil.getInstance(getApplicationContext());
         preferenceUtil.registerListener(this);
+
+        shouldDuck = preferenceUtil.getAudioDuck();
     }
 
     @Override
@@ -400,6 +408,35 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         receiverRegistered = true;
     }
 
+    private void initAudioManager() {
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        audioFocusChangeListener = focusChange -> {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    stream.unduck();
+                    if (wasPlayingBeforeLoss) {
+                        play();
+                    }
+                    break;
+
+                case AudioManager.AUDIOFOCUS_LOSS:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    wasPlayingBeforeLoss = isPlaying();
+                    if (wasPlayingBeforeLoss) {
+                        pause();
+                    }
+                    break;
+
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    wasPlayingBeforeLoss = isPlaying();
+                    if (shouldDuck) {
+                        stream.duck();
+                    }
+                    break;
+            }
+        };
+    }
+
     private void togglePlayPause() {
         if (isPlaying()) {
             pause();
@@ -409,7 +446,12 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     }
 
     private void play() {
-        if (stream.play()) {
+        // Request audio focus for playback
+        int result = audioManager.requestAudioFocus(audioFocusChangeListener,
+                AudioManager.STREAM_MUSIC,
+                AudioManager.AUDIOFOCUS_GAIN);
+
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED && stream.play()) {
             App.getRadioViewModel().setIsPlaying(true);
 
             updateNotification();
@@ -432,6 +474,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     private void stop() {
         if (stream.stop()) {
+            audioManager.abandonAudioFocus(audioFocusChangeListener);
+
             stopForeground(true);
             stopSelf();
 
@@ -521,6 +565,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART:
             case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART_BLUR:
                 updateMediaSession();
+                break;
+
+            case PreferenceUtil.PREF_AUDIO_DUCK:
+                shouldDuck = preferenceUtil.getAudioDuck();
                 break;
         }
     }

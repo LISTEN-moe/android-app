@@ -14,13 +14,13 @@
     </style>
 
     <!-- Theme with no toolbar -->
-    <style name="AppThemeNoTitle" parent="AppTheme">
+    <style name="AppTheme.NoTitle" parent="AppTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <!-- TabHost -->
-    <style name="TabWidgetTheme" parent="AppThemeNoTitle">
+    <style name="TabWidgetTheme" parent="AppTheme.NoTitle">
         <item name="android:textColorPrimary">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>
