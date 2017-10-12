@@ -1,14 +1,19 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_lockscreen_albumart"
-        android:title="@string/pref_title_lockscreen_albumart" />
+    <android.support.v7.preference.PreferenceCategory
+        android:title="@string/pref_header_lockscreen">
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:dependency="pref_lockscreen_albumart"
-        android:key="pref_lockscreen_albumart_blur"
-        android:title="@string/pref_title_lockscreen_albumart_blur" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_lockscreen_albumart"
+            android:title="@string/pref_title_lockscreen_albumart" />
 
-</PreferenceScreen>
+        <SwitchPreference
+            android:defaultValue="false"
+            android:dependency="pref_lockscreen_albumart"
+            android:key="pref_lockscreen_albumart_blur"
+            android:title="@string/pref_title_lockscreen_albumart_blur" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>

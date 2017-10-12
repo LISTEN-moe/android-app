@@ -11,6 +11,8 @@
         <item name="android:textColorSecondary">@color/light_grey</item>
 
         <item name="android:textAppearanceButton">@style/ButtonTheme</item>
+
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
     <!-- Theme with no toolbar -->

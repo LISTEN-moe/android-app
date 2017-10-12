@@ -1,13 +1,18 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_audio_pause_on_noisy"
-        android:title="@string/pref_title_pause_on_noisy" />
+    <android.support.v7.preference.PreferenceCategory
+        android:title="@string/pref_header_audio">
 
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="pref_audio_duck"
-        android:title="@string/pref_title_audio_duck" />
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_audio_pause_on_noisy"
+            android:title="@string/pref_title_pause_on_noisy" />
 
-</PreferenceScreen>
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_audio_duck"
+            android:title="@string/pref_title_audio_duck" />
+
+    </android.support.v7.preference.PreferenceCategory>
+
+</android.support.v7.preference.PreferenceScreen>
