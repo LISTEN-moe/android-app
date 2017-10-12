@@ -13,4 +13,10 @@
         <item quantity="other">%d listeners</item>
     </plurals>
 
+    <plurals name="minutes">
+        <item quantity="one">1 minute</item>
+        <!-- e.g. 10 minutes -->
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
 </resources>

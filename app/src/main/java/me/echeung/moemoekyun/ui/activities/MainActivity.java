@@ -19,6 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
@@ -219,6 +221,10 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(this, AboutActivity.class));
                 return true;
 
+            case R.id.action_sleep_timer:
+                showSleepTimerDialog();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -229,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showLoginDialog(@Nullable final OnLoginListener listener) {
-        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, findViewById(R.id.layout_root));
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, null);
         final TextInputEditText loginUser = layout.findViewById(R.id.login_username);
         final TextInputEditText loginPass = layout.findViewById(R.id.login_password);
 
@@ -345,6 +351,48 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return message;
         }
+    }
+
+    private void showSleepTimerDialog() {
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_sleep_timer, null);
+        final TextView sleepTimerText = layout.findViewById(R.id.sleep_timer_text);
+        final SeekBar sleepTimerSeekBar = layout.findViewById(R.id.sleep_timer_seekbar);
+
+        updateSleepTimerText(sleepTimerText, sleepTimerSeekBar);
+        sleepTimerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                updateSleepTimerText(sleepTimerText, sleepTimerSeekBar);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        // TODO: save sleep timer
+        // TODO: actually pause for sleep timer
+        // TODO: show cancel button if sleep timer previously set
+
+        final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle(R.string.sleep_timer)
+                .setView(layout)
+                .setPositiveButton(R.string.set, null)
+                .setNegativeButton(R.string.close, null)
+                .setNeutralButton(R.string.cancel_timer, null)
+                .create();
+
+        loginDialog.show();
+    }
+
+    private void updateSleepTimerText(TextView textView, SeekBar seekBar) {
+        int value = seekBar.getProgress();
+        final String text = getResources().getQuantityString(R.plurals.minutes, value);
+        textView.setText(String.format(text, value));
     }
 
     public interface OnLoginListener {

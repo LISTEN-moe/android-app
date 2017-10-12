@@ -21,6 +21,13 @@
     <string name="action_undo">Undo</string>
 
 
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Sleep timer</string>
+    <string name="set">Set</string>
+    <string name="close">Close</string>
+    <string name="cancel_timer">Cancel timer</string>
+
+
     <!-- == Search == -->
 
     <string name="search">Search</string>
