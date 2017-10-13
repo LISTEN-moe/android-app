@@ -34,9 +34,9 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
-import me.echeung.moemoekyun.utils.BitmapUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
+import me.echeung.moemoekyun.utils.StackBlur;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service implements RadioSocket.SocketListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -204,7 +204,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         if (preferenceUtil.getLockscreenAlbumArt()) {
             Bitmap albumArt = background;
             if (preferenceUtil.getLockscreenAlbumArtBlur()) {
-                albumArt = BitmapUtil.blur(albumArt);
+                albumArt = StackBlur.blur(albumArt, 5F);
             }
 
             metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
