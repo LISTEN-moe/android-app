@@ -12,6 +12,8 @@ public class PreferenceUtil {
     public static final String PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart";
     public static final String PREF_LOCKSCREEN_ALBUMART_BLUR = "pref_lockscreen_albumart_blur";
 
+    private static final String SLEEP_TIMER_MINS = "pref_sleep_timer";
+
     private static PreferenceUtil instance;
 
     private final SharedPreferences preferences;
@@ -49,5 +51,21 @@ public class PreferenceUtil {
 
     public boolean getLockscreenAlbumArtBlur() {
         return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART_BLUR, false);
+    }
+
+    public int getSleepTimer() {
+        return preferences.getInt(SLEEP_TIMER_MINS, 0);
+    }
+
+    public void setSleepTimer(int timerTime) {
+        preferences.edit()
+                .putInt(SLEEP_TIMER_MINS, timerTime)
+                .apply();
+    }
+
+    public void clearSleepTimer() {
+        preferences.edit()
+                .remove(SLEEP_TIMER_MINS)
+                .apply();
     }
 }

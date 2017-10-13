@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- e.g. 10 requests remaining -->
     <plurals name="user_requests">
         <item quantity="one">1 request remaining</item>
-        <!-- e.g. 10 requests remaining -->
         <item quantity="other">%d requests remaining</item>
     </plurals>
 
+    <!-- e.g. 420 listeners -->
     <plurals name="current_listeners">
         <item quantity="one">1 listener</item>
-        <!-- e.g. 420 listeners -->
         <item quantity="other">%d listeners</item>
     </plurals>
 
     <plurals name="minutes">
         <item quantity="one">1 minute</item>
-        <!-- e.g. 10 minutes -->
         <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <plurals name="sleep_timer_set">
+        <item quantity="one">Set timer for 1 minute</item>
+        <item quantity="other">Set timer for %d minutes</item>
     </plurals>
 
 </resources>

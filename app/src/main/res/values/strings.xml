@@ -22,10 +22,12 @@
 
 
     <!-- == Sleep timer == -->
+
     <string name="sleep_timer">Sleep timer</string>
     <string name="set">Set</string>
     <string name="close">Close</string>
     <string name="cancel_timer">Cancel timer</string>
+    <string name="sleep_timer_canceled">Cancelled timer</string>
 
 
     <!-- == Search == -->

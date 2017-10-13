@@ -1,5 +1,7 @@
 package me.echeung.moemoekyun.ui.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,6 +10,7 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputEditText;
@@ -32,6 +35,7 @@ import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
+import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.utils.UrlUtil;
 
 public class MainActivity extends AppCompatActivity {
@@ -235,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showLoginDialog(@Nullable final OnLoginListener listener) {
-        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, null);
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, findViewById(R.id.layout_root_login));
         final TextInputEditText loginUser = layout.findViewById(R.id.login_username);
         final TextInputEditText loginPass = layout.findViewById(R.id.login_password);
 
@@ -354,15 +358,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showSleepTimerDialog() {
-        final View layout = getLayoutInflater().inflate(R.layout.dialog_sleep_timer, null);
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_sleep_timer, findViewById(R.id.layout_root_sleep));
         final TextView sleepTimerText = layout.findViewById(R.id.sleep_timer_text);
         final SeekBar sleepTimerSeekBar = layout.findViewById(R.id.sleep_timer_seekbar);
 
-        updateSleepTimerText(sleepTimerText, sleepTimerSeekBar);
+        final int prevSleepTimer = PreferenceUtil.getInstance(this).getSleepTimer();
+        if (prevSleepTimer != 0) {
+            sleepTimerSeekBar.setProgress(prevSleepTimer);
+        }
+
+        sleepTimerText.setText(getPluralText(R.plurals.minutes, sleepTimerSeekBar.getProgress()));
         sleepTimerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                updateSleepTimerText(sleepTimerText, sleepTimerSeekBar);
+                sleepTimerText.setText(getPluralText(R.plurals.minutes, sleepTimerSeekBar.getProgress()));
             }
 
             @Override
@@ -374,25 +383,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // TODO: save sleep timer
-        // TODO: actually pause for sleep timer
-        // TODO: show cancel button if sleep timer previously set
-
-        final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
+        final AlertDialog.Builder sleepTimerDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle(R.string.sleep_timer)
                 .setView(layout)
-                .setPositiveButton(R.string.set, null)
-                .setNegativeButton(R.string.close, null)
-                .setNeutralButton(R.string.cancel_timer, null)
-                .create();
+                .setPositiveButton(R.string.set, (dialogInterface, i) -> {
+                    final PendingIntent pi = makeTimerPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT);
 
-        loginDialog.show();
+                    final int minutes = sleepTimerSeekBar.getProgress();
+                    PreferenceUtil.getInstance(getApplicationContext()).setSleepTimer(minutes);
+
+                    final long timerTime = SystemClock.elapsedRealtime() + 10000;//(minutes * 60 * 1000);
+                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi);
+
+                    Toast.makeText(getApplicationContext(), getPluralText(R.plurals.sleep_timer_set, minutes), Toast.LENGTH_SHORT)
+                            .show();
+                })
+                .setNegativeButton(R.string.close, null);
+
+        if (prevSleepTimer != 0) {
+            sleepTimerDialog.setNeutralButton(R.string.cancel_timer, (dialogInterface, i) -> {
+                final PendingIntent previous = makeTimerPendingIntent(PendingIntent.FLAG_NO_CREATE);
+                if (previous != null) {
+                    AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                    am.cancel(previous);
+                    previous.cancel();
+
+                    PreferenceUtil.getInstance(getApplicationContext()).clearSleepTimer();
+
+                    Toast.makeText(getApplicationContext(), getString(R.string.sleep_timer_canceled), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+        }
+
+        sleepTimerDialog.create().show();
     }
 
-    private void updateSleepTimerText(TextView textView, SeekBar seekBar) {
-        int value = seekBar.getProgress();
-        final String text = getResources().getQuantityString(R.plurals.minutes, value);
-        textView.setText(String.format(text, value));
+    private PendingIntent makeTimerPendingIntent(int flag) {
+        return PendingIntent.getService(this, 0, makeTimerIntent(), flag);
+    }
+
+    private Intent makeTimerIntent() {
+        return new Intent(this, RadioService.class)
+                .setAction(RadioService.STOP);
+    }
+
+    private String getPluralText(int pluralId, int value) {
+        final String text = getResources().getQuantityString(pluralId, value);
+        return String.format(text, value);
     }
 
     public interface OnLoginListener {
