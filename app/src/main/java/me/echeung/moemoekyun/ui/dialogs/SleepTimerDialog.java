@@ -14,9 +14,9 @@ import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.service.RadioService;
-import me.echeung.moemoekyun.utils.PreferenceUtil;
 
 public class SleepTimerDialog {
 
@@ -36,7 +36,8 @@ public class SleepTimerDialog {
         final TextView sleepTimerText = layout.findViewById(R.id.sleep_timer_text);
         final SeekBar sleepTimerSeekBar = layout.findViewById(R.id.sleep_timer_seekbar);
 
-        final int prevSleepTimer = PreferenceUtil.getInstance(activity).getSleepTimer();
+        // Init seekbar + text
+        final int prevSleepTimer = App.getPreferenceUtil().getSleepTimer();
         if (prevSleepTimer != 0) {
             sleepTimerSeekBar.setProgress(prevSleepTimer);
         }
@@ -57,6 +58,7 @@ public class SleepTimerDialog {
             }
         });
 
+        // Build dialog
         final AlertDialog.Builder sleepTimerDialog = new AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.sleep_timer)
                 .setView(layout)
@@ -64,7 +66,7 @@ public class SleepTimerDialog {
                     final PendingIntent pi = makeTimerPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT);
 
                     final int minutes = sleepTimerSeekBar.getProgress();
-                    PreferenceUtil.getInstance(activity).setSleepTimer(minutes);
+                    App.getPreferenceUtil().setSleepTimer(minutes);
 
                     final long timerTime = SystemClock.elapsedRealtime() + (minutes * 60 * 1000);
                     AlarmManager am = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
@@ -75,6 +77,7 @@ public class SleepTimerDialog {
                 })
                 .setNegativeButton(R.string.close, null);
 
+        // Show cancel button if a timer is currently set
         if (prevSleepTimer != 0) {
             sleepTimerDialog.setNeutralButton(R.string.cancel_timer, (dialogInterface, i) -> {
                 final PendingIntent previous = makeTimerPendingIntent(PendingIntent.FLAG_NO_CREATE);
@@ -83,7 +86,7 @@ public class SleepTimerDialog {
                     am.cancel(previous);
                     previous.cancel();
 
-                    PreferenceUtil.getInstance(activity).clearSleepTimer();
+                    App.getPreferenceUtil().clearSleepTimer();
 
                     Toast.makeText(activity, activity.getString(R.string.sleep_timer_canceled), Toast.LENGTH_SHORT)
                             .show();

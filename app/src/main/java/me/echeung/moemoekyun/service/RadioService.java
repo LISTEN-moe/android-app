@@ -75,8 +75,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
-    private PreferenceUtil preferenceUtil;
-
     private Bitmap background;
 
     @Override
@@ -98,8 +96,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         // Preload background image for media session
         background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
 
-        preferenceUtil = PreferenceUtil.getInstance(getApplicationContext());
-        preferenceUtil.registerListener(this);
+        App.getPreferenceUtil().registerListener(this);
     }
 
     @Override
@@ -131,7 +128,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             mediaSession.release();
         }
 
-        preferenceUtil.unregisterListener(this);
+        App.getPreferenceUtil().unregisterListener(this);
 
         super.onDestroy();
     }
@@ -201,9 +198,9 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtist())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAnime());
 
-        if (preferenceUtil.getLockscreenAlbumArt()) {
+        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
             Bitmap albumArt = background;
-            if (preferenceUtil.getLockscreenAlbumArtBlur()) {
+            if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
                 albumArt = StackBlur.blur(albumArt, 5F);
             }
 
@@ -275,7 +272,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 // Pause when headphones unplugged
                 case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                    if (preferenceUtil.getAudioPauseOnNoisy()) {
+                    if (App.getPreferenceUtil().shouldPauseOnNoisy()) {
                         pause();
                     }
                     break;
@@ -440,7 +437,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     wasPlayingBeforeLoss = isPlaying();
-                    if (preferenceUtil.getAudioDuck()) {
+                    if (App.getPreferenceUtil().shouldDuckAudio()) {
                         stream.duck();
                     }
                     break;

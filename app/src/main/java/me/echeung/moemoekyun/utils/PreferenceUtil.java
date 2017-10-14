@@ -14,19 +14,10 @@ public class PreferenceUtil {
 
     private static final String SLEEP_TIMER_MINS = "pref_sleep_timer";
 
-    private static PreferenceUtil instance;
-
     private final SharedPreferences preferences;
 
-    private PreferenceUtil(@NonNull final Context context) {
+    public PreferenceUtil(@NonNull final Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
-    }
-
-    public static PreferenceUtil getInstance(@NonNull final Context context) {
-        if (instance == null) {
-            instance = new PreferenceUtil(context.getApplicationContext());
-        }
-        return instance;
     }
 
     public void registerListener(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
@@ -37,19 +28,19 @@ public class PreferenceUtil {
         preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
-    public boolean getAudioPauseOnNoisy() {
+    public boolean shouldPauseOnNoisy() {
         return preferences.getBoolean(PREF_AUDIO_PAUSE_ON_NOISY, true);
     }
 
-    public boolean getAudioDuck() {
+    public boolean shouldDuckAudio() {
         return preferences.getBoolean(PREF_AUDIO_DUCK, true);
     }
 
-    public boolean getLockscreenAlbumArt() {
+    public boolean shouldShowLockscreenAlbumArt() {
         return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART, true);
     }
 
-    public boolean getLockscreenAlbumArtBlur() {
+    public boolean shouldBlurLockscreenAlbumArt() {
         return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART_BLUR, false);
     }
 
@@ -57,9 +48,9 @@ public class PreferenceUtil {
         return preferences.getInt(SLEEP_TIMER_MINS, 0);
     }
 
-    public void setSleepTimer(int timerTime) {
+    public void setSleepTimer(int minutes) {
         preferences.edit()
-                .putInt(SLEEP_TIMER_MINS, timerTime)
+                .putInt(SLEEP_TIMER_MINS, minutes)
                 .apply();
     }
 

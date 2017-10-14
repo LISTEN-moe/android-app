@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.ui.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
@@ -10,15 +9,11 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
@@ -28,6 +23,7 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
+import me.echeung.moemoekyun.ui.dialogs.LoginDialog;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
@@ -233,56 +229,8 @@ public class MainActivity extends AppCompatActivity {
         showLoginDialog(null);
     }
 
-    public void showLoginDialog(@Nullable final OnLoginListener listener) {
-        final View layout = getLayoutInflater().inflate(R.layout.dialog_login, findViewById(R.id.layout_root_login));
-        final TextInputEditText loginUser = layout.findViewById(R.id.login_username);
-        final TextInputEditText loginPass = layout.findViewById(R.id.login_password);
-
-        final AlertDialog loginDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
-                .setTitle(R.string.login)
-                .setView(layout)
-                .setPositiveButton(R.string.login, null)
-                .setNegativeButton(android.R.string.cancel, null)
-                .create();
-
-        // Override the positive button listener so it won't automatically be dismissed even with
-        // an error
-        loginDialog.setOnShowListener(dialog -> {
-            final Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
-            button.setOnClickListener(view -> {
-                final String user = loginUser.getText().toString().trim();
-                final String pass = loginPass.getText().toString().trim();
-
-                if (user.length() == 0 || pass.length() == 0) {
-                    return;
-                }
-
-                login(user, pass, dialog, listener);
-            });
-        });
-
-        // Login when keyboard "done" action is pressed on password field
-        loginPass.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick();
-                return true;
-            }
-            return false;
-        });
-
-        loginDialog.show();
-    }
-
-    /**
-     * Logs the user in with the provided credentials.
-     *
-     * @param user     Username to pass in the request body.
-     * @param pass     Password to pass in the request body.
-     * @param dialog   Reference to the login dialog so it can be dismissed upon success.
-     * @param listener Used to run something after a successful login.
-     */
-    private void login(final String user, final String pass, final DialogInterface dialog, final OnLoginListener listener) {
-        App.getApiClient().authenticate(user, pass, new AuthCallback() {
+    public void showLoginDialog(@Nullable final LoginDialog.OnLoginListener listener) {
+        new LoginDialog(this, (user, pass, dialog) -> App.getApiClient().authenticate(user, pass, new AuthCallback() {
             @Override
             public void onSuccess(final String result) {
                 runOnUiThread(() -> {
@@ -300,11 +248,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(final String message) {
-                runOnUiThread(() -> {
-                    Toast.makeText(getApplicationContext(), getAuthMessage(message), Toast.LENGTH_LONG).show();
-                });
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getAuthMessage(message), Toast.LENGTH_LONG).show());
             }
-        });
+        })).show();
     }
 
     private void broadcastAuthEvent() {
@@ -350,9 +296,5 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return message;
         }
-    }
-
-    public interface OnLoginListener {
-        void onLogin();
     }
 }

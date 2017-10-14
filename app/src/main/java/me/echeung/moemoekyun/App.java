@@ -10,6 +10,7 @@ import android.os.IBinder;
 import me.echeung.listenmoeapi.APIClient;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
@@ -24,6 +25,8 @@ public class App extends Application implements ServiceConnection {
     private static RadioViewModel radioViewModel;
     private static SearchViewModel searchViewModel;
     private static UserViewModel userViewModel;
+
+    private static PreferenceUtil preferenceUtil;
 
     @Override
     public void onCreate() {
@@ -49,6 +52,9 @@ public class App extends Application implements ServiceConnection {
         radioViewModel = new RadioViewModel(this);
         searchViewModel = new SearchViewModel(this);
         userViewModel = new UserViewModel(this);
+
+        // Preferences
+        preferenceUtil = new PreferenceUtil(this);
     }
 
     public static APIClient getApiClient() {
@@ -65,6 +71,10 @@ public class App extends Application implements ServiceConnection {
 
     public static UserViewModel getUserViewModel() {
         return userViewModel;
+    }
+
+    public static PreferenceUtil getPreferenceUtil() {
+        return preferenceUtil;
     }
 
     public static RadioService getService() {
