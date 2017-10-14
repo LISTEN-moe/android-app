@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <import type="android.view.View" />
+        <import type="android.graphics.Typeface" />
 
         <variable name="title" type="String" />
         <variable name="subtitle" type="String" />
         <variable name="favorited" type="boolean" />
+        <variable name="enabled" type="boolean" />
     </data>
 
     <LinearLayout
@@ -26,6 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:alpha="@{enabled ? 1F : 0.75F}"
             android:orientation="vertical">
 
             <TextView
@@ -34,7 +38,8 @@
                 android:layout_height="wrap_content"
                 android:text="@{title}"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                app:textStyle="@{enabled ? Typeface.NORMAL : Typeface.ITALIC}" />
 
             <TextView
                 android:id="@+id/txt_subtitle"
@@ -42,7 +47,8 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:text="@{subtitle}"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                app:textStyle="@{enabled ? Typeface.NORMAL : Typeface.ITALIC}" />
 
         </LinearLayout>
 

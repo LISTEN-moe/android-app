@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_sleep_timer:
-                showSleepTimerDialog();
+                new SleepTimerDialog(this).show();
                 return true;
 
             default:
@@ -350,10 +350,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return message;
         }
-    }
-
-    private void showSleepTimerDialog() {
-        new SleepTimerDialog(this).show();
     }
 
     public interface OnLoginListener {

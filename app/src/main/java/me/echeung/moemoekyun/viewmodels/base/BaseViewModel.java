@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.view.View;
+import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
@@ -38,7 +39,12 @@ public abstract class BaseViewModel extends BaseObservable {
     // ========================================================================
 
     @BindingAdapter("android:visibility")
-    public static void setVisibility(View view, boolean visible) {
-        view.setVisibility(visible ? View.VISIBLE : View.GONE);
+    public static void setVisibility(View v, boolean visible) {
+        v.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    @BindingAdapter("app:textStyle")
+    public static void setTextStyle(TextView v, int typeface) {
+        v.setTypeface(null, typeface);
     }
 }

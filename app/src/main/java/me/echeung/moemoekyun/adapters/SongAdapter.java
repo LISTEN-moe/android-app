@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.adapters;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -163,10 +162,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             binding.setVariable(BR.title, song.getTitle());
             binding.setVariable(BR.subtitle, song.getArtistAndAnime());
             binding.setVariable(BR.favorited, song.isFavorite());
-
-            final int typeface = song.isEnabled() ? Typeface.NORMAL : Typeface.ITALIC;
-            binding.txtTitle.setTypeface(null, typeface);
-            binding.txtSubtitle.setTypeface(null, typeface);
+            binding.setVariable(BR.enabled, song.isEnabled());
 
             binding.executePendingBindings();
         }
