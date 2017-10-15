@@ -32,7 +32,7 @@ public class APIClient {
     private static final String BASE_URL = "https://listen.moe/api/";
 
     private static final String HEADER_USER_AGENT = "User-Agent";
-    static final String USER_AGENT = "me.echeung.moemoekyun";
+    public static final String USER_AGENT = "me.echeung.moemoekyun";
 
     private final APIHelper helper;
 
