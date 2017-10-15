@@ -39,7 +39,7 @@ public class SongActionsUtil {
                         song.setFavorite(favorited);
                         adapter.notifyDataSetChanged();
 
-                        // Broadcast change
+                        // Broadcast event
                         final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
                         activity.sendBroadcast(favIntent);
 
@@ -73,15 +73,28 @@ public class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
+        final int requests = App.getUserViewModel().getUserRequests();
+        if (requests <= 0) {
+            Toast.makeText(activity.getApplicationContext(), R.string.no_requests_left, Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         App.getApiClient().requestSong(song.getId(), new RequestSongCallback() {
             @Override
             public void onSuccess() {
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-                        Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.requested_song, song.getArtist()), Toast.LENGTH_LONG).show();
-
                         song.setEnabled(false);
                         adapter.notifyDataSetChanged();
+
+                        // Broadcast event
+                        final Intent reqEvent = new Intent(UserFragment.REQUEST_EVENT);
+                        activity.sendBroadcast(reqEvent);
+
+                        final int remainingReqs = requests - 1;
+                        App.getUserViewModel().setUserRequests(remainingReqs);
+
+                        Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.requested_song, song.getArtist()), Toast.LENGTH_LONG).show();
                     });
                 }
             }
@@ -94,7 +107,7 @@ public class SongActionsUtil {
                                 R.string.supporter_required :
                                 R.string.error;
 
-                        Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
                     });
                 }
             }

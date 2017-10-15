@@ -43,6 +43,7 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
 
+    public static final String REQUEST_EVENT = "req_event";
     public static final String FAVORITE_EVENT = "fav_event";
 
     private FragmentUserBinding binding;
@@ -119,6 +120,9 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
     public void onResume() {
         super.onResume();
 
+        // In case favorites were updated
+        initUserContent();
+
         if (!receiverRegistered) {
             getActivity().registerReceiver(intentReceiver, intentFilter);
             receiverRegistered = true;
@@ -176,6 +180,7 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
                         case UserFragment.FAVORITE_EVENT:
+                        case UserFragment.REQUEST_EVENT:
                             initUserContent();
                             break;
                     }
