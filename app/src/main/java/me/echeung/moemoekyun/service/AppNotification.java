@@ -38,7 +38,7 @@ class AppNotification {
         final Song song = App.getRadioViewModel().getCurrentSong();
         final boolean isPlaying = service.isPlaying();
 
-        Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.drawable.background);
+//        Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.drawable.background);
 
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
@@ -62,7 +62,7 @@ class AppNotification {
                 .setOnlyAlertOnce(true)
                 .setColor(ContextCompat.getColor(service, R.color.colorAccent))
                 .setSmallIcon(R.drawable.ic_icon)
-                .setLargeIcon(albumArt)
+//                .setLargeIcon(albumArt)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .setOngoing(isPlaying)

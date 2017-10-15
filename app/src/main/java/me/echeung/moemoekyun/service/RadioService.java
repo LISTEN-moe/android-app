@@ -198,14 +198,14 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtist())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAnime());
 
-        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
-            Bitmap albumArt = background;
-            if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
-                albumArt = StackBlur.blur(albumArt, 5F);
-            }
-
-            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
-        }
+//        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
+//            Bitmap albumArt = background;
+//            if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
+//                albumArt = StackBlur.blur(albumArt, 5F);
+//            }
+//
+//            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
+//        }
 
         mediaSession.setMetadata(metaData.build());
 
