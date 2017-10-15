@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:alpha="@{enabled ? 1F : 0.75F}"
+            android:alpha="@{enabled ? 1f : 0.75f}"
             android:orientation="vertical">
 
             <TextView

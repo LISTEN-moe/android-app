@@ -50,7 +50,9 @@ android {
         disable 'MissingTranslation'
         disable 'ExtraTranslation'
 
-        abortOnError false
+        enable 'ObsoleteSdkInt'
+
+        abortOnError true
     }
 }
 

@@ -111,6 +111,6 @@ public class SleepTimerDialog {
 
     private Intent makeTimerIntent() {
         return new Intent(activity, RadioService.class)
-                .setAction(RadioService.STOP);
+                .setAction(RadioService.TIMER_STOP);
     }
 }

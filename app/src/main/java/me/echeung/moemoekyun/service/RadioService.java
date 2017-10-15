@@ -36,7 +36,6 @@ import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
-import me.echeung.moemoekyun.utils.StackBlur;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service implements RadioSocket.SocketListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -49,6 +48,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     public static final String STOP = APP_PACKAGE_NAME + ".stop";
     public static final String TOGGLE_FAVORITE = APP_PACKAGE_NAME + ".toggle_favorite";
     public static final String UPDATE = APP_PACKAGE_NAME + ".update";
+    public static final String TIMER_STOP = APP_PACKAGE_NAME + ".timer_stop";
 
     private static final String MUSIC_PACKAGE_NAME = "com.android.music";
     public static final String META_CHANGED = APP_PACKAGE_NAME + ".metachanged";
@@ -128,6 +128,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             mediaSession.release();
         }
 
+        App.getPreferenceUtil().clearSleepTimer();
         App.getPreferenceUtil().unregisterListener(this);
 
         super.onDestroy();
@@ -268,6 +269,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case RadioService.UPDATE:
                     socket.update();
+                    break;
+
+                case RadioService.TIMER_STOP:
+                    timerStop();
                     break;
 
                 // Pause when headphones unplugged
@@ -482,17 +487,28 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     private void stop() {
         if (stream.stop()) {
-            audioManager.abandonAudioFocus(audioFocusChangeListener);
-
-            stopForeground(true);
-            stopSelf();
-
-            App.getRadioViewModel().setIsPlaying(false);
-
-            updateMediaSessionPlaybackState();
-
-            sendPublicIntent(PLAY_STATE_CHANGED);
+            stopStream();
         }
+    }
+
+    private void timerStop() {
+        stream.stop(() -> {
+            stopStream();
+            App.getPreferenceUtil().clearSleepTimer();
+        });
+    }
+
+    private void stopStream() {
+        audioManager.abandonAudioFocus(audioFocusChangeListener);
+
+        stopForeground(true);
+        stopSelf();
+
+        App.getRadioViewModel().setIsPlaying(false);
+
+        updateMediaSessionPlaybackState();
+
+        sendPublicIntent(PLAY_STATE_CHANGED);
     }
 
     private void favoriteCurrentSong() {

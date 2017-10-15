@@ -2,6 +2,8 @@ package me.echeung.listenmoeapi.players;
 
 import android.content.Context;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
+import android.os.Handler;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -27,6 +29,9 @@ import static com.google.android.exoplayer2.C.USAGE_MEDIA;
 
 public class AndroidPlayer implements StreamPlayer {
 
+    private static final String WIFI_LOCK_TAG = "listenmoe_wifi_lock";
+
+    private final WifiManager.WifiLock wifiLock;
     private final Player.EventListener eventListener;
     private SimpleExoPlayer player;
 
@@ -36,6 +41,11 @@ public class AndroidPlayer implements StreamPlayer {
     public AndroidPlayer(Context context, String streamUrl) {
         this.context = context;
         this.streamUrl = streamUrl;
+
+        this.wifiLock =
+                ((WifiManager) context.getApplicationContext()
+                        .getSystemService(Context.WIFI_SERVICE))
+                        .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
 
         this.eventListener = new Player.EventListener() {
             @Override
@@ -98,6 +108,8 @@ public class AndroidPlayer implements StreamPlayer {
         }
 
         if (!isPlaying()) {
+            acquireWifiLock();
+
             player.setPlayWhenReady(true);
             player.seekToDefaultPosition();
 
@@ -112,6 +124,8 @@ public class AndroidPlayer implements StreamPlayer {
         if (player != null) {
             player.setPlayWhenReady(false);
 
+            releaseWifiLock();
+
             return true;
         }
 
@@ -124,11 +138,41 @@ public class AndroidPlayer implements StreamPlayer {
             player.setPlayWhenReady(false);
 
             releasePlayer();
+            releaseWifiLock();
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * Stops with a fadeout.
+     * @param callback Called after the music has fully stopped.
+     */
+    @Override
+    public void stop(Runnable callback) {
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                float vol = player.getVolume();
+                float newVol = vol - 0.1f;
+                if (newVol <= 0) {
+                    stop();
+                    if (callback != null) {
+                        callback.run();
+                    }
+                    return;
+                }
+
+                player.setVolume(newVol);
+
+                handler.postDelayed(this, 250);
+            }
+        };
+
+        handler.post(runnable);
     }
 
     @Override
@@ -156,6 +200,7 @@ public class AndroidPlayer implements StreamPlayer {
         player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
         player.prepare(streamSource);
         player.addListener(eventListener);
+        player.setVolume(1f);
 
         final AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(CONTENT_TYPE_MUSIC)
@@ -169,6 +214,19 @@ public class AndroidPlayer implements StreamPlayer {
             player.release();
             player.removeListener(eventListener);
             player = null;
+        }
+    }
+
+    private void acquireWifiLock() {
+        if (wifiLock != null) {
+            releaseWifiLock();
+            wifiLock.acquire();
+        }
+    }
+
+    private void releaseWifiLock() {
+        if (wifiLock != null && wifiLock.isHeld()) {
+            wifiLock.release();
         }
     }
 }
