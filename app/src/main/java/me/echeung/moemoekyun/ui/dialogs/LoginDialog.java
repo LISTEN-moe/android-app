@@ -9,26 +9,21 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 
-import java.lang.ref.WeakReference;
-
 import me.echeung.moemoekyun.R;
 
 public class LoginDialog {
 
-    private WeakReference<Activity> activityRef;
+    private Activity activity;
     private Callback callback;
 
     public LoginDialog(@NonNull Activity activity, @NonNull Callback callback) {
-        this.activityRef = new WeakReference<>(activity);
+        this.activity = activity;
         this.callback = callback;
+
+        initDialog();
     }
 
-    public void show() {
-        final Activity activity = activityRef.get();
-        if (activity == null) {
-            return;
-        }
-
+    private void initDialog() {
         final View layout = activity.getLayoutInflater().inflate(R.layout.dialog_login, activity.findViewById(R.id.layout_root_login));
         final TextInputEditText loginUser = layout.findViewById(R.id.login_username);
         final TextInputEditText loginPass = layout.findViewById(R.id.login_password);

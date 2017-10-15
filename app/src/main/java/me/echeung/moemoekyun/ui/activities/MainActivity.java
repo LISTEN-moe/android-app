@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_sleep_timer:
-                new SleepTimerDialog(this).show();
+                new SleepTimerDialog(this);
                 return true;
 
             default:
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(final String message) {
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), getAuthMessage(message), Toast.LENGTH_LONG).show());
             }
-        })).show();
+        }));
     }
 
     private void broadcastAuthEvent() {
