@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
@@ -36,6 +38,8 @@ class AppNotification {
         final Song song = App.getRadioViewModel().getCurrentSong();
         final boolean isPlaying = service.isPlaying();
 
+        Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.drawable.background);
+
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
                 isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp,
@@ -58,6 +62,7 @@ class AppNotification {
                 .setOnlyAlertOnce(true)
                 .setColor(ContextCompat.getColor(service, R.color.colorAccent))
                 .setSmallIcon(R.drawable.ic_icon)
+                .setLargeIcon(albumArt)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .setOngoing(isPlaying)
