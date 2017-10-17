@@ -7,7 +7,7 @@ public interface StreamPlayer {
     boolean play();
     boolean pause();
     boolean stop();
-    void stop(Runnable callback);
+    void fadeOut(Runnable callback);
 
     void duck();
     void unduck();

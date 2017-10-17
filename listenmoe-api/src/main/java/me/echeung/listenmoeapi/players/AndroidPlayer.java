@@ -146,18 +146,14 @@ public class AndroidPlayer implements StreamPlayer {
         return false;
     }
 
-    /**
-     * Stops with a fadeout.
-     * @param callback Called after the music has fully stopped.
-     */
     @Override
-    public void stop(Runnable callback) {
+    public void fadeOut(Runnable callback) {
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 float vol = player.getVolume();
-                float newVol = vol - 0.1f;
+                float newVol = vol - 0.05f;
                 if (newVol <= 0) {
                     stop();
                     if (callback != null) {
@@ -168,7 +164,7 @@ public class AndroidPlayer implements StreamPlayer {
 
                 player.setVolume(newVol);
 
-                handler.postDelayed(this, 250);
+                handler.postDelayed(this, 200);
             }
         };
 

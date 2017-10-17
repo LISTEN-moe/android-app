@@ -11,9 +11,18 @@ public class RadioStream {
     private static final String STREAM_URL = "https://listen.moe/fallback";
 
     private StreamPlayer player;
+    private Callback callback;
 
     RadioStream(Context context) {
         this.player = new AndroidPlayer(context, STREAM_URL);
+    }
+
+    public void setListener(Callback callback) {
+        this.callback = callback;
+    }
+
+    public void removeListener() {
+        this.callback = null;
     }
 
     public boolean isStarted() {
@@ -24,20 +33,30 @@ public class RadioStream {
         return player.isPlaying();
     }
 
-    public boolean play() {
-        return player.play();
+    public void play() {
+        if (player.play() && callback != null) {
+            callback.onPlay();
+        }
     }
 
-    public boolean pause() {
-        return player.pause();
+    public void pause() {
+        if (player.pause() && callback != null) {
+            callback.onPause();
+        }
     }
 
-    public boolean stop() {
-        return player.stop();
+    public void stop() {
+        if (player.stop() && callback != null) {
+            callback.onStop();
+        }
     }
 
-    public void stop(Runnable callback) {
-        player.stop(callback);
+    public void fadeOut() {
+        player.fadeOut(() -> {
+            if (callback != null) {
+                callback.onStop();
+            }
+        });
     }
 
     public void duck() {
@@ -46,5 +65,11 @@ public class RadioStream {
 
     public void unduck() {
         player.unduck();
+    }
+
+    public interface Callback {
+        void onPlay();
+        void onPause();
+        void onStop();
     }
 }

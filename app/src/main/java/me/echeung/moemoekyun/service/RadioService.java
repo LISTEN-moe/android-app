@@ -91,6 +91,43 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         stream = App.getApiClient().getStream();
         socket = App.getApiClient().getSocket();
 
+        stream.setListener(new RadioStream.Callback() {
+            @Override
+            public void onPlay() {
+                App.getRadioViewModel().setIsPlaying(true);
+
+                updateNotification();
+                updateMediaSessionPlaybackState();
+
+                sendPublicIntent(PLAY_STATE_CHANGED);
+            }
+
+            @Override
+            public void onPause() {
+                App.getRadioViewModel().setIsPlaying(false);
+
+                updateNotification();
+                updateMediaSessionPlaybackState();
+
+                sendPublicIntent(PLAY_STATE_CHANGED);
+            }
+
+            @Override
+            public void onStop() {
+                audioManager.abandonAudioFocus(audioFocusChangeListener);
+
+                stopForeground(true);
+                stopSelf();
+
+                App.getPreferenceUtil().clearSleepTimer();
+                App.getRadioViewModel().setIsPlaying(false);
+
+                updateMediaSessionPlaybackState();
+
+                sendPublicIntent(PLAY_STATE_CHANGED);
+            }
+        });
+
         socket.connect();
 
         // Preload background image for media session
@@ -117,6 +154,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     public void onDestroy() {
         stop();
         socket.disconnect();
+        stream.removeListener();
 
         if (receiverRegistered) {
             unregisterReceiver(intentReceiver);
@@ -128,7 +166,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             mediaSession.release();
         }
 
-        App.getPreferenceUtil().clearSleepTimer();
         App.getPreferenceUtil().unregisterListener(this);
 
         super.onDestroy();
@@ -464,51 +501,21 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 AudioManager.STREAM_MUSIC,
                 AudioManager.AUDIOFOCUS_GAIN);
 
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED && stream.play()) {
-            App.getRadioViewModel().setIsPlaying(true);
-
-            updateNotification();
-            updateMediaSessionPlaybackState();
-
-            sendPublicIntent(PLAY_STATE_CHANGED);
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            stream.play();
         }
     }
 
     private void pause() {
-        if (stream.pause()) {
-            App.getRadioViewModel().setIsPlaying(false);
-
-            updateNotification();
-            updateMediaSessionPlaybackState();
-
-            sendPublicIntent(PLAY_STATE_CHANGED);
-        }
+        stream.pause();
     }
 
     private void stop() {
-        if (stream.stop()) {
-            stopStream();
-        }
+        stream.stop();
     }
 
     private void timerStop() {
-        stream.stop(() -> {
-            stopStream();
-            App.getPreferenceUtil().clearSleepTimer();
-        });
-    }
-
-    private void stopStream() {
-        audioManager.abandonAudioFocus(audioFocusChangeListener);
-
-        stopForeground(true);
-        stopSelf();
-
-        App.getRadioViewModel().setIsPlaying(false);
-
-        updateMediaSessionPlaybackState();
-
-        sendPublicIntent(PLAY_STATE_CHANGED);
+        stream.fadeOut();
     }
 
     private void favoriteCurrentSong() {
