@@ -11,6 +11,7 @@
     <string name="action_unfavorite">不喜愛</string>
     <string name="action_request">請求</string>
     <string name="action_undo">取消</string>
+    <!-- == Sleep timer == -->
     <!-- == Search == -->
     <string name="search">搜尋</string>
     <!-- e.g. No results for "user's search query" -->
@@ -26,4 +27,5 @@
     <!-- == No Internet view == -->
     <!-- == About == -->
     <!-- e.g. Version 1.0 -->
+    <!-- == Settings == -->
 </resources>

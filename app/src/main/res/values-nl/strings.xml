@@ -11,6 +11,12 @@
     <string name="action_unfavorite">Verwijder als favoriet</string>
     <string name="action_request">Aanvragen</string>
     <string name="action_undo">Ongedaan maken</string>
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Slaaptimer</string>
+    <string name="set">Instellen</string>
+    <string name="close">Sluiten</string>
+    <string name="cancel_timer">timer annuleren</string>
+    <string name="sleep_timer_canceled">Timer geannuleerd</string>
     <!-- == Search == -->
     <string name="search">Zoek</string>
     <string name="clear_query">Rij vrijmaken</string>
@@ -51,6 +57,7 @@
     <!-- == Song item actions == -->
     <!-- Requested song title -->
     <string name="requested_song">Verzocht %s</string>
+    <string name="no_requests_left">Geen verzoeken vandaag</string>
     <string name="supporter_required">Supporterstatus vereist</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Kan geen verbinding maken met LISTEN.moe\n\nControleer uw internet verbinding</string>
@@ -67,4 +74,12 @@
     <string name="open_in_browser">Openen in de browser</string>
     <string name="discord">Doe mee op Discord</string>
     <string name="patreon">Steun ons op Patreon</string>
+    <!-- == Settings == -->
+    <string name="settings">Instellingen</string>
+    <string name="pref_header_audio">Geluid</string>
+    <string name="pref_title_pause_on_noisy">Pauzeer wanneer de koptelefoon is ontkoppeld</string>
+    <string name="pref_title_audio_duck">Volume verlagen bij focusverlies</string>
+    <string name="pref_header_lockscreen">Vergrendelscherm</string>
+    <string name="pref_title_lockscreen_albumart">albumhoes weergeven</string>
+    <string name="pref_title_lockscreen_albumart_blur">Blur albumhoes</string>
 </resources>

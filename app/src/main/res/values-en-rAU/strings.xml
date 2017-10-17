@@ -11,6 +11,12 @@
     <string name="action_unfavorite">Unfavourite</string>
     <string name="action_request">Request</string>
     <string name="action_undo">Undo</string>
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Sleep timer</string>
+    <string name="set">Set</string>
+    <string name="close">Close</string>
+    <string name="cancel_timer">Cancel timer</string>
+    <string name="sleep_timer_canceled">Cancelled timer</string>
     <!-- == Search == -->
     <string name="search">Search</string>
     <string name="clear_query">Clear query</string>
@@ -51,6 +57,7 @@
     <!-- == Song item actions == -->
     <!-- Requested song title -->
     <string name="requested_song">Requested %s</string>
+    <string name="no_requests_left">No requests left today</string>
     <string name="supporter_required">Supporter status required</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Can\'t connect to LISTEN.moe\n\nPlease check your Internet connection</string>
@@ -67,4 +74,12 @@
     <string name="open_in_browser">Open in browser</string>
     <string name="discord">Join us on Discord</string>
     <string name="patreon">Support on Patreon</string>
+    <!-- == Settings == -->
+    <string name="settings">Settings</string>
+    <string name="pref_header_audio">Audio</string>
+    <string name="pref_title_pause_on_noisy">Pause when headphones are removed</string>
+    <string name="pref_title_audio_duck">Reduce volume on focus loss</string>
+    <string name="pref_header_lockscreen">Lockscreen</string>
+    <string name="pref_title_lockscreen_albumart">Show album cover</string>
+    <string name="pref_title_lockscreen_albumart_blur">Blur album cover</string>
 </resources>

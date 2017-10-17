@@ -11,6 +11,7 @@
     <string name="action_unfavorite">Sacar de favoritos</string>
     <string name="action_request">Pedir</string>
     <string name="action_undo">Deshacer</string>
+    <!-- == Sleep timer == -->
     <!-- == Search == -->
     <string name="search">Buscar</string>
     <string name="clear_query">Borrar query</string>
@@ -63,4 +64,5 @@
     <string name="open_in_browser">Abrir en el navegador</string>
     <string name="discord">Únete en Discord</string>
     <string name="patreon">Ayúdanos en Patreon</string>
+    <!-- == Settings == -->
 </resources>

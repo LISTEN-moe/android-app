@@ -11,6 +11,7 @@
     <string name="action_unfavorite">Favorit entfernen</string>
     <string name="action_request">Musikwunsch</string>
     <string name="action_undo">Rückgängig</string>
+    <!-- == Sleep timer == -->
     <!-- == Search == -->
     <string name="search">Suche</string>
     <string name="clear_query">Eingabe zurücksetzen</string>
@@ -61,4 +62,5 @@
     <string name="open_in_browser">Im Browser öffnen</string>
     <string name="discord">Trete uns auf Discord bei</string>
     <string name="patreon">Auf Patreon unterstützen</string>
+    <!-- == Settings == -->
 </resources>

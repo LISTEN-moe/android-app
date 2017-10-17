@@ -11,6 +11,12 @@
     <string name="action_unfavorite">Retirer des favoris</string>
     <string name="action_request">Requête</string>
     <string name="action_undo">Annuler</string>
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Minuterie d\'arrêt</string>
+    <string name="set">Démarrer</string>
+    <string name="close">Fermer</string>
+    <string name="cancel_timer">Annuler la minuterie</string>
+    <string name="sleep_timer_canceled">Minuterie annulée</string>
     <!-- == Search == -->
     <string name="search">Rechercher</string>
     <string name="clear_query">Supprimer la requête</string>
@@ -51,6 +57,7 @@
     <!-- == Song item actions == -->
     <!-- Requested song title -->
     <string name="requested_song">Une requête à été faite pour %s</string>
+    <string name="no_requests_left">Pas de requêtes restantes aujourd\'hui</string>
     <string name="supporter_required">Grade Supporteur requis</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Impossible de se connecter à LISTEN.moe\nMerci de vérifier votre connexion internet</string>
@@ -67,4 +74,12 @@
     <string name="open_in_browser">Ouvrir dans le navigateur</string>
     <string name="discord">Rejoignez-nous sur Discord</string>
     <string name="patreon">Supportez sur Patreon</string>
+    <!-- == Settings == -->
+    <string name="settings">Paramètres</string>
+    <string name="pref_header_audio">Audio</string>
+    <string name="pref_title_pause_on_noisy">Mettre en pause quand les écouteurs sont débranchés</string>
+    <string name="pref_title_audio_duck">Réduire le volume lors des notifications et communications</string>
+    <string name="pref_header_lockscreen">Écran de verrouillage</string>
+    <string name="pref_title_lockscreen_albumart">Montrer la couverture de l\'album</string>
+    <string name="pref_title_lockscreen_albumart_blur">Flouter la couverture de l\'album</string>
 </resources>
