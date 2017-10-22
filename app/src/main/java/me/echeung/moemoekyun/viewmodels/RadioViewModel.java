@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.utils.PluralsUtil;
 import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
 public class RadioViewModel extends BaseViewModel {
@@ -20,7 +21,7 @@ public class RadioViewModel extends BaseViewModel {
     private Song currentSong;
     private boolean isPlaying;
     private boolean isFavorited;
-    private int listeners;
+    private String listeners;
     private String requester;
 
     private boolean showHistory;
@@ -42,7 +43,7 @@ public class RadioViewModel extends BaseViewModel {
         setLastSong(null);
         setSecondLastSong(null);
 
-        setListeners(0);
+        setListeners(null);
         setRequester(null);
     }
 
@@ -82,11 +83,23 @@ public class RadioViewModel extends BaseViewModel {
     }
 
     @Bindable
-    public int getListeners() {
+    public String getListeners() {
+        if (listeners == null) {
+            return "";
+        }
+
+        try {
+            Integer val = Integer.valueOf(listeners);
+            if (val != null) {
+                return PluralsUtil.getString(contextRef.get(), R.plurals.current_listeners, val);
+            }
+        } catch (NumberFormatException e) {
+        }
+
         return listeners;
     }
 
-    public void setListeners(int listeners) {
+    public void setListeners(String listeners) {
         this.listeners = listeners;
         notifyPropertyChanged(BR.listeners);
     }

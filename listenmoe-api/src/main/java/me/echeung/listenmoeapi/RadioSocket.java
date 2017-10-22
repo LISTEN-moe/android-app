@@ -4,6 +4,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.listenmoeapi.models.PlaybackInfo;
@@ -23,7 +24,7 @@ public class RadioSocket extends WebSocketListener {
     private static final int RETRY_TIME_MAX = 4000;
     private int retryTime = RETRY_TIME_MIN;
 
-    private static final Gson GSON = new Gson();
+    private final Gson gson;
 
     private final OkHttpClient client;
     private final AuthUtil authUtil;
@@ -34,6 +35,10 @@ public class RadioSocket extends WebSocketListener {
     RadioSocket(OkHttpClient client, AuthUtil authUtil) {
         this.client = client;
         this.authUtil = authUtil;
+
+        gson = new GsonBuilder()
+                .registerTypeAdapter(PlaybackInfo.class, new PlaybackInfo.PlaybackInfoDeserializer())
+                .create();
     }
 
     public void setListener(SocketListener listener) {
@@ -118,7 +123,7 @@ public class RadioSocket extends WebSocketListener {
             return;
         }
 
-        final PlaybackInfo playbackInfo = GSON.fromJson(jsonString, PlaybackInfo.class);
+        final PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
         listener.onSocketReceive(playbackInfo);
     }
 

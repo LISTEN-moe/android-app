@@ -1,7 +1,14 @@
 package me.echeung.listenmoeapi.models;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.SerializedName;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +21,7 @@ public class PlaybackInfo extends BasicTrack {
     private String animeName;
     @SerializedName("requested_by")
     private String requestedBy;
-    private int listeners;
+    private String mListeners;
     private BasicTrack last;
     @SerializedName("second_last")
     private BasicTrack secondLast;
@@ -32,8 +39,12 @@ public class PlaybackInfo extends BasicTrack {
         return requestedBy;
     }
 
-    public int getListeners() {
-        return listeners;
+    public String getListeners() {
+        return mListeners;
+    }
+
+    public void setListeners(String listeners) {
+        this.mListeners = listeners;
     }
 
     public List<BasicTrack> getPlayHistory() {
@@ -89,6 +100,24 @@ public class PlaybackInfo extends BasicTrack {
 
         public int getUserSongsInQueue() {
             return userSongsInQueue;
+        }
+    }
+
+    public static class PlaybackInfoDeserializer implements JsonDeserializer<PlaybackInfo> {
+
+        @Override
+        public PlaybackInfo deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
+            PlaybackInfo playbackInfo = new Gson().fromJson(json, PlaybackInfo.class);
+            JsonObject jsonObject = json.getAsJsonObject();
+
+            if (jsonObject.has("listeners")) {
+                JsonElement elem = jsonObject.get("listeners");
+                if (elem != null && !elem.isJsonNull()) {
+                    playbackInfo.setListeners(elem.getAsString());
+                }
+            }
+
+            return playbackInfo;
         }
     }
 }
