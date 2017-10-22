@@ -25,7 +25,6 @@ import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.dialogs.LoginDialog;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
-import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.UrlUtil;
 
@@ -64,7 +63,9 @@ public class MainActivity extends AppCompatActivity {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         // Invalidate token if needed
-        AuthUtil.checkAuthTokenValidity(this);
+        if (!App.getAuthUtil().checkAuthTokenValidity()) {
+            App.getUserViewModel().reset();
+        }
 
         // Handle intent actions
         initBroadcastReceiver();
@@ -177,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         // Toggle visibility of login/logout items based on authentication status
-        final boolean authenticated = AuthUtil.isAuthenticated(this);
+        final boolean authenticated = App.getAuthUtil().isAuthenticated();
         menu.findItem(R.id.action_login).setVisible(!authenticated);
         menu.findItem(R.id.action_register).setVisible(!authenticated);
         menu.findItem(R.id.action_logout).setVisible(authenticated);
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_search:
-                if (AuthUtil.isAuthenticated(this)) {
+                if (App.getAuthUtil().isAuthenticated()) {
                     startActivity(new Intent(this, SearchActivity.class));
                 } else {
                     showLoginDialog(() -> onOptionsItemSelected(item));
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.dismiss();
                     invalidateOptionsMenu();
 
-                    AuthUtil.setAuthToken(getApplicationContext(), result);
+                    App.getAuthUtil().setAuthToken(result);
                     broadcastAuthEvent();
 
                     if (listener != null) {
@@ -274,11 +275,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        if (!AuthUtil.isAuthenticated(this)) {
+        if (!App.getAuthUtil().isAuthenticated()) {
             return;
         }
 
-        AuthUtil.clearAuthToken(this);
+        App.getAuthUtil().clearAuthToken();
+        App.getUserViewModel().reset();
+
         Toast.makeText(getApplicationContext(), getString(R.string.logged_out), Toast.LENGTH_LONG).show();
         invalidateOptionsMenu();
 

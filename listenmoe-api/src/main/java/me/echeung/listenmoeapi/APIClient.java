@@ -3,6 +3,7 @@ package me.echeung.listenmoeapi;
 import android.content.Context;
 import android.util.Log;
 
+import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
 import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
@@ -34,7 +35,7 @@ public class APIClient {
     private static final String HEADER_USER_AGENT = "User-Agent";
     public static final String USER_AGENT = "me.echeung.moemoekyun";
 
-    private final APIHelper helper;
+    private final AuthUtil authUtil;
 
     private final AuthService authService;
     private final SongsService songsService;
@@ -43,8 +44,8 @@ public class APIClient {
     private final RadioSocket socket;
     private final RadioStream stream;
 
-    public APIClient(Context context, APIHelper helper) {
-        this.helper = helper;
+    public APIClient(Context context, AuthUtil authUtil) {
+        this.authUtil = authUtil;
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(chain -> {
@@ -69,7 +70,7 @@ public class APIClient {
         songsService = restAdapter.create(SongsService.class);
         userService = restAdapter.create(UserService.class);
 
-        socket = new RadioSocket(okHttpClient, helper);
+        socket = new RadioSocket(okHttpClient, authUtil);
         stream = new RadioStream(context);
     }
 
@@ -103,12 +104,12 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void getUserInfo(final UserInfoCallback callback) {
-        if (!helper.isAuthenticated()) {
+        if (!authUtil.isAuthenticated()) {
             callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
-        userService.getUserInfo(helper.getAuthToken())
+        userService.getUserInfo(authUtil.getAuthToken())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>() {
                     @Override
                     public void success(final UserResponse response) {
@@ -129,12 +130,12 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void getUserFavorites(final UserFavoritesCallback callback) {
-        if (!helper.isAuthenticated()) {
+        if (!authUtil.isAuthenticated()) {
             callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
-        userService.getFavorites(helper.getAuthToken())
+        userService.getFavorites(authUtil.getAuthToken())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserFavoritesResponse>() {
                     @Override
                     public void success(final UserFavoritesResponse response) {
@@ -159,12 +160,12 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void favoriteSong(final int songId, final FavoriteSongCallback callback) {
-        if (!helper.isAuthenticated()) {
+        if (!authUtil.isAuthenticated()) {
             callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
-        songsService.favorite(helper.getAuthToken(), songId)
+        songsService.favorite(authUtil.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoriteResponse>() {
                     @Override
                     public void success(final FavoriteResponse response) {
@@ -186,12 +187,12 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void requestSong(final int songId, final RequestSongCallback callback) {
-        if (!helper.isAuthenticated()) {
+        if (!authUtil.isAuthenticated()) {
             callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
-        songsService.request(helper.getAuthToken(), songId)
+        songsService.request(authUtil.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
                     public void success(final BaseResponse response) {
@@ -213,12 +214,12 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void search(final String query, final SearchCallback callback) {
-        if (!helper.isAuthenticated()) {
+        if (!authUtil.isAuthenticated()) {
             callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
-        songsService.search(helper.getAuthToken(), query)
+        songsService.search(authUtil.getAuthToken(), query)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SearchResponse>() {
                     @Override
                     public void success(final SearchResponse response) {
@@ -239,10 +240,5 @@ public class APIClient {
 
     public RadioStream getStream() {
         return stream;
-    }
-
-    public interface APIHelper {
-        boolean isAuthenticated();
-        String getAuthToken();
     }
 }

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.listenmoeapi.models.PlaybackInfo;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,14 +26,14 @@ public class RadioSocket extends WebSocketListener {
     private static final Gson GSON = new Gson();
 
     private final OkHttpClient client;
-    private final APIClient.APIHelper apiHelper;
+    private final AuthUtil authUtil;
 
     private volatile WebSocket socket;
     private SocketListener listener;
 
-    RadioSocket(OkHttpClient client, APIClient.APIHelper apiClient) {
+    RadioSocket(OkHttpClient client, AuthUtil authUtil) {
         this.client = client;
-        this.apiHelper = apiClient;
+        this.authUtil = authUtil;
     }
 
     public void setListener(SocketListener listener) {
@@ -54,7 +55,7 @@ public class RadioSocket extends WebSocketListener {
     }
 
     public void update() {
-        final String authToken = apiHelper.getAuthToken();
+        final String authToken = authUtil.getAuthToken();
         if (authToken == null || authToken.isEmpty()) {
             return;
         }

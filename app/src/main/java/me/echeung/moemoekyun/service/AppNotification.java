@@ -5,8 +5,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
@@ -15,7 +13,6 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.AuthUtil;
 
 class AppNotification {
 
@@ -75,7 +72,7 @@ class AppNotification {
 
             // Favorite action
             NotificationCompat.Action favoriteAction;
-            if (AuthUtil.isAuthenticated(service)) {
+            if (App.getAuthUtil().isAuthenticated()) {
                 favoriteAction = new NotificationCompat.Action(
                         song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
                         song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),

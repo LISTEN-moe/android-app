@@ -33,7 +33,6 @@ import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
-import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
@@ -260,7 +259,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     0, 1);
 
         // Favorite action
-        if (AuthUtil.isAuthenticated(this)) {
+        if (App.getAuthUtil().isAuthenticated()) {
             final Song currentSong = App.getRadioViewModel().getCurrentSong();
             final int favoriteIcon = currentSong == null || !currentSong.isFavorite() ?
                     R.drawable.ic_star_border_white_24dp :
@@ -348,7 +347,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     break;
 
                 case MainActivity.AUTH_EVENT:
-                    if (AuthUtil.isAuthenticated(this)) {
+                    if (App.getAuthUtil().isAuthenticated()) {
                         socket.update();
                     } else {
                         App.getRadioViewModel().setIsFavorited(false);
@@ -525,7 +524,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         final int songId = currentSong.getId();
         if (songId == -1) return;
 
-        if (!AuthUtil.isAuthenticated(getApplicationContext())) {
+        if (!App.getAuthUtil().isAuthenticated()) {
             promptLoginFavorite();
             return;
         }

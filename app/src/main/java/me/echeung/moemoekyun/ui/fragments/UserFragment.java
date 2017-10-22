@@ -34,7 +34,6 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
@@ -197,7 +196,7 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
     }
 
     private void initUserContent() {
-        boolean authenticated = AuthUtil.isAuthenticated(getContext());
+        boolean authenticated = App.getAuthUtil().isAuthenticated();
 
         vLoginMsg.setVisibility(authenticated ? View.GONE : View.VISIBLE);
         vUserContent.setVisibility(authenticated ? View.VISIBLE : View.GONE);

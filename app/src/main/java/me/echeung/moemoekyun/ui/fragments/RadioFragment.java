@@ -20,7 +20,6 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.FragmentRadioBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
@@ -117,7 +116,7 @@ public class RadioFragment extends Fragment {
     }
 
     private void favorite() {
-        if (!AuthUtil.isAuthenticated(getActivity())) {
+        if (!App.getAuthUtil().isAuthenticated()) {
             ((MainActivity) getActivity()).showLoginDialog(this::favorite);
             return;
         }
