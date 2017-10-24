@@ -9,6 +9,7 @@ public class PreferenceUtil {
 
     public static final String PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy";
     public static final String PREF_AUDIO_DUCK = "pref_audio_duck";
+    public static final String PREF_AUDIO_PAUSE_ON_LOSS = "pref_audio_pause_on_loss";
     public static final String PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart";
     public static final String PREF_LOCKSCREEN_ALBUMART_BLUR = "pref_lockscreen_albumart_blur";
 
@@ -34,6 +35,10 @@ public class PreferenceUtil {
 
     public boolean shouldDuckAudio() {
         return preferences.getBoolean(PREF_AUDIO_DUCK, true);
+    }
+
+    public boolean shouldPauseAudioOnLoss() {
+        return preferences.getBoolean(PREF_AUDIO_PAUSE_ON_LOSS, true);
     }
 
     public boolean shouldShowLockscreenAlbumArt() {

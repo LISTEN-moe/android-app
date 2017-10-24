@@ -117,7 +117,8 @@
 
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy">Pause when headphones are removed</string>
-    <string name="pref_title_audio_duck">Reduce volume on focus loss</string>
+    <string name="pref_title_audio_duck">Reduce volume on transient focus loss</string>
+    <string name="pref_title_audio_pause_on_loss">Pause volume on focus loss</string>
 
     <string name="pref_header_lockscreen">Lockscreen</string>
     <string name="pref_title_lockscreen_albumart">Show album cover</string>

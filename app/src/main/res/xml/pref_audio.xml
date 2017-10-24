@@ -13,6 +13,11 @@
             android:key="pref_audio_duck"
             android:title="@string/pref_title_audio_duck" />
 
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="pref_audio_pause_on_loss"
+            android:title="@string/pref_title_audio_pause_on_loss" />
+
     </android.support.v7.preference.PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen>

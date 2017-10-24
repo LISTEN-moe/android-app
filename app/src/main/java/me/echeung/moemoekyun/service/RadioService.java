@@ -471,7 +471,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 case AudioManager.AUDIOFOCUS_LOSS:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     wasPlayingBeforeLoss = isPlaying();
-                    if (wasPlayingBeforeLoss) {
+                    if (wasPlayingBeforeLoss && App.getPreferenceUtil().shouldPauseAudioOnLoss()) {
                         pause();
                     }
                     break;
