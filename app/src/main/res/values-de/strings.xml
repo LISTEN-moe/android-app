@@ -12,6 +12,11 @@
     <string name="action_request">Musikwunsch</string>
     <string name="action_undo">Rückgängig</string>
     <!-- == Sleep timer == -->
+    <string name="sleep_timer">Schlaf-Timer</string>
+    <string name="set">Setzen</string>
+    <string name="close">Schließen</string>
+    <string name="cancel_timer">Timer abbrechen</string>
+    <string name="sleep_timer_canceled">Timer abgebrochen</string>
     <!-- == Search == -->
     <string name="search">Suche</string>
     <string name="clear_query">Eingabe zurücksetzen</string>
@@ -31,6 +36,9 @@
     <string name="logout_confirmation">Bist du dir sicher, dass du dich ausloggen willst?</string>
     <string name="logged_out">Abgemeldet</string>
     <string name="login_required">Du must eingeloggt sein, um dieses Feature zu benutzen.</string>
+    <string name="auth_error_general">Fehler: Login fehlgeschlagen</string>
+    <string name="auth_error_name">Fehler: falscher Benutzername</string>
+    <string name="auth_error_pass">Fehler: Password falsch</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/Pause</string>
     <string name="history">Zuletzt gespielt</string>
@@ -44,8 +52,12 @@
     <string name="unfavorited">%s von Favoriten entfernt</string>
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d in der Warteschlange, %d vor deinen</string>
+    <string name="random_request">Wünsche eine zufälliges Lied</string>
+    <string name="all_cooldown">Alle Songs sind am abkühlen</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
+    <string name="requested_song">Wünsche %s</string>
+    <string name="no_requests_left">Keine Wünsche verbleibend für heute</string>
     <string name="supporter_required">Supporter Status benötigt</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Konnte keine Verbindung zu LISTEN.moe herstellen.\nÜberprüfe deine Internet Verbindung.</string>
@@ -63,4 +75,15 @@
     <string name="discord">Trete uns auf Discord bei</string>
     <string name="patreon">Auf Patreon unterstützen</string>
     <!-- == Settings == -->
+    <string name="settings">Einstellungen</string>
+    <string name="pref_header_audio">Audio</string>
+    <string name="pref_title_pause_on_noisy">Stoppe die Musik wenn die Kopfhörer entfernt werden</string>
+    <string name="pref_title_audio_duck">Reduziere die Musik bei Fokus Verlust</string>
+    <string name="pref_title_audio_duck_summary">Benachrichtigungen, Navigation, usw.</string>
+    <string name="pref_title_audio_pause_on_loss">Pausiere die Musik beim Fokus verlust</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Videos, andere Musik, etc.</string>
+    <string name="pref_header_lockscreen">Sperrbildschirm</string>
+    <string name="pref_title_lockscreen_albumart">Zeige Album Bild</string>
+    <string name="pref_title_lockscreen_albumart_summary">Zeige das Albumcover auf dem Sperrbildschirm und Android Auto</string>
+    <string name="pref_title_lockscreen_albumart_blur">Füge Unschärfe dem Album Cover hinzu</string>
 </resources>

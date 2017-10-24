@@ -78,8 +78,12 @@
     <string name="settings">Settings</string>
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy">Pause when headphones are removed</string>
-    <string name="pref_title_audio_duck">Reduce volume on focus loss</string>
+    <string name="pref_title_audio_duck">Reduce volume on transient focus loss</string>
+    <string name="pref_title_audio_duck_summary">Notifications, navigation, etc.</string>
+    <string name="pref_title_audio_pause_on_loss">Pause volume on focus loss</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Videos, other music, etc.</string>
     <string name="pref_header_lockscreen">Lockscreen</string>
     <string name="pref_title_lockscreen_albumart">Show album cover</string>
+    <string name="pref_title_lockscreen_albumart_summary">Displays album art on lockscreen and Android Auto</string>
     <string name="pref_title_lockscreen_albumart_blur">Blur album cover</string>
 </resources>
