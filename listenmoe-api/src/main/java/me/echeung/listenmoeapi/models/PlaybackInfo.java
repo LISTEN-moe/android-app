@@ -90,7 +90,7 @@ public class PlaybackInfo extends BasicTrack {
             return songsInQueue;
         }
 
-        public boolean isHasSongInQueue() {
+        public boolean hasSongInQueue() {
             return hasSongInQueue;
         }
 

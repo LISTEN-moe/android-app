@@ -6,7 +6,8 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="pref_lockscreen_albumart"
-            android:title="@string/pref_title_lockscreen_albumart" />
+            android:title="@string/pref_title_lockscreen_albumart"
+            android:summary="@string/pref_title_lockscreen_albumart_summary" />
 
         <SwitchPreference
             android:defaultValue="false"
