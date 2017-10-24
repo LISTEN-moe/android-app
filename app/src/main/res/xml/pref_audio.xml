@@ -18,7 +18,7 @@
             android:defaultValue="true"
             android:key="pref_audio_pause_on_loss"
             android:title="@string/pref_title_audio_pause_on_loss"
-            android:summary="@string/pref_title_audio_duck_summary" />
+            android:summary="@string/pref_title_audio_pause_on_loss_summary" />
 
     </android.support.v7.preference.PreferenceCategory>
 
