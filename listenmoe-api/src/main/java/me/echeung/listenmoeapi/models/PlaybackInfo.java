@@ -103,6 +103,7 @@ public class PlaybackInfo extends BasicTrack {
         }
     }
 
+    // Handles listeners being a number or string
     public static class PlaybackInfoDeserializer implements JsonDeserializer<PlaybackInfo> {
 
         @Override
