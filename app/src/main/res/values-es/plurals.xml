@@ -10,4 +10,12 @@
         <item quantity="one">1 oyente</item>
         <item quantity="other">%d oyentes</item>
     </plurals>
+    <plurals name="minutes">
+        <item quantity="one">1 minuto</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+    <plurals name="sleep_timer_set">
+        <item quantity="one">Poner el timer en 1 minuto</item>
+        <item quantity="other">Poner el timer en %d minutos</item>
+    </plurals>
 </resources>

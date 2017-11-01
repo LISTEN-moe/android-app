@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="error">エラーが発生しました</string>
+    <string name="copied_to_clipboard">クリップボードにコピーしました</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_request">リクエスト</string>
+    <string name="action_undo">アンドゥ</string>
+    <!-- == Sleep timer == -->
+    <string name="close">閉じる</string>
+    <string name="cancel_timer">タイマーをキャンセル</string>
+    <string name="sleep_timer_canceled">タイマーをキャンセルしました</string>
+    <!-- == Search == -->
+    <string name="search">検索</string>
+    <string name="clear_query">クリア</string>
+    <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">\"%s\"との一致はありません</string>
+    <!-- == Sort == -->
+    <string name="sort_title">タイトル</string>
+    <string name="sort_artist">アーティスト</string>
+    <!-- == Auth == -->
+    <string name="login">ログイン</string>
+    <string name="logout">ログアウト</string>
+    <string name="username">ユーザー名</string>
+    <string name="password">パスワード</string>
+    <!-- == Radio tab == -->
+    <!-- e.g. Requested by: username -->
+    <!-- == User tab == -->
+    <!-- e.g. Unfavorited song title -->
+    <!-- e.g. 2 in queue, 10 before yours -->
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <!-- == No Internet view == -->
+    <!-- == About == -->
+    <!-- e.g. Version 1.0 -->
+    <!-- == Settings == -->
+</resources>
