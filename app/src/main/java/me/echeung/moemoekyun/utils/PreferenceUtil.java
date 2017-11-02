@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 public class PreferenceUtil {
 
+    public static final String PREF_GENERAL_BROADCAST_INTENT = "pref_general_broadcast_intent";
     public static final String PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy";
     public static final String PREF_AUDIO_DUCK = "pref_audio_duck";
     public static final String PREF_AUDIO_PAUSE_ON_LOSS = "pref_audio_pause_on_loss";
@@ -27,6 +28,10 @@ public class PreferenceUtil {
 
     public void unregisterListener(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
         preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+    }
+
+    public boolean shouldBroadcastIntent() {
+        return preferences.getBoolean(PREF_GENERAL_BROADCAST_INTENT, false);
     }
 
     public boolean shouldPauseOnNoisy() {
