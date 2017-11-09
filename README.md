@@ -24,7 +24,7 @@ This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/stor
 
 ### Prerequisites
 
-- [Android Studio Canary](https://developer.android.com/studio/preview/index.html)
+- [Android Studio](https://developer.android.com/studio/index.html)
 
 ### Project structure
 
