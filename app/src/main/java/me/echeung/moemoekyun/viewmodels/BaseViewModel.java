@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.viewmodels.base;
+package me.echeung.moemoekyun.viewmodels;
 
 import android.content.Context;
 import android.databinding.BaseObservable;

@@ -5,8 +5,6 @@ import android.databinding.Bindable;
 
 import com.android.databinding.library.baseAdapters.BR;
 
-import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
-
 public class UserViewModel extends BaseViewModel {
 
     private String userName;

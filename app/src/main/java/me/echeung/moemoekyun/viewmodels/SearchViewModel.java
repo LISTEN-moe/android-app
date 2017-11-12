@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import com.android.databinding.library.baseAdapters.BR;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.viewmodels.base.BaseViewModel;
 
 public class SearchViewModel extends BaseViewModel {
 
