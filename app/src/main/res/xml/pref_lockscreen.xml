@@ -4,13 +4,13 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_lockscreen">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="pref_lockscreen_albumart"
             android:title="@string/pref_title_lockscreen_albumart"
             android:summary="@string/pref_title_lockscreen_albumart_summary" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:dependency="pref_lockscreen_albumart"
             android:key="pref_lockscreen_albumart_blur"

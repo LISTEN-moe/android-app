@@ -4,7 +4,7 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_general">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="pref_general_broadcast_intent"
             android:title="@string/pref_title_general_broadcast_intent"

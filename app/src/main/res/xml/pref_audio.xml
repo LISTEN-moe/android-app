@@ -4,18 +4,18 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_audio">
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="pref_audio_pause_on_noisy"
             android:title="@string/pref_title_pause_on_noisy" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="pref_audio_duck"
             android:title="@string/pref_title_audio_duck"
             android:summary="@string/pref_title_audio_duck_summary" />
 
-        <SwitchPreference
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="true"
             android:key="pref_audio_pause_on_loss"
             android:title="@string/pref_title_audio_pause_on_loss"
