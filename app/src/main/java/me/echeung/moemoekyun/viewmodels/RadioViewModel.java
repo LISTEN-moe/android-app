@@ -83,14 +83,15 @@ public class RadioViewModel extends BaseViewModel {
 
     @Bindable
     public String getListeners() {
-        if (listeners == null) {
+        final Context context = getContext();
+        if (context == null || listeners == null) {
             return "";
         }
 
         try {
             Integer val = Integer.valueOf(listeners);
             if (val != null) {
-                return PluralsUtil.getString(contextRef.get(), R.plurals.current_listeners, val);
+                return PluralsUtil.getString(context, R.plurals.current_listeners, val);
             }
         } catch (NumberFormatException e) {
         }
@@ -105,7 +106,7 @@ public class RadioViewModel extends BaseViewModel {
 
     @Bindable
     public String getRequester() {
-        final Context context = contextRef.get();
+        final Context context = getContext();
         if (context == null || TextUtils.isEmpty(requester)) {
             return null;
         }

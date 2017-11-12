@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 public class PreferenceUtil {
 
+    public static final String PREF_GENERAL_LANGUAGE = "pref_general_language";
     public static final String PREF_GENERAL_BROADCAST_INTENT = "pref_general_broadcast_intent";
     public static final String PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy";
     public static final String PREF_AUDIO_DUCK = "pref_audio_duck";
@@ -28,6 +29,10 @@ public class PreferenceUtil {
 
     public void unregisterListener(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
         preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+    }
+
+    public String getLanguage() {
+        return preferences.getString(PREF_GENERAL_LANGUAGE, LocaleUtil.DEFAULT);
     }
 
     public boolean shouldBroadcastIntent() {

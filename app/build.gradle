@@ -80,4 +80,5 @@ dependencies {
 
     implementation 'de.hdodenhof:circleimageview:2.2.0'
     implementation 'com.github.bumptech.glide:glide:4.2.0'
+    implementation 'com.jakewharton:process-phoenix:2.0.0'
 }

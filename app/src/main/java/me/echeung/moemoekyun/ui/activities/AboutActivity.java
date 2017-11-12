@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.ui.activities;
 
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
@@ -10,7 +9,7 @@ import de.psdev.licensesdialog.LicensesDialog;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.UrlUtil;
 
-public class AboutActivity extends AppCompatActivity implements View.OnClickListener {
+public class AboutActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String URL_GOOGLEPLAY = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
     private static final String URL_GITHUB = "https://github.com/LISTEN-moe/android-app";

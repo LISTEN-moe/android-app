@@ -40,7 +40,7 @@ public class SearchViewModel extends BaseViewModel {
 
     @Bindable
     public String getQuery() {
-        final Context context = contextRef.get();
+        final Context context = getContext();
         if (context == null || TextUtils.isEmpty(query)) {
             return null;
         }

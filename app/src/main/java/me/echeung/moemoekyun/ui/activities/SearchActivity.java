@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -28,7 +27,7 @@ import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 
-public class SearchActivity extends AppCompatActivity implements SongAdapter.OnSongItemClickListener {
+public class SearchActivity extends BaseActivity implements SongAdapter.OnSongItemClickListener {
 
     private static final String LIST_ID = "SEARCH_LIST";
 

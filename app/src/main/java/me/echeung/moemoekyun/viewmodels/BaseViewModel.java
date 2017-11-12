@@ -10,13 +10,23 @@ import android.widget.TextView;
 import java.lang.ref.WeakReference;
 
 import me.echeung.moemoekyun.BR;
+import me.echeung.moemoekyun.utils.LocaleUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
 
-    protected WeakReference<Context> contextRef;
+    private WeakReference<Context> contextRef;
 
     public BaseViewModel(Context context) {
         this.contextRef = new WeakReference<>(context);
+    }
+
+    protected Context getContext() {
+        final Context context = contextRef.get();
+        if (context == null) {
+            return null;
+        }
+
+        return LocaleUtil.setLocale(context);
     }
 
     // Network connection

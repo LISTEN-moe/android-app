@@ -4,11 +4,18 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_general">
 
-        <android.support.v7.preference.SwitchPreferenceCompat
-            android:defaultValue="false"
-            android:key="pref_general_broadcast_intent"
-            android:title="@string/pref_title_general_broadcast_intent"
-            android:summary="@string/pref_title_general_broadcast_intent_summary" />
+        <android.support.v7.preference.ListPreference
+            android:key="pref_general_language"
+            android:title="@string/pref_title_language"
+            android:entries="@array/pref_language_names"
+            android:entryValues="@array/pref_language_codes"
+            android:defaultValue="default" />
+
+        <!--<android.support.v7.preference.SwitchPreferenceCompat-->
+            <!--android:defaultValue="false"-->
+            <!--android:key="pref_general_broadcast_intent"-->
+            <!--android:title="@string/pref_title_general_broadcast_intent"-->
+            <!--android:summary="@string/pref_title_general_broadcast_intent_summary" />-->
 
     </android.support.v7.preference.PreferenceCategory>
 
