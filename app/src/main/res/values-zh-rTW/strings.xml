@@ -7,25 +7,51 @@
     <string name="action_play">播放</string>
     <string name="action_pause">暫停</string>
     <string name="action_stop">停止</string>
-    <string name="action_favorite">你的最愛</string>
-    <string name="action_unfavorite">不喜愛</string>
-    <string name="action_request">請求</string>
+    <string name="action_favorite">加入最愛</string>
+    <string name="action_unfavorite">從最愛刪除</string>
+    <string name="action_request">點歌</string>
     <string name="action_undo">取消</string>
     <!-- == Sleep timer == -->
+    <string name="sleep_timer">睡眠計時</string>
+    <string name="close">關閉</string>
+    <string name="cancel_timer">取消計時</string>
+    <string name="sleep_timer_canceled">已取消計時</string>
     <!-- == Search == -->
     <string name="search">搜尋</string>
     <!-- e.g. No results for "user's search query" -->
     <!-- == Sort == -->
+    <string name="sort_title">歌名</string>
+    <string name="sort_desc">降順</string>
     <!-- == Auth == -->
+    <string name="register">登錄</string>
+    <string name="login">登入</string>
+    <string name="logout">登出</string>
+    <string name="username">用戶名</string>
+    <string name="password">密碼</string>
+    <string name="logout_confirmation">確定要登出嗎？</string>
+    <string name="logged_out">已登出</string>
+    <string name="login_required">本功能使用前必須登入</string>
+    <string name="auth_error_general">登入失敗</string>
+    <string name="auth_error_name">用戶名錯誤</string>
+    <string name="auth_error_pass">密碼錯誤</string>
     <!-- == Radio tab == -->
+    <string name="play_pause">播放/暫停</string>
+    <string name="history">播放記錄</string>
+    <string name="favorite">我的最愛</string>
     <!-- e.g. Requested by: username -->
     <!-- == User tab == -->
+    <string name="no_favorites">目前沒有最愛</string>
     <!-- e.g. Unfavorited song title -->
     <!-- e.g. 2 in queue, 10 before yours -->
     <!-- == Song item actions == -->
     <!-- Requested song title -->
     <!-- == No Internet view == -->
     <!-- == About == -->
+    <string name="about">關於</string>
     <!-- e.g. Version 1.0 -->
+    <string name="version">版本 %s</string>
     <!-- == Settings == -->
+    <string name="settings">設定</string>
+    <string name="pref_header_general">一般</string>
+    <string name="pref_title_pause_on_noisy">耳機拔出時暫停</string>
 </resources>

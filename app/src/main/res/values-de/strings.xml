@@ -76,6 +76,9 @@
     <string name="patreon">Auf Patreon unterstützen</string>
     <!-- == Settings == -->
     <string name="settings">Einstellungen</string>
+    <string name="pref_header_general">Generell</string>
+    <string name="pref_title_general_broadcast_intent">Übertrage Song Update</string>
+    <string name="pref_title_general_broadcast_intent_summary">Last.fm Scrobbling unterstützung</string>
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy">Stoppe die Musik wenn die Kopfhörer entfernt werden</string>
     <string name="pref_title_audio_duck">Reduziere die Musik bei Fokus Verlust</string>

@@ -76,6 +76,9 @@
     <string name="patreon">Support on Patreon</string>
     <!-- == Settings == -->
     <string name="settings">Settings</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_general_broadcast_intent">Broadcast song updates</string>
+    <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling support</string>
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy">Pause when headphones are removed</string>
     <string name="pref_title_audio_duck">Lower volume on transient focus loss</string>

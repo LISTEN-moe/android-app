@@ -76,10 +76,16 @@
     <string name="patreon">Supportez sur Patreon</string>
     <!-- == Settings == -->
     <string name="settings">Paramètres</string>
+    <string name="pref_header_general">Général</string>
+    <string name="pref_title_general_broadcast_intent_summary">Support de scrobbling Last.fm</string>
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy">Mettre en pause quand les écouteurs sont débranchés</string>
     <string name="pref_title_audio_duck">Réduire le volume lors des notifications et communications</string>
+    <string name="pref_title_audio_duck_summary">Notifications, navigation, etc.</string>
+    <string name="pref_title_audio_pause_on_loss">Mettre en pause lors de la perte d\'attention</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Vidéos, autres musiques, etc.</string>
     <string name="pref_header_lockscreen">Écran de verrouillage</string>
     <string name="pref_title_lockscreen_albumart">Montrer la couverture de l\'album</string>
+    <string name="pref_title_lockscreen_albumart_summary">Afficher la couverture de l\'album sur l\'écran de verrouillage et Android Auto</string>
     <string name="pref_title_lockscreen_albumart_blur">Flouter la couverture de l\'album</string>
 </resources>

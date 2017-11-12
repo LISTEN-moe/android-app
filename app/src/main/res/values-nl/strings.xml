@@ -76,10 +76,17 @@
     <string name="patreon">Steun ons op Patreon</string>
     <!-- == Settings == -->
     <string name="settings">Instellingen</string>
+    <string name="pref_header_general">Algemeen</string>
+    <string name="pref_title_general_broadcast_intent">Nummer informatie</string>
+    <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling ondersteuning</string>
     <string name="pref_header_audio">Geluid</string>
     <string name="pref_title_pause_on_noisy">Pauzeer wanneer de koptelefoon is ontkoppeld</string>
     <string name="pref_title_audio_duck">Volume verlagen bij focusverlies</string>
+    <string name="pref_title_audio_duck_summary">Meldingen, navigatie, etc.</string>
+    <string name="pref_title_audio_pause_on_loss">Volume onderbreken bij focusverlies</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Video\'s, andere muziek, etc.</string>
     <string name="pref_header_lockscreen">Vergrendelscherm</string>
     <string name="pref_title_lockscreen_albumart">albumhoes weergeven</string>
+    <string name="pref_title_lockscreen_albumart_summary">Geeft albumillustraties weer op het vergrendelscherm</string>
     <string name="pref_title_lockscreen_albumart_blur">Blur albumhoes</string>
 </resources>
