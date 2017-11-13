@@ -36,10 +36,17 @@
 
             </FrameLayout>
 
-            <include
-                android:id="@+id/favorites"
-                layout="@layout/user_favorites"
-                binding:vm="@{vm}" />
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/user_favorites_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <include
+                    android:id="@+id/favorites"
+                    layout="@layout/user_favorites"
+                    binding:vm="@{vm}" />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -54,6 +55,8 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
 
     // Favorites list
     private SongAdapter adapter;
+
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     // Receiver
     private IntentFilter intentFilter;
@@ -108,6 +111,12 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
             popupMenu.setOnMenuItemClickListener(this::handleMenuItemClick);
             popupMenu.show();
         });
+
+        // Pull to refresh
+        swipeRefreshLayout = binding.userFavoritesContainer;
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(this::getUserFavorites);
+        swipeRefreshLayout.setRefreshing(false);
 
         initBroadcastReceiver();
         initUserContent();
@@ -196,6 +205,8 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
     }
 
     private void initUserContent() {
+        swipeRefreshLayout.setRefreshing(true);
+
         boolean authenticated = App.getAuthUtil().isAuthenticated();
 
         vLoginMsg.setVisibility(authenticated ? View.GONE : View.VISIBLE);
@@ -205,6 +216,11 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
             return;
         }
 
+        getUserInfo();
+        getUserFavorites();
+    }
+
+    private void getUserInfo() {
         App.getApiClient().getUserInfo(new UserInfoCallback() {
             @Override
             public void onSuccess(final UserResponse userResponse) {
@@ -217,22 +233,35 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
             public void onFailure(final String message) {
             }
         });
+    }
 
+    private void getUserFavorites() {
         App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
             @Override
             public void onSuccess(final UserFavoritesResponse userFavorites) {
                 final List<Song> favorites = userFavorites.getSongs();
 
-                getActivity().runOnUiThread(() -> adapter.setSongs(favorites));
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> adapter.setSongs(favorites));
+                }
 
                 viewModel.setUserRequests(userFavorites.getExtra().getRequests());
                 viewModel.setHasFavorites(!favorites.isEmpty());
+
+                completeRefresh();
             }
 
             @Override
             public void onFailure(final String message) {
+                completeRefresh();
             }
         });
+    }
+
+    private void completeRefresh() {
+        if (getActivity() != null && swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
+            getActivity().runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false));
+        }
     }
 
     @Override
