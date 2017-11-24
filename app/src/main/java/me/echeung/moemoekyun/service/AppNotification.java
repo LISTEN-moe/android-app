@@ -14,9 +14,11 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 
-class AppNotification {
+public class AppNotification {
 
-    private static final String NOTIFICATION_CHANNEL = "notif_channel";
+    public static final String NOTIFICATION_CHANNEL_NAME = "Default";
+    public static final String NOTIFICATION_CHANNEL_ID = "default";
+
     private static final int NOTIFICATION_ID = 1;
 
     private RadioService service;
@@ -51,7 +53,7 @@ class AppNotification {
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
         final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL)
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

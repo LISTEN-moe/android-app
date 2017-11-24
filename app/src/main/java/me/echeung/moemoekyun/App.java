@@ -1,6 +1,8 @@
 package me.echeung.moemoekyun;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +12,7 @@ import android.os.IBinder;
 import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.auth.AndroidAuthUtil;
 import me.echeung.listenmoeapi.auth.AuthUtil;
+import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
@@ -35,6 +38,7 @@ public class App extends Application implements ServiceConnection {
         super.onCreate();
 
         // Music player service
+        initNotificationChannel();
         initService();
 
         // API client
@@ -109,5 +113,17 @@ public class App extends Application implements ServiceConnection {
     @Override
     public void onServiceDisconnected(ComponentName arg0) {
         clearService();
+    }
+
+    private void initNotificationChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            final NotificationChannel notifChannel = new NotificationChannel(
+                    AppNotification.NOTIFICATION_CHANNEL_ID,
+                    AppNotification.NOTIFICATION_CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_LOW);
+
+            final NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notifManager.createNotificationChannel(notifChannel);
+        }
     }
 }
