@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_general">一般</string>
     <!-- == Generic strings == -->
     <string name="error">錯誤發生</string>
     <string name="copied_to_clipboard">複製到剪貼板</string>
@@ -18,12 +19,11 @@
     <string name="sleep_timer_canceled">已取消計時</string>
     <!-- == Search == -->
     <string name="search">搜尋</string>
-    <!-- e.g. No results for "user's search query" -->
-    <!-- == Sort == -->
     <string name="sort_title">歌名</string>
     <string name="sort_desc">降順</string>
     <!-- == Auth == -->
     <string name="register">登錄</string>
+    <!-- Auth -->
     <string name="login">登入</string>
     <string name="logout">登出</string>
     <string name="username">用戶名</string>
@@ -38,20 +38,13 @@
     <string name="play_pause">播放/暫停</string>
     <string name="history">播放記錄</string>
     <string name="favorite">我的最愛</string>
-    <!-- e.g. Requested by: username -->
     <!-- == User tab == -->
     <string name="no_favorites">目前沒有最愛</string>
-    <!-- e.g. Unfavorited song title -->
-    <!-- e.g. 2 in queue, 10 before yours -->
-    <!-- == Song item actions == -->
-    <!-- Requested song title -->
-    <!-- == No Internet view == -->
     <!-- == About == -->
     <string name="about">關於</string>
     <!-- e.g. Version 1.0 -->
     <string name="version">版本 %s</string>
     <!-- == Settings == -->
     <string name="settings">設定</string>
-    <string name="pref_header_general">一般</string>
     <string name="pref_title_pause_on_noisy">耳機拔出時暫停</string>
 </resources>

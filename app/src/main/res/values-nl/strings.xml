@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="pref_header_general">Algemeen</string>
     <!-- == Generic strings == -->
     <string name="error">Er is een fout opgetreden</string>
     <string name="copied_to_clipboard">Gekopieerd</string>
@@ -29,6 +30,7 @@
     <string name="sort_desc">Aflopend</string>
     <!-- == Auth == -->
     <string name="register">Registreren</string>
+    <!-- Auth -->
     <string name="login">Aanmelden</string>
     <string name="logout">Afmelden</string>
     <string name="username">Gebruikersnaam</string>
@@ -54,10 +56,10 @@
     <string name="queue_info">"%d in de rij, %d voor jouw verzoek "</string>
     <string name="random_request">Willekeurig nummer aanvragen</string>
     <string name="all_cooldown">Je kan tijdelijk geen nummers aanvragen</string>
-    <!-- == Song item actions == -->
     <!-- Requested song title -->
     <string name="requested_song">Verzocht %s</string>
     <string name="no_requests_left">Geen verzoeken vandaag</string>
+    <!-- Song item actions -->
     <string name="supporter_required">Supporterstatus vereist</string>
     <!-- == No Internet view == -->
     <string name="no_internet">Kan geen verbinding maken met LISTEN.moe\n\nControleer uw internet verbinding</string>
@@ -74,11 +76,12 @@
     <string name="open_in_browser">Openen in de browser</string>
     <string name="discord">Doe mee op Discord</string>
     <string name="patreon">Steun ons op Patreon</string>
+    <string name="pref_title_language">Taal</string>
     <!-- == Settings == -->
     <string name="settings">Instellingen</string>
-    <string name="pref_header_general">Algemeen</string>
     <string name="pref_title_general_broadcast_intent">Nummer informatie</string>
     <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling ondersteuning</string>
+    <string name="system_default">Systeem standaard</string>
     <string name="pref_header_audio">Geluid</string>
     <string name="pref_title_pause_on_noisy">Pauzeer wanneer de koptelefoon is ontkoppeld</string>
     <string name="pref_title_audio_duck">Volume verlagen bij focusverlies</string>
