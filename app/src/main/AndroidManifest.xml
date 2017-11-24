@@ -81,6 +81,10 @@
             android:name="com.google.android.gms.car.notification.SmallIcon"
             android:resource="@drawable/ic_icon" />
 
+        <meta-data
+            android:name="asset_statements"
+            android:resource="@string/asset_statements" />
+
     </application>
 
 </manifest>

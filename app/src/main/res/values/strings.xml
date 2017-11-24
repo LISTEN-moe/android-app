@@ -2,6 +2,11 @@
 <resources>
 
     <string name="app_name" translatable="false">LISTEN.moe</string>
+    <string name="asset_statements" translatable="false">
+    [{
+        \"include\": \"https://listen.moe/.well-known/assetlinks.json\"
+    }]
+    </string>
 
 
     <!-- == Generic strings == -->
