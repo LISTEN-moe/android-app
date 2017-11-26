@@ -116,9 +116,11 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List<Song> getEnabledVisibleSongs() {
         List<Song> songs = new ArrayList<>();
-        for (Song song : visibleSongs) {
-            if (song.isEnabled()) {
-                songs.add(song);
+        if (visibleSongs != null) {
+            for (Song song : visibleSongs) {
+                if (song.isEnabled()) {
+                    songs.add(song);
+                }
             }
         }
         return songs;
