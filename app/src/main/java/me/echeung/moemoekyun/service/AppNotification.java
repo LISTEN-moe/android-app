@@ -60,6 +60,7 @@ public class AppNotification {
                 .setShowWhen(false)
                 .setOnlyAlertOnce(true)
                 .setColor(ContextCompat.getColor(service, R.color.colorAccent))
+                .setContentTitle(service.getString(R.string.app_name))
                 .setSmallIcon(R.drawable.ic_icon)
 //                .setLargeIcon(albumArt)
                 .setContentIntent(clickIntent)
