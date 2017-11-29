@@ -3,10 +3,8 @@
     <string-array name="pref_language_names">
         <item>@string/system_default</item>
         <item>Deutsch</item>
-        <item>English (Australia)</item>
-        <item>English (Canada)</item>
-        <item>English (United Kingdom)</item>
-        <item>English (United States)</item>
+        <item>English (UK)</item>
+        <item>English (US)</item>
         <item>Español</item>
         <item>Français</item>
         <item>Nederlands</item>
@@ -19,8 +17,6 @@
     <string-array name="pref_language_codes">
         <item>default</item>
         <item>de</item>
-        <item>en-rAU</item>
-        <item>en-rCA</item>
         <item>en-rGB</item>
         <item>en-US</item>
         <item>es</item>
