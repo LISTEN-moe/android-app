@@ -118,6 +118,22 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         swipeRefreshLayout.setOnRefreshListener(this::getUserFavorites);
         swipeRefreshLayout.setRefreshing(false);
 
+        // Only allow pull to refresh when user is at the top of the list
+        vUserFavorites.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition = vUserFavorites.getChildCount() != 0 ?
+                        vUserFavorites.getChildAt(0).getTop() :
+                        0;
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
+
         initBroadcastReceiver();
         initUserContent();
 
