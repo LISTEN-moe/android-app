@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 
 public class PreferenceUtil {
 
+    public static final String PREF_GENERAL_THEME = "pref_general_theme";
     public static final String PREF_GENERAL_LANGUAGE = "pref_general_language";
     public static final String PREF_GENERAL_BROADCAST_INTENT = "pref_general_broadcast_intent";
     public static final String PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy";
@@ -14,6 +15,10 @@ public class PreferenceUtil {
     public static final String PREF_AUDIO_PAUSE_ON_LOSS = "pref_audio_pause_on_loss";
     public static final String PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart";
     public static final String PREF_LOCKSCREEN_ALBUMART_BLUR = "pref_lockscreen_albumart_blur";
+
+    public static final String THEME_DEFAULT = "three";
+    public static final String THEME_CHRISTMAS = "christmas";
+    public static final String THEME_FOUR = "four";
 
     private static final String SLEEP_TIMER_MINS = "pref_sleep_timer";
 
@@ -29,6 +34,14 @@ public class PreferenceUtil {
 
     public void unregisterListener(SharedPreferences.OnSharedPreferenceChangeListener sharedPreferenceChangeListener) {
         preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
+    }
+
+    public boolean isDefaultTheme() {
+        return getTheme().equals(THEME_DEFAULT);
+    }
+
+    public String getTheme() {
+        return preferences.getString(PREF_GENERAL_THEME, THEME_DEFAULT);
     }
 
     public String getLanguage() {

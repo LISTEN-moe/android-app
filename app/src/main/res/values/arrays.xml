@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array name="pref_theme_names">
+        <item>3.0</item>
+        <item>Christmas</item>
+        <!--<item>3.0 + 1.0</item>-->
+    </string-array>
+
+    <string-array name="pref_theme_codes">
+        <item>three</item>
+        <item>christmas</item>
+        <!--<item>four</item>-->
+    </string-array>
+
     <string-array name="pref_language_names">
         <item>@string/system_default</item>
         <item>Deutsch</item>
@@ -27,4 +40,5 @@
         <item>ja</item>
         <item>zh-rTW</item>
     </string-array>
+
 </resources>

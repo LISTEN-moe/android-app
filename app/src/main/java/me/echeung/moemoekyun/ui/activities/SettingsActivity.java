@@ -55,22 +55,19 @@ public class SettingsActivity extends BaseActivity {
         }
 
         private void invalidateSettings() {
-            final Preference languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE);
+            final Preference themeSetting = findPreference(PreferenceUtil.PREF_GENERAL_THEME);
+            setSummary(themeSetting);
+            themeSetting.setOnPreferenceChangeListener((preference, o) -> {
+                setSummary(themeSetting, o);
+                promptAppRestart();
+                return true;
+            });
+
+                final Preference languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE);
             setSummary(languageSetting);
             languageSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(languageSetting, o);
-
-                // Prompt to restart app
-                final Activity activity = getActivity();
-                if (activity != null) {
-                    new AlertDialog.Builder(activity, R.style.DialogTheme)
-                            .setTitle(R.string.restart_app)
-                            .setPositiveButton(R.string.restart, (dialogInterface, i) -> ProcessPhoenix.triggerRebirth(getActivity()))
-                            .setNegativeButton(android.R.string.cancel, null)
-                            .create()
-                            .show();
-                }
-
+                promptAppRestart();
                 return true;
             });
         }
@@ -98,6 +95,18 @@ public class SettingsActivity extends BaseActivity {
             return PreferenceManager
                     .getDefaultSharedPreferences(preference.getContext())
                     .getString(preference.getKey(), "");
+        }
+
+        private void promptAppRestart() {
+            final Activity activity = getActivity();
+            if (activity != null) {
+                new AlertDialog.Builder(activity, R.style.DialogTheme)
+                        .setTitle(R.string.restart_app)
+                        .setPositiveButton(R.string.restart, (dialogInterface, i) -> ProcessPhoenix.triggerRebirth(getActivity()))
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .create()
+                        .show();
+            }
         }
     }
 }
