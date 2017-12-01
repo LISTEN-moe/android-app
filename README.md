@@ -15,7 +15,7 @@
 
 ## About
 
-A native Android app using things like [OkHttp](http://square.github.io/okhttp/), [RetroFit](http://square.github.io/retrofit/), and [data binding](https://developer.android.com/topic/libraries/data-binding/index.html). Implements all functionality exposed through the official [LISTEN.moe API](https://listen-moe.github.io/documentation/).
+A native Android app using things like [OkHttp](http://square.github.io/okhttp/), [RetroFit](http://square.github.io/retrofit/), and [data binding](https://developer.android.com/topic/libraries/data-binding/index.html). Features things like [Android Auto](https://www.android.com/auto/) and [autofill](https://android-developers.googleblog.com/2017/11/getting-your-android-app-ready-for.html) support.
 
 This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/store/apps/details?id=jcotter.listenmoe) and serves as the official Android app.
 
@@ -30,7 +30,7 @@ This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/stor
 
 The project contains 2 submodules:
 - `app`: The Android app itself.
-- `listenmoe-api`: An Android library that contains abstracts the API, including the websocket and stream.
+- `listenmoe-api`: An Android library that wraps the [LISTEN.moe API](https://listen-moe.github.io/documentation/), including the websocket and stream.
 
 ### Translations
 
@@ -38,7 +38,7 @@ Translations are crowdsourced through [OneSky](https://osfmofb.oneskyapp.com/col
 
 ### Release
 
-The release builds are signed by and uploaded to Google Play and Amazon App Store by [@arkon](https://github.com/arkon/).
+The release builds are signed by and uploaded to the Google Play Store and Amazon App Store by [@arkon](https://github.com/arkon/).
 
 
 ## License
