@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="pref_header_general">Général</string>
     <!-- == Generic strings == -->
     <string name="error">Une erreur s\'est produite</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
@@ -76,12 +75,18 @@
     <string name="open_in_browser">Ouvrir dans le navigateur</string>
     <string name="discord">Rejoignez-nous sur Discord</string>
     <string name="patreon">Supportez sur Patreon</string>
+    <string name="pref_header_general">Général</string>
     <string name="pref_title_language">"Langue "</string>
     <!-- == Settings == -->
     <string name="settings">Paramètres</string>
-    <string name="pref_title_general_broadcast_intent_summary">Support de scrobbling Last.fm</string>
+    <string name="pref_title_theme">Thème</string>
+    <string name="system_default">Langue par défaut du système</string>
+    <string name="restart_app">Redémarrer l\'application pour appliquer les modifications ?</string>
     <string name="pref_header_audio">Audio</string>
+    <string name="restart">Redémarrage</string>
+    <string name="pref_title_general_broadcast_intent">Envoyer les informations de la musique vers Last.fm</string>
     <string name="pref_title_pause_on_noisy">Mettre en pause quand les écouteurs sont débranchés</string>
+    <string name="pref_title_general_broadcast_intent_summary">Support de scrobbling Last.fm</string>
     <string name="pref_title_audio_duck">Réduire le volume lors des pertes d\'attention temporaires</string>
     <string name="pref_title_audio_duck_summary">Notifications, navigation, etc.</string>
     <string name="pref_title_audio_pause_on_loss">Mettre en pause lors des pertes d\'attention</string>
