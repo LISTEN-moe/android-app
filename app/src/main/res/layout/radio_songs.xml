@@ -21,7 +21,7 @@
             android:maxHeight="100dp"
             android:maxWidth="300dp"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/logo"
+            app:srcCompat="?attr/themeLogoImage"
             tools:ignore="ContentDescription" />
 
         <RelativeLayout

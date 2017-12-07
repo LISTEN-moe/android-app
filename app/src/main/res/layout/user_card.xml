@@ -58,8 +58,8 @@
             android:layout_height="@dimen/avatar_size"
             android:layout_centerHorizontal="true"
             android:elevation="3dp"
-            android:src="@drawable/kanna"
-            app:civ_border_color="@color/colorAccent"
+            android:src="?attr/themeDefaultAvatarImage"
+            app:civ_border_color="?attr/colorAccent"
             app:civ_border_width="2dp" />
 
     </RelativeLayout>

@@ -7,6 +7,8 @@
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
 
+        <item name="alertDialogColorAccent">@color/colorAccent</item>
+
         <item name="android:windowBackground">@color/grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/light_grey</item>
@@ -19,16 +21,25 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="themeBackgroundImage">@drawable/background</item>
+        <item name="themeLogoImage">@drawable/logo</item>
+        <item name="themeDefaultAvatarImage">@drawable/kanna</item>
     </style>
 
     <!-- Christmas theme -->
     <style name="AppThemeChristmas" parent="AppTheme">
-        <item name="android:windowBackground">@android:color/holo_red_light</item>
+        <item name="colorAccent">#e53935</item>
+        <item name="alertDialogColorAccent">#e53935</item>
+
+        <item name="themeBackgroundImage">@drawable/background</item>
+        <item name="themeLogoImage">@drawable/logo</item>
+        <item name="themeDefaultAvatarImage">@drawable/kanna_christmas</item>
     </style>
 
     <!-- TabHost -->
     <style name="TabWidgetTheme" parent="AppTheme">
-        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="android:textColorPrimary">?attr/colorAccent</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 
@@ -36,8 +47,8 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:background">@color/dark_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorLink">@color/colorAccent</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorLink">?attr/colorAccent</item>
+        <item name="colorAccent">?attr/alertDialogColorAccent</item>
     </style>
 
     <!-- Buttons -->

@@ -53,7 +53,7 @@
                 android:layout_alignParentTop="true"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/background"
+                android:src="?attr/themeBackgroundImage"
                 tools:ignore="ContentDescription" />
 
             <android.support.design.widget.AppBarLayout

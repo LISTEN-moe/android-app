@@ -18,7 +18,7 @@
             android:text='@{vm.requester}'
             android:textAlignment="center"
             android:textColor="@color/white"
-            android:textColorLink="@color/colorAccent"
+            android:textColorLink="?attr/colorAccent"
             android:textSize="14sp" />
 
         <LinearLayout
