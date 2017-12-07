@@ -24,6 +24,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
 
+        setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupVersion();

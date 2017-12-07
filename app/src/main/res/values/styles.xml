@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!-- Base application theme -->
     <style name="AppTheme" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -13,16 +14,15 @@
         <item name="android:textAppearanceButton">@style/ButtonTheme</item>
 
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-    </style>
 
-    <!-- Theme with no toolbar -->
-    <style name="AppTheme.NoTitle" parent="AppTheme">
+        <!-- Toolbar -->
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
     <!-- TabHost -->
-    <style name="TabWidgetTheme" parent="AppTheme.NoTitle">
+    <style name="TabWidgetTheme" parent="AppTheme">
         <item name="android:textColorPrimary">@color/colorAccent</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>
@@ -70,4 +70,5 @@
             white-space: pre-wrap;
         }
     </string>
+
 </resources>
