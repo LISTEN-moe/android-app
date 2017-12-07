@@ -11,5 +11,4 @@ This issue tracker is only for bug reports and enhancement suggestions. You won'
 - App version:
 - Android version:
 - Phone:
-- Software number (optional):
 - Priority this should have – please be realistic and elaborate if possible:
