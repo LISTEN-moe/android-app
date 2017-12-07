@@ -1,7 +1,7 @@
 package me.echeung.moemoekyun.ui.activities;
 
 import android.app.Activity;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -11,8 +11,6 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.jakewharton.processphoenix.ProcessPhoenix;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
@@ -103,11 +101,20 @@ public class SettingsActivity extends BaseActivity {
             if (activity != null) {
                 new AlertDialog.Builder(activity, R.style.DialogTheme)
                         .setTitle(R.string.restart_app)
-                        .setPositiveButton(R.string.restart, (dialogInterface, i) -> ProcessPhoenix.triggerRebirth(getActivity()))
+                        .setPositiveButton(R.string.restart, (dialogInterface, i) -> restartApp())
                         .setNegativeButton(android.R.string.cancel, null)
                         .create()
                         .show();
             }
+        }
+
+        private void restartApp() {
+            Intent i = getActivity().getBaseContext().getPackageManager().
+                    getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName());
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            getActivity().finish();
         }
     }
 }

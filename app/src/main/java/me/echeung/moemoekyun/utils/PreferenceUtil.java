@@ -36,10 +36,6 @@ public class PreferenceUtil {
         preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
-    public boolean isDefaultTheme() {
-        return getTheme().equals(THEME_DEFAULT);
-    }
-
     public String getTheme() {
         return preferences.getString(PREF_GENERAL_THEME, THEME_DEFAULT);
     }
