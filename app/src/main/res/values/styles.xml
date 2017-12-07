@@ -33,7 +33,7 @@
         <item name="alertDialogColorAccent">#e53935</item>
 
         <item name="themeBackgroundImage">@drawable/background</item>
-        <item name="themeLogoImage">@drawable/logo</item>
+        <item name="themeLogoImage">@drawable/logo_christmas</item>
         <item name="themeDefaultAvatarImage">@drawable/kanna_christmas</item>
     </style>
 
