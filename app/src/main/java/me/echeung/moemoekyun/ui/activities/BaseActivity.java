@@ -14,6 +14,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         switch (App.getPreferenceUtil().getTheme()) {
+            case PreferenceUtil.THEME_DEFAULT:
+                setTheme(R.style.AppTheme);
+                break;
+
             case PreferenceUtil.THEME_CHRISTMAS:
                 setTheme(R.style.AppThemeChristmas);
                 break;
