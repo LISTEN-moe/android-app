@@ -3,22 +3,18 @@
 
     <!-- Based on https://github.com/bleeding182/samples/tree/master/SplashScreen -->
     <style name="SplashTheme" parent="Theme.AppCompat">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowFullscreen">true</item>
-
-        <item name="android:windowBackground">@drawable/splash_screen</item>
-
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
     <!-- Base application theme -->
-    <style name="AppTheme" parent="Theme.AppCompat">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="SplashTheme">
         <item name="alertDialogColorAccent">@color/colorAccent</item>
 
         <item name="android:windowBackground">@color/grey</item>
@@ -31,8 +27,6 @@
 
         <!-- Toolbar -->
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
 
         <item name="themeBackgroundImage">@drawable/background</item>
         <item name="themeLogoImage">@drawable/logo</item>
@@ -41,10 +35,11 @@
 
     <!-- Christmas theme -->
     <style name="AppThemeChristmas" parent="AppTheme">
+        <item name="colorPrimaryDark">#e53935</item>
         <item name="colorAccent">#e53935</item>
         <item name="alertDialogColorAccent">#e53935</item>
 
-        <item name="themeBackgroundImage">@drawable/background</item>
+        <item name="themeBackgroundImage">@drawable/background_christmas</item>
         <item name="themeLogoImage">@drawable/logo_christmas</item>
         <item name="themeDefaultAvatarImage">@drawable/kanna_christmas</item>
     </style>
