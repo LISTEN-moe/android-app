@@ -79,14 +79,17 @@
     <string name="pref_title_language">Taal</string>
     <!-- == Settings == -->
     <string name="settings">Instellingen</string>
+    <string name="pref_title_theme">Thema</string>
     <string name="system_default">Systeem standaard</string>
+    <string name="restart_app">Start de App. opnieuw op om de weizigingen toe te passen?</string>
     <string name="pref_header_audio">Geluid</string>
+    <string name="restart">Opnieuw starten</string>
     <string name="pref_title_general_broadcast_intent">Nummer informatie</string>
     <string name="pref_title_pause_on_noisy">Pauzeer wanneer de koptelefoon is ontkoppeld</string>
     <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling ondersteuning</string>
     <string name="pref_title_audio_duck">Volume verlagen bij focusverlies</string>
     <string name="pref_title_audio_duck_summary">Meldingen, navigatie, etc.</string>
-    <string name="pref_title_audio_pause_on_loss">Volume onderbreken bij focusverlies</string>
+    <string name="pref_title_audio_pause_on_loss">Pauzeer bij focusverlies</string>
     <string name="pref_title_audio_pause_on_loss_summary">Video\'s, andere muziek, etc.</string>
     <string name="pref_header_lockscreen">Vergrendelscherm</string>
     <string name="pref_title_lockscreen_albumart">albumhoes weergeven</string>

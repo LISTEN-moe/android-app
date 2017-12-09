@@ -75,13 +75,21 @@
     <string name="open_in_browser">Abrir en el navegador</string>
     <string name="discord">Únete en Discord</string>
     <string name="patreon">Ayúdanos en Patreon</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_language">Idioma</string>
     <!-- == Settings == -->
     <string name="settings">Opciones</string>
+    <string name="pref_title_theme">Tema</string>
+    <string name="system_default">Predeterminado</string>
+    <string name="restart_app">Reiniciar la app para aplicar los cambios?</string>
     <string name="pref_header_audio">Audio</string>
+    <string name="restart">Reiniciar</string>
+    <string name="pref_title_general_broadcast_intent">Transmitir actualización de canciones</string>
     <string name="pref_title_pause_on_noisy">Pausar cuando los auriculares son removidos</string>
+    <string name="pref_title_general_broadcast_intent_summary">Soporte para scrobbling de Last.fm</string>
     <string name="pref_title_audio_duck">Bajar el volumen en notificación entrante</string>
     <string name="pref_title_audio_duck_summary">Notificaciones, navegación, etc</string>
-    <string name="pref_title_audio_pause_on_loss">Pausar volumen cuando se pierde el foco</string>
+    <string name="pref_title_audio_pause_on_loss">Pausar cuando se pierde el foco</string>
     <string name="pref_title_audio_pause_on_loss_summary">Videos, otra música, etc</string>
     <string name="pref_header_lockscreen">Pantalla de bloqueo</string>
     <string name="pref_title_lockscreen_albumart">Mostrar cover del album</string>

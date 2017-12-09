@@ -7,5 +7,92 @@
     <string name="action_play">Воспроизвести</string>
     <string name="action_pause">Пауза</string>
     <string name="action_stop">Остановить</string>
-    <string name="no_requests_left">Сегодня не было оставлено запросов</string>
+    <string name="action_favorite">Добавить в избранное</string>
+    <string name="action_unfavorite">Удалить из избранного</string>
+    <string name="action_request">Запросить</string>
+    <string name="action_undo">Отменить</string>
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Таймер сна</string>
+    <string name="set">Установить</string>
+    <string name="close">Закрыть</string>
+    <string name="cancel_timer">Удалить таймер</string>
+    <string name="sleep_timer_canceled">Таймер удалён</string>
+    <!-- == Search == -->
+    <string name="search">Поиск</string>
+    <string name="clear_query">Очистить запрос</string>
+    <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">По вашему запросу \"%s\" ничего не найдено</string>
+    <!-- == Sort == -->
+    <string name="sort">Сортировка</string>
+    <string name="sort_title">По названию</string>
+    <string name="sort_artist">По исполнителю</string>
+    <string name="sort_desc">По убыванию</string>
+    <!-- == Auth == -->
+    <string name="register">Регистрация</string>
+    <!-- Auth -->
+    <string name="login">Войти</string>
+    <string name="logout">Выйти</string>
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="logout_confirmation">Вы действительно хотите выйти?</string>
+    <string name="logged_out">Вы успешно вышли</string>
+    <string name="login_required">Вам необходимо войти, чтобы использовать эту функцию</string>
+    <string name="auth_error_general">Ошибка: ошибка входа</string>
+    <string name="auth_error_name">Ошибка: неверное имя пользователя</string>
+    <string name="auth_error_pass">Ошибка: неверный пароль</string>
+    <!-- == Radio tab == -->
+    <string name="play_pause">Возпроизвести/пауза</string>
+    <string name="history">История</string>
+    <string name="favorite">Добавить в избранное</string>
+    <!-- e.g. Requested by: username -->
+    <string name="requested_by">Запрошено %s</string>
+    <!-- == User tab == -->
+    <string name="no_favorites">У вас нет ничего в избранном</string>
+    <string name="filter_favorites">Поиск по избранному</string>
+    <!-- e.g. Unfavorited song title -->
+    <string name="unfavorited">%s удалено из избранного</string>
+    <!-- e.g. 2 in queue, 10 before yours -->
+    <string name="queue_info">%d в очереди, %d перед вашей</string>
+    <string name="random_request">Запросить случайную песню</string>
+    <string name="all_cooldown">Все песни сейчас недоступны</string>
+    <!-- Requested song title -->
+    <string name="requested_song">Запрошено %s</string>
+    <string name="no_requests_left">Вы больше не можете запрашивать песни сегодня</string>
+    <!-- Song item actions -->
+    <string name="supporter_required">Необходимо пожертвовать для использовантя этой функции</string>
+    <!-- == No Internet view == -->
+    <string name="no_internet">Невозожно соединиться с LISTEN.moe\nПроверьте интернет-соединение</string>
+    <string name="retry">Повторить</string>
+    <!-- == About == -->
+    <string name="about">О программе</string>
+    <!-- e.g. Version 1.0 -->
+    <string name="version">Версия %s</string>
+    <string name="rate">Оценить в Google Play</string>
+    <string name="github">Оценить на GitHub</string>
+    <string name="translate">Помогите перевести приложение</string>
+    <string name="licenses">Лицензия</string>
+    <string name="listenmoe">Радио LISTEN.moe</string>
+    <string name="open_in_browser">Открыть в браузере</string>
+    <string name="discord">Присоединиться к нам в Discord</string>
+    <string name="patreon">Поддержать на Patreon</string>
+    <string name="pref_header_general">Основные</string>
+    <string name="pref_title_language">Язык</string>
+    <!-- == Settings == -->
+    <string name="settings">Настройки</string>
+    <string name="pref_title_theme">Тема</string>
+    <string name="system_default">Язык системы</string>
+    <string name="restart_app">Перезапустить приложение для применения изменений?</string>
+    <string name="pref_header_audio">Звук</string>
+    <string name="restart">Перезапустить</string>
+    <string name="pref_title_general_broadcast_intent">Возпроизводить обновления песни</string>
+    <string name="pref_title_pause_on_noisy">Пауза, когда наушники отключены</string>
+    <string name="pref_title_general_broadcast_intent_summary">Поддержка скробблинга Last.fm</string>
+    <string name="pref_title_audio_duck">Уменьшать громкость при временной потере фокуса</string>
+    <string name="pref_title_audio_duck_summary">Уведомления, навигация и т.д.</string>
+    <string name="pref_title_audio_pause_on_loss">Пауза при потере фокуса</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Видео, музыка и т.д.</string>
+    <string name="pref_header_lockscreen">Экран блокировки</string>
+    <string name="pref_title_lockscreen_albumart">Показывать обложку альбома</string>
+    <string name="pref_title_lockscreen_albumart_summary">Показывает обложку альбома на экране блокировки и в Android Auto</string>
+    <string name="pref_title_lockscreen_albumart_blur">Затуманить обложку альбома</string>
 </resources>
