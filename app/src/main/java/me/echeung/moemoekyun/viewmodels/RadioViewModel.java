@@ -76,6 +76,10 @@ public class RadioViewModel extends BaseViewModel {
     }
 
     public void setIsFavorited(boolean isFavorited) {
+        if (this.currentSong == null) {
+            return;
+        }
+
         this.currentSong.setFavorite(isFavorited);
         this.isFavorited = isFavorited;
         notifyPropertyChanged(BR.isFavorited);
