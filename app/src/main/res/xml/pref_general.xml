@@ -4,12 +4,13 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_general">
 
+        <!-- TODO: revert back to actual default post-Christmas -->
         <android.support.v7.preference.ListPreference
             android:key="pref_general_theme"
             android:title="@string/pref_title_theme"
             android:entries="@array/pref_theme_names"
             android:entryValues="@array/pref_theme_codes"
-            android:defaultValue="three" />
+            android:defaultValue="christmas" />
 
         <android.support.v7.preference.ListPreference
             android:key="pref_general_language"
