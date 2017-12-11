@@ -320,7 +320,12 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 // Headphone media button action
                 case Intent.ACTION_MEDIA_BUTTON:
-                    final KeyEvent keyEvent = (KeyEvent) intent.getExtras().get(Intent.EXTRA_KEY_EVENT);
+                    final Bundle extras = intent.getExtras();
+                    if (extras == null) {
+                        return false;
+                    }
+
+                    final KeyEvent keyEvent = (KeyEvent) extras.get(Intent.EXTRA_KEY_EVENT);
                     if (keyEvent == null || keyEvent.getAction() != KeyEvent.ACTION_DOWN) {
                         return false;
                     }
