@@ -28,10 +28,13 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         super.onCreate(savedInstanceState);
+
+        LocaleUtil.setTitle(this);
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleUtil.setLocale(base));
     }
+
 }

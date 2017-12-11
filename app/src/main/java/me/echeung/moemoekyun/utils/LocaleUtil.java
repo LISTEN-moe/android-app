@@ -1,14 +1,18 @@
 package me.echeung.moemoekyun.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.util.Locale;
 
 import me.echeung.moemoekyun.App;
 
+// https://proandroiddev.com/change-language-programmatically-at-runtime-on-android-5e6bc15c758
 public class LocaleUtil {
 
     protected static final String DEFAULT = "default";
@@ -35,4 +39,19 @@ public class LocaleUtil {
         context = context.createConfigurationContext(config);
         return context;
     }
+
+    public static void setTitle(@NonNull Activity activity) {
+        try {
+            int label = activity
+                    .getPackageManager()
+                    .getActivityInfo(activity.getComponentName(), PackageManager.GET_META_DATA)
+                    .labelRes;
+            if (label != 0) {
+                activity.setTitle(label);
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e(activity.getLocalClassName(), e.getMessage(), e);
+        }
+    }
+
 }
