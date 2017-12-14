@@ -2,7 +2,7 @@
 <resources>
 
     <!-- https://stackoverflow.com/a/30164189 -->
-    <attr name="alertDialogColorAccent" format="reference|color" />
+    <attr name="themeColorAccent" format="reference|color" />
 
     <attr name="themeBackgroundImage" format="reference" />
     <attr name="themeLogoImage" format="reference" />

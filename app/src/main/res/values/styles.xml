@@ -15,7 +15,6 @@
 
     <!-- Base application theme -->
     <style name="AppTheme" parent="SplashTheme">
-        <item name="alertDialogColorAccent">@color/colorAccent</item>
 
         <item name="android:windowBackground">@color/grey</item>
         <item name="android:textColorPrimary">@color/white</item>
@@ -28,6 +27,7 @@
         <!-- Toolbar -->
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 
+        <item name="themeColorAccent">@color/colorAccent</item>
         <item name="themeBackgroundImage">@drawable/background</item>
         <item name="themeLogoImage">@drawable/logo</item>
         <item name="themeDefaultAvatarImage">@drawable/kanna</item>
@@ -37,8 +37,8 @@
     <style name="AppThemeChristmas" parent="AppTheme">
         <item name="colorPrimaryDark">#e53935</item>
         <item name="colorAccent">#e53935</item>
-        <item name="alertDialogColorAccent">#e53935</item>
 
+        <item name="themeColorAccent">#e53935</item>
         <item name="themeBackgroundImage">@drawable/background_christmas</item>
         <item name="themeLogoImage">@drawable/logo_christmas</item>
         <item name="themeDefaultAvatarImage">@drawable/kanna_christmas</item>
@@ -46,7 +46,7 @@
 
     <!-- TabHost -->
     <style name="TabWidgetTheme" parent="AppTheme">
-        <item name="android:textColorPrimary">?attr/colorAccent</item>
+        <item name="android:textColorPrimary">?attr/themeColorAccent</item>
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 
@@ -54,8 +54,8 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Dialog.Alert">
         <item name="android:background">@color/dark_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorLink">?attr/colorAccent</item>
-        <item name="colorAccent">?attr/alertDialogColorAccent</item>
+        <item name="android:textColorLink">?attr/themeColorAccent</item>
+        <item name="colorAccent">?attr/themeColorAccent</item>
     </style>
 
     <!-- Buttons -->
