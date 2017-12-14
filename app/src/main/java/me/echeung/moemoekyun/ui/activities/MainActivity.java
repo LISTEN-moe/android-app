@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        // Prevent app from exiting when pressing back on the user tab
         if (viewPager != null && viewPager.getCurrentItem() != 0) {
             viewPager.setCurrentItem(0, true);
         } else {
