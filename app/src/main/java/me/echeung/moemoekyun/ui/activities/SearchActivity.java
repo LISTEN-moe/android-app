@@ -23,6 +23,7 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.ActivitySearchBinding;
+import me.echeung.moemoekyun.utils.ImeUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
@@ -105,6 +106,10 @@ public class SearchActivity extends BaseActivity implements SongAdapter.OnSongIt
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (SongSortUtil.handleSortMenuItem(item, adapter)) {
             return true;
+        }
+
+        if (item.getItemId() == android.R.id.home) {
+            ImeUtil.hideSoftKeyboard(this);
         }
 
         return super.onOptionsItemSelected(item);
