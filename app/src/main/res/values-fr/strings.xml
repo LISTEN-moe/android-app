@@ -50,7 +50,7 @@
     <string name="no_favorites">Pas encore de favoris</string>
     <string name="filter_favorites">Filtrer les favoris</string>
     <!-- e.g. Unfavorited song title -->
-    <string name="unfavorited">%s retiré des favoris</string>
+    <string name="unfavorited">%s a été retiré des favoris</string>
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d dans la file, %d avant la votre</string>
     <string name="random_request">Demander une chanson aléatoire</string>
