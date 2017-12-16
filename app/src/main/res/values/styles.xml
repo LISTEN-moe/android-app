@@ -15,7 +15,6 @@
 
     <!-- Base application theme -->
     <style name="AppTheme" parent="SplashTheme">
-
         <item name="android:windowBackground">@color/grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/light_grey</item>
@@ -35,6 +34,7 @@
 
     <!-- Christmas theme -->
     <style name="AppThemeChristmas" parent="AppTheme">
+        <item name="colorPrimary">#e53935</item>
         <item name="colorPrimaryDark">#e53935</item>
         <item name="colorAccent">#e53935</item>
 
