@@ -7,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 
 import me.echeung.listenmoeapi.APIClient;
@@ -119,7 +120,7 @@ public class App extends Application implements ServiceConnection {
     }
 
     private void initNotificationChannel() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final NotificationChannel notifChannel = new NotificationChannel(
                     AppNotification.NOTIFICATION_CHANNEL_ID,
                     AppNotification.NOTIFICATION_CHANNEL_NAME,
