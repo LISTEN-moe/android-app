@@ -37,6 +37,12 @@
             <include
                 layout="@layout/about_card_listenmoe"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" />
+
+            <include
+                layout="@layout/about_card_translations"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>

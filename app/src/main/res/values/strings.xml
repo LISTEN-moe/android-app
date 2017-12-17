@@ -109,11 +109,30 @@
     <string name="rate">Rate on Google Play</string>
     <string name="github">Star on GitHub</string>
     <string name="translate">Help translate the app</string>
+    <string name="translators">Translators</string>
     <string name="licenses">Licenses</string>
     <string name="listenmoe">LISTEN.moe radio</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="discord">Join us on Discord</string>
     <string name="patreon">Support on Patreon</string>
+    <string name="translators_list" translatable="false">
+        anonymousthing
+        \nCalvin_c64
+        \nCaymon
+        \nCrawl
+        \ncshih.calvin
+        \njimimbi97
+        \nKana
+        \nLiliace
+        \nMiinc
+        \nnick.acc
+        \nNogooduser
+        \nPraxic
+        \nRainBee
+        \nRuslan Nurislamov
+        \nvzwGrey
+        \nwongtszwing87
+    </string>
 
 
     <!-- == Settings == -->
