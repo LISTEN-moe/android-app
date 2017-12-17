@@ -1,4 +1,7 @@
-<h1 align="center">LISTEN.moe Android app</h1>
+<div align="center">
+	<img src="https://lolisafe.moe/DJwzPbWD.png" />
+</div>
+<h1 align="center">Official Android app</h1>
 
 ## Download
 
