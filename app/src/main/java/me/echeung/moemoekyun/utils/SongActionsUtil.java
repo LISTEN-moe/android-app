@@ -123,6 +123,8 @@ public class SongActionsUtil {
         ClipData clip = ClipData.newPlainText("song", songInfo);
         clipboard.setPrimaryClip(clip);
 
-        Toast.makeText(context, context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
+        String text = String.format("%s: %s", context.getString(R.string.copied_to_clipboard), songInfo);
+
+        Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
 }
