@@ -4,6 +4,8 @@ android {
     compileSdkVersion 27
     buildToolsVersion '27.0.2'
 
+    flavorDimensions 'variant'
+
     defaultConfig {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21
@@ -43,6 +45,18 @@ android {
 
             minifyEnabled false
             useProguard false
+        }
+    }
+
+    productFlavors {
+        playstore {
+            dimension 'variant'
+        }
+        fdroid {
+            dimension 'variant'
+
+            applicationIdSuffix '.fdroid'
+            versionNameSuffix ' (F-Droid)'
         }
     }
 
