@@ -56,7 +56,6 @@ android {
             dimension 'variant'
 
             applicationIdSuffix '.fdroid'
-            versionNameSuffix ' (F-Droid)'
         }
     }
 
