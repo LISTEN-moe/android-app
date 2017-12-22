@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="translators">Översättare</string>
     <!-- == Generic strings == -->
     <string name="error">Ett fel uppstod</string>
     <string name="copied_to_clipboard">Kopierad till urklipp</string>
