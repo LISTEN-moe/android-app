@@ -31,7 +31,13 @@ public class LocaleUtil {
         final Configuration config = new Configuration(res.getConfiguration());
 
         if (!language.equals(DEFAULT)) {
-            final Locale locale = new Locale(language);
+            Locale locale;
+            if (language.contains("-r")) {
+                String[] languageParts = language.split("-r");
+                locale = new Locale(languageParts[0], languageParts[1]);
+            } else {
+                locale = new Locale(language);
+            }
             Locale.setDefault(locale);
             config.setLocale(locale);
         }
