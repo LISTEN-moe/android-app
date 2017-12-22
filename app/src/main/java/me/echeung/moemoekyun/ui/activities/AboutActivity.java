@@ -1,17 +1,19 @@
 package me.echeung.moemoekyun.ui.activities;
 
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import de.psdev.licensesdialog.LicensesDialog;
+import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.UrlUtil;
 
 public class AboutActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String URL_GOOGLEPLAY = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
+    private static final String URL_STORE = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
     private static final String URL_GITHUB = "https://github.com/LISTEN-moe/android-app";
     private static final String URL_TRANSLATE = "https://osfmofb.oneskyapp.com/collaboration/project?id=271507";
 
@@ -27,15 +29,19 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setupVersion();
+        setupPackageInfo();
         setupClickListeners();
     }
 
-    private void setupVersion() {
+    private void setupPackageInfo() {
         try {
-            final String version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             final TextView txtVersion = findViewById(R.id.app_version);
-            txtVersion.setText(getString(R.string.version, version));
+            String versionText = getString(R.string.version, packageInfo.versionName);
+            if (BuildConfig.DEBUG) {
+                versionText += String.format(" (%s)", packageInfo.packageName);
+            }
+            txtVersion.setText(versionText);
         } catch (PackageManager.NameNotFoundException e) {
         }
     }
@@ -55,7 +61,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.about_app_rate:
-                UrlUtil.openUrl(this, URL_GOOGLEPLAY);
+                UrlUtil.openUrl(this, URL_STORE);
                 break;
 
             case R.id.about_app_github:
