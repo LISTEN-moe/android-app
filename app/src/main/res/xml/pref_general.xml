@@ -4,7 +4,6 @@
     <android.support.v7.preference.PreferenceCategory
         android:title="@string/pref_header_general">
 
-        <!-- TODO: revert back to actual default post-Christmas -->
         <android.support.v7.preference.ListPreference
             android:key="pref_general_theme"
             android:title="@string/pref_title_theme"
