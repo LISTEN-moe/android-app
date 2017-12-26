@@ -36,9 +36,8 @@ public class PreferenceUtil {
         preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener);
     }
 
-    // TODO: revert back to actual default post-Christmas
     public String getTheme() {
-        return preferences.getString(PREF_GENERAL_THEME, THEME_CHRISTMAS);
+        return preferences.getString(PREF_GENERAL_THEME, THEME_DEFAULT);
     }
 
     public String getLanguage() {

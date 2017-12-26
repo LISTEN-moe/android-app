@@ -10,7 +10,7 @@
             android:title="@string/pref_title_theme"
             android:entries="@array/pref_theme_names"
             android:entryValues="@array/pref_theme_codes"
-            android:defaultValue="christmas" />
+            android:defaultValue="three" />
 
         <android.support.v7.preference.ListPreference
             android:key="pref_general_language"
