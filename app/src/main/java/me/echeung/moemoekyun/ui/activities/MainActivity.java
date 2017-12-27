@@ -1,9 +1,6 @@
 package me.echeung.moemoekyun.ui.activities;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -29,7 +26,6 @@ import me.echeung.moemoekyun.utils.UrlUtil;
 
 public class MainActivity extends BaseActivity {
 
-    public static final String TRIGGER_LOGIN_AND_FAVORITE = "fav_after_login";
     public static final String AUTH_EVENT = "auth_event";
 
     private static final String URL_REGISTER = "https://listen.moe/#/register";
@@ -37,9 +33,6 @@ public class MainActivity extends BaseActivity {
     private ActivityMainBinding binding;
 
     private ViewPager viewPager;
-
-    private BroadcastReceiver intentReceiver;
-    private boolean receiverRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,24 +58,10 @@ public class MainActivity extends BaseActivity {
         if (!App.getAuthUtil().checkAuthTokenValidity()) {
             App.getUserViewModel().reset();
         }
-
-        // Handle intent actions
-        initBroadcastReceiver();
-        handleIntentAction(getIntent());
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        handleIntentAction(intent);
     }
 
     @Override
     protected void onDestroy() {
-        if (receiverRegistered) {
-            unregisterReceiver(intentReceiver);
-            receiverRegistered = false;
-        }
-
         // Kill service/notification if killing activity and not playing
         final RadioService service = App.getService();
         if (service != null && !service.isPlaying()) {
@@ -120,32 +99,6 @@ public class MainActivity extends BaseActivity {
 
             final Intent updateIntent = new Intent(RadioService.UPDATE);
             sendBroadcast(updateIntent);
-        }
-    }
-
-    private void initBroadcastReceiver() {
-        intentReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                handleIntentAction(intent);
-            }
-        };
-
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MainActivity.TRIGGER_LOGIN_AND_FAVORITE);
-
-        registerReceiver(intentReceiver, intentFilter);
-        receiverRegistered = true;
-    }
-
-    private void handleIntentAction(Intent intent) {
-        final String action = intent.getAction();
-        if (action != null) {
-            switch (action) {
-                case MainActivity.TRIGGER_LOGIN_AND_FAVORITE:
-                    showLoginDialog(this::favoriteSong);
-                    break;
-            }
         }
     }
 

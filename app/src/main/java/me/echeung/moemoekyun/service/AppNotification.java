@@ -73,23 +73,15 @@ public class AppNotification {
             builder.setContentTitle(song.getTitle());
             builder.setContentText(song.getArtistAndAnime());
 
-            // Favorite action
-            NotificationCompat.Action favoriteAction;
+            // Add favorite action if logged in
             if (App.getAuthUtil().isAuthenticated()) {
-                favoriteAction = new NotificationCompat.Action(
+                builder.addAction(new NotificationCompat.Action(
                         song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
                         song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
                         getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
-                );
-            } else {
-                favoriteAction = new NotificationCompat.Action(
-                        R.drawable.ic_star_border_white_24dp,
-                        service.getString(R.string.action_favorite),
-                        getPlaybackActionActivity(MainActivity.TRIGGER_LOGIN_AND_FAVORITE)
-                );
+                ));
             }
 
-            builder.addAction(favoriteAction);
             builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1));
         }
 
