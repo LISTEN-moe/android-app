@@ -7,14 +7,15 @@ import me.echeung.listenmoeapi.players.StreamPlayer;
 
 public class RadioStream {
 
-    // Vorbis: /stream, Opus: /opus, mp3: /fallback
-    private static final String STREAM_URL = "https://listen.moe/fallback";
+    private static final String STREAM_VORBIS = "https://listen.moe/stream";
+    private static final String STREAM_OPUS = "https://listen.moe/opus";
+    private static final String STREAM_MP3 = "https://listen.moe/fallback";
 
     private StreamPlayer player;
     private Callback callback;
 
     RadioStream(Context context) {
-        this.player = new AndroidPlayer(context, STREAM_URL);
+        this.player = new AndroidPlayer(context, STREAM_MP3);
     }
 
     public void setListener(Callback callback) {
