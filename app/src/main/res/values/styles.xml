@@ -60,7 +60,7 @@
 
     <!-- Buttons -->
     <style name="ButtonTheme" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <!-- About card item -->
