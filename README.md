@@ -10,6 +10,13 @@
        src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
 </a>
 
+<!--
+<a href="https://f-droid.org/app/me.echeung.moemoekyun.fdroid">
+  <img height="50" alt="Get it on F-Droid"
+       src="https://f-droid.org/badge/get-it-on.png">
+</a>
+-->
+
 <a href="https://www.amazon.com/gp/product/B075VJFSTL/ref=mas_pm_listen_moe">
   <img height="50" alt="Get it on the Amazon app store"
        src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-underground-app-us-white.png" />
