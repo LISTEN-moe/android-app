@@ -21,6 +21,7 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.widget.Toast;
 
 import me.echeung.listenmoeapi.RadioSocket;
 import me.echeung.listenmoeapi.RadioStream;
@@ -530,7 +531,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         if (songId == -1) return;
 
         if (!App.getAuthUtil().isAuthenticated()) {
-            promptLoginFavorite();
+            showLoginRequiredToast();
             return;
         }
 
@@ -552,18 +553,14 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             @Override
             public void onFailure(final String message) {
                 if (message.equals(Messages.AUTH_FAILURE)) {
-                    promptLoginFavorite();
+                    showLoginRequiredToast();
                 }
             }
         });
     }
 
-    /**
-     * Opens up the login dialog in MainActivity.
-     */
-    private void promptLoginFavorite() {
-        final Intent loginIntent = new Intent(MainActivity.TRIGGER_LOGIN_AND_FAVORITE);
-        sendBroadcast(loginIntent);
+    private void showLoginRequiredToast() {
+        Toast.makeText(getApplicationContext(), R.string.login_required, Toast.LENGTH_SHORT).show();
     }
 
     /**

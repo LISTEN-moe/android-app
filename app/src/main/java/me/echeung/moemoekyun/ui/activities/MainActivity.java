@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -12,14 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import me.echeung.listenmoeapi.callbacks.AuthCallback;
-import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
-import me.echeung.moemoekyun.ui.dialogs.LoginDialog;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.UrlUtil;
@@ -27,6 +23,10 @@ import me.echeung.moemoekyun.utils.UrlUtil;
 public class MainActivity extends BaseActivity {
 
     public static final String AUTH_EVENT = "auth_event";
+
+    public static final int LOGIN_REQUEST = 0;
+    public static final int LOGIN_SEARCH_REQUEST = 1;
+    public static final int LOGIN_FAVORITE_REQUEST = 2;
 
     private static final String URL_REGISTER = "https://listen.moe/#/register";
 
@@ -144,14 +144,14 @@ public class MainActivity extends BaseActivity {
         switch (item.getItemId()) {
             case R.id.action_search:
                 if (App.getAuthUtil().isAuthenticated()) {
-                    startActivity(new Intent(this, SearchActivity.class));
+                    showSearchActivity();
                 } else {
-                    showLoginDialog(() -> onOptionsItemSelected(item));
+                    showLoginActivity(LOGIN_SEARCH_REQUEST);
                 }
                 return true;
 
             case R.id.action_login:
-                showLoginDialog();
+                showLoginActivity();
                 return true;
 
             case R.id.action_register:
@@ -179,42 +179,42 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void showLoginDialog() {
-        showLoginDialog(null);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        invalidateOptionsMenu();
+        broadcastAuthEvent();
+
+        switch (requestCode) {
+            case LOGIN_SEARCH_REQUEST:
+                showSearchActivity();
+                break;
+
+            case LOGIN_FAVORITE_REQUEST:
+                final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
+                sendBroadcast(favIntent);
+                break;
+        }
     }
 
-    public void showLoginDialog(@Nullable final LoginDialog.OnLoginListener listener) {
-        new LoginDialog(this, (user, pass, dialog) -> App.getApiClient().authenticate(user, pass, new AuthCallback() {
-            @Override
-            public void onSuccess(final String result) {
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                    invalidateOptionsMenu();
+    public void showLoginActivity() {
+        startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_REQUEST);
+    }
 
-                    App.getAuthUtil().setAuthToken(result);
-                    broadcastAuthEvent();
+    public void showLoginActivity(int requestCode) {
+        startActivityForResult(new Intent(this, LoginActivity.class), requestCode);
+    }
 
-                    if (listener != null) {
-                        listener.onLogin();
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(final String message) {
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getAuthMessage(message), Toast.LENGTH_LONG).show());
-            }
-        }));
+    private void showSearchActivity() {
+        startActivity(new Intent(this, SearchActivity.class));
     }
 
     private void broadcastAuthEvent() {
         final Intent authEventIntent = new Intent(MainActivity.AUTH_EVENT);
         sendBroadcast(authEventIntent);
-    }
-
-    private void favoriteSong() {
-        final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
-        sendBroadcast(favIntent);
     }
 
     private void showLogoutDialog() {
@@ -239,18 +239,5 @@ public class MainActivity extends BaseActivity {
         invalidateOptionsMenu();
 
         broadcastAuthEvent();
-    }
-
-    private String getAuthMessage(final String message) {
-        switch (message) {
-            case Messages.INVALID_USER:
-                return getString(R.string.auth_error_name);
-            case Messages.INVALID_PASS:
-                return getString(R.string.auth_error_pass);
-            case Messages.ERROR:
-                return getString(R.string.auth_error_general);
-            default:
-                return message;
-        }
     }
 }
