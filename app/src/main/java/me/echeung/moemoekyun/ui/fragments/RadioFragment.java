@@ -117,7 +117,7 @@ public class RadioFragment extends Fragment {
 
     private void favorite() {
         if (!App.getAuthUtil().isAuthenticated()) {
-            ((MainActivity) getActivity()).showLoginActivity(MainActivity.LOGIN_FAVORITE_REQUEST);
+            ((MainActivity) getActivity()).showAuthActivity(MainActivity.LOGIN_FAVORITE_REQUEST);
             return;
         }
 

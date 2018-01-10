@@ -17,6 +17,7 @@ import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.LocaleUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
+import me.echeung.moemoekyun.viewmodels.AuthViewModel;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 import me.echeung.moemoekyun.viewmodels.SearchViewModel;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
@@ -29,6 +30,7 @@ public class App extends Application implements ServiceConnection {
     private static APIClient apiClient;
     private static AuthUtil authUtil;
 
+    private static AuthViewModel authViewModel;
     private static RadioViewModel radioViewModel;
     private static SearchViewModel searchViewModel;
     private static UserViewModel userViewModel;
@@ -50,6 +52,7 @@ public class App extends Application implements ServiceConnection {
         apiClient = new APIClient(this, authUtil);
 
         // UI view models
+        authViewModel = new AuthViewModel(this);
         radioViewModel = new RadioViewModel(this);
         searchViewModel = new SearchViewModel(this);
         userViewModel = new UserViewModel(this);
@@ -64,6 +67,10 @@ public class App extends Application implements ServiceConnection {
 
     public static AuthUtil getAuthUtil() {
         return authUtil;
+    }
+
+    public static AuthViewModel getAuthViewModel() {
+        return authViewModel;
     }
 
     public static RadioViewModel getRadioViewModel() {

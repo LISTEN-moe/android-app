@@ -76,7 +76,7 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
 
         // Login view
         final Button vBtnLogin = binding.loginMsg.btnLogin;
-        vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showLoginActivity());
+        vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showAuthActivity());
 
         // Favorites list adapter
         adapter = new SongAdapter(getContext(), LIST_ID, this);

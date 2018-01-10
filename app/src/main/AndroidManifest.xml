@@ -48,7 +48,7 @@
             android:parentActivityName=".ui.activities.MainActivity" />
 
         <activity
-            android:name=".ui.activities.LoginActivity"
+            android:name=".ui.activities.AuthActivity"
             android:label="@string/login"
             android:parentActivityName=".ui.activities.MainActivity" />
 

@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.ui.activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.widget.Toast;
@@ -10,29 +11,44 @@ import me.echeung.listenmoeapi.callbacks.AuthCallback;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.databinding.ActivityAuthBinding;
+import me.echeung.moemoekyun.viewmodels.AuthViewModel;
 
-public class LoginActivity extends BaseActivity {
+public class AuthActivity extends BaseActivity {
 
-    private TextInputEditText loginUser;
-    private TextInputEditText loginPass;
+    private ActivityAuthBinding binding;
+
+    private AuthViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_auth);
+
+        viewModel = App.getAuthViewModel();
+        viewModel.reset();
+
+        binding.setVm(viewModel);
 
         setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        loginUser = findViewById(R.id.login_username);
-        loginPass = findViewById(R.id.login_password);
+        binding.authBtn.setOnClickListener(v -> login());
+    }
 
-        findViewById(R.id.login_btn).setOnClickListener(v -> login());
+    @Override
+    protected void onDestroy() {
+        if (binding != null) {
+            binding.unbind();
+        }
+
+        super.onDestroy();
     }
 
     private void login() {
-        final String user = loginUser.getText().toString().trim();
-        final String pass = loginPass.getText().toString().trim();
+        final String user = binding.loginUsername.getText().toString().trim();
+        final String pass = binding.loginPassword.getText().toString().trim();
 
         if (user.length() == 0 || pass.length() == 0) {
             return;

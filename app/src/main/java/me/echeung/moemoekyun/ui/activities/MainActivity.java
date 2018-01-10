@@ -146,12 +146,12 @@ public class MainActivity extends BaseActivity {
                 if (App.getAuthUtil().isAuthenticated()) {
                     showSearchActivity();
                 } else {
-                    showLoginActivity(LOGIN_SEARCH_REQUEST);
+                    showAuthActivity(LOGIN_SEARCH_REQUEST);
                 }
                 return true;
 
             case R.id.action_login:
-                showLoginActivity();
+                showAuthActivity();
                 return true;
 
             case R.id.action_register:
@@ -200,12 +200,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void showLoginActivity() {
-        startActivityForResult(new Intent(this, LoginActivity.class), LOGIN_REQUEST);
+    public void showAuthActivity() {
+        startActivityForResult(new Intent(this, AuthActivity.class), LOGIN_REQUEST);
     }
 
-    public void showLoginActivity(int requestCode) {
-        startActivityForResult(new Intent(this, LoginActivity.class), requestCode);
+    public void showAuthActivity(int requestCode) {
+        startActivityForResult(new Intent(this, AuthActivity.class), requestCode);
     }
 
     private void showSearchActivity() {
