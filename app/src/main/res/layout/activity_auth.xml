@@ -32,7 +32,7 @@
                 android:textColorHint="@color/light_grey">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/login_username"
+                    android:id="@+id/auth_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="username"
@@ -46,14 +46,47 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColorHint="@color/light_grey"
+                android:visibility="@{vm.showRegister}">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/auth_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    tools:ignore="LabelFor" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:textColorHint="@color/light_grey">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/login_password"
+                    android:id="@+id/auth_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="password"
                     android:hint="@string/password"
+                    android:inputType="textPassword"
+                    tools:ignore="LabelFor" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColorHint="@color/light_grey"
+                android:visibility="@{vm.showRegister}">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/auth_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_confirm"
                     android:inputType="textPassword"
                     tools:ignore="LabelFor" />
 

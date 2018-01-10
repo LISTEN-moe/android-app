@@ -47,8 +47,8 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void login() {
-        final String user = binding.loginUsername.getText().toString().trim();
-        final String pass = binding.loginPassword.getText().toString().trim();
+        final String user = binding.authUsername.getText().toString().trim();
+        final String pass = binding.authPassword.getText().toString().trim();
 
         if (user.length() == 0 || pass.length() == 0) {
             return;

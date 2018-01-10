@@ -57,7 +57,10 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="username">Username</string>
+    <string name="email">Email address</string>
     <string name="password">Password</string>
+    <string name="password_confirm">Confirm password</string>
+    <string name="mfa_token">6-digit MFA token</string>
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="logged_out">Logged out</string>
     <string name="login_required">You must log in to use this feature.</string>

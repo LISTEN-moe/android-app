@@ -15,7 +15,7 @@
         android:textColorHint="@color/light_grey">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/login_username"
+            android:id="@+id/auth_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="username"
@@ -32,7 +32,7 @@
         android:textColorHint="@color/light_grey">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/login_password"
+            android:id="@+id/auth_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:autofillHints="password"
