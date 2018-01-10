@@ -80,9 +80,11 @@ public class AppNotification {
                         song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
                         getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
                 ));
-            }
 
-            builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1));
+                builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1));
+            } else {
+                builder.setStyle(new MediaStyle().setShowActionsInCompactView(0));
+            }
         }
 
         final Notification notification = builder.build();
