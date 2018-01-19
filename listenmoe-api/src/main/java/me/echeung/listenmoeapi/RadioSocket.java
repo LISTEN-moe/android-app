@@ -1,13 +1,15 @@
 package me.echeung.listenmoeapi;
 
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import me.echeung.listenmoeapi.auth.AuthUtil;
-import me.echeung.listenmoeapi.models.PlaybackInfo;
+import me.echeung.listenmoeapi.models.SocketBaseResponse;
+import me.echeung.listenmoeapi.models.SocketConnectResponse;
+import me.echeung.listenmoeapi.models.SocketUpdateResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,13 +20,13 @@ public class RadioSocket extends WebSocketListener {
 
     private static final String TAG = RadioSocket.class.getSimpleName();
 
-    private static final String SOCKET_URL = "wss://listen.moe/api/v2/socket";
+    private static final String SOCKET_URL = "wss://dev.listen.moe/gateway";
+
+    private static final Gson GSON = new Gson();
 
     private static final int RETRY_TIME_MIN = 250;
     private static final int RETRY_TIME_MAX = 4000;
     private int retryTime = RETRY_TIME_MIN;
-
-    private final Gson gson;
 
     private final OkHttpClient client;
     private final AuthUtil authUtil;
@@ -32,13 +34,14 @@ public class RadioSocket extends WebSocketListener {
     private volatile WebSocket socket;
     private SocketListener listener;
 
+    private Handler heartbeatHandler;
+    private Runnable heartbeatTask;
+
     RadioSocket(OkHttpClient client, AuthUtil authUtil) {
         this.client = client;
         this.authUtil = authUtil;
 
-        gson = new GsonBuilder()
-                .registerTypeAdapter(PlaybackInfo.class, new PlaybackInfo.PlaybackInfoDeserializer())
-                .create();
+        heartbeatHandler = new Handler();
     }
 
     public void setListener(SocketListener listener) {
@@ -48,6 +51,20 @@ public class RadioSocket extends WebSocketListener {
     public synchronized void connect() {
         final Request request = new Request.Builder().url(SOCKET_URL).build();
         socket = client.newWebSocket(request, this);
+
+        clearHeartbeat();
+    }
+
+    public void reconnect() {
+        disconnect();
+
+        // Exponential backoff
+        SystemClock.sleep(retryTime);
+        if (retryTime < RETRY_TIME_MAX) {
+            retryTime *= 2;
+        }
+
+        connect();
     }
 
     public synchronized void disconnect() {
@@ -56,40 +73,26 @@ public class RadioSocket extends WebSocketListener {
             socket = null;
         }
 
+        clearHeartbeat();
+
         parseWebSocketResponse(null);
-    }
-
-    public void update() {
-        final String authToken = authUtil.getAuthToken();
-        if (authToken == null || authToken.isEmpty()) {
-            return;
-        }
-
-        if (socket == null) {
-            connect();
-        }
-
-        socket.send("{\"token\":\"" + authToken + "\"}");
     }
 
     @Override
     public void onOpen(WebSocket socket, Response response) {
         retryTime = RETRY_TIME_MIN;
+
+        clearHeartbeat();
+
+        // Authenticate with socket
+        String authToken = authUtil.getAuthToken();
+        authToken = authToken == null || authToken.isEmpty() ? "" : "Bearer " + authToken;
+        socket.send("{ \"op\": 0, \"d\": { \"auth\": \"Bearer " + authToken + "\" } }");
     }
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
-        if (text.contains("\"listeners\":")) {
-            // Get user token from shared preferences if socket not authenticated
-            if (!text.contains("\"extended\":")) {
-                update();
-            }
-
-            parseWebSocketResponse(text);
-        } else if (text.contains("\"reason\":")) {
-            // We get a "CLEANUP" disconnect message after a while
-            reconnect();
-        }
+        parseWebSocketResponse(text);
     }
 
     @Override
@@ -103,16 +106,16 @@ public class RadioSocket extends WebSocketListener {
         reconnect();
     }
 
-    private void reconnect() {
-        disconnect();
+    private void heartbeat(int milliseconds) {
+        heartbeatTask = () -> socket.send("{ \"op\": 9 }");
+        heartbeatHandler.postDelayed(heartbeatTask, milliseconds);
+    }
 
-        // Exponential backoff
-        SystemClock.sleep(retryTime);
-        if (retryTime < RETRY_TIME_MAX) {
-            retryTime *= 2;
+    private void clearHeartbeat() {
+        if (heartbeatTask != null) {
+            heartbeatHandler.removeCallbacks(heartbeatTask);
+            heartbeatTask = null;
         }
-
-        connect();
     }
 
     private void parseWebSocketResponse(final String jsonString) {
@@ -123,12 +126,23 @@ public class RadioSocket extends WebSocketListener {
             return;
         }
 
-        final PlaybackInfo playbackInfo = gson.fromJson(jsonString, PlaybackInfo.class);
-        listener.onSocketReceive(playbackInfo);
+        final SocketBaseResponse baseResponse = GSON.fromJson(jsonString, SocketBaseResponse.class);
+        if (baseResponse.getOp() == 0) {
+            final SocketConnectResponse connectResponse = GSON.fromJson(jsonString, SocketConnectResponse.class);
+            heartbeat(connectResponse.getD().getHeartbeat());
+            return;
+        }
+
+        if (baseResponse.getOp() == 1) {
+            final SocketUpdateResponse updateResponse = GSON.fromJson(jsonString, SocketUpdateResponse.class);
+            if (!updateResponse.getT().equals("TRACK_UPDATE")) return;
+            listener.onSocketReceive(updateResponse.getD());
+        }
     }
 
     public interface SocketListener {
-        void onSocketReceive(PlaybackInfo info);
+        void onSocketReceive(SocketUpdateResponse.Details info);
         void onSocketFailure();
     }
+
 }

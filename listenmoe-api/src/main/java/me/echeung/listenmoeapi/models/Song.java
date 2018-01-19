@@ -8,7 +8,7 @@ import java.util.List;
 import lombok.Getter;
 
 @Getter
-public class Track implements Parcelable {
+public class Song implements Parcelable {
 
     private int id;
     private String title;
@@ -16,6 +16,7 @@ public class Track implements Parcelable {
     private List<SongDescriptor> artists;
     private List<String> source;
     private int duration;
+    private boolean favorite;
 
     @Override
     public int describeContents() {
@@ -30,24 +31,26 @@ public class Track implements Parcelable {
         parcel.writeTypedList(artists);
         parcel.writeStringList(source);
         parcel.writeInt(duration);
+        parcel.writeByte(favorite ? (byte) 1 : 0);
     }
 
-    public Track(Parcel in) {
+    public Song(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
         in.readTypedList(this.albums, SongDescriptor.CREATOR);
         in.readTypedList(this.artists, SongDescriptor.CREATOR);
         in.readStringList(this.source);
         this.duration = in.readInt();
+        this.favorite = in.readByte() == 1;
     }
 
     public static final Creator CREATOR = new Creator() {
-        public Track createFromParcel(Parcel in) {
-            return new Track(in);
+        public Song createFromParcel(Parcel in) {
+            return new Song(in);
         }
 
-        public Track[] newArray(int size) {
-            return new Track[size];
+        public Song[] newArray(int size) {
+            return new Song[size];
         }
     };
 

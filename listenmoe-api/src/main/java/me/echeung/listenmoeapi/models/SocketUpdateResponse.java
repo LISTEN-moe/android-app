@@ -4,33 +4,40 @@ import java.util.List;
 
 import lombok.Getter;
 
+@Getter
 public class SocketUpdateResponse extends SocketBaseResponse {
 
-    @Getter
     private String t;
 
-    @Getter
     private Details d;
 
+    @Getter
     public class Details {
 
-        @Getter
         private String event;
 
-        @Getter
         private String startTime;
 
-        @Getter
         private int listeners;
 
-        @Getter
-        private String requester;
+        private User requester;
 
-        @Getter
-        private List<Track> lastPlayed;
+        private List<Song> lastPlayed;
 
-        @Getter
-        private Track song;
+        private Song song;
+
+        private Queue queue;
+
+    }
+
+    @Getter
+    public class Queue {
+
+        private int inQueue;
+
+        private int inQueueByUser;
+
+        private int inQueueBeforeUser;
 
     }
 
