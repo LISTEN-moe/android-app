@@ -9,13 +9,9 @@ public class SocketConnectResponse extends SocketBaseResponse {
 
     @Getter
     public class Details {
-
         private int heartbeat;
-
         private String message;
-
         private User user;
-
     }
 
 }
