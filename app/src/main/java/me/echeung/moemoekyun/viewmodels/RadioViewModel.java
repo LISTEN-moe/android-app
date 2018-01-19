@@ -137,6 +137,14 @@ public class RadioViewModel extends BaseViewModel {
         notifyPropertyChanged(BR.event);
     }
 
+    public String getRequesterOrEvent() {
+        if (event != null && !event.isEmpty()) {
+            return event;
+        }
+
+        return getRequester();
+    }
+
 
     // History
     // ========================================================================
