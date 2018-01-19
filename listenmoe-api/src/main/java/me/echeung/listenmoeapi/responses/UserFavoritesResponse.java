@@ -2,13 +2,13 @@ package me.echeung.listenmoeapi.responses;
 
 import java.util.List;
 
-import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.models.Track;
 
 public class UserFavoritesResponse extends BaseResponse {
-    private List<Song> songs;
+    private List<Track> songs;
     private SongsExtra extra;
 
-    public List<Song> getSongs() {
+    public List<Track> getSongs() {
         return songs;
     }
 

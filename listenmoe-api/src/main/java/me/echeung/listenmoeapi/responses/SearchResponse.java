@@ -2,12 +2,12 @@ package me.echeung.listenmoeapi.responses;
 
 import java.util.List;
 
-import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.models.Track;
 
 public class SearchResponse extends BaseResponse {
-    private List<Song> songs;
+    private List<Track> songs;
 
-    public List<Song> getSongs() {
+    public List<Track> getSongs() {
         return songs;
     }
 }
