@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.PluralsUtil;
@@ -25,7 +26,7 @@ public class RadioViewModel extends BaseViewModel {
     private boolean isPlaying;
     private boolean isFavorited;
     private int listeners;
-    private String requester;
+    private User requester;
     private String event;
 
     private boolean showHistory;
@@ -114,14 +115,14 @@ public class RadioViewModel extends BaseViewModel {
     @Bindable
     public String getRequester() {
         final Context context = getContext();
-        if (context == null || TextUtils.isEmpty(requester)) {
+        if (context == null || requester == null || TextUtils.isEmpty(requester.getUsername())) {
             return null;
         }
 
-        return String.format(context.getString(R.string.requested_by), requester);
+        return String.format(context.getString(R.string.requested_by), requester.getUsername());
     }
 
-    public void setRequester(String requester) {
+    public void setRequester(User requester) {
         this.requester = requester;
         notifyPropertyChanged(BR.requester);
     }
