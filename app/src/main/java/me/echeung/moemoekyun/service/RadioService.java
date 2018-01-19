@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -192,10 +193,13 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         viewModel.setCurrentSong(info.getSong());
 
-        this.trackStartTime = ISO8601.toCalendar(info.getStartTime());
+        try {
+            this.trackStartTime = ISO8601.toCalendar(info.getStartTime());
+        } catch (ParseException e) {
+        }
 
-        viewModel.setLastSong(info.getLastPlayed().get(0).toString());
-        viewModel.setSecondLastSong(info.getLastPlayed().get(1).toString());
+        viewModel.setLastSong(info.getLastPlayed().get(0).getTitle());
+        viewModel.setSecondLastSong(info.getLastPlayed().get(1).getTitle());
 
 //            if (info.hasExtended()) {
 //                final SocketUpdateResponse.ExtendedInfo extended = info.getExtended();
@@ -236,8 +240,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtists().get(0))
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbums().get(0));
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistString())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumString());
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
             Bitmap albumArt = background;
@@ -579,8 +583,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         intent.putExtra("id", song.getId());
 
-        intent.putExtra("artist", song.getArtists().get(0));
-        intent.putExtra("album", song.getAlbums().get(0));
+        intent.putExtra("artist", song.getAlbumString());
+        intent.putExtra("album", song.getAlbumString());
         intent.putExtra("track", song.getTitle());
 
         intent.putExtra("duration", song.getDuration());

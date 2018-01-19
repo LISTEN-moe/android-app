@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-light"
-                        android:text="@{vm.currentSong.getArtistAndAnime()}"
+                        android:text="@{vm.currentSong.getAlbumString()}"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="18sp" />

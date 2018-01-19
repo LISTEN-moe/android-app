@@ -44,8 +44,8 @@ public class SongSortUtil {
         switch (sortType) {
             case SORT_ARTIST:
                 sorter = sortDescending ?
-                        (song, t1) -> t1.getArtist().compareToIgnoreCase(song.getArtist()) :
-                        (song, t1) -> song.getArtist().compareToIgnoreCase(t1.getArtist());
+                        (song, t1) -> t1.getArtistString().compareToIgnoreCase(song.getArtistString()) :
+                        (song, t1) -> song.getArtistString().compareToIgnoreCase(t1.getArtistString());
                 break;
 
             case SORT_TITLE:

@@ -24,7 +24,7 @@ public class RadioViewModel extends BaseViewModel {
     private Song currentSong;
     private boolean isPlaying;
     private boolean isFavorited;
-    private String listeners;
+    private int listeners;
     private String requester;
     private String event;
 
@@ -47,8 +47,9 @@ public class RadioViewModel extends BaseViewModel {
         setLastSong(null);
         setSecondLastSong(null);
 
-        setListeners(null);
+        setListeners(0);
         setRequester(null);
+        setEvent(null);
     }
 
 
@@ -85,7 +86,7 @@ public class RadioViewModel extends BaseViewModel {
             return;
         }
 
-        this.currentSong.setFavorite(isFavorited);
+//        this.currentSong.setFavorite(isFavorited);
         this.isFavorited = isFavorited;
         notifyPropertyChanged(BR.isFavorited);
     }
@@ -93,22 +94,19 @@ public class RadioViewModel extends BaseViewModel {
     @Bindable
     public String getListeners() {
         final Context context = getContext();
-        if (context == null || listeners == null) {
+        if (context == null) {
             return "";
         }
 
         try {
-            Integer val = Integer.valueOf(listeners);
-            if (val != null) {
-                return PluralsUtil.getString(context, R.plurals.current_listeners, val);
-            }
+            return PluralsUtil.getString(context, R.plurals.current_listeners, listeners);
         } catch (NumberFormatException e) {
         }
 
-        return listeners;
+        return "";
     }
 
-    public void setListeners(String listeners) {
+    public void setListeners(int listeners) {
         this.listeners = listeners;
         notifyPropertyChanged(BR.listeners);
     }

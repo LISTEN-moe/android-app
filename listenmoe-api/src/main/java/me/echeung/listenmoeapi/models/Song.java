@@ -18,6 +18,35 @@ public class Song implements Parcelable {
     private int duration;
     private boolean favorite;
 
+    public String getAlbumString() {
+        StringBuilder s = new StringBuilder();
+        for (SongDescriptor album : albums) {
+            if (s.length() != 0)
+                s.append(", ");
+            s.append(album.getName());
+        }
+        return s.toString();
+    }
+
+    public String getArtistString() {
+        StringBuilder s = new StringBuilder();
+        for (SongDescriptor artist : artists) {
+            if (s.length() != 0)
+                s.append(", ");
+            s.append(artist.getName());
+        }
+        return s.toString();
+    }
+
+    public String getSourceString() {
+        return String.join(", ", source);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s - %s", title, getArtistString(), getAlbumString());
+    }
+
     @Override
     public int describeContents() {
         return 0;

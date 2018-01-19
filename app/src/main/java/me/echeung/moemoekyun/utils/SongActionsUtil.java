@@ -36,7 +36,7 @@ public class SongActionsUtil {
 
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-                        song.setFavorite(favorited);
+//                        song.setFavorite(favorited);
                         adapter.notifyDataSetChanged();
 
                         // Broadcast event
@@ -84,7 +84,7 @@ public class SongActionsUtil {
             public void onSuccess() {
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-                        song.setEnabled(false);
+//                        song.setEnabled(false);
                         adapter.notifyDataSetChanged();
 
                         // Broadcast event
@@ -94,7 +94,7 @@ public class SongActionsUtil {
                         final int remainingReqs = requests - 1;
                         App.getUserViewModel().setUserRequests(remainingReqs);
 
-                        Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.requested_song, song.getArtist()), Toast.LENGTH_LONG).show();
+                        Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.requested_song, song.getTitle()), Toast.LENGTH_LONG).show();
                     });
                 }
             }

@@ -2,9 +2,9 @@ package me.echeung.listenmoeapi.models;
 
 import lombok.Getter;
 
+@Getter
 public class SocketBaseResponse {
 
-    @Getter
     private int op;
 
 }

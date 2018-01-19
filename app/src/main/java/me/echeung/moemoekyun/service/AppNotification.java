@@ -71,7 +71,7 @@ public class AppNotification {
 
         if (song != null) {
             builder.setContentTitle(song.getTitle());
-            builder.setContentText(song.getArtistAndAnime());
+            builder.setContentText(song.getArtistString());
 
             // Add favorite action if logged in
             if (App.getAuthUtil().isAuthenticated()) {

@@ -289,14 +289,14 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
                 .setTitle(song.getTitle())
-                .setMessage(song.getArtistAndAnime())
+                .setMessage(song.getArtistString())
                 .setPositiveButton(android.R.string.cancel, null)
                 .setNegativeButton(favoriteAction, (dialogInterface, in) -> SongActionsUtil.favorite(getActivity(), adapter, song));
 
-        if (song.isEnabled()) {
-            // Create button "Request"
-            builder.setNeutralButton(getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(getActivity(), adapter, song));
-        }
+//        if (song.isEnabled()) {
+//            // Create button "Request"
+//            builder.setNeutralButton(getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(getActivity(), adapter, song));
+//        }
 
         builder.create().show();
     }

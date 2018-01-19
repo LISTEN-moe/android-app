@@ -140,7 +140,7 @@ public class APIClient {
                     @Override
                     public void success(final UserFavoritesResponse response) {
                         for (final Song song : response.getSongs()) {
-                            song.setFavorite(true);
+//                            song.setFavorite(true);
                         }
                         callback.onSuccess(response);
                     }
