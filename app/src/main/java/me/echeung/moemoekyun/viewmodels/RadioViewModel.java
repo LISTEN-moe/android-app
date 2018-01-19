@@ -6,6 +6,10 @@ import android.databinding.Bindable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
@@ -22,6 +26,7 @@ public class RadioViewModel extends BaseViewModel {
     private boolean isFavorited;
     private String listeners;
     private String requester;
+    private String event;
 
     private boolean showHistory;
     private String lastSong;
@@ -115,18 +120,22 @@ public class RadioViewModel extends BaseViewModel {
             return null;
         }
 
-        // If there's a space, it's probably an event
-        if (requester.contains(" ")) {
-            return requester;
-        }
-
-        // Actual user requester
         return String.format(context.getString(R.string.requested_by), requester);
     }
 
     public void setRequester(String requester) {
         this.requester = requester;
         notifyPropertyChanged(BR.requester);
+    }
+
+    @Bindable
+    public String getEvent() {
+        return event;
+    }
+
+    public void setEvent(String event) {
+        this.event = event;
+        notifyPropertyChanged(BR.event);
     }
 
 

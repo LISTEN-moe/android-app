@@ -23,10 +23,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 import me.echeung.listenmoeapi.RadioSocket;
 import me.echeung.listenmoeapi.RadioStream;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
-import me.echeung.listenmoeapi.models.PlaybackInfo;
+import me.echeung.listenmoeapi.models.SocketUpdateResponse;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
@@ -34,8 +37,10 @@ import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
+import me.echeung.moemoekyun.utils.ISO8601;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
+import me.echeung.moemoekyun.utils.StackBlur;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service implements RadioSocket.SocketListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -65,6 +70,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private AppNotification notification;
     private RadioStream stream;
     private RadioSocket socket;
+
+    private Calendar trackStartTime;
 
     private MediaSessionCompat mediaSession;
 
@@ -180,32 +187,28 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     }
 
     @Override
-    public void onSocketReceive(PlaybackInfo info) {
+    public void onSocketReceive(SocketUpdateResponse.Details info) {
         final RadioViewModel viewModel = App.getRadioViewModel();
 
-        if (info.getSongId() != 0) {
-            viewModel.setCurrentSong(new Song(
-                    info.getSongId(),
-                    info.getArtistName(),
-                    info.getSongName(),
-                    info.getAnimeName()
-            ));
+        viewModel.setCurrentSong(info.getSong());
 
-            viewModel.setLastSong(info.getLast().toString());
-            viewModel.setSecondLastSong(info.getSecondLast().toString());
+        this.trackStartTime = ISO8601.toCalendar(info.getStartTime());
 
-            if (info.hasExtended()) {
-                final PlaybackInfo.ExtendedInfo extended = info.getExtended();
+        viewModel.setLastSong(info.getLastPlayed().get(0).toString());
+        viewModel.setSecondLastSong(info.getLastPlayed().get(1).toString());
 
-                viewModel.setIsFavorited(extended.isFavorite());
+//            if (info.hasExtended()) {
+//                final SocketUpdateResponse.ExtendedInfo extended = info.getExtended();
 
-                App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
-                App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
-            }
-        }
+//                viewModel.setIsFavorited(extended.isFavorite());
+
+//                App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
+//                App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
+//            }
 
         viewModel.setListeners(info.getListeners());
-        viewModel.setRequester(info.getRequestedBy());
+        viewModel.setRequester(info.getRequester().getUsername());
+        viewModel.setEvent(info.getEvent());
 
         updateMediaSession();
         updateNotification();
@@ -233,17 +236,17 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtist())
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAnime());
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtists().get(0))
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbums().get(0));
 
-//        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
-//            Bitmap albumArt = background;
-//            if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
-//                albumArt = StackBlur.blur(albumArt, 5F);
-//            }
-//
-//            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
-//        }
+        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
+            Bitmap albumArt = background;
+            if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
+                albumArt = StackBlur.blur(albumArt, 5F);
+            }
+
+            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
+        }
 
         mediaSession.setMetadata(metaData.build());
 
@@ -305,7 +308,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     break;
 
                 case RadioService.UPDATE:
-                    socket.update();
+                    socket.reconnect();
                     break;
 
                 case RadioService.TIMER_STOP:
@@ -354,7 +357,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case MainActivity.AUTH_EVENT:
                     if (App.getAuthUtil().isAuthenticated()) {
-                        socket.update();
+                        socket.reconnect();
                     } else {
                         App.getRadioViewModel().setIsFavorited(false);
                         updateNotification();
@@ -363,7 +366,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case ConnectivityManager.CONNECTIVITY_ACTION:
                     if (NetworkUtil.isNetworkAvailable(this)) {
-                        socket.update();
+                        socket.reconnect();
                     }
             }
         }
@@ -576,13 +579,12 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         intent.putExtra("id", song.getId());
 
-        intent.putExtra("artist", song.getArtist());
-        // intent.putExtra("album", song.getAlbum());
+        intent.putExtra("artist", song.getArtists().get(0));
+        intent.putExtra("album", song.getAlbums().get(0));
         intent.putExtra("track", song.getTitle());
 
-        // TODO: duration/position is needed to work properly with Last.fm and synced Musicxmatch lyrics
-        // intent.putExtra("duration", song.duration);
-        // intent.putExtra("position", (long) getSongProgressMillis());
+        intent.putExtra("duration", song.getDuration());
+        intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - this.trackStartTime.getTimeInMillis());
 
         intent.putExtra("playing", isPlaying());
 
@@ -606,4 +608,5 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             return RadioService.this;
         }
     }
+
 }
