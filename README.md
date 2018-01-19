@@ -35,6 +35,7 @@ This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/stor
 ### Prerequisites
 
 - [Android Studio](https://developer.android.com/studio/index.html)
+- [Lombok Plugin](https://projectlombok.org/setup/android#android-studio) for Android Studio
 
 ### Project structure
 
