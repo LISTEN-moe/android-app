@@ -2,6 +2,7 @@ package me.echeung.listenmoeapi.services;
 
 import me.echeung.listenmoeapi.ErrorHandlingAdapter;
 import me.echeung.listenmoeapi.responses.BaseResponse;
+import me.echeung.listenmoeapi.responses.FavoriteResponse;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -10,7 +11,7 @@ import retrofit2.http.Path;
 
 public interface FavoritesService {
     @POST("favorites/{id}")
-    ErrorHandlingAdapter.WrappedCall<BaseResponse> favorite(@Header("Authorization") String token, @Path("id") String id);
+    ErrorHandlingAdapter.WrappedCall<FavoriteResponse> favorite(@Header("Authorization") String token, @Path("id") String id);
 
     @DELETE("favorites/{id}")
     ErrorHandlingAdapter.WrappedCall<BaseResponse> removeFavorite(@Header("Authorization") String token, @Path("id") String id);

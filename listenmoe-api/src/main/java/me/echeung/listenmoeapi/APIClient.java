@@ -102,7 +102,7 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void authenticate(final String username, final String password, final AuthCallback callback) {
-        authService.login(username, password)
+        authService.login(new AuthService.LoginBody(username, password))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
                     public void success(final AuthResponse response) {
@@ -179,13 +179,13 @@ public class APIClient {
      * @param songId   Song to toggle.
      * @param callback Listener to handle the response.
      */
-    public void favoriteSong(final int songId, final FavoriteSongCallback callback) {
+    public void favoriteSong(final String songId, final FavoriteSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
-        songsService.favorite(authUtil.getAuthToken(), songId)
+        favoritesService.favorite(authUtil.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoriteResponse>() {
                     @Override
                     public void success(final FavoriteResponse response) {
@@ -206,13 +206,13 @@ public class APIClient {
      * @param songId   Song to request.
      * @param callback Listener to handle the response.
      */
-    public void requestSong(final int songId, final RequestSongCallback callback) {
+    public void requestSong(final String songId, final RequestSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(Messages.AUTH_ERROR);
             return;
         }
 
-        songsService.request(authUtil.getAuthToken(), songId)
+        requestsService.request(authUtil.getAuthToken(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
                     public void success(final BaseResponse response) {
@@ -239,7 +239,7 @@ public class APIClient {
             return;
         }
 
-        songsService.search(authUtil.getAuthToken(), query)
+        songsService.songs(authUtil.getAuthToken())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SearchResponse>() {
                     @Override
                     public void success(final SearchResponse response) {
