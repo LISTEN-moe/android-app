@@ -18,8 +18,12 @@ import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.listenmoeapi.responses.SearchResponse;
 import me.echeung.listenmoeapi.responses.UserFavoritesResponse;
 import me.echeung.listenmoeapi.responses.UserResponse;
+import me.echeung.listenmoeapi.services.ArtistsService;
 import me.echeung.listenmoeapi.services.AuthService;
+import me.echeung.listenmoeapi.services.FavoritesService;
+import me.echeung.listenmoeapi.services.RequestsService;
 import me.echeung.listenmoeapi.services.SongsService;
+import me.echeung.listenmoeapi.services.UploadsService;
 import me.echeung.listenmoeapi.services.UserService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -43,8 +47,12 @@ public class APIClient {
 
     private final AuthUtil authUtil;
 
+    private final ArtistsService artistsService;
     private final AuthService authService;
+    private final FavoritesService favoritesService;
+    private final RequestsService requestsService;
     private final SongsService songsService;
+    private final UploadsService uploadsService;
     private final UserService userService;
 
     private final RadioSocket socket;
@@ -74,8 +82,12 @@ public class APIClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        artistsService = restAdapter.create(ArtistsService.class);
         authService = restAdapter.create(AuthService.class);
+        favoritesService = restAdapter.create(FavoritesService.class);
+        requestsService = restAdapter.create(RequestsService.class);
         songsService = restAdapter.create(SongsService.class);
+        uploadsService = restAdapter.create(UploadsService.class);
         userService = restAdapter.create(UserService.class);
 
         socket = new RadioSocket(okHttpClient, authUtil);
