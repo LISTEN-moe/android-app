@@ -1,13 +1,40 @@
 package me.echeung.listenmoeapi.services;
 
+import lombok.AllArgsConstructor;
 import me.echeung.listenmoeapi.ErrorHandlingAdapter;
 import me.echeung.listenmoeapi.responses.AuthResponse;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Body;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface AuthService {
-    @FormUrlEncoded
-    @POST("authenticate")
-    ErrorHandlingAdapter.WrappedCall<AuthResponse> login(@Field("username") String username, @Field("password") String password);
+    @POST("register")
+    ErrorHandlingAdapter.WrappedCall<AuthResponse> register(@Body RegisterBody body);
+
+    @POST("login")
+    ErrorHandlingAdapter.WrappedCall<AuthResponse> login(@Body LoginBody body);
+
+    @Headers("Authorization: Bearer Temp2FAJWT")
+    @POST("login/mfa")
+    ErrorHandlingAdapter.WrappedCall<AuthResponse> login(@Body LoginMfaBody body);
+
+    @AllArgsConstructor
+    public class RegisterBody {
+        final String email;
+        final String username;
+        final String password;
+    }
+
+    @AllArgsConstructor
+    public class LoginBody {
+        final String username;
+        final String password;
+    }
+
+    @AllArgsConstructor
+    public class LoginMfaBody {
+        final String email;
+        final String username;
+        final String password;
+    }
 }

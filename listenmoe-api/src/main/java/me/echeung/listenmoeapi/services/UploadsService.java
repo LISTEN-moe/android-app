@@ -6,10 +6,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Path;
 
-public interface SongsService {
-    @GET("songs")
-    ErrorHandlingAdapter.WrappedCall<BaseResponse> songs(@Header("Authorization") String token);
-
-    @GET("songs/{username}/uploads")
+public interface UploadsService {
+    @GET("uploads/{username}")
     ErrorHandlingAdapter.WrappedCall<BaseResponse> uploads(@Header("Authorization") String token, @Path("username") String username);
 }
