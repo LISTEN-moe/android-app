@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.echeung.listenmoeapi.auth.AuthUtil;
+import me.echeung.listenmoeapi.callbacks.ArtistCallback;
+import me.echeung.listenmoeapi.callbacks.ArtistsCallback;
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
 import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
@@ -14,15 +16,16 @@ import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
-import me.echeung.listenmoeapi.models.SongDescriptor;
 import me.echeung.listenmoeapi.models.SongListItem;
-import me.echeung.listenmoeapi.models.User;
+import me.echeung.listenmoeapi.responses.ArtistResponse;
+import me.echeung.listenmoeapi.responses.ArtistsResponse;
 import me.echeung.listenmoeapi.responses.AuthResponse;
 import me.echeung.listenmoeapi.responses.BaseResponse;
 import me.echeung.listenmoeapi.responses.FavoritesResponse;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.listenmoeapi.responses.SongsResponse;
 import me.echeung.listenmoeapi.responses.UserResponse;
+import me.echeung.listenmoeapi.services.ArtistsService;
 import me.echeung.listenmoeapi.services.AuthService;
 import me.echeung.listenmoeapi.services.FavoritesService;
 import me.echeung.listenmoeapi.services.RequestsService;
@@ -50,7 +53,7 @@ public class APIClient {
 
     private final AuthUtil authUtil;
 
-//    private final ArtistsService artistsService;
+    private final ArtistsService artistsService;
     private final AuthService authService;
     private final FavoritesService favoritesService;
     private final RequestsService requestsService;
@@ -84,7 +87,7 @@ public class APIClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-//        artistsService = restAdapter.create(ArtistsService.class);
+        artistsService = restAdapter.create(ArtistsService.class);
         authService = restAdapter.create(AuthService.class);
         favoritesService = restAdapter.create(FavoritesService.class);
         requestsService = restAdapter.create(RequestsService.class);
@@ -299,6 +302,59 @@ public class APIClient {
                     public void success(final SongsResponse response) {
                         List<Song> filteredSongs = filterSongs(response.getSongs(), query);
                         callback.onSuccess(filteredSongs);
+                    }
+
+                    @Override
+                    public void error(final String message) {
+                        Log.e(TAG, message);
+                        callback.onFailure(message);
+                    }
+                });
+    }
+
+    /**
+     * Gets a list of all artists.
+     *
+     * @param callback Listener to handle the response.
+     */
+    public void getArtists(final ArtistsCallback callback) {
+        if (!authUtil.isAuthenticated()) {
+            callback.onFailure(Messages.AUTH_ERROR);
+            return;
+        }
+
+        artistsService.getArtists(authUtil.getAuthToken())
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>() {
+                    @Override
+                    public void success(final ArtistsResponse response) {
+                        callback.onSuccess(response.getArtists());
+                    }
+
+                    @Override
+                    public void error(final String message) {
+                        Log.e(TAG, message);
+                        callback.onFailure(message);
+                    }
+                });
+    }
+
+    /**
+     * Gets an artist's info.
+     *
+     * @param artistId Artist to get.
+     * @param callback Listener to handle the response.
+     */
+    public void getArtist(final String artistId, final ArtistCallback callback) {
+        if (!authUtil.isAuthenticated()) {
+            callback.onFailure(Messages.AUTH_ERROR);
+            return;
+        }
+
+        artistsService.getArtist(authUtil.getAuthToken(), artistId)
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>() {
+                    @Override
+                    public void success(final ArtistResponse response) {
+                        callback.onSuccess(response.getArtist());
                     }
 
                     @Override
