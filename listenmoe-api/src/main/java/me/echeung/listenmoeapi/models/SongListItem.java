@@ -53,7 +53,7 @@ public class SongListItem {
 
         if (albums != null) {
             for (String album : albums) {
-                if (album.contains(query)) {
+                if (album != null && album.contains(query)) {
                     return true;
                 }
             }
@@ -61,7 +61,7 @@ public class SongListItem {
 
         if (albumsRomaji != null) {
             for (String album : albumsRomaji) {
-                if (album.contains(query)) {
+                if (album != null && album.contains(query)) {
                     return true;
                 }
             }
@@ -69,7 +69,7 @@ public class SongListItem {
 
         if (albumsSearchRomaji != null) {
             for (String album : albumsSearchRomaji) {
-                if (album.contains(query)) {
+                if (album != null && album.contains(query)) {
                     return true;
                 }
             }
@@ -77,7 +77,7 @@ public class SongListItem {
 
         if (artists != null) {
             for (String artist : artists) {
-                if (artist.contains(query)) {
+                if (artist != null && artist.contains(query)) {
                     return true;
                 }
             }
@@ -85,7 +85,7 @@ public class SongListItem {
 
         if (artistsRomaji != null) {
             for (String artist : artistsRomaji) {
-                if (artist.contains(query)) {
+                if (artist != null && artist.contains(query)) {
                     return true;
                 }
             }
@@ -93,7 +93,7 @@ public class SongListItem {
 
         if (artistsSearchRomaji != null) {
             for (String artist : artistsSearchRomaji) {
-                if (artist.contains(query)) {
+                if (artist != null && artist.contains(query)) {
                     return true;
                 }
             }
@@ -101,7 +101,7 @@ public class SongListItem {
 
         if (groups != null) {
             for (String group : groups) {
-                if (group.contains(query)) {
+                if (group != null && group.contains(query)) {
                     return true;
                 }
             }
@@ -109,7 +109,7 @@ public class SongListItem {
 
         if (groupsRomaji != null) {
             for (String group : groupsRomaji) {
-                if (group.contains(query)) {
+                if (group != null && group.contains(query)) {
                     return true;
                 }
             }
@@ -117,7 +117,7 @@ public class SongListItem {
 
         if (groupsSearchRomaji != null) {
             for (String group : groupsSearchRomaji) {
-                if (group.contains(query)) {
+                if (group != null && group.contains(query)) {
                     return true;
                 }
             }
