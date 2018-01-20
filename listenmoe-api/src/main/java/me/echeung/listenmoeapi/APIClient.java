@@ -3,6 +3,9 @@ package me.echeung.listenmoeapi;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
@@ -11,13 +14,13 @@ import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.models.SongListItem;
 import me.echeung.listenmoeapi.responses.AuthResponse;
 import me.echeung.listenmoeapi.responses.BaseResponse;
 import me.echeung.listenmoeapi.responses.FavoritesResponse;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.listenmoeapi.responses.SongsResponse;
 import me.echeung.listenmoeapi.responses.UserResponse;
-import me.echeung.listenmoeapi.services.ArtistsService;
 import me.echeung.listenmoeapi.services.AuthService;
 import me.echeung.listenmoeapi.services.FavoritesService;
 import me.echeung.listenmoeapi.services.RequestsService;
@@ -45,7 +48,7 @@ public class APIClient {
 
     private final AuthUtil authUtil;
 
-    private final ArtistsService artistsService;
+//    private final ArtistsService artistsService;
     private final AuthService authService;
     private final FavoritesService favoritesService;
     private final RequestsService requestsService;
@@ -79,7 +82,7 @@ public class APIClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        artistsService = restAdapter.create(ArtistsService.class);
+//        artistsService = restAdapter.create(ArtistsService.class);
         authService = restAdapter.create(AuthService.class);
         favoritesService = restAdapter.create(FavoritesService.class);
         requestsService = restAdapter.create(RequestsService.class);
@@ -102,6 +105,10 @@ public class APIClient {
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
                     public void success(final AuthResponse response) {
+                        if (response.isMfa()) {
+                            // TODO: handle MFA
+                        }
+
                         final String userToken = response.getToken();
                         callback.onSuccess(userToken);
                     }
@@ -129,7 +136,7 @@ public class APIClient {
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>() {
                     @Override
                     public void success(final UserResponse response) {
-                        callback.onSuccess(response);
+                        callback.onSuccess(response.getUser());
                     }
 
                     @Override
@@ -155,10 +162,7 @@ public class APIClient {
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>() {
                     @Override
                     public void success(final FavoritesResponse response) {
-                        for (final Song song : response.getFavorites()) {
-//                            song.setFavorite(true);
-                        }
-                        callback.onSuccess(response);
+                        callback.onSuccess(response.getFavorites());
                     }
 
                     @Override
@@ -170,9 +174,9 @@ public class APIClient {
     }
 
     /**
-     * Toggles the favorited status of a song. If the song is already favorited, it will remove it and vice-versa.
+     * Favorites a song.
      *
-     * @param songId   Song to toggle.
+     * @param songId   Song to favorite.
      * @param callback Listener to handle the response.
      */
     public void favoriteSong(final String songId, final FavoriteSongCallback callback) {
@@ -182,10 +186,37 @@ public class APIClient {
         }
 
         favoritesService.favorite(authUtil.getAuthToken(), songId)
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
-                    public void success(final FavoritesResponse response) {
-                        callback.onSuccess(response.isFavorite());
+                    public void success(final BaseResponse response) {
+                        callback.onSuccess();
+                    }
+
+                    @Override
+                    public void error(final String message) {
+                        Log.e(TAG, message);
+                        callback.onFailure(message);
+                    }
+                });
+    }
+
+    /**
+     * Unfavorites a song.
+     *
+     * @param songId   Song to unfavorite.
+     * @param callback Listener to handle the response.
+     */
+    public void unfavoriteSong(final String songId, final FavoriteSongCallback callback) {
+        if (!authUtil.isAuthenticated()) {
+            callback.onFailure(Messages.AUTH_ERROR);
+            return;
+        }
+
+        favoritesService.favorite(authUtil.getAuthToken(), songId)
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
+                    @Override
+                    public void success(final BaseResponse response) {
+                        callback.onSuccess();
                     }
 
                     @Override
@@ -239,7 +270,11 @@ public class APIClient {
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>() {
                     @Override
                     public void success(final SongsResponse response) {
-                        callback.onSuccess(response.getSongs());
+                        List<Song> filteredSongs = new ArrayList<>();
+                        for (SongListItem song : response.getSongs()) {
+                            // TODO: actually filter and return list of SongListItems
+                        }
+                        callback.onSuccess(filteredSongs);
                     }
 
                     @Override

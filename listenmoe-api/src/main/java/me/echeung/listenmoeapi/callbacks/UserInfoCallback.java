@@ -1,7 +1,7 @@
 package me.echeung.listenmoeapi.callbacks;
 
-import me.echeung.listenmoeapi.responses.UserResponse;
+import me.echeung.listenmoeapi.models.User;
 
 public interface UserInfoCallback extends BaseCallback {
-    void onSuccess(final UserResponse userResponse);
+    void onSuccess(final User user);
 }

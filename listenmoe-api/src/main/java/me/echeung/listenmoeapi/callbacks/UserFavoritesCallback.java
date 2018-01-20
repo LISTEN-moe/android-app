@@ -1,7 +1,9 @@
 package me.echeung.listenmoeapi.callbacks;
 
-import me.echeung.listenmoeapi.responses.UserFavoritesResponse;
+import java.util.List;
+
+import me.echeung.listenmoeapi.models.Song;
 
 public interface UserFavoritesCallback extends BaseCallback {
-    void onSuccess(final UserFavoritesResponse userFavorites);
+    void onSuccess(final List<Song> favorites);
 }
