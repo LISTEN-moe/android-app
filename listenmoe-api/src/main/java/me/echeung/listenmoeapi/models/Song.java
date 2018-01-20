@@ -9,7 +9,6 @@ import lombok.Getter;
 
 @Getter
 public class Song implements Parcelable {
-
     private int id;
     private String title;
     private List<SongDescriptor> albums;
@@ -94,5 +93,4 @@ public class Song implements Parcelable {
             return new Song[size];
         }
     };
-
 }

@@ -7,7 +7,6 @@ import lombok.Getter;
 
 @Getter
 public class SongDescriptor implements Parcelable {
-
     private int id;
     private String name;
     private String nameRomaji;
@@ -42,5 +41,4 @@ public class SongDescriptor implements Parcelable {
             return new SongDescriptor[size];
         }
     };
-
 }

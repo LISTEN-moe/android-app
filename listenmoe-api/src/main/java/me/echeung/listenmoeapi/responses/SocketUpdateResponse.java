@@ -1,12 +1,13 @@
-package me.echeung.listenmoeapi.models;
+package me.echeung.listenmoeapi.responses;
 
 import java.util.List;
 
 import lombok.Getter;
+import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.models.User;
 
 @Getter
 public class SocketUpdateResponse extends SocketBaseResponse {
-
     private String t;
     private Details d;
 
@@ -27,5 +28,4 @@ public class SocketUpdateResponse extends SocketBaseResponse {
         private int inQueueByUser;
         private int inQueueBeforeUser;
     }
-
 }

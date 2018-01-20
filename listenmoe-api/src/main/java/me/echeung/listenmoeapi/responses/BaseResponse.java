@@ -1,14 +1,9 @@
 package me.echeung.listenmoeapi.responses;
 
+import lombok.Getter;
+
+@Getter
 public class BaseResponse {
     private boolean success;
     private String message;
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }

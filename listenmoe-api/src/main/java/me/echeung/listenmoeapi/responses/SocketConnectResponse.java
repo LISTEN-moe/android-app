@@ -1,10 +1,10 @@
-package me.echeung.listenmoeapi.models;
+package me.echeung.listenmoeapi.responses;
 
 import lombok.Getter;
+import me.echeung.listenmoeapi.models.User;
 
 @Getter
 public class SocketConnectResponse extends SocketBaseResponse {
-
     private Details d;
 
     @Getter
@@ -13,5 +13,4 @@ public class SocketConnectResponse extends SocketBaseResponse {
         private String message;
         private User user;
     }
-
 }
