@@ -105,10 +105,35 @@ public class APIClient {
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
                     public void success(final AuthResponse response) {
+                        final String userToken = response.getToken();
+
                         if (response.isMfa()) {
-                            // TODO: handle MFA
+                            callback.onMfa(userToken);
+                            return;
                         }
 
+                        callback.onSuccess(userToken);
+                    }
+
+                    @Override
+                    public void error(final String message) {
+                        Log.e(TAG, message);
+                        callback.onFailure(message);
+                    }
+                });
+    }
+
+    /**
+     * Second step for MFA authentication.
+     *
+     * @param otpToken User's one-time password token.
+     * @param callback Listener to handle the response.
+     */
+    public void authenticateMfa(final String otpToken, final AuthCallback callback) {
+        authService.mfa(new AuthService.LoginMfaBody(otpToken))
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
+                    @Override
+                    public void success(final AuthResponse response) {
                         final String userToken = response.getToken();
                         callback.onSuccess(userToken);
                     }
