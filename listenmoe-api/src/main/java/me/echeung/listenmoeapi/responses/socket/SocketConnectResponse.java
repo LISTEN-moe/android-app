@@ -1,4 +1,4 @@
-package me.echeung.listenmoeapi.responses;
+package me.echeung.listenmoeapi.responses.socket;
 
 import lombok.Getter;
 import me.echeung.listenmoeapi.models.User;

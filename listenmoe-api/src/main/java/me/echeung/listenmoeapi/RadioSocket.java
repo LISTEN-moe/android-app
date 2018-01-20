@@ -7,9 +7,9 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import me.echeung.listenmoeapi.auth.AuthUtil;
-import me.echeung.listenmoeapi.responses.SocketBaseResponse;
-import me.echeung.listenmoeapi.responses.SocketConnectResponse;
-import me.echeung.listenmoeapi.responses.SocketUpdateResponse;
+import me.echeung.listenmoeapi.responses.socket.SocketBaseResponse;
+import me.echeung.listenmoeapi.responses.socket.SocketConnectResponse;
+import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

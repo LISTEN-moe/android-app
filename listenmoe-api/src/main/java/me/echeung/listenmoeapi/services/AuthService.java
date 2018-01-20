@@ -3,13 +3,14 @@ package me.echeung.listenmoeapi.services;
 import lombok.AllArgsConstructor;
 import me.echeung.listenmoeapi.ErrorHandlingAdapter;
 import me.echeung.listenmoeapi.responses.AuthResponse;
+import me.echeung.listenmoeapi.responses.BaseResponse;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 public interface AuthService {
     @POST("register")
-    ErrorHandlingAdapter.WrappedCall<AuthResponse> register(@Body RegisterBody body);
+    ErrorHandlingAdapter.WrappedCall<BaseResponse> register(@Body RegisterBody body);
 
     @POST("login")
     ErrorHandlingAdapter.WrappedCall<AuthResponse> login(@Body LoginBody body);
@@ -33,8 +34,6 @@ public interface AuthService {
 
     @AllArgsConstructor
     public class LoginMfaBody {
-        final String email;
-        final String username;
-        final String password;
+        final String token;
     }
 }

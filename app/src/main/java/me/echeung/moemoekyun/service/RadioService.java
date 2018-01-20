@@ -30,7 +30,7 @@ import java.util.GregorianCalendar;
 import me.echeung.listenmoeapi.RadioSocket;
 import me.echeung.listenmoeapi.RadioStream;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
-import me.echeung.listenmoeapi.responses.SocketUpdateResponse;
+import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;

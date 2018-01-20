@@ -1,4 +1,4 @@
-package me.echeung.listenmoeapi.responses;
+package me.echeung.listenmoeapi.responses.socket;
 
 import java.util.List;
 
