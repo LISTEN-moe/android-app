@@ -11,11 +11,11 @@ import retrofit2.http.Path;
 
 public interface FavoritesService {
     @POST("favorites/{id}")
-    ErrorHandlingAdapter.WrappedCall<FavoriteResponse> favorite(@Header("Authorization") String token, @Path("id") String id);
+    ErrorHandlingAdapter.WrappedCall<BaseResponse> favorite(@Header("Authorization") String token, @Path("id") String id);
 
     @DELETE("favorites/{id}")
     ErrorHandlingAdapter.WrappedCall<BaseResponse> removeFavorite(@Header("Authorization") String token, @Path("id") String id);
 
     @GET("favorites/{username}")
-    ErrorHandlingAdapter.WrappedCall<BaseResponse> favorites(@Header("Authorization") String token, @Path("username") String username);
+    ErrorHandlingAdapter.WrappedCall<FavoriteResponse> favorites(@Header("Authorization") String token, @Path("username") String username);
 }

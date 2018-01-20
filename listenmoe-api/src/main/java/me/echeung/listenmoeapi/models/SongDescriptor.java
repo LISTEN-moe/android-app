@@ -11,6 +11,7 @@ public class SongDescriptor implements Parcelable {
     private String name;
     private String nameRomaji;
     private String image;
+    private String releaseDate;
 
     @Override
     public int describeContents() {
@@ -23,6 +24,7 @@ public class SongDescriptor implements Parcelable {
         parcel.writeString(name);
         parcel.writeString(nameRomaji);
         parcel.writeString(image);
+        parcel.writeString(releaseDate);
     }
 
     public SongDescriptor(Parcel in) {
@@ -30,6 +32,7 @@ public class SongDescriptor implements Parcelable {
         this.name = in.readString();
         this.nameRomaji = in.readString();
         this.image = in.readString();
+        this.releaseDate = in.readString();
     }
 
     public static final Creator CREATOR = new Creator() {

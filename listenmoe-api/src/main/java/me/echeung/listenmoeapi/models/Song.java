@@ -11,11 +11,17 @@ import lombok.Getter;
 public class Song implements Parcelable {
     private int id;
     private String title;
+    private String titleRomaji;
+    private String titleSearchRomaji;
     private List<SongDescriptor> albums;
     private List<SongDescriptor> artists;
     private List<String> source;
+    private List<String> groups;
+    private List<String> tags;
+    private String notes;
     private int duration;
     private boolean favorite;
+    private User uploader;
 
     public String getAlbumString() {
         StringBuilder s = new StringBuilder();
