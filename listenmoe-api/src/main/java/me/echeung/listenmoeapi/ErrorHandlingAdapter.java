@@ -87,16 +87,11 @@ public class ErrorHandlingAdapter {
                         return;
                     }
 
-                    if (!body.isSuccess()) {
-                        callback.error(body.getMessage());
-                        return;
-                    }
-
                     int code = response.code();
                     if (code >= 200 && code < 300) {
                         callback.success(body);
                     } else {
-                        callback.error("Response returned with non-200 code: " + response);
+                        callback.error(body.getMessage());
                     }
                 }
 
