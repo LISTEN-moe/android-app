@@ -1,8 +1,10 @@
 package me.echeung.listenmoeapi.models;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class User {
     private String uuid;
     private String email;

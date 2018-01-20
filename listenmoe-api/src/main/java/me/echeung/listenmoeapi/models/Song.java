@@ -5,9 +5,11 @@ import android.os.Parcelable;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class Song implements Parcelable {
     private int id;
     private String title;

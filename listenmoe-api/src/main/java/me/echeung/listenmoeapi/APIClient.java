@@ -14,7 +14,9 @@ import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.models.SongDescriptor;
 import me.echeung.listenmoeapi.models.SongListItem;
+import me.echeung.listenmoeapi.models.User;
 import me.echeung.listenmoeapi.responses.AuthResponse;
 import me.echeung.listenmoeapi.responses.BaseResponse;
 import me.echeung.listenmoeapi.responses.FavoritesResponse;
@@ -108,7 +110,7 @@ public class APIClient {
                         final String userToken = response.getToken();
 
                         if (response.isMfa()) {
-                            callback.onMfa(userToken);
+                            callback.onMfaRequired(userToken);
                             return;
                         }
 
@@ -297,8 +299,51 @@ public class APIClient {
                     public void success(final SongsResponse response) {
                         List<Song> filteredSongs = new ArrayList<>();
                         for (SongListItem song : response.getSongs()) {
-                            // TODO: actually filter and return list of SongListItems
+                            if (song.search(query)) {
+                                User uploader = User.builder()
+                                                    .uuid(song.getUploaderUuid())
+                                                    .displayName(song.getUploaderDisplayName())
+                                                    .username(song.getUploaderUsername())
+                                                    .build();
+
+                                List<SongDescriptor> albums = new ArrayList<>();
+                                for (int i = 0; i < song.getAlbums().size(); i++) {
+                                    albums.add(SongDescriptor.builder()
+                                            .id(song.getAlbumsId().get(i))
+                                            .name(song.getAlbums().get(i))
+                                            .nameRomaji(song.getAlbumsRomaji().get(i))
+                                            .image(song.getAlbumsCover().get(i))
+                                            .releaseDate(song.getAlbumsReleaseDate().get(i))
+                                            .build());
+                                }
+
+                                List<SongDescriptor> artists = new ArrayList<>();
+                                for (int i = 0; i < song.getArtists().size(); i++) {
+                                    albums.add(SongDescriptor.builder()
+                                            .id(song.getArtistsId().get(i))
+                                            .name(song.getArtists().get(i))
+                                            .nameRomaji(song.getArtistsRomaji().get(i))
+                                            .build());
+                                }
+
+                                filteredSongs.add(new Song(
+                                        song.getId(),
+                                        song.getTitle(),
+                                        song.getTitleRomaji(),
+                                        song.getTitleSearchRomaji(),
+                                        albums,
+                                        artists,
+                                        song.getSources(),
+                                        song.getGroups(),
+                                        song.getTags(),
+                                        null,
+                                        song.getDuration(),
+                                        song.isFavorite(),
+                                        uploader
+                                ));
+                            }
                         }
+
                         callback.onSuccess(filteredSongs);
                     }
 
