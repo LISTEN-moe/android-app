@@ -297,53 +297,7 @@ public class APIClient {
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>() {
                     @Override
                     public void success(final SongsResponse response) {
-                        List<Song> filteredSongs = new ArrayList<>();
-                        for (SongListItem song : response.getSongs()) {
-                            if (song.search(query)) {
-                                User uploader = User.builder()
-                                                    .uuid(song.getUploaderUuid())
-                                                    .displayName(song.getUploaderDisplayName())
-                                                    .username(song.getUploaderUsername())
-                                                    .build();
-
-                                List<SongDescriptor> albums = new ArrayList<>();
-                                for (int i = 0; i < song.getAlbums().size(); i++) {
-                                    albums.add(SongDescriptor.builder()
-                                            .id(song.getAlbumsId().get(i))
-                                            .name(song.getAlbums().get(i))
-                                            .nameRomaji(song.getAlbumsRomaji().get(i))
-                                            .image(song.getAlbumsCover().get(i))
-                                            .releaseDate(song.getAlbumsReleaseDate().get(i))
-                                            .build());
-                                }
-
-                                List<SongDescriptor> artists = new ArrayList<>();
-                                for (int i = 0; i < song.getArtists().size(); i++) {
-                                    albums.add(SongDescriptor.builder()
-                                            .id(song.getArtistsId().get(i))
-                                            .name(song.getArtists().get(i))
-                                            .nameRomaji(song.getArtistsRomaji().get(i))
-                                            .build());
-                                }
-
-                                filteredSongs.add(new Song(
-                                        song.getId(),
-                                        song.getTitle(),
-                                        song.getTitleRomaji(),
-                                        song.getTitleSearchRomaji(),
-                                        albums,
-                                        artists,
-                                        song.getSources(),
-                                        song.getGroups(),
-                                        song.getTags(),
-                                        null,
-                                        song.getDuration(),
-                                        song.isFavorite(),
-                                        uploader
-                                ));
-                            }
-                        }
-
+                        List<Song> filteredSongs = filterSongs(response.getSongs(), query);
                         callback.onSuccess(filteredSongs);
                     }
 
@@ -353,6 +307,18 @@ public class APIClient {
                         callback.onFailure(message);
                     }
                 });
+    }
+
+    private List<Song> filterSongs(List<SongListItem> songs, String query) {
+        List<Song> filteredSongs = new ArrayList<>();
+
+        for (SongListItem song : songs) {
+            if (song.search(query)) {
+                filteredSongs.add(SongListItem.toSong(song));
+            }
+        }
+
+        return filteredSongs;
     }
 
     public RadioSocket getSocket() {
