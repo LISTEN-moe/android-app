@@ -30,10 +30,16 @@ public class APIClient {
 
     private static final String TAG = APIClient.class.getSimpleName();
 
-    private static final String BASE_URL = "https://listen.moe/api/";
+    private static final String BASE_URL = "https://beta.listen.moe/api/";
 
     private static final String HEADER_USER_AGENT = "User-Agent";
     public static final String USER_AGENT = "me.echeung.moemoekyun";
+
+    private static final String HEADER_CONTENT_TYPE = "Content-Type";
+    private static final String CONTENT_TYPE = "application/json";
+
+    private static final String HEADER_ACCEPT = "Accept";
+    private static final String ACCEPT = "application/vnd.listen.v4+json";
 
     private final AuthUtil authUtil;
 
@@ -53,6 +59,8 @@ public class APIClient {
 
                     final Request newRequest = request.newBuilder()
                             .addHeader(HEADER_USER_AGENT, USER_AGENT)
+                            .addHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE)
+                            .addHeader(HEADER_ACCEPT, ACCEPT)
                             .build();
 
                     return chain.proceed(newRequest);
