@@ -13,18 +13,16 @@ import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.AuthResponse;
 import me.echeung.listenmoeapi.responses.BaseResponse;
-import me.echeung.listenmoeapi.responses.FavoriteResponse;
+import me.echeung.listenmoeapi.responses.FavoritesResponse;
 import me.echeung.listenmoeapi.responses.Messages;
-import me.echeung.listenmoeapi.responses.SearchResponse;
-import me.echeung.listenmoeapi.responses.UserFavoritesResponse;
+import me.echeung.listenmoeapi.responses.SongsResponse;
 import me.echeung.listenmoeapi.responses.UserResponse;
 import me.echeung.listenmoeapi.services.ArtistsService;
 import me.echeung.listenmoeapi.services.AuthService;
 import me.echeung.listenmoeapi.services.FavoritesService;
 import me.echeung.listenmoeapi.services.RequestsService;
 import me.echeung.listenmoeapi.services.SongsService;
-import me.echeung.listenmoeapi.services.UploadsService;
-import me.echeung.listenmoeapi.services.UserService;
+import me.echeung.listenmoeapi.services.UsersService;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -52,8 +50,7 @@ public class APIClient {
     private final FavoritesService favoritesService;
     private final RequestsService requestsService;
     private final SongsService songsService;
-    private final UploadsService uploadsService;
-    private final UserService userService;
+    private final UsersService usersService;
 
     private final RadioSocket socket;
     private final RadioStream stream;
@@ -87,8 +84,7 @@ public class APIClient {
         favoritesService = restAdapter.create(FavoritesService.class);
         requestsService = restAdapter.create(RequestsService.class);
         songsService = restAdapter.create(SongsService.class);
-        uploadsService = restAdapter.create(UploadsService.class);
-        userService = restAdapter.create(UserService.class);
+        usersService = restAdapter.create(UsersService.class);
 
         socket = new RadioSocket(okHttpClient, authUtil);
         stream = new RadioStream(context);
@@ -129,7 +125,7 @@ public class APIClient {
             return;
         }
 
-        userService.getUserInfo(authUtil.getAuthToken())
+        usersService.getUserInfo(authUtil.getAuthToken(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>() {
                     @Override
                     public void success(final UserResponse response) {
@@ -155,11 +151,11 @@ public class APIClient {
             return;
         }
 
-        userService.getFavorites(authUtil.getAuthToken())
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserFavoritesResponse>() {
+        favoritesService.getFavorites(authUtil.getAuthToken(), "@me")
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>() {
                     @Override
-                    public void success(final UserFavoritesResponse response) {
-                        for (final Song song : response.getSongs()) {
+                    public void success(final FavoritesResponse response) {
+                        for (final Song song : response.getFavorites()) {
 //                            song.setFavorite(true);
                         }
                         callback.onSuccess(response);
@@ -186,9 +182,9 @@ public class APIClient {
         }
 
         favoritesService.favorite(authUtil.getAuthToken(), songId)
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoriteResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>() {
                     @Override
-                    public void success(final FavoriteResponse response) {
+                    public void success(final FavoritesResponse response) {
                         callback.onSuccess(response.isFavorite());
                     }
 
@@ -239,10 +235,10 @@ public class APIClient {
             return;
         }
 
-        songsService.songs(authUtil.getAuthToken())
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<SearchResponse>() {
+        songsService.getSongs(authUtil.getAuthToken())
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>() {
                     @Override
-                    public void success(final SearchResponse response) {
+                    public void success(final SongsResponse response) {
                         callback.onSuccess(response.getSongs());
                     }
 

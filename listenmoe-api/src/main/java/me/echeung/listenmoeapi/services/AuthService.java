@@ -17,7 +17,7 @@ public interface AuthService {
 
     @Headers("Authorization: Bearer Temp2FAJWT")
     @POST("login/mfa")
-    ErrorHandlingAdapter.WrappedCall<AuthResponse> login(@Body LoginMfaBody body);
+    ErrorHandlingAdapter.WrappedCall<AuthResponse> mfa(@Body LoginMfaBody body);
 
     @AllArgsConstructor
     public class RegisterBody {

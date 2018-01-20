@@ -8,5 +8,12 @@ public class User {
     private String email;
     private String username;
     private String displayName;
+    private String avatarImage;
+    private String bannerImage;
+    private String bio;
+    private int requestsRemaining;
+    private int additionalRequests;
     private int uploads;
+    private int uploadLimit;
+    private int favorites;
 }

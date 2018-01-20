@@ -6,6 +6,6 @@ import lombok.Getter;
 import me.echeung.listenmoeapi.models.Song;
 
 @Getter
-public class FavoriteResponse extends BaseResponse {
+public class FavoritesResponse extends BaseResponse {
     private List<Song> favorites;
 }
