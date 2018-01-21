@@ -34,7 +34,7 @@ public final class SongActionsUtil {
 
         new AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(song.getTitle())
-                .setMessage(song.getArtistString())
+                .setMessage(song.getArtistString() + "\n" + song.getAlbumString())
                 .setPositiveButton(android.R.string.cancel, null)
                 .setNegativeButton(favoriteAction, favoriteActionListener)
                 .setNeutralButton(activity.getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(activity, adapter, song))
