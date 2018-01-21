@@ -194,7 +194,11 @@ public class APIClient {
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>() {
                     @Override
                     public void success(final FavoritesResponse response) {
-                        callback.onSuccess(response.getFavorites());
+                        List<Song> favorites = response.getFavorites();
+                        for (Song song : favorites) {
+                            song.setFavorite(true);
+                        }
+                        callback.onSuccess(favorites);
                     }
 
                     @Override
@@ -244,7 +248,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.favorite(authUtil.getAuthTokenWithPrefix(), songId)
+        favoritesService.removeFavorite(authUtil.getAuthTokenWithPrefix(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
                     public void success(final BaseResponse response) {

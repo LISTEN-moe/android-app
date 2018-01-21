@@ -71,7 +71,7 @@ public final class SongActionsUtil {
             @Override
             public void onFailure(final String message) {
                 if (activity != null) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show());
+                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
                 }
             }
         });
@@ -94,7 +94,7 @@ public final class SongActionsUtil {
 
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-//                        song.setFavorite(favorited);
+                        song.setFavorite(false);
                         adapter.notifyDataSetChanged();
 
                         // Broadcast event
@@ -117,7 +117,7 @@ public final class SongActionsUtil {
             @Override
             public void onFailure(final String message) {
                 if (activity != null) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show());
+                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
                 }
             }
         });
@@ -157,13 +157,7 @@ public final class SongActionsUtil {
             @Override
             public void onFailure(final String message) {
                 if (activity != null) {
-                    activity.runOnUiThread(() -> {
-                        final int toastMsg = message.equals(Messages.USER_NOT_SUPPORTER) ?
-                                R.string.supporter_required :
-                                R.string.error;
-
-                        Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
-                    });
+                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
                 }
             }
         });

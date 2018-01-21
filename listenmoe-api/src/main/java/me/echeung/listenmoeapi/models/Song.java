@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -26,9 +27,11 @@ public class Song implements Parcelable {
     private List<String> tags;
     private String notes;
     private int duration;
-    private boolean favorite;
     private boolean enabled;
     private User uploader;
+
+    @Setter
+    private boolean favorite;
 
     public String getAlbumString() {
         StringBuilder s = new StringBuilder();

@@ -85,15 +85,15 @@ public class ErrorHandlingAdapter {
                 public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
                     final T body = response.body();
 
-                    if (body == null && response.errorBody() == null) {
-                        callback.error("Unsuccessful response: " + response);
-                        return;
-                    }
-
                     int code = response.code();
                     if (code >= 200 && code < 300) {
                         callback.success(body);
                     } else {
+                        if (body == null && response.errorBody() == null) {
+                            callback.error("Unsuccessful response: " + response);
+                            return;
+                        }
+
                         if (response.errorBody() != null) {
                             Converter<ResponseBody, BaseResponse> errorConverter =
                                     APIClient.getRetrofit().responseBodyConverter(BaseResponse.class, new Annotation[0]);
@@ -105,6 +105,7 @@ public class ErrorHandlingAdapter {
                                 e.printStackTrace();
                             }
                         }
+
                         callback.error("Error: " + response);
                     }
                 }
