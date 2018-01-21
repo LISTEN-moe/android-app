@@ -19,6 +19,8 @@ public class RadioViewModel extends BaseViewModel {
     private final SharedPreferences sharedPrefs;
 
     private Song currentSong;
+    private String albumArtUrl;
+
     private boolean isPlaying;
     private boolean isFavorited;
     private int listeners;
@@ -61,6 +63,16 @@ public class RadioViewModel extends BaseViewModel {
     public void setCurrentSong(Song currentSong) {
         this.currentSong = currentSong;
         notifyPropertyChanged(BR.currentSong);
+    }
+
+    @Bindable
+    public String getAlbumArtUrl() {
+        return albumArtUrl;
+    }
+
+    public void setAlbumArtUrl(String albumArtUrl) {
+        this.albumArtUrl = albumArtUrl;
+        notifyPropertyChanged(BR.albumArtUrl);
     }
 
     @Bindable

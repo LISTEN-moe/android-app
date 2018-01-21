@@ -50,6 +50,7 @@
                     android:maxWidth="250dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/album"
+                    android:imageUrl="@{vm.albumArtUrl}"
                     tools:ignore="ContentDescription" />
 
                 <LinearLayout
