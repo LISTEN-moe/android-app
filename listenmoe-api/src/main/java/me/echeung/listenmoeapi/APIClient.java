@@ -40,7 +40,7 @@ public class APIClient {
 
     private static final String TAG = APIClient.class.getSimpleName();
 
-    private static final String BASE_URL = "https://beta.listen.moe/api/";
+    private static final String BASE_URL = "https://dev.listen.moe/api/";
 
     private static final String HEADER_USER_AGENT = "User-Agent";
     public static final String USER_AGENT = "me.echeung.moemoekyun";
@@ -50,6 +50,8 @@ public class APIClient {
 
     private static final String HEADER_ACCEPT = "Accept";
     private static final String ACCEPT = "application/vnd.listen.v4+json";
+
+    private static Retrofit retrofit;
 
     private final AuthUtil authUtil;
 
@@ -80,19 +82,19 @@ public class APIClient {
                 })
                 .build();
 
-        final Retrofit restAdapter = new Retrofit.Builder()
+        retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        artistsService = restAdapter.create(ArtistsService.class);
-        authService = restAdapter.create(AuthService.class);
-        favoritesService = restAdapter.create(FavoritesService.class);
-        requestsService = restAdapter.create(RequestsService.class);
-        songsService = restAdapter.create(SongsService.class);
-        usersService = restAdapter.create(UsersService.class);
+        artistsService = retrofit.create(ArtistsService.class);
+        authService = retrofit.create(AuthService.class);
+        favoritesService = retrofit.create(FavoritesService.class);
+        requestsService = retrofit.create(RequestsService.class);
+        songsService = retrofit.create(SongsService.class);
+        usersService = retrofit.create(UsersService.class);
 
         socket = new RadioSocket(okHttpClient, authUtil);
         stream = new RadioStream(context);
@@ -383,5 +385,9 @@ public class APIClient {
 
     public RadioStream getStream() {
         return stream;
+    }
+
+    public static Retrofit getRetrofit() {
+        return retrofit;
     }
 }

@@ -2,14 +2,17 @@ package me.echeung.listenmoeapi;
 
 import android.support.annotation.NonNull;
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import me.echeung.listenmoeapi.responses.BaseResponse;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
 import retrofit2.Callback;
+import retrofit2.Converter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
@@ -82,7 +85,7 @@ public class ErrorHandlingAdapter {
                 public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
                     final T body = response.body();
 
-                    if (!response.isSuccessful() || body == null) {
+                    if (body == null && response.errorBody() == null) {
                         callback.error("Unsuccessful response: " + response);
                         return;
                     }
@@ -91,7 +94,17 @@ public class ErrorHandlingAdapter {
                     if (code >= 200 && code < 300) {
                         callback.success(body);
                     } else {
-                        callback.error(body.getMessage());
+                        if (response.errorBody() != null) {
+                            Converter<ResponseBody, BaseResponse> errorConverter =
+                                    APIClient.getRetrofit().responseBodyConverter(BaseResponse.class, new Annotation[0]);
+                            try {
+                                BaseResponse error = errorConverter.convert(response.errorBody());
+                                callback.error(error.getMessage());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        callback.error("Error: " + response);
                     }
                 }
 
