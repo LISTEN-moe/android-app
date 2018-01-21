@@ -40,21 +40,23 @@ public class SongListItem {
     private String uploaderDisplayName;
 
     public boolean search(String query) {
-        if (title != null && title.contains(query)) {
+        query = query.toLowerCase().trim();
+
+        if (title != null && title.toLowerCase().contains(query)) {
             return true;
         }
 
-        if (titleRomaji != null && titleRomaji.contains(query)) {
+        if (titleRomaji != null && titleRomaji.toLowerCase().contains(query)) {
             return true;
         }
 
-        if (titleSearchRomaji != null && titleSearchRomaji.contains(query)) {
+        if (titleSearchRomaji != null && titleSearchRomaji.toLowerCase().contains(query)) {
             return true;
         }
 
         if (albums != null) {
             for (String album : albums) {
-                if (album != null && album.contains(query)) {
+                if (album != null && album.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -62,7 +64,7 @@ public class SongListItem {
 
         if (albumsRomaji != null) {
             for (String album : albumsRomaji) {
-                if (album != null && album.contains(query)) {
+                if (album != null && album.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -70,7 +72,7 @@ public class SongListItem {
 
         if (albumsSearchRomaji != null) {
             for (String album : albumsSearchRomaji) {
-                if (album != null && album.contains(query)) {
+                if (album != null && album.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -78,7 +80,7 @@ public class SongListItem {
 
         if (artists != null) {
             for (String artist : artists) {
-                if (artist != null && artist.contains(query)) {
+                if (artist != null && artist.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -86,7 +88,7 @@ public class SongListItem {
 
         if (artistsRomaji != null) {
             for (String artist : artistsRomaji) {
-                if (artist != null && artist.contains(query)) {
+                if (artist != null && artist.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -94,7 +96,7 @@ public class SongListItem {
 
         if (artistsSearchRomaji != null) {
             for (String artist : artistsSearchRomaji) {
-                if (artist != null && artist.contains(query)) {
+                if (artist != null && artist.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -102,7 +104,7 @@ public class SongListItem {
 
         if (groups != null) {
             for (String group : groups) {
-                if (group != null && group.contains(query)) {
+                if (group != null && group.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -110,7 +112,7 @@ public class SongListItem {
 
         if (groupsRomaji != null) {
             for (String group : groupsRomaji) {
-                if (group != null && group.contains(query)) {
+                if (group != null && group.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -118,7 +120,7 @@ public class SongListItem {
 
         if (groupsSearchRomaji != null) {
             for (String group : groupsSearchRomaji) {
-                if (group != null && group.contains(query)) {
+                if (group != null && group.toLowerCase().contains(query)) {
                     return true;
                 }
             }

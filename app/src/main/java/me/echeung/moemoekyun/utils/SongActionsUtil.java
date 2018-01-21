@@ -19,7 +19,6 @@ import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.ui.activities.SearchActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public final class SongActionsUtil {

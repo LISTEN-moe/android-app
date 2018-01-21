@@ -84,24 +84,26 @@ public class Song implements Parcelable {
     }
 
     public boolean search(String query) {
-        if (title != null && title.contains(query)) {
+        query = query.toLowerCase().trim();
+
+        if (title != null && title.toLowerCase().contains(query)) {
             return true;
         }
 
-        if (titleRomaji != null && titleRomaji.contains(query)) {
+        if (titleRomaji != null && titleRomaji.toLowerCase().contains(query)) {
             return true;
         }
 
-        if (titleSearchRomaji != null && titleSearchRomaji.contains(query)) {
+        if (titleSearchRomaji != null && titleSearchRomaji.toLowerCase().contains(query)) {
             return true;
         }
 
         if (albums != null) {
             for (SongDescriptor album : albums) {
-                if (album.getName() != null && album.getName().contains(query)) {
+                if (album.getName() != null && album.getName().toLowerCase().contains(query)) {
                     return true;
                 }
-                if (album.getNameRomaji() != null && album.getNameRomaji().contains(query)) {
+                if (album.getNameRomaji() != null && album.getNameRomaji().toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -109,10 +111,10 @@ public class Song implements Parcelable {
 
         if (artists != null) {
             for (SongDescriptor artist : artists) {
-                if (artist.getName() != null && artist.getName().contains(query)) {
+                if (artist.getName() != null && artist.getName().toLowerCase().contains(query)) {
                     return true;
                 }
-                if (artist.getNameRomaji() != null && artist.getNameRomaji().contains(query)) {
+                if (artist.getNameRomaji() != null && artist.getNameRomaji().toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -120,7 +122,7 @@ public class Song implements Parcelable {
 
         if (groups != null) {
             for (String group : groups) {
-                if (group != null && group.contains(query)) {
+                if (group != null && group.toLowerCase().contains(query)) {
                     return true;
                 }
             }
@@ -128,7 +130,7 @@ public class Song implements Parcelable {
 
         if (tags != null) {
             for (String tag : tags) {
-                if (tag != null && tag.contains(query)) {
+                if (tag != null && tag.toLowerCase().contains(query)) {
                     return true;
                 }
             }
