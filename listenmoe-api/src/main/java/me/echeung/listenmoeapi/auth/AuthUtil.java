@@ -28,6 +28,13 @@ public interface AuthUtil {
     String getAuthToken();
 
     /**
+     * Fetches the stored auth token with the "Bearer" prefix.
+     *
+     * @return The user's auth token with the "Bearer" prefix.
+     */
+    String getAuthTokenWithPrefix();
+
+    /**
      * Stores the auth token, also tracking the time that it was stored.
      * Android context to fetch SharedPreferences.
      *

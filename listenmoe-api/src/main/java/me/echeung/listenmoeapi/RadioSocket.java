@@ -91,17 +91,10 @@ public class RadioSocket extends WebSocketListener {
         Log.d(TAG, "Socket connection opened");
 
         retryTime = RETRY_TIME_MIN;
-
         clearHeartbeat();
 
         // Handshake with socket
-        String authToken = "";
-        if (authUtil.isAuthenticated()) {
-            String token = authUtil.getAuthToken();
-            if (token != null && !token.isEmpty()) {
-                authToken = "Bearer " + token;
-            }
-        }
+        final String authToken = authUtil.isAuthenticated() ? authUtil.getAuthTokenWithPrefix() : "";
         socket.send(String.format("{ \"op\": 0, \"d\": { \"auth\": \"%s\" } }", authToken));
     }
 

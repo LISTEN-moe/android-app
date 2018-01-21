@@ -38,6 +38,10 @@ public class AndroidAuthUtil implements AuthUtil {
                 .getString(USER_TOKEN, null);
     }
 
+    public String getAuthTokenWithPrefix() {
+        return String.format("Bearer %s", getAuthToken());
+    }
+
     public void setAuthToken(String token) {
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()

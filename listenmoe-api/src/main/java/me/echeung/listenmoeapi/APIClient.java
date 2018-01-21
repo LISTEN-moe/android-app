@@ -164,7 +164,7 @@ public class APIClient {
             return;
         }
 
-        usersService.getUserInfo(authUtil.getAuthToken(), "@me")
+        usersService.getUserInfo(authUtil.getAuthTokenWithPrefix(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>() {
                     @Override
                     public void success(final UserResponse response) {
@@ -190,7 +190,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.getFavorites(authUtil.getAuthToken(), "@me")
+        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>() {
                     @Override
                     public void success(final FavoritesResponse response) {
@@ -217,7 +217,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.favorite(authUtil.getAuthToken(), songId)
+        favoritesService.favorite(authUtil.getAuthTokenWithPrefix(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
                     public void success(final BaseResponse response) {
@@ -244,7 +244,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.favorite(authUtil.getAuthToken(), songId)
+        favoritesService.favorite(authUtil.getAuthTokenWithPrefix(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
                     public void success(final BaseResponse response) {
@@ -271,7 +271,7 @@ public class APIClient {
             return;
         }
 
-        requestsService.request(authUtil.getAuthToken(), songId)
+        requestsService.request(authUtil.getAuthTokenWithPrefix(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
                     @Override
                     public void success(final BaseResponse response) {
@@ -298,7 +298,7 @@ public class APIClient {
             return;
         }
 
-        songsService.getSongs(authUtil.getAuthToken())
+        songsService.getSongs(authUtil.getAuthTokenWithPrefix())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>() {
                     @Override
                     public void success(final SongsResponse response) {
@@ -325,7 +325,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtists(authUtil.getAuthToken())
+        artistsService.getArtists(authUtil.getAuthTokenWithPrefix())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>() {
                     @Override
                     public void success(final ArtistsResponse response) {
@@ -352,7 +352,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtist(authUtil.getAuthToken(), artistId)
+        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), artistId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>() {
                     @Override
                     public void success(final ArtistResponse response) {
@@ -387,7 +387,7 @@ public class APIClient {
         return stream;
     }
 
-    public static Retrofit getRetrofit() {
+    static Retrofit getRetrofit() {
         return retrofit;
     }
 }

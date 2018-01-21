@@ -8,5 +8,5 @@ import retrofit2.http.Path;
 
 public interface UsersService {
     @GET("users/{username}")
-    ErrorHandlingAdapter.WrappedCall<UserResponse> getUserInfo(@Header("authorization") String token, @Path("username") String username);
+    ErrorHandlingAdapter.WrappedCall<UserResponse> getUserInfo(@Header("Authorization") String token, @Path("username") String username);
 }
