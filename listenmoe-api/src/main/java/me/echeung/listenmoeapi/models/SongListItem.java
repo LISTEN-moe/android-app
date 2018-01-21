@@ -149,7 +149,7 @@ public class SongListItem {
 
         List<SongDescriptor> artists = new ArrayList<>();
         for (int i = 0; i < song.getArtists().size(); i++) {
-            albums.add(SongDescriptor.builder()
+            artists.add(SongDescriptor.builder()
                     .id(song.getArtistsId().get(i))
                     .name(song.getArtists().get(i))
                     .nameRomaji(song.getArtistsRomaji().get(i))
