@@ -2,8 +2,7 @@ package me.echeung.listenmoeapi;
 
 import android.content.Context;
 
-import me.echeung.listenmoeapi.players.AndroidPlayer;
-import me.echeung.listenmoeapi.players.StreamPlayer;
+import me.echeung.listenmoeapi.player.StreamPlayer;
 
 public class RadioStream {
 
@@ -15,7 +14,7 @@ public class RadioStream {
     private Callback callback;
 
     RadioStream(Context context) {
-        this.player = new AndroidPlayer(context, STREAM_MP3);
+        this.player = new StreamPlayer(context, STREAM_MP3);
     }
 
     public void setListener(Callback callback) {

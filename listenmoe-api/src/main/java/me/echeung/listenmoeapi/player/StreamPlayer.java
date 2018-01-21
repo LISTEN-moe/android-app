@@ -1,4 +1,4 @@
-package me.echeung.listenmoeapi.players;
+package me.echeung.listenmoeapi.player;
 
 import android.content.Context;
 import android.net.Uri;
@@ -27,7 +27,7 @@ import me.echeung.listenmoeapi.APIClient;
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
 import static com.google.android.exoplayer2.C.USAGE_MEDIA;
 
-public class AndroidPlayer implements StreamPlayer {
+public class StreamPlayer {
 
     private static final String WIFI_LOCK_TAG = "listenmoe_wifi_lock";
 
@@ -38,7 +38,7 @@ public class AndroidPlayer implements StreamPlayer {
     private Context context;
     private String streamUrl;
 
-    public AndroidPlayer(Context context, String streamUrl) {
+    public StreamPlayer(Context context, String streamUrl) {
         this.context = context;
         this.streamUrl = streamUrl;
 
@@ -91,17 +91,14 @@ public class AndroidPlayer implements StreamPlayer {
         };
     }
 
-    @Override
     public boolean isStarted() {
         return player != null;
     }
 
-    @Override
     public boolean isPlaying() {
         return player != null && player.getPlayWhenReady();
     }
 
-    @Override
     public boolean play() {
         if (player == null) {
             init();
@@ -119,7 +116,6 @@ public class AndroidPlayer implements StreamPlayer {
         return false;
     }
 
-    @Override
     public boolean pause() {
         if (player != null) {
             player.setPlayWhenReady(false);
@@ -132,7 +128,6 @@ public class AndroidPlayer implements StreamPlayer {
         return false;
     }
 
-    @Override
     public boolean stop() {
         if (player != null) {
             player.setPlayWhenReady(false);
@@ -146,7 +141,6 @@ public class AndroidPlayer implements StreamPlayer {
         return false;
     }
 
-    @Override
     public void fadeOut(Runnable callback) {
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
@@ -171,14 +165,12 @@ public class AndroidPlayer implements StreamPlayer {
         handler.post(runnable);
     }
 
-    @Override
     public void duck() {
         if (player != null) {
             player.setVolume(0.5f);
         }
     }
 
-    @Override
     public void unduck() {
         if (player != null) {
             player.setVolume(1f);

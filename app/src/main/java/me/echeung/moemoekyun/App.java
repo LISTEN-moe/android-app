@@ -11,7 +11,6 @@ import android.os.Build;
 import android.os.IBinder;
 
 import me.echeung.listenmoeapi.APIClient;
-import me.echeung.listenmoeapi.auth.AndroidAuthUtil;
 import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
@@ -48,7 +47,7 @@ public class App extends Application implements ServiceConnection {
         initService();
 
         // API client
-        authUtil = new AndroidAuthUtil(this);
+        authUtil = new AuthUtil(this);
         apiClient = new APIClient(this, authUtil);
 
         // UI view models
