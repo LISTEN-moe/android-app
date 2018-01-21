@@ -6,10 +6,6 @@ import android.databinding.Bindable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.BR;
@@ -30,8 +26,8 @@ public class RadioViewModel extends BaseViewModel {
     private String event;
 
     private boolean showHistory;
-    private String lastSong;
-    private String secondLastSong;
+    private Song lastSong;
+    private Song secondLastSong;
 
     public RadioViewModel(Context context) {
         super(context);
@@ -164,21 +160,21 @@ public class RadioViewModel extends BaseViewModel {
     }
 
     @Bindable
-    public String getLastSong() {
-        return TextUtils.isEmpty(lastSong) ? null : lastSong;
+    public Song getLastSong() {
+        return lastSong;
     }
 
-    public void setLastSong(String lastSong) {
+    public void setLastSong(Song lastSong) {
         this.lastSong = lastSong;
         notifyPropertyChanged(BR.lastSong);
     }
 
     @Bindable
-    public String getSecondLastSong() {
-        return TextUtils.isEmpty(secondLastSong) ? null : secondLastSong;
+    public Song getSecondLastSong() {
+        return secondLastSong;
     }
 
-    public void setSecondLastSong(String secondLastSong) {
+    public void setSecondLastSong(Song secondLastSong) {
         this.secondLastSong = secondLastSong;
         notifyPropertyChanged(BR.secondLastSong);
     }

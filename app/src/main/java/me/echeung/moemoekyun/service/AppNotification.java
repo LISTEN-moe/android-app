@@ -103,11 +103,4 @@ public class AppNotification {
 
         return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
-    private PendingIntent getPlaybackActionActivity(final String action) {
-        final Intent intent = new Intent(service, MainActivity.class);
-        intent.setAction(action);
-
-        return PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 }

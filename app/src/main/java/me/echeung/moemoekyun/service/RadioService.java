@@ -30,9 +30,9 @@ import java.util.GregorianCalendar;
 import me.echeung.listenmoeapi.RadioSocket;
 import me.echeung.listenmoeapi.RadioStream;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
-import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.Messages;
+import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
@@ -198,8 +198,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         } catch (ParseException e) {
         }
 
-        viewModel.setLastSong(info.getLastPlayed().get(0).getTitle());
-        viewModel.setSecondLastSong(info.getLastPlayed().get(1).getTitle());
+        viewModel.setLastSong(info.getLastPlayed().get(0));
+        viewModel.setSecondLastSong(info.getLastPlayed().get(1));
 
 //            if (info.hasExtended()) {
 //                final SocketUpdateResponse.ExtendedInfo extended = info.getExtended();
@@ -542,28 +542,53 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             return;
         }
 
-        App.getApiClient().favoriteSong(songId, new FavoriteSongCallback() {
-            @Override
-            public void onSuccess(final boolean favorited) {
-                final Song currentSong = App.getRadioViewModel().getCurrentSong();
-                if (currentSong.getId() == songId) {
-                    App.getRadioViewModel().setIsFavorited(favorited);
+        if (currentSong.isFavorite()) {
+            App.getApiClient().unfavoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
+                @Override
+                public void onSuccess() {
+                    final Song currentSong = App.getRadioViewModel().getCurrentSong();
+                    if (currentSong.getId() == songId) {
+                        App.getRadioViewModel().setIsFavorited(false);
+                    }
+
+                    final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
+                    sendBroadcast(favIntent);
+
+                    updateNotification();
+                    updateMediaSessionPlaybackState();
                 }
 
-                final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
-                sendBroadcast(favIntent);
-
-                updateNotification();
-                updateMediaSessionPlaybackState();
-            }
-
-            @Override
-            public void onFailure(final String message) {
-                if (message.equals(Messages.AUTH_FAILURE)) {
-                    showLoginRequiredToast();
+                @Override
+                public void onFailure(final String message) {
+                    if (message.equals(Messages.AUTH_FAILURE)) {
+                        showLoginRequiredToast();
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            App.getApiClient().favoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
+                @Override
+                public void onSuccess() {
+                    final Song currentSong = App.getRadioViewModel().getCurrentSong();
+                    if (currentSong.getId() == songId) {
+                        App.getRadioViewModel().setIsFavorited(true);
+                    }
+
+                    final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
+                    sendBroadcast(favIntent);
+
+                    updateNotification();
+                    updateMediaSessionPlaybackState();
+                }
+
+                @Override
+                public void onFailure(final String message) {
+                    if (message.equals(Messages.AUTH_FAILURE)) {
+                        showLoginRequiredToast();
+                    }
+                }
+            });
+        }
     }
 
     private void showLoginRequiredToast() {

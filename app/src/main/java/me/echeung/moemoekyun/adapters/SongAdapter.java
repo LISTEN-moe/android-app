@@ -90,8 +90,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (!TextUtils.isEmpty(filterQuery)) {
             visibleSongs = new ArrayList<>();
             for (final Song song : allSongs) {
-                if (song.getTitle().toLowerCase().contains(filterQuery) ||
-                        song.toString().toLowerCase().contains(filterQuery)) {
+                if (song.search(filterQuery)) {
                     visibleSongs.add(song);
                 }
             }
@@ -118,9 +117,9 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         List<Song> songs = new ArrayList<>();
         if (visibleSongs != null) {
             for (Song song : visibleSongs) {
-//                if (song != null && song.isEnabled()) {
+                if (song != null && song.isEnabled()) {
                     songs.add(song);
-//                }
+                }
             }
         }
         return songs;
@@ -164,7 +163,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             binding.setVariable(BR.title, song.getTitle());
             binding.setVariable(BR.subtitle, song.getArtistString());
             binding.setVariable(BR.favorited, song.isFavorite());
-            binding.setVariable(BR.enabled, true /*song.isEnabled()*/);
+            binding.setVariable(BR.enabled, song.isEnabled());
 
             binding.executePendingBindings();
         }

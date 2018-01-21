@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.ui.activities;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -149,18 +150,21 @@ public class SearchActivity extends BaseActivity implements SongAdapter.OnSongIt
                 getString(R.string.action_unfavorite) :
                 getString(R.string.action_favorite);
 
+        final DialogInterface.OnClickListener favoriteActionListener = song.isFavorite() ?
+                (dialogInterface, in) -> SongActionsUtil.unfavorite(SearchActivity.this, adapter, song) :
+                (dialogInterface, in) -> SongActionsUtil.favorite(SearchActivity.this, adapter, song);
+
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle(song.getTitle())
                 .setMessage(song.getArtistString())
                 .setPositiveButton(android.R.string.cancel, null)
-                .setNegativeButton(favoriteAction,
-                        (dialogInterface, in) -> SongActionsUtil.favorite(SearchActivity.this, adapter, song));
+                .setNegativeButton(favoriteAction, favoriteActionListener);
 
-//        if (song.isEnabled()) {
-//            // Create button "Request"
-//            builder.setNeutralButton(getString(R.string.action_request),
-//                    (dialogInterface, im) -> SongActionsUtil.request(SearchActivity.this, adapter, song));
-//        }
+        if (song.isEnabled()) {
+            // Create button "Request"
+            builder.setNeutralButton(getString(R.string.action_request),
+                    (dialogInterface, im) -> SongActionsUtil.request(SearchActivity.this, adapter, song));
+        }
 
         builder.create().show();
     }

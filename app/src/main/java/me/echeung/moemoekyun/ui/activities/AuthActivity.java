@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
@@ -56,14 +55,19 @@ public class AuthActivity extends BaseActivity {
 
         App.getApiClient().authenticate(user, pass, new AuthCallback() {
             @Override
-            public void onSuccess(final String result) {
+            public void onSuccess(final String token) {
                 runOnUiThread(() -> {
-                    App.getAuthUtil().setAuthToken(result);
+                    App.getAuthUtil().setAuthToken(token);
 
                     Intent returnIntent = new Intent();
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
                 });
+            }
+
+            @Override
+            public void onMfaRequired(final String token) {
+                // TODO: MFA
             }
 
             @Override

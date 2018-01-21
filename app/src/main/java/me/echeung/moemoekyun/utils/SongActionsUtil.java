@@ -27,11 +27,47 @@ public class SongActionsUtil {
      */
     public static void favorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
         final int songId = song.getId();
-        App.getApiClient().favoriteSong(songId, new FavoriteSongCallback() {
+        App.getApiClient().favoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
             @Override
-            public void onSuccess(final boolean favorited) {
+            public void onSuccess() {
                 if (App.getRadioViewModel().getCurrentSong().getId() == songId) {
-                    App.getRadioViewModel().setIsFavorited(favorited);
+                    App.getRadioViewModel().setIsFavorited(true);
+                }
+
+                if (activity != null) {
+                    activity.runOnUiThread(() -> {
+//                        song.setFavorite(favorited);
+                        adapter.notifyDataSetChanged();
+
+                        // Broadcast event
+                        final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
+                        activity.sendBroadcast(favIntent);
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(final String message) {
+                if (activity != null) {
+                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), R.string.error, Toast.LENGTH_SHORT).show());
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Updates the favorite status of a song.
+     *
+     * @param song The song to update the favorite status of.
+     */
+    public static void unfavorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
+        final int songId = song.getId();
+        App.getApiClient().unfavoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
+            @Override
+            public void onSuccess() {
+                if (App.getRadioViewModel().getCurrentSong().getId() == songId) {
+                    App.getRadioViewModel().setIsFavorited(false);
                 }
 
                 if (activity != null) {
@@ -44,15 +80,13 @@ public class SongActionsUtil {
                         activity.sendBroadcast(favIntent);
 
                         // Undo action
-                        if (!favorited) {
-                            final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
-                            if (coordinatorLayout != null) {
-                                final Snackbar undoBar = Snackbar.make(coordinatorLayout,
-                                        String.format(activity.getString(R.string.unfavorited), song.getTitle()),
-                                        Snackbar.LENGTH_LONG);
-                                undoBar.setAction(R.string.action_undo, (v) -> favorite(activity, adapter, song));
-                                undoBar.show();
-                            }
+                        final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
+                        if (coordinatorLayout != null) {
+                            final Snackbar undoBar = Snackbar.make(coordinatorLayout,
+                                    String.format(activity.getString(R.string.unfavorited), song.getTitle()),
+                                    Snackbar.LENGTH_LONG);
+                            undoBar.setAction(R.string.action_undo, (v) -> favorite(activity, adapter, song));
+                            undoBar.show();
                         }
                     });
                 }
@@ -79,7 +113,7 @@ public class SongActionsUtil {
             return;
         }
 
-        App.getApiClient().requestSong(song.getId(), new RequestSongCallback() {
+        App.getApiClient().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
             @Override
             public void onSuccess() {
                 if (activity != null) {

@@ -28,8 +28,7 @@ import java.util.List;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
-import me.echeung.listenmoeapi.responses.UserFavoritesResponse;
-import me.echeung.listenmoeapi.responses.UserResponse;
+import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
@@ -239,9 +238,8 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
     private void getUserInfo() {
         App.getApiClient().getUserInfo(new UserInfoCallback() {
             @Override
-            public void onSuccess(final UserResponse userResponse) {
-                final String userName = userResponse.getUsername();
-
+            public void onSuccess(final User user) {
+                final String userName = user.getUsername();
                 viewModel.setUserName(userName);
             }
 
@@ -254,14 +252,12 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
     private void getUserFavorites() {
         App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
             @Override
-            public void onSuccess(final UserFavoritesResponse userFavorites) {
-                final List<Song> favorites = userFavorites.getSongs();
-
+            public void onSuccess(final List<Song> favorites) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> adapter.setSongs(favorites));
                 }
 
-                viewModel.setUserRequests(userFavorites.getExtra().getRequests());
+//                viewModel.setUserRequests(userFavorites.getExtra().getRequests());
                 viewModel.setHasFavorites(!favorites.isEmpty());
 
                 completeRefresh();
