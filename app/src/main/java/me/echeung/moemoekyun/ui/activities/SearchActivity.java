@@ -146,26 +146,6 @@ public class SearchActivity extends BaseActivity implements SongAdapter.OnSongIt
 
     @Override
     public void onSongItemClick(final Song song) {
-        final String favoriteAction = song.isFavorite() ?
-                getString(R.string.action_unfavorite) :
-                getString(R.string.action_favorite);
-
-        final DialogInterface.OnClickListener favoriteActionListener = song.isFavorite() ?
-                (dialogInterface, in) -> SongActionsUtil.unfavorite(SearchActivity.this, adapter, song) :
-                (dialogInterface, in) -> SongActionsUtil.favorite(SearchActivity.this, adapter, song);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme)
-                .setTitle(song.getTitle())
-                .setMessage(song.getArtistString())
-                .setPositiveButton(android.R.string.cancel, null)
-                .setNegativeButton(favoriteAction, favoriteActionListener);
-
-        if (song.isEnabled()) {
-            // Create button "Request"
-            builder.setNeutralButton(getString(R.string.action_request),
-                    (dialogInterface, im) -> SongActionsUtil.request(SearchActivity.this, adapter, song));
-        }
-
-        builder.create().show();
+        SongActionsUtil.showSongActionsDialog(this, adapter, song);
     }
 }

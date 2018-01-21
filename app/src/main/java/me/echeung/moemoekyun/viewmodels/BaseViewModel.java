@@ -5,7 +5,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.view.View;
-import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
 
@@ -53,8 +52,4 @@ public abstract class BaseViewModel extends BaseObservable {
         v.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
-    @BindingAdapter("app:textStyle")
-    public static void setTextStyle(TextView v, int typeface) {
-        v.setTypeface(null, typeface);
-    }
 }

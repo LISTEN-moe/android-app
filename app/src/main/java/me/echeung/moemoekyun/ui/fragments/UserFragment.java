@@ -278,22 +278,6 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
 
     @Override
     public void onSongItemClick(final Song song) {
-        // Create button "Favorite"/"Unfavorite"
-        final String favoriteAction = song.isFavorite() ?
-                getString(R.string.action_unfavorite) :
-                getString(R.string.action_favorite);
-
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.DialogTheme)
-                .setTitle(song.getTitle())
-                .setMessage(song.getArtistString())
-                .setPositiveButton(android.R.string.cancel, null)
-                .setNegativeButton(favoriteAction, (dialogInterface, in) -> SongActionsUtil.favorite(getActivity(), adapter, song));
-
-//        if (song.isEnabled()) {
-//            // Create button "Request"
-//            builder.setNeutralButton(getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(getActivity(), adapter, song));
-//        }
-
-        builder.create().show();
+        SongActionsUtil.showSongActionsDialog(getActivity(), adapter, song);
     }
 }

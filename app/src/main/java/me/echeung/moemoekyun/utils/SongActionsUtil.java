@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -16,9 +18,30 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.adapters.SongAdapter;
+import me.echeung.moemoekyun.ui.activities.SearchActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public final class SongActionsUtil {
+
+    public static void showSongActionsDialog(final Activity activity, final SongAdapter adapter, final Song song) {
+        final String favoriteAction = song.isFavorite() ?
+                activity.getString(R.string.action_unfavorite) :
+                activity.getString(R.string.action_favorite);
+
+        final DialogInterface.OnClickListener favoriteActionListener = song.isFavorite() ?
+                (dialogInterface, in) -> SongActionsUtil.unfavorite(activity, adapter, song) :
+                (dialogInterface, in) -> SongActionsUtil.favorite(activity, adapter, song);
+
+        new AlertDialog.Builder(activity, R.style.DialogTheme)
+                .setTitle(song.getTitle())
+                .setMessage(song.getArtistString())
+                .setPositiveButton(android.R.string.cancel, null)
+                .setNegativeButton(favoriteAction, favoriteActionListener)
+                .setNeutralButton(activity.getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(activity, adapter, song))
+                .create()
+                .show();
+    }
 
     /**
      * Updates the favorite status of a song.
@@ -118,7 +141,6 @@ public final class SongActionsUtil {
             public void onSuccess() {
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-//                        song.setEnabled(false);
                         adapter.notifyDataSetChanged();
 
                         // Broadcast event

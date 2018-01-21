@@ -102,27 +102,15 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     /**
-     * Gets a random song from the filtered list, which isn't on cool down.
+     * Gets a random song from the filtered list.
      */
     public Song getRandomRequestSong() {
-        List<Song> songs = getEnabledVisibleSongs();
+        List<Song> songs = getSongs();
         return songs.isEmpty() ? null : songs.get(new Random().nextInt(songs.size()));
     }
 
     private List<Song> getSongs() {
         return visibleSongs;
-    }
-
-    private List<Song> getEnabledVisibleSongs() {
-        List<Song> songs = new ArrayList<>();
-        if (visibleSongs != null) {
-            for (Song song : visibleSongs) {
-                if (song != null && song.isEnabled()) {
-                    songs.add(song);
-                }
-            }
-        }
-        return songs;
     }
 
     protected OnSongItemClickListener getListener() {
@@ -163,7 +151,6 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             binding.setVariable(BR.title, song.getTitle());
             binding.setVariable(BR.subtitle, song.getArtistString());
             binding.setVariable(BR.favorited, song.isFavorite());
-            binding.setVariable(BR.enabled, song.isEnabled());
 
             binding.executePendingBindings();
         }
