@@ -58,7 +58,7 @@ public final class SongActionsUtil {
 
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-//                        song.setFavorite(favorited);
+                        song.setFavorite(true);
                         adapter.notifyDataSetChanged();
 
                         // Broadcast event

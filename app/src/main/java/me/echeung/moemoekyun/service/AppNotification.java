@@ -5,6 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
@@ -13,6 +15,7 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
+import me.echeung.moemoekyun.utils.AlbumArtUtil;
 
 public class AppNotification {
 
@@ -20,6 +23,8 @@ public class AppNotification {
     public static final String NOTIFICATION_CHANNEL_ID = "default";
 
     private static final int NOTIFICATION_ID = 1;
+
+    private static final int NOTIFICATION_ALBUM_ART_MAX_SIZE = 500;
 
     private RadioService service;
     private NotificationManager notificationManager;
@@ -34,10 +39,32 @@ public class AppNotification {
             return;
         }
 
-        final Song song = App.getRadioViewModel().getCurrentSong();
-        final boolean isPlaying = service.isPlaying();
+        final Song song = getCurrentSong();
 
-//        Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.drawable.background);
+        // Default album art
+        final Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.drawable.background);
+
+        update(song, albumArt);
+
+        // Update the notification with the downloaded album art as needed
+        final String albumArtUrl = song.getAlbumArtUrl();
+        if (albumArtUrl != null) {
+            AlbumArtUtil.getAlbumArtBitmap(service, song.getAlbumArtUrl(), NOTIFICATION_ALBUM_ART_MAX_SIZE, bitmap -> {
+                update(song, bitmap);
+            });
+        }
+    }
+
+    private void update(final Song song, final Bitmap albumArt) {
+        if (!service.isStreamStarted()) {
+            return;
+        }
+
+        if (song.getId() != getCurrentSong().getId()) {
+            return;
+        }
+
+        final boolean isPlaying = service.isPlaying();
 
         // Play/pause action
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
@@ -62,7 +89,7 @@ public class AppNotification {
                 .setColor(ContextCompat.getColor(service, R.color.colorAccent))
                 .setContentTitle(service.getString(R.string.app_name))
                 .setSmallIcon(R.drawable.ic_icon)
-//                .setLargeIcon(albumArt)
+                .setLargeIcon(albumArt)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .setOngoing(isPlaying)
@@ -95,6 +122,10 @@ public class AppNotification {
             service.stopForeground(false);
             notificationManager.notify(NOTIFICATION_ID, notification);
         }
+    }
+
+    private Song getCurrentSong() {
+        return App.getRadioViewModel().getCurrentSong();
     }
 
     private PendingIntent getPlaybackActionService(final String action) {
