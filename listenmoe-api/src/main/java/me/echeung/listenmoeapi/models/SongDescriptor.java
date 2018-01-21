@@ -3,11 +3,15 @@ package me.echeung.listenmoeapi.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class SongDescriptor implements Parcelable {
     private int id;
     private String name;

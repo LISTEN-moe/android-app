@@ -154,19 +154,19 @@ public class SongListItem {
                     .build());
         }
 
-        return new Song(
-                song.getId(),
-                song.getTitle(),
-                song.getTitleRomaji(),
-                song.getTitleSearchRomaji(),
-                albums,
-                artists,
-                song.getSources(),
-                song.getGroups(),
-                song.getTags(),
-                null,
-                song.getDuration(),
-                song.isFavorite(),
-                uploader);
+        return Song.builder()
+                .id(song.getId())
+                .title(song.getTitle())
+                .titleRomaji(song.getTitleRomaji())
+                .albums(albums)
+                .artists(artists)
+                .sources(song.getSources())
+                .groups(song.getGroups())
+                .tags(song.getTags())
+                .duration(song.getDuration())
+                .favorite(song.isFavorite())
+                .enabled(song.isEnabled())
+                .uploader(uploader)
+                .build();
     }
 }
