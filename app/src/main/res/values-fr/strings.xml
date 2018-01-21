@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="translators">Traducteurs</string>
     <!-- == Generic strings == -->
     <string name="error">Une erreur s\'est produite</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
