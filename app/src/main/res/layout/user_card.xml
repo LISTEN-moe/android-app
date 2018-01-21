@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable name="vm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
@@ -23,7 +24,8 @@
                 android:adjustViewBounds="true"
                 android:imageUrl="@{vm.bannerUrl}"
                 android:scaleType="fitXY"
-                android:visibility="@{vm.bannerUrl != null}" />
+                android:visibility="@{vm.bannerUrl != null}"
+                tools:ignore="ContentDescription" />
 
             <LinearLayout
                 android:layout_width="match_parent"
