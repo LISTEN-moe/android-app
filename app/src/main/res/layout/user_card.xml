@@ -23,7 +23,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:imageUrl="@{vm.bannerUrl}"
-                android:scaleType="fitXY"
+                android:scaleType="centerCrop"
                 android:visibility="@{vm.bannerUrl != null}"
                 tools:ignore="ContentDescription" />
 

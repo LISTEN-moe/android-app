@@ -48,7 +48,7 @@
                     android:adjustViewBounds="true"
                     android:maxHeight="250dp"
                     android:maxWidth="250dp"
-                    android:scaleType="fitCenter"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/album"
                     android:imageUrl="@{vm.albumArtUrl}"
                     tools:ignore="ContentDescription" />
