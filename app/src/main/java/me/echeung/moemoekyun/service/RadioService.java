@@ -312,7 +312,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     break;
 
                 case RadioService.UPDATE:
-                    socket.reconnect();
+//                    socket.reconnect();
                     break;
 
                 case RadioService.TIMER_STOP:
@@ -361,7 +361,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case MainActivity.AUTH_EVENT:
                     if (App.getAuthUtil().isAuthenticated()) {
-                        socket.reconnect();
+//                        socket.reconnect();
                     } else {
                         App.getRadioViewModel().setIsFavorited(false);
                         updateNotification();
@@ -370,7 +370,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case ConnectivityManager.CONNECTIVITY_ACTION:
                     if (NetworkUtil.isNetworkAvailable(this)) {
-                        socket.reconnect();
+//                        socket.reconnect();
                     }
             }
         }

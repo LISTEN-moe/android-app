@@ -48,7 +48,12 @@ public class RadioSocket extends WebSocketListener {
         this.listener = listener;
     }
 
-    public synchronized void connect() {
+    public void connect() {
+        if (socket != null) {
+            disconnect();
+        }
+
+        Log.d(TAG, "Connecting to socket...");
         final Request request = new Request.Builder().url(SOCKET_URL).build();
         socket = client.newWebSocket(request, this);
 
@@ -56,6 +61,8 @@ public class RadioSocket extends WebSocketListener {
     }
 
     public void reconnect() {
+        Log.d(TAG, String.format("Reconnecting to socket in %d ms", retryTime));
+
         disconnect();
 
         // Exponential backoff
@@ -67,7 +74,8 @@ public class RadioSocket extends WebSocketListener {
         connect();
     }
 
-    public synchronized void disconnect() {
+    public void disconnect() {
+        Log.d(TAG, "Disconnected from socket");
         if (socket != null) {
             socket.cancel();
             socket = null;
@@ -80,14 +88,21 @@ public class RadioSocket extends WebSocketListener {
 
     @Override
     public void onOpen(WebSocket socket, Response response) {
+        Log.d(TAG, "Socket connection opened");
+
         retryTime = RETRY_TIME_MIN;
 
         clearHeartbeat();
 
-        // Authenticate with socket
-        String authToken = authUtil.getAuthToken();
-        authToken = authToken == null || authToken.isEmpty() ? "" : "Bearer " + authToken;
-        socket.send("{ \"op\": 0, \"d\": { \"auth\": \"Bearer " + authToken + "\" } }");
+        // Handshake with socket
+        String authToken = "";
+        if (authUtil.isAuthenticated()) {
+            String token = authUtil.getAuthToken();
+            if (token != null && !token.isEmpty()) {
+                authToken = "Bearer " + token;
+            }
+        }
+        socket.send(String.format("{ \"op\": 0, \"d\": { \"auth\": \"%s\" } }", authToken));
     }
 
     @Override
@@ -102,23 +117,37 @@ public class RadioSocket extends WebSocketListener {
     }
 
     @Override
-    public void	onClosed(WebSocket webSocket, int code, String reason) {
+    public void onClosed(WebSocket webSocket, int code, String reason) {
+        Log.d(TAG, "Socket connection closed");
         reconnect();
     }
 
     private void heartbeat(int milliseconds) {
-        heartbeatTask = () -> socket.send("{ \"op\": 9 }");
+        clearHeartbeat();
+
+        heartbeatTask = () -> {
+            Log.d(TAG, "Sending heartbeat to socket");
+            socket.send("{ \"op\": 9 }");
+
+            // Repeat
+            heartbeatHandler.postDelayed(heartbeatTask, milliseconds);
+        };
+
         heartbeatHandler.postDelayed(heartbeatTask, milliseconds);
+        Log.d(TAG, String.format("Created heartbeat task for %d ms", milliseconds));
     }
 
     private void clearHeartbeat() {
         if (heartbeatTask != null) {
-            heartbeatHandler.removeCallbacks(heartbeatTask);
+            Log.d(TAG, "Removing heartbeat task");
+            heartbeatHandler.removeCallbacksAndMessages(null);
             heartbeatTask = null;
         }
     }
 
     private void parseWebSocketResponse(final String jsonString) {
+        Log.d(TAG, "Parsing socket data: " + jsonString);
+
         if (listener == null) return;
 
         if (jsonString == null) {
@@ -126,6 +155,7 @@ public class RadioSocket extends WebSocketListener {
             return;
         }
 
+        // Heartbeat init
         final SocketBaseResponse baseResponse = GSON.fromJson(jsonString, SocketBaseResponse.class);
         if (baseResponse.getOp() == 0) {
             final SocketConnectResponse connectResponse = GSON.fromJson(jsonString, SocketConnectResponse.class);
@@ -133,6 +163,7 @@ public class RadioSocket extends WebSocketListener {
             return;
         }
 
+        // Track update
         if (baseResponse.getOp() == 1) {
             final SocketUpdateResponse updateResponse = GSON.fromJson(jsonString, SocketUpdateResponse.class);
             if (!updateResponse.getT().equals("TRACK_UPDATE")) return;
