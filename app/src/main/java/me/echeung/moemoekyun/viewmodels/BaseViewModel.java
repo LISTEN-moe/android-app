@@ -5,6 +5,9 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.view.View;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.lang.ref.WeakReference;
 
@@ -28,6 +31,7 @@ public abstract class BaseViewModel extends BaseObservable {
         return LocaleUtil.setLocale(context);
     }
 
+
     // Network connection
     // ========================================================================
 
@@ -50,6 +54,17 @@ public abstract class BaseViewModel extends BaseObservable {
     @BindingAdapter("android:visibility")
     public static void setVisibility(View v, boolean visible) {
         v.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    @BindingAdapter("android:imageUrl")
+    public static void loadImage(ImageView v, String url) {
+        if (url == null) {
+            return;
+        }
+
+        Glide.with(v.getContext())
+                .load(url)
+                .into(v);
     }
 
 }

@@ -11,12 +11,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 
-        <android.support.v7.widget.CardView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            app:cardBackgroundColor="@color/dark_grey"
-            app:cardUseCompatPadding="true">
+            android:background="@color/dark_grey">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:imageUrl="@{vm.bannerUrl}"
+                android:scaleType="fitXY"
+                android:visibility="@{vm.bannerUrl != null}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -28,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
-                    android:text="@{vm.userName}"
+                    android:text="@{vm.user.getUsername()}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
@@ -38,7 +45,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-light"
-                    android:text="@{@plurals/user_requests(vm.userRequests, vm.userRequests)}"
+                    android:text="@{@plurals/user_requests(vm.user.getRequestsRemaining(), vm.user.getRequestsRemaining())}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
@@ -56,7 +63,7 @@
 
             </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        </FrameLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/user_avatar"
@@ -64,6 +71,7 @@
             android:layout_height="@dimen/avatar_size"
             android:layout_centerHorizontal="true"
             android:elevation="3dp"
+            android:imageUrl="@{vm.avatarUrl}"
             android:src="?attr/themeDefaultAvatarImage"
             app:civ_border_color="?attr/colorAccent"
             app:civ_border_width="2dp" />

@@ -5,10 +5,14 @@ import android.databinding.Bindable;
 
 import com.android.databinding.library.baseAdapters.BR;
 
+import me.echeung.listenmoeapi.models.User;
+
 public class UserViewModel extends BaseViewModel {
 
-    private String userName;
-    private int userRequests;
+    private User user;
+    private String avatarUrl;
+    private String bannerUrl;
+
     private int queueSize;
     private int queuePosition;
     private boolean hasFavorites;
@@ -18,31 +22,43 @@ public class UserViewModel extends BaseViewModel {
     }
 
     public void reset() {
-        setUserName(null);
-        setUserRequests(0);
+        setUser(null);
+        setAvatarUrl(null);
+        setBannerUrl(null);
+
         setQueueSize(0);
         setQueuePosition(0);
         setHasFavorites(false);
     }
 
     @Bindable
-    public String getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-        notifyPropertyChanged(BR.userName);
+    public void setUser(User user) {
+        this.user = user;
+        notifyPropertyChanged(BR.user);
     }
 
     @Bindable
-    public int getUserRequests() {
-        return userRequests;
+    public String getAvatarUrl() {
+        return avatarUrl;
     }
 
-    public void setUserRequests(int userRequests) {
-        this.userRequests = userRequests;
-        notifyPropertyChanged(BR.userRequests);
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+        notifyPropertyChanged(BR.avatarUrl);
+    }
+
+    @Bindable
+    public String getBannerUrl() {
+        return bannerUrl;
+    }
+
+    public void setBannerUrl(String bannerUrl) {
+        this.bannerUrl = bannerUrl;
+        notifyPropertyChanged(BR.bannerUrl);
     }
 
     @Bindable

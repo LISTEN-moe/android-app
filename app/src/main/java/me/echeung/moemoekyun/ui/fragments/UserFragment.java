@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
@@ -238,8 +239,15 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         App.getApiClient().getUserInfo(new UserInfoCallback() {
             @Override
             public void onSuccess(final User user) {
-                final String userName = user.getUsername();
-                viewModel.setUserName(userName);
+                viewModel.setUser(user);
+
+                if (user.getAvatarImage() != null) {
+                    viewModel.setAvatarUrl(APIClient.CDN_AVATAR_URL + user.getAvatarImage());
+                }
+
+                if (user.getBannerImage() != null) {
+                    viewModel.setBannerUrl(APIClient.CDN_BANNER_URL + user.getBannerImage());
+                }
             }
 
             @Override
@@ -256,7 +264,6 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
                     getActivity().runOnUiThread(() -> adapter.setSongs(favorites));
                 }
 
-//                viewModel.setUserRequests(userFavorites.getExtra().getRequests());
                 viewModel.setHasFavorites(!favorites.isEmpty());
 
                 completeRefresh();

@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import me.echeung.listenmoeapi.APIClient;
 
 @Getter
 @Builder
@@ -78,7 +79,7 @@ public class Song implements Parcelable {
         if (!albums.isEmpty()) {
             for (SongDescriptor album : albums) {
                 if (album.getImage() != null) {
-                    return "https://cdn.listen.moe/covers/" + album.getImage();
+                    return APIClient.CDN_ALBUM_ART_URL + album.getImage();
                 }
             }
         }

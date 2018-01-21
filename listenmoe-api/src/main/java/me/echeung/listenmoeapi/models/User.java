@@ -2,6 +2,7 @@ package me.echeung.listenmoeapi.models;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Builder
@@ -13,9 +14,11 @@ public class User {
     private String avatarImage;
     private String bannerImage;
     private String bio;
-    private int requestsRemaining;
     private int additionalRequests;
     private int uploads;
     private int uploadLimit;
     private int favorites;
+
+    @Setter
+    private int requestsRemaining;
 }

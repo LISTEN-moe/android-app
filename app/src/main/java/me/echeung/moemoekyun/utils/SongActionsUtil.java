@@ -15,7 +15,6 @@ import android.widget.Toast;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
 import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
 import me.echeung.listenmoeapi.models.Song;
-import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
@@ -129,7 +128,7 @@ public final class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
-        final int requests = App.getUserViewModel().getUserRequests();
+        final int requests = App.getUserViewModel().getUser().getRequestsRemaining();
         if (requests <= 0) {
             Toast.makeText(activity.getApplicationContext(), R.string.no_requests_left, Toast.LENGTH_SHORT).show();
             return;
@@ -147,7 +146,7 @@ public final class SongActionsUtil {
                         activity.sendBroadcast(reqEvent);
 
                         final int remainingReqs = requests - 1;
-                        App.getUserViewModel().setUserRequests(remainingReqs);
+                        App.getUserViewModel().getUser().setRequestsRemaining(remainingReqs);
 
                         Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.requested_song, song.getTitle()), Toast.LENGTH_LONG).show();
                     });
