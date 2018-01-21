@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.echeung.listenmoeapi.auth.AuthUtil;
+import me.echeung.listenmoeapi.cache.SongsCache;
 import me.echeung.listenmoeapi.callbacks.ArtistCallback;
 import me.echeung.listenmoeapi.callbacks.ArtistsCallback;
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
 import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
 import me.echeung.listenmoeapi.callbacks.SearchCallback;
+import me.echeung.listenmoeapi.callbacks.SongsCallback;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
 import me.echeung.listenmoeapi.models.Song;
@@ -62,6 +64,8 @@ public class APIClient {
     private final SongsService songsService;
     private final UsersService usersService;
 
+    private final SongsCache songsCache;
+
     private final RadioSocket socket;
     private final RadioStream stream;
 
@@ -95,6 +99,8 @@ public class APIClient {
         requestsService = retrofit.create(RequestsService.class);
         songsService = retrofit.create(SongsService.class);
         usersService = retrofit.create(UsersService.class);
+
+        songsCache = new SongsCache(this);
 
         socket = new RadioSocket(okHttpClient, authUtil);
         stream = new RadioStream(context);
@@ -291,6 +297,32 @@ public class APIClient {
     }
 
     /**
+     * Gets all songs.
+     *
+     * @param callback Listener to handle the response.
+     */
+    public void getSongs(final SongsCallback callback) {
+        if (!authUtil.isAuthenticated()) {
+            callback.onFailure(Messages.AUTH_ERROR);
+            return;
+        }
+
+        songsService.getSongs(authUtil.getAuthTokenWithPrefix())
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>() {
+                    @Override
+                    public void success(final SongsResponse response) {
+                        callback.onSuccess(response.getSongs());
+                    }
+
+                    @Override
+                    public void error(final String message) {
+                        Log.e(TAG, message);
+                        callback.onFailure(message);
+                    }
+                });
+    }
+
+    /**
      * Searches for songs.
      *
      * @param query    Search query string.
@@ -302,20 +334,19 @@ public class APIClient {
             return;
         }
 
-        songsService.getSongs(authUtil.getAuthTokenWithPrefix())
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>() {
-                    @Override
-                    public void success(final SongsResponse response) {
-                        List<Song> filteredSongs = filterSongs(response.getSongs(), query);
-                        callback.onSuccess(filteredSongs);
-                    }
+        songsCache.getSongs(new SongsCache.Callback() {
+            @Override
+            public void onRetrieve(List<SongListItem> songs) {
+                List<Song> filteredSongs = filterSongs(songs, query);
+                callback.onSuccess(filteredSongs);
+            }
 
-                    @Override
-                    public void error(final String message) {
-                        Log.e(TAG, message);
-                        callback.onFailure(message);
-                    }
-                });
+            @Override
+            public void onFailure(final String message) {
+                Log.e(TAG, message);
+                callback.onFailure(message);
+            }
+        });
     }
 
     /**
