@@ -100,6 +100,7 @@ public class ErrorHandlingAdapter {
                             try {
                                 BaseResponse error = errorConverter.convert(response.errorBody());
                                 callback.error(error.getMessage());
+                                return;
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }

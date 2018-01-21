@@ -40,7 +40,7 @@ public class APIClient {
 
     private static final String TAG = APIClient.class.getSimpleName();
 
-    private static final String BASE_URL = "https://dev.listen.moe/api/";
+    private static final String BASE_URL = "https://beta.listen.moe/api/";
 
     private static final String HEADER_USER_AGENT = "User-Agent";
     public static final String USER_AGENT = "me.echeung.moemoekyun";

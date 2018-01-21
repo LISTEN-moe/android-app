@@ -20,7 +20,7 @@ public class RadioSocket extends WebSocketListener {
 
     private static final String TAG = RadioSocket.class.getSimpleName();
 
-    private static final String SOCKET_URL = "wss://dev.listen.moe/gateway";
+    private static final String SOCKET_URL = "wss://beta.listen.moe/gateway";
 
     private static final Gson GSON = new Gson();
 
