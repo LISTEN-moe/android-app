@@ -14,7 +14,7 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 
-public class SongSortUtil {
+public final class SongSortUtil {
 
     private static final String PREF_LIST_PREFIX_TYPE = "song_sort_list_type_";
     private static final String PREF_LIST_PREFIX_DESC = "song_sort_list_desc_";
@@ -106,4 +106,5 @@ public class SongSortUtil {
         final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getBoolean(PREF_LIST_PREFIX_DESC + listKey, false);
     }
+
 }

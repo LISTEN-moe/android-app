@@ -6,7 +6,7 @@ import android.net.NetworkInfo;
 
 import me.echeung.moemoekyun.App;
 
-public class NetworkUtil {
+public final class NetworkUtil {
 
     public static boolean isNetworkAvailable(Context context) {
         if (context != null) {
@@ -23,4 +23,5 @@ public class NetworkUtil {
 
         return false;
     }
+
 }

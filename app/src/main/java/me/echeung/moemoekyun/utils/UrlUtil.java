@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-public class UrlUtil {
+public final class UrlUtil {
 
     public static void openUrl(Context context, String url) {
         final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         context.startActivity(browserIntent);
     }
+
 }

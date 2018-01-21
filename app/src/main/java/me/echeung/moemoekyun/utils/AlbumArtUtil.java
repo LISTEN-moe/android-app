@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
-public class AlbumArtUtil {
+public final class AlbumArtUtil {
 
     public static void getAlbumArtBitmap(Context context, String url, Callback callback) {
         new Handler(Looper.getMainLooper()).post(() -> {

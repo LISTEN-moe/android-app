@@ -18,7 +18,7 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
-public class SongActionsUtil {
+public final class SongActionsUtil {
 
     /**
      * Updates the favorite status of a song.
@@ -161,4 +161,5 @@ public class SongActionsUtil {
 
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
     }
+
 }

@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-public class PreferenceUtil {
+public final class PreferenceUtil {
 
     public static final String PREF_GENERAL_THEME = "pref_general_theme";
     public static final String PREF_GENERAL_LANGUAGE = "pref_general_language";
@@ -83,4 +83,5 @@ public class PreferenceUtil {
                 .remove(SLEEP_TIMER_MINS)
                 .apply();
     }
+
 }

@@ -13,9 +13,9 @@ import java.util.Locale;
 import me.echeung.moemoekyun.App;
 
 // https://proandroiddev.com/change-language-programmatically-at-runtime-on-android-5e6bc15c758
-public class LocaleUtil {
+public final class LocaleUtil {
 
-    protected static final String DEFAULT = "default";
+    static final String DEFAULT = "default";
 
     public static Context setLocale(@NonNull Context context) {
         if (App.getPreferenceUtil() == null) {
