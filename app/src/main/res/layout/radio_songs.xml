@@ -18,8 +18,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             android:adjustViewBounds="true"
-            android:maxHeight="100dp"
-            android:maxWidth="300dp"
+            android:maxHeight="80dp"
+            android:maxWidth="250dp"
             android:scaleType="fitCenter"
             app:srcCompat="?attr/themeLogoImage"
             tools:ignore="ContentDescription" />
