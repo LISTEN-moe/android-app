@@ -71,6 +71,18 @@ public class Song implements Parcelable {
         return String.format("%s - %s", getTitle(), getArtistString());
     }
 
+    public String getAlbumArtUrl() {
+        if (!albums.isEmpty()) {
+            for (SongDescriptor album : albums) {
+                if (album.getImage() != null) {
+                    return "https://cdn.listen.moe/covers/" + album.getImage();
+                }
+            }
+        }
+
+        return null;
+    }
+
     public boolean search(String query) {
         if (title != null && title.contains(query)) {
             return true;

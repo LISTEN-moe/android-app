@@ -38,6 +38,7 @@ import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
+import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.ISO8601;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
@@ -196,6 +197,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         try {
             this.trackStartTime = ISO8601.toCalendar(info.getStartTime());
         } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         viewModel.setLastSong(info.getLastPlayed().get(0));
@@ -245,6 +247,19 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
             Bitmap albumArt = background;
+
+            final String albumArtUrl = currentSong.getAlbumArtUrl();
+            if (albumArtUrl != null) {
+                AlbumArtUtil.getAlbumArtBitmap(this, albumArtUrl, bitmap -> {
+                    if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
+                        bitmap = StackBlur.blur(bitmap, 5F);
+                    }
+
+                    metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
+                    updateMediaSession(metaData);
+                });
+            }
+
             if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
                 albumArt = StackBlur.blur(albumArt, 5F);
             }
@@ -252,19 +267,22 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
         }
 
-        mediaSession.setMetadata(metaData.build());
+        updateMediaSession(metaData);
+    }
 
+    private void updateMediaSession(MediaMetadataCompat.Builder metaData) {
+        mediaSession.setMetadata(metaData.build());
         updateMediaSessionPlaybackState();
     }
 
     private void updateMediaSessionPlaybackState() {
         // Play/pause state
         final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
-            .setActions(MEDIA_SESSION_ACTIONS)
-            .setState(isStreamStarted()
-                    ? isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED
-                    : PlaybackStateCompat.STATE_STOPPED,
-                    0, 1);
+                .setActions(MEDIA_SESSION_ACTIONS)
+                .setState(isStreamStarted()
+                                ? isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED
+                                : PlaybackStateCompat.STATE_STOPPED,
+                        0, 1);
 
         // Favorite action
         if (App.getAuthUtil().isAuthenticated()) {
@@ -612,8 +630,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         intent.putExtra("album", song.getAlbumString());
         intent.putExtra("track", song.getTitle());
 
-        intent.putExtra("duration", song.getDuration());
-        intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - this.trackStartTime.getTimeInMillis());
+        if (trackStartTime != null) {
+            intent.putExtra("duration", song.getDuration());
+            intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - trackStartTime.getTimeInMillis());
+        }
 
         intent.putExtra("playing", isPlaying());
 
