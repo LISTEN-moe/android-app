@@ -22,9 +22,9 @@ public abstract class BaseActivity extends AppCompatActivity {
                 setTheme(R.style.AppThemeChristmas);
                 break;
 
-//            case PreferenceUtil.THEME_FOUR:
-//                setTheme(R.style.AppTheme);
-//                break;
+            case PreferenceUtil.THEME_FOUR:
+                setTheme(R.style.AppThemeFour);
+                break;
         }
 
         super.onCreate(savedInstanceState);

@@ -4,13 +4,13 @@
     <string-array name="pref_theme_names">
         <item>3.0</item>
         <item>Christmas</item>
-        <!--<item>3.0 + 1.0</item>-->
+        <item>3.0 + 1.0</item>
     </string-array>
 
     <string-array name="pref_theme_codes">
         <item>three</item>
         <item>christmas</item>
-        <!--<item>four</item>-->
+        <item>four</item>
     </string-array>
 
     <string-array name="pref_language_names">

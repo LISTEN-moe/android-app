@@ -11,6 +11,9 @@
     <color name="grey">#2B2E41</color>
     <color name="dark_grey">#1D1F2B</color>
 
+    <color name="christmas_accent">#E53935</color>
+    <color name="four_dark_grey">#212330</color>
+
     <color name="light_pink">#F75E7E</color>
     <color name="pink">#EC1A55</color>
 </resources>

@@ -34,14 +34,21 @@
 
     <!-- Christmas theme -->
     <style name="AppThemeChristmas" parent="AppTheme">
-        <item name="colorPrimary">#e53935</item>
-        <item name="colorPrimaryDark">#e53935</item>
-        <item name="colorAccent">#e53935</item>
+        <item name="colorPrimary">@color/christmas_accent</item>
+        <item name="colorPrimaryDark">@color/christmas_accent</item>
+        <item name="colorAccent">@color/christmas_accent</item>
 
-        <item name="themeColorAccent">#e53935</item>
+        <item name="themeColorAccent">@color/christmas_accent</item>
         <item name="themeBackgroundImage">@drawable/background_christmas</item>
         <item name="themeLogoImage">@drawable/logo_christmas</item>
         <item name="themeDefaultAvatarImage">@drawable/kanna_christmas</item>
+    </style>
+
+    <!-- 3.0 + 1.0 theme -->
+    <style name="AppThemeFour" parent="AppTheme">
+        <item name="android:windowBackground">@color/four_dark_grey</item>
+
+        <item name="themeBackgroundImage">@drawable/background_four</item>
     </style>
 
     <!-- TabHost -->
