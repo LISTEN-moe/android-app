@@ -6,7 +6,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
@@ -29,6 +28,9 @@ public class AppNotification {
     private RadioService service;
     private NotificationManager notificationManager;
 
+    private int lastSongId;
+    private Bitmap lastAlbumArt;
+
     AppNotification(RadioService service) {
         this.service = service;
         notificationManager = (NotificationManager) service.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -41,15 +43,21 @@ public class AppNotification {
 
         final Song song = getCurrentSong();
 
-        // Default album art
-        final Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.mipmap.ic_launcher);
+        // Use the already downloaded album art
+        Bitmap albumArt = null;
+        if (song != null && lastSongId == song.getId() && lastAlbumArt != null) {
+            albumArt = lastAlbumArt;
+        }
 
         update(song, albumArt);
 
-        // Update the notification with the downloaded album art as needed
-        final String albumArtUrl = song.getAlbumArtUrl();
-        if (albumArtUrl != null) {
-            AlbumArtUtil.getAlbumArtBitmap(service, song.getAlbumArtUrl(), NOTIFICATION_ALBUM_ART_MAX_SIZE, bitmap -> {
+        if (song != null && lastSongId != song.getId()) {
+            lastSongId = song.getId();
+
+            // Update the notification with the downloaded album art as needed
+            AlbumArtUtil.getAlbumArtBitmap(service, song, NOTIFICATION_ALBUM_ART_MAX_SIZE, bitmap -> {
+                lastAlbumArt = bitmap;
+
                 update(song, bitmap);
             });
         }

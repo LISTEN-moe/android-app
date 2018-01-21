@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.session.MediaSession;
 import android.net.ConnectivityManager;
@@ -84,8 +82,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
-    private Bitmap background;
-
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -138,9 +134,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         });
 
         socket.connect();
-
-        // Preload background image for media session
-        background = BitmapFactory.decodeResource(getResources(), R.drawable.background);
 
         App.getPreferenceUtil().registerListener(this);
     }
@@ -246,25 +239,14 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumString());
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
-            Bitmap albumArt = background;
+            AlbumArtUtil.getAlbumArtBitmap(this, currentSong, bitmap -> {
+                if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
+                    bitmap = StackBlur.blur(bitmap, 5F);
+                }
 
-            final String albumArtUrl = currentSong.getAlbumArtUrl();
-            if (albumArtUrl != null) {
-                AlbumArtUtil.getAlbumArtBitmap(this, albumArtUrl, bitmap -> {
-                    if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
-                        bitmap = StackBlur.blur(bitmap, 5F);
-                    }
-
-                    metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
-                    updateMediaSession(metaData);
-                });
-            }
-
-            if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
-                albumArt = StackBlur.blur(albumArt, 5F);
-            }
-
-            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
+                metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
+                updateMediaSession(metaData);
+            });
         }
 
         updateMediaSession(metaData);
