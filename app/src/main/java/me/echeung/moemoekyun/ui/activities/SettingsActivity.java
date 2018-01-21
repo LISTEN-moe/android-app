@@ -63,7 +63,7 @@ public class SettingsActivity extends BaseActivity {
                 return true;
             });
 
-                final Preference languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE);
+            final Preference languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE);
             setSummary(languageSetting);
             languageSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(languageSetting, o);

@@ -44,6 +44,11 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
             txtVersion.setText(versionText);
         } catch (PackageManager.NameNotFoundException e) {
         }
+
+        // Hide Play Store item depending on build flavor
+        if (!BuildConfig.FLAVOR.equals("playstore")) {
+            findViewById(R.id.about_app_rate).setVisibility(View.GONE);
+        }
     }
 
     private void setupClickListeners() {
