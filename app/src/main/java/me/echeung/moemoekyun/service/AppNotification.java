@@ -42,7 +42,7 @@ public class AppNotification {
         final Song song = getCurrentSong();
 
         // Default album art
-        final Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.drawable.background);
+        final Bitmap albumArt = BitmapFactory.decodeResource(service.getResources(), R.mipmap.ic_launcher);
 
         update(song, albumArt);
 
@@ -57,10 +57,6 @@ public class AppNotification {
 
     private void update(final Song song, final Bitmap albumArt) {
         if (!service.isStreamStarted()) {
-            return;
-        }
-
-        if (song.getId() != getCurrentSong().getId()) {
             return;
         }
 
