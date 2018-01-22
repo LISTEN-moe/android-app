@@ -18,12 +18,12 @@ public abstract class BaseActivity extends AppCompatActivity {
                 setTheme(R.style.AppTheme);
                 break;
 
-            case PreferenceUtil.THEME_CHRISTMAS:
-                setTheme(R.style.AppThemeChristmas);
+            case PreferenceUtil.THEME_LEGACY:
+                setTheme(R.style.AppThemeLegacy);
                 break;
 
-            case PreferenceUtil.THEME_FOUR:
-                setTheme(R.style.AppThemeFour);
+            case PreferenceUtil.THEME_CHRISTMAS:
+                setTheme(R.style.AppThemeChristmas);
                 break;
         }
 

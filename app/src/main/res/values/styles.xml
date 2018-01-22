@@ -13,9 +13,9 @@
         <item name="android:windowBackground">@drawable/splash_screen</item>
     </style>
 
-    <!-- Base application theme -->
+    <!-- 3.0 + 1.0 theme -->
     <style name="AppTheme" parent="SplashTheme">
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:windowBackground">@color/four_dark_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/light_grey</item>
 
@@ -27,9 +27,16 @@
         <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 
         <item name="themeColorAccent">@color/colorAccent</item>
-        <item name="themeBackgroundImage">@drawable/background</item>
+        <item name="themeBackgroundImage">@drawable/background_four</item>
         <item name="themeLogoImage">@drawable/logo</item>
         <item name="themeDefaultAvatarImage">@drawable/kanna</item>
+    </style>
+
+    <!-- Legacy 3.0 theme -->
+    <style name="AppThemeLegacy" parent="AppTheme">
+        <item name="android:windowBackground">@color/grey</item>
+
+        <item name="themeBackgroundImage">@drawable/background</item>
     </style>
 
     <!-- Christmas theme -->
@@ -42,13 +49,6 @@
         <item name="themeBackgroundImage">@drawable/background_christmas</item>
         <item name="themeLogoImage">@drawable/logo_christmas</item>
         <item name="themeDefaultAvatarImage">@drawable/kanna_christmas</item>
-    </style>
-
-    <!-- 3.0 + 1.0 theme -->
-    <style name="AppThemeFour" parent="AppTheme">
-        <item name="android:windowBackground">@color/four_dark_grey</item>
-
-        <item name="themeBackgroundImage">@drawable/background_four</item>
     </style>
 
     <!-- TabHost -->

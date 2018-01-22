@@ -16,9 +16,9 @@ public final class PreferenceUtil {
     public static final String PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart";
     public static final String PREF_LOCKSCREEN_ALBUMART_BLUR = "pref_lockscreen_albumart_blur";
 
-    public static final String THEME_DEFAULT = "three";
+    public static final String THEME_DEFAULT = "four";
+    public static final String THEME_LEGACY = "three";
     public static final String THEME_CHRISTMAS = "christmas";
-    public static final String THEME_FOUR = "four";
 
     private static final String SLEEP_TIMER_MINS = "pref_sleep_timer";
 
