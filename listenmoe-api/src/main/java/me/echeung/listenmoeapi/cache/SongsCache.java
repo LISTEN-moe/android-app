@@ -26,10 +26,13 @@ public class SongsCache {
 
     public SongsCache(APIClient apiClient) {
         this.apiClient = apiClient;
+
+        // Prime the cache
+        getSongs(null);
     }
 
     public void getSongs(Callback callback) {
-        if (lastUpdated != 0L && isCacheValid() && cachedSongs != null) {
+        if (lastUpdated != 0L && isCacheValid() && cachedSongs != null && callback != null) {
             callback.onRetrieve(cachedSongs);
         }
 
@@ -39,13 +42,17 @@ public class SongsCache {
                 lastUpdated = new GregorianCalendar().getTimeInMillis();
                 cachedSongs = songs;
 
-                callback.onRetrieve(cachedSongs);
+                if (callback != null) {
+                    callback.onRetrieve(cachedSongs);
+                }
             }
 
             @Override
             public void onFailure(String message) {
                 Log.e(TAG, message);
-                callback.onFailure(message);
+                if (callback != null) {
+                    callback.onFailure(message);
+                }
             }
         });
     }
