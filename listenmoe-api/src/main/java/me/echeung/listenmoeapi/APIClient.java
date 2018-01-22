@@ -42,7 +42,7 @@ public class APIClient {
 
     private static final String TAG = APIClient.class.getSimpleName();
 
-    private static final String BASE_URL = "https://beta.listen.moe/api/";
+    private static final String BASE_URL = "https://listen.moe/api/";
     public static final String CDN_ALBUM_ART_URL = "https://cdn.listen.moe/covers/";
     public static final String CDN_AVATAR_URL = "https://cdn.listen.moe/avatars/";
     public static final String CDN_BANNER_URL = "https://cdn.listen.moe/banners/";

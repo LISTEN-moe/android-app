@@ -58,18 +58,6 @@ public class Song implements Parcelable {
         return s.toString();
     }
 
-    public String getSourceString() {
-        StringBuilder s = new StringBuilder();
-        if (sources != null) {
-            for (String source : sources) {
-                if (s.length() != 0)
-                    s.append(", ");
-                s.append(source);
-            }
-        }
-        return s.toString();
-    }
-
     @Override
     public String toString() {
         return String.format("%s - %s", getTitle(), getArtistString());
