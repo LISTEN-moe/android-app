@@ -13,18 +13,23 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/controls"
             android:layout_alignParentTop="true"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/radio_album_art"
+                layout="@layout/radio_album_art" />
 
             <include
                 android:id="@+id/radio_songs"
                 layout="@layout/radio_songs" />
 
-        </FrameLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/controls"

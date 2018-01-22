@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <me.echeung.moemoekyun.ui.views.SquareImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:adjustViewBounds="true"
+            android:imageUrl="@{vm.albumArtUrl}"
+            android:maxHeight="250dp"
+            android:maxWidth="250dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/album"
+            tools:ignore="ContentDescription" />
+
+    </LinearLayout>
+
+</layout>

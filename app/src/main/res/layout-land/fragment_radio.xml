@@ -16,30 +16,53 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/controls"
-            android:gravity="center">
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/land_info">
 
             <include
-                android:id="@+id/radio_songs"
-                layout="@layout/radio_songs" />
+                android:id="@+id/radio_album_art"
+                layout="@layout/radio_album_art" />
 
         </FrameLayout>
 
-        <LinearLayout
-            android:id="@+id/controls"
+        <RelativeLayout
+            android:id="@+id/land_info"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="8dp"
-            android:gravity="center">
+            android:orientation="vertical">
 
-            <include
-                android:id="@+id/radio_controls"
-                layout="@layout/radio_controls" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/controls"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <include
+                    android:id="@+id/radio_songs"
+                    layout="@layout/radio_songs" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/controls"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true">
+
+                <include
+                    android:id="@+id/radio_controls"
+                    layout="@layout/radio_controls" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

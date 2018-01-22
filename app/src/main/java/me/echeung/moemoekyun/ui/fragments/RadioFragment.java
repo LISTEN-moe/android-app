@@ -40,6 +40,7 @@ public class RadioFragment extends Fragment {
 
         viewModel = App.getRadioViewModel();
 
+        binding.radioAlbumArt.setVm(viewModel);
         binding.radioSongs.setVm(viewModel);
         binding.radioControls.setVm(viewModel);
 
