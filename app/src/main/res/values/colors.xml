@@ -11,6 +11,8 @@
     <color name="grey">#2B2E41</color>
     <color name="dark_grey">#1D1F2B</color>
 
+    <color name="fifty_percent_black_overlay">#88000000</color>
+
     <color name="christmas_accent">#E53935</color>
     <color name="four_dark_grey">#212330</color>
 
