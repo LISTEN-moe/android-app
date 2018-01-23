@@ -156,13 +156,21 @@ public class SongListItem {
                     .build());
         }
 
+        List<SongDescriptor> sources = new ArrayList<>();
+        for (int i = 0; i < song.getSources().size(); i++) {
+            sources.add(SongDescriptor.builder()
+                    .name(song.getSources().get(i))
+                    .nameRomaji(song.getSourcesRomaji().get(i))
+                    .build());
+        }
+
         return Song.builder()
                 .id(song.getId())
                 .title(song.getTitle())
                 .titleRomaji(song.getTitleRomaji())
                 .albums(albums)
                 .artists(artists)
-                .sources(song.getSources())
+                .sources(sources)
                 .groups(song.getGroups())
                 .tags(song.getTags())
                 .duration(song.getDuration())

@@ -23,7 +23,7 @@ public class Song implements Parcelable {
     private String titleSearchRomaji;
     private List<SongDescriptor> albums;
     private List<SongDescriptor> artists;
-    private List<String> sources;
+    private List<SongDescriptor> sources;
     private List<String> groups;
     private List<String> tags;
     private String notes;
@@ -142,7 +142,7 @@ public class Song implements Parcelable {
         parcel.writeString(title);
         parcel.writeTypedList(albums);
         parcel.writeTypedList(artists);
-        parcel.writeStringList(sources);
+        parcel.writeTypedList(sources);
         parcel.writeInt(duration);
         parcel.writeByte(favorite ? (byte) 1 : 0);
     }
@@ -152,7 +152,7 @@ public class Song implements Parcelable {
         this.title = in.readString();
         in.readTypedList(this.albums, SongDescriptor.CREATOR);
         in.readTypedList(this.artists, SongDescriptor.CREATOR);
-        in.readStringList(this.sources);
+        in.readTypedList(this.sources, SongDescriptor.CREATOR);
         this.duration = in.readInt();
         this.favorite = in.readByte() == 1;
     }
