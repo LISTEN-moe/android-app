@@ -13,8 +13,6 @@ public class UserViewModel extends BaseViewModel {
     private String avatarUrl;
     private String bannerUrl;
 
-    private int queueSize;
-    private int queuePosition;
     private boolean hasFavorites;
 
     public UserViewModel(Context context) {
@@ -26,8 +24,6 @@ public class UserViewModel extends BaseViewModel {
         setAvatarUrl(null);
         setBannerUrl(null);
 
-        setQueueSize(0);
-        setQueuePosition(0);
         setHasFavorites(false);
     }
 
@@ -59,26 +55,6 @@ public class UserViewModel extends BaseViewModel {
     public void setBannerUrl(String bannerUrl) {
         this.bannerUrl = bannerUrl;
         notifyPropertyChanged(BR.bannerUrl);
-    }
-
-    @Bindable
-    public int getQueueSize() {
-        return queueSize;
-    }
-
-    public void setQueueSize(int queueSize) {
-        this.queueSize = queueSize;
-        notifyPropertyChanged(BR.queueSize);
-    }
-
-    @Bindable
-    public int getQueuePosition() {
-        return queuePosition;
-    }
-
-    public void setQueuePosition(int queuePosition) {
-        this.queuePosition = queuePosition;
-        notifyPropertyChanged(BR.queuePosition);
     }
 
     @Bindable

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
+        <variable name="userVm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
     </data>
 
     <FrameLayout
@@ -15,7 +15,7 @@
             android:layout_height="fill_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{!vm.hasFavorites}">
+            android:visibility="@{!userVm.hasFavorites}">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
             android:layout_height="fill_parent"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="@{vm.hasFavorites}">
+            android:visibility="@{userVm.hasFavorites}">
 
             <!-- Prevents EditText from automatically focusing -->
             <FrameLayout

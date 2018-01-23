@@ -31,6 +31,10 @@ public class RadioViewModel extends BaseViewModel {
     private Song lastSong;
     private Song secondLastSong;
 
+    private int queueSize;
+    private int inQueueByUser;
+    private int queuePosition;
+
     public RadioViewModel(Context context) {
         super(context);
 
@@ -51,6 +55,10 @@ public class RadioViewModel extends BaseViewModel {
 
         setLastSong(null);
         setSecondLastSong(null);
+
+        setQueueSize(0);
+        setInQueueByUser(0);
+        setQueuePosition(0);
     }
 
 
@@ -192,4 +200,39 @@ public class RadioViewModel extends BaseViewModel {
         this.secondLastSong = secondLastSong;
         notifyPropertyChanged(BR.secondLastSong);
     }
+
+
+    // Queue
+    // ========================================================================
+
+    @Bindable
+    public int getQueueSize() {
+        return queueSize;
+    }
+
+    public void setQueueSize(int queueSize) {
+        this.queueSize = queueSize;
+        notifyPropertyChanged(BR.queueSize);
+    }
+
+    @Bindable
+    public int getInQueueByUser() {
+        return inQueueByUser;
+    }
+
+    public void setInQueueByUser(int inQueueByUser) {
+        this.inQueueByUser = inQueueByUser;
+        notifyPropertyChanged(BR.inQueueByUser);
+    }
+
+    @Bindable
+    public int getQueuePosition() {
+        return queuePosition;
+    }
+
+    public void setQueuePosition(int queuePosition) {
+        this.queuePosition = queuePosition;
+        notifyPropertyChanged(BR.queuePosition);
+    }
+
 }

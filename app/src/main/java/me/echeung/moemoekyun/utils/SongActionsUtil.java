@@ -145,6 +145,7 @@ public final class SongActionsUtil {
                         final Intent reqEvent = new Intent(UserFragment.REQUEST_EVENT);
                         activity.sendBroadcast(reqEvent);
 
+                        // TODO: this doesn't update the user card because it's not a VM field
                         final int remainingReqs = requests - 1;
                         App.getUserViewModel().getUser().setRequestsRemaining(remainingReqs);
 

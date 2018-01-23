@@ -68,7 +68,8 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
 
         viewModel = App.getUserViewModel();
 
-        binding.setVm(viewModel);
+        binding.setRadioVm(App.getRadioViewModel());
+        binding.setUserVm(viewModel);
 
         vLoginMsg = binding.loginMsg.container;
         vUserContent = binding.userContent;

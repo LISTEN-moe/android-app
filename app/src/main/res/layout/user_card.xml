@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
+        <variable name="radioVm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
+        <variable name="userVm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
     </data>
 
     <RelativeLayout
@@ -22,16 +23,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
-                android:imageUrl="@{vm.bannerUrl}"
+                android:imageUrl="@{userVm.bannerUrl}"
                 android:scaleType="centerCrop"
-                android:visibility="@{vm.bannerUrl != null}"
+                android:visibility="@{userVm.bannerUrl != null}"
                 tools:ignore="ContentDescription" />
 
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/scrim"
-                android:visibility="@{vm.bannerUrl != null}" />
+                android:visibility="@{userVm.bannerUrl != null}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="48dp"
-                    android:text="@{vm.user.getUsername()}"
+                    android:text="@{userVm.user.getUsername()}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="20sp" />
@@ -53,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-light"
-                    android:text="@{@plurals/user_requests(vm.user.getRequestsRemaining(), vm.user.getRequestsRemaining())}"
+                    android:text="@{@plurals/user_requests(userVm.user.getRequestsRemaining(), userVm.user.getRequestsRemaining())}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="14sp" />
@@ -63,11 +64,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:fontFamily="sans-serif-light"
-                    android:text="@{@string/queue_info(vm.queueSize, vm.queuePosition)}"
+                    android:text="@{@string/queue_info(radioVm.queueSize, radioVm.queuePosition)}"
                     android:textAlignment="center"
                     android:textColor="@color/white"
                     android:textSize="14sp"
-                    android:visibility="@{vm.queuePosition != 0}" />
+                    android:visibility="@{radioVm.inQueueByUser != 0}" />
 
             </LinearLayout>
 
@@ -79,7 +80,7 @@
             android:layout_height="@dimen/avatar_size"
             android:layout_centerHorizontal="true"
             android:elevation="3dp"
-            android:imageUrl="@{vm.avatarUrl}"
+            android:imageUrl="@{userVm.avatarUrl}"
             android:src="?attr/themeDefaultAvatarImage"
             app:civ_border_color="?attr/colorAccent"
             app:civ_border_width="2dp" />
