@@ -24,6 +24,12 @@
         <license>BSD 3-Clause License</license>
     </notice>
     <notice>
+        <name>Lombok</name>
+        <url>https://projectlombok.org/</url>
+        <copyright>Copyright 2009-2018 The Project Lombok Authors</copyright>
+        <license>MIT</license>
+    </notice>
+    <notice>
         <name>OkHttp</name>
         <url>https://github.com/square/okhttp</url>
         <license>Apache Software License 2.0</license>
