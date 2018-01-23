@@ -17,11 +17,6 @@
 </a>
 -->
 
-<a href="https://www.amazon.com/gp/product/B075VJFSTL/ref=mas_pm_listen_moe">
-  <img height="50" alt="Get it on the Amazon app store"
-       src="https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/devportal2/res/images/amazon-underground-app-us-white.png" />
-</a>
-
 
 ## About
 
