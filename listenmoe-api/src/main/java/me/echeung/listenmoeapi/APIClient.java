@@ -146,7 +146,7 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void authenticateMfa(final String otpToken, final AuthCallback callback) {
-        authService.mfa(new AuthService.LoginMfaBody(otpToken))
+        authService.mfa(authUtil.getAuthTokenWithPrefix(), new AuthService.LoginMfaBody(otpToken))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
                     public void success(final AuthResponse response) {

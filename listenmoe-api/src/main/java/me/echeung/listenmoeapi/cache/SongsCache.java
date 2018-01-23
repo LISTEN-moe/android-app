@@ -2,7 +2,6 @@ package me.echeung.listenmoeapi.cache;
 
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 

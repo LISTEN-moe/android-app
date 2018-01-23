@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
-import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.ActivityAuthBinding;
@@ -49,16 +48,16 @@ public class AuthActivity extends BaseActivity {
         final String user = binding.authUsername.getText().toString().trim();
         final String pass = binding.authPassword.getText().toString().trim();
 
-        if (user.length() == 0 || pass.length() == 0) {
+        if (user.isEmpty() || pass.isEmpty()) {
             return;
         }
 
-        App.getApiClient().authenticate(user, pass, new AuthCallback() {
+        AuthCallback callback = new AuthCallback() {
             @Override
             public void onSuccess(final String token) {
-                runOnUiThread(() -> {
-                    App.getAuthUtil().setAuthToken(token);
+                App.getAuthUtil().setAuthToken(token);
 
+                runOnUiThread(() -> {
                     Intent returnIntent = new Intent();
                     setResult(Activity.RESULT_OK, returnIntent);
                     finish();
@@ -67,26 +66,33 @@ public class AuthActivity extends BaseActivity {
 
             @Override
             public void onMfaRequired(final String token) {
-                // TODO: MFA
+                App.getAuthUtil().setAuthToken(token);
+                viewModel.setShowMfa(true);
             }
 
             @Override
             public void onFailure(final String message) {
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), getAuthMessage(message), Toast.LENGTH_LONG).show());
+                viewModel.setShowMfa(false);
+
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show());
             }
-        });
+        };
+
+        // Login with OTP token
+        if (viewModel.getShowMfa()) {
+            final String otpToken = binding.authOtp.getText().toString().trim();
+
+            if (otpToken.length() != 6) {
+                return;
+            }
+
+            App.getApiClient().authenticateMfa(otpToken, callback);
+            return;
+        }
+
+
+        // Login
+        App.getApiClient().authenticate(user, pass, callback);
     }
 
-    private String getAuthMessage(final String message) {
-        switch (message) {
-            case Messages.INVALID_USER:
-                return getString(R.string.auth_error_name);
-            case Messages.INVALID_PASS:
-                return getString(R.string.auth_error_pass);
-            case Messages.ERROR:
-                return getString(R.string.auth_error_general);
-            default:
-                return message;
-        }
-    }
 }

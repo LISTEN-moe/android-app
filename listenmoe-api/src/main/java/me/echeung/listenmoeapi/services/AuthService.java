@@ -5,7 +5,7 @@ import me.echeung.listenmoeapi.ErrorHandlingAdapter;
 import me.echeung.listenmoeapi.responses.AuthResponse;
 import me.echeung.listenmoeapi.responses.BaseResponse;
 import retrofit2.http.Body;
-import retrofit2.http.Headers;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface AuthService {
@@ -15,9 +15,8 @@ public interface AuthService {
     @POST("login")
     ErrorHandlingAdapter.WrappedCall<AuthResponse> login(@Body LoginBody body);
 
-    @Headers("Authorization: Bearer Temp2FAJWT")
     @POST("login/mfa")
-    ErrorHandlingAdapter.WrappedCall<AuthResponse> mfa(@Body LoginMfaBody body);
+    ErrorHandlingAdapter.WrappedCall<AuthResponse> mfa(@Header("Authorization") String token, @Body LoginMfaBody body);
 
     @AllArgsConstructor
     public class RegisterBody {
