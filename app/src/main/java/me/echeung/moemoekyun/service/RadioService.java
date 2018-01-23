@@ -187,6 +187,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         final Song song = info.getSong();
         viewModel.setCurrentSong(song);
         viewModel.setAlbumArtUrl(song.getAlbumArtUrl());
+        viewModel.setIsFavorited(song.isFavorite());
 
         try {
             this.trackStartTime = ISO8601.toCalendar(info.getStartTime());
@@ -197,18 +198,12 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         viewModel.setLastSong(info.getLastPlayed().get(0));
         viewModel.setSecondLastSong(info.getLastPlayed().get(1));
 
-//            if (info.hasExtended()) {
-//                final SocketUpdateResponse.ExtendedInfo extended = info.getExtended();
-
-//                viewModel.setIsFavorited(extended.isFavorite());
-
-//                App.getUserViewModel().setQueueSize(extended.getQueue().getSongsInQueue());
-//                App.getUserViewModel().setQueuePosition(extended.getQueue().getInQueueBeforeUserSong());
-//            }
-
         viewModel.setListeners(info.getListeners());
         viewModel.setRequester(info.getRequester());
         viewModel.setEvent(info.getEvent());
+
+        App.getUserViewModel().setQueueSize(info.getQueue().getInQueue());
+        App.getUserViewModel().setQueuePosition(info.getQueue().getInQueueBeforeUser());
 
         updateMediaSession();
         updateNotification();
