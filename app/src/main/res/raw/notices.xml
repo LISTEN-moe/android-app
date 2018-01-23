@@ -27,7 +27,7 @@
         <name>Lombok</name>
         <url>https://projectlombok.org/</url>
         <copyright>Copyright 2009-2018 The Project Lombok Authors</copyright>
-        <license>MIT</license>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>OkHttp</name>
