@@ -48,7 +48,7 @@ public final class AlbumArtUtil {
 
     private static Bitmap getDefaultAlbumArt(Context context) {
         if (defaultAlbumArt == null) {
-            defaultAlbumArt = BitmapFactory.decodeResource(context.getResources(), R.drawable.album);
+            defaultAlbumArt = BitmapFactory.decodeResource(context.getResources(), R.drawable.blank);
         }
 
         return defaultAlbumArt;

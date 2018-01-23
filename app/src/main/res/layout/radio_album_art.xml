@@ -21,7 +21,7 @@
             android:maxHeight="250dp"
             android:maxWidth="250dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/album"
+            android:src="@drawable/blank"
             tools:ignore="ContentDescription" />
 
     </LinearLayout>
