@@ -43,12 +43,14 @@ public class RadioViewModel extends BaseViewModel {
 
     public void reset() {
         setCurrentSong(null);
-        setLastSong(null);
-        setSecondLastSong(null);
+        setAlbumArtUrl(null);
 
         setListeners(0);
         setRequester(null);
         setEvent(null);
+
+        setLastSong(null);
+        setSecondLastSong(null);
     }
 
 
@@ -95,7 +97,7 @@ public class RadioViewModel extends BaseViewModel {
             return;
         }
 
-//        this.currentSong.setFavorite(isFavorited);
+        this.currentSong.setFavorite(isFavorited);
         this.isFavorited = isFavorited;
         notifyPropertyChanged(BR.isFavorited);
     }

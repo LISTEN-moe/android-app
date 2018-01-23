@@ -1,5 +1,6 @@
 package me.echeung.listenmoeapi.responses;
 
+// TODO: remove this
 public class Messages {
     public static final String AUTH_ERROR = "error-login";
     public static final String AUTH_FAILURE = "Failed to authenticate token.";

@@ -74,8 +74,7 @@ public class AppNotification {
         final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
                 isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp,
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
-                getPlaybackActionService(RadioService.PLAY_PAUSE)
-        );
+                getPlaybackActionService(RadioService.PLAY_PAUSE));
 
         // Build the notification
         final Intent action = new Intent(service, MainActivity.class);
@@ -109,8 +108,7 @@ public class AppNotification {
                 builder.addAction(new NotificationCompat.Action(
                         song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
                         song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
-                        getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
-                ));
+                        getPlaybackActionService(RadioService.TOGGLE_FAVORITE)));
 
                 builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1));
             } else {

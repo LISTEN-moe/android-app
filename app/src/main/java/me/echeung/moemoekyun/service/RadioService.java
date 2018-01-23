@@ -29,7 +29,6 @@ import me.echeung.listenmoeapi.RadioSocket;
 import me.echeung.listenmoeapi.RadioStream;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
 import me.echeung.listenmoeapi.models.Song;
-import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
@@ -363,6 +362,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case MainActivity.AUTH_EVENT:
                     if (App.getAuthUtil().isAuthenticated()) {
+                        // TODO: reconnect
 //                        socket.reconnect();
                     } else {
                         App.getRadioViewModel().setIsFavorited(false);
@@ -372,6 +372,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 case ConnectivityManager.CONNECTIVITY_ACTION:
                     if (NetworkUtil.isNetworkAvailable(this)) {
+                        // TODO: reconnect
 //                        socket.reconnect();
                     }
             }
@@ -544,6 +545,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             return;
         }
 
+        // TODO: refactor this
         if (currentSong.isFavorite()) {
             App.getApiClient().unfavoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
                 @Override
@@ -562,9 +564,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 @Override
                 public void onFailure(final String message) {
-                    if (message.equals(Messages.AUTH_FAILURE)) {
-                        showLoginRequiredToast();
-                    }
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -585,9 +585,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
                 @Override
                 public void onFailure(final String message) {
-                    if (message.equals(Messages.AUTH_FAILURE)) {
-                        showLoginRequiredToast();
-                    }
+                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                 }
             });
         }
