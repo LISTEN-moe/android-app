@@ -202,9 +202,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         viewModel.setRequester(info.getRequester());
         viewModel.setEvent(info.getEvent());
 
-        viewModel.setQueueSize(info.getQueue().getInQueue());
-        viewModel.setInQueueByUser(info.getQueue().getInQueueByUser());
-        viewModel.setQueuePosition(info.getQueue().getInQueueBeforeUser());
+        if (info.getQueue() != null) {
+            viewModel.setQueueSize(info.getQueue().getInQueue());
+            viewModel.setInQueueByUser(info.getQueue().getInQueueByUser());
+            viewModel.setQueuePosition(info.getQueue().getInQueueBeforeUser());
+        }
 
         updateMediaSession();
         updateNotification();
