@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name="pref_theme_names">
-        <item>3.0 + 1.0</item>
+        <item>3.0+1.0</item>
         <item>Legacy</item>
         <item>Christmas</item>
     </string-array>
