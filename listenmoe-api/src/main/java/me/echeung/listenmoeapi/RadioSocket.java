@@ -115,6 +115,7 @@ public class RadioSocket extends WebSocketListener {
         reconnect();
     }
 
+    // TODO: heartbeat handler on dead thread after sleep, reconnect on wake?
     private void heartbeat(int milliseconds) {
         clearHeartbeat();
 

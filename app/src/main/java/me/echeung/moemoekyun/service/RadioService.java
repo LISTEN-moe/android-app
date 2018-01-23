@@ -594,7 +594,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     }
 
     /**
-     * Sends an intent out for services like Last.fm or Musicxmatch.
+     * Sends an intent out for services like Last.fm.
      *
      * @param action The broadcast event.
      */
@@ -610,6 +610,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         intent.putExtra("album", song.getAlbumString());
         intent.putExtra("track", song.getTitle());
 
+        // TODO: verify this works
         if (trackStartTime != null) {
             intent.putExtra("duration", song.getDuration());
             intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - trackStartTime.getTimeInMillis());
