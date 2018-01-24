@@ -13,6 +13,9 @@ android {
         versionCode 31
         versionName '2.0.0'
 
+        renderscriptTargetApi 27
+        renderscriptSupportModeEnabled true
+
         vectorDrawables.useSupportLibrary = true
     }
 

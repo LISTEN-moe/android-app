@@ -36,10 +36,10 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
+import me.echeung.moemoekyun.utils.BlurUtil;
 import me.echeung.moemoekyun.utils.ISO8601;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
-import me.echeung.moemoekyun.utils.StackBlur;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service implements RadioSocket.SocketListener, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -242,7 +242,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
             AlbumArtUtil.getAlbumArtBitmap(this, currentSong, bitmap -> {
                 if (App.getPreferenceUtil().shouldBlurLockscreenAlbumArt()) {
-                    bitmap = StackBlur.blur(bitmap, 5F);
+                    bitmap = BlurUtil.blur(getApplicationContext(), bitmap, 5f);
                 }
 
                 metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
