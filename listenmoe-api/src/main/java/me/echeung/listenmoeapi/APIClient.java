@@ -219,6 +219,21 @@ public class APIClient {
     }
 
     /**
+     * Toggles a song's favorite status
+     *
+     * @param songId Song to update favorite status of.
+     * @param isFavorite Whether the song is currently favorited.
+     * @param callback Listener to handle the response.
+     */
+    public void toggleFavorite(final String songId, final boolean isFavorite, final FavoriteSongCallback callback) {
+        if (isFavorite) {
+            unfavoriteSong(songId, callback);
+        } else {
+            favoriteSong(songId, callback);
+        }
+    }
+
+    /**
      * Favorites a song.
      *
      * @param songId   Song to favorite.

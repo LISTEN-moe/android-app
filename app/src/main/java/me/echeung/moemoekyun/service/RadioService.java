@@ -543,50 +543,30 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             return;
         }
 
-        // TODO: refactor this
-        if (currentSong.isFavorite()) {
-            App.getApiClient().unfavoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
-                @Override
-                public void onSuccess() {
-                    final Song currentSong = App.getRadioViewModel().getCurrentSong();
-                    if (currentSong.getId() == songId) {
-                        App.getRadioViewModel().setIsFavorited(false);
-                    }
+        final boolean isCurrentlyFavorite = currentSong.isFavorite();
 
-                    final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
-                    sendBroadcast(favIntent);
-
-                    updateNotification();
-                    updateMediaSessionPlaybackState();
+        final FavoriteSongCallback callback = new FavoriteSongCallback() {
+            @Override
+            public void onSuccess() {
+                final Song currentSong = App.getRadioViewModel().getCurrentSong();
+                if (currentSong.getId() == songId) {
+                    App.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
                 }
 
-                @Override
-                public void onFailure(final String message) {
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            App.getApiClient().favoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
-                @Override
-                public void onSuccess() {
-                    final Song currentSong = App.getRadioViewModel().getCurrentSong();
-                    if (currentSong.getId() == songId) {
-                        App.getRadioViewModel().setIsFavorited(true);
-                    }
+                final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
+                sendBroadcast(favIntent);
 
-                    final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
-                    sendBroadcast(favIntent);
+                updateNotification();
+                updateMediaSessionPlaybackState();
+            }
 
-                    updateNotification();
-                    updateMediaSessionPlaybackState();
-                }
+            @Override
+            public void onFailure(final String message) {
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            }
+        };
 
-                @Override
-                public void onFailure(final String message) {
-                    Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+        App.getApiClient().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
     }
 
     private void showLoginRequiredToast() {

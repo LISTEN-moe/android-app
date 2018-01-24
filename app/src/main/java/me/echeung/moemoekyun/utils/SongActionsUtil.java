@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -27,15 +26,11 @@ public final class SongActionsUtil {
                 activity.getString(R.string.action_unfavorite) :
                 activity.getString(R.string.action_favorite);
 
-        final DialogInterface.OnClickListener favoriteActionListener = song.isFavorite() ?
-                (dialogInterface, in) -> SongActionsUtil.unfavorite(activity, adapter, song) :
-                (dialogInterface, in) -> SongActionsUtil.favorite(activity, adapter, song);
-
         new AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(song.getTitle())
                 .setMessage(song.getArtistString() + "\n" + song.getAlbumString())
                 .setPositiveButton(android.R.string.cancel, null)
-                .setNegativeButton(favoriteAction, favoriteActionListener)
+                .setNegativeButton(favoriteAction, (dialogInterface, in) -> SongActionsUtil.toggleFavorite(activity, adapter, song))
                 .setNeutralButton(activity.getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(activity, adapter, song))
                 .create()
                 .show();
@@ -46,68 +41,36 @@ public final class SongActionsUtil {
      *
      * @param song The song to update the favorite status of.
      */
-    public static void favorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
+    public static void toggleFavorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
         final int songId = song.getId();
-        App.getApiClient().favoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
+        final boolean isCurrentlyFavorite = song.isFavorite();
+
+        final FavoriteSongCallback callback = new FavoriteSongCallback() {
             @Override
             public void onSuccess() {
                 if (App.getRadioViewModel().getCurrentSong().getId() == songId) {
-                    App.getRadioViewModel().setIsFavorited(true);
+                    App.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
                 }
 
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-                        song.setFavorite(true);
-                        adapter.notifyDataSetChanged();
-
-                        // Broadcast event
-                        final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
-                        activity.sendBroadcast(favIntent);
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(final String message) {
-                if (activity != null) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
-                }
-            }
-        });
-    }
-
-
-    /**
-     * Updates the favorite status of a song.
-     *
-     * @param song The song to update the favorite status of.
-     */
-    public static void unfavorite(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
-        final int songId = song.getId();
-        App.getApiClient().unfavoriteSong(String.valueOf(songId), new FavoriteSongCallback() {
-            @Override
-            public void onSuccess() {
-                if (App.getRadioViewModel().getCurrentSong().getId() == songId) {
-                    App.getRadioViewModel().setIsFavorited(false);
-                }
-
-                if (activity != null) {
-                    activity.runOnUiThread(() -> {
-                        song.setFavorite(false);
+                        song.setFavorite(!isCurrentlyFavorite);
                         adapter.notifyDataSetChanged();
 
                         // Broadcast event
                         final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
                         activity.sendBroadcast(favIntent);
 
-                        // Undo action
-                        final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
-                        if (coordinatorLayout != null) {
-                            final Snackbar undoBar = Snackbar.make(coordinatorLayout,
-                                    String.format(activity.getString(R.string.unfavorited), song.getTitle()),
-                                    Snackbar.LENGTH_LONG);
-                            undoBar.setAction(R.string.action_undo, (v) -> favorite(activity, adapter, song));
-                            undoBar.show();
+                        if (isCurrentlyFavorite) {
+                            // Undo action
+                            final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
+                            if (coordinatorLayout != null) {
+                                final Snackbar undoBar = Snackbar.make(coordinatorLayout,
+                                        String.format(activity.getString(R.string.unfavorited), song.getTitle()),
+                                        Snackbar.LENGTH_LONG);
+                                undoBar.setAction(R.string.action_undo, (v) -> toggleFavorite(activity, adapter, song));
+                                undoBar.show();
+                            }
                         }
                     });
                 }
@@ -119,7 +82,9 @@ public final class SongActionsUtil {
                     activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
                 }
             }
-        });
+        };
+
+        App.getApiClient().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
     }
 
     /**
