@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text='@{vm.getRequesterOrEvent()}'
+            android:text="@{vm.event != null ? vm.event : vm.requester}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textColorLink="?attr/colorAccent"
@@ -67,7 +67,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text='@{vm.listeners}'
+            android:text="@{vm.listeners}"
             android:textAlignment="center"
             android:textColor="@color/white" />
 

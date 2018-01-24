@@ -79,7 +79,7 @@
                         android:layout_marginBottom="16dp"
                         android:alpha="0.5"
                         android:fontFamily="sans-serif-light"
-                        android:text='@{vm.lastSong.toString()}'
+                        android:text="@{vm.lastSong.toString()}"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
@@ -90,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.25"
                         android:fontFamily="sans-serif-light"
-                        android:text='@{vm.secondLastSong.toString()}'
+                        android:text="@{vm.secondLastSong.toString()}"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
