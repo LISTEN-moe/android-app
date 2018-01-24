@@ -5,30 +5,23 @@
         <variable name="vm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
     </data>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:visibility="@{vm.currentSong == null}">
-
-            <ProgressBar
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:indeterminate="true" />
-
-        </RelativeLayout>
+        <ProgressBar
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:indeterminate="true"
+            android:visibility="@{vm.currentSong == null}" />
 
         <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:fillViewport="true"
             android:visibility="@{vm.currentSong != null}">
 
@@ -68,9 +61,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:alpha="@{vm.showHistory ? 1f : 0f}"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:visibility="@{vm.showHistory}">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/songList2"
@@ -101,6 +94,6 @@
 
         </ScrollView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>

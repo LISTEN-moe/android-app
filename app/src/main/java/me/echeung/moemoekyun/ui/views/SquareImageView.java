@@ -22,10 +22,13 @@ public class SquareImageView extends ImageView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
         final int width = Math.min(getMeasuredWidth(), getMaxWidth());
-        setMeasuredDimension(width, width);
+        final int height = Math.min(getMeasuredHeight(), getMaxHeight());
+
+        final int dimen = Math.min(width, height);
+        setMeasuredDimension(dimen, dimen);
     }
 
 }
