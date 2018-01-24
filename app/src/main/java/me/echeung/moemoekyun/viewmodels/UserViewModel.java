@@ -35,7 +35,7 @@ public class UserViewModel extends BaseViewModel {
 
     public void setUser(User user) {
         this.user = user;
-        setRequestsRemaining(user.getRequestsRemaining());
+        setRequestsRemaining(user != null ? user.getRequestsRemaining() : 0);
         notifyPropertyChanged(BR.user);
     }
 

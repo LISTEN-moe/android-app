@@ -71,7 +71,7 @@ public class RadioViewModel extends BaseViewModel {
 
     public void setCurrentSong(Song currentSong) {
         this.currentSong = currentSong;
-        setIsFavorited(currentSong.isFavorite());
+        setIsFavorited(currentSong != null && currentSong.isFavorite());
         notifyPropertyChanged(BR.currentSong);
     }
 
