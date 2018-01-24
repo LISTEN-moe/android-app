@@ -149,19 +149,27 @@ public class RadioSocket extends WebSocketListener {
             return;
         }
 
-        // Heartbeat init
         final SocketBaseResponse baseResponse = GSON.fromJson(jsonString, SocketBaseResponse.class);
-        if (baseResponse.getOp() == 0) {
-            final SocketConnectResponse connectResponse = GSON.fromJson(jsonString, SocketConnectResponse.class);
-            heartbeat(connectResponse.getD().getHeartbeat());
-            return;
-        }
+        switch (baseResponse.getOp()) {
+            // Heartbeat init
+            case 0:
+                final SocketConnectResponse connectResponse = GSON.fromJson(jsonString, SocketConnectResponse.class);
+                heartbeat(connectResponse.getD().getHeartbeat());
+                break;
 
-        // Track update
-        if (baseResponse.getOp() == 1) {
-            final SocketUpdateResponse updateResponse = GSON.fromJson(jsonString, SocketUpdateResponse.class);
-            if (!updateResponse.getT().equals("TRACK_UPDATE")) return;
-            listener.onSocketReceive(updateResponse.getD());
+            // Track update
+            case 1:
+                final SocketUpdateResponse updateResponse = GSON.fromJson(jsonString, SocketUpdateResponse.class);
+                if (!updateResponse.getT().equals("TRACK_UPDATE") && !updateResponse.getT().equals("TRACK_UPDATE_REQUEST")) return;
+                listener.onSocketReceive(updateResponse.getD());
+                break;
+
+            // Heartbeat ACK
+            case 10:
+                break;
+
+            default:
+                Log.d(TAG, "Received invalid socket data: " + jsonString);
         }
     }
 
