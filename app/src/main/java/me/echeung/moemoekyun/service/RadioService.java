@@ -188,7 +188,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         final Song song = info.getSong();
         viewModel.setCurrentSong(song);
         viewModel.setAlbumArtUrl(song.getAlbumArtUrl());
-        viewModel.setIsFavorited(song.isFavorite());
 
         try {
             this.trackStartTime = ISO8601.toCalendar(info.getStartTime());

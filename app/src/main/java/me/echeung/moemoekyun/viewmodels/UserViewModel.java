@@ -24,6 +24,7 @@ public class UserViewModel extends BaseViewModel {
         setAvatarUrl(null);
         setBannerUrl(null);
 
+        setRequestsRemaining(0);
         setHasFavorites(false);
     }
 
@@ -34,6 +35,7 @@ public class UserViewModel extends BaseViewModel {
 
     public void setUser(User user) {
         this.user = user;
+        setRequestsRemaining(user.getRequestsRemaining());
         notifyPropertyChanged(BR.user);
     }
 
@@ -58,6 +60,22 @@ public class UserViewModel extends BaseViewModel {
     }
 
     @Bindable
+    public int getRequestsRemaining() {
+        if (user == null) {
+            return 0;
+        }
+
+        return user.getRequestsRemaining();
+    }
+
+    public void setRequestsRemaining(int requestsRemaining) {
+        if (user != null) {
+            user.setRequestsRemaining(requestsRemaining);
+        }
+        notifyPropertyChanged(BR.requestsRemaining);
+    }
+
+    @Bindable
     public boolean getHasFavorites() {
         return hasFavorites;
     }
@@ -66,4 +84,5 @@ public class UserViewModel extends BaseViewModel {
         this.hasFavorites = hasFavorites;
         notifyPropertyChanged(BR.hasFavorites);
     }
+
 }

@@ -22,7 +22,6 @@ public class RadioViewModel extends BaseViewModel {
     private String albumArtUrl;
 
     private boolean isPlaying;
-    private boolean isFavorited;
     private int listeners;
     private User requester;
     private String event;
@@ -72,6 +71,7 @@ public class RadioViewModel extends BaseViewModel {
 
     public void setCurrentSong(Song currentSong) {
         this.currentSong = currentSong;
+        setIsFavorited(currentSong.isFavorite());
         notifyPropertyChanged(BR.currentSong);
     }
 
@@ -97,16 +97,19 @@ public class RadioViewModel extends BaseViewModel {
 
     @Bindable
     public boolean getIsFavorited() {
-        return isFavorited;
+        if (currentSong == null) {
+            return false;
+        }
+
+        return currentSong.isFavorite();
     }
 
     public void setIsFavorited(boolean isFavorited) {
-        if (this.currentSong == null) {
+        if (currentSong == null) {
             return;
         }
 
         this.currentSong.setFavorite(isFavorited);
-        this.isFavorited = isFavorited;
         notifyPropertyChanged(BR.isFavorited);
     }
 
