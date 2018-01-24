@@ -96,7 +96,6 @@ public class App extends Application implements ServiceConnection {
         if (!isServiceBound()) {
             service = radioService;
             isServiceBound = true;
-            apiClient.getSocket().setListener(radioService);
         }
     }
 

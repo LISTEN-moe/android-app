@@ -132,6 +132,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             }
         });
 
+        socket.setListener(this);
         socket.connect();
 
         App.getPreferenceUtil().registerListener(this);
