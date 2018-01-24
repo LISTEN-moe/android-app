@@ -27,11 +27,12 @@ public class RadioSocket extends WebSocketListener {
     private static final int RETRY_TIME_MIN = 250;
     private static final int RETRY_TIME_MAX = 4000;
     private int retryTime = RETRY_TIME_MIN;
+    private boolean attemptingReconnect = false;
 
     private final OkHttpClient client;
     private final AuthUtil authUtil;
 
-    private volatile WebSocket socket;
+    private WebSocket socket;
     private SocketListener listener;
 
     private Handler heartbeatHandler;
@@ -49,21 +50,35 @@ public class RadioSocket extends WebSocketListener {
     }
 
     public void connect() {
+        Log.d(TAG, "Connecting to socket...");
+
         if (socket != null) {
             disconnect();
         }
 
-        Log.d(TAG, "Connecting to socket...");
         final Request request = new Request.Builder().url(SOCKET_URL).build();
         socket = client.newWebSocket(request, this);
+    }
+
+    public void disconnect() {
+        Log.d(TAG, "Disconnected from socket");
+
+        if (socket != null) {
+            socket.cancel();
+            socket = null;
+        }
 
         clearHeartbeat();
     }
 
     public void reconnect() {
+        if (attemptingReconnect) return;
+
         Log.d(TAG, String.format("Reconnecting to socket in %d ms", retryTime));
 
         disconnect();
+
+        attemptingReconnect = true;
 
         // Exponential backoff
         SystemClock.sleep(retryTime);
@@ -74,16 +89,15 @@ public class RadioSocket extends WebSocketListener {
         connect();
     }
 
-    public void disconnect() {
-        Log.d(TAG, "Disconnected from socket");
-        if (socket != null) {
-            socket.cancel();
-            socket = null;
+    public void update() {
+        Log.d(TAG, "Requesting update from socket");
+
+        if (socket == null) {
+            connect();
+            return;
         }
 
-        clearHeartbeat();
-
-        parseWebSocketResponse(null);
+        socket.send("{ \"op\": 2 }");
     }
 
     @Override
@@ -91,6 +105,8 @@ public class RadioSocket extends WebSocketListener {
         Log.d(TAG, "Socket connection opened");
 
         retryTime = RETRY_TIME_MIN;
+        attemptingReconnect = false;
+
         clearHeartbeat();
 
         // Handshake with socket
@@ -100,6 +116,8 @@ public class RadioSocket extends WebSocketListener {
 
     @Override
     public void onMessage(WebSocket webSocket, String text) {
+        Log.d(TAG, "Received message from socket: " + text);
+
         parseWebSocketResponse(text);
     }
 
@@ -111,15 +129,19 @@ public class RadioSocket extends WebSocketListener {
 
     @Override
     public void onClosed(WebSocket webSocket, int code, String reason) {
-        Log.d(TAG, "Socket connection closed");
+        Log.d(TAG, "Socket connection closed: " + reason);
         reconnect();
     }
 
     // TODO: heartbeat handler on dead thread after sleep, reconnect on wake?
     private void heartbeat(int milliseconds) {
-        clearHeartbeat();
+        if (heartbeatTask != null) {
+            clearHeartbeat();
+        }
 
         heartbeatTask = () -> {
+            if (socket == null) return;
+
             Log.d(TAG, "Sending heartbeat to socket");
             socket.send("{ \"op\": 9 }");
 
@@ -140,9 +162,10 @@ public class RadioSocket extends WebSocketListener {
     }
 
     private void parseWebSocketResponse(final String jsonString) {
-        Log.d(TAG, "Parsing socket data: " + jsonString);
-
-        if (listener == null) return;
+        if (listener == null) {
+            Log.d(TAG, "Listener is null");
+            return;
+        }
 
         if (jsonString == null) {
             listener.onSocketFailure();

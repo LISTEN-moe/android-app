@@ -81,6 +81,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
+    private boolean isFirstConnectivityChange = true;
+
     @Override
     public IBinder onBind(Intent intent) {
         return binder;
@@ -311,7 +313,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     break;
 
                 case RadioService.UPDATE:
-//                    socket.reconnect();
+                    socket.update();
                     break;
 
                 case RadioService.TIMER_STOP:
@@ -359,19 +361,24 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     break;
 
                 case MainActivity.AUTH_EVENT:
-                    if (App.getAuthUtil().isAuthenticated()) {
-                        // TODO: reconnect
-//                        socket.reconnect();
-                    } else {
+                    socket.reconnect();
+                    if (!App.getAuthUtil().isAuthenticated()) {
                         App.getRadioViewModel().setIsFavorited(false);
                         updateNotification();
                     }
                     break;
 
                 case ConnectivityManager.CONNECTIVITY_ACTION:
+                    // Ignore the initial sticky broadcast on app start
+                    if (isFirstConnectivityChange) {
+                        isFirstConnectivityChange = false;
+                        break;
+                    }
+
                     if (NetworkUtil.isNetworkAvailable(this)) {
-                        // TODO: reconnect
-//                        socket.reconnect();
+                        socket.connect();
+                    } else {
+                        socket.disconnect();
                     }
             }
         }
