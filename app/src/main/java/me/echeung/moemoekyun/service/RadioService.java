@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.media.AudioManager;
 import android.media.session.MediaSession;
 import android.net.ConnectivityManager;
@@ -17,6 +18,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -72,6 +74,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private Calendar trackStartTime;
 
     private MediaSessionCompat mediaSession;
+    private int maxScreenLength;
 
     private AudioManager audioManager;
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
@@ -89,6 +92,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     @Override
     public void onCreate() {
+        maxScreenLength = getMaxScreenLength();
+
         initBroadcastReceiver();
         initMediaSession();
         initAudioManager();
@@ -240,7 +245,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
-            AlbumArtUtil.getAlbumArtBitmap(this, currentSong, bitmap -> {
+            AlbumArtUtil.getAlbumArtBitmap(this, currentSong, maxScreenLength, bitmap -> {
                 metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
                 updateMediaSession(metaData);
             });
@@ -613,6 +618,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 updateMediaSession();
                 break;
         }
+    }
+
+    private int getMaxScreenLength() {
+        final DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
 
     public class ServiceBinder extends Binder {

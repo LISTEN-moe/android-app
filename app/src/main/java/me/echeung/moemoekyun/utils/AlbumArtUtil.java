@@ -5,10 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
 
 import me.echeung.listenmoeapi.models.Song;
@@ -17,10 +17,6 @@ import me.echeung.moemoekyun.R;
 public final class AlbumArtUtil {
 
     private static Bitmap defaultAlbumArt;
-
-    public static void getAlbumArtBitmap(Context context, Song song, Callback callback) {
-        getAlbumArtBitmap(context, song, Target.SIZE_ORIGINAL, callback);
-    }
 
     public static void getAlbumArtBitmap(Context context, Song song, int size, Callback callback) {
         final String albumArtUrl = song.getAlbumArtUrl();
@@ -39,7 +35,7 @@ public final class AlbumArtUtil {
                     .load(url)
                     .into(new SimpleTarget<Bitmap>(size, size) {
                         @Override
-                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                        public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                             callback.onBitmapReady(resource);
                         }
                     });
