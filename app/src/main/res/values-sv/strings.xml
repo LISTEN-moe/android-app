@@ -95,5 +95,4 @@
     <string name="pref_header_lockscreen">Låsskärm</string>
     <string name="pref_title_lockscreen_albumart">Visa albumomslag</string>
     <string name="pref_title_lockscreen_albumart_summary">Visar albumomslag på låsskärmen och Android Auto</string>
-    <string name="pref_title_lockscreen_albumart_blur">Blurra albumomslag</string>
 </resources>

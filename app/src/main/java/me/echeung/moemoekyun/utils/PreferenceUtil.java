@@ -14,7 +14,6 @@ public final class PreferenceUtil {
     public static final String PREF_AUDIO_DUCK = "pref_audio_duck";
     public static final String PREF_AUDIO_PAUSE_ON_LOSS = "pref_audio_pause_on_loss";
     public static final String PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart";
-    public static final String PREF_LOCKSCREEN_ALBUMART_BLUR = "pref_lockscreen_albumart_blur";
 
     public static final String THEME_DEFAULT = "four";
     public static final String THEME_LEGACY = "three";
@@ -62,10 +61,6 @@ public final class PreferenceUtil {
 
     public boolean shouldShowLockscreenAlbumArt() {
         return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART, true);
-    }
-
-    public boolean shouldBlurLockscreenAlbumArt() {
-        return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART_BLUR, false);
     }
 
     public int getSleepTimer() {

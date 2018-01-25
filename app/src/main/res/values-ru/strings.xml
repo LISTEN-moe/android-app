@@ -95,5 +95,4 @@
     <string name="pref_header_lockscreen">Экран блокировки</string>
     <string name="pref_title_lockscreen_albumart">Показывать обложку альбома</string>
     <string name="pref_title_lockscreen_albumart_summary">Показывает обложку альбома на экране блокировки и в Android Auto</string>
-    <string name="pref_title_lockscreen_albumart_blur">Затуманить обложку альбома</string>
 </resources>

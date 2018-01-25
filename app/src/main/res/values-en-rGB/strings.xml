@@ -95,5 +95,4 @@
     <string name="pref_header_lockscreen">Lockscreen</string>
     <string name="pref_title_lockscreen_albumart">Show album cover</string>
     <string name="pref_title_lockscreen_albumart_summary">Displays album art on lockscreen and Android Auto</string>
-    <string name="pref_title_lockscreen_albumart_blur">Blur album cover</string>
 </resources>

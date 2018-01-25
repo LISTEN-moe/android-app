@@ -94,5 +94,4 @@
     <string name="pref_header_lockscreen">Pantalla de bloqueo</string>
     <string name="pref_title_lockscreen_albumart">Mostrar cover del album</string>
     <string name="pref_title_lockscreen_albumart_summary">Mostrar el arte del album en la pantalla de bloqueo y en Android Auto</string>
-    <string name="pref_title_lockscreen_albumart_blur">Difuminar el cover del album</string>
 </resources>

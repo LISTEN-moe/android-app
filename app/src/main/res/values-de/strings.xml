@@ -94,5 +94,4 @@
     <string name="pref_header_lockscreen">Sperrbildschirm</string>
     <string name="pref_title_lockscreen_albumart">Zeige Albumcover</string>
     <string name="pref_title_lockscreen_albumart_summary">Zeige das Albumcover auf dem Sperrbildschirm und Android Auto</string>
-    <string name="pref_title_lockscreen_albumart_blur">Füge Unschärfe dem Albumcover hinzu</string>
 </resources>
