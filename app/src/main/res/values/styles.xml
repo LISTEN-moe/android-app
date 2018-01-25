@@ -24,7 +24,7 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
 
         <!-- Toolbar -->
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 
         <item name="themeColorAccent">@color/colorAccent</item>
         <item name="themeBackgroundImage">@drawable/background_four</item>
