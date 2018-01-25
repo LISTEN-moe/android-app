@@ -8,7 +8,7 @@
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_margin="16dp">
 
         <!-- Default album art -->
@@ -16,8 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:maxHeight="250dp"
-            android:maxWidth="250dp"
             android:scaleType="centerCrop"
             android:src="@drawable/blank"
             tools:ignore="ContentDescription" />
@@ -28,8 +26,6 @@
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
             android:imageUrl="@{vm.albumArtUrl}"
-            android:maxHeight="250dp"
-            android:maxWidth="250dp"
             android:scaleType="centerCrop"
             android:visibility="@{vm.albumArtUrl != null}"
             tools:ignore="ContentDescription" />
