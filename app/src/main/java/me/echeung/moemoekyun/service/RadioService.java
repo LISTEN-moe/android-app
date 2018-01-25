@@ -236,7 +236,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistString())
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumString());
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumString())
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
             AlbumArtUtil.getAlbumArtBitmap(this, currentSong, bitmap -> {
