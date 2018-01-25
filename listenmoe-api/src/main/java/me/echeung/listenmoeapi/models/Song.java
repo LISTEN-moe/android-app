@@ -140,20 +140,34 @@ public class Song implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(title);
+        parcel.writeString(titleRomaji);
+        parcel.writeString(titleSearchRomaji);
         parcel.writeTypedList(albums);
         parcel.writeTypedList(artists);
         parcel.writeTypedList(sources);
+        parcel.writeStringList(groups);
+        parcel.writeStringList(tags);
+        parcel.writeString(notes);
         parcel.writeInt(duration);
+        parcel.writeByte(enabled ? (byte) 1 : 0);
+        parcel.writeParcelable(uploader, 0);
         parcel.writeByte(favorite ? (byte) 1 : 0);
     }
 
     public Song(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
+        this.titleRomaji = in.readString();
+        this.titleSearchRomaji = in.readString();
         in.readTypedList(this.albums, SongDescriptor.CREATOR);
         in.readTypedList(this.artists, SongDescriptor.CREATOR);
         in.readTypedList(this.sources, SongDescriptor.CREATOR);
+        in.readStringList(this.groups);
+        in.readStringList(this.tags);
+        this.notes = in.readString();
         this.duration = in.readInt();
+        this.enabled = in.readByte() == 1;
+        this.uploader = in.readParcelable(User.class.getClassLoader());
         this.favorite = in.readByte() == 1;
     }
 
@@ -166,4 +180,5 @@ public class Song implements Parcelable {
             return new Song[size];
         }
     };
+
 }
