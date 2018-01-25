@@ -6,12 +6,23 @@
         <variable name="vm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
     </data>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:layout_margin="16dp">
 
+        <!-- Default album art -->
+        <me.echeung.moemoekyun.ui.views.SquareImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:maxHeight="250dp"
+            android:maxWidth="250dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/blank"
+            tools:ignore="ContentDescription" />
+
+        <!-- Shows downloaded album art -->
         <me.echeung.moemoekyun.ui.views.SquareImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -20,9 +31,9 @@
             android:maxHeight="250dp"
             android:maxWidth="250dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/blank"
+            android:visibility="@{vm.albumArtUrl != null}"
             tools:ignore="ContentDescription" />
 
-    </LinearLayout>
+    </FrameLayout>
 
 </layout>

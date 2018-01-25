@@ -46,7 +46,6 @@ public class RadioViewModel extends BaseViewModel {
 
     public void reset() {
         setCurrentSong(null);
-        setAlbumArtUrl(null);
 
         setListeners(0);
         setRequester(null);
@@ -72,6 +71,7 @@ public class RadioViewModel extends BaseViewModel {
     public void setCurrentSong(Song currentSong) {
         this.currentSong = currentSong;
         setIsFavorited(currentSong != null && currentSong.isFavorite());
+        setAlbumArtUrl(currentSong != null ? currentSong.getAlbumArtUrl() : null);
         notifyPropertyChanged(BR.currentSong);
     }
 

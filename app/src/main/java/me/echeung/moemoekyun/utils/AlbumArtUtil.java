@@ -8,6 +8,8 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -33,6 +35,9 @@ public final class AlbumArtUtil {
             Glide.with(context.getApplicationContext())
                     .asBitmap()
                     .load(url)
+                    .apply(new RequestOptions()
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .centerCrop())
                     .into(new SimpleTarget<Bitmap>(size, size) {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {

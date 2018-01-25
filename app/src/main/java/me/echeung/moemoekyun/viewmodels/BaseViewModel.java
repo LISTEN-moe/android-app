@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 
 import java.lang.ref.WeakReference;
@@ -59,17 +61,16 @@ public abstract class BaseViewModel extends BaseObservable {
 
     @BindingAdapter("android:imageUrl")
     public static void loadImage(ImageView v, String url) {
-        if (url == null) {
-            return;
-        }
-
         // Free up previous resources
         Glide.with(v.getContext())
                 .clear(v);
 
-        Glide.with(v.getContext())
-                .load(url)
-                .into(new DrawableImageViewTarget(v).waitForLayout());
+        if (url != null) {
+            Glide.with(v.getContext())
+                    .load(url)
+                    .apply(new RequestOptions().centerCrop())
+                    .into(new DrawableImageViewTarget(v).waitForLayout());
+        }
     }
 
 }
