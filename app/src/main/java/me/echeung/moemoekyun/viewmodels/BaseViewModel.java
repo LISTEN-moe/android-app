@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.DrawableImageViewTarget;
 
 import java.lang.ref.WeakReference;
 
@@ -62,9 +63,13 @@ public abstract class BaseViewModel extends BaseObservable {
             return;
         }
 
+        // Free up previous resources
+        Glide.with(v.getContext())
+                .clear(v);
+
         Glide.with(v.getContext())
                 .load(url)
-                .into(v);
+                .into(new DrawableImageViewTarget(v).waitForLayout());
     }
 
 }

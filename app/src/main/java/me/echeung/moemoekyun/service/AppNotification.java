@@ -23,7 +23,7 @@ public class AppNotification {
 
     private static final int NOTIFICATION_ID = 1;
 
-    private static final int NOTIFICATION_ALBUM_ART_MAX_SIZE = 500;
+    private static final int NOTIFICATION_ALBUM_ART_MAX_SIZE = 300;
 
     private RadioService service;
     private NotificationManager notificationManager;
