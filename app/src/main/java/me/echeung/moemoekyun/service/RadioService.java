@@ -590,6 +590,9 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         final Song song = App.getRadioViewModel().getCurrentSong();
         if (song == null || !App.getPreferenceUtil().shouldBroadcastIntent()) return;
 
+        // Scrobbling only works if there's actually progress
+        if (song.getDuration() == 0 || trackStartTime == null) return;
+
         final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
 
         intent.putExtra("id", song.getId());
@@ -598,11 +601,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         intent.putExtra("album", song.getAlbumString());
         intent.putExtra("track", song.getTitle());
 
-        // TODO: verify this works
-        if (trackStartTime != null) {
-            intent.putExtra("duration", song.getDuration());
-            intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - trackStartTime.getTimeInMillis());
-        }
+        intent.putExtra("duration", song.getDuration());
+        intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - trackStartTime.getTimeInMillis());
 
         intent.putExtra("playing", isPlaying());
 
