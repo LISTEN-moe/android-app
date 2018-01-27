@@ -34,8 +34,10 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
+import me.echeung.moemoekyun.utils.SearchBarUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
+import me.echeung.moemoekyun.viewmodels.SearchBarViewModel;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
 public class UserFragment extends Fragment implements SongAdapter.OnSongItemClickListener {
@@ -84,34 +86,6 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         vUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         vUserFavorites.setAdapter(adapter);
 
-        // Set up favorites filtering
-        final EditText vFilterQuery = binding.favorites.favoritesSearchBar.query;
-        vFilterQuery.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                final String query = editable.toString().trim().toLowerCase();
-                adapter.filter(query);
-            }
-        });
-
-        // Set up favorites sorting
-        binding.favorites.favoritesSearchBar.overflowBtn.setOnClickListener(v -> {
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), binding.favorites.favoritesSearchBar.overflowBtn);
-            popupMenu.inflate(R.menu.menu_sort);
-
-            SongSortUtil.initSortMenu(getContext(), LIST_ID, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(this::handleMenuItemClick);
-            popupMenu.show();
-        });
-
         // Pull to refresh
         swipeRefreshLayout = binding.userFavoritesContainer;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
@@ -134,6 +108,7 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
             }
         });
 
+        initSearchBar();
         initBroadcastReceiver();
         initUserContent();
 
@@ -177,22 +152,9 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         super.onDestroy();
     }
 
-    private boolean handleMenuItemClick(MenuItem item) {
-        if (SongSortUtil.handleSortMenuItem(item, adapter)) {
-            return true;
-        }
-
-        if (item.getItemId() == R.id.action_random_request) {
-            final Song randomSong = adapter.getRandomRequestSong();
-            if (randomSong != null) {
-                SongActionsUtil.request(getActivity(), adapter, randomSong);
-            } else {
-                Toast.makeText(getActivity(), getString(R.string.all_cooldown), Toast.LENGTH_SHORT).show();
-            }
-            return true;
-        }
-
-        return false;
+    private void initSearchBar() {
+        SearchBarUtil searchBarUtil = new SearchBarUtil(getActivity(), binding.favorites.favoritesSearchBar, adapter, LIST_ID);
+        searchBarUtil.init();
     }
 
     private void initBroadcastReceiver() {

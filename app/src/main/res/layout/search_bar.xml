@@ -2,12 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.SearchBarViewModel" />
         <variable name="searchHint" type="java.lang.String" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <!-- Prevents EditText from automatically focusing -->
@@ -19,19 +21,31 @@
 
         <EditText
             android:id="@+id/query"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignEnd="@id/overflow_btn"
-            android:layout_alignParentStart="true"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:backgroundTint="@color/light_grey"
             android:hint="@{searchHint}"
             android:importantForAutofill="no"
-            android:inputType="textNoSuggestions"
             android:maxLines="1"
             android:padding="16dp"
+            android:text="@={vm.query}"
             android:textColor="@color/white"
             android:textColorHint="@color/light_grey"
             android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btn_clear_search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0.5"
+            android:background="@drawable/round_selector"
+            android:contentDescription="@string/clear_query"
+            android:padding="16dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_cancel_white_24dp"
+            android:visibility="@{vm.query != null &amp;&amp; !vm.query.isEmpty()}"
+            android:onClick="@{() -> vm.clearQuery()}"  />
 
         <ImageButton
             android:id="@+id/overflow_btn"
@@ -46,6 +60,6 @@
             android:src="@drawable/ic_more_vert_white_24dp"
             android:tint="@color/light_grey" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>
