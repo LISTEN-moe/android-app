@@ -8,10 +8,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +25,12 @@ import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
+import me.echeung.moemoekyun.adapters.SongsList;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.SearchBarUtil;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements SongsList.SongListLoader {
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
 
@@ -47,10 +44,8 @@ public class UserFragment extends Fragment {
 
     private UserViewModel viewModel;
 
-    // Favorites list
-    private SongAdapter adapter;
-
     private SwipeRefreshLayout swipeRefreshLayout;
+    private SongsList songsList;
 
     // Receiver
     private IntentFilter intentFilter;
@@ -73,20 +68,15 @@ public class UserFragment extends Fragment {
         final Button vBtnLogin = binding.loginMsg.btnLogin;
         vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showAuthActivity());
 
-        // Favorites list adapter
-        adapter = new SongAdapter(getActivity(), LIST_ID);
-        final RecyclerView vUserFavorites = binding.favorites.favoritesList;
-        vUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
-        vUserFavorites.setAdapter(adapter);
-
         // Pull to refresh
         swipeRefreshLayout = binding.userFavoritesContainer;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(this::getUserFavorites);
+        swipeRefreshLayout.setOnRefreshListener(() -> songsList.loadSongs());
         swipeRefreshLayout.setRefreshing(false);
 
         // Only allow pull to refresh when user is at the top of the list
-        vUserFavorites.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        final RecyclerView favoritesList = binding.favorites.favoritesList.list;
+        favoritesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -94,8 +84,8 @@ public class UserFragment extends Fragment {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int topRowVerticalPosition = vUserFavorites.getChildCount() != 0 ?
-                        vUserFavorites.getChildAt(0).getTop() :
+                int topRowVerticalPosition = favoritesList.getChildCount() != 0 ?
+                        favoritesList.getChildAt(0).getTop() :
                         0;
                 swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
             }
@@ -146,24 +136,8 @@ public class UserFragment extends Fragment {
     }
 
     private void initSearchBar() {
-        SearchBarUtil searchBarUtil = new SearchBarUtil(getActivity(), binding.favorites.favoritesSearchBar, adapter, LIST_ID)
-                .withTextWatcher(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable editable) {
-                        final String query = editable.toString().trim().toLowerCase();
-                        adapter.filter(query);
-                    }
-                });
-
-        searchBarUtil.init();
+        songsList = new SongsList(getActivity(), binding.favorites.favoritesList, LIST_ID, this);
+        songsList.init();
     }
 
     private void initBroadcastReceiver() {
@@ -204,7 +178,6 @@ public class UserFragment extends Fragment {
         }
 
         getUserInfo();
-        getUserFavorites();
     }
 
     private void getUserInfo() {
@@ -228,7 +201,8 @@ public class UserFragment extends Fragment {
         });
     }
 
-    private void getUserFavorites() {
+    @Override
+    public void loadSongs(SongAdapter adapter) {
         App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
             @Override
             public void onSuccess(final List<Song> favorites) {
@@ -246,6 +220,10 @@ public class UserFragment extends Fragment {
                 completeRefresh();
             }
         });
+    }
+
+    @Override
+    public void onFilter(String query, boolean hasResults) {
     }
 
     private void completeRefresh() {

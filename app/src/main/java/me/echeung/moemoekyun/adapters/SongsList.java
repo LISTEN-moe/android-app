@@ -1,57 +1,64 @@
-package me.echeung.moemoekyun.utils;
+package me.echeung.moemoekyun.adapters;
 
 import android.app.Activity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.databinding.SearchBarBinding;
+import me.echeung.moemoekyun.databinding.SongsListBinding;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
+import me.echeung.moemoekyun.utils.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.SearchBarViewModel;
 
-public class SearchBarUtil {
+public class SongsList {
 
     private WeakReference<Activity> activity;
-    private SearchBarBinding binding;
+    private SongsListBinding binding;
     private SongAdapter adapter;
     private String listId;
+    private SongListLoader loader;
 
-    private TextWatcher textWatcher;
-    private TextView.OnEditorActionListener onEditorActionListener;
-
-    public SearchBarUtil(Activity activity, SearchBarBinding binding, SongAdapter adapter, String listId) {
+    public SongsList(Activity activity, SongsListBinding binding, String listId, SongListLoader loader) {
         this.activity = new WeakReference<>(activity);
         this.binding = binding;
-        this.adapter = adapter;
         this.listId = listId;
-    }
+        this.loader = loader;
 
-    public SearchBarUtil withTextWatcher(TextWatcher textWatcher) {
-        this.textWatcher = textWatcher;
-        return this;
-    }
-
-    public SearchBarUtil withOnEditorActionListener(TextView.OnEditorActionListener onEditorActionListener) {
-        this.onEditorActionListener = onEditorActionListener;
-        return this;
+        this.adapter = new SongAdapter(activity, listId);
+        final RecyclerView songsList = binding.list;
+        songsList.setLayoutManager(new LinearLayoutManager(activity));
+        songsList.setAdapter(adapter);
     }
 
     public void init() {
         binding.setVm(new SearchBarViewModel());
 
-        if (textWatcher != null) {
-            binding.query.addTextChangedListener(textWatcher);
-        }
+        binding.query.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
-        if (onEditorActionListener != null) {
-            binding.query.setOnEditorActionListener(onEditorActionListener);
-        }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // TODO: debounce this
+                final String query = editable.toString().trim().toLowerCase();
+                adapter.filter(query);
+
+                loader.onFilter(query, adapter.getItemCount() != 0);
+            }
+        });
 
         binding.overflowBtn.setOnClickListener(v -> {
             final Activity activityRef = this.activity.get();
@@ -64,6 +71,12 @@ public class SearchBarUtil {
             popupMenu.setOnMenuItemClickListener(this::handleMenuItemClick);
             popupMenu.show();
         });
+
+        loadSongs();
+    }
+
+    public void loadSongs() {
+        loader.loadSongs(adapter);
     }
 
     private boolean handleMenuItemClick(MenuItem item) {
@@ -86,4 +99,10 @@ public class SearchBarUtil {
 
         return false;
     }
+
+    public interface SongListLoader {
+        void loadSongs(SongAdapter adapter);
+        void onFilter(String query, boolean hasResults);
+    }
+
 }

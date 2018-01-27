@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:binding="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -29,27 +28,15 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             android:visibility="@{userVm.hasFavorites}">
 
             <include
-                layout="@layout/search_bar"
-                android:id="@+id/favorites_search_bar"
-                binding:searchHint="@{@string/filter_favorites}" />
-
-            <android.support.v7.widget.RecyclerView
+                layout="@layout/songs_list"
                 android:id="@+id/favorites_list"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                app:fastScrollEnabled="true"
-                app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
-                app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
-                app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
-                app:fastScrollVerticalTrackDrawable="@drawable/line_drawable" />
+                binding:searchHint="@{@string/filter_favorites}" />
 
         </LinearLayout>
 
