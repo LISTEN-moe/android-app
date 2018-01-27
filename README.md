@@ -10,12 +10,10 @@
        src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
 </a>
 
-<!--
 <a href="https://f-droid.org/app/me.echeung.moemoekyun.fdroid">
   <img height="50" alt="Get it on F-Droid"
        src="https://f-droid.org/badge/get-it-on.png">
 </a>
--->
 
 
 ## About
