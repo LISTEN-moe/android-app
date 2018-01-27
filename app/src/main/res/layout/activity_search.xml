@@ -84,13 +84,6 @@
                 android:orientation="vertical"
                 android:visibility="@{!vm.hasResults}">
 
-                <ImageView
-                    android:id="@+id/search_placeholder"
-                    android:layout_width="156dp"
-                    android:layout_height="200dp"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="16dp" />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

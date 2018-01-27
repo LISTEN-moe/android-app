@@ -4,7 +4,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import de.psdev.licensesdialog.LicensesDialog;
 import me.echeung.moemoekyun.BuildConfig;
@@ -29,11 +32,11 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setupPackageInfo();
+        setupInfo();
         setupClickListeners();
     }
 
-    private void setupPackageInfo() {
+    private void setupInfo() {
         try {
             final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             final TextView txtVersion = findViewById(R.id.app_version);
@@ -49,6 +52,11 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         if (!BuildConfig.FLAVOR.equals("playstore")) {
             findViewById(R.id.about_app_rate).setVisibility(View.GONE);
         }
+
+        // Kanna GIF
+        Glide.with(this)
+                .load(R.drawable.kanna_dancing)
+                .into((ImageView) findViewById(R.id.kanna_image));
     }
 
     private void setupClickListeners() {

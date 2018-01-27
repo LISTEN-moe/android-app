@@ -76,11 +76,6 @@ public class SearchActivity extends BaseActivity implements SongAdapter.OnSongIt
         adapter = new SongAdapter(this, LIST_ID, this);
         binding.resultsList.setLayoutManager(new LinearLayoutManager(this));
         binding.resultsList.setAdapter(adapter);
-
-        // No results image
-        Glide.with(this)
-                .load(R.drawable.kanna_dancing)
-                .into(binding.searchPlaceholder);
     }
 
     @Override

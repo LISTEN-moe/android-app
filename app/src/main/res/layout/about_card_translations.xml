@@ -28,6 +28,13 @@
             android:paddingStart="16dp"
             android:text="@string/translators_list" />
 
+        <ImageView
+            android:id="@+id/kanna_image"
+            android:layout_width="156dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp" />
+
     </LinearLayout>
 
 </android.support.v7.widget.CardView>
