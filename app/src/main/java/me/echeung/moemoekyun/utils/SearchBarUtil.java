@@ -2,10 +2,9 @@ package me.echeung.moemoekyun.utils;
 
 import android.app.Activity;
 import android.support.v7.widget.PopupMenu;
-import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
@@ -23,6 +22,9 @@ public class SearchBarUtil {
     private SongAdapter adapter;
     private String listId;
 
+    private TextWatcher textWatcher;
+    private TextView.OnEditorActionListener onEditorActionListener;
+
     public SearchBarUtil(Activity activity, SearchBarBinding binding, SongAdapter adapter, String listId) {
         this.activity = new WeakReference<>(activity);
         this.binding = binding;
@@ -30,28 +32,27 @@ public class SearchBarUtil {
         this.listId = listId;
     }
 
+    public SearchBarUtil withTextWatcher(TextWatcher textWatcher) {
+        this.textWatcher = textWatcher;
+        return this;
+    }
+
+    public SearchBarUtil withOnEditorActionListener(TextView.OnEditorActionListener onEditorActionListener) {
+        this.onEditorActionListener = onEditorActionListener;
+        return this;
+    }
+
     public void init() {
         binding.setVm(new SearchBarViewModel());
 
-        // Set up favorites filtering
-        final EditText vFilterQuery = binding.query;
-        vFilterQuery.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+        if (textWatcher != null) {
+            binding.query.addTextChangedListener(textWatcher);
+        }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+        if (onEditorActionListener != null) {
+            binding.query.setOnEditorActionListener(onEditorActionListener);
+        }
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                final String query = editable.toString().trim().toLowerCase();
-                adapter.filter(query);
-            }
-        });
-
-        // Set up favorites sorting
         binding.overflowBtn.setOnClickListener(v -> {
             final Activity activityRef = this.activity.get();
             if (activityRef == null) return;

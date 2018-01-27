@@ -25,8 +25,7 @@ public class MainActivity extends BaseActivity {
     public static final String AUTH_EVENT = "auth_event";
 
     public static final int LOGIN_REQUEST = 0;
-    public static final int LOGIN_SEARCH_REQUEST = 1;
-    public static final int LOGIN_FAVORITE_REQUEST = 2;
+    public static final int LOGIN_FAVORITE_REQUEST = 1;
 
     private static final String URL_REGISTER = "https://listen.moe/#/register";
 
@@ -142,14 +141,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
-                if (App.getAuthUtil().isAuthenticated()) {
-                    showSearchActivity();
-                } else {
-                    showAuthActivity(LOGIN_SEARCH_REQUEST);
-                }
-                return true;
-
             case R.id.action_login:
                 showAuthActivity();
                 return true;
@@ -189,10 +180,6 @@ public class MainActivity extends BaseActivity {
         broadcastAuthEvent();
 
         switch (requestCode) {
-            case LOGIN_SEARCH_REQUEST:
-                showSearchActivity();
-                break;
-
             case LOGIN_FAVORITE_REQUEST:
                 final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
                 sendBroadcast(favIntent);
@@ -206,10 +193,6 @@ public class MainActivity extends BaseActivity {
 
     public void showAuthActivity(int requestCode) {
         startActivityForResult(new Intent(this, AuthActivity.class), requestCode);
-    }
-
-    private void showSearchActivity() {
-        startActivity(new Intent(this, SearchActivity.class));
     }
 
     private void broadcastAuthEvent() {

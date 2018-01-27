@@ -9,18 +9,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -36,8 +32,6 @@ import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.SearchBarUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
-import me.echeung.moemoekyun.utils.SongSortUtil;
-import me.echeung.moemoekyun.viewmodels.SearchBarViewModel;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
 public class UserFragment extends Fragment implements SongAdapter.OnSongItemClickListener {
@@ -153,7 +147,23 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
     }
 
     private void initSearchBar() {
-        SearchBarUtil searchBarUtil = new SearchBarUtil(getActivity(), binding.favorites.favoritesSearchBar, adapter, LIST_ID);
+        SearchBarUtil searchBarUtil = new SearchBarUtil(getActivity(), binding.favorites.favoritesSearchBar, adapter, LIST_ID)
+                .withTextWatcher(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        final String query = editable.toString().trim().toLowerCase();
+                        adapter.filter(query);
+                    }
+                });
+
         searchBarUtil.init();
     }
 

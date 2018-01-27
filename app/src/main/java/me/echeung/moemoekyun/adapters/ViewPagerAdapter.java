@@ -15,6 +15,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.fragments.RadioFragment;
+import me.echeung.moemoekyun.ui.fragments.SongsFragment;
 import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -30,8 +31,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         this.context = context;
 
         // Tabs
-        add(RadioFragment.class, R.drawable.ic_radio_white_24dp);
         add(UserFragment.class, R.drawable.ic_person_white_24dp);
+        add(SongsFragment.class, R.drawable.ic_audiotrack_white_24dp);
+        add(RadioFragment.class, R.drawable.ic_radio_white_24dp);
     }
 
     @NonNull

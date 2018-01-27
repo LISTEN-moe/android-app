@@ -29,6 +29,7 @@
             android:importantForAutofill="no"
             android:maxLines="1"
             android:padding="16dp"
+            android:singleLine="true"
             android:text="@={vm.query}"
             android:textColor="@color/white"
             android:textColorHint="@color/light_grey"
