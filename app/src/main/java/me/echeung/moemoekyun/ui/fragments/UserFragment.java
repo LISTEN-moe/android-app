@@ -85,7 +85,7 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         vUserFavorites.setAdapter(adapter);
 
         // Set up favorites filtering
-        final EditText vFilterQuery = binding.favorites.favoritesFilterQuery;
+        final EditText vFilterQuery = binding.favorites.favoritesSearchBar.query;
         vFilterQuery.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -103,8 +103,8 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         });
 
         // Set up favorites sorting
-        binding.favorites.favoritesSortBtn.setOnClickListener(v -> {
-            final PopupMenu popupMenu = new PopupMenu(getActivity(), binding.favorites.favoritesSortBtn);
+        binding.favorites.favoritesSearchBar.overflowBtn.setOnClickListener(v -> {
+            final PopupMenu popupMenu = new PopupMenu(getActivity(), binding.favorites.favoritesSearchBar.overflowBtn);
             popupMenu.inflate(R.menu.menu_sort);
 
             SongSortUtil.initSortMenu(getContext(), LIST_ID, popupMenu.getMenu());
