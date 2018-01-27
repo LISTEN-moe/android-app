@@ -44,7 +44,9 @@ Translations are crowdsourced through [OneSky](https://osfmofb.oneskyapp.com/col
 
 ### Release
 
-The release builds are signed by and uploaded to the Google Play Store and Amazon App Store by [@arkon](https://github.com/arkon/).
+The release builds are signed by and uploaded to the Google Play Store by [@arkon](https://github.com/arkon/).
+
+F-Droid release are automated ([see F-Droid wiki](https://f-droid.org/wiki/page/me.echeung.moemoekyun.fdroid)).
 
 
 ## License
