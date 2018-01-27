@@ -18,7 +18,6 @@ import me.echeung.moemoekyun.utils.LocaleUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.AuthViewModel;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
-import me.echeung.moemoekyun.viewmodels.SongsViewModel;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
 public class App extends Application implements ServiceConnection {
@@ -31,7 +30,6 @@ public class App extends Application implements ServiceConnection {
 
     private static AuthViewModel authViewModel;
     private static RadioViewModel radioViewModel;
-    private static SongsViewModel songsViewModel;
     private static UserViewModel userViewModel;
 
     private static PreferenceUtil preferenceUtil;
@@ -53,7 +51,6 @@ public class App extends Application implements ServiceConnection {
         // UI view models
         authViewModel = new AuthViewModel(this);
         radioViewModel = new RadioViewModel(this);
-        songsViewModel = new SongsViewModel(this);
         userViewModel = new UserViewModel(this);
 
         // Preferences
@@ -74,10 +71,6 @@ public class App extends Application implements ServiceConnection {
 
     public static RadioViewModel getRadioViewModel() {
         return radioViewModel;
-    }
-
-    public static SongsViewModel getSongsViewModel() {
-        return songsViewModel;
     }
 
     public static UserViewModel getUserViewModel() {

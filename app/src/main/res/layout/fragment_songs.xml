@@ -4,38 +4,19 @@
     xmlns:binding="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.SongsFragment">
 
-    <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.SongsViewModel" />
-    </data>
+    <data />
 
-    <android.support.design.widget.CoordinatorLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <!-- TODO: move this to songs_list too -->
-        <ProgressBar
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"
-            android:visibility="@{!vm.loadedSongs}" />
+        <include
+            layout="@layout/songs_list"
+            android:id="@+id/songs_list"
+            binding:searchHint="@{@string/search}" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="@{vm.loadedSongs}">
-
-            <include
-                layout="@layout/songs_list"
-                android:id="@+id/songs_list"
-                binding:searchHint="@{@string/search}" />
-
-        </LinearLayout>
-
-    </android.support.design.widget.CoordinatorLayout>
+    </FrameLayout>
 
 </layout>

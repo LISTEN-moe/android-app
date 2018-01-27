@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.adapters;
 
 import android.app.Activity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -22,26 +23,47 @@ public class SongList {
 
     private WeakReference<Activity> activity;
     private SongAdapter adapter;
-    private String listId;
     private SongListLoader loader;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
-    private SongsListBinding binding;
     private SongListViewModel songListViewModel;
 
     public SongList(Activity activity, SongsListBinding binding, String listId, SongListLoader loader) {
         this.activity = new WeakReference<>(activity);
-        this.binding = binding;
-        this.listId = listId;
         this.loader = loader;
 
+        // List adapter
         this.adapter = new SongAdapter(activity, listId);
         final RecyclerView songsList = binding.list;
         songsList.setLayoutManager(new LinearLayoutManager(activity));
         songsList.setAdapter(adapter);
 
+        // Pull to refresh
+        swipeRefreshLayout = binding.refreshLayout;
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+        swipeRefreshLayout.setOnRefreshListener(this::loadSongs);
+        swipeRefreshLayout.setRefreshing(false);
+
+        // Only allow pull to refresh when user is at the top of the list
+        songsList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                int topRowVerticalPosition = songsList.getChildCount() != 0
+                        ? songsList.getChildAt(0).getTop()
+                        : 0;
+                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
+
         this.songListViewModel = new SongListViewModel();
         binding.setVm(songListViewModel);
 
+        // Filter
         binding.query.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -62,6 +84,7 @@ public class SongList {
             }
         });
 
+        // Menu
         binding.overflowBtn.setOnClickListener(v -> {
             final Activity activityRef = this.activity.get();
             if (activityRef == null) return;
@@ -73,12 +96,16 @@ public class SongList {
             popupMenu.setOnMenuItemClickListener(this::handleMenuItemClick);
             popupMenu.show();
         });
-
-        loadSongs();
     }
 
     public void loadSongs() {
         loader.loadSongs(adapter);
+    }
+
+    public void showLoading(boolean loading) {
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(loading);
+        }
     }
 
     private boolean handleMenuItemClick(MenuItem item) {

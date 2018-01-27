@@ -7,13 +7,9 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.util.List;
 
@@ -41,7 +37,6 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
 
     private UserViewModel viewModel;
 
-    private SwipeRefreshLayout swipeRefreshLayout;
     private SongList songList;
 
     // Receiver
@@ -57,30 +52,6 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
 
         binding.setRadioVm(App.getRadioViewModel());
         binding.setUserVm(viewModel);
-
-        // TODO: move this to SongList
-        // Pull to refresh
-        swipeRefreshLayout = binding.userFavoritesContainer;
-        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(() -> songList.loadSongs());
-        swipeRefreshLayout.setRefreshing(false);
-
-        // Only allow pull to refresh when user is at the top of the list
-        final RecyclerView favoritesList = binding.favorites.favoritesList.list;
-        favoritesList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int topRowVerticalPosition = favoritesList.getChildCount() != 0
-                        ? favoritesList.getChildAt(0).getTop()
-                        : 0;
-                swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
-            }
-        });
 
         songList = new SongList(getActivity(), binding.favorites.favoritesList, LIST_ID, this);
 
@@ -153,10 +124,11 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
     }
 
     private void initUserContent() {
-        swipeRefreshLayout.setRefreshing(true);
+        songList.showLoading(true);
 
         if (App.getAuthUtil().isAuthenticated()) {
             getUserInfo();
+            songList.loadSongs();
         }
     }
 
@@ -187,25 +159,24 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
             @Override
             public void onSuccess(final List<Song> favorites) {
                 if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> adapter.setSongs(favorites));
+                    getActivity().runOnUiThread(() -> {
+                        songList.showLoading(false);
+                        adapter.setSongs(favorites);
+                    });
                 }
 
                 viewModel.setHasFavorites(!favorites.isEmpty());
-
-                completeRefresh();
             }
 
             @Override
             public void onFailure(final String message) {
-                completeRefresh();
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        songList.showLoading(false);
+                    });
+                }
             }
         });
-    }
-
-    private void completeRefresh() {
-        if (getActivity() != null && swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
-            getActivity().runOnUiThread(() -> swipeRefreshLayout.setRefreshing(false));
-        }
     }
 
 }
