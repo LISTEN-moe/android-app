@@ -68,7 +68,7 @@ public final class SongActionsUtil {
                             final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
                             if (coordinatorLayout != null) {
                                 final Snackbar undoBar = Snackbar.make(coordinatorLayout,
-                                        String.format(activity.getString(R.string.unfavorited), song.getTitle()),
+                                        String.format(activity.getString(R.string.unfavorited), song.toString()),
                                         Snackbar.LENGTH_LONG);
                                 undoBar.setAction(R.string.action_undo, (v) -> toggleFavorite(activity, adapter, song));
                                 undoBar.show();
