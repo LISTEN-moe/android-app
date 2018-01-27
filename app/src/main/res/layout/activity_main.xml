@@ -60,6 +60,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:paddingBottom="@dimen/now_playing_peek_height"
                 android:visibility="@{vm.isConnected}">
 
                 <!-- Login required message -->
