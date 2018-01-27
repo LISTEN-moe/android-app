@@ -21,7 +21,7 @@ import me.echeung.moemoekyun.viewmodels.SongsViewModel;
 
 public class SongsFragment extends Fragment implements SongList.SongListLoader {
 
-    private static final String LIST_ID = "SEARCH_LIST";
+    private static final String LIST_ID = "SONGS_LIST";
 
     private FragmentSongsBinding binding;
 

@@ -2,11 +2,8 @@ package me.echeung.moemoekyun.viewmodels;
 
 import android.content.Context;
 import android.databinding.Bindable;
-import android.text.TextUtils;
 
 import com.android.databinding.library.baseAdapters.BR;
-
-import me.echeung.moemoekyun.R;
 
 public class SongsViewModel extends BaseViewModel {
 

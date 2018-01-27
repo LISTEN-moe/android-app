@@ -64,10 +64,12 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
         vLoginMsg = binding.loginMsg.container;
         vUserContent = binding.userContent;
 
+        // TODO: move this to main activity level to hide all tabs
         // Login view
         final Button vBtnLogin = binding.loginMsg.btnLogin;
         vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showAuthActivity());
 
+        // TODO: move this to SongList
         // Pull to refresh
         swipeRefreshLayout = binding.userFavoritesContainer;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);

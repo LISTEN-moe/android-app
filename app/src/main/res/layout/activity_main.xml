@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activities.MainActivity">
 
@@ -86,6 +87,11 @@
                 android:clipToPadding="false"/>
 
         </RelativeLayout>
+
+        <include
+            layout="@layout/now_playing"
+            android:id="@+id/now_playing"
+            binding:vm="@{vm}" />
 
     </android.support.design.widget.CoordinatorLayout>
 

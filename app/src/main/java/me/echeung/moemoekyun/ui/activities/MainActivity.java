@@ -2,23 +2,32 @@ package me.echeung.moemoekyun.ui.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.databinding.Observable;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.moemoekyun.App;
+import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
 import me.echeung.moemoekyun.utils.NetworkUtil;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.UrlUtil;
+import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class MainActivity extends BaseActivity {
 
@@ -31,7 +40,14 @@ public class MainActivity extends BaseActivity {
 
     private ActivityMainBinding binding;
 
+    private RadioViewModel viewModel;
+
     private ViewPager viewPager;
+
+    private Observable.OnPropertyChangedCallback playPauseCallback;
+    private FloatingActionButton vPlayPauseBtn;
+    private AnimatedVectorDrawable playToPause;
+    private AnimatedVectorDrawable pauseToPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +55,8 @@ public class MainActivity extends BaseActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        binding.setVm(App.getRadioViewModel());
+        viewModel = App.getRadioViewModel();
+        binding.setVm(viewModel);
 
         // Check network connectivity
         binding.btnRetry.setOnClickListener(v -> retry());
@@ -57,6 +74,9 @@ public class MainActivity extends BaseActivity {
         if (!App.getAuthUtil().checkAuthTokenValidity()) {
             App.getUserViewModel().reset();
         }
+
+        // Init now playing sheet
+        initNowPlaying();
     }
 
     @Override
@@ -74,6 +94,10 @@ public class MainActivity extends BaseActivity {
 
         if (binding != null) {
             binding.unbind();
+        }
+
+        if (playPauseCallback != null) {
+            viewModel.removeOnPropertyChangedCallback(playPauseCallback);
         }
 
         super.onDestroy();
@@ -125,6 +149,33 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    private void initNowPlaying() {
+        // Clickable links
+        final TextView vRequestBy = binding.nowPlaying.radioControls.requestedBy;
+        vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
+
+        initPlayPause();
+
+        final ImageButton vHistoryBtn = binding.nowPlaying.radioControls.historyBtn;
+        vHistoryBtn.setOnClickListener(v -> showHistory());
+
+        final ImageButton vFavoriteBtn = binding.nowPlaying.radioControls.favoriteBtn;
+        vFavoriteBtn.setOnClickListener(v -> favorite());
+
+        binding.nowPlaying.radioSongs.songList1.setOnLongClickListener(v -> {
+            SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
+            return true;
+        });
+        binding.nowPlaying.radioSongs.songList2.setOnLongClickListener(v -> {
+            SongActionsUtil.copyToClipboard(this, viewModel.getLastSong());
+            return true;
+        });
+        binding.nowPlaying.radioSongs.songList3.setOnLongClickListener(v -> {
+            SongActionsUtil.copyToClipboard(this, viewModel.getSecondLastSong());
+            return true;
+        });
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -169,6 +220,10 @@ public class MainActivity extends BaseActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+
+    // Auth stuff
+    // =============================================================================================
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -223,4 +278,55 @@ public class MainActivity extends BaseActivity {
 
         broadcastAuthEvent();
     }
+
+
+    // Now playing stuff
+    // =============================================================================================
+
+    private void initPlayPause() {
+        vPlayPauseBtn = binding.nowPlaying.radioControls.playPauseBtn;
+        vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
+
+        playToPause = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_play_to_pause);
+        pauseToPlay = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_pause_to_play);
+
+        setPlayPauseDrawable();
+
+        playPauseCallback = new Observable.OnPropertyChangedCallback() {
+            @Override
+            public void onPropertyChanged(Observable sender, int propertyId) {
+                if (propertyId == BR.isPlaying) {
+                    setPlayPauseDrawable();
+                }
+            }
+        };
+
+        viewModel.addOnPropertyChangedCallback(playPauseCallback);
+    }
+
+    private void setPlayPauseDrawable() {
+        final AnimatedVectorDrawable drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
+        vPlayPauseBtn.setImageDrawable(drawable);
+        drawable.start();
+    }
+
+    private void togglePlayPause() {
+        final Intent playPauseIntent = new Intent(RadioService.PLAY_PAUSE);
+        sendBroadcast(playPauseIntent);
+    }
+
+    private void favorite() {
+        if (!App.getAuthUtil().isAuthenticated()) {
+            showAuthActivity(MainActivity.LOGIN_FAVORITE_REQUEST);
+            return;
+        }
+
+        final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
+        sendBroadcast(favIntent);
+    }
+
+    private void showHistory() {
+        viewModel.toggleShowHistory();
+    }
+
 }
