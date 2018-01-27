@@ -22,6 +22,8 @@ import me.echeung.moemoekyun.ui.fragments.UserFragment;
 public final class SongActionsUtil {
 
     public static void showSongActionsDialog(final Activity activity, final SongAdapter adapter, final Song song) {
+        if (activity == null) return;
+
         final String favoriteAction = song.isFavorite() ?
                 activity.getString(R.string.action_unfavorite) :
                 activity.getString(R.string.action_favorite);
@@ -128,6 +130,8 @@ public final class SongActionsUtil {
     }
 
     public static void copyToClipboard(final Context context, final Song song) {
+        if (context == null) return;
+
         copyToClipboard(context, song.toString());
     }
 

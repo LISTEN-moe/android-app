@@ -31,10 +31,9 @@ import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.SearchBarUtil;
-import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
-public class UserFragment extends Fragment implements SongAdapter.OnSongItemClickListener {
+public class UserFragment extends Fragment {
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
 
@@ -75,7 +74,7 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showAuthActivity());
 
         // Favorites list adapter
-        adapter = new SongAdapter(getContext(), LIST_ID, this);
+        adapter = new SongAdapter(getActivity(), LIST_ID);
         final RecyclerView vUserFavorites = binding.favorites.favoritesList;
         vUserFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
         vUserFavorites.setAdapter(adapter);
@@ -255,8 +254,4 @@ public class UserFragment extends Fragment implements SongAdapter.OnSongItemClic
         }
     }
 
-    @Override
-    public void onSongItemClick(final Song song) {
-        SongActionsUtil.showSongActionsDialog(getActivity(), adapter, song);
-    }
 }

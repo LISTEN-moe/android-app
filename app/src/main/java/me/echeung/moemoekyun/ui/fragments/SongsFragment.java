@@ -20,10 +20,9 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 import me.echeung.moemoekyun.utils.SearchBarUtil;
-import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.SongsViewModel;
 
-public class SongsFragment extends Fragment implements SongAdapter.OnSongItemClickListener {
+public class SongsFragment extends Fragment {
 
     private static final String LIST_ID = "SEARCH_LIST";
 
@@ -43,7 +42,7 @@ public class SongsFragment extends Fragment implements SongAdapter.OnSongItemCli
         binding.setVm(viewModel);
 
         // Results list adapter
-        adapter = new SongAdapter(getContext(), LIST_ID, this);
+        adapter = new SongAdapter(getActivity(), LIST_ID);
         binding.resultsList.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.resultsList.setAdapter(adapter);
 
@@ -90,13 +89,8 @@ public class SongsFragment extends Fragment implements SongAdapter.OnSongItemCli
 
     private void updateResults(final String query, final List<Song> results) {
         adapter.setSongs(results);
-//        viewModel.setQuery(query);
+        viewModel.setQuery(query);
         viewModel.setHasResults(results != null && !results.isEmpty());
-    }
-
-    @Override
-    public void onSongItemClick(final Song song) {
-        SongActionsUtil.showSongActionsDialog(getActivity(), adapter, song);
     }
 
 }

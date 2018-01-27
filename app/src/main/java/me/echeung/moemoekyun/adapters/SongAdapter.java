@@ -1,6 +1,6 @@
 package me.echeung.moemoekyun.adapters;
 
-import android.content.Context;
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,19 +21,17 @@ import me.echeung.moemoekyun.utils.SongSortUtil;
 
 public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private Context context;
+    private WeakReference<Activity> activity;
     private String listId;
-    private WeakReference<OnSongItemClickListener> listener;
 
     private List<Song> allSongs;
     private List<Song> visibleSongs;
 
     private String filterQuery;
 
-    public SongAdapter(Context context, String listId, OnSongItemClickListener listener) {
-        this.context = context;
+    public SongAdapter(Activity activity, String listId) {
+        this.activity = new WeakReference<>(activity);
         this.listId = listId;
-        this.listener = new WeakReference<>(listener);
 
         setHasStableIds(true);
     }
@@ -49,12 +47,18 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public void sortType(String sortType) {
-        SongSortUtil.setListSortType(context, listId, sortType);
+        final Activity activityRef = activity.get();
+        if (activityRef == null) return;
+
+        SongSortUtil.setListSortType(activityRef, listId, sortType);
         updateSongs();
     }
 
     public void sortDescending(boolean descending) {
-        SongSortUtil.setListSortDescending(context, listId, descending);
+        final Activity activityRef = activity.get();
+        if (activityRef == null) return;
+
+        SongSortUtil.setListSortDescending(activityRef, listId, descending);
         updateSongs();
     }
 
@@ -83,6 +87,9 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     private void updateSongs() {
+        final Activity activityRef = activity.get();
+        if (activityRef == null) return;
+
         if (allSongs == null || allSongs.isEmpty()) return;
 
         visibleSongs = allSongs;
@@ -96,7 +103,7 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
         }
 
-        SongSortUtil.sort(context, listId, visibleSongs);
+        SongSortUtil.sort(activityRef, listId, visibleSongs);
 
         notifyDataSetChanged();
     }
@@ -113,12 +120,8 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return visibleSongs;
     }
 
-    protected OnSongItemClickListener getListener() {
-        return listener.get();
-    }
-
-    public interface OnSongItemClickListener {
-        void onSongItemClick(final Song song);
+    private Activity getActivity() {
+        return activity.get();
     }
 
     private static class SongHolder extends RecyclerView.ViewHolder {
@@ -132,17 +135,14 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             binding.getRoot().setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    final OnSongItemClickListener listener = adapter.getListener();
-                    if (listener != null) {
-                        final Song song = adapter.getSongs().get(getLayoutPosition());
-                        listener.onSongItemClick(song);
-                    }
+                    final Song song = adapter.getSongs().get(getLayoutPosition());
+                    SongActionsUtil.showSongActionsDialog(adapter.getActivity(), adapter, song);
                 }
             });
 
             binding.getRoot().setOnLongClickListener(v -> {
                 final Song song = adapter.getSongs().get(getLayoutPosition());
-                SongActionsUtil.copyToClipboard(adapter.context, song);
+                SongActionsUtil.copyToClipboard(adapter.getActivity(), song);
                 return true;
             });
         }
