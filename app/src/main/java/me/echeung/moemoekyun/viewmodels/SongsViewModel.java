@@ -10,44 +10,27 @@ import me.echeung.moemoekyun.R;
 
 public class SongsViewModel extends BaseViewModel {
 
-    private boolean hasResults;
-    private String query;
+    private boolean loadedSongs;
 
     public SongsViewModel(Context context) {
         super(context);
 
         // Defaults
-        hasResults = false;
-        query = null;
+        loadedSongs = false;
     }
 
     public void reset() {
-        setHasResults(false);
-        setQuery(null);
+        setLoadedSongs(false);
     }
 
     @Bindable
-    public boolean getHasResults() {
-        return hasResults;
+    public boolean isLoadedSongs() {
+        return loadedSongs;
     }
 
-    public void setHasResults(boolean hasResults) {
-        this.hasResults = hasResults;
-        notifyPropertyChanged(BR.hasResults);
+    public void setLoadedSongs(boolean loadedSongs) {
+        this.loadedSongs = loadedSongs;
+        notifyPropertyChanged(BR.loadedSongs);
     }
 
-    @Bindable
-    public String getQuery() {
-        final Context context = getContext();
-        if (context == null || TextUtils.isEmpty(query)) {
-            return null;
-        }
-
-        return String.format(context.getString(R.string.no_results), query);
-    }
-
-    public void setQuery(String query) {
-        this.query = query;
-        notifyPropertyChanged(BR.query);
-    }
 }

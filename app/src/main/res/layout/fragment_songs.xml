@@ -14,19 +14,20 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
+        <!-- TODO: move this to songs_list too -->
         <ProgressBar
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:indeterminate="true"
-            android:visibility="@{!vm.hasResults}" />
+            android:visibility="@{!vm.loadedSongs}" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:visibility="@{vm.hasResults}">
+            android:visibility="@{vm.loadedSongs}">
 
             <include
                 layout="@layout/songs_list"

@@ -15,11 +15,11 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.adapters.SongsList;
+import me.echeung.moemoekyun.adapters.SongList;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 import me.echeung.moemoekyun.viewmodels.SongsViewModel;
 
-public class SongsFragment extends Fragment implements SongsList.SongListLoader {
+public class SongsFragment extends Fragment implements SongList.SongListLoader {
 
     private static final String LIST_ID = "SEARCH_LIST";
 
@@ -36,7 +36,7 @@ public class SongsFragment extends Fragment implements SongsList.SongListLoader 
 
         binding.setVm(viewModel);
 
-        initSearchBar();
+        new SongList(getActivity(), binding.songsList, LIST_ID, this);
 
         return binding.getRoot();
     }
@@ -50,36 +50,27 @@ public class SongsFragment extends Fragment implements SongsList.SongListLoader 
         super.onDestroy();
     }
 
-    private void initSearchBar() {
-        SongsList songsList = new SongsList(getActivity(), binding.songsList, LIST_ID, this);
-        songsList.init();
-    }
-
     @Override
     public void loadSongs(SongAdapter adapter) {
         App.getApiClient().search(null, new SearchCallback() {
             @Override
             public void onSuccess(final List<Song> results) {
                 if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        adapter.setSongs(results);
-                    });
-
-                    viewModel.setHasResults(results != null && !results.isEmpty());
+                    getActivity().runOnUiThread(() -> adapter.setSongs(results));
                 }
+
+                viewModel.setLoadedSongs(true);
             }
 
             @Override
             public void onFailure(final String message) {
-                getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show());
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show());
+                }
+
+                viewModel.setLoadedSongs(true);
             }
         });
-    }
-
-    @Override
-    public void onFilter(String query, boolean hasResults) {
-        viewModel.setQuery(query);
-        viewModel.setHasResults(hasResults);
     }
 
 }

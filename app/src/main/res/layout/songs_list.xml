@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.SearchBarViewModel" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.SongListViewModel" />
         <variable name="searchHint" type="java.lang.String" />
     </data>
 
@@ -72,12 +72,29 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             app:fastScrollEnabled="true"
             app:fastScrollHorizontalThumbDrawable="@drawable/thumb_drawable"
             app:fastScrollHorizontalTrackDrawable="@drawable/line_drawable"
             app:fastScrollVerticalThumbDrawable="@drawable/thumb_drawable"
             app:fastScrollVerticalTrackDrawable="@drawable/line_drawable" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="@{!vm.hasResults}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:layout_gravity="center"
+                android:text="@{vm.noResults}"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

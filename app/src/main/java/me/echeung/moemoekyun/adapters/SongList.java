@@ -16,17 +16,19 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.SongsListBinding;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
-import me.echeung.moemoekyun.viewmodels.SearchBarViewModel;
+import me.echeung.moemoekyun.viewmodels.SongListViewModel;
 
-public class SongsList {
+public class SongList {
 
     private WeakReference<Activity> activity;
-    private SongsListBinding binding;
     private SongAdapter adapter;
     private String listId;
     private SongListLoader loader;
 
-    public SongsList(Activity activity, SongsListBinding binding, String listId, SongListLoader loader) {
+    private SongsListBinding binding;
+    private SongListViewModel songListViewModel;
+
+    public SongList(Activity activity, SongsListBinding binding, String listId, SongListLoader loader) {
         this.activity = new WeakReference<>(activity);
         this.binding = binding;
         this.listId = listId;
@@ -36,10 +38,9 @@ public class SongsList {
         final RecyclerView songsList = binding.list;
         songsList.setLayoutManager(new LinearLayoutManager(activity));
         songsList.setAdapter(adapter);
-    }
 
-    public void init() {
-        binding.setVm(new SearchBarViewModel());
+        this.songListViewModel = new SongListViewModel(activity);
+        binding.setVm(songListViewModel);
 
         binding.query.addTextChangedListener(new TextWatcher() {
             @Override
@@ -56,7 +57,8 @@ public class SongsList {
                 final String query = editable.toString().trim().toLowerCase();
                 adapter.filter(query);
 
-                loader.onFilter(query, adapter.getItemCount() != 0);
+                songListViewModel.setQuery(query);
+                songListViewModel.setHasResults(adapter.getItemCount() != 0);
             }
         });
 
@@ -102,7 +104,6 @@ public class SongsList {
 
     public interface SongListLoader {
         void loadSongs(SongAdapter adapter);
-        void onFilter(String query, boolean hasResults);
     }
 
 }

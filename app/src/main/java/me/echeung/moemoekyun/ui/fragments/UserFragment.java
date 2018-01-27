@@ -25,12 +25,12 @@ import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.adapters.SongsList;
+import me.echeung.moemoekyun.adapters.SongList;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
-public class UserFragment extends Fragment implements SongsList.SongListLoader {
+public class UserFragment extends Fragment implements SongList.SongListLoader {
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
 
@@ -45,7 +45,7 @@ public class UserFragment extends Fragment implements SongsList.SongListLoader {
     private UserViewModel viewModel;
 
     private SwipeRefreshLayout swipeRefreshLayout;
-    private SongsList songsList;
+    private SongList songList;
 
     // Receiver
     private IntentFilter intentFilter;
@@ -71,7 +71,7 @@ public class UserFragment extends Fragment implements SongsList.SongListLoader {
         // Pull to refresh
         swipeRefreshLayout = binding.userFavoritesContainer;
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
-        swipeRefreshLayout.setOnRefreshListener(() -> songsList.loadSongs());
+        swipeRefreshLayout.setOnRefreshListener(() -> songList.loadSongs());
         swipeRefreshLayout.setRefreshing(false);
 
         // Only allow pull to refresh when user is at the top of the list
@@ -91,7 +91,8 @@ public class UserFragment extends Fragment implements SongsList.SongListLoader {
             }
         });
 
-        initSearchBar();
+        songList = new SongList(getActivity(), binding.favorites.favoritesList, LIST_ID, this);
+
         initBroadcastReceiver();
         initUserContent();
 
@@ -133,11 +134,6 @@ public class UserFragment extends Fragment implements SongsList.SongListLoader {
         }
 
         super.onDestroy();
-    }
-
-    private void initSearchBar() {
-        songsList = new SongsList(getActivity(), binding.favorites.favoritesList, LIST_ID, this);
-        songsList.init();
     }
 
     private void initBroadcastReceiver() {
@@ -220,10 +216,6 @@ public class UserFragment extends Fragment implements SongsList.SongListLoader {
                 completeRefresh();
             }
         });
-    }
-
-    @Override
-    public void onFilter(String query, boolean hasResults) {
     }
 
     private void completeRefresh() {
