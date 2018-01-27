@@ -3,15 +3,13 @@ package me.echeung.moemoekyun.ui.activities;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.jakewharton.processphoenix.ProcessPhoenix;
+import android.widget.Toast;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
@@ -100,12 +98,7 @@ public class SettingsActivity extends BaseActivity {
         private void promptAppRestart() {
             final Activity activity = getActivity();
             if (activity != null) {
-                new AlertDialog.Builder(activity, R.style.DialogTheme)
-                        .setTitle(R.string.restart_app)
-                        .setPositiveButton(R.string.restart, (dialogInterface, i) -> ProcessPhoenix.triggerRebirth(getActivity()))
-                        .setNegativeButton(android.R.string.cancel, null)
-                        .create()
-                        .show();
+                Toast.makeText(activity, R.string.restart_required, Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -82,9 +82,7 @@
     <string name="settings">Настройки</string>
     <string name="pref_title_theme">Тема</string>
     <string name="system_default">Язык системы</string>
-    <string name="restart_app">Перезапустить приложение для применения изменений?</string>
     <string name="pref_header_audio">Звук</string>
-    <string name="restart">Перезапустить</string>
     <string name="pref_title_general_broadcast_intent">Воспроизводить обновления песни</string>
     <string name="pref_title_pause_on_noisy">Пауза, когда наушники отключены</string>
     <string name="pref_title_general_broadcast_intent_summary">Поддержка скробблинга Last.fm</string>

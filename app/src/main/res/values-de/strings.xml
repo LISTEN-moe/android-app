@@ -81,9 +81,7 @@
     <string name="settings">Einstellungen</string>
     <string name="pref_title_theme">Stil</string>
     <string name="system_default">System Standard</string>
-    <string name="restart_app">App neustarten um Änderungen zu übernehmen?</string>
     <string name="pref_header_audio">Audio</string>
-    <string name="restart">Neustarten</string>
     <string name="pref_title_general_broadcast_intent">Übertrage Song Updates</string>
     <string name="pref_title_pause_on_noisy">Stoppe die Musik wenn die Kopfhörer entfernt werden</string>
     <string name="pref_title_general_broadcast_intent_summary">Last.fm Scrobbling Unterstützung</string>

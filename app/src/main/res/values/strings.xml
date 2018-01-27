@@ -146,8 +146,7 @@
     <string name="pref_title_theme">Theme</string>
     <string name="pref_title_language">Language</string>
     <string name="system_default">System default</string>
-    <string name="restart_app">Restart app to apply changes?</string>
-    <string name="restart">Restart</string>
+    <string name="restart_required">Changes will be applied after the app is restarted</string>
     <string name="pref_title_general_broadcast_intent">Broadcast song updates</string>
     <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling support</string>
 

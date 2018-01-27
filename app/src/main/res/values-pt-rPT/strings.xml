@@ -81,9 +81,7 @@
     <string name="settings">Definições</string>
     <string name="pref_title_theme">Tema</string>
     <string name="system_default">Predefinido do sistema</string>
-    <string name="restart_app">Reiniciar aplicação para aplicar alterações?</string>
     <string name="pref_header_audio">Áudio</string>
-    <string name="restart">Reiniciar</string>
     <string name="pref_title_general_broadcast_intent">Transmitir atualizações de músicas</string>
     <string name="pref_title_pause_on_noisy">Pausar quando os auscultadores são removidos</string>
     <string name="pref_title_general_broadcast_intent_summary">Suporte para scrobbling no Last.fm</string>

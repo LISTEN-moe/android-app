@@ -82,9 +82,7 @@
     <string name="settings">Inställningar</string>
     <string name="pref_title_theme">Tema</string>
     <string name="system_default">Systemstandard</string>
-    <string name="restart_app">Starta om för att tillämpa ändringar?</string>
     <string name="pref_header_audio">Ljud</string>
-    <string name="restart">Starta om</string>
     <string name="pref_title_general_broadcast_intent">Dela låt uppdateringar</string>
     <string name="pref_title_pause_on_noisy">Pausa när hörlurar blir borttagen</string>
     <string name="pref_title_general_broadcast_intent_summary">Support för Last.fm skrobbling</string>

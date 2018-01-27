@@ -28,10 +28,8 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    api 'com.squareup.okhttp3:okhttp:3.9.0'
-    implementation 'com.google.android.exoplayer:exoplayer-core:r2.5.3'
+    api 'com.squareup.okhttp3:okhttp:3.9.1'
+    implementation 'com.google.android.exoplayer:exoplayer-core:r2.5.4'
 
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'

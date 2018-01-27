@@ -81,9 +81,7 @@
     <string name="settings">Opciones</string>
     <string name="pref_title_theme">Tema</string>
     <string name="system_default">Predeterminado</string>
-    <string name="restart_app">Reiniciar la app para aplicar los cambios?</string>
     <string name="pref_header_audio">Audio</string>
-    <string name="restart">Reiniciar</string>
     <string name="pref_title_general_broadcast_intent">Transmitir actualización de canciones</string>
     <string name="pref_title_pause_on_noisy">Pausar cuando los auriculares son removidos</string>
     <string name="pref_title_general_broadcast_intent_summary">Soporte para scrobbling de Last.fm</string>
