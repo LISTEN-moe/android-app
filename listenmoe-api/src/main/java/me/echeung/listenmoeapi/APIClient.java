@@ -424,7 +424,7 @@ public class APIClient {
         List<Song> filteredSongs = new ArrayList<>();
 
         for (SongListItem song : songs) {
-            if (song.search(query)) {
+            if (query == null || song.search(query)) {
                 filteredSongs.add(SongListItem.toSong(song));
             }
         }

@@ -48,6 +48,9 @@ public class SongsFragment extends Fragment {
 
         initSearchBar();
 
+        // Populate all songs
+        search(null);
+
         return binding.getRoot();
     }
 
@@ -62,29 +65,29 @@ public class SongsFragment extends Fragment {
 
     private void initSearchBar() {
         SearchBarUtil searchBarUtil = new SearchBarUtil(getActivity(), binding.songsSearchBar, adapter, LIST_ID)
-                .withOnEditorActionListener(this::onEditorAction);
+                .withOnEditorActionListener(this::onSearch);
 
         searchBarUtil.init();
     }
 
-    private boolean onEditorAction(TextView textView, int i, KeyEvent event) {
+    private boolean onSearch(TextView textView, int i, KeyEvent event) {
         final String query = textView.getText().toString().trim();
-
-        if (!TextUtils.isEmpty(query)) {
-            App.getApiClient().search(query, new SearchCallback() {
-                @Override
-                public void onSuccess(final List<Song> results) {
-                    getActivity().runOnUiThread(() -> updateResults(query, results));
-                }
-
-                @Override
-                public void onFailure(final String message) {
-                    updateResults(query, null);
-                }
-            });
-        }
-
+        search(query);
         return true;
+    }
+
+    private void search(String query) {
+        App.getApiClient().search(query, new SearchCallback() {
+            @Override
+            public void onSuccess(final List<Song> results) {
+                getActivity().runOnUiThread(() -> updateResults(query, results));
+            }
+
+            @Override
+            public void onFailure(final String message) {
+                updateResults(query, null);
+            }
+        });
     }
 
     private void updateResults(final String query, final List<Song> results) {

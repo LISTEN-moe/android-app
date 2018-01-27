@@ -44,13 +44,13 @@
                 android:orientation="vertical"
                 android:visibility="@{!vm.hasResults}">
 
-                <!--<TextView-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:fontFamily="sans-serif-light"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@{vm.query}"-->
-                    <!--android:textColor="@color/white" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@{vm.query}"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
