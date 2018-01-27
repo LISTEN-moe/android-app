@@ -39,7 +39,7 @@ public class SongList {
         songsList.setLayoutManager(new LinearLayoutManager(activity));
         songsList.setAdapter(adapter);
 
-        this.songListViewModel = new SongListViewModel(activity);
+        this.songListViewModel = new SongListViewModel();
         binding.setVm(songListViewModel);
 
         binding.query.addTextChangedListener(new TextWatcher() {

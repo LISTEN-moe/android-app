@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-light"
                 android:layout_gravity="center"
-                android:text="@{vm.noResults}"
+                android:text="@{@string/no_results(vm.query)}"
                 android:textColor="@color/white" />
 
         </LinearLayout>
