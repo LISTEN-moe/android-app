@@ -58,25 +58,29 @@ public class MainActivity extends BaseActivity {
         viewModel = App.getRadioViewModel();
         binding.setVm(viewModel);
 
-        // Check network connectivity
         binding.btnRetry.setOnClickListener(v -> retry());
+        binding.btnLogin.setOnClickListener(v -> showAuthActivity());
+
+        // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(this)) {
             return;
         }
 
-        // Init app/tab bar
-        initAppbar();
-
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        // Invalidate token if needed
-        if (!App.getAuthUtil().checkAuthTokenValidity()) {
-            App.getUserViewModel().reset();
-        }
+        // Init app/tab bar
+        initAppbar();
 
         // Init now playing sheet
         initNowPlaying();
+
+        // Invalidate token if needed
+        boolean isAuthed = App.getAuthUtil().checkAuthTokenValidity();
+        viewModel.setIsAuthed(isAuthed);
+        if (!isAuthed) {
+            App.getUserViewModel().reset();
+        }
     }
 
     @Override
@@ -253,6 +257,8 @@ public class MainActivity extends BaseActivity {
     private void broadcastAuthEvent() {
         final Intent authEventIntent = new Intent(MainActivity.AUTH_EVENT);
         sendBroadcast(authEventIntent);
+
+        viewModel.setIsAuthed(App.getAuthUtil().isAuthenticated());
     }
 
     private void showLogoutDialog() {

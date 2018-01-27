@@ -39,9 +39,6 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
 
     private FragmentUserBinding binding;
 
-    private LinearLayout vLoginMsg;
-    private LinearLayout vUserContent;
-
     private UserViewModel viewModel;
 
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -61,14 +58,6 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
         binding.setRadioVm(App.getRadioViewModel());
         binding.setUserVm(viewModel);
 
-        vLoginMsg = binding.loginMsg.container;
-        vUserContent = binding.userContent;
-
-        // TODO: move this to main activity level to hide all tabs
-        // Login view
-        final Button vBtnLogin = binding.loginMsg.btnLogin;
-        vBtnLogin.setOnClickListener(v -> ((MainActivity) getActivity()).showAuthActivity());
-
         // TODO: move this to SongList
         // Pull to refresh
         swipeRefreshLayout = binding.userFavoritesContainer;
@@ -86,9 +75,9 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                int topRowVerticalPosition = favoritesList.getChildCount() != 0 ?
-                        favoritesList.getChildAt(0).getTop() :
-                        0;
+                int topRowVerticalPosition = favoritesList.getChildCount() != 0
+                        ? favoritesList.getChildAt(0).getTop()
+                        : 0;
                 swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
             }
         });
@@ -166,16 +155,9 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
     private void initUserContent() {
         swipeRefreshLayout.setRefreshing(true);
 
-        boolean authenticated = App.getAuthUtil().isAuthenticated();
-
-        vLoginMsg.setVisibility(authenticated ? View.GONE : View.VISIBLE);
-        vUserContent.setVisibility(authenticated ? View.VISIBLE : View.GONE);
-
-        if (!authenticated) {
-            return;
+        if (App.getAuthUtil().isAuthenticated()) {
+            getUserInfo();
         }
-
-        getUserInfo();
     }
 
     private void getUserInfo() {

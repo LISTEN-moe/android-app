@@ -9,49 +9,39 @@
         <variable name="userVm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/user_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin">
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:orientation="horizontal">
 
-        <include
-            android:id="@+id/login_msg"
-            layout="@layout/user_login" />
-
-        <LinearLayout
-            android:id="@+id/user_content"
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:layout_width="240dp"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_marginEnd="8dp">
 
-            <FrameLayout
-                android:layout_width="240dp"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp">
+            <include
+                android:id="@+id/user_card"
+                layout="@layout/user_card"
+                binding:radioVm="@{radioVm}"
+                binding:userVm="@{userVm}" />
 
-                <include
-                    android:id="@+id/user_card"
-                    layout="@layout/user_card"
-                    binding:radioVm="@{radioVm}"
-                    binding:userVm="@{userVm}" />
+        </FrameLayout>
 
-            </FrameLayout>
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/user_favorites_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/user_favorites_container"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
+            <include
+                android:id="@+id/favorites"
+                layout="@layout/user_favorites"
+                binding:userVm="@{userVm}" />
 
-                <include
-                    android:id="@+id/favorites"
-                    layout="@layout/user_favorites"
-                    binding:userVm="@{userVm}" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
-            </android.support.v4.widget.SwipeRefreshLayout>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </layout>

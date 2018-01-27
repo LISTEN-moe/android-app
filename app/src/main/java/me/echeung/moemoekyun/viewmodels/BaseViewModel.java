@@ -50,6 +50,22 @@ public abstract class BaseViewModel extends BaseObservable {
     }
 
 
+    // Auth status
+    // ========================================================================
+
+    private boolean isAuthed;
+
+    @Bindable
+    public boolean getIsAuthed() {
+        return isAuthed;
+    }
+
+    public void setIsAuthed(boolean isAuthed) {
+        this.isAuthed = isAuthed;
+        notifyPropertyChanged(BR.isAuthed);
+    }
+
+
     // Helpers
     // ========================================================================
 

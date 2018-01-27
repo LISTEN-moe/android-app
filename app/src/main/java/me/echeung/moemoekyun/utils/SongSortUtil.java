@@ -43,16 +43,16 @@ public final class SongSortUtil {
         Comparator<Song> sorter;
         switch (sortType) {
             case SORT_ARTIST:
-                sorter = sortDescending ?
-                        (song, t1) -> t1.getArtistString().compareToIgnoreCase(song.getArtistString()) :
-                        (song, t1) -> song.getArtistString().compareToIgnoreCase(t1.getArtistString());
+                sorter = sortDescending
+                        ? (song, t1) -> t1.getArtistString().compareToIgnoreCase(song.getArtistString())
+                        : (song, t1) -> song.getArtistString().compareToIgnoreCase(t1.getArtistString());
                 break;
 
             case SORT_TITLE:
             default:
-                sorter = sortDescending ?
-                        (song, t1) -> t1.getTitle().compareToIgnoreCase(song.getTitle()) :
-                        (song, t1) -> song.getTitle().compareToIgnoreCase(t1.getTitle());
+                sorter = sortDescending
+                        ? (song, t1) -> t1.getTitle().compareToIgnoreCase(song.getTitle())
+                        : (song, t1) -> song.getTitle().compareToIgnoreCase(t1.getTitle());
                 break;
         }
 
