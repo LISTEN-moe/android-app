@@ -115,7 +115,11 @@ public final class SongActionsUtil {
                         final int remainingReqs = requests - 1;
                         App.getUserViewModel().setRequestsRemaining(remainingReqs);
 
-                        Toast.makeText(activity.getApplicationContext(), activity.getString(R.string.requested_song, song.getTitle()), Toast.LENGTH_LONG).show();
+                        final String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
+                                ? activity.getString(R.string.requested_song, song.getTitle())
+                                : activity.getString(R.string.requested_random_song);
+
+                        Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_LONG).show();
                     });
                 }
             }

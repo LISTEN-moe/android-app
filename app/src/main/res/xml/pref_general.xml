@@ -24,6 +24,11 @@
             android:title="@string/pref_title_general_broadcast_intent"
             android:summary="@string/pref_title_general_broadcast_intent_summary" />
 
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_general_random_request_title"
+            android:title="@string/pref_title_general_random_request_title" />
+
     </android.support.v7.preference.PreferenceCategory>
 
 </android.support.v7.preference.PreferenceScreen>
