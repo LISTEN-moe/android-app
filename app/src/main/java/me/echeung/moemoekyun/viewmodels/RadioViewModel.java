@@ -34,6 +34,8 @@ public class RadioViewModel extends BaseViewModel {
     private int inQueueByUser;
     private int queuePosition;
 
+    private float miniPlayerAlpha;
+
     public RadioViewModel(Context context) {
         super(context);
 
@@ -228,6 +230,20 @@ public class RadioViewModel extends BaseViewModel {
     public void setQueuePosition(int queuePosition) {
         this.queuePosition = queuePosition;
         notifyPropertyChanged(BR.queuePosition);
+    }
+
+
+    // Mini player
+    // ========================================================================
+
+    @Bindable
+    public float getMiniPlayerAlpha() {
+        return miniPlayerAlpha;
+    }
+
+    public void setMiniPlayerAlpha(float miniPlayerAlpha) {
+        this.miniPlayerAlpha = miniPlayerAlpha;
+        notifyPropertyChanged(BR.miniPlayerAlpha);
     }
 
 }

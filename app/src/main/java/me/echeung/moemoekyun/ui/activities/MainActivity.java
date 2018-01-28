@@ -6,6 +6,8 @@ import android.databinding.Observable;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,6 +15,8 @@ import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +50,7 @@ public class MainActivity extends BaseActivity {
 
     private Observable.OnPropertyChangedCallback playPauseCallback;
     private FloatingActionButton vPlayPauseBtn;
+    private ImageButton vMiniPlayPauseBtn;
     private AnimatedVectorDrawable playToPause;
     private AnimatedVectorDrawable pauseToPlay;
 
@@ -154,6 +159,25 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initNowPlaying() {
+        final FrameLayout bottomSheet = (FrameLayout) binding.nowPlaying.nowPlayingSheet;
+        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+
+        // Start expanded
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                viewModel.setMiniPlayerAlpha(1f - slideOffset);
+            }
+        });
+
+//        bottomSheetBehavior.onTouchEvent()
+
         // Clickable links
         final TextView vRequestBy = binding.nowPlaying.radioControls.requestedBy;
         vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
@@ -293,6 +317,9 @@ public class MainActivity extends BaseActivity {
         vPlayPauseBtn = binding.nowPlaying.radioControls.playPauseBtn;
         vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
 
+        vMiniPlayPauseBtn = binding.nowPlaying.nowPlayingMini.miniPlayPause;
+        vMiniPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
+
         playToPause = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_play_to_pause);
         pauseToPlay = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_pause_to_play);
 
@@ -313,6 +340,7 @@ public class MainActivity extends BaseActivity {
     private void setPlayPauseDrawable() {
         final AnimatedVectorDrawable drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
         vPlayPauseBtn.setImageDrawable(drawable);
+        vMiniPlayPauseBtn.setImageDrawable(drawable);
         drawable.start();
     }
 
