@@ -116,7 +116,7 @@ public final class SongActionsUtil {
                         App.getUserViewModel().setRequestsRemaining(remainingReqs);
 
                         final String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
-                                ? activity.getString(R.string.requested_song, song.getTitle())
+                                ? activity.getString(R.string.requested_song, song.toString())
                                 : activity.getString(R.string.requested_random_song);
 
                         Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_LONG).show();
