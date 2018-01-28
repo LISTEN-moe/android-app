@@ -8,6 +8,7 @@
     </data>
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/mini_content"
         android:layout_width="match_parent"
         android:layout_height="@dimen/now_playing_peek_height"
         android:alpha="@{vm.miniPlayerAlpha}"
@@ -54,6 +55,8 @@
             android:id="@+id/mini_play_pause"
             android:layout_width="@dimen/fab_size"
             android:layout_height="@dimen/fab_size"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:background="@drawable/round_selector"
             android:contentDescription="@string/play_pause"
             android:padding="16dp"

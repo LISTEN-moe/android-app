@@ -159,12 +159,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initNowPlaying() {
-        final FrameLayout bottomSheet = (FrameLayout) binding.nowPlaying.nowPlayingSheet;
+        final FrameLayout bottomSheet = binding.nowPlaying.nowPlayingSheet;
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
         // Start expanded
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+        // Shows/hides mini player
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
@@ -176,7 +177,15 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-//        bottomSheetBehavior.onTouchEvent()
+        // Expand when tap mini player
+        binding.nowPlaying.nowPlayingMini.miniContent.setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        });
+
+        // Collapse button
+        binding.nowPlaying.collapseBtn.setOnClickListener(v -> {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        });
 
         // Clickable links
         final TextView vRequestBy = binding.nowPlaying.radioControls.requestedBy;
