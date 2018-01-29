@@ -17,27 +17,43 @@
         app:behavior_peekHeight="@dimen/now_playing_peek_height"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-        <!-- TODO: status bar offset (+ in land) -->
         <!-- TODO: background colour? -->
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/dark_grey"
-            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:fitsSystemWindows="true"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/activity_vertical_margin">
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+                <ImageButton
+                    android:id="@+id/collapse_btn"
+                    android:layout_width="@dimen/fab_size"
+                    android:layout_height="@dimen/fab_size"
+                    android:background="@drawable/round_selector"
+                    android:padding="8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_keyboard_arrow_down_white_24dp"
+                    tools:ignore="ContentDescription" />
+
+            </android.support.v7.widget.Toolbar>
 
             <include
                 android:id="@+id/radio_album_art"
                 layout="@layout/radio_album_art"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
                 app:layout_constraintBottom_toTopOf="@+id/radio_songs"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appbar"
                 binding:vm="@{vm}" />
 
             <include
@@ -57,6 +73,7 @@
                 layout="@layout/radio_controls"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -64,17 +81,6 @@
                 binding:vm="@{vm}" />
 
         </android.support.constraint.ConstraintLayout>
-
-        <ImageButton
-            android:id="@+id/collapse_btn"
-            android:layout_width="@dimen/fab_size"
-            android:layout_height="@dimen/fab_size"
-            android:layout_margin="16dp"
-            android:background="@drawable/round_selector"
-            android:padding="8dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_keyboard_arrow_down_white_24dp"
-            tools:ignore="ContentDescription" />
 
         <include
             android:id="@+id/now_playing_mini"
