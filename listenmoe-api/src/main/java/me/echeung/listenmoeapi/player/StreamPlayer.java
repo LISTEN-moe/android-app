@@ -146,7 +146,7 @@ public class StreamPlayer {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                float vol = player.getVolume();
+                float vol = player != null ? player.getVolume() : -1;
                 float newVol = vol - 0.05f;
                 if (newVol <= 0) {
                     stop();
