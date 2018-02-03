@@ -76,33 +76,16 @@ public abstract class BaseViewModel extends BaseObservable {
 
     @BindingAdapter("android:imageUrl")
     public static void loadImage(ImageView v, String url) {
-        loadImage(v, url, false);
-    }
-
-    @BindingAdapter("android:circleImageUrl")
-    public static void loadCircleImage(ImageView v, String url) {
-        loadImage(v, url, true);
-    }
-
-    private static void loadImage(ImageView v, String url, boolean isCircle) {
         // Free up previous resources
         Glide.with(v.getContext())
                 .clear(v);
 
-        if (url != null) {
-            RequestOptions requestOptions = new RequestOptions()
-                    .centerCrop()
-                    .placeholder(v.getDrawable());
-
-            if (isCircle) {
-                requestOptions = requestOptions.circleCrop();
-            }
-
-            Glide.with(v.getContext())
-                    .load(url)
-                    .apply(requestOptions)
-                    .into(new DrawableImageViewTarget(v).waitForLayout());
-        }
+        Glide.with(v.getContext())
+                .load(url)
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .placeholder(v.getDrawable()))
+                .into(new DrawableImageViewTarget(v).waitForLayout());
     }
 
 }

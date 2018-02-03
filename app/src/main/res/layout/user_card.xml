@@ -13,84 +13,102 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 
-        <FrameLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:background="@color/dark_grey">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:imageUrl="@{userVm.bannerUrl}"
-                android:scaleType="centerCrop"
-                android:visibility="@{userVm.bannerUrl != null}"
-                tools:ignore="ContentDescription" />
+            app:cardBackgroundColor="@color/dark_grey"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="3dp"
+            app:cardPreventCornerOverlap="true">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/scrim"
-                android:visibility="@{userVm.bannerUrl != null}" />
+                android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:imageUrl="@{userVm.bannerUrl}"
+                    android:scaleType="centerCrop"
+                    android:visibility="@{userVm.bannerUrl != null}"
+                    tools:ignore="ContentDescription" />
 
-                <TextView
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/scrim"
+                    android:visibility="@{userVm.bannerUrl != null}" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="48dp"
-                    android:text="@{userVm.user.getUsername()}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@{@plurals/user_requests(userVm.requestsRemaining, userVm.requestsRemaining)}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="48dp"
+                        android:text="@{userVm.user.getUsername()}"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="20sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@{@string/queue_info(radioVm.queueSize, radioVm.queuePosition)}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="14sp"
-                    android:visibility="@{radioVm.inQueueByUser != 0}" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@{@plurals/user_requests(userVm.requestsRemaining, userVm.requestsRemaining)}"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
 
-            </LinearLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@{@string/queue_info(radioVm.queueSize, radioVm.queuePosition)}"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:visibility="@{radioVm.inQueueByUser != 0}" />
 
-        </FrameLayout>
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:layout_width="@dimen/avatar_size"
-            android:layout_height="@dimen/avatar_size"
+            android:layout_width="@dimen/avatar_container_size"
+            android:layout_height="@dimen/avatar_container_size"
             android:layout_centerHorizontal="true"
             app:cardBackgroundColor="?attr/colorAccent"
-            app:cardCornerRadius="@dimen/avatar_size_half"
-            app:cardElevation="0dp"
+            app:cardCornerRadius="@{@dimen/avatar_container_size / 2}"
+            app:cardElevation="3dp"
             app:cardPreventCornerOverlap="true">
 
-            <ImageView
-                android:id="@+id/user_avatar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/avatar_margin"
-                android:circleImageUrl="@{userVm.avatarUrl}"
-                android:src="?attr/themeDefaultAvatarImage"
-                tools:ignore="ContentDescription" />
+            <android.support.v7.widget.CardView
+                android:layout_width="@dimen/avatar_size"
+                android:layout_height="@dimen/avatar_size"
+                android:layout_gravity="center"
+                app:cardBackgroundColor="?attr/colorAccent"
+                app:cardCornerRadius="@{@dimen/avatar_size / 2}"
+                app:cardPreventCornerOverlap="true">
+
+                <ImageView
+                    android:id="@+id/user_avatar"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:imageUrl="@{userVm.avatarUrl}"
+                    android:src="?attr/themeDefaultAvatarImage"
+                    tools:ignore="ContentDescription" />
+
+            </android.support.v7.widget.CardView>
 
         </android.support.v7.widget.CardView>
 
