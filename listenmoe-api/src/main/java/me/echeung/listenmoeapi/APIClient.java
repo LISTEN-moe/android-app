@@ -24,7 +24,6 @@ import me.echeung.listenmoeapi.responses.ArtistsResponse;
 import me.echeung.listenmoeapi.responses.AuthResponse;
 import me.echeung.listenmoeapi.responses.BaseResponse;
 import me.echeung.listenmoeapi.responses.FavoritesResponse;
-import me.echeung.listenmoeapi.responses.Messages;
 import me.echeung.listenmoeapi.responses.SongsResponse;
 import me.echeung.listenmoeapi.responses.UserResponse;
 import me.echeung.listenmoeapi.services.ArtistsService;
@@ -41,6 +40,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class APIClient {
 
     private static final String TAG = APIClient.class.getSimpleName();
+
+    // TODO: better handle this and onError logging
+    public static final String AUTH_ERROR = "api-auth-error";
 
     private static final String BASE_URL = "https://listen.moe/api/";
     public static final String CDN_ALBUM_ART_URL = "https://cdn.listen.moe/covers/";
@@ -169,7 +171,7 @@ public class APIClient {
      */
     public void getUserInfo(final UserInfoCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -195,7 +197,7 @@ public class APIClient {
      */
     public void getUserFavorites(final UserFavoritesCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -241,7 +243,7 @@ public class APIClient {
      */
     public void favoriteSong(final String songId, final FavoriteSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -268,7 +270,7 @@ public class APIClient {
      */
     public void unfavoriteSong(final String songId, final FavoriteSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -295,7 +297,7 @@ public class APIClient {
      */
     public void requestSong(final String songId, final RequestSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -321,7 +323,7 @@ public class APIClient {
      */
     public void getSongs(final SongsCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -348,7 +350,7 @@ public class APIClient {
      */
     public void search(final String query, final SearchCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -374,7 +376,7 @@ public class APIClient {
      */
     public void getArtists(final ArtistsCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
@@ -401,7 +403,7 @@ public class APIClient {
      */
     public void getArtist(final String artistId, final ArtistCallback callback) {
         if (!authUtil.isAuthenticated()) {
-            callback.onFailure(Messages.AUTH_ERROR);
+            callback.onFailure(AUTH_ERROR);
             return;
         }
 
