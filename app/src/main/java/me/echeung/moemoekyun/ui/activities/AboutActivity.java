@@ -21,6 +21,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     private static final String URL_TRANSLATE = "https://osfmofb.oneskyapp.com/collaboration/project?id=271507";
 
     private static final String URL_LISTENMOE = "https://listen.moe";
+    private static final String URL_TWITTER_NP = "https://twitter.com/LISTEN_moe_NP";
     private static final String URL_DISCORD = "https://discordapp.com/invite/4S8JYr8"; // https://listen.moe/discord
     private static final String URL_PATREON = "https://www.patreon.com/odysseyradio";
 
@@ -66,6 +67,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.about_app_licenses).setOnClickListener(this);
 
         findViewById(R.id.about_listenmoe_website).setOnClickListener(this);
+        findViewById(R.id.about_listenmoe_play_history).setOnClickListener(this);
         findViewById(R.id.about_listenmoe_discord).setOnClickListener(this);
         findViewById(R.id.about_listenmoe_patreon).setOnClickListener(this);
     }
@@ -91,6 +93,10 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
 
             case R.id.about_listenmoe_website:
                 UrlUtil.openUrl(this, URL_LISTENMOE);
+                break;
+
+            case R.id.about_listenmoe_play_history:
+                UrlUtil.openUrl(this, URL_TWITTER_NP);
                 break;
 
             case R.id.about_listenmoe_discord:
