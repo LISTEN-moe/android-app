@@ -74,16 +74,25 @@
 
         </FrameLayout>
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/user_avatar"
+        <android.support.v7.widget.CardView
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
             android:layout_centerHorizontal="true"
-            android:elevation="3dp"
-            android:imageUrl="@{userVm.avatarUrl}"
-            android:src="?attr/themeDefaultAvatarImage"
-            app:civ_border_color="?attr/colorAccent"
-            app:civ_border_width="2dp" />
+            app:cardBackgroundColor="?attr/colorAccent"
+            app:cardCornerRadius="@dimen/avatar_size_half"
+            app:cardElevation="0dp"
+            app:cardPreventCornerOverlap="true">
+
+            <ImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/avatar_margin"
+                android:circleImageUrl="@{userVm.avatarUrl}"
+                android:src="?attr/themeDefaultAvatarImage"
+                tools:ignore="ContentDescription" />
+
+        </android.support.v7.widget.CardView>
 
     </RelativeLayout>
 

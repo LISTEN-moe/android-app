@@ -7,12 +7,6 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>CircleImageView</name>
-        <url>https://github.com/hdodenhof/CircleImageView</url>
-        <copyright>Copyright 2014 - 2017 Henning Dodenhof</copyright>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
         <name>ExoPlayer</name>
         <url>https://github.com/google/ExoPlayer</url>
         <license>Apache Software License 2.0</license>
