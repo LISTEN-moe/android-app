@@ -1,7 +1,6 @@
 package me.echeung.listenmoeapi;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +37,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
-
-    private static final String TAG = APIClient.class.getSimpleName();
 
     // TODO: better handle this and onError logging
     public static final String AUTH_ERROR = "api-auth-error";
@@ -135,7 +132,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -158,7 +154,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -184,7 +179,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -214,7 +208,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -256,7 +249,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -283,7 +275,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -310,7 +301,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -336,7 +326,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -363,7 +352,6 @@ public class APIClient {
 
             @Override
             public void onFailure(final String message) {
-                Log.e(TAG, message);
                 callback.onFailure(message);
             }
         });
@@ -389,7 +377,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });
@@ -416,7 +403,6 @@ public class APIClient {
 
                     @Override
                     public void error(final String message) {
-                        Log.e(TAG, message);
                         callback.onFailure(message);
                     }
                 });

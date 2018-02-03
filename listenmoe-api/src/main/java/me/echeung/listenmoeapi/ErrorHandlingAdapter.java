@@ -1,6 +1,7 @@
 package me.echeung.listenmoeapi;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -18,6 +19,8 @@ import retrofit2.Retrofit;
 
 // Based on https://github.com/square/retrofit/blob/e6a7cd01657670807bed24f6f4ed56eb59c9c9ab/samples/src/main/java/com/example/retrofit/ErrorHandlingAdapter.java
 public class ErrorHandlingAdapter {
+
+    private static final String TAG = ErrorHandlingAdapter.class.getSimpleName();
 
     public interface WrappedCall<T extends BaseResponse> {
         void cancel();
@@ -90,7 +93,7 @@ public class ErrorHandlingAdapter {
                         callback.success(body);
                     } else {
                         if (body == null && response.errorBody() == null) {
-                            callback.error("Unsuccessful response: " + response);
+                            error(callback, "Unsuccessful response: " + response);
                             return;
                         }
 
@@ -99,20 +102,20 @@ public class ErrorHandlingAdapter {
                                     APIClient.getRetrofit().responseBodyConverter(BaseResponse.class, new Annotation[0]);
                             try {
                                 BaseResponse error = errorConverter.convert(response.errorBody());
-                                callback.error(error.getMessage());
+                                error(callback, error.getMessage());
                                 return;
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        callback.error("Error: " + response);
+                        error(callback, "Error: " + response);
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<T> call, @NonNull Throwable t) {
-                    callback.error(t.getMessage());
+                    error(callback, t.getMessage());
                 }
             });
         }
@@ -120,6 +123,11 @@ public class ErrorHandlingAdapter {
         @Override
         public WrappedCall<T> clone() {
             return new WrappedCallAdapter<>(call.clone());
+        }
+
+        private void error(final WrappedCallback<T> callback, final String message) {
+            Log.e(TAG, message);
+            callback.error(message);
         }
     }
 }
