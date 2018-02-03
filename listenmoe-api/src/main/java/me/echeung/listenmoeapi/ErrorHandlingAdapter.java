@@ -23,8 +23,8 @@ public class ErrorHandlingAdapter {
     private static final String TAG = ErrorHandlingAdapter.class.getSimpleName();
 
     public interface WrappedCall<T extends BaseResponse> {
-        void cancel();
         void enqueue(WrappedCallback<T> callback);
+        void cancel();
         WrappedCall<T> clone();
     }
 
@@ -77,36 +77,27 @@ public class ErrorHandlingAdapter {
         }
 
         @Override
-        public void cancel() {
-            call.cancel();
-        }
-
-        @Override
         public void enqueue(final WrappedCallback<T> callback) {
             call.enqueue(new Callback<T>() {
                 @Override
                 public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-                    final T body = response.body();
-
-                    int code = response.code();
-                    if (code >= 200 && code < 300) {
-                        callback.success(body);
+                    if (response.isSuccessful()) {
+                        callback.success(response.body());
                     } else {
-                        if (body == null && response.errorBody() == null) {
+                        if (response.errorBody() == null) {
                             error(callback, "Unsuccessful response: " + response);
                             return;
                         }
 
-                        if (response.errorBody() != null) {
-                            Converter<ResponseBody, BaseResponse> errorConverter =
-                                    APIClient.getRetrofit().responseBodyConverter(BaseResponse.class, new Annotation[0]);
-                            try {
-                                BaseResponse error = errorConverter.convert(response.errorBody());
-                                error(callback, error.getMessage());
-                                return;
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                        // Parse response body for errors
+                        final Converter<ResponseBody, BaseResponse> errorConverter =
+                                APIClient.getRetrofit().responseBodyConverter(BaseResponse.class, new Annotation[0]);
+                        try {
+                            final BaseResponse error = errorConverter.convert(response.errorBody());
+                            error(callback, error.getMessage());
+                            return;
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
 
                         error(callback, "Error: " + response);
@@ -118,6 +109,11 @@ public class ErrorHandlingAdapter {
                     error(callback, t.getMessage());
                 }
             });
+        }
+
+        @Override
+        public void cancel() {
+            call.cancel();
         }
 
         @Override
