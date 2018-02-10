@@ -35,7 +35,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autofillHints="username"
-                    android:hint="@string/username"
+                    android:hint="@string/username_or_email"
                     android:inputType="text"
                     android:maxLines="1"
                     tools:ignore="LabelFor" />
@@ -101,7 +101,7 @@
                     android:id="@+id/auth_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/mfa_token"
+                    android:hint="@string/mfa_hint"
                     android:inputType="text"
                     android:maxLines="1"
                     tools:ignore="LabelFor" />

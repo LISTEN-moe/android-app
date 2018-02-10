@@ -37,9 +37,6 @@
     <string name="logout_confirmation">Bist du dir sicher, dass du dich ausloggen willst?</string>
     <string name="logged_out">Abgemeldet</string>
     <string name="login_required">Du must eingeloggt sein, um dieses Feature zu benutzen.</string>
-    <string name="auth_error_general">Fehler: Login fehlgeschlagen</string>
-    <string name="auth_error_name">Fehler: Falscher Benutzername</string>
-    <string name="auth_error_pass">Fehler: Falsches Password</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/Pause</string>
     <string name="history">Zuletzt gespielt</string>

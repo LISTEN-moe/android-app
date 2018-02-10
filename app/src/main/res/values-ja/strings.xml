@@ -36,9 +36,6 @@
     <string name="logout_confirmation">ログアウトします。よろしいですか？</string>
     <string name="logged_out">ログアウトしました</string>
     <string name="login_required">この機能を使用にはログインが必要です</string>
-    <string name="auth_error_general">エラー：ログインに失敗しました</string>
-    <string name="auth_error_name">エラー：ユーザー名は無効です</string>
-    <string name="auth_error_pass">エラー：パスワードは無効です</string>
     <!-- == Radio tab == -->
     <string name="play_pause">再生/一時停止</string>
     <string name="history">履歴</string>

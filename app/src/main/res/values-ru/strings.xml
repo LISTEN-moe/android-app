@@ -38,9 +38,6 @@
     <string name="logout_confirmation">Вы действительно хотите выйти?</string>
     <string name="logged_out">Выход выполнен</string>
     <string name="login_required">Вам необходимо войти, чтобы использовать эту функцию</string>
-    <string name="auth_error_general">Ошибка: ошибка входа</string>
-    <string name="auth_error_name">Ошибка: неверное имя пользователя</string>
-    <string name="auth_error_pass">Ошибка: неверный пароль</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Возпроизвести/пауза</string>
     <string name="history">История</string>

@@ -38,9 +38,6 @@
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="logged_out">Logged out</string>
     <string name="login_required">You must log in to use this feature.</string>
-    <string name="auth_error_general">Error: login failed</string>
-    <string name="auth_error_name">Error: invalid username</string>
-    <string name="auth_error_pass">Error: incorrect password</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/pause</string>
     <string name="history">History</string>

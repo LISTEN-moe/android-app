@@ -37,9 +37,6 @@
     <string name="logout_confirmation">Weet je zeker dat je wil afmelden?</string>
     <string name="logged_out">Afgemeld</string>
     <string name="login_required">Je moet je aanmelden om deze functie te gebruiken.</string>
-    <string name="auth_error_general">Fout: aanmelden mislukt</string>
-    <string name="auth_error_name">Fout: ongeldig gebruikersnaam</string>
-    <string name="auth_error_pass">Fout: verkeerd wachtwoord</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Start/pauze</string>
     <string name="history">Geschiedenis</string>

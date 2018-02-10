@@ -37,9 +37,6 @@
     <string name="logout_confirmation">Tem a certeza que quer sair?</string>
     <string name="logged_out">Logout efetuado</string>
     <string name="login_required">É necessario efetuar login para usar esta função.</string>
-    <string name="auth_error_general">Erro: login falhou</string>
-    <string name="auth_error_name">Erro: utilizador invalido</string>
-    <string name="auth_error_pass">Erro: palavra-passe incorreta</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Reproduzir/pausa</string>
     <string name="history">Histórico</string>

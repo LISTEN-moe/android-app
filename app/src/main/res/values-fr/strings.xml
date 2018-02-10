@@ -38,9 +38,6 @@
     <string name="logout_confirmation">Êtes-vous sûr de vouloir vous déconnecter ?</string>
     <string name="logged_out">Déconnecté</string>
     <string name="login_required">Vous devez vous connecter pour utiliser cette fonctionnalité.</string>
-    <string name="auth_error_general">Erreur : la connexion a échoué</string>
-    <string name="auth_error_name">Erreur : nom d\'utilisateur invalide</string>
-    <string name="auth_error_pass">Erreur : mot de passe incorrect</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/pause</string>
     <string name="history">Historique</string>

@@ -37,9 +37,6 @@
     <string name="logout_confirmation">Estás seguro que quieres desloguearte?</string>
     <string name="logged_out">Deslogueado</string>
     <string name="login_required">Debes loguearte para usar esta función.</string>
-    <string name="auth_error_general">Error: autenticación fallida</string>
-    <string name="auth_error_name">Error: usuario inválido</string>
-    <string name="auth_error_pass">Error: password incorrecto</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/Pausa</string>
     <string name="history">Historial</string>

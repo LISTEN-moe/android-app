@@ -38,9 +38,6 @@
     <string name="logout_confirmation">Är du säker på att du vill logga ut?</string>
     <string name="logged_out">Utloggad</string>
     <string name="login_required">Du måste logga in för att använda den här funktionen</string>
-    <string name="auth_error_general">Error: inloggning misslyckades</string>
-    <string name="auth_error_name">Error: fel användarnamn</string>
-    <string name="auth_error_pass">Error: fel lösenord</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Spela/pausa</string>
     <string name="history">Historik</string>
