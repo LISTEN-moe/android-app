@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:autofillHints="username"
                     android:hint="@string/username_or_email"
-                    android:inputType="text"
+                    android:inputType="textNoSuggestions|textEmailAddress"
                     android:maxLines="1"
                     tools:ignore="LabelFor" />
 
@@ -53,7 +53,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
-                    android:inputType="text"
+                    android:inputType="textNoSuggestions|textEmailAddress"
                     android:maxLines="1"
                     tools:ignore="LabelFor" />
 
