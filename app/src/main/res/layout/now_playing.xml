@@ -23,9 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/dark_grey"
-            android:fitsSystemWindows="true"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin">
+            android:fitsSystemWindows="true">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/appbar"
