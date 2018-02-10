@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
+import android.support.v7.graphics.Palette;
 
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
@@ -83,21 +84,26 @@ public class AppNotification {
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
         final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
+        int color = ContextCompat.getColor(service, R.color.colorAccent);
+        if (albumArt != null) {
+            color = Palette.from(albumArt).generate().getVibrantColor(color);
+        }
+
+        MediaStyle style = new MediaStyle().setMediaSession(service.getMediaSession().getSessionToken());
+
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
-                .setCategory(NotificationCompat.CATEGORY_SERVICE)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setShowWhen(false)
-                .setOnlyAlertOnce(true)
-                .setColor(ContextCompat.getColor(service, R.color.colorAccent))
-                .setContentTitle(service.getString(R.string.app_name))
                 .setSmallIcon(R.drawable.ic_icon)
                 .setLargeIcon(albumArt)
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
-                .setOngoing(isPlaying)
                 .addAction(playPauseAction)
-                .setStyle(new MediaStyle().setShowActionsInCompactView(0));
+                .setContentTitle(service.getString(R.string.app_name))
+                .setOngoing(isPlaying)
+                .setShowWhen(false)
+                .setStyle(style.setShowActionsInCompactView(0))
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setOnlyAlertOnce(true)
+                .setColor(color);
 
         if (song != null) {
             builder.setContentTitle(song.getTitle());
@@ -110,9 +116,7 @@ public class AppNotification {
                         song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
                         getPlaybackActionService(RadioService.TOGGLE_FAVORITE)));
 
-                builder.setStyle(new MediaStyle().setShowActionsInCompactView(0, 1));
-            } else {
-                builder.setStyle(new MediaStyle().setShowActionsInCompactView(0));
+                builder.setStyle(style.setShowActionsInCompactView(0, 1));
             }
         }
 
