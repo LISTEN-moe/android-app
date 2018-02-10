@@ -1,6 +1,8 @@
 package me.echeung.moemoekyun.ui.activities;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -21,9 +23,9 @@ public class AuthActivity extends BaseActivity {
 
     private ActivityAuthBinding binding;
 
-    private AuthViewModel viewModel;
-
     private AuthCallback callback;
+
+    private AlertDialog mfaDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,7 @@ public class AuthActivity extends BaseActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth);
 
-        viewModel = App.getAuthViewModel();
+        final AuthViewModel viewModel = App.getAuthViewModel();
         viewModel.reset();
 
         binding.setVm(viewModel);
@@ -67,6 +69,13 @@ public class AuthActivity extends BaseActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        autoPasteMfaToken();
+    }
+
+    @Override
     protected void onDestroy() {
         if (binding != null) {
             binding.unbind();
@@ -89,20 +98,49 @@ public class AuthActivity extends BaseActivity {
         final View layout = getLayoutInflater().inflate(R.layout.dialog_auth_mfa, findViewById(R.id.layout_root_mfa));
         final TextInputEditText otpText = layout.findViewById(R.id.mfa_otp);
 
-        runOnUiThread(() -> new AlertDialog.Builder(this, R.style.DialogTheme)
-                .setTitle(R.string.mfa_prompt)
-                .setView(layout)
-                .setPositiveButton(R.string.submit, (dialogInterface, i) -> {
-                    final String otpToken = otpText.getText().toString().trim();
-                    if (otpToken.length() != OTP_LENGTH) {
-                        return;
-                    }
+        runOnUiThread(() -> {
+            mfaDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
+                    .setTitle(R.string.mfa_prompt)
+                    .setView(layout)
+                    .setPositiveButton(R.string.submit, (dialogInterface, i) -> {
+                        final String otpToken = otpText.getText().toString().trim();
+                        if (otpToken.length() != OTP_LENGTH) {
+                            return;
+                        }
 
-                    App.getApiClient().authenticateMfa(otpToken, callback);
-                })
-                .setNegativeButton(R.string.close, null)
-                .create()
-                .show());
+                        App.getApiClient().authenticateMfa(otpToken, callback);
+                    })
+                    .setNegativeButton(R.string.close, null)
+                    .create();
+
+            mfaDialog.show();
+        });
+    }
+
+    private void autoPasteMfaToken() {
+        if (mfaDialog == null || !mfaDialog.isShowing()) {
+            return;
+        }
+
+        final ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        if (clipboard == null) {
+            return;
+        }
+
+        final ClipData clipData = clipboard.getPrimaryClip();
+        if (clipData == null || clipData.getItemCount() == 0) {
+            return;
+        }
+
+        final ClipData.Item clipDataItem = clipData.getItemAt(0);
+        final String clipboardText = clipDataItem.getText().toString();
+
+        if (clipboardText.length() == OTP_LENGTH && clipboardText.matches("^[0-9]*$")) {
+            final TextInputEditText otpText = mfaDialog.findViewById(R.id.mfa_otp);
+            if (otpText != null) {
+                otpText.setText(clipboardText);
+            }
+        }
     }
 
 }
