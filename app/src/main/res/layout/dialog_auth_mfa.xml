@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/mfa_hint"
-            android:inputType="text"
+            android:inputType="number"
             android:maxLines="1"
             tools:ignore="LabelFor" />
 
