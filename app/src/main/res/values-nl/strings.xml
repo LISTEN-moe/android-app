@@ -54,7 +54,6 @@
     <string name="all_cooldown">Je kan tijdelijk geen nummers aanvragen</string>
     <!-- Requested song title -->
     <string name="requested_song">Verzocht %s</string>
-    <string name="no_requests_left">Geen verzoeken vandaag</string>
     <!-- Song item actions -->
     <string name="supporter_required">Supporterstatus vereist</string>
     <!-- == No Internet view == -->

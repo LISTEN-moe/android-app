@@ -54,7 +54,6 @@
     <string name="all_cooldown">Alle Songs sind auf Abklingzeit</string>
     <!-- Requested song title -->
     <string name="requested_song">Wünsche %s</string>
-    <string name="no_requests_left">Keine Wünsche verbleibend für heute</string>
     <!-- Song item actions -->
     <string name="supporter_required">Supporter Status benötigt</string>
     <!-- == No Internet view == -->

@@ -55,7 +55,6 @@
     <string name="all_cooldown">Alla låtar är på cool down</string>
     <!-- Requested song title -->
     <string name="requested_song">Requestade %s</string>
-    <string name="no_requests_left">Inga requests kvar för idag</string>
     <!-- Song item actions -->
     <string name="supporter_required">Supporter status krävs</string>
     <!-- == No Internet view == -->

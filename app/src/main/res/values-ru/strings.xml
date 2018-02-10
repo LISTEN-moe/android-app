@@ -55,7 +55,6 @@
     <string name="all_cooldown">Все песни сейчас недоступны</string>
     <!-- Requested song title -->
     <string name="requested_song">Запрошено %s</string>
-    <string name="no_requests_left">Вы больше не можете запрашивать песни сегодня</string>
     <!-- Song item actions -->
     <string name="supporter_required">Необходимо пожертвовать для использования этой функции</string>
     <!-- == No Internet view == -->

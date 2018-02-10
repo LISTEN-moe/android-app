@@ -95,7 +95,6 @@
     <!-- Requested song title -->
     <string name="requested_song">Requested %s</string>
     <string name="requested_random_song">Requested a random song</string>
-    <string name="no_requests_left">No requests left today</string>
     <string name="supporter_required">Supporter status required</string>
 
 

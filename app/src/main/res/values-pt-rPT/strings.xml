@@ -54,7 +54,6 @@
     <string name="all_cooldown">Nenhuma música pode ser escolhida</string>
     <!-- Requested song title -->
     <string name="requested_song">%s foi solicitada</string>
-    <string name="no_requests_left">Nenhum pedido restante por hoje</string>
     <!-- Song item actions -->
     <string name="supporter_required">É necessario estatuto de contribuidor</string>
     <!-- == No Internet view == -->

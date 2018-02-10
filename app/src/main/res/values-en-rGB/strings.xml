@@ -55,7 +55,6 @@
     <string name="all_cooldown">All songs are on cool down</string>
     <!-- Requested song title -->
     <string name="requested_song">Requested %s</string>
-    <string name="no_requests_left">No requests left today</string>
     <!-- Song item actions -->
     <string name="supporter_required">Supporter status required</string>
     <!-- == No Internet view == -->

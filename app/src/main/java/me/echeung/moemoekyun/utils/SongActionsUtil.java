@@ -96,11 +96,6 @@ public final class SongActionsUtil {
      */
     public static void request(final Activity activity, final RecyclerView.Adapter adapter, final Song song) {
         final int requests = App.getUserViewModel().getUser().getRequestsRemaining();
-        if (requests <= 0) {
-            Toast.makeText(activity.getApplicationContext(), R.string.no_requests_left, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         App.getApiClient().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
             @Override
             public void onSuccess() {
@@ -112,8 +107,8 @@ public final class SongActionsUtil {
                         final Intent reqEvent = new Intent(UserFragment.REQUEST_EVENT);
                         activity.sendBroadcast(reqEvent);
 
-                        final int remainingReqs = requests - 1;
-                        App.getUserViewModel().setRequestsRemaining(remainingReqs);
+                        final int remainingRequests = requests - 1;
+                        App.getUserViewModel().setRequestsRemaining(remainingRequests);
 
                         final String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
                                 ? activity.getString(R.string.requested_song, song.toString())
