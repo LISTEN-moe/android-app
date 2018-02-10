@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_root_login"
+    android:id="@+id/layout_root_mfa"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -15,29 +15,12 @@
         android:textColorHint="@color/light_grey">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/auth_username"
+            android:id="@+id/mfa_otp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints="username"
-            android:hint="@string/username"
+            android:hint="@string/mfa_hint"
             android:inputType="text"
             android:maxLines="1"
-            tools:ignore="LabelFor" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColorHint="@color/light_grey">
-
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/auth_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autofillHints="password"
-            android:hint="@string/password"
-            android:inputType="textPassword"
             tools:ignore="LabelFor" />
 
     </android.support.design.widget.TextInputLayout>

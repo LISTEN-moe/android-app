@@ -91,23 +91,6 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/light_grey"
-                android:visibility="@{vm.showMfa}">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/auth_otp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/mfa_hint"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    tools:ignore="LabelFor" />
-
-            </android.support.design.widget.TextInputLayout>
-
             <Button
                 android:id="@+id/auth_btn"
                 android:layout_width="match_parent"

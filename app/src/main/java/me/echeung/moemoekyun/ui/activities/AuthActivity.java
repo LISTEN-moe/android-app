@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.AuthCallback;
@@ -14,9 +17,13 @@ import me.echeung.moemoekyun.viewmodels.AuthViewModel;
 
 public class AuthActivity extends BaseActivity {
 
+    private static final int OTP_LENGTH = 6;
+
     private ActivityAuthBinding binding;
 
     private AuthViewModel viewModel;
+
+    private AuthCallback callback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +40,8 @@ public class AuthActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         binding.authBtn.setOnClickListener(v -> login());
-    }
 
-    @Override
-    protected void onDestroy() {
-        if (binding != null) {
-            binding.unbind();
-        }
-
-        super.onDestroy();
-    }
-
-    private void login() {
-        final String user = binding.authUsername.getText().toString().trim();
-        final String pass = binding.authPassword.getText().toString().trim();
-
-        if (user.isEmpty() || pass.isEmpty()) {
-            return;
-        }
-
-        AuthCallback callback = new AuthCallback() {
+        callback = new AuthCallback() {
             @Override
             public void onSuccess(final String token) {
                 App.getAuthUtil().setAuthToken(token);
@@ -67,32 +56,53 @@ public class AuthActivity extends BaseActivity {
             @Override
             public void onMfaRequired(final String token) {
                 App.getAuthUtil().setAuthToken(token);
-                viewModel.setShowMfa(true);
+                showMfaDialog();
             }
 
             @Override
             public void onFailure(final String message) {
-                viewModel.setShowMfa(false);
-
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show());
             }
         };
+    }
 
-        // Login with OTP token
-        if (viewModel.getShowMfa()) {
-            final String otpToken = binding.authOtp.getText().toString().trim();
+    @Override
+    protected void onDestroy() {
+        if (binding != null) {
+            binding.unbind();
+        }
 
-            if (otpToken.length() != 6) {
-                return;
-            }
+        super.onDestroy();
+    }
 
-            App.getApiClient().authenticateMfa(otpToken, callback);
+    private void login() {
+        final String user = binding.authUsername.getText().toString().trim();
+        final String pass = binding.authPassword.getText().toString().trim();
+        if (user.isEmpty() || pass.isEmpty()) {
             return;
         }
 
-
-        // Login
         App.getApiClient().authenticate(user, pass, callback);
+    }
+
+    private void showMfaDialog() {
+        final View layout = getLayoutInflater().inflate(R.layout.dialog_auth_mfa, findViewById(R.id.layout_root_mfa));
+        final TextInputEditText otpText = layout.findViewById(R.id.mfa_otp);
+
+        runOnUiThread(() -> new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle(R.string.mfa_prompt)
+                .setView(layout)
+                .setPositiveButton(R.string.submit, (dialogInterface, i) -> {
+                    final String otpToken = otpText.getText().toString().trim();
+                    if (otpToken.length() != OTP_LENGTH) {
+                        return;
+                    }
+
+                    App.getApiClient().authenticateMfa(otpToken, callback);
+                })
+                .setNegativeButton(R.string.close, null)
+                .create()
+                .show());
     }
 
 }
