@@ -1,6 +1,8 @@
 package me.echeung.moemoekyun.ui.activities;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
@@ -8,8 +10,9 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.LocaleUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
+import me.echeung.moemoekyun.utils.ThemeUtil;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +33,39 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         LocaleUtil.setTitle(this);
+
+        colorNavigationBar();
+
+        App.getPreferenceUtil().registerListener(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        App.getPreferenceUtil().unregisterListener(this);
+
+        super.onDestroy();
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleUtil.setLocale(base));
+    }
+
+    private void colorNavigationBar() {
+        final int color = App.getPreferenceUtil().shouldColorNavbar()
+                ? ThemeUtil.getAccentColor(this)
+                : Color.BLACK;
+
+        getWindow().setNavigationBarColor(color);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case PreferenceUtil.PREF_COLOR_NAVBAR:
+                colorNavigationBar();
+                break;
+        }
     }
 
 }

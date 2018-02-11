@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
 import android.support.v7.graphics.Palette;
 
@@ -16,6 +15,7 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
+import me.echeung.moemoekyun.utils.ThemeUtil;
 
 public class AppNotification {
 
@@ -55,8 +55,8 @@ public class AppNotification {
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
         final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
-        int color = ContextCompat.getColor(service, R.color.colorAccent);
-        if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
+        int color = ThemeUtil.getAccentColor(service);
+        if (App.getPreferenceUtil().shouldColorNotification() && albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
             color = Palette.from(albumArt).generate().getVibrantColor(color);
         }
 

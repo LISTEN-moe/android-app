@@ -18,6 +18,9 @@ public final class PreferenceUtil {
 
     public static final String PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart";
 
+    public static final String PREF_COLOR_NOTIFICATION = "pref_color_notification";
+    public static final String PREF_COLOR_NAVBAR = "pref_color_navbar";
+
     public static final String THEME_DEFAULT = "four";
     public static final String THEME_LEGACY = "three";
     public static final String THEME_CHRISTMAS = "christmas";
@@ -68,6 +71,14 @@ public final class PreferenceUtil {
 
     public boolean shouldShowLockscreenAlbumArt() {
         return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART, true);
+    }
+
+    public boolean shouldColorNotification() {
+        return preferences.getBoolean(PREF_COLOR_NOTIFICATION, true);
+    }
+
+    public boolean shouldColorNavbar() {
+        return preferences.getBoolean(PREF_COLOR_NAVBAR, false);
     }
 
     public int getSleepTimer() {

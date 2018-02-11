@@ -163,4 +163,8 @@
     <string name="pref_title_lockscreen_albumart">Show album cover</string>
     <string name="pref_title_lockscreen_albumart_summary">Displays album art on lockscreen and Android Auto</string>
 
+    <string name="pref_header_color">Color</string>
+    <string name="pref_title_color_notification">Color notification based on album art</string>
+    <string name="pref_title_color_navbar">Theme on-screen navigation bar</string>
+
 </resources>

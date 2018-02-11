@@ -619,6 +619,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
             case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART:
                 updateMediaSession();
                 break;
+
+            case PreferenceUtil.PREF_COLOR_NOTIFICATION:
+                updateNotification();
+                break;
         }
     }
 
