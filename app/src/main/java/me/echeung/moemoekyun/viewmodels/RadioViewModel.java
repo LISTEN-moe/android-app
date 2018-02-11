@@ -1,11 +1,12 @@
 package me.echeung.moemoekyun.viewmodels;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.databinding.Bindable;
 import android.graphics.Bitmap;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
@@ -16,19 +17,13 @@ import me.echeung.moemoekyun.utils.PluralsUtil;
 
 public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callback {
 
-    private static final String SHOW_HISTORY = "pref_show_history";
-
-    private final SharedPreferences sharedPrefs;
-
     private Song currentSong;
-    private String albumArtUrl;
 
     private boolean isPlaying;
     private int listeners;
     private User requester;
     private String event;
 
-    private boolean showHistory;
     private Song lastSong;
     private Song secondLastSong;
 
@@ -45,9 +40,6 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
 
         // Defaults
         isPlaying = false;
-
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        showHistory = sharedPrefs.getBoolean(SHOW_HISTORY, false);
     }
 
     public void reset() {
@@ -171,18 +163,11 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     // History
     // ========================================================================
 
-    @Bindable
-    public boolean getShowHistory() {
-        return showHistory;
-    }
-
-    public void toggleShowHistory() {
-        showHistory = !showHistory;
-        notifyPropertyChanged(BR.showHistory);
-
-        sharedPrefs.edit()
-                .putBoolean(SHOW_HISTORY, showHistory)
-                .apply();
+    public List<Song> getHistory() {
+        List<Song> songs = new ArrayList<>();
+        songs.add(lastSong);
+        songs.add(secondLastSong);
+        return songs;
     }
 
     @Bindable

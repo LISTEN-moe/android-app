@@ -8,7 +8,11 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
         <ProgressBar
             style="?android:attr/progressBarStyle"
@@ -18,86 +22,54 @@
             android:indeterminate="true"
             android:visibility="@{vm.currentSong == null}" />
 
-        <ScrollView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:fillViewport="true"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingTop="16dp"
             android:visibility="@{vm.currentSong != null}">
 
             <LinearLayout
+                android:id="@+id/current_song"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin">
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/songList1"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="16dp"
+                    android:text="@{vm.currentSong.getTitle()}"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:text="@{vm.currentSong.getTitle()}"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="24sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-light"
-                        android:text="@{vm.currentSong.getArtistString()}"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-                <!-- TODO: show history in a dialog -->
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:alpha="@{vm.showHistory ? 1f : 0f}"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_marginBottom="16dp"
+                    android:alpha="0.75"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@{vm.currentSong.getArtistString()}"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-                    <TextView
-                        android:id="@+id/songList2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:alpha="0.5"
-                        android:fontFamily="sans-serif-light"
-                        android:text="@{vm.lastSong.toString()}"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:id="@+id/songList3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.25"
-                        android:fontFamily="sans-serif-light"
-                        android:text="@{vm.secondLastSong.toString()}"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.75"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@{vm.currentSong.getAlbumString()}"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
-        </ScrollView>
+        </LinearLayout>
 
     </RelativeLayout>
 

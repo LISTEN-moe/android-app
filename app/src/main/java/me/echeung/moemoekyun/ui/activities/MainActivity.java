@@ -28,6 +28,7 @@ import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
+import me.echeung.moemoekyun.ui.dialogs.SongDetailsDialog;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.UrlUtil;
@@ -199,16 +200,8 @@ public class MainActivity extends BaseActivity {
         final ImageButton vFavoriteBtn = binding.nowPlaying.radioControls.favoriteBtn;
         vFavoriteBtn.setOnClickListener(v -> favorite());
 
-        binding.nowPlaying.radioSongs.songList1.setOnLongClickListener(v -> {
+        binding.nowPlaying.radioSongs.currentSong.setOnLongClickListener(v -> {
             SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
-            return true;
-        });
-        binding.nowPlaying.radioSongs.songList2.setOnLongClickListener(v -> {
-            SongActionsUtil.copyToClipboard(this, viewModel.getLastSong());
-            return true;
-        });
-        binding.nowPlaying.radioSongs.songList3.setOnLongClickListener(v -> {
-            SongActionsUtil.copyToClipboard(this, viewModel.getSecondLastSong());
             return true;
         });
     }
@@ -369,7 +362,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showHistory() {
-        viewModel.toggleShowHistory();
+        new SongDetailsDialog(this, viewModel.getHistory()).show();
     }
 
 }
