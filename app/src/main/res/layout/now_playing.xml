@@ -24,10 +24,11 @@
             android:layout_height="match_parent"
             android:background="@color/dark_grey">
 
-            <android.support.v7.widget.Toolbar
+            <LinearLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="?attr/actionBarSize"
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/collapse_btn"
@@ -39,7 +40,7 @@
                     android:src="@drawable/ic_keyboard_arrow_down_white_24dp"
                     tools:ignore="ContentDescription" />
 
-            </android.support.v7.widget.Toolbar>
+            </LinearLayout>
 
             <include
                 android:id="@+id/radio_album_art"
