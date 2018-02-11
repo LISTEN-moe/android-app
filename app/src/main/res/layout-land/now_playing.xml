@@ -20,8 +20,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dark_grey"
-            android:fitsSystemWindows="true">
+            android:background="@color/dark_grey">
 
             <android.support.constraint.Guideline
                 android:id="@+id/top_horizontal_guideline"
