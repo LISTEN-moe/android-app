@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.session.MediaSession;
 import android.net.ConnectivityManager;
@@ -18,7 +18,6 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -43,7 +42,7 @@ import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
-public class RadioService extends Service implements RadioSocket.SocketListener, SharedPreferences.OnSharedPreferenceChangeListener {
+public class RadioService extends Service implements RadioSocket.SocketListener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = RadioService.class.getSimpleName();
 
@@ -74,7 +73,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private Calendar trackStartTime;
 
     private MediaSessionCompat mediaSession;
-    private int maxScreenLength;
 
     private AudioManager audioManager;
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
@@ -92,7 +90,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     @Override
     public void onCreate() {
-        maxScreenLength = getMaxScreenLength();
+        AlbumArtUtil.addListener(this);
 
         initBroadcastReceiver();
         initMediaSession();
@@ -160,6 +158,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     @Override
     public void onDestroy() {
+        AlbumArtUtil.removeListener(this);
+
         stop();
         socket.disconnect();
         stream.removeListener();
@@ -230,6 +230,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     }
 
     private void updateMediaSession() {
+        updateMediaSession(null);
+    }
+
+    private void updateMediaSession(Bitmap albumArt) {
         final Song currentSong = App.getRadioViewModel().getCurrentSong();
 
         if (currentSong == null) {
@@ -243,17 +247,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumString())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
 
-        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
-            AlbumArtUtil.getAlbumArtBitmap(this, currentSong, maxScreenLength, bitmap -> {
-                metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, bitmap);
-                updateMediaSession(metaData);
-            });
+        if (albumArt != null && App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
+            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
+            updateNotification();
         }
 
-        updateMediaSession(metaData);
-    }
-
-    private void updateMediaSession(MediaMetadataCompat.Builder metaData) {
         mediaSession.setMetadata(metaData.build());
         updateMediaSessionPlaybackState();
     }
@@ -280,6 +278,11 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         }
 
         mediaSession.setPlaybackState(stateBuilder.build());
+    }
+
+    @Override
+    public void onAlbumArtReady(Bitmap bitmap) {
+        updateMediaSession(bitmap);
     }
 
     private void updateNotification() {
@@ -617,11 +620,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 updateMediaSession();
                 break;
         }
-    }
-
-    private int getMaxScreenLength() {
-        final DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
-        return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
 
     public class ServiceBinder extends Binder {

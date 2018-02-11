@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -72,6 +73,20 @@ public abstract class BaseViewModel extends BaseObservable {
     @BindingAdapter("android:visibility")
     public static void setVisibility(View v, boolean visible) {
         v.setVisibility(visible ? View.VISIBLE : View.GONE);
+    }
+
+    @BindingAdapter("android:imageBitmap")
+    public static void loadImage(ImageView v, Bitmap bitmap) {
+        // Free up previous resources
+        Glide.with(v.getContext())
+                .clear(v);
+
+        Glide.with(v.getContext())
+                .load(bitmap)
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .placeholder(v.getDrawable()))
+                .into(v);
     }
 
     @BindingAdapter("android:imageUrl")

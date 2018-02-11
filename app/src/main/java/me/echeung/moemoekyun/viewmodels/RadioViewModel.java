@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.viewmodels;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.databinding.Bindable;
+import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
@@ -10,9 +11,10 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.PluralsUtil;
 
-public class RadioViewModel extends BaseViewModel {
+public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callback {
 
     private static final String SHOW_HISTORY = "pref_show_history";
 
@@ -38,6 +40,8 @@ public class RadioViewModel extends BaseViewModel {
 
     public RadioViewModel(Context context) {
         super(context);
+
+        AlbumArtUtil.addListener(this);
 
         // Defaults
         isPlaying = false;
@@ -72,19 +76,22 @@ public class RadioViewModel extends BaseViewModel {
 
     public void setCurrentSong(Song currentSong) {
         this.currentSong = currentSong;
+
         setIsFavorited(currentSong != null && currentSong.isFavorite());
-        setAlbumArtUrl(currentSong != null ? currentSong.getAlbumArtUrl() : null);
+
+        AlbumArtUtil.updateAlbumArt(getContext(), currentSong);
+
         notifyPropertyChanged(BR.currentSong);
     }
 
     @Bindable
-    public String getAlbumArtUrl() {
-        return albumArtUrl;
+    public Bitmap getAlbumArt() {
+        return AlbumArtUtil.getCurrentAlbumArt();
     }
 
-    public void setAlbumArtUrl(String albumArtUrl) {
-        this.albumArtUrl = albumArtUrl;
-        notifyPropertyChanged(BR.albumArtUrl);
+    @Override
+    public void onAlbumArtReady(Bitmap bitmap) {
+        notifyPropertyChanged(BR.albumArt);
     }
 
     @Bindable

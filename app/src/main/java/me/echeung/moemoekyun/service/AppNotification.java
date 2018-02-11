@@ -24,13 +24,8 @@ public class AppNotification {
 
     private static final int NOTIFICATION_ID = 1;
 
-    private static final int NOTIFICATION_ALBUM_ART_MAX_SIZE = 300;
-
     private RadioService service;
     private NotificationManager notificationManager;
-
-    private int lastSongId;
-    private Bitmap lastAlbumArt;
 
     AppNotification(RadioService service) {
         this.service = service;
@@ -43,31 +38,7 @@ public class AppNotification {
         }
 
         final Song song = getCurrentSong();
-
-        // Use the already downloaded album art
-        Bitmap albumArt = null;
-        if (song != null && lastSongId == song.getId() && lastAlbumArt != null) {
-            albumArt = lastAlbumArt;
-        }
-
-        update(song, albumArt);
-
-        if (song != null && lastSongId != song.getId()) {
-            lastSongId = song.getId();
-
-            // Update the notification with the downloaded album art as needed
-            AlbumArtUtil.getAlbumArtBitmap(service, song, NOTIFICATION_ALBUM_ART_MAX_SIZE, bitmap -> {
-                lastAlbumArt = bitmap;
-
-                update(song, bitmap);
-            });
-        }
-    }
-
-    private void update(final Song song, final Bitmap albumArt) {
-        if (!service.isStreamStarted()) {
-            return;
-        }
+        final Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
 
         final boolean isPlaying = service.isPlaying();
 
@@ -85,7 +56,7 @@ public class AppNotification {
         final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
         int color = ContextCompat.getColor(service, R.color.colorAccent);
-        if (albumArt != null) {
+        if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
             color = Palette.from(albumArt).generate().getVibrantColor(color);
         }
 

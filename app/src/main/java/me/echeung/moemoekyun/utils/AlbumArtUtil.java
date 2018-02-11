@@ -1,11 +1,13 @@
 package me.echeung.moemoekyun.utils;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.util.DisplayMetrics;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -13,24 +15,59 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.R;
 
 public final class AlbumArtUtil {
 
-    private static Bitmap defaultAlbumArt;
+    private static final int MAX_SCREEN_SIZE = getMaxScreenLength();
 
-    public static void getAlbumArtBitmap(Context context, Song song, int size, Callback callback) {
+    private static Bitmap defaultAlbumArt;
+    private static Bitmap currentAlbumArt;
+    private static boolean isDefaultAlbumArt = true;
+    private static List<Callback> listeners = new ArrayList<>();
+
+    public static void addListener(Callback callback) {
+        listeners.add(callback);
+    }
+
+    public static void removeListener(Callback callback) {
+        if (listeners.contains(callback)) {
+            listeners.remove(callback);
+        }
+    }
+
+    public static Bitmap getCurrentAlbumArt() {
+        return currentAlbumArt;
+    }
+
+    public static boolean isDefaultAlbumArt() {
+        return isDefaultAlbumArt;
+    }
+
+    public static void updateAlbumArt(Context context, Song song) {
         final String albumArtUrl = song.getAlbumArtUrl();
         if (albumArtUrl != null) {
-            downloadAlbumArtBitmap(context, albumArtUrl, size, callback);
+            downloadAlbumArtBitmap(context, albumArtUrl);
             return;
         }
 
-        callback.onBitmapReady(getDefaultAlbumArt(context));
+        isDefaultAlbumArt = true;
+        updateListeners(getDefaultAlbumArt(context));
     }
 
-    private static void downloadAlbumArtBitmap(Context context, String url, int size, Callback callback) {
+    private static void updateListeners(Bitmap bitmap) {
+        currentAlbumArt = bitmap;
+
+        for (Callback listener : listeners) {
+            listener.onAlbumArtReady(bitmap);
+        }
+    }
+
+    private static void downloadAlbumArtBitmap(Context context, String url) {
         new Handler(Looper.getMainLooper()).post(() -> {
             Glide.with(context.getApplicationContext())
                     .asBitmap()
@@ -38,10 +75,11 @@ public final class AlbumArtUtil {
                     .apply(new RequestOptions()
                             .diskCacheStrategy(DiskCacheStrategy.NONE)
                             .centerCrop())
-                    .into(new SimpleTarget<Bitmap>(size, size) {
+                    .into(new SimpleTarget<Bitmap>(MAX_SCREEN_SIZE, MAX_SCREEN_SIZE) {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
-                            callback.onBitmapReady(resource);
+                            isDefaultAlbumArt = false;
+                            updateListeners(resource);
                         }
                     });
         });
@@ -55,8 +93,13 @@ public final class AlbumArtUtil {
         return defaultAlbumArt;
     }
 
+    private static int getMaxScreenLength() {
+        final DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
+    }
+
     public interface Callback {
-        void onBitmapReady(Bitmap bitmap);
+        void onAlbumArtReady(Bitmap bitmap);
     }
 
 }

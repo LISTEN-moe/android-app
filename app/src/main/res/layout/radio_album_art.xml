@@ -25,9 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"
-            android:imageUrl="@{vm.albumArtUrl}"
+            android:imageBitmap="@{vm.albumArt}"
             android:scaleType="centerCrop"
-            android:visibility="@{vm.albumArtUrl != null}"
             tools:ignore="ContentDescription" />
 
     </FrameLayout>
