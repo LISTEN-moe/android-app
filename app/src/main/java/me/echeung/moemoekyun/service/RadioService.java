@@ -230,10 +230,6 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     }
 
     private void updateMediaSession() {
-        updateMediaSession(null);
-    }
-
-    private void updateMediaSession(Bitmap albumArt) {
         final Song currentSong = App.getRadioViewModel().getCurrentSong();
 
         if (currentSong == null) {
@@ -247,9 +243,12 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumString())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
 
-        if (albumArt != null && App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
-            metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
-            updateNotification();
+        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
+            final Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
+            if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
+                metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
+                updateNotification();
+            }
         }
 
         mediaSession.setMetadata(metaData.build());
@@ -282,7 +281,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     @Override
     public void onAlbumArtReady(Bitmap bitmap) {
-        updateMediaSession(bitmap);
+        updateMediaSession();
     }
 
     private void updateNotification() {
