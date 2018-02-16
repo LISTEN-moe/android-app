@@ -12,6 +12,7 @@
         android:id="@+id/now_playing_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
         android:visibility="@{vm.isConnected}"
         app:behavior_hideable="false"
         app:behavior_peekHeight="@dimen/now_playing_peek_height"
