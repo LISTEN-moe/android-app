@@ -55,8 +55,9 @@ public class AppNotification {
         final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
         final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
+        // For pre-Oreo colored notifications
         int color = ThemeUtil.getAccentColor(service);
-        if (App.getPreferenceUtil().shouldColorNotification() && albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
+        if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
             color = Palette.from(albumArt).generate().getVibrantColor(color);
         }
 
