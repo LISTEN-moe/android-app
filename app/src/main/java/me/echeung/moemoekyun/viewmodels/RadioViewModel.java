@@ -137,11 +137,11 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     @Bindable
     public String getRequester() {
         final Context context = getContext();
-        if (context == null || requester == null || TextUtils.isEmpty(requester.getUsername())) {
+        if (context == null || requester == null || TextUtils.isEmpty(requester.getDisplayName())) {
             return null;
         }
 
-        return String.format(context.getString(R.string.requested_by), requester.getUsername());
+        return String.format(context.getString(R.string.requested_by), requester.getDisplayName());
     }
 
     public void setRequester(User requester) {
