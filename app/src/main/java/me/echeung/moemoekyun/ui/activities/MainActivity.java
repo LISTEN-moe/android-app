@@ -362,7 +362,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showHistory() {
-        new SongDetailsDialog(this, viewModel.getHistory()).show();
+        new SongDetailsDialog(this, viewModel.getHistory());
     }
 
 }
