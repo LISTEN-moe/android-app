@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.v7.graphics.Palette;
 import android.util.DisplayMetrics;
 
 import com.bumptech.glide.Glide;
@@ -46,6 +47,14 @@ public final class AlbumArtUtil {
 
     public static boolean isDefaultAlbumArt() {
         return isDefaultAlbumArt;
+    }
+
+    public static int getPaletteColor(Context context) {
+        int color = ThemeUtil.getAccentColor(context);
+        if (currentAlbumArt != null && !isDefaultAlbumArt) {
+            color = Palette.from(currentAlbumArt).generate().getVibrantColor(color);
+        }
+        return color;
     }
 
     public static void updateAlbumArt(Context context, Song song) {
