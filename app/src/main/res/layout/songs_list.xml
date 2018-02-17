@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:gravity="center_vertical"
@@ -27,14 +27,14 @@
 
             <EditText
                 android:id="@+id/query"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:backgroundTint="@color/light_grey"
                 android:hint="@{searchHint}"
                 android:importantForAutofill="no"
                 android:maxLines="1"
-                android:padding="16dp"
+                android:paddingEnd="80dp"
+                android:paddingStart="16dp"
                 android:singleLine="true"
                 android:text="@={vm.query}"
                 android:textColor="@color/white"
@@ -45,10 +45,12 @@
                 android:id="@+id/btn_clear_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/overflow_btn"
                 android:alpha="0.5"
                 android:background="@drawable/round_selector"
                 android:contentDescription="@string/clear_query"
-                android:padding="16dp"
+                android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_cancel_white_24dp"
                 android:visibility="@{vm.query != null &amp;&amp; !vm.query.isEmpty()}"
@@ -63,11 +65,11 @@
                 android:background="@drawable/round_selector"
                 android:contentDescription="@string/sort"
                 android:padding="8dp"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_more_vert_white_24dp"
                 android:tint="@color/light_grey" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/refresh_layout"
