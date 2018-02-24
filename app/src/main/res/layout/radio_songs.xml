@@ -23,6 +23,7 @@
             android:visibility="@{vm.currentSong == null}" />
 
         <LinearLayout
+            android:id="@+id/current_song"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -31,43 +32,47 @@
             android:paddingTop="16dp"
             android:visibility="@{vm.currentSong != null}">
 
-            <LinearLayout
-                android:id="@+id/current_song"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginBottom="16dp"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:selected="@{true}"
+                android:singleLine="true"
+                android:text="@{vm.currentSong.getTitle()}"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="24sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:text="@{vm.currentSong.getTitle()}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="24sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:alpha="0.75"
+                android:ellipsize="marquee"
+                android:fontFamily="sans-serif-light"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:selected="@{true}"
+                android:singleLine="true"
+                android:text="@{vm.currentSong.getArtistString()}"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:alpha="0.75"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@{vm.currentSong.getArtistString()}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:alpha="0.75"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@{vm.currentSong.getAlbumString()}"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:alpha="0.75"
+                android:ellipsize="marquee"
+                android:fontFamily="sans-serif-light"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:selected="@{true}"
+                android:singleLine="true"
+                android:text="@{vm.currentSong.getAlbumString()}"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

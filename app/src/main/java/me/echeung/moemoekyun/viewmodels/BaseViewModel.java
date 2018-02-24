@@ -7,6 +7,7 @@ import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -69,6 +70,11 @@ public abstract class BaseViewModel extends BaseObservable {
 
     // Helpers
     // ========================================================================
+
+    @BindingAdapter("android:selected")
+    public static void setSelected(TextView v, boolean selected) {
+        v.setSelected(selected);
+    }
 
     @BindingAdapter("android:visibility")
     public static void setVisibility(View v, boolean visible) {
