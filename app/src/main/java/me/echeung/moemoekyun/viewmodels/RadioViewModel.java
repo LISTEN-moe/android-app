@@ -165,6 +165,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
 
     public List<Song> getHistory() {
         List<Song> songs = new ArrayList<>();
+        songs.add(currentSong);
         songs.add(lastSong);
         songs.add(secondLastSong);
         return songs;

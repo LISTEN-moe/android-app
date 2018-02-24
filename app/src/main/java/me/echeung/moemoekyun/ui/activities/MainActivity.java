@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -200,7 +201,9 @@ public class MainActivity extends BaseActivity {
         final ImageButton vFavoriteBtn = binding.nowPlaying.radioControls.favoriteBtn;
         vFavoriteBtn.setOnClickListener(v -> favorite());
 
-        binding.nowPlaying.radioSongs.currentSong.setOnLongClickListener(v -> {
+        final LinearLayout vCurrentSong = binding.nowPlaying.radioSongs.currentSong;
+        vCurrentSong.setOnClickListener(v -> showHistory());
+        vCurrentSong.setOnLongClickListener(v -> {
             SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
             return true;
         });
