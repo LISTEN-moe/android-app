@@ -8,14 +8,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
-import android.support.v7.graphics.Palette;
 
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
-import me.echeung.moemoekyun.utils.ThemeUtil;
 
 public class AppNotification {
 
@@ -60,7 +58,7 @@ public class AppNotification {
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_icon)
                 .setLargeIcon(albumArt)
-                .setColor(AlbumArtUtil.getPaletteColor(service))  // For pre-Oreo colored notifications
+                .setColor(AlbumArtUtil.getVibrantColor(service))  // For pre-Oreo colored notifications
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .addAction(playPauseAction)

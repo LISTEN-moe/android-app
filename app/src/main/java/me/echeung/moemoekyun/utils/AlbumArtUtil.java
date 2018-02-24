@@ -26,10 +26,13 @@ public final class AlbumArtUtil {
 
     private static final int MAX_SCREEN_SIZE = getMaxScreenLength();
 
+    private static List<Callback> listeners = new ArrayList<>();
+
+    private static boolean isDefaultAlbumArt = true;
     private static Bitmap defaultAlbumArt;
     private static Bitmap currentAlbumArt;
-    private static boolean isDefaultAlbumArt = true;
-    private static List<Callback> listeners = new ArrayList<>();
+    private static int vibrantColor;
+    private static int bodyColor;
 
     public static void addListener(Callback callback) {
         listeners.add(callback);
@@ -49,14 +52,6 @@ public final class AlbumArtUtil {
         return isDefaultAlbumArt;
     }
 
-    public static int getPaletteColor(Context context) {
-        int color = ThemeUtil.getAccentColor(context);
-        if (currentAlbumArt != null && !isDefaultAlbumArt) {
-            color = Palette.from(currentAlbumArt).generate().getVibrantColor(color);
-        }
-        return color;
-    }
-
     public static void updateAlbumArt(Context context, Song song) {
         final String albumArtUrl = song.getAlbumArtUrl();
         if (albumArtUrl != null) {
@@ -68,9 +63,23 @@ public final class AlbumArtUtil {
         updateListeners(getDefaultAlbumArt(context));
     }
 
-    private static void updateListeners(Bitmap bitmap) {
-        currentAlbumArt = bitmap;
+    public static int getVibrantColor(Context context) {
+        if (currentAlbumArt == null || isDefaultAlbumArt) {
+            return ThemeUtil.getAccentColor(context);
+        }
 
+        return vibrantColor;
+    }
+
+    public static int getBodyColor(Context context) {
+        if (currentAlbumArt == null || isDefaultAlbumArt) {
+            return ThemeUtil.getBodyColor(context);
+        }
+
+        return bodyColor;
+    }
+
+    private static void updateListeners(Bitmap bitmap) {
         for (Callback listener : listeners) {
             listener.onAlbumArtReady(bitmap);
         }
@@ -88,6 +97,14 @@ public final class AlbumArtUtil {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                             isDefaultAlbumArt = false;
+                            currentAlbumArt = resource;
+
+                            final Palette.Swatch swatch = Palette.from(currentAlbumArt).generate().getVibrantSwatch();
+                            if (swatch != null) {
+                                vibrantColor = swatch.getRgb();
+                                bodyColor = swatch.getBodyTextColor();
+                            }
+
                             updateListeners(resource);
                         }
                     });

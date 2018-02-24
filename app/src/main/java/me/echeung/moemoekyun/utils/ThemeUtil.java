@@ -15,4 +15,11 @@ public final class ThemeUtil {
         return typedValue.data;
     }
 
+    @ColorInt
+    public static int getBodyColor(Context context) {
+        final TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true);
+        return typedValue.data;
+    }
+
 }
