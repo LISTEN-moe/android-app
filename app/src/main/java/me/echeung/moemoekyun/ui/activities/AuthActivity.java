@@ -46,8 +46,6 @@ public class AuthActivity extends BaseActivity {
         callback = new AuthCallback() {
             @Override
             public void onSuccess(final String token) {
-                App.getAuthUtil().setAuthToken(token);
-
                 runOnUiThread(() -> {
                     Intent returnIntent = new Intent();
                     setResult(Activity.RESULT_OK, returnIntent);
@@ -57,7 +55,6 @@ public class AuthActivity extends BaseActivity {
 
             @Override
             public void onMfaRequired(final String token) {
-                App.getAuthUtil().setAuthToken(token);
                 showMfaDialog();
             }
 

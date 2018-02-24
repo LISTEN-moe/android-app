@@ -123,10 +123,12 @@ public class APIClient {
                         final String userToken = response.getToken();
 
                         if (response.isMfa()) {
+                            authUtil.setMfaAuthToken(userToken);
                             callback.onMfaRequired(userToken);
                             return;
                         }
 
+                        authUtil.setAuthToken(userToken);
                         callback.onSuccess(userToken);
                     }
 
@@ -144,11 +146,13 @@ public class APIClient {
      * @param callback Listener to handle the response.
      */
     public void authenticateMfa(final String otpToken, final AuthCallback callback) {
-        authService.mfa(authUtil.getAuthTokenWithPrefix(), new AuthService.LoginMfaBody(otpToken))
+        authService.mfa(authUtil.getMfaAuthTokenWithPrefix(), new AuthService.LoginMfaBody(otpToken))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
                     public void success(final AuthResponse response) {
                         final String userToken = response.getToken();
+                        authUtil.setAuthToken(userToken);
+                        authUtil.clearMfaAuthToken();
                         callback.onSuccess(userToken);
                     }
 

@@ -12,6 +12,8 @@ public class AuthUtil {
     private static final String USER_TOKEN = "user_token";
     private static final String LAST_AUTH = "last_auth";
 
+    private String mfaToken;
+
     private Context context;
 
     public AuthUtil(Context context) {
@@ -48,13 +50,28 @@ public class AuthUtil {
     }
 
     /**
-     * Fetches the stored auth token.
+     * Fetches the stored temporary MFA auth token with the "Bearer" prefix.
      *
-     * @return The user's auth token.
+     * @return The temporary MFA auth token with the "Bearer" prefix.
      */
-    public String getAuthToken() {
-        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(USER_TOKEN, null);
+    public String getMfaAuthTokenWithPrefix() {
+        return getPrefixedToken(mfaToken);
+    }
+
+    /**
+     * Stores the temporary auth token for MFA.
+     *
+     * @param token The auth token for MFA to store, provided via the LISTEN.moe API.
+     */
+    public void setMfaAuthToken(String token) {
+        this.mfaToken = token;
+    }
+
+    /**
+     * Removes the stored temporary MFA auth token.
+     */
+    public void clearMfaAuthToken() {
+        this.mfaToken = null;
     }
 
     /**
@@ -63,7 +80,7 @@ public class AuthUtil {
      * @return The user's auth token with the "Bearer" prefix.
      */
     public String getAuthTokenWithPrefix() {
-        return String.format("Bearer %s", getAuthToken());
+        return getPrefixedToken(getAuthToken());
     }
 
     /**
@@ -91,13 +108,21 @@ public class AuthUtil {
                 .apply();
     }
 
+    private String getAuthToken() {
+        return PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(USER_TOKEN, null);
+    }
+
+    private String getPrefixedToken(String token) {
+        return String.format("Bearer %s", token);
+    }
+
     /**
-     * Checks how old the token is.
-     *
      * @return The time in seconds since the stored auth token was stored.
      */
     private long getTokenAge() {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getLong(LAST_AUTH, 0);
     }
+
 }
