@@ -64,7 +64,7 @@
 
                 <!-- TODO: dummy user card -->
 
-                <!-- Login required message -->
+                <!-- Login button -->
                 <Button
                     android:id="@+id/btn_login"
                     android:layout_width="wrap_content"
@@ -73,12 +73,10 @@
                     android:text="@string/login"
                     android:visibility="@{!vm.isAuthed}" />
 
-                <!-- Logged in content -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="@{vm.isAuthed}">
+                    android:orientation="vertical">
 
                     <android.support.design.widget.AppBarLayout
                         android:layout_width="match_parent"
@@ -97,17 +95,20 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 app:tabGravity="fill"
-                                app:tabMode="fixed" />
+                                app:tabMode="fixed"
+                                android:visibility="@{vm.isAuthed}" />
 
                         </android.support.v7.widget.Toolbar>
 
                     </android.support.design.widget.AppBarLayout>
 
+                    <!-- Logged in content -->
                     <android.support.v4.view.ViewPager
                         android:id="@+id/pager"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:clipToPadding="false" />
+                        android:clipToPadding="false"
+                        android:visibility="@{vm.isAuthed}" />
 
                 </LinearLayout>
 
