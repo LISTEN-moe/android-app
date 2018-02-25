@@ -52,7 +52,7 @@
 
             <include
                 android:id="@+id/radio_album_art"
-                layout="@layout/radio_album_art"
+                layout="@layout/radio_album_art_card"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_horizontal_guideline"

@@ -45,7 +45,7 @@
 
             <include
                 android:id="@+id/radio_album_art"
-                layout="@layout/radio_album_art"
+                layout="@layout/radio_album_art_card"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
