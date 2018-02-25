@@ -87,17 +87,27 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     @Bindable
     @ColorInt
     public int getBackgroundColor() {
-        return !App.getPreferenceUtil().shouldColorNowPlaying() || AlbumArtUtil.isDefaultAlbumArt()
-                ? ThemeUtil.getBackgroundColor(getContext())
-                : AlbumArtUtil.getCurrentAccentColor();
+        if (App.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
+            final int accentColor = AlbumArtUtil.getCurrentAccentColor();
+            if (accentColor != 0) {
+                return accentColor;
+            }
+        }
+
+        return ThemeUtil.getBackgroundColor(getContext());
     }
 
     @Bindable
     @ColorInt
     public int getBodyColor() {
-        return !App.getPreferenceUtil().shouldColorNowPlaying() || AlbumArtUtil.isDefaultAlbumArt()
-                ? ThemeUtil.getBodyColor(getContext())
-                : AlbumArtUtil.getCurrentBodyColor();
+        if (App.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
+            final int bodyColor = AlbumArtUtil.getCurrentBodyColor();
+            if (bodyColor != 0) {
+                return bodyColor;
+            }
+        }
+
+        return ThemeUtil.getBodyColor(getContext());
     }
 
     @Override

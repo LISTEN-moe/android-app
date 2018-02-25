@@ -96,7 +96,10 @@ public final class AlbumArtUtil {
                         public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                             isDefaultAlbumArt = false;
 
-                            final Palette.Swatch swatch = Palette.from(resource).generate().getVibrantSwatch();
+                            Palette.Swatch swatch = Palette.from(resource).generate().getVibrantSwatch();
+                            if (swatch == null) {
+                                swatch = Palette.from(resource).generate().getMutedSwatch();
+                            }
                             if (swatch != null) {
                                 currentAccentColor = swatch.getRgb();
                                 currentBodyColor = swatch.getBodyTextColor();
