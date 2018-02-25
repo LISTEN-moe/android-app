@@ -165,17 +165,22 @@ public class MainActivity extends BaseActivity {
         final FrameLayout bottomSheet = binding.nowPlaying.nowPlayingSheet;
         final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
 
-        // Start expanded
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        // Restore previous expanded state
+        if (App.getPreferenceUtil().isNowPlayingExpanded()) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else {
+            viewModel.setMiniPlayerAlpha(1f);
+        }
 
-        // Shows/hides mini player
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                App.getPreferenceUtil().setIsNowPlayingExpanded(newState == BottomSheetBehavior.STATE_EXPANDED);
             }
 
             @Override
             public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // Shows/hides mini player
                 viewModel.setMiniPlayerAlpha(1f - slideOffset);
             }
         });

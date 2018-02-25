@@ -25,6 +25,8 @@ public final class PreferenceUtil {
     public static final String THEME_LEGACY = "three";
     public static final String THEME_CHRISTMAS = "christmas";
 
+    private static final String NOW_PLAYING_EXPANDED = "now_playing_expanded";
+
     private static final String SLEEP_TIMER_MINS = "pref_sleep_timer";
 
     private final SharedPreferences preferences;
@@ -79,6 +81,16 @@ public final class PreferenceUtil {
 
     public boolean shouldColorNavbar() {
         return preferences.getBoolean(PREF_COLOR_NAVBAR, false);
+    }
+
+    public boolean isNowPlayingExpanded() {
+        return preferences.getBoolean(NOW_PLAYING_EXPANDED, true);
+    }
+
+    public void setIsNowPlayingExpanded(boolean expanded) {
+        preferences.edit()
+                .putBoolean(NOW_PLAYING_EXPANDED, expanded)
+                .apply();
     }
 
     public int getSleepTimer() {
