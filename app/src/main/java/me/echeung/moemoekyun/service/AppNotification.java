@@ -14,6 +14,7 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
+import me.echeung.moemoekyun.utils.ThemeUtil;
 
 public class AppNotification {
 
@@ -55,10 +56,14 @@ public class AppNotification {
 
         MediaStyle style = new MediaStyle().setMediaSession(service.getMediaSession().getSessionToken());
 
+        int color = AlbumArtUtil.isDefaultAlbumArt()
+                ? ThemeUtil.getAccentColor(service)
+                : AlbumArtUtil.getCurrentVibrantColor();
+
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_icon)
                 .setLargeIcon(albumArt)
-                .setColor(AlbumArtUtil.getVibrantColor(service))  // For pre-Oreo colored notifications
+                .setColor(color)  // For pre-Oreo colored notifications
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .addAction(playPauseAction)

@@ -42,7 +42,7 @@
                 android:singleLine="true"
                 android:text="@{vm.currentSong.getTitle()}"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@{vm.bodyColor}"
                 android:textSize="24sp" />
 
             <TextView
@@ -57,7 +57,7 @@
                 android:singleLine="true"
                 android:text="@{vm.currentSong.getArtistString()}"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@{vm.bodyColor}"
                 android:textSize="18sp" />
 
             <TextView
@@ -71,7 +71,7 @@
                 android:singleLine="true"
                 android:text="@{vm.currentSong.getAlbumString()}"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@{vm.bodyColor}"
                 android:textSize="18sp" />
 
         </LinearLayout>

@@ -28,11 +28,12 @@ public final class AlbumArtUtil {
 
     private static List<Callback> listeners = new ArrayList<>();
 
-    private static boolean isDefaultAlbumArt = true;
     private static Bitmap defaultAlbumArt;
+
+    private static boolean isDefaultAlbumArt = true;
     private static Bitmap currentAlbumArt;
-    private static int vibrantColor;
-    private static int bodyColor;
+    private static int currentVibrantColor;
+    private static int currentBodyColor;
 
     public static void addListener(Callback callback) {
         listeners.add(callback);
@@ -60,26 +61,21 @@ public final class AlbumArtUtil {
         }
 
         isDefaultAlbumArt = true;
+        currentVibrantColor = 0;
+        currentBodyColor = 0;
         updateListeners(getDefaultAlbumArt(context));
     }
 
-    public static int getVibrantColor(Context context) {
-        if (currentAlbumArt == null || isDefaultAlbumArt) {
-            return ThemeUtil.getAccentColor(context);
-        }
-
-        return vibrantColor;
+    public static int getCurrentVibrantColor() {
+        return currentVibrantColor;
     }
 
-    public static int getBodyColor(Context context) {
-        if (currentAlbumArt == null || isDefaultAlbumArt) {
-            return ThemeUtil.getBodyColor(context);
-        }
-
-        return bodyColor;
+    public static int getCurrentBodyColor() {
+        return currentBodyColor;
     }
 
     private static void updateListeners(Bitmap bitmap) {
+        currentAlbumArt = bitmap;
         for (Callback listener : listeners) {
             listener.onAlbumArtReady(bitmap);
         }
@@ -97,12 +93,11 @@ public final class AlbumArtUtil {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                             isDefaultAlbumArt = false;
-                            currentAlbumArt = resource;
 
-                            final Palette.Swatch swatch = Palette.from(currentAlbumArt).generate().getVibrantSwatch();
+                            final Palette.Swatch swatch = Palette.from(resource).generate().getVibrantSwatch();
                             if (swatch != null) {
-                                vibrantColor = swatch.getRgb();
-                                bodyColor = swatch.getBodyTextColor();
+                                currentVibrantColor = swatch.getRgb();
+                                currentBodyColor = swatch.getBodyTextColor();
                             }
 
                             updateListeners(resource);

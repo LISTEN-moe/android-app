@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:text="@{vm.event != null ? vm.event : vm.requester}"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@{vm.bodyColor}"
             android:textColorLink="?attr/themeColorAccent"
             android:textSize="14sp" />
 
@@ -38,6 +38,7 @@
                 android:padding="8dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_history_white_24dp"
+                android:tint="@{vm.bodyColor}"
                 android:visibility="@{vm.currentSong != null}" />
 
             <android.support.design.widget.FloatingActionButton
@@ -59,6 +60,7 @@
                 android:padding="8dp"
                 android:scaleType="fitXY"
                 android:src="@{vm.isFavorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}"
+                android:tint="@{vm.bodyColor}"
                 android:visibility="@{vm.currentSong != null}" />
 
         </LinearLayout>
@@ -68,7 +70,7 @@
             android:layout_height="wrap_content"
             android:text="@{vm.listeners}"
             android:textAlignment="center"
-            android:textColor="@color/white" />
+            android:textColor="@{vm.bodyColor}" />
 
     </LinearLayout>
 

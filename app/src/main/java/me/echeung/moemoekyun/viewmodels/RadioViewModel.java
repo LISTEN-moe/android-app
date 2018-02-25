@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.viewmodels;
 import android.content.Context;
 import android.databinding.Bindable;
 import android.graphics.Bitmap;
+import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.PluralsUtil;
+import me.echeung.moemoekyun.utils.ThemeUtil;
 
 public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callback {
 
@@ -81,9 +83,27 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
         return AlbumArtUtil.getCurrentAlbumArt();
     }
 
+    @Bindable
+    @ColorInt
+    public int getBackgroundColor() {
+        return AlbumArtUtil.isDefaultAlbumArt()
+                ? ThemeUtil.getBackgroundColor(getContext())
+                : AlbumArtUtil.getCurrentVibrantColor();
+    }
+
+    @Bindable
+    @ColorInt
+    public int getBodyColor() {
+        return AlbumArtUtil.isDefaultAlbumArt()
+                ? ThemeUtil.getBodyColor(getContext())
+                : AlbumArtUtil.getCurrentBodyColor();
+    }
+
     @Override
     public void onAlbumArtReady(Bitmap bitmap) {
         notifyPropertyChanged(BR.albumArt);
+        notifyPropertyChanged(BR.backgroundColor);
+        notifyPropertyChanged(BR.bodyColor);
     }
 
     @Bindable

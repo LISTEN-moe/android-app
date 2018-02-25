@@ -21,7 +21,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/dark_grey">
+            android:background="@{vm.backgroundColor}">
 
             <android.support.constraint.Guideline
                 android:id="@+id/top_horizontal_guideline"
@@ -46,6 +46,7 @@
                     android:padding="8dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_keyboard_arrow_down_white_24dp"
+                    android:tint="@{vm.bodyColor}"
                     tools:ignore="ContentDescription" />
 
             </LinearLayout>
