@@ -16,6 +16,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SharedPr
     protected void onCreate(Bundle savedInstanceState) {
         ThemeUtil.setTheme(this);
         LocaleUtil.setTitle(this);
+
         ThemeUtil.colorNavigationBar(this);
 
         App.getPreferenceUtil().registerListener(this);

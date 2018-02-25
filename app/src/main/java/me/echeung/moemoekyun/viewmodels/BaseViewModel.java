@@ -17,6 +17,7 @@ import java.lang.ref.WeakReference;
 
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.utils.LocaleUtil;
+import me.echeung.moemoekyun.utils.ThemeUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
 
@@ -27,12 +28,15 @@ public abstract class BaseViewModel extends BaseObservable {
     }
 
     protected Context getContext() {
-        final Context context = contextRef.get();
+        Context context = contextRef.get();
         if (context == null) {
             return null;
         }
 
-        return LocaleUtil.setLocale(context);
+        context = LocaleUtil.setLocale(context);
+        context = ThemeUtil.setTheme(context);
+
+        return context;
     }
 
 

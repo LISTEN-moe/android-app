@@ -14,7 +14,6 @@ import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
-import me.echeung.moemoekyun.utils.LocaleUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.AuthViewModel;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
@@ -37,8 +36,6 @@ public class App extends Application implements ServiceConnection {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        LocaleUtil.setLocale(this);
 
         // Preferences
         preferenceUtil = new PreferenceUtil(this);

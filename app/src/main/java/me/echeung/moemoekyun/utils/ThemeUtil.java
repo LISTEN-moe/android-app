@@ -13,7 +13,7 @@ import me.echeung.moemoekyun.R;
 
 public final class ThemeUtil {
 
-    public static void setTheme(Context context) {
+    public static Context setTheme(Context context) {
         switch (App.getPreferenceUtil().getTheme()) {
             case PreferenceUtil.THEME_DEFAULT:
                 context.setTheme(R.style.AppTheme);
@@ -27,6 +27,8 @@ public final class ThemeUtil {
                 context.setTheme(R.style.AppThemeChristmas);
                 break;
         }
+
+        return context;
     }
 
     public static void colorNavigationBar(Activity activity) {

@@ -11,9 +11,6 @@
         <item name="windowNoTitle">true</item>
 
         <item name="android:windowBackground">@drawable/splash_screen</item>
-
-        <item name="themeColorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <!-- 3.0 + 1.0 theme -->
