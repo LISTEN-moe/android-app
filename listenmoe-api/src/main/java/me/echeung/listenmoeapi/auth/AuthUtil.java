@@ -3,6 +3,8 @@ package me.echeung.listenmoeapi.auth;
 import android.content.Context;
 import android.preference.PreferenceManager;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Helper for handling authorization-related tasks. Helps with the storage of the auth token and
  * actions requiring it.
@@ -14,10 +16,10 @@ public class AuthUtil {
 
     private String mfaToken;
 
-    private Context context;
+    private WeakReference<Context> contextRef;
 
     public AuthUtil(Context context) {
-        this.context = context;
+        this.contextRef = new WeakReference<>(context);
     }
 
     /**
@@ -90,6 +92,11 @@ public class AuthUtil {
      * @param token The auth token to store, provided via the LISTEN.moe API.
      */
     public void setAuthToken(String token) {
+        final Context context = contextRef.get();
+        if (context == null) {
+            return;
+        }
+
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(USER_TOKEN, token)
@@ -101,6 +108,11 @@ public class AuthUtil {
      * Removes the stored auth token.
      */
     public void clearAuthToken() {
+        final Context context = contextRef.get();
+        if (context == null) {
+            return;
+        }
+
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(USER_TOKEN, null)
@@ -109,6 +121,11 @@ public class AuthUtil {
     }
 
     private String getAuthToken() {
+        final Context context = contextRef.get();
+        if (context == null) {
+            return null;
+        }
+
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(USER_TOKEN, null);
     }
@@ -121,8 +138,13 @@ public class AuthUtil {
      * @return The time in seconds since the stored auth token was stored.
      */
     private long getTokenAge() {
+        final Context context = contextRef.get();
+        if (context == null) {
+            return 0L;
+        }
+
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getLong(LAST_AUTH, 0);
+                .getLong(LAST_AUTH, 0L);
     }
 
 }
