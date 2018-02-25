@@ -90,7 +90,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     @Override
     public void onCreate() {
-        AlbumArtUtil.addListener(this);
+        AlbumArtUtil.registerListener(this);
 
         initBroadcastReceiver();
         initMediaSession();
@@ -158,7 +158,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
     @Override
     public void onDestroy() {
-        AlbumArtUtil.removeListener(this);
+        AlbumArtUtil.unregisterListener(this);
 
         stop();
         socket.disconnect();

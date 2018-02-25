@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.viewmodels;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.databinding.Bindable;
 import android.graphics.Bitmap;
 import android.support.annotation.ColorInt;
@@ -16,9 +17,10 @@ import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.PluralsUtil;
+import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.utils.ThemeUtil;
 
-public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callback {
+public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private Song currentSong;
 
@@ -39,10 +41,11 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     public RadioViewModel(Context context) {
         super(context);
 
-        AlbumArtUtil.addListener(this);
-
         // Defaults
         isPlaying = false;
+
+        AlbumArtUtil.registerListener(this);
+        App.getPreferenceUtil().registerListener(this);
     }
 
     public void reset() {
@@ -268,6 +271,20 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     public void setMiniPlayerAlpha(float miniPlayerAlpha) {
         this.miniPlayerAlpha = miniPlayerAlpha;
         notifyPropertyChanged(BR.miniPlayerAlpha);
+    }
+
+
+    // Misc.
+    // ========================================================================
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case PreferenceUtil.PREF_COLOR_NOW_PLAYING:
+                notifyPropertyChanged(BR.backgroundColor);
+                notifyPropertyChanged(BR.bodyColor);
+                break;
+        }
     }
 
 }

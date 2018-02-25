@@ -36,11 +36,11 @@ public final class AlbumArtUtil {
     private static int currentAccentColor;
     private static int currentBodyColor;
 
-    public static void addListener(Callback callback) {
+    public static void registerListener(Callback callback) {
         listeners.add(callback);
     }
 
-    public static void removeListener(Callback callback) {
+    public static void unregisterListener(Callback callback) {
         if (listeners.contains(callback)) {
             listeners.remove(callback);
         }
