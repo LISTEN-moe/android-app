@@ -58,7 +58,7 @@ public class AppNotification {
 
         int color = AlbumArtUtil.isDefaultAlbumArt()
                 ? ThemeUtil.getAccentColor(service)
-                : AlbumArtUtil.getCurrentVibrantColor();
+                : AlbumArtUtil.getCurrentAccentColor();
 
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_icon)

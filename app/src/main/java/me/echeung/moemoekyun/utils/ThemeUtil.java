@@ -56,18 +56,19 @@ public final class ThemeUtil {
 
     @ColorInt
     private static int resolveColorAttr(Context context, int attrId) {
-        final TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
+        if (context != null) {
+            final TypedValue typedValue = new TypedValue();
+            Resources.Theme theme = context.getTheme();
 
-        boolean wasResolved = theme.resolveAttribute(attrId, typedValue, true);
-        if (wasResolved) {
-            return typedValue.resourceId == 0
-                    ? typedValue.data
-                    : ContextCompat.getColor(context, typedValue.resourceId);
+            boolean wasResolved = theme.resolveAttribute(attrId, typedValue, true);
+            if (wasResolved) {
+                return typedValue.resourceId == 0
+                        ? typedValue.data
+                        : ContextCompat.getColor(context, typedValue.resourceId);
+            }
         }
 
-        // Fallback
-        return Color.BLACK;
+        return Color.WHITE;
     }
 
 }

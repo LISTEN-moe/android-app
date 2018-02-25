@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/mfa_hint"
             android:inputType="number"
-            android:maxLines="1"
+            android:singleLine="true"
             tools:ignore="LabelFor" />
 
     </android.support.design.widget.TextInputLayout>

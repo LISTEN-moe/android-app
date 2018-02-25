@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
@@ -32,7 +33,7 @@ public final class AlbumArtUtil {
 
     private static boolean isDefaultAlbumArt = true;
     private static Bitmap currentAlbumArt;
-    private static int currentVibrantColor;
+    private static int currentAccentColor;
     private static int currentBodyColor;
 
     public static void addListener(Callback callback) {
@@ -60,14 +61,11 @@ public final class AlbumArtUtil {
             return;
         }
 
-        isDefaultAlbumArt = true;
-        currentVibrantColor = 0;
-        currentBodyColor = 0;
         updateListeners(getDefaultAlbumArt(context));
     }
 
-    public static int getCurrentVibrantColor() {
-        return currentVibrantColor;
+    public static int getCurrentAccentColor() {
+        return currentAccentColor;
     }
 
     public static int getCurrentBodyColor() {
@@ -83,6 +81,10 @@ public final class AlbumArtUtil {
 
     private static void downloadAlbumArtBitmap(Context context, String url) {
         new Handler(Looper.getMainLooper()).post(() -> {
+            if (context == null) {
+                return;
+            }
+
             Glide.with(context.getApplicationContext())
                     .asBitmap()
                     .load(url)
@@ -96,7 +98,7 @@ public final class AlbumArtUtil {
 
                             final Palette.Swatch swatch = Palette.from(resource).generate().getVibrantSwatch();
                             if (swatch != null) {
-                                currentVibrantColor = swatch.getRgb();
+                                currentAccentColor = swatch.getRgb();
                                 currentBodyColor = swatch.getBodyTextColor();
                             }
 
@@ -110,6 +112,10 @@ public final class AlbumArtUtil {
         if (defaultAlbumArt == null) {
             defaultAlbumArt = BitmapFactory.decodeResource(context.getResources(), R.drawable.blank);
         }
+
+        isDefaultAlbumArt = true;
+        currentAccentColor = Color.BLACK;
+        currentBodyColor = Color.WHITE;
 
         return defaultAlbumArt;
     }

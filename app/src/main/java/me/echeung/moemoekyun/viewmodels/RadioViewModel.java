@@ -89,7 +89,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     public int getBackgroundColor() {
         return !App.getPreferenceUtil().shouldColorNowPlaying() || AlbumArtUtil.isDefaultAlbumArt()
                 ? ThemeUtil.getBackgroundColor(getContext())
-                : AlbumArtUtil.getCurrentVibrantColor();
+                : AlbumArtUtil.getCurrentAccentColor();
     }
 
     @Bindable

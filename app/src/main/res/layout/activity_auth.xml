@@ -37,7 +37,7 @@
                     android:autofillHints="username"
                     android:hint="@string/username_or_email"
                     android:inputType="textNoSuggestions|textEmailAddress"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     tools:ignore="LabelFor" />
 
             </android.support.design.widget.TextInputLayout>
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/email"
                     android:inputType="textNoSuggestions|textEmailAddress"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     tools:ignore="LabelFor" />
 
             </android.support.design.widget.TextInputLayout>

@@ -32,7 +32,6 @@
                 android:backgroundTint="@color/light_grey"
                 android:hint="@{searchHint}"
                 android:importantForAutofill="no"
-                android:maxLines="1"
                 android:paddingEnd="80dp"
                 android:paddingStart="16dp"
                 android:singleLine="true"
