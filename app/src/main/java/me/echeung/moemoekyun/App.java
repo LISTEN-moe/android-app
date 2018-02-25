@@ -40,9 +40,8 @@ public class App extends Application implements ServiceConnection {
 
         LocaleUtil.setLocale(this);
 
-        // Music player service
-        initNotificationChannel();
-        initService();
+        // Preferences
+        preferenceUtil = new PreferenceUtil(this);
 
         // API client
         authUtil = new AuthUtil(this);
@@ -53,8 +52,9 @@ public class App extends Application implements ServiceConnection {
         radioViewModel = new RadioViewModel(this);
         userViewModel = new UserViewModel(this);
 
-        // Preferences
-        preferenceUtil = new PreferenceUtil(this);
+        // Music player service
+        initNotificationChannel();
+        initService();
     }
 
     public static APIClient getApiClient() {

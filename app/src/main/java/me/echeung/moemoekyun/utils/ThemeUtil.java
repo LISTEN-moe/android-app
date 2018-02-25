@@ -13,18 +13,18 @@ import me.echeung.moemoekyun.R;
 
 public final class ThemeUtil {
 
-    public static void setTheme(Activity activity) {
+    public static void setTheme(Context context) {
         switch (App.getPreferenceUtil().getTheme()) {
             case PreferenceUtil.THEME_DEFAULT:
-                activity.setTheme(R.style.AppTheme);
+                context.setTheme(R.style.AppTheme);
                 break;
 
             case PreferenceUtil.THEME_LEGACY:
-                activity.setTheme(R.style.AppThemeLegacy);
+                context.setTheme(R.style.AppThemeLegacy);
                 break;
 
             case PreferenceUtil.THEME_CHRISTMAS:
-                activity.setTheme(R.style.AppThemeChristmas);
+                context.setTheme(R.style.AppThemeChristmas);
                 break;
         }
     }

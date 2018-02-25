@@ -11,6 +11,7 @@ import java.util.List;
 
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
@@ -86,7 +87,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     @Bindable
     @ColorInt
     public int getBackgroundColor() {
-        return AlbumArtUtil.isDefaultAlbumArt()
+        return !App.getPreferenceUtil().shouldColorNowPlaying() || AlbumArtUtil.isDefaultAlbumArt()
                 ? ThemeUtil.getBackgroundColor(getContext())
                 : AlbumArtUtil.getCurrentVibrantColor();
     }
@@ -94,7 +95,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     @Bindable
     @ColorInt
     public int getBodyColor() {
-        return AlbumArtUtil.isDefaultAlbumArt()
+        return !App.getPreferenceUtil().shouldColorNowPlaying() || AlbumArtUtil.isDefaultAlbumArt()
                 ? ThemeUtil.getBodyColor(getContext())
                 : AlbumArtUtil.getCurrentBodyColor();
     }

@@ -5,6 +5,11 @@
         android:title="@string/pref_header_color">
 
         <android.support.v7.preference.SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="pref_color_now_playing"
+            android:title="@string/pref_title_color_now_playing" />
+
+        <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="pref_color_navbar"
             android:title="@string/pref_title_color_navbar" />

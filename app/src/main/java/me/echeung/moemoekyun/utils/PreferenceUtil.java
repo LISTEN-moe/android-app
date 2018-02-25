@@ -18,6 +18,7 @@ public final class PreferenceUtil {
 
     public static final String PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart";
 
+    public static final String PREF_COLOR_NOW_PLAYING = "pref_color_now_playing";
     public static final String PREF_COLOR_NAVBAR = "pref_color_navbar";
 
     public static final String THEME_DEFAULT = "four";
@@ -70,6 +71,10 @@ public final class PreferenceUtil {
 
     public boolean shouldShowLockscreenAlbumArt() {
         return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART, true);
+    }
+
+    public boolean shouldColorNowPlaying() {
+        return preferences.getBoolean(PREF_COLOR_NOW_PLAYING, true);
     }
 
     public boolean shouldColorNavbar() {
