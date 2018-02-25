@@ -1,25 +1,71 @@
 package me.echeung.moemoekyun.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 
 public final class ThemeUtil {
 
+    public static void setTheme(Activity activity) {
+        switch (App.getPreferenceUtil().getTheme()) {
+            case PreferenceUtil.THEME_DEFAULT:
+                activity.setTheme(R.style.AppTheme);
+                break;
+
+            case PreferenceUtil.THEME_LEGACY:
+                activity.setTheme(R.style.AppThemeLegacy);
+                break;
+
+            case PreferenceUtil.THEME_CHRISTMAS:
+                activity.setTheme(R.style.AppThemeChristmas);
+                break;
+        }
+    }
+
+    public static void colorNavigationBar(Activity activity) {
+        final int color = App.getPreferenceUtil().shouldColorNavbar()
+                ? ThemeUtil.getAccentColor(activity)
+                : Color.BLACK;
+
+        activity.getWindow().setNavigationBarColor(color);
+    }
+
     @ColorInt
     public static int getAccentColor(Context context) {
-        final TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(R.attr.themeColorAccent, typedValue, true);
-        return typedValue.data;
+        return resolveColorAttr(context, R.attr.themeColorAccent);
+    }
+
+    @ColorInt
+    public static int getBackgroundColor(Context context) {
+        return resolveColorAttr(context, android.R.attr.windowBackground);
     }
 
     @ColorInt
     public static int getBodyColor(Context context) {
+        return resolveColorAttr(context, android.R.attr.textColorPrimary);
+    }
+
+    @ColorInt
+    private static int resolveColorAttr(Context context, int attrId) {
         final TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(android.R.attr.textColorPrimary, typedValue, true);
-        return typedValue.data;
+        Resources.Theme theme = context.getTheme();
+
+        boolean wasResolved = theme.resolveAttribute(attrId, typedValue, true);
+        if (wasResolved) {
+            return typedValue.resourceId == 0
+                    ? typedValue.data
+                    : ContextCompat.getColor(context, typedValue.resourceId);
+        }
+
+        // Fallback
+        return Color.BLACK;
     }
 
 }

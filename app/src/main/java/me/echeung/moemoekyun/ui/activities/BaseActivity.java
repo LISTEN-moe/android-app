@@ -16,27 +16,13 @@ public abstract class BaseActivity extends AppCompatActivity implements SharedPr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        switch (App.getPreferenceUtil().getTheme()) {
-            case PreferenceUtil.THEME_DEFAULT:
-                setTheme(R.style.AppTheme);
-                break;
-
-            case PreferenceUtil.THEME_LEGACY:
-                setTheme(R.style.AppThemeLegacy);
-                break;
-
-            case PreferenceUtil.THEME_CHRISTMAS:
-                setTheme(R.style.AppThemeChristmas);
-                break;
-        }
-
-        super.onCreate(savedInstanceState);
-
+        ThemeUtil.setTheme(this);
         LocaleUtil.setTitle(this);
-
-        colorNavigationBar();
+        ThemeUtil.colorNavigationBar(this);
 
         App.getPreferenceUtil().registerListener(this);
+
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -51,19 +37,11 @@ public abstract class BaseActivity extends AppCompatActivity implements SharedPr
         super.attachBaseContext(LocaleUtil.setLocale(base));
     }
 
-    private void colorNavigationBar() {
-        final int color = App.getPreferenceUtil().shouldColorNavbar()
-                ? ThemeUtil.getAccentColor(this)
-                : Color.BLACK;
-
-        getWindow().setNavigationBarColor(color);
-    }
-
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case PreferenceUtil.PREF_COLOR_NAVBAR:
-                colorNavigationBar();
+                ThemeUtil.colorNavigationBar(this);
                 break;
         }
     }

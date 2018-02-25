@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
@@ -325,8 +326,8 @@ public class MainActivity extends BaseActivity {
         vMiniPlayPauseBtn = binding.nowPlaying.nowPlayingMini.miniPlayPause;
         vMiniPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
 
-        playToPause = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_play_to_pause);
-        pauseToPlay = (AnimatedVectorDrawable) getDrawable(R.drawable.avd_pause_to_play);
+        playToPause = (AnimatedVectorDrawable) ContextCompat.getDrawable(this, R.drawable.avd_play_to_pause);
+        pauseToPlay = (AnimatedVectorDrawable) ContextCompat.getDrawable(this, R.drawable.avd_pause_to_play);
 
         setPlayPauseDrawable();
 
