@@ -16,7 +16,6 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
-import me.echeung.moemoekyun.utils.PluralsUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.utils.ThemeUtil;
 
@@ -149,18 +148,8 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     }
 
     @Bindable
-    public String getListeners() {
-        final Context context = getContext();
-        if (context == null) {
-            return "";
-        }
-
-        try {
-            return PluralsUtil.getString(context, R.plurals.current_listeners, listeners);
-        } catch (NumberFormatException e) {
-        }
-
-        return "";
+    public int getListeners() {
+        return listeners;
     }
 
     public void setListeners(int listeners) {

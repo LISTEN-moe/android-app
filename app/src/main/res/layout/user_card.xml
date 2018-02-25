@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-light"
-                        android:text="@{@plurals/user_requests(userVm.requestsRemaining, userVm.requestsRemaining)}"
+                        android:text="@{@plurals/user_requests(userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining)}"
                         android:textAlignment="center"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
