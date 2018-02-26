@@ -66,7 +66,7 @@
     <string name="mfa_hint">6-digit security code</string>
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="logged_out">Logged out</string>
-    <string name="login_required">You must log in to use this feature.</string>
+    <string name="login_required">Log in to use this feature.</string>
 
 
     <!-- == Radio tab == -->
