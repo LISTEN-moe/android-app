@@ -29,7 +29,7 @@
         <item name="themeColorAccent">@color/colorAccent</item>
         <item name="themeBackgroundImage">@drawable/background_four</item>
         <item name="themeLogoImage">@drawable/logo</item>
-        <item name="themeDefaultAvatarImage">@drawable/kanna</item>
+        <item name="themeDefaultAvatarImage">@drawable/avatar_v4</item>
     </style>
 
     <!-- Legacy 3.0 theme -->
@@ -48,7 +48,7 @@
         <item name="themeColorAccent">@color/christmas_accent</item>
         <item name="themeBackgroundImage">@drawable/background_christmas</item>
         <item name="themeLogoImage">@drawable/logo_christmas</item>
-        <item name="themeDefaultAvatarImage">@drawable/kanna_christmas</item>
+        <item name="themeDefaultAvatarImage">@drawable/avatar_kanna_christmas</item>
     </style>
 
     <!-- TabHost -->
