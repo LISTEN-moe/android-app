@@ -36,11 +36,14 @@
     <style name="AppThemeLegacy" parent="AppTheme">
         <item name="android:windowBackground">@color/grey</item>
 
+        <item name="themeColorAccent">@color/colorAccent</item>
         <item name="themeBackgroundImage">@drawable/background</item>
+        <item name="themeLogoImage">@drawable/logo</item>
+        <item name="themeDefaultAvatarImage">@drawable/avatar_kanna</item>
     </style>
 
     <!-- Christmas theme -->
-    <style name="AppThemeChristmas" parent="AppTheme">
+    <style name="AppThemeChristmas" parent="AppThemeLegacy">
         <item name="colorPrimary">@color/christmas_accent</item>
         <item name="colorPrimaryDark">@color/christmas_accent</item>
         <item name="colorAccent">@color/christmas_accent</item>
