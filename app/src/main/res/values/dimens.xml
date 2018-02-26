@@ -11,4 +11,6 @@
     <dimen name="md_listitem_height">24dp</dimen>
 
     <dimen name="now_playing_peek_height">64dp</dimen>
+
+    <dimen name="card_radius">5dp</dimen>
 </resources>
