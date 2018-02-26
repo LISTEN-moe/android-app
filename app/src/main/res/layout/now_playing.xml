@@ -47,6 +47,8 @@
                 layout="@layout/radio_album_art_card"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 app:layout_constraintBottom_toTopOf="@+id/radio_songs"
                 app:layout_constraintEnd_toEndOf="parent"
