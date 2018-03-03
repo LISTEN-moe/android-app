@@ -10,9 +10,7 @@ public final class NetworkUtil {
 
     public static boolean isNetworkAvailable(Context context) {
         if (context != null) {
-            final ConnectivityManager connectivityManager
-                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            final NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            final NetworkInfo activeNetworkInfo = getActiveNetworkInfo(context);
 
             boolean isAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
@@ -22,6 +20,25 @@ public final class NetworkUtil {
         }
 
         return false;
+    }
+
+    public static boolean isWifi(Context context) {
+        if (context == null || !isNetworkAvailable(context)) {
+            return false;
+        }
+
+        final NetworkInfo activeNetworkInfo = getActiveNetworkInfo(context);
+
+        return activeNetworkInfo != null
+                && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI
+                && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    private static NetworkInfo getActiveNetworkInfo(Context context) {
+        final ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo();
     }
 
 }

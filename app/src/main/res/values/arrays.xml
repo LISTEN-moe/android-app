@@ -43,4 +43,16 @@
         <item>zh-rTW</item>
     </string-array>
 
+    <string-array name="pref_download_names">
+        <item>Always</item>
+        <item>Only on Wi-Fi</item>
+        <item>Never</item>
+    </string-array>
+
+    <string-array name="pref_download_codes">
+        <item>always</item>
+        <item>wifi</item>
+        <item>never</item>
+    </string-array>
+
 </resources>

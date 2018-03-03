@@ -69,6 +69,13 @@ public class SettingsActivity extends BaseActivity {
                 promptAppRestart();
                 return true;
             });
+
+            final Preference downloadSetting = findPreference(PreferenceUtil.PREF_GENERAL_DOWNLOAD);
+            setSummary(downloadSetting);
+            downloadSetting.setOnPreferenceChangeListener((preference, o) -> {
+                setSummary(downloadSetting, o);
+                return true;
+            });
         }
 
         private void setSummary(@NonNull Preference preference) {
@@ -102,5 +109,7 @@ public class SettingsActivity extends BaseActivity {
                 Toast.makeText(activity, R.string.restart_required, Toast.LENGTH_SHORT).show();
             }
         }
+
     }
+
 }

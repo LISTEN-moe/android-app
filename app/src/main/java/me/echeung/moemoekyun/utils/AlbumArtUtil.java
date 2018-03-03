@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.echeung.listenmoeapi.models.Song;
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 
 public final class AlbumArtUtil {
@@ -56,7 +57,7 @@ public final class AlbumArtUtil {
 
     public static void updateAlbumArt(Context context, Song song) {
         final String albumArtUrl = song.getAlbumArtUrl();
-        if (albumArtUrl != null) {
+        if (albumArtUrl != null && App.getPreferenceUtil().shouldDownloadImage(context)) {
             downloadAlbumArtBitmap(context, albumArtUrl);
             return;
         }

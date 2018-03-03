@@ -18,6 +18,15 @@
             android:entryValues="@array/pref_language_codes"
             android:defaultValue="default" />
 
+        <android.support.v7.preference.ListPreference
+            android:key="pref_general_download"
+            android:title="@string/pref_title_general_download"
+            android:entries="@array/pref_download_names"
+            android:entryValues="@array/pref_download_codes"
+            android:defaultValue="always"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
+
         <android.support.v7.preference.SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="pref_general_broadcast_intent"

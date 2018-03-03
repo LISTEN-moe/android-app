@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.DrawableImageViewTarget;
 
 import java.lang.ref.WeakReference;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.utils.LocaleUtil;
 import me.echeung.moemoekyun.utils.ThemeUtil;
@@ -91,12 +92,14 @@ public abstract class BaseViewModel extends BaseObservable {
         Glide.with(v.getContext())
                 .clear(v);
 
-        Glide.with(v.getContext())
-                .load(bitmap)
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .placeholder(v.getDrawable()))
-                .into(v);
+        if (App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
+            Glide.with(v.getContext())
+                    .load(bitmap)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .placeholder(v.getDrawable()))
+                    .into(v);
+        }
     }
 
     @BindingAdapter("android:imageUrl")
@@ -105,12 +108,14 @@ public abstract class BaseViewModel extends BaseObservable {
         Glide.with(v.getContext())
                 .clear(v);
 
-        Glide.with(v.getContext())
-                .load(url)
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .placeholder(v.getDrawable()))
-                .into(new DrawableImageViewTarget(v).waitForLayout());
+        if (App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
+            Glide.with(v.getContext())
+                    .load(url)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .placeholder(v.getDrawable()))
+                    .into(new DrawableImageViewTarget(v).waitForLayout());
+        }
     }
 
 }

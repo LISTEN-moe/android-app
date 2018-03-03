@@ -9,6 +9,7 @@ public final class PreferenceUtil {
 
     public static final String PREF_GENERAL_THEME = "pref_general_theme";
     public static final String PREF_GENERAL_LANGUAGE = "pref_general_language";
+    public static final String PREF_GENERAL_DOWNLOAD = "pref_general_download";
     public static final String PREF_GENERAL_BROADCAST_INTENT = "pref_general_broadcast_intent";
     public static final String PREF_GENERAL_RANDOM_REQUEST_TITLE = "pref_general_random_request_title";
 
@@ -24,6 +25,10 @@ public final class PreferenceUtil {
     public static final String THEME_DEFAULT = "four";
     public static final String THEME_LEGACY = "three";
     public static final String THEME_CHRISTMAS = "christmas";
+
+    public static final String DOWNLOAD_ALWAYS = "always";
+    public static final String DOWNLOAD_WIFI = "wifi";
+    public static final String DOWNLOAD_NEVER = "never";
 
     private static final String NOW_PLAYING_EXPANDED = "now_playing_expanded";
 
@@ -49,6 +54,12 @@ public final class PreferenceUtil {
 
     public String getLanguage() {
         return preferences.getString(PREF_GENERAL_LANGUAGE, LocaleUtil.DEFAULT);
+    }
+
+    public boolean shouldDownloadImage(Context context) {
+        final String pref = preferences.getString(PREF_GENERAL_DOWNLOAD, DOWNLOAD_ALWAYS);
+        return pref.equals(DOWNLOAD_ALWAYS)
+                || pref.equals(DOWNLOAD_WIFI) && NetworkUtil.isWifi(context);
     }
 
     public boolean shouldBroadcastIntent() {
