@@ -152,7 +152,7 @@
     <string name="pref_title_general_broadcast_intent">Broadcast song updates</string>
     <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling support</string>
     <string name="pref_title_general_romaji">Prefer romaji</string>
-    <string name="pref_title_general_romaji_summary">\"Nanahara\" instead of \"ななはら\"</string>
+    <string name="pref_title_general_romaji_summary">\"Nanahira\" instead of \"ななひら\"</string>
     <string name="pref_title_general_random_request_title">Show randomly requested song title</string>
 
     <string name="pref_header_audio">Audio</string>
