@@ -13,8 +13,8 @@ public class RadioStream {
     private StreamPlayer player;
     private Callback callback;
 
-    RadioStream(Context context) {
-        this.player = new StreamPlayer(context, STREAM_MP3);
+    RadioStream(Context context, String userAgent) {
+        this.player = new StreamPlayer(context, STREAM_MP3, userAgent);
     }
 
     public void setListener(Callback callback) {

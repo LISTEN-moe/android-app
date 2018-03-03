@@ -46,14 +46,13 @@ public class APIClient {
     public static final String CDN_AVATAR_URL = "https://cdn.listen.moe/avatars/";
     public static final String CDN_BANNER_URL = "https://cdn.listen.moe/banners/";
 
-    private static final String HEADER_USER_AGENT = "User-Agent";
-    public static final String USER_AGENT = "me.echeung.moemoekyun";
-
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
     private static final String CONTENT_TYPE = "application/json";
 
     private static final String HEADER_ACCEPT = "Accept";
     private static final String ACCEPT = "application/vnd.listen.v4+json";
+
+    private static final String HEADER_USER_AGENT = "User-Agent";
 
     private static Retrofit retrofit;
 
@@ -71,7 +70,7 @@ public class APIClient {
     private final RadioSocket socket;
     private final RadioStream stream;
 
-    public APIClient(Context context, AuthUtil authUtil) {
+    public APIClient(Context context, AuthUtil authUtil, String userAgent) {
         this.authUtil = authUtil;
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -79,7 +78,7 @@ public class APIClient {
                     final Request request = chain.request();
 
                     final Request newRequest = request.newBuilder()
-                            .addHeader(HEADER_USER_AGENT, USER_AGENT)
+                            .addHeader(HEADER_USER_AGENT, userAgent)
                             .addHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE)
                             .addHeader(HEADER_ACCEPT, ACCEPT)
                             .build();
@@ -105,7 +104,7 @@ public class APIClient {
         songsCache = new SongsCache(this);
 
         socket = new RadioSocket(okHttpClient, authUtil);
-        stream = new RadioStream(context);
+        stream = new RadioStream(context, userAgent);
     }
 
     /**

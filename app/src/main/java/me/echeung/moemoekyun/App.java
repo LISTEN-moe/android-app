@@ -42,7 +42,7 @@ public class App extends Application implements ServiceConnection {
 
         // API client
         authUtil = new AuthUtil(this);
-        apiClient = new APIClient(this, authUtil);
+        apiClient = new APIClient(this, authUtil, getUserAgent());
 
         // UI view models
         authViewModel = new AuthViewModel(this);
@@ -125,4 +125,14 @@ public class App extends Application implements ServiceConnection {
             notifManager.createNotificationChannel(notifChannel);
         }
     }
+
+    private String getUserAgent() {
+        return String.format("%s/%s (%s; %s; Android %s)",
+                BuildConfig.APPLICATION_ID,
+                BuildConfig.VERSION_NAME,
+                Build.DEVICE,
+                Build.BRAND,
+                Build.VERSION.SDK_INT);
+    }
+
 }
