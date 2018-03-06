@@ -119,12 +119,18 @@
     <string name="play_history">Song history</string>
     <string name="discord">Join us on Discord</string>
     <string name="patreon">Support on Patreon</string>
+
+    <!--
+        To get list of collaborators from OneSky:
+        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
+    -->
     <string name="translators_list" translatable="false">
         anonymousthing
         \nCalvin_c64
         \nCaymon
         \nCrawl
         \ncshih.calvin
+        \nhazexcs_jmt
         \njimimbi97
         \nKana
         \nLiliace
@@ -134,6 +140,7 @@
         \nPraxic
         \nRainBee
         \nRuslan Nurislamov
+        \nsakaikazuki
         \nvzwGrey
         \nwongtszwing87
     </string>
