@@ -2,16 +2,16 @@
 <resources>
     <!-- e.g. 10 requests remaining -->
     <plurals name="user_requests">
-        <item quantity="other">残りの%d件のリクエスト</item>
+        <item quantity="other">您剩余 %d 次请求</item>
     </plurals>
     <!-- e.g. 420 listeners -->
     <plurals name="current_listeners">
-        <item quantity="other">聞いている%d人</item>
+        <item quantity="other">%d 听众在线</item>
     </plurals>
     <plurals name="minutes">
-        <item quantity="other">%d分</item>
+        <item quantity="other">%d 分钟</item>
     </plurals>
     <plurals name="sleep_timer_set">
-        <item quantity="other">タイマーを%d分にセット</item>
+        <item quantity="other">设置 %d 分钟倒计时</item>
     </plurals>
 </resources>

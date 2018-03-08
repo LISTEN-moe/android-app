@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="translators">Traducteurs</string>
+    <!-- == Generic strings == -->
+    <string name="submit">Soumettre</string>
     <!-- == Generic strings == -->
     <string name="error">Une erreur s\'est produite</string>
     <string name="copied_to_clipboard">Copié dans le presse-papier</string>
@@ -33,11 +34,18 @@
     <!-- Auth -->
     <string name="login">Se connecter</string>
     <string name="logout">Se déconnecter</string>
+    <string name="username_or_email">Nom d\'utilisateur / adresse email</string>
     <string name="username">Nom d\'utilisateur</string>
+    <string name="email">Adresse email</string>
     <string name="password">Mot de passe</string>
+    <string name="password_confirm">Confirmer le mot de passe</string>
+    <string name="mfa_prompt">Entrez le code de sécurité généré par votre application d\'authentification.</string>
+    <string name="mfa_hint">Code de sécurité à 6 chiffres</string>
     <string name="logout_confirmation">Êtes-vous sûr de vouloir vous déconnecter ?</string>
     <string name="logged_out">Déconnecté</string>
-    <string name="login_required">Vous devez vous connecter pour utiliser cette fonctionnalité.</string>
+    <string name="login_required">Connectez-vous pour utiliser cette fonctionnalité.</string>
+    <string name="auth_error_general">Erreur : la connexion a échoué</string>
+    <string name="auth_error_name">Erreur : nom d\'utilisateur invalide</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/pause</string>
     <string name="history">Historique</string>
@@ -51,10 +59,12 @@
     <string name="unfavorited">%s a été retiré des favoris</string>
     <!-- e.g. 2 in queue, 10 before yours -->
     <string name="queue_info">%d dans la file, %d avant la votre</string>
-    <string name="random_request">Demander une chanson aléatoire</string>
+    <string name="random_request">Demander une musique aléatoire</string>
     <string name="all_cooldown">Aucune musique ne peut être redemandée pour l\'instant</string>
     <!-- Requested song title -->
     <string name="requested_song">Une requête à été faite pour %s</string>
+    <string name="requested_random_song">Musique aléatoire demandée</string>
+    <string name="no_requests_left">Pas de requêtes restantes aujourd\'hui</string>
     <!-- Song item actions -->
     <string name="supporter_required">Grade Supporteur requis</string>
     <!-- == No Internet view == -->
@@ -67,21 +77,30 @@
     <string name="rate">Noter sur le Google Play</string>
     <string name="github">Star on GitHub</string>
     <string name="translate">Aidez à traduire l\'application</string>
+    <string name="translators">Traducteurs</string>
     <string name="licenses">Licenses</string>
     <string name="listenmoe">LISTEN.moe radio</string>
     <string name="open_in_browser">Ouvrir dans le navigateur</string>
+    <string name="play_history">Historique des musiques</string>
     <string name="discord">Rejoignez-nous sur Discord</string>
     <string name="patreon">Supportez sur Patreon</string>
-    <string name="pref_header_general">Général</string>
-    <string name="pref_title_language">"Langue "</string>
     <!-- == Settings == -->
     <string name="settings">Paramètres</string>
+    <string name="pref_header_general">Général</string>
     <string name="pref_title_theme">Thème</string>
+    <string name="pref_title_language">"Langue "</string>
     <string name="system_default">Langue par défaut du système</string>
-    <string name="pref_header_audio">Audio</string>
+    <string name="restart_required">Les modifications seront appliquées après le redémarrage de l\'application</string>
+    <string name="pref_title_general_download">Télécharger les images automatiquement</string>
+    <string name="restart">Redémarrage</string>
     <string name="pref_title_general_broadcast_intent">Envoyer les informations de la musique vers Last.fm</string>
-    <string name="pref_title_pause_on_noisy">Mettre en pause quand les écouteurs sont débranchés</string>
     <string name="pref_title_general_broadcast_intent_summary">Support de scrobbling Last.fm</string>
+    <string name="pref_title_general_romaji">Privilégier les romaji</string>
+    <string name="pref_title_general_romaji_summary">\"Nanahira\" à la place de \"ななひら\"</string>
+    <string name="pref_title_general_random_request_title">Montrer le nom de la musique demandée aléatoirement</string>
+    <string name="restart_app">Redémarrer l\'application pour appliquer les modifications ?</string>
+    <string name="pref_header_audio">Audio</string>
+    <string name="pref_title_pause_on_noisy">Mettre en pause quand les écouteurs sont débranchés</string>
     <string name="pref_title_audio_duck">Réduire le volume lors des pertes d\'attention temporaires</string>
     <string name="pref_title_audio_duck_summary">Notifications, navigation, etc.</string>
     <string name="pref_title_audio_pause_on_loss">Mettre en pause lors des pertes d\'attention</string>
@@ -89,4 +108,6 @@
     <string name="pref_header_lockscreen">Écran de verrouillage</string>
     <string name="pref_title_lockscreen_albumart">Montrer la couverture de l\'album</string>
     <string name="pref_title_lockscreen_albumart_summary">Afficher la couverture de l\'album sur l\'écran de verrouillage et Android Auto</string>
+    <string name="pref_header_color">Couleur</string>
+    <string name="pref_title_color_now_playing">Couleur affichée basée sur la couverture de l\'album diffusé</string>
 </resources>

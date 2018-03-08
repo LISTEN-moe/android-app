@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="translators">Переводчики</string>
+    <!-- == Generic strings == -->
+    <string name="submit">Подтвердить</string>
     <!-- == Generic strings == -->
     <string name="error">Произошла ошибка!</string>
     <string name="copied_to_clipboard">Скопировано в буфер обмена</string>
@@ -33,11 +34,18 @@
     <!-- Auth -->
     <string name="login">Войти</string>
     <string name="logout">Выйти</string>
+    <string name="username_or_email">Имя пользователя или адрес email</string>
     <string name="username">Имя пользователя</string>
+    <string name="email">Адрес email</string>
     <string name="password">Пароль</string>
+    <string name="password_confirm">Подтвердите пароль</string>
+    <string name="mfa_prompt">Введите ключ из приложения двухфакторной аутентификации.</string>
+    <string name="mfa_hint">Код подтверждения</string>
     <string name="logout_confirmation">Вы действительно хотите выйти?</string>
     <string name="logged_out">Выход выполнен</string>
-    <string name="login_required">Вам необходимо войти, чтобы использовать эту функцию</string>
+    <string name="login_required">Войдите, чтобы использовать эту функцию</string>
+    <string name="auth_error_general">Ошибка: ошибка входа</string>
+    <string name="auth_error_name">Ошибка: неверное имя пользователя</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Возпроизвести/пауза</string>
     <string name="history">История</string>
@@ -55,6 +63,8 @@
     <string name="all_cooldown">Все песни сейчас недоступны</string>
     <!-- Requested song title -->
     <string name="requested_song">Запрошено %s</string>
+    <string name="requested_random_song">Запрошена случайная песня</string>
+    <string name="no_requests_left">Вы больше не можете запрашивать песни сегодня</string>
     <!-- Song item actions -->
     <string name="supporter_required">Необходимо пожертвовать для использования этой функции</string>
     <!-- == No Internet view == -->
@@ -67,21 +77,30 @@
     <string name="rate">Оценить в Google Play</string>
     <string name="github">Оценить на GitHub</string>
     <string name="translate">Помогите перевести приложение</string>
+    <string name="translators">Переводчики</string>
     <string name="licenses">Лицензия</string>
     <string name="listenmoe">Радио LISTEN.moe</string>
     <string name="open_in_browser">Открыть в браузере</string>
+    <string name="play_history">История песен</string>
     <string name="discord">Присоединиться к нам в Discord</string>
     <string name="patreon">Поддержать на Patreon</string>
-    <string name="pref_header_general">Основные</string>
-    <string name="pref_title_language">Язык</string>
     <!-- == Settings == -->
     <string name="settings">Настройки</string>
+    <string name="pref_header_general">Основные</string>
     <string name="pref_title_theme">Тема</string>
+    <string name="pref_title_language">Язык</string>
     <string name="system_default">Язык системы</string>
-    <string name="pref_header_audio">Звук</string>
+    <string name="restart_required">Изменения будут применены после перезапуска приложения</string>
+    <string name="pref_title_general_download">Скачивать изображения автоматически</string>
+    <string name="restart">Перезапустить</string>
     <string name="pref_title_general_broadcast_intent">Воспроизводить обновления песни</string>
-    <string name="pref_title_pause_on_noisy">Пауза, когда наушники отключены</string>
     <string name="pref_title_general_broadcast_intent_summary">Поддержка скробблинга Last.fm</string>
+    <string name="pref_title_general_romaji">Предпочитать ромадзи</string>
+    <string name="pref_title_general_romaji_summary">\"Nanahira\" вместо \"ななひら\"</string>
+    <string name="pref_title_general_random_request_title">Показать название запрошенной случайно песни</string>
+    <string name="restart_app">Перезапустить приложение для применения изменений?</string>
+    <string name="pref_header_audio">Звук</string>
+    <string name="pref_title_pause_on_noisy">Пауза, когда наушники отключены</string>
     <string name="pref_title_audio_duck">Уменьшать громкость при временной потере фокуса</string>
     <string name="pref_title_audio_duck_summary">Уведомления, навигация и т.д.</string>
     <string name="pref_title_audio_pause_on_loss">Пауза при потере фокуса</string>
@@ -89,4 +108,7 @@
     <string name="pref_header_lockscreen">Экран блокировки</string>
     <string name="pref_title_lockscreen_albumart">Показывать обложку альбома</string>
     <string name="pref_title_lockscreen_albumart_summary">Показывает обложку альбома на экране блокировки и в Android Auto</string>
+    <string name="pref_header_color">Цвет</string>
+    <string name="pref_title_color_now_playing">Перекрашивать уведомление на основе обложки альбома</string>
+    <string name="pref_title_color_navbar">Перекрашивать панель навигации</string>
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="translators">Översättare</string>
     <!-- == Generic strings == -->
     <string name="error">Ett fel uppstod</string>
     <string name="copied_to_clipboard">Kopierad till urklipp</string>
@@ -38,6 +37,8 @@
     <string name="logout_confirmation">Är du säker på att du vill logga ut?</string>
     <string name="logged_out">Utloggad</string>
     <string name="login_required">Du måste logga in för att använda den här funktionen</string>
+    <string name="auth_error_general">Error: inloggning misslyckades</string>
+    <string name="auth_error_name">Error: fel användarnamn</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Spela/pausa</string>
     <string name="history">Historik</string>
@@ -55,6 +56,7 @@
     <string name="all_cooldown">Alla låtar är på cool down</string>
     <!-- Requested song title -->
     <string name="requested_song">Requestade %s</string>
+    <string name="no_requests_left">Inga requests kvar för idag</string>
     <!-- Song item actions -->
     <string name="supporter_required">Supporter status krävs</string>
     <!-- == No Internet view == -->
@@ -67,21 +69,24 @@
     <string name="rate">Betygsätt på Google Play</string>
     <string name="github">Sätt en stjärna på GitHub</string>
     <string name="translate">Hjälp till att översätta appen</string>
+    <string name="translators">Översättare</string>
     <string name="licenses">Licenser</string>
     <string name="listenmoe">LISTEN.moe radio</string>
     <string name="open_in_browser">Öppna i webbläsare</string>
     <string name="discord">Joina oss på Discord</string>
     <string name="patreon">Stöd på Patreon</string>
-    <string name="pref_header_general">Allmänt</string>
-    <string name="pref_title_language">Språk</string>
     <!-- == Settings == -->
     <string name="settings">Inställningar</string>
+    <string name="pref_header_general">Allmänt</string>
     <string name="pref_title_theme">Tema</string>
+    <string name="pref_title_language">Språk</string>
     <string name="system_default">Systemstandard</string>
-    <string name="pref_header_audio">Ljud</string>
+    <string name="restart">Starta om</string>
     <string name="pref_title_general_broadcast_intent">Dela låt uppdateringar</string>
-    <string name="pref_title_pause_on_noisy">Pausa när hörlurar blir borttagen</string>
     <string name="pref_title_general_broadcast_intent_summary">Support för Last.fm skrobbling</string>
+    <string name="restart_app">Starta om för att tillämpa ändringar?</string>
+    <string name="pref_header_audio">Ljud</string>
+    <string name="pref_title_pause_on_noisy">Pausa när hörlurar blir borttagen</string>
     <string name="pref_title_audio_duck">Sänk volym vid kortvarig förlorande av fokus</string>
     <string name="pref_title_audio_duck_summary">Notifikationer, navigering, etc.</string>
     <string name="pref_title_audio_pause_on_loss">Pausa vid förlorat fokus</string>

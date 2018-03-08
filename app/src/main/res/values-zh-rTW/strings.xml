@@ -32,7 +32,6 @@
     <string name="login_required">本功能使用前必須登入</string>
     <string name="auth_error_general">登入失敗</string>
     <string name="auth_error_name">用戶名錯誤</string>
-    <string name="auth_error_pass">密碼錯誤</string>
     <!-- == Radio tab == -->
     <string name="play_pause">播放/暫停</string>
     <string name="history">播放記錄</string>
@@ -43,8 +42,8 @@
     <string name="about">關於</string>
     <!-- e.g. Version 1.0 -->
     <string name="version">版本 %s</string>
-    <string name="pref_header_general">一般</string>
     <!-- == Settings == -->
     <string name="settings">設定</string>
+    <string name="pref_header_general">一般</string>
     <string name="pref_title_pause_on_noisy">耳機拔出時暫停</string>
 </resources>

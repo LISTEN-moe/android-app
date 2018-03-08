@@ -37,6 +37,8 @@
     <string name="logout_confirmation">Estás seguro que quieres desloguearte?</string>
     <string name="logged_out">Deslogueado</string>
     <string name="login_required">Debes loguearte para usar esta función.</string>
+    <string name="auth_error_general">Error: autenticación fallida</string>
+    <string name="auth_error_name">Error: usuario inválido</string>
     <!-- == Radio tab == -->
     <string name="play_pause">Play/Pausa</string>
     <string name="history">Historial</string>
@@ -54,6 +56,7 @@
     <string name="all_cooldown">Todas las canciones estan en cooldown</string>
     <!-- Requested song title -->
     <string name="requested_song">Has pedido %s</string>
+    <string name="no_requests_left">No te queda requests por hoy</string>
     <!-- Song item actions -->
     <string name="supporter_required">Necesitas ser supporter</string>
     <!-- == No Internet view == -->
@@ -71,16 +74,18 @@
     <string name="open_in_browser">Abrir en el navegador</string>
     <string name="discord">Únete en Discord</string>
     <string name="patreon">Ayúdanos en Patreon</string>
-    <string name="pref_header_general">General</string>
-    <string name="pref_title_language">Idioma</string>
     <!-- == Settings == -->
     <string name="settings">Opciones</string>
+    <string name="pref_header_general">General</string>
     <string name="pref_title_theme">Tema</string>
+    <string name="pref_title_language">Idioma</string>
     <string name="system_default">Predeterminado</string>
-    <string name="pref_header_audio">Audio</string>
+    <string name="restart">Reiniciar</string>
     <string name="pref_title_general_broadcast_intent">Transmitir actualización de canciones</string>
-    <string name="pref_title_pause_on_noisy">Pausar cuando los auriculares son removidos</string>
     <string name="pref_title_general_broadcast_intent_summary">Soporte para scrobbling de Last.fm</string>
+    <string name="restart_app">Reiniciar la app para aplicar los cambios?</string>
+    <string name="pref_header_audio">Audio</string>
+    <string name="pref_title_pause_on_noisy">Pausar cuando los auriculares son removidos</string>
     <string name="pref_title_audio_duck">Bajar el volumen en notificación entrante</string>
     <string name="pref_title_audio_duck_summary">Notificaciones, navegación, etc</string>
     <string name="pref_title_audio_pause_on_loss">Pausar cuando se pierde el foco</string>

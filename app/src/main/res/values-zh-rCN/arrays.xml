@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_download_names">
+        <item>总是</item>
+        <item>只在 Wi-Fi 连接时</item>
+        <item>从不</item>
+    </string-array>
+</resources>
