@@ -256,6 +256,10 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     }
 
     private void updateMediaSessionPlaybackState() {
+        if (!mediaSession.isActive()) {
+            return;
+        }
+
         // Play/pause state
         final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
                 .setActions(MEDIA_SESSION_ACTIONS)
