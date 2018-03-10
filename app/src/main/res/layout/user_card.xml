@@ -80,7 +80,8 @@
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:visibility="@{userVm != null}" />
 
                     <TextView
                         android:layout_width="match_parent"
