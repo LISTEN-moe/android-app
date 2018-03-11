@@ -8,23 +8,23 @@
         <variable name="vm" type="me.echeung.moemoekyun.viewmodels.AuthViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/appbar"
+        <include layout="@layout/background_image" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/dark_grey"
-            android:elevation="4dp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include layout="@layout/background_image" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@android:color/transparent"
+                android:elevation="0dp" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -48,6 +48,14 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
                         android:padding="@dimen/activity_vertical_margin">
+
+                        <include
+                            layout="@layout/logo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp" />
 
                         <android.support.design.widget.TextInputLayout
                             android:layout_width="match_parent"
@@ -127,8 +135,8 @@
 
             </FrameLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </layout>

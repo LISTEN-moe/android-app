@@ -40,6 +40,7 @@ public class AuthActivity extends BaseActivity {
 
         setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         binding.authBtn.setOnClickListener(v -> login());
 
