@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity {
 
         binding.btnRetry.setOnClickListener(v -> retry());
         binding.btnLogin.setOnClickListener(v -> showAuthActivity());
+        binding.btnRegister.setOnClickListener(v -> UrlUtil.openUrl(this, URL_REGISTER));
 
         // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(this)) {
@@ -221,8 +222,6 @@ public class MainActivity extends BaseActivity {
 
         // Toggle visibility of login/logout items based on authentication status
         final boolean authenticated = App.getAuthUtil().isAuthenticated();
-        menu.findItem(R.id.action_login).setVisible(!authenticated);
-        menu.findItem(R.id.action_register).setVisible(!authenticated);
         menu.findItem(R.id.action_logout).setVisible(authenticated);
 
         return true;
@@ -231,14 +230,6 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_login:
-                showAuthActivity();
-                return true;
-
-            case R.id.action_register:
-                UrlUtil.openUrl(this, URL_REGISTER);
-                return true;
-
             case R.id.action_logout:
                 showLogoutDialog();
                 return true;

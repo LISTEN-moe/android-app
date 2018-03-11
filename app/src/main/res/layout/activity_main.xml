@@ -93,12 +93,25 @@
                         android:layout_height="0dp"
                         android:layout_weight="1">
 
-                        <Button
-                            android:id="@+id/btn_login"
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="@string/login" />
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/btn_login"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/login" />
+
+                            <Button
+                                android:id="@+id/btn_register"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/register" />
+
+                        </LinearLayout>
 
                     </FrameLayout>
 
