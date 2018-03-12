@@ -110,6 +110,7 @@ public final class SongActionsUtil {
                     final Intent reqEvent = new Intent(SongActionsUtil.REQUEST_EVENT);
                     activity.sendBroadcast(reqEvent);
 
+                    // Instantly update remaining requests number to appear responsive
                     final int remainingRequests = requests - 1;
                     App.getUserViewModel().setRequestsRemaining(remainingRequests);
 

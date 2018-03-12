@@ -319,6 +319,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     break;
 
                 case RadioService.UPDATE:
+                case SongActionsUtil.REQUEST_EVENT:
                     socket.update();
                     break;
 
@@ -475,6 +476,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         intentFilter.addAction(RadioService.STOP);
         intentFilter.addAction(RadioService.TOGGLE_FAVORITE);
         intentFilter.addAction(RadioService.UPDATE);
+        intentFilter.addAction(SongActionsUtil.REQUEST_EVENT);
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
         intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON);
         intentFilter.addAction(MainActivity.AUTH_EVENT);
