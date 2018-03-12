@@ -35,11 +35,11 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.ui.fragments.UserFragment;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.ISO8601;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service implements RadioSocket.SocketListener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -566,7 +566,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     App.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
                 }
 
-                final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
+                final Intent favIntent = new Intent(SongActionsUtil.FAVORITE_EVENT);
                 sendBroadcast(favIntent);
 
                 updateNotification();

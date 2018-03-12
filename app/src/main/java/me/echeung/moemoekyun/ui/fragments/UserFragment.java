@@ -24,14 +24,12 @@ import me.echeung.moemoekyun.adapters.SongAdapter;
 import me.echeung.moemoekyun.adapters.SongList;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.UserViewModel;
 
 public class UserFragment extends Fragment implements SongList.SongListLoader {
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
-
-    public static final String REQUEST_EVENT = "req_event";
-    public static final String FAVORITE_EVENT = "fav_event";
 
     private FragmentUserBinding binding;
 
@@ -106,8 +104,8 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
                 if (action != null) {
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
-                        case UserFragment.FAVORITE_EVENT:
-                        case UserFragment.REQUEST_EVENT:
+                        case SongActionsUtil.FAVORITE_EVENT:
+                        case SongActionsUtil.REQUEST_EVENT:
                             initUserContent();
                             break;
                     }
@@ -117,7 +115,7 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(MainActivity.AUTH_EVENT);
-        intentFilter.addAction(UserFragment.FAVORITE_EVENT);
+        intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT);
 
         getActivity().registerReceiver(intentReceiver, intentFilter);
         receiverRegistered = true;

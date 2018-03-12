@@ -17,9 +17,11 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.ui.fragments.UserFragment;
 
 public final class SongActionsUtil {
+
+    public static final String REQUEST_EVENT = "req_event";
+    public static final String FAVORITE_EVENT = "fav_event";
 
     public static void showSongActionsDialog(final Activity activity, final SongAdapter adapter, final Song song) {
         if (activity == null) return;
@@ -54,35 +56,35 @@ public final class SongActionsUtil {
                     App.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
                 }
 
-                if (activity != null) {
-                    activity.runOnUiThread(() -> {
-                        song.setFavorite(!isCurrentlyFavorite);
-                        adapter.notifyDataSetChanged();
+                if (activity == null) return;
 
-                        // Broadcast event
-                        final Intent favIntent = new Intent(UserFragment.FAVORITE_EVENT);
-                        activity.sendBroadcast(favIntent);
+                activity.runOnUiThread(() -> {
+                    song.setFavorite(!isCurrentlyFavorite);
+                    adapter.notifyDataSetChanged();
 
-                        if (isCurrentlyFavorite) {
-                            // Undo action
-                            final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
-                            if (coordinatorLayout != null) {
-                                final Snackbar undoBar = Snackbar.make(coordinatorLayout,
-                                        String.format(activity.getString(R.string.unfavorited), song.toString()),
-                                        Snackbar.LENGTH_LONG);
-                                undoBar.setAction(R.string.action_undo, (v) -> toggleFavorite(activity, adapter, song));
-                                undoBar.show();
-                            }
+                    // Broadcast event
+                    final Intent favIntent = new Intent(SongActionsUtil.FAVORITE_EVENT);
+                    activity.sendBroadcast(favIntent);
+
+                    if (isCurrentlyFavorite) {
+                        // Undo action
+                        final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
+                        if (coordinatorLayout != null) {
+                            final Snackbar undoBar = Snackbar.make(coordinatorLayout,
+                                    String.format(activity.getString(R.string.unfavorited), song.toString()),
+                                    Snackbar.LENGTH_LONG);
+                            undoBar.setAction(R.string.action_undo, (v) -> toggleFavorite(activity, adapter, song));
+                            undoBar.show();
                         }
-                    });
-                }
+                    }
+                });
             }
 
             @Override
             public void onFailure(final String message) {
-                if (activity != null) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
-                }
+                if (activity == null) return;
+
+                activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
             }
         };
 
@@ -99,31 +101,31 @@ public final class SongActionsUtil {
         App.getApiClient().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
             @Override
             public void onSuccess() {
-                if (activity != null) {
-                    activity.runOnUiThread(() -> {
-                        adapter.notifyDataSetChanged();
+                if (activity == null) return;
 
-                        // Broadcast event
-                        final Intent reqEvent = new Intent(UserFragment.REQUEST_EVENT);
-                        activity.sendBroadcast(reqEvent);
+                activity.runOnUiThread(() -> {
+                    adapter.notifyDataSetChanged();
 
-                        final int remainingRequests = requests - 1;
-                        App.getUserViewModel().setRequestsRemaining(remainingRequests);
+                    // Broadcast event
+                    final Intent reqEvent = new Intent(SongActionsUtil.REQUEST_EVENT);
+                    activity.sendBroadcast(reqEvent);
 
-                        final String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
-                                ? activity.getString(R.string.requested_song, song.toString())
-                                : activity.getString(R.string.requested_random_song);
+                    final int remainingRequests = requests - 1;
+                    App.getUserViewModel().setRequestsRemaining(remainingRequests);
 
-                        Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_LONG).show();
-                    });
-                }
+                    final String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
+                            ? activity.getString(R.string.requested_song, song.toString())
+                            : activity.getString(R.string.requested_random_song);
+
+                    Toast.makeText(activity.getApplicationContext(), toastMsg, Toast.LENGTH_LONG).show();
+                });
             }
 
             @Override
             public void onFailure(final String message) {
-                if (activity != null) {
-                    activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
-                }
+                if (activity == null) return;
+
+                activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
             }
         });
     }
