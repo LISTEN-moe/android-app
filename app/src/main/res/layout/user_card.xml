@@ -35,8 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:alpha="0.5"
-                android:background="@android:color/black"
-                android:visibility="@{userVm.bannerUrl != null}" />
+                android:background="@android:color/black" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -80,15 +79,14 @@
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:visibility="@{userVm != null}" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-light"
-                        android:text="@{userVm != null ? @plurals/user_requests(userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining) : @string/login_required}"
+                        android:text="@{@plurals/user_requests(userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining)}"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
