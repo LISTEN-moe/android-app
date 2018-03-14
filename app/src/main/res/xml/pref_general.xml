@@ -9,14 +9,18 @@
             android:title="@string/pref_title_theme"
             android:entries="@array/pref_theme_names"
             android:entryValues="@array/pref_theme_codes"
-            android:defaultValue="four" />
+            android:defaultValue="four"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
 
         <android.support.v7.preference.ListPreference
             android:key="pref_general_language"
             android:title="@string/pref_title_language"
             android:entries="@array/pref_language_names"
             android:entryValues="@array/pref_language_codes"
-            android:defaultValue="default" />
+            android:defaultValue="default"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null" />
 
         <android.support.v7.preference.ListPreference
             android:key="pref_general_download"
