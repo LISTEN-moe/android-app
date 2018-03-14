@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.echeung.listenmoeapi.models.Event;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.App;
@@ -26,7 +27,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     private boolean isPlaying;
     private int listeners;
     private User requester;
-    private String event;
+    private Event event;
 
     private Song lastSong;
     private Song secondLastSong;
@@ -173,11 +174,11 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     }
 
     @Bindable
-    public String getEvent() {
+    public Event getEvent() {
         return event;
     }
 
-    public void setEvent(String event) {
+    public void setEvent(Event event) {
         this.event = event;
         notifyPropertyChanged(BR.event);
     }

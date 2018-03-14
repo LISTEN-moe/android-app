@@ -3,6 +3,7 @@ package me.echeung.listenmoeapi.responses.socket;
 import java.util.List;
 
 import lombok.Getter;
+import me.echeung.listenmoeapi.models.Event;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
 
@@ -19,7 +20,7 @@ public class SocketUpdateResponse extends SocketBaseResponse {
         private Queue queue;
         private int listeners;
         private User requester;
-        private String event;
+        private Event event;
     }
 
     @Getter
