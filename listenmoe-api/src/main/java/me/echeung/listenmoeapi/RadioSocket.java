@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.listenmoeapi.responses.socket.SocketBaseResponse;
@@ -22,12 +23,15 @@ public class RadioSocket extends WebSocketListener {
 
     private static final String SOCKET_URL = "wss://listen.moe/gateway";
 
-    private static final Gson GSON = new Gson();
+    private static final String TRACK_UPDATE = "TRACK_UPDATE";
+    private static final String TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST";
 
     private static final int RETRY_TIME_MIN = 250;
     private static final int RETRY_TIME_MAX = 4000;
     private int retryTime = RETRY_TIME_MIN;
     private boolean attemptingReconnect = false;
+
+    private final Gson gson;
 
     private final OkHttpClient client;
     private final AuthUtil authUtil;
@@ -41,6 +45,10 @@ public class RadioSocket extends WebSocketListener {
     RadioSocket(OkHttpClient client, AuthUtil authUtil) {
         this.client = client;
         this.authUtil = authUtil;
+
+        gson = new GsonBuilder()
+                .registerTypeAdapter(SocketUpdateResponse.Details.class, new SocketUpdateResponse.DetailsDeserializer())
+                .create();
 
         heartbeatHandler = new Handler();
     }
@@ -172,18 +180,18 @@ public class RadioSocket extends WebSocketListener {
             return;
         }
 
-        final SocketBaseResponse baseResponse = GSON.fromJson(jsonString, SocketBaseResponse.class);
+        final SocketBaseResponse baseResponse = gson.fromJson(jsonString, SocketBaseResponse.class);
         switch (baseResponse.getOp()) {
             // Heartbeat init
             case 0:
-                final SocketConnectResponse connectResponse = GSON.fromJson(jsonString, SocketConnectResponse.class);
+                final SocketConnectResponse connectResponse = gson.fromJson(jsonString, SocketConnectResponse.class);
                 heartbeat(connectResponse.getD().getHeartbeat());
                 break;
 
             // Track update
             case 1:
-                final SocketUpdateResponse updateResponse = GSON.fromJson(jsonString, SocketUpdateResponse.class);
-                if (!updateResponse.getT().equals("TRACK_UPDATE") && !updateResponse.getT().equals("TRACK_UPDATE_REQUEST")) return;
+                final SocketUpdateResponse updateResponse = gson.fromJson(jsonString, SocketUpdateResponse.class);
+                if (!updateResponse.getT().equals(TRACK_UPDATE) && !updateResponse.getT().equals(TRACK_UPDATE_REQUEST)) return;
                 listener.onSocketReceive(updateResponse.getD());
                 break;
 
