@@ -6,8 +6,8 @@ import me.echeung.listenmoeapi.player.StreamPlayer;
 
 public class RadioStream {
 
-    private static final String STREAM_VORBIS = "https://listen.moe/stream";
-    private static final String STREAM_OPUS = "https://listen.moe/opus";
+//    private static final String STREAM_VORBIS = "https://listen.moe/stream";
+//    private static final String STREAM_OPUS = "https://listen.moe/opus";
     private static final String STREAM_MP3 = "https://listen.moe/fallback";
 
     private StreamPlayer player;
