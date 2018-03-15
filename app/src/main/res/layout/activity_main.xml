@@ -122,8 +122,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="1dp"
                                 android:background="@color/light_grey"
-                                android:layout_marginEnd="8dp"
-                                android:layout_marginStart="8dp" />
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginStart="16dp" />
 
                             <Button
                                 android:id="@+id/btn_register"

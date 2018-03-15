@@ -57,76 +57,91 @@
                             android:layout_marginBottom="16dp"
                             android:layout_marginTop="16dp" />
 
-                        <android.support.design.widget.TextInputLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:textColorHint="@color/light_grey">
+                            android:orientation="vertical"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginTop="16dp">
 
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/auth_username"
+                            <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:autofillHints="username"
-                                android:hint="@string/username_or_email"
-                                android:inputType="textNoSuggestions|textEmailAddress"
-                                android:singleLine="true"
-                                tools:ignore="LabelFor" />
+                                android:textColorHint="@color/light_grey">
 
-                        </android.support.design.widget.TextInputLayout>
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/auth_username"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autofillHints="username"
+                                    android:hint="@string/username_or_email"
+                                    android:inputType="textNoSuggestions|textEmailAddress"
+                                    android:singleLine="true"
+                                    tools:ignore="LabelFor" />
 
-                        <android.support.design.widget.TextInputLayout
+                            </android.support.design.widget.TextInputLayout>
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/light_grey"
+                                android:visibility="@{vm.showRegister}">
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/auth_email"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/email"
+                                    android:inputType="textNoSuggestions|textEmailAddress"
+                                    android:singleLine="true"
+                                    tools:ignore="LabelFor" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/light_grey">
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/auth_password"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:autofillHints="password"
+                                    android:hint="@string/password"
+                                    android:inputType="textPassword"
+                                    tools:ignore="LabelFor" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+                            <android.support.design.widget.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/light_grey"
+                                android:visibility="@{vm.showRegister}">
+
+                                <android.support.design.widget.TextInputEditText
+                                    android:id="@+id/auth_password_confirm"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/password_confirm"
+                                    android:inputType="textPassword"
+                                    tools:ignore="LabelFor" />
+
+                            </android.support.design.widget.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <View
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/light_grey"
-                            android:visibility="@{vm.showRegister}">
-
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/auth_email"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/email"
-                                android:inputType="textNoSuggestions|textEmailAddress"
-                                android:singleLine="true"
-                                tools:ignore="LabelFor" />
-
-                        </android.support.design.widget.TextInputLayout>
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/light_grey">
-
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/auth_password"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:autofillHints="password"
-                                android:hint="@string/password"
-                                android:inputType="textPassword"
-                                tools:ignore="LabelFor" />
-
-                        </android.support.design.widget.TextInputLayout>
-
-                        <android.support.design.widget.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textColorHint="@color/light_grey"
-                            android:visibility="@{vm.showRegister}">
-
-                            <android.support.design.widget.TextInputEditText
-                                android:id="@+id/auth_password_confirm"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="@string/password_confirm"
-                                android:inputType="textPassword"
-                                tools:ignore="LabelFor" />
-
-                        </android.support.design.widget.TextInputLayout>
+                            android:layout_height="1dp"
+                            android:background="@color/light_grey" />
 
                         <Button
                             android:id="@+id/auth_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:background="?attr/selectableItemBackground"
                             android:text="@{vm.showRegister ? @string/register : @string/login}" />
 
                     </LinearLayout>
