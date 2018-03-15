@@ -89,16 +89,16 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void login() {
-        final String user = getText(binding.authUsername);
-        final String pass = getText(binding.authPassword);
+        final String userLogin = getText(binding.authLogin);
+        final String password = getText(binding.authPassword);
 
-        setError(binding.authUsername, user.isEmpty(), getString(R.string.required));
-        setError(binding.authPassword, pass.isEmpty(), getString(R.string.required));
-        if (user.isEmpty() || pass.isEmpty()) {
+        setError(binding.authLogin, userLogin.isEmpty(), getString(R.string.required));
+        setError(binding.authPassword, password.isEmpty(), getString(R.string.required));
+        if (userLogin.isEmpty() || password.isEmpty()) {
             return;
         }
 
-        App.getApiClient().authenticate(user, pass, loginCallback);
+        App.getApiClient().authenticate(userLogin, password, loginCallback);
     }
 
     private void showMfaDialog() {
@@ -151,26 +151,26 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void register() {
-        final String user = getText(binding.authUsername);
+        final String username = getText(binding.authUsername);
         final String email = getText(binding.authEmail);
-        final String pass = getText(binding.authPassword);
-        final String passConfirm = getText(binding.authPasswordConfirm);
+        final String password = getText(binding.authPassword);
+        final String passwordConfirm = getText(binding.authPasswordConfirm);
 
-        setError(binding.authUsername, user.isEmpty(), getString(R.string.required));
+        setError(binding.authUsername, username.isEmpty(), getString(R.string.required));
         setError(binding.authEmail, email.isEmpty(), getString(R.string.required));
-        setError(binding.authPassword, pass.isEmpty(), getString(R.string.required));
-        setError(binding.authPasswordConfirm, passConfirm.isEmpty(), getString(R.string.required));
-        if (user.isEmpty() || email.isEmpty() || pass.isEmpty() || passConfirm.isEmpty()) {
+        setError(binding.authPassword, password.isEmpty(), getString(R.string.required));
+        setError(binding.authPasswordConfirm, passwordConfirm.isEmpty(), getString(R.string.required));
+        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty()) {
             return;
         }
 
-        setError(binding.authPassword, !pass.equals(passConfirm), getString(R.string.password_mismatch));
-        setError(binding.authPasswordConfirm, !pass.equals(passConfirm), getString(R.string.password_mismatch));
-        if (!pass.equals(passConfirm)) {
+        setError(binding.authPassword, !password.equals(passwordConfirm), getString(R.string.password_mismatch));
+        setError(binding.authPasswordConfirm, !password.equals(passwordConfirm), getString(R.string.password_mismatch));
+        if (!password.equals(passwordConfirm)) {
             return;
         }
 
-        App.getApiClient().register(email, user, pass, new RegisterCallback() {
+        App.getApiClient().register(email, username, password, new RegisterCallback() {
             @Override
             public void onSuccess(String message) {
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());
