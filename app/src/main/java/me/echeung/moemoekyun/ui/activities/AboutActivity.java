@@ -18,7 +18,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
 
     private static final String URL_STORE = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
     private static final String URL_GITHUB = "https://github.com/LISTEN-moe/android-app";
-    private static final String URL_TRANSLATE = "https://osfmofb.oneskyapp.com/collaboration/project?id=271507";
+    private static final String URL_TRANSLATE = "https://crwd.in/listenmoe-android-app";
 
     private static final String URL_LISTENMOE = "https://listen.moe";
     private static final String URL_TWITTER_NP = "https://twitter.com/LISTEN_moe_NP";

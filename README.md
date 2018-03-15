@@ -38,7 +38,7 @@ The project contains 2 submodules:
 
 ### Translations
 
-Translations are crowdsourced through [OneSky](https://osfmofb.oneskyapp.com/collaboration/project?id=271507) and managed by [@arkon](https://github.com/arkon/).
+Translations are crowdsourced through [CrowdIn](https://crwd.in/listenmoe-android-app) and managed by [@arkon](https://github.com/arkon/).
 
 ### Release
 
