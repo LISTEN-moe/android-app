@@ -15,7 +15,7 @@
             android:id="@+id/requested_by"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{vm.event != null ? vm.event : vm.requester}"
+            android:text="@{vm.event != null ? vm.event.name : vm.requester}"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textColorLink="?attr/colorAccent"

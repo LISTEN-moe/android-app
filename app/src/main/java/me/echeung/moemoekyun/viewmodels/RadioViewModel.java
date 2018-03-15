@@ -6,6 +6,7 @@ import android.databinding.Bindable;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
+import me.echeung.listenmoeapi.models.Event;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.BR;
@@ -24,7 +25,7 @@ public class RadioViewModel extends BaseViewModel {
     private boolean isPlaying;
     private int listeners;
     private User requester;
-    private String event;
+    private Event event;
 
     private boolean showHistory;
     private Song lastSong;
@@ -149,11 +150,11 @@ public class RadioViewModel extends BaseViewModel {
     }
 
     @Bindable
-    public String getEvent() {
+    public Event getEvent() {
         return event;
     }
 
-    public void setEvent(String event) {
+    public void setEvent(Event event) {
         this.event = event;
         notifyPropertyChanged(BR.event);
     }
