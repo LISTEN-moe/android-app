@@ -42,6 +42,7 @@
                     android:id="@+id/collapse_btn"
                     android:layout_width="@dimen/fab_size"
                     android:layout_height="@dimen/fab_size"
+                    android:alpha="0.5"
                     android:background="@drawable/round_selector"
                     android:padding="8dp"
                     android:scaleType="fitXY"

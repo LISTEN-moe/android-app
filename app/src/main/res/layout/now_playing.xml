@@ -27,12 +27,14 @@
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/collapse_btn"
                     android:layout_width="@dimen/fab_size"
                     android:layout_height="@dimen/fab_size"
+                    android:alpha="0.5"
                     android:background="@drawable/round_selector"
                     android:padding="8dp"
                     android:scaleType="fitXY"
@@ -49,7 +51,6 @@
                 android:layout_height="0dp"
                 android:layout_marginEnd="@dimen/activity_horizontal_margin"
                 android:layout_marginStart="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 app:layout_constraintBottom_toTopOf="@+id/radio_songs"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
