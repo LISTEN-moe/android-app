@@ -74,7 +74,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:autofillHints="username"
-                                    android:hint="@string/username_or_email"
+                                    android:hint="@{vm.showRegister ? @string/username : @string/username_or_email}"
                                     android:inputType="textNoSuggestions|textEmailAddress"
                                     android:singleLine="true"
                                     tools:ignore="LabelFor" />

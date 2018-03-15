@@ -33,7 +33,6 @@ import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
 import me.echeung.moemoekyun.ui.dialogs.SongDetailsDialog;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
-import me.echeung.moemoekyun.utils.UrlUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class MainActivity extends BaseActivity {
@@ -42,8 +41,6 @@ public class MainActivity extends BaseActivity {
 
     public static final int LOGIN_REQUEST = 0;
     public static final int LOGIN_FAVORITE_REQUEST = 1;
-
-    private static final String URL_REGISTER = "https://listen.moe/#/register";
 
     private ActivityMainBinding binding;
 
@@ -67,8 +64,8 @@ public class MainActivity extends BaseActivity {
         binding.setVm(viewModel);
 
         binding.btnRetry.setOnClickListener(v -> retry());
-        binding.btnLogin.setOnClickListener(v -> showAuthActivity());
-        binding.btnRegister.setOnClickListener(v -> UrlUtil.openUrl(this, URL_REGISTER));
+        binding.btnLogin.setOnClickListener(v -> showLoginActivity());
+        binding.btnRegister.setOnClickListener(v -> showRegisterActivity());
 
         // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(this)) {
@@ -272,11 +269,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void showAuthActivity() {
-        startActivityForResult(new Intent(this, AuthActivity.class), LOGIN_REQUEST);
+    public void showLoginActivity() {
+        showLoginActivity(LOGIN_REQUEST);
     }
 
-    public void showAuthActivity(int requestCode) {
+    public void showLoginActivity(int requestCode) {
+        App.getAuthViewModel().setShowRegister(false);
         startActivityForResult(new Intent(this, AuthActivity.class), requestCode);
     }
 
@@ -285,6 +283,11 @@ public class MainActivity extends BaseActivity {
         sendBroadcast(authEventIntent);
 
         viewModel.setIsAuthed(App.getAuthUtil().isAuthenticated());
+    }
+
+    private void showRegisterActivity() {
+        App.getAuthViewModel().setShowRegister(true);
+        startActivity(new Intent(this, AuthActivity.class));
     }
 
     private void showLogoutDialog() {
@@ -353,7 +356,7 @@ public class MainActivity extends BaseActivity {
 
     private void favorite() {
         if (!App.getAuthUtil().isAuthenticated()) {
-            showAuthActivity(MainActivity.LOGIN_FAVORITE_REQUEST);
+            showLoginActivity(MainActivity.LOGIN_FAVORITE_REQUEST);
             return;
         }
 

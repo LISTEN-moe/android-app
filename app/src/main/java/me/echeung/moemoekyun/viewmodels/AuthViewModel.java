@@ -16,10 +16,6 @@ public class AuthViewModel extends BaseViewModel {
         showRegister = false;
     }
 
-    public void reset() {
-        setShowRegister(false);
-    }
-
     @Bindable
     public boolean getShowRegister() {
         return showRegister;

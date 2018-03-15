@@ -9,8 +9,9 @@ import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.listenmoeapi.cache.SongsCache;
 import me.echeung.listenmoeapi.callbacks.ArtistCallback;
 import me.echeung.listenmoeapi.callbacks.ArtistsCallback;
-import me.echeung.listenmoeapi.callbacks.AuthCallback;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
+import me.echeung.listenmoeapi.callbacks.LoginCallback;
+import me.echeung.listenmoeapi.callbacks.RegisterCallback;
 import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
 import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.callbacks.SongsCallback;
@@ -114,7 +115,7 @@ public class APIClient {
      * @param password User's password.
      * @param callback Listener to handle the response.
      */
-    public void authenticate(final String username, final String password, final AuthCallback callback) {
+    public void authenticate(final String username, final String password, final LoginCallback callback) {
         authService.login(new AuthService.LoginBody(username, password))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
@@ -144,7 +145,7 @@ public class APIClient {
      * @param otpToken User's one-time password token.
      * @param callback Listener to handle the response.
      */
-    public void authenticateMfa(final String otpToken, final AuthCallback callback) {
+    public void authenticateMfa(final String otpToken, final LoginCallback callback) {
         authService.mfa(authUtil.getMfaAuthTokenWithPrefix(), new AuthService.LoginMfaBody(otpToken))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
                     @Override
@@ -153,6 +154,26 @@ public class APIClient {
                         authUtil.setAuthToken(userToken);
                         authUtil.clearMfaAuthToken();
                         callback.onSuccess(userToken);
+                    }
+
+                    @Override
+                    public void error(final String message) {
+                        callback.onFailure(message);
+                    }
+                });
+    }
+
+    /**
+     * Register a new user.
+     *
+     * @param callback Listener to handle the response.
+     */
+    public void register(final String email, final String username, final String password, final RegisterCallback callback) {
+        authService.register(new AuthService.RegisterBody(email, username, password))
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
+                    @Override
+                    public void success(final BaseResponse response) {
+                        callback.onSuccess(response.getMessage());
                     }
 
                     @Override

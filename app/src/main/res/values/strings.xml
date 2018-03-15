@@ -67,6 +67,8 @@
     <string name="logout_confirmation">Are you sure you want to logout?</string>
     <string name="logged_out">Logged out</string>
     <string name="login_required">Log in to use this feature.</string>
+    <string name="required">Required</string>
+    <string name="password_mismatch">Passwords don\'t match</string>
 
 
     <!-- == Radio tab == -->

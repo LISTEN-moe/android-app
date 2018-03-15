@@ -11,7 +11,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Toast;
 
-import me.echeung.listenmoeapi.callbacks.AuthCallback;
+import me.echeung.listenmoeapi.callbacks.LoginCallback;
+import me.echeung.listenmoeapi.callbacks.RegisterCallback;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.ActivityAuthBinding;
@@ -23,7 +24,7 @@ public class AuthActivity extends BaseActivity {
 
     private ActivityAuthBinding binding;
 
-    private AuthCallback callback;
+    private LoginCallback loginCallback;
 
     private AlertDialog mfaDialog;
 
@@ -34,7 +35,6 @@ public class AuthActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth);
 
         final AuthViewModel viewModel = App.getAuthViewModel();
-        viewModel.reset();
 
         binding.setVm(viewModel);
 
@@ -42,9 +42,15 @@ public class AuthActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.authBtn.setOnClickListener(v -> login());
+        binding.authBtn.setOnClickListener(v -> {
+            if (viewModel.getShowRegister()) {
+                register();
+            } else {
+                login();
+            }
+        });
 
-        callback = new AuthCallback() {
+        loginCallback = new LoginCallback() {
             @Override
             public void onSuccess(final String token) {
                 runOnUiThread(() -> {
@@ -61,7 +67,7 @@ public class AuthActivity extends BaseActivity {
 
             @Override
             public void onFailure(final String message) {
-                runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show());
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());
             }
         };
     }
@@ -83,13 +89,16 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void login() {
-        final String user = binding.authUsername.getText().toString().trim();
-        final String pass = binding.authPassword.getText().toString().trim();
+        final String user = getText(binding.authUsername);
+        final String pass = getText(binding.authPassword);
+
+        setError(binding.authUsername, user.isEmpty(), getString(R.string.required));
+        setError(binding.authPassword, pass.isEmpty(), getString(R.string.required));
         if (user.isEmpty() || pass.isEmpty()) {
             return;
         }
 
-        App.getApiClient().authenticate(user, pass, callback);
+        App.getApiClient().authenticate(user, pass, loginCallback);
     }
 
     private void showMfaDialog() {
@@ -106,7 +115,7 @@ public class AuthActivity extends BaseActivity {
                             return;
                         }
 
-                        App.getApiClient().authenticateMfa(otpToken, callback);
+                        App.getApiClient().authenticateMfa(otpToken, loginCallback);
                     })
                     .setNegativeButton(R.string.close, null)
                     .create();
@@ -139,6 +148,47 @@ public class AuthActivity extends BaseActivity {
                 otpText.setText(clipboardText);
             }
         }
+    }
+
+    private void register() {
+        final String user = getText(binding.authUsername);
+        final String email = getText(binding.authEmail);
+        final String pass = getText(binding.authPassword);
+        final String passConfirm = getText(binding.authPasswordConfirm);
+
+        setError(binding.authUsername, user.isEmpty(), getString(R.string.required));
+        setError(binding.authEmail, email.isEmpty(), getString(R.string.required));
+        setError(binding.authPassword, pass.isEmpty(), getString(R.string.required));
+        setError(binding.authPasswordConfirm, passConfirm.isEmpty(), getString(R.string.required));
+        if (user.isEmpty() || email.isEmpty() || pass.isEmpty() || passConfirm.isEmpty()) {
+            return;
+        }
+
+        setError(binding.authPassword, !pass.equals(passConfirm), getString(R.string.password_mismatch));
+        setError(binding.authPasswordConfirm, !pass.equals(passConfirm), getString(R.string.password_mismatch));
+        if (!pass.equals(passConfirm)) {
+            return;
+        }
+
+        App.getApiClient().register(email, user, pass, new RegisterCallback() {
+            @Override
+            public void onSuccess(String message) {
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onFailure(String message) {
+                runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());
+            }
+        });
+    }
+
+    private void setError(TextInputEditText editText, boolean isError, String errorMessage) {
+        editText.setError(isError ? errorMessage : null);
+    }
+
+    private String getText(TextInputEditText editText) {
+        return editText.getText().toString().trim();
     }
 
 }
