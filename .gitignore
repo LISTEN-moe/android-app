@@ -17,6 +17,9 @@ target/
 local.properties
 .gitattributes
 
+# Crowdin plugin configuration
+crowdin.properties
+
 # Gradle generated files
 .gradle/
 
