@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="pref_download_names">
-        <item>Toujours</item>
-        <item>Seulement en Wi-Fi</item>
-        <item>Jamais</item>
-    </string-array>
-</resources>

@@ -3,20 +3,20 @@
 <resources>
   <!-- e.g. 10 requests remaining -->
   <plurals name="user_requests">
-    <item quantity="one">1 pedido restante</item>
-    <item quantity="other">%d pedidos restantes</item>
+    <item quantity="one">te queda 1 request</item>
+    <item quantity="other">te quedan %d requests</item>
   </plurals>
   <!-- e.g. 420 listeners -->
   <plurals name="current_listeners">
-    <item quantity="one">1 pessoa a ouvir</item>
-    <item quantity="other">%d pessoas a ouvir</item>
+    <item quantity="one">1 oyente</item>
+    <item quantity="other">%d oyentes</item>
   </plurals>
   <plurals name="minutes">
     <item quantity="one">1 minuto</item>
     <item quantity="other">%d minutos</item>
   </plurals>
   <plurals name="sleep_timer_set">
-    <item quantity="one">Temporizador configurado para 1 minuto</item>
-    <item quantity="other">Temporizador configurado para %d minutos</item>
+    <item quantity="one">Poner el timer en 1 minuto</item>
+    <item quantity="other">Poner el timer en %d minutos</item>
   </plurals>
 </resources>
