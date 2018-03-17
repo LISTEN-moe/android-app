@@ -12,7 +12,7 @@
 
 <a href="https://f-droid.org/app/me.echeung.moemoekyun.fdroid">
   <img height="50" alt="Get it on F-Droid"
-       src="https://f-droid.org/badge/get-it-on.png">
+       src="https://i.imgur.com/um29KX1.png">
 </a>
 
 
