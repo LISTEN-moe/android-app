@@ -14,8 +14,8 @@ import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapters.SongAdapter;
-import me.echeung.moemoekyun.adapters.SongList;
+import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
+import me.echeung.moemoekyun.adapters.songslist.SongList;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 
 public class SongsFragment extends Fragment implements SongList.SongListLoader {

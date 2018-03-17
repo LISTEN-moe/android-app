@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.adapters;
+package me.echeung.moemoekyun.adapters.songslist;
 
 import android.app.Activity;
 import android.support.v4.widget.SwipeRefreshLayout;

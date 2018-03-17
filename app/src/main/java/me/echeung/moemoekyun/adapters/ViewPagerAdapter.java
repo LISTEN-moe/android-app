@@ -20,7 +20,7 @@ import me.echeung.moemoekyun.ui.fragments.UserFragment;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     private final SparseArray<WeakReference<Fragment>> fragments = new SparseArray<>();
-    private final List<Holder> holders = new ArrayList<>();
+    private final List<TabHolder> holders = new ArrayList<>();
 
     @NonNull
     private final Context context;
@@ -62,7 +62,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(final int position) {
-        final Holder holder = holders.get(position);
+        final TabHolder holder = holders.get(position);
         return Fragment.instantiate(context, holder.className, holder.params);
     }
 
@@ -76,7 +76,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void add(@NonNull final Class<? extends Fragment> className, final int drawableId) {
-        final Holder holder = new Holder();
+        final TabHolder holder = new TabHolder();
         holder.className = className.getName();
         holder.drawableId = drawableId;
         holder.params = null;
@@ -85,9 +85,10 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         notifyDataSetChanged();
     }
 
-    private final static class Holder {
+    private final static class TabHolder {
         String className;
         int drawableId;
         Bundle params;
     }
+
 }

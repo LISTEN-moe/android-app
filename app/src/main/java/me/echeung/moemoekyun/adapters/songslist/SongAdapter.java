@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.adapters;
+package me.echeung.moemoekyun.adapters.songslist;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
@@ -33,8 +33,6 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
                 @Override
                 public boolean areContentsTheSame(@NonNull Song oldSong, @NonNull Song newSong) {
-                    // NOTE: if you use equals, your object must properly override Object#equals()
-                    // Incorrectly returning false here will result in too many animations.
                     return oldSong.equals(newSong);
                 }
             };
@@ -57,14 +55,14 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         final SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
         return new SongViewHolder(binding, this);
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final Song song = visibleSongs.get(position);
         final SongViewHolder songHolder = (SongViewHolder) holder;
         songHolder.bind(song);
