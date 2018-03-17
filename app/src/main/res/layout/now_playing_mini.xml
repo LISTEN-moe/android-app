@@ -17,7 +17,7 @@
 
         <include
             android:id="@+id/mini_album_art"
-            layout="@layout/radio_album_art"
+            layout="@layout/album_art"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             app:layout_constraintStart_toStartOf="parent"
