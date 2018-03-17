@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import me.echeung.listenmoeapi.models.Song;
+import me.echeung.moemoekyun.R;
 
 public class SongDetailAdapter extends ArrayAdapter<Song> {
 
@@ -20,16 +21,17 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
 
     @NonNull
     @Override
-    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+    public View getView(int position, View view, @NonNull ViewGroup parent) {
+        if (view == null) {
+            view = LayoutInflater.from(getContext()).inflate(R.layout.song_detail_item, parent, false);
         }
 
-        Song song = getItem(position);
-        TextView tvName = convertView.findViewById(android.R.id.text1);
-        tvName.setText(song.toString());
+        final Song song = getItem(position);
 
-        return convertView;
+        ((TextView) view.findViewById(R.id.title)).setText(song.getTitle());
+        ((TextView) view.findViewById(R.id.artist)).setText(song.getArtistString());
+
+        return view;
     }
 
 }
