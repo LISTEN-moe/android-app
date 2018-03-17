@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:binding="http://schemas.android.com/apk/res-auto"
+    xmlns:binding="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -40,47 +40,77 @@
                 tools:ignore="ContentDescription" />
 
             <include
-                android:id="@+id/radio_album_art"
-                layout="@layout/album_art_card"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
-                app:layout_constraintBottom_toTopOf="@+id/radio_songs"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/collapse_btn"
-                binding:vm="@{vm}" />
-
-            <include
-                android:id="@+id/radio_songs"
-                layout="@layout/radio_songs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/radio_controls"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radio_album_art"
-                binding:vm="@{vm}" />
-
-            <include
-                android:id="@+id/radio_controls"
-                layout="@layout/radio_controls"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/radio_songs"
+                android:id="@+id/content"
+                layout="@layout/now_playing_content"
                 binding:vm="@{vm}" />
 
         </android.support.constraint.ConstraintLayout>
 
-        <include
-            android:id="@+id/now_playing_mini"
-            layout="@layout/now_playing_mini"
-            binding:vm="@{vm}" />
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/mini_player"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/now_playing_peek_height"
+            android:alpha="@{vm.miniPlayerAlpha}"
+            android:background="@color/dark_grey"
+            android:visibility="@{vm.miniPlayerAlpha != 0}">
+
+            <include
+                android:id="@+id/mini_album_art"
+                layout="@layout/album_art"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="parent"
+                binding:vm="@{vm}" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/mini_play_pause"
+                app:layout_constraintStart_toEndOf="@+id/mini_album_art"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="@{vm.currentSong.title}"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-light"
+                    android:singleLine="true"
+                    android:text="@{vm.currentSong.artistString}"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/mini_play_pause"
+                android:layout_width="@dimen/fab_size"
+                android:layout_height="@dimen/fab_size"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/round_selector"
+                android:contentDescription="@string/play_pause"
+                android:padding="16dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_anim_play"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
 
     </FrameLayout>
 

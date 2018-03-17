@@ -168,8 +168,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initNowPlaying() {
-        final FrameLayout bottomSheet = binding.nowPlaying.nowPlayingSheet;
-        nowPlayingSheet = BottomSheetBehavior.from(bottomSheet);
+        nowPlayingSheet = BottomSheetBehavior.from(binding.nowPlaying.nowPlayingSheet);
 
         // Restore previous expanded state
         if (App.getPreferenceUtil().isNowPlayingExpanded()) {
@@ -192,7 +191,7 @@ public class MainActivity extends BaseActivity {
         });
 
         // Expand when tap mini player
-        binding.nowPlaying.nowPlayingMini.miniContent.setOnClickListener(v -> {
+        binding.nowPlaying.miniPlayer.setOnClickListener(v -> {
             nowPlayingSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
 
@@ -202,18 +201,18 @@ public class MainActivity extends BaseActivity {
         });
 
         // Clickable links
-        final TextView vRequestBy = binding.nowPlaying.radioControls.requestedBy;
+        final TextView vRequestBy = binding.nowPlaying.content.radioControls.requestedBy;
         vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
 
         initPlayPause();
 
-        final ImageButton vHistoryBtn = binding.nowPlaying.radioControls.historyBtn;
+        final ImageButton vHistoryBtn = binding.nowPlaying.content.radioControls.historyBtn;
         vHistoryBtn.setOnClickListener(v -> showHistory());
 
-        final ImageButton vFavoriteBtn = binding.nowPlaying.radioControls.favoriteBtn;
+        final ImageButton vFavoriteBtn = binding.nowPlaying.content.radioControls.favoriteBtn;
         vFavoriteBtn.setOnClickListener(v -> favorite());
 
-        final LinearLayout vCurrentSong = binding.nowPlaying.radioSongs.currentSong;
+        final LinearLayout vCurrentSong = binding.nowPlaying.content.radioSongs.currentSong;
         vCurrentSong.setOnClickListener(v -> showHistory());
         vCurrentSong.setOnLongClickListener(v -> {
             SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
@@ -327,10 +326,10 @@ public class MainActivity extends BaseActivity {
     // =============================================================================================
 
     private void initPlayPause() {
-        vPlayPauseBtn = binding.nowPlaying.radioControls.playPauseBtn;
+        vPlayPauseBtn = binding.nowPlaying.content.radioControls.playPauseBtn;
         vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
 
-        vMiniPlayPauseBtn = binding.nowPlaying.nowPlayingMini.miniPlayPause;
+        vMiniPlayPauseBtn = binding.nowPlaying.miniPlayPause;
         vMiniPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
 
         playToPause = (AnimatedVectorDrawable) ContextCompat.getDrawable(this, R.drawable.avd_play_to_pause);
