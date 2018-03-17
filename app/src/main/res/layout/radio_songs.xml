@@ -2,6 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+        <import type="android.text.TextUtils" />
         <variable name="vm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
     </data>
 
@@ -35,7 +36,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:selected="@{true}"
@@ -48,7 +48,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:alpha="0.75"
                 android:ellipsize="marquee"
                 android:fontFamily="sans-serif-light"
@@ -63,6 +63,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:alpha="0.75"
                 android:ellipsize="marquee"
                 android:fontFamily="sans-serif-light"
@@ -72,7 +73,8 @@
                 android:text="@{vm.currentSong.getAlbumString()}"
                 android:textAlignment="center"
                 android:textColor="@{vm.bodyColor}"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="@{!TextUtils.isEmpty(vm.currentSong.getAlbumString())}" />
 
         </LinearLayout>
 
