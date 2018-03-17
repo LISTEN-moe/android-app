@@ -47,6 +47,7 @@ public class MainActivity extends BaseActivity {
     private RadioViewModel viewModel;
 
     private ViewPager viewPager;
+    private BottomSheetBehavior nowPlayingSheet;
 
     private Observable.OnPropertyChangedCallback playPauseCallback;
     private FloatingActionButton vPlayPauseBtn;
@@ -115,12 +116,19 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        // Prevent app from exiting when pressing back on the user tab
+        // Collapse now playing
+        if (nowPlayingSheet != null && nowPlayingSheet.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            nowPlayingSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            return;
+        }
+
+        // Go back to first tab
         if (viewPager != null && viewPager.getCurrentItem() != 0) {
             viewPager.setCurrentItem(0, true);
-        } else {
-            super.onBackPressed();
+            return;
         }
+
+        super.onBackPressed();
     }
 
     /**
@@ -161,16 +169,16 @@ public class MainActivity extends BaseActivity {
 
     private void initNowPlaying() {
         final FrameLayout bottomSheet = binding.nowPlaying.nowPlayingSheet;
-        final BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        nowPlayingSheet = BottomSheetBehavior.from(bottomSheet);
 
         // Restore previous expanded state
         if (App.getPreferenceUtil().isNowPlayingExpanded()) {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            nowPlayingSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
         } else {
             viewModel.setMiniPlayerAlpha(1f);
         }
 
-        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        nowPlayingSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 App.getPreferenceUtil().setIsNowPlayingExpanded(newState == BottomSheetBehavior.STATE_EXPANDED);
@@ -185,12 +193,12 @@ public class MainActivity extends BaseActivity {
 
         // Expand when tap mini player
         binding.nowPlaying.nowPlayingMini.miniContent.setOnClickListener(v -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            nowPlayingSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
 
         // Collapse button
         binding.nowPlaying.collapseBtn.setOnClickListener(v -> {
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            nowPlayingSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
         // Clickable links
