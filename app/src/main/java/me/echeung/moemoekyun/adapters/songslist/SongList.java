@@ -78,7 +78,11 @@ public class SongList {
                 final String query = editable.toString().trim().toLowerCase();
                 adapter.filter(query);
 
-                songListViewModel.setHasResults(adapter.getItemCount() != 0);
+                boolean hasResults = adapter.getItemCount() != 0;
+                songListViewModel.setHasResults(hasResults);
+                if (hasResults) {
+                    binding.list.scrollToPosition(0);
+                }
             }
         });
 
