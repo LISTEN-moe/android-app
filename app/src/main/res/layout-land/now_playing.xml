@@ -30,27 +30,20 @@
                 android:orientation="horizontal"
                 app:layout_constraintGuide_percent="0.2" />
 
-            <LinearLayout
-                android:id="@+id/appbar"
-                android:layout_width="0dp"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_constraintEnd_toStartOf="@+id/middle_vertical_guideline"
+            <ImageButton
+                android:id="@+id/collapse_btn"
+                android:layout_width="@dimen/now_playing_drag_bar_size"
+                android:layout_height="@dimen/now_playing_drag_bar_size"
+                android:alpha="0.5"
+                android:background="@drawable/round_selector"
+                android:padding="8dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_drag_pill_white_24dp"
+                android:tint="@{vm.bodyColor}"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <ImageButton
-                    android:id="@+id/collapse_btn"
-                    android:layout_width="@dimen/fab_size"
-                    android:layout_height="@dimen/fab_size"
-                    android:alpha="0.5"
-                    android:background="@drawable/round_selector"
-                    android:padding="8dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_keyboard_arrow_down_white_24dp"
-                    android:tint="@{vm.bodyColor}"
-                    tools:ignore="ContentDescription" />
-
-            </LinearLayout>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <include
                 android:id="@+id/radio_album_art"
