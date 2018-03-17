@@ -166,9 +166,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
         }
 
         void bind(final Song song) {
-            binding.setVariable(BR.title, song.getTitle());
-            binding.setVariable(BR.subtitle, song.getArtistString());
-            binding.setVariable(BR.favorited, song.isFavorite());
+            binding.setVariable(BR.song, song);
 
             binding.executePendingBindings();
         }
