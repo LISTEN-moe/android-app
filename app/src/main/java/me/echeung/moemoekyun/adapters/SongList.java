@@ -75,7 +75,6 @@ public class SongList {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                // TODO: debounce this
                 final String query = editable.toString().trim().toLowerCase();
                 adapter.filter(query);
 

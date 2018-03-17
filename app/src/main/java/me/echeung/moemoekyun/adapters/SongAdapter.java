@@ -2,6 +2,9 @@ package me.echeung.moemoekyun.adapters;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.support.v7.recyclerview.extensions.ListAdapter;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,7 +22,22 @@ import me.echeung.moemoekyun.databinding.SongItemBinding;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 
-public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
+
+    private static final DiffUtil.ItemCallback<Song> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<Song>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull Song oldSong, @NonNull Song newSong) {
+                    return oldSong.getId() == newSong.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(@NonNull Song oldSong, @NonNull Song newSong) {
+                    // NOTE: if you use equals, your object must properly override Object#equals()
+                    // Incorrectly returning false here will result in too many animations.
+                    return oldSong.equals(newSong);
+                }
+            };
 
     private WeakReference<Activity> activity;
     private String listId;
@@ -30,10 +48,36 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private String filterQuery;
 
     public SongAdapter(Activity activity, String listId) {
+        super(DIFF_CALLBACK);
+
         this.activity = new WeakReference<>(activity);
         this.listId = listId;
 
         setHasStableIds(true);
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        final SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
+        return new SongViewHolder(binding, this);
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final Song song = visibleSongs.get(position);
+        final SongViewHolder songHolder = (SongViewHolder) holder;
+        songHolder.bind(song);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return visibleSongs.get(position).getId();
+    }
+
+    @Override
+    public int getItemCount() {
+        return visibleSongs != null ? visibleSongs.size() : 0;
     }
 
     public void setSongs(List<Song> songs) {
@@ -60,30 +104,6 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         SongSortUtil.setListSortDescending(activityRef, listId, descending);
         updateSongs();
-    }
-
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        final SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
-        return new SongHolder(binding, this);
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final Song song = visibleSongs.get(position);
-        final SongHolder songHolder = (SongHolder) holder;
-        songHolder.bind(song);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return visibleSongs.get(position).getId();
-    }
-
-    @Override
-    public int getItemCount() {
-        return visibleSongs != null ? visibleSongs.size() : 0;
     }
 
     private void updateSongs() {
@@ -124,11 +144,11 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return activity.get();
     }
 
-    private static class SongHolder extends RecyclerView.ViewHolder {
+    private static class SongViewHolder extends RecyclerView.ViewHolder {
 
         private SongItemBinding binding;
 
-        SongHolder(final SongItemBinding binding, final SongAdapter adapter) {
+        SongViewHolder(final SongItemBinding binding, final SongAdapter adapter) {
             super(binding.getRoot());
 
             this.binding = binding;
@@ -155,4 +175,5 @@ public class SongAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             binding.executePendingBindings();
         }
     }
+
 }
