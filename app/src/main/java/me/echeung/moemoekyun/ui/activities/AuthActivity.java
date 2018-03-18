@@ -117,7 +117,6 @@ public class AuthActivity extends BaseActivity {
 
                         App.getApiClient().authenticateMfa(otpToken, loginCallback);
                     })
-                    .setNegativeButton(R.string.close, null)
                     .create();
 
             mfaDialog.show();
