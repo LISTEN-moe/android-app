@@ -25,6 +25,7 @@ public class AuthActivity extends BaseActivity {
     private static final int OTP_LENGTH = 6;
 
     private ActivityAuthBinding binding;
+    private AuthViewModel viewModel;
 
     private LoginCallback loginCallback;
 
@@ -36,25 +37,18 @@ public class AuthActivity extends BaseActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth);
 
-        final AuthViewModel viewModel = App.getAuthViewModel();
-
+        viewModel = App.getAuthViewModel();
         binding.setVm(viewModel);
 
         setSupportActionBar(findViewById(R.id.appbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        binding.authBtn.setOnClickListener(v -> {
-            if (viewModel.getShowRegister()) {
-                register();
-            } else {
-                login();
-            }
-        });
+        binding.authBtn.setOnClickListener(v -> submit());
 
         final TextView.OnEditorActionListener onSubmit = (v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                binding.authBtn.performClick();
+                submit();
                 return true;
             }
             return false;
@@ -99,6 +93,14 @@ public class AuthActivity extends BaseActivity {
         }
 
         super.onDestroy();
+    }
+
+    private void submit() {
+        if (viewModel.getShowRegister()) {
+            register();
+        } else {
+            login();
+        }
     }
 
     private void login() {
