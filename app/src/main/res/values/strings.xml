@@ -179,4 +179,9 @@
     <string name="pref_title_color_now_playing">Color now playing based on album art</string>
     <string name="pref_title_color_navbar">Theme on-screen navigation bar</string>
 
+    <string name="pref_header_advanced">Advanced</string>
+    <string name="pref_title_advanced_clear_image_cache">Clear image cache</string>
+    <string name="pref_title_advanced_whitelist_battery_optimization">Whitelist from battery optimization</string>
+    <string name="pref_title_advanced_whitelist_battery_optimization_summary">Prevents app from losing connection</string>
+
 </resources>

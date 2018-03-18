@@ -1,6 +1,8 @@
 package me.echeung.moemoekyun.ui.activities;
 
 import android.app.Activity;
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.ListPreference;
@@ -11,7 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.utils.DozeUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
@@ -45,6 +50,7 @@ public class SettingsActivity extends BaseActivity {
             addPreferencesFromResource(R.xml.pref_lockscreen);
             addPreferencesFromResource(R.xml.pref_color);
             addPreferencesFromResource(R.xml.pref_audio);
+            addPreferencesFromResource(R.xml.pref_advanced);
         }
 
         @Override
@@ -74,6 +80,22 @@ public class SettingsActivity extends BaseActivity {
             setSummary(downloadSetting);
             downloadSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(downloadSetting, o);
+                return true;
+            });
+
+            final Preference ignoreDoze = findPreference(PreferenceUtil.PREF_ADVANCED_WHITELIST_BATTERY_OPTIMIZATION);
+            if (DozeUtil.isWhitelisted(getContext())) {
+                ignoreDoze.setVisible(false);
+            } else {
+                ignoreDoze.setOnPreferenceClickListener(preference -> {
+                    DozeUtil.requestWhitelist(getContext());
+                    return true;
+                });
+            }
+
+            final Preference clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE);
+            clearCache.setOnPreferenceClickListener(preference -> {
+                clearGlideCache();
                 return true;
             });
         }
@@ -108,6 +130,21 @@ public class SettingsActivity extends BaseActivity {
             if (activity != null) {
                 Toast.makeText(activity, R.string.restart_required, Toast.LENGTH_SHORT).show();
             }
+        }
+
+        private void clearGlideCache() {
+            final Context context = getContext();
+            if (context == null) return;
+
+            new AsyncTask<Void, Void, Void>() {
+                @Override
+                protected Void doInBackground(Void... params) {
+                    Glide.get(context).clearDiskCache();
+                    return null;
+                }
+            }.execute();
+
+            Glide.get(context).clearMemory();
         }
 
     }
