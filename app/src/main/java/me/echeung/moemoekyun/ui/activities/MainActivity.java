@@ -73,11 +73,6 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        // Prompt to turn off battery optimizations
-        if (!DozeUtil.isWhitelisted(this)) {
-            DozeUtil.requestWhitelist(this);
-        }
-
         // Sets audio type to media (volume button control)
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -92,6 +87,11 @@ public class MainActivity extends BaseActivity {
         viewModel.setIsAuthed(isAuthed);
         if (!isAuthed) {
             App.getUserViewModel().reset();
+        }
+
+        // Prompt to turn off battery optimizations
+        if (!DozeUtil.isWhitelisted(this)) {
+            DozeUtil.requestWhitelist(this);
         }
     }
 
