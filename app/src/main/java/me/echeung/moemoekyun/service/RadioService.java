@@ -37,7 +37,6 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.ISO8601;
-import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
@@ -376,17 +375,15 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
                     break;
 
                 case ConnectivityManager.CONNECTIVITY_ACTION:
+                    Log.d(TAG, "Connection change");
+
                     // Ignore the initial sticky broadcast on app start
                     if (isFirstConnectivityChange) {
                         isFirstConnectivityChange = false;
                         break;
                     }
 
-                    if (NetworkUtil.isNetworkAvailable(this)) {
-                        socket.connect();
-                    } else {
-                        socket.disconnect();
-                    }
+                    socket.reconnect();
             }
         }
 

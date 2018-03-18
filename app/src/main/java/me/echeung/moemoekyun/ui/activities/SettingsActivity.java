@@ -16,7 +16,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.utils.DozeUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
@@ -82,16 +81,6 @@ public class SettingsActivity extends BaseActivity {
                 setSummary(downloadSetting, o);
                 return true;
             });
-
-            final Preference ignoreDoze = findPreference(PreferenceUtil.PREF_ADVANCED_WHITELIST_BATTERY_OPTIMIZATION);
-            if (DozeUtil.isWhitelisted(getContext())) {
-                ignoreDoze.setVisible(false);
-            } else {
-                ignoreDoze.setOnPreferenceClickListener(preference -> {
-                    DozeUtil.requestWhitelist(getContext());
-                    return true;
-                });
-            }
 
             final Preference clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE);
             clearCache.setOnPreferenceClickListener(preference -> {

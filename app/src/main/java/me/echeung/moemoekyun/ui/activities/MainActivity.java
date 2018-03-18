@@ -30,6 +30,7 @@ import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
 import me.echeung.moemoekyun.ui.dialogs.SongDetailsDialog;
+import me.echeung.moemoekyun.utils.DozeUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
@@ -70,6 +71,11 @@ public class MainActivity extends BaseActivity {
         // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(this)) {
             return;
+        }
+
+        // Prompt to turn off battery optimizations
+        if (!DozeUtil.isWhitelisted(this)) {
+            DozeUtil.requestWhitelist(this);
         }
 
         // Sets audio type to media (volume button control)

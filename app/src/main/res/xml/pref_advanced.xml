@@ -5,11 +5,6 @@
         android:title="@string/pref_header_advanced">
 
         <android.support.v7.preference.Preference
-            android:key="pref_advanced_whitelist_battery_optimization"
-            android:title="@string/pref_title_advanced_whitelist_battery_optimization"
-            android:summary="@string/pref_title_advanced_whitelist_battery_optimization_summary" />
-
-        <android.support.v7.preference.Preference
             android:key="pref_advanced_clear_image_cache"
             android:title="@string/pref_title_advanced_clear_image_cache" />
 

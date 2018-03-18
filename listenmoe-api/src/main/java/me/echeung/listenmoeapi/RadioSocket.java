@@ -124,7 +124,7 @@ public class RadioSocket extends WebSocketListener {
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-        Log.e(TAG, t.getMessage(), t);
+        Log.e(TAG, "Socket failure: " + t.getMessage(), t);
         reconnect();
     }
 

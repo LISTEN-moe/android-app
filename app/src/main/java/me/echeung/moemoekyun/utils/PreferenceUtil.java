@@ -23,7 +23,6 @@ public final class PreferenceUtil {
     public static final String PREF_COLOR_NOW_PLAYING = "pref_color_now_playing";
     public static final String PREF_COLOR_NAVBAR = "pref_color_navbar";
 
-    public static final String PREF_ADVANCED_WHITELIST_BATTERY_OPTIMIZATION = "pref_advanced_whitelist_battery_optimization";
     public static final String PREF_ADVANCED_CLEAR_IMAGE_CACHE = "pref_advanced_clear_image_cache";
 
     public static final String THEME_DEFAULT = "four";
