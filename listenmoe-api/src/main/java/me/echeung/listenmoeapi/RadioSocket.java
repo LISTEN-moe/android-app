@@ -64,14 +64,14 @@ public class RadioSocket extends WebSocketListener {
     }
 
     public void disconnect() {
-        Log.d(TAG, "Disconnected from socket");
+        clearHeartbeat();
 
         if (socket != null) {
             socket.cancel();
             socket = null;
         }
 
-        clearHeartbeat();
+        Log.d(TAG, "Disconnected from socket");
     }
 
     public void reconnect() {
@@ -110,8 +110,6 @@ public class RadioSocket extends WebSocketListener {
         retryTime = RETRY_TIME_MIN;
         attemptingReconnect = false;
 
-        clearHeartbeat();
-
         // Handshake with socket
         final String authToken = authUtil.isAuthenticated() ? authUtil.getAuthTokenWithPrefix() : "";
         socket.send(String.format("{ \"op\": 0, \"d\": { \"auth\": \"%s\" } }", authToken));
@@ -136,20 +134,20 @@ public class RadioSocket extends WebSocketListener {
         reconnect();
     }
 
-    // TODO: heartbeat handler on dead thread after sleep, reconnect on wake?
     private void heartbeat(int milliseconds) {
-        if (heartbeatTask != null) {
-            clearHeartbeat();
-        }
+        clearHeartbeat();
 
-        heartbeatTask = () -> {
-            if (socket == null) return;
+        heartbeatTask = new Runnable() {
+            @Override
+            public void run() {
+                if (socket == null) return;
 
-            Log.d(TAG, "Sending heartbeat to socket");
-            socket.send("{ \"op\": 9 }");
+                Log.d(TAG, "Sending heartbeat to socket");
+                socket.send("{ \"op\": 9 }");
 
-            // Repeat
-            heartbeatHandler.postDelayed(heartbeatTask, milliseconds);
+                // Repeat
+                heartbeatHandler.postDelayed(this, milliseconds);
+            }
         };
 
         heartbeatHandler.postDelayed(heartbeatTask, milliseconds);
