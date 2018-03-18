@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.listenmoeapi.callbacks.LoginCallback;
@@ -49,6 +51,17 @@ public class AuthActivity extends BaseActivity {
                 login();
             }
         });
+
+        final TextView.OnEditorActionListener onSubmit = (v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                binding.authBtn.performClick();
+                return true;
+            }
+            return false;
+        };
+
+        binding.authPassword.setOnEditorActionListener(onSubmit);
+        binding.authPasswordConfirm.setOnEditorActionListener(onSubmit);
 
         loginCallback = new LoginCallback() {
             @Override

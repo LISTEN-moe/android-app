@@ -5,6 +5,7 @@
     tools:context=".ui.activities.AuthActivity">
 
     <data>
+        <import type="android.view.inputmethod.EditorInfo" />
         <variable name="vm" type="me.echeung.moemoekyun.viewmodels.AuthViewModel" />
     </data>
 
@@ -128,6 +129,7 @@
                                     android:autofillHints="password"
                                     android:hint="@string/password"
                                     android:inputType="textPassword"
+                                    android:imeOptions="@{vm.showRegister ? EditorInfo.IME_ACTION_NEXT : EditorInfo.IME_ACTION_DONE}"
                                     tools:ignore="LabelFor" />
 
                             </android.support.design.widget.TextInputLayout>
@@ -144,6 +146,7 @@
                                     android:layout_height="wrap_content"
                                     android:hint="@string/password_confirm"
                                     android:inputType="textPassword"
+                                    android:imeOptions="actionDone"
                                     tools:ignore="LabelFor" />
 
                             </android.support.design.widget.TextInputLayout>
