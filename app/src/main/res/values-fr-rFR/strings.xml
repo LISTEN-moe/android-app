@@ -65,7 +65,7 @@
   <string name="requested_random_song">Musique aléatoire demandée</string>
   <string name="supporter_required">Grade Supporteur requis</string>
   <!-- == No Internet view == -->
-  <string name="no_internet">Impossible de se connecter à LISTEN.moe\nMerci de vérifier votre connexion internet</string>
+  <string name="no_internet">Impossible de se connecter à LISTEN.moe\n\nMerci de vérifier votre connexion internet</string>
   <string name="retry">Réessayez</string>
   <!-- == About == -->
   <string name="about">À propos</string>
