@@ -47,7 +47,6 @@
   <string name="password_mismatch">Las contraseñas no coinciden</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Play/Pausa</string>
-  <string name="history">Historial</string>
   <string name="favorite">Favorito</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Pedido por: %s</string>

@@ -11,6 +11,10 @@
     <item quantity="one">1 auditeur</item>
     <item quantity="other">%d auditeurs</item>
   </plurals>
+  <plurals name="minutes">
+    <item quantity="one">1 minute</item>
+    <item quantity="other">%d minutes</item>
+  </plurals>
   <plurals name="sleep_timer_set">
     <item quantity="one">Minuterie programmée pour 1 minute</item>
     <item quantity="other">Minuterie programmée pour %d minutes</item>

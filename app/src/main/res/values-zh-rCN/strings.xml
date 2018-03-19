@@ -45,7 +45,6 @@
   <string name="login_required">登录来使用这个功能</string>
   <!-- == Radio tab == -->
   <string name="play_pause">播放/暂停</string>
-  <string name="history">历史记录</string>
   <string name="favorite">我的最爱</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">请求者：%s</string>

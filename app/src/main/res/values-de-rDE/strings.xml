@@ -37,7 +37,6 @@
   <string name="login_required">Du must eingeloggt sein, um dieses Feature zu benutzen.</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Play/Pause</string>
-  <string name="history">Zuletzt gespielt</string>
   <string name="favorite">Favorisieren</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Gewünscht von: %s</string>

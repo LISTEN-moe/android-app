@@ -36,7 +36,6 @@
   <string name="login_required">Du måste logga in för att använda den här funktionen</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Spela/pausa</string>
-  <string name="history">Historik</string>
   <string name="favorite">Favorit</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Requestad av: %s</string>

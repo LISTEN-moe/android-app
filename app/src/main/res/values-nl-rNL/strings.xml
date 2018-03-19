@@ -44,7 +44,6 @@
   <string name="login_required">Je moet je aanmelden om deze functie te gebruiken.</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Start/pauze</string>
-  <string name="history">Geschiedenis</string>
   <string name="favorite">Favorieten</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Aangevraagd door: %s</string>

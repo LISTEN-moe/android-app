@@ -41,7 +41,6 @@
   <string name="login_required">ログインユーザーのみの機能</string>
   <!-- == Radio tab == -->
   <string name="play_pause">再生/一時停止</string>
-  <string name="history">履歴</string>
   <string name="favorite">お気に入りに追加</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">%s さんからのリクエスト</string>

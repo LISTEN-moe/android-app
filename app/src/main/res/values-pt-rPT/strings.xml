@@ -37,7 +37,6 @@
   <string name="login_required">É necessario efetuar login para usar esta função.</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Reproduzir/pausa</string>
-  <string name="history">Histórico</string>
   <string name="favorite">Adicionar aos favoritos</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Solicitado por: %s</string>

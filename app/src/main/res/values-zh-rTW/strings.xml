@@ -34,7 +34,6 @@
   <string name="login_required">本功能使用前必須登入</string>
   <!-- == Radio tab == -->
   <string name="play_pause">播放/暫停</string>
-  <string name="history">播放記錄</string>
   <string name="favorite">我的最愛</string>
   <!-- e.g. Requested by: username -->
   <!-- == User tab == -->

@@ -43,9 +43,10 @@
   <string name="logout_confirmation">Вы действительно хотите выйти?</string>
   <string name="logged_out">Выход выполнен</string>
   <string name="login_required">Войдите, чтобы использовать эту функцию</string>
+  <string name="required">Обязательно</string>
+  <string name="password_mismatch">Пароли не совпадают</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Возпроизвести/пауза</string>
-  <string name="history">История</string>
   <string name="favorite">Добавить в избранное</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Запрошено %s</string>
