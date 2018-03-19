@@ -47,6 +47,7 @@
   <string name="password_mismatch">Les mots de passe ne correspondent pas</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Play/pause</string>
+  <string name="last_played">Joué récemment</string>
   <string name="favorite">Favori</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Demandé par : %s</string>
@@ -110,4 +111,6 @@
   <string name="pref_header_color">Couleur</string>
   <string name="pref_title_color_now_playing">Couleur affichée basée sur la couverture de l\'album diffusé</string>
   <string name="pref_title_color_navbar">Thématiser la barre de navigation</string>
+  <string name="pref_header_advanced">Avancé</string>
+  <string name="pref_title_advanced_clear_image_cache">Effacer le cache des images</string>
 </resources>
