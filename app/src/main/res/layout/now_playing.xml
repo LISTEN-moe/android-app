@@ -18,7 +18,7 @@
         app:behavior_peekHeight="@dimen/now_playing_peek_height"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-        <android.support.constraint.ConstraintLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@{vm.backgroundColor}">
@@ -27,16 +27,13 @@
                 android:id="@+id/collapse_btn"
                 android:layout_width="@dimen/now_playing_drag_bar_size"
                 android:layout_height="@dimen/now_playing_drag_bar_size"
-                android:layout_gravity="center"
+                android:layout_gravity="center_horizontal"
                 android:alpha="0.5"
                 android:background="@drawable/round_selector"
                 android:padding="8dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_drag_pill_white_24dp"
                 android:tint="@{vm.bodyColor}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
             <include
@@ -44,7 +41,7 @@
                 layout="@layout/now_playing_content"
                 binding:vm="@{vm}" />
 
-        </android.support.constraint.ConstraintLayout>
+        </FrameLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/mini_player"

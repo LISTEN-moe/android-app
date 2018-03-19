@@ -3,20 +3,20 @@ package me.echeung.moemoekyun.ui.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageView;
+import android.widget.FrameLayout;
 
 @SuppressLint("AppCompatCustomView")
-public class SquareImageView extends ImageView {
+public class SquareLayout extends FrameLayout {
 
-    public SquareImageView(Context context) {
+    public SquareLayout(Context context) {
         super(context);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs) {
+    public SquareLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public SquareImageView(Context context, AttributeSet attrs, int defStyle) {
+    public SquareLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -24,10 +24,7 @@ public class SquareImageView extends ImageView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final int width = Math.min(getMeasuredWidth(), getMaxWidth());
-        final int height = Math.min(getMeasuredHeight(), getMaxHeight());
-
-        final int dimen = Math.min(width, height);
+        final int dimen = Math.min(getMeasuredWidth(), getMeasuredHeight());
         setMeasuredDimension(dimen, dimen);
     }
 

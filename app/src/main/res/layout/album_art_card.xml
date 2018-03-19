@@ -7,32 +7,38 @@
         <variable name="vm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
     </data>
 
-    <android.support.v7.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="@dimen/card_radius"
-        app:cardElevation="3dp"
-        app:cardPreventCornerOverlap="true">
+    <me.echeung.moemoekyun.ui.views.SquareLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <!-- Default album art -->
-        <me.echeung.moemoekyun.ui.views.SquareImageView
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@drawable/blank"
-            tools:ignore="ContentDescription" />
+            android:layout_margin="8dp"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:cardElevation="3dp"
+            app:cardPreventCornerOverlap="true">
 
-        <!-- Shows downloaded album art -->
-        <me.echeung.moemoekyun.ui.views.SquareImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:imageBitmap="@{vm.albumArt}"
-            android:scaleType="centerCrop"
-            tools:ignore="ContentDescription" />
+            <!-- Default album art -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/blank"
+                tools:ignore="ContentDescription" />
 
-    </android.support.v7.widget.CardView>
+            <!-- Shows downloaded album art -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:imageBitmap="@{vm.albumArt}"
+                android:scaleType="centerCrop"
+                tools:ignore="ContentDescription" />
+
+        </android.support.v7.widget.CardView>
+
+    </me.echeung.moemoekyun.ui.views.SquareLayout>
 
 </layout>
