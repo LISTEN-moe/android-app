@@ -4,7 +4,7 @@
 
     <data>
         <variable name="song" type="me.echeung.listenmoeapi.models.Song" />
-        <variable name="detailed" type="Boolean" />
+        <variable name="detailed" type="boolean" />
     </data>
 
     <LinearLayout
