@@ -16,7 +16,7 @@ public class SongDetailsDialog {
         SongDetailAdapter adapter = new SongDetailAdapter(context, songs);
 
         new AlertDialog.Builder(context, R.style.DialogTheme)
-                .setTitle(R.string.history)
+                .setTitle(R.string.last_played)
                 .setAdapter(adapter, (dialogInterface, i) -> SongActionsUtil.copyToClipboard(context, songs.get(i)))
                 .setPositiveButton(R.string.close, null)
                 .create()

@@ -34,7 +34,7 @@
                 android:layout_height="@dimen/fab_size"
                 android:layout_margin="16dp"
                 android:background="@drawable/round_selector"
-                android:contentDescription="@string/history"
+                android:contentDescription="@string/last_played"
                 android:padding="8dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_history_white_24dp"

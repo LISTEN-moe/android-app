@@ -74,7 +74,7 @@
     <!-- == Radio tab == -->
 
     <string name="play_pause">Play/pause</string>
-    <string name="history">History</string>
+    <string name="last_played">Last played</string>
     <string name="favorite">Favorite</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Requested by: %s</string>
