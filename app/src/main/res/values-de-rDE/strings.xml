@@ -33,7 +33,7 @@
   <string name="register">Registrieren</string>
   <string name="login">Anmelden</string>
   <string name="logout">Abmelden</string>
-  <string name="username_or_email">Benutzername / e-Mail-Adresse</string>
+  <string name="username_or_email">Benutzername / E-Mail-Adresse</string>
   <string name="username">Benutzername</string>
   <string name="email">E-Mail-Adresse</string>
   <string name="password">Passwort</string>
