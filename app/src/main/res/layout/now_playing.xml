@@ -87,7 +87,7 @@
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-light"
                     android:singleLine="true"
-                    android:text="@{vm.currentSong.artistString}"
+                    android:text="@{vm.currentSong.artistsString}"
                     android:textColor="@color/white" />
 
             </LinearLayout>

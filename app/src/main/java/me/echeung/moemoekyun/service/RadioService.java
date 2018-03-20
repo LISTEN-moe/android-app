@@ -238,8 +238,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistString())
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumString())
+                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistsString())
+                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumsString())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
@@ -601,8 +601,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
 
         intent.putExtra("id", song.getId());
 
-        intent.putExtra("artist", song.getAlbumString());
-        intent.putExtra("album", song.getAlbumString());
+        intent.putExtra("artist", song.getAlbumsString());
+        intent.putExtra("album", song.getAlbumsString());
         intent.putExtra("track", song.getTitle());
 
         intent.putExtra("duration", song.getDuration());

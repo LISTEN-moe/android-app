@@ -36,7 +36,7 @@ public class Song implements Parcelable {
     @Setter
     private boolean favorite;
 
-    public String getAlbumString() {
+    public String getAlbumsString() {
         StringBuilder s = new StringBuilder();
         if (albums != null) {
             for (SongDescriptor album : albums) {
@@ -48,7 +48,7 @@ public class Song implements Parcelable {
         return s.toString();
     }
 
-    public String getArtistString() {
+    public String getArtistsString() {
         StringBuilder s = new StringBuilder();
         if (artists != null) {
             for (SongDescriptor artist : artists) {
@@ -60,9 +60,21 @@ public class Song implements Parcelable {
         return s.toString();
     }
 
+    public String getSourcesString() {
+        StringBuilder s = new StringBuilder();
+        if (artists != null) {
+            for (SongDescriptor source : sources) {
+                if (s.length() != 0)
+                    s.append(", ");
+                s.append(source.getName());
+            }
+        }
+        return s.toString();
+    }
+
     @Override
     public String toString() {
-        return String.format("%s - %s", getTitle(), getArtistString());
+        return String.format("%s - %s", getTitle(), getArtistsString());
     }
 
     public String getAlbumArtUrl() {

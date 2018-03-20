@@ -40,7 +40,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:selected="@{true}"
                 android:singleLine="true"
-                android:text="@{vm.currentSong.getTitle()}"
+                android:text="@{vm.currentSong.title}"
                 android:textAlignment="center"
                 android:textColor="@{vm.bodyColor}"
                 android:textSize="24sp" />
@@ -55,7 +55,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:selected="@{true}"
                 android:singleLine="true"
-                android:text="@{vm.currentSong.getArtistString()}"
+                android:text="@{vm.currentSong.artistsString}"
                 android:textAlignment="center"
                 android:textColor="@{vm.bodyColor}"
                 android:textSize="18sp" />
@@ -70,11 +70,11 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:selected="@{true}"
                 android:singleLine="true"
-                android:text="@{vm.currentSong.getAlbumString()}"
+                android:text="@{vm.currentSong.albumsString}"
                 android:textAlignment="center"
                 android:textColor="@{vm.bodyColor}"
                 android:textSize="18sp"
-                android:visibility="@{!TextUtils.isEmpty(vm.currentSong.getAlbumString())}" />
+                android:visibility="@{!TextUtils.isEmpty(vm.currentSong.albumsString)}" />
 
         </LinearLayout>
 
