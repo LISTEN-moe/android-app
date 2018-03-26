@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
+import me.echeung.moemoekyun.databinding.SongItemBinding;
 
 public final class SongActionsUtil {
 
@@ -30,9 +32,12 @@ public final class SongActionsUtil {
                 activity.getString(R.string.action_unfavorite) :
                 activity.getString(R.string.action_favorite);
 
+        final SongItemBinding binding = DataBindingUtil.inflate(activity.getLayoutInflater(), R.layout.song_item, null, false);
+        binding.setSong(song);
+        binding.setDetailed(true);
+
         new AlertDialog.Builder(activity, R.style.DialogTheme)
-                .setTitle(song.getTitle())
-                .setMessage(song.getArtistsString() + "\n" + song.getAlbumsString())
+                .setView(binding.getRoot())
                 .setPositiveButton(android.R.string.cancel, null)
                 .setNegativeButton(favoriteAction, (dialogInterface, in) -> SongActionsUtil.toggleFavorite(activity, adapter, song))
                 .setNeutralButton(activity.getString(R.string.action_request), (dialogInterface, im) -> SongActionsUtil.request(activity, adapter, song))
