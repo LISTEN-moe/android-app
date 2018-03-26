@@ -70,7 +70,8 @@
             android:layout_height="wrap_content"
             android:text="@{@plurals/current_listeners(vm.listeners, vm.listeners, vm.listeners, vm.listeners)}"
             android:textAlignment="center"
-            android:textColor="@{vm.bodyColor}" />
+            android:textColor="@{vm.bodyColor}"
+            android:visibility="@{vm.currentSong != null}" />
 
     </LinearLayout>
 
