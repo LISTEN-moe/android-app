@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 
@@ -49,7 +50,10 @@ public class SettingsActivity extends BaseActivity {
             addPreferencesFromResource(R.xml.pref_lockscreen);
             addPreferencesFromResource(R.xml.pref_color);
             addPreferencesFromResource(R.xml.pref_audio);
-            addPreferencesFromResource(R.xml.pref_advanced);
+
+            if (BuildConfig.DEBUG) {
+                addPreferencesFromResource(R.xml.pref_advanced);
+            }
         }
 
         @Override
@@ -82,11 +86,13 @@ public class SettingsActivity extends BaseActivity {
                 return true;
             });
 
-            final Preference clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE);
-            clearCache.setOnPreferenceClickListener(preference -> {
-                clearGlideCache();
-                return true;
-            });
+            if (BuildConfig.DEBUG) {
+                final Preference clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE);
+                clearCache.setOnPreferenceClickListener(preference -> {
+                    clearGlideCache();
+                    return true;
+                });
+            }
         }
 
         private void setSummary(@NonNull Preference preference) {
