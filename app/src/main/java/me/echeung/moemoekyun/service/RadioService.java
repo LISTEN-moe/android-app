@@ -26,10 +26,10 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import me.echeung.listenmoeapi.RadioSocket;
-import me.echeung.listenmoeapi.RadioStream;
 import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
 import me.echeung.listenmoeapi.models.Song;
+import me.echeung.listenmoeapi.radio.Socket;
+import me.echeung.listenmoeapi.radio.Stream;
 import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
@@ -41,7 +41,7 @@ import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
-public class RadioService extends Service implements RadioSocket.SocketListener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
+public class RadioService extends Service implements Socket.SocketListener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = RadioService.class.getSimpleName();
 
@@ -66,8 +66,8 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
     private final IBinder binder = new ServiceBinder();
 
     private AppNotification notification;
-    private RadioStream stream;
-    private RadioSocket socket;
+    private Stream stream;
+    private Socket socket;
 
     private Calendar trackStartTime;
 
@@ -98,7 +98,7 @@ public class RadioService extends Service implements RadioSocket.SocketListener,
         stream = App.getApiClient().getStream();
         socket = App.getApiClient().getSocket();
 
-        stream.setListener(new RadioStream.Callback() {
+        stream.setListener(new Stream.Callback() {
             @Override
             public void onPlay() {
                 App.getRadioViewModel().setIsPlaying(true);

@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
+import me.echeung.listenmoeapi.endpoints.Endpoints;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.App;
@@ -137,11 +137,11 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
                 viewModel.setUser(user);
 
                 if (user.getAvatarImage() != null) {
-                    viewModel.setAvatarUrl(APIClient.CDN_AVATAR_URL + user.getAvatarImage());
+                    viewModel.setAvatarUrl(Endpoints.CDN_AVATAR_URL + user.getAvatarImage());
                 }
 
                 if (user.getBannerImage() != null) {
-                    viewModel.setBannerUrl(APIClient.CDN_BANNER_URL + user.getBannerImage());
+                    viewModel.setBannerUrl(Endpoints.CDN_BANNER_URL + user.getBannerImage());
                 }
             }
 

@@ -17,8 +17,11 @@ import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.callbacks.SongsCallback;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
+import me.echeung.listenmoeapi.endpoints.Endpoints;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.SongListItem;
+import me.echeung.listenmoeapi.radio.Socket;
+import me.echeung.listenmoeapi.radio.Stream;
 import me.echeung.listenmoeapi.responses.ArtistResponse;
 import me.echeung.listenmoeapi.responses.ArtistsResponse;
 import me.echeung.listenmoeapi.responses.AuthResponse;
@@ -42,11 +45,6 @@ public class APIClient {
     // TODO: better handle this and onError logging
     public static final String AUTH_ERROR = "api-auth-error";
 
-    private static final String BASE_URL = "https://listen.moe/api/";
-    public static final String CDN_ALBUM_ART_URL = "https://cdn.listen.moe/covers/";
-    public static final String CDN_AVATAR_URL = "https://cdn.listen.moe/avatars/";
-    public static final String CDN_BANNER_URL = "https://cdn.listen.moe/banners/";
-
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
     private static final String CONTENT_TYPE = "application/json";
 
@@ -68,8 +66,8 @@ public class APIClient {
 
     private final SongsCache songsCache;
 
-    private final RadioSocket socket;
-    private final RadioStream stream;
+    private final Socket socket;
+    private final Stream stream;
 
     public APIClient(Context context, AuthUtil authUtil, String userAgent) {
         this.authUtil = authUtil;
@@ -89,7 +87,7 @@ public class APIClient {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(Endpoints.API_BASE)
                 .client(okHttpClient)
                 .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -104,8 +102,8 @@ public class APIClient {
 
         songsCache = new SongsCache(this);
 
-        socket = new RadioSocket(okHttpClient, authUtil);
-        stream = new RadioStream(context, userAgent);
+        socket = new Socket(okHttpClient, authUtil);
+        stream = new Stream(context, userAgent);
     }
 
     /**
@@ -444,11 +442,11 @@ public class APIClient {
         return filteredSongs;
     }
 
-    public RadioSocket getSocket() {
+    public Socket getSocket() {
         return socket;
     }
 
-    public RadioStream getStream() {
+    public Stream getStream() {
         return stream;
     }
 

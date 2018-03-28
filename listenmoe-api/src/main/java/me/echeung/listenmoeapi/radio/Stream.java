@@ -1,20 +1,17 @@
-package me.echeung.listenmoeapi;
+package me.echeung.listenmoeapi.radio;
 
 import android.content.Context;
 
+import me.echeung.listenmoeapi.endpoints.Endpoints;
 import me.echeung.listenmoeapi.player.StreamPlayer;
 
-public class RadioStream {
-
-//    private static final String STREAM_VORBIS = "https://listen.moe/stream";
-//    private static final String STREAM_OPUS = "https://listen.moe/opus";
-    private static final String STREAM_MP3 = "https://listen.moe/fallback";
+public class Stream {
 
     private StreamPlayer player;
     private Callback callback;
 
-    RadioStream(Context context, String userAgent) {
-        this.player = new StreamPlayer(context, STREAM_MP3, userAgent);
+    public Stream(Context context, String userAgent) {
+        this.player = new StreamPlayer(context, Endpoints.STREAM_MP3, userAgent);
     }
 
     public void setListener(Callback callback) {

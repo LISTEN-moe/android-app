@@ -1,4 +1,4 @@
-package me.echeung.listenmoeapi;
+package me.echeung.listenmoeapi.radio;
 
 import android.os.Handler;
 import android.os.SystemClock;
@@ -7,6 +7,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import me.echeung.listenmoeapi.auth.AuthUtil;
+import me.echeung.listenmoeapi.endpoints.Endpoints;
 import me.echeung.listenmoeapi.responses.socket.SocketBaseResponse;
 import me.echeung.listenmoeapi.responses.socket.SocketConnectResponse;
 import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
@@ -16,11 +17,9 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-public class RadioSocket extends WebSocketListener {
+public class Socket extends WebSocketListener {
 
-    private static final String TAG = RadioSocket.class.getSimpleName();
-
-    private static final String SOCKET_URL = "wss://listen.moe/gateway";
+    private static final String TAG = Socket.class.getSimpleName();
 
     private static final Gson GSON = new Gson();
 
@@ -41,7 +40,7 @@ public class RadioSocket extends WebSocketListener {
     private Handler heartbeatHandler;
     private Runnable heartbeatTask;
 
-    RadioSocket(OkHttpClient client, AuthUtil authUtil) {
+    public Socket(OkHttpClient client, AuthUtil authUtil) {
         this.client = client;
         this.authUtil = authUtil;
 
@@ -59,7 +58,7 @@ public class RadioSocket extends WebSocketListener {
             disconnect();
         }
 
-        final Request request = new Request.Builder().url(SOCKET_URL).build();
+        final Request request = new Request.Builder().url(Endpoints.SOCKET).build();
         socket = client.newWebSocket(request, this);
     }
 
