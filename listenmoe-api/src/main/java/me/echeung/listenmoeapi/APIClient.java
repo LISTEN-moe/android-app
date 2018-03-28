@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
 import me.echeung.listenmoeapi.auth.AuthUtil;
 import me.echeung.listenmoeapi.cache.SongsCache;
 import me.echeung.listenmoeapi.callbacks.ArtistCallback;
@@ -53,9 +54,13 @@ public class APIClient {
 
     private static final String HEADER_USER_AGENT = "User-Agent";
 
+    @Getter
     private static Retrofit retrofit;
 
-    private final AuthUtil authUtil;
+    @Getter
+    private final Socket socket;
+    @Getter
+    private final Stream stream;
 
     private final ArtistsService artistsService;
     private final AuthService authService;
@@ -64,10 +69,8 @@ public class APIClient {
     private final SongsService songsService;
     private final UsersService usersService;
 
+    private final AuthUtil authUtil;
     private final SongsCache songsCache;
-
-    private final Socket socket;
-    private final Stream stream;
 
     public APIClient(Context context, AuthUtil authUtil, String userAgent) {
         this.authUtil = authUtil;
@@ -440,18 +443,6 @@ public class APIClient {
         }
 
         return filteredSongs;
-    }
-
-    public Socket getSocket() {
-        return socket;
-    }
-
-    public Stream getStream() {
-        return stream;
-    }
-
-    static Retrofit getRetrofit() {
-        return retrofit;
     }
 
 }

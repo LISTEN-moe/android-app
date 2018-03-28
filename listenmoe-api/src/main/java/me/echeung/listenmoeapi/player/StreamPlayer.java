@@ -104,41 +104,41 @@ public class StreamPlayer {
             init();
         }
 
-        if (!isPlaying()) {
-            acquireWifiLock();
-
-            player.setPlayWhenReady(true);
-            player.seekToDefaultPosition();
-
-            return true;
+        if (isPlaying()) {
+            return false;
         }
 
-        return false;
+        acquireWifiLock();
+
+        player.setPlayWhenReady(true);
+        player.seekToDefaultPosition();
+
+        return true;
     }
 
     public boolean pause() {
-        if (player != null) {
-            player.setPlayWhenReady(false);
-
-            releaseWifiLock();
-
-            return true;
+        if (player == null) {
+            return false;
         }
 
-        return false;
+        player.setPlayWhenReady(false);
+
+        releaseWifiLock();
+
+        return true;
     }
 
     public boolean stop() {
-        if (player != null) {
-            player.setPlayWhenReady(false);
-
-            releasePlayer();
-            releaseWifiLock();
-
-            return true;
+        if (player == null) {
+            return false;
         }
 
-        return false;
+        player.setPlayWhenReady(false);
+
+        releasePlayer();
+        releaseWifiLock();
+
+        return true;
     }
 
     public void fadeOut(Runnable callback) {
@@ -225,4 +225,5 @@ public class StreamPlayer {
             wifiLock.release();
         }
     }
+
 }

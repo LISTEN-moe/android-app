@@ -8,18 +8,18 @@ import me.echeung.listenmoeapi.player.StreamPlayer;
 public class Stream {
 
     private StreamPlayer player;
-    private Callback callback;
+    private Listener listener;
 
     public Stream(Context context, String userAgent) {
         this.player = new StreamPlayer(context, Endpoints.STREAM_MP3, userAgent);
     }
 
-    public void setListener(Callback callback) {
-        this.callback = callback;
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 
     public void removeListener() {
-        this.callback = null;
+        this.listener = null;
     }
 
     public boolean isStarted() {
@@ -31,27 +31,27 @@ public class Stream {
     }
 
     public void play() {
-        if (player.play() && callback != null) {
-            callback.onPlay();
+        if (player.play() && listener != null) {
+            listener.onStreamPlay();
         }
     }
 
     public void pause() {
-        if (player.pause() && callback != null) {
-            callback.onPause();
+        if (player.pause() && listener != null) {
+            listener.onStreamPause();
         }
     }
 
     public void stop() {
-        if (player.stop() && callback != null) {
-            callback.onStop();
+        if (player.stop() && listener != null) {
+            listener.onStreamStop();
         }
     }
 
     public void fadeOut() {
         player.fadeOut(() -> {
-            if (callback != null) {
-                callback.onStop();
+            if (listener != null) {
+                listener.onStreamStop();
             }
         });
     }
@@ -64,9 +64,10 @@ public class Stream {
         player.unduck();
     }
 
-    public interface Callback {
-        void onPlay();
-        void onPause();
-        void onStop();
+    public interface Listener {
+        void onStreamPlay();
+        void onStreamPause();
+        void onStreamStop();
     }
+
 }

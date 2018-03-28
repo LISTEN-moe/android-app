@@ -41,7 +41,7 @@ import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
-public class RadioService extends Service implements Socket.SocketListener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
+public class RadioService extends Service implements Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = RadioService.class.getSimpleName();
 
@@ -98,9 +98,9 @@ public class RadioService extends Service implements Socket.SocketListener, Albu
         stream = App.getApiClient().getStream();
         socket = App.getApiClient().getSocket();
 
-        stream.setListener(new Stream.Callback() {
+        stream.setListener(new Stream.Listener() {
             @Override
-            public void onPlay() {
+            public void onStreamPlay() {
                 App.getRadioViewModel().setIsPlaying(true);
 
                 updateNotification();
@@ -110,7 +110,7 @@ public class RadioService extends Service implements Socket.SocketListener, Albu
             }
 
             @Override
-            public void onPause() {
+            public void onStreamPause() {
                 App.getRadioViewModel().setIsPlaying(false);
 
                 updateNotification();
@@ -120,7 +120,7 @@ public class RadioService extends Service implements Socket.SocketListener, Albu
             }
 
             @Override
-            public void onStop() {
+            public void onStreamStop() {
                 audioManager.abandonAudioFocus(audioFocusChangeListener);
 
                 stopForeground(true);

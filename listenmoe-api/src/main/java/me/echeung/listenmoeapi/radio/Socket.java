@@ -35,7 +35,7 @@ public class Socket extends WebSocketListener {
     private final AuthUtil authUtil;
 
     private WebSocket socket;
-    private SocketListener listener;
+    private Listener listener;
 
     private Handler heartbeatHandler;
     private Runnable heartbeatTask;
@@ -47,7 +47,7 @@ public class Socket extends WebSocketListener {
         heartbeatHandler = new Handler();
     }
 
-    public void setListener(SocketListener listener) {
+    public void setListener(Listener listener) {
         this.listener = listener;
     }
 
@@ -196,7 +196,7 @@ public class Socket extends WebSocketListener {
         }
     }
 
-    public interface SocketListener {
+    public interface Listener {
         void onSocketReceive(SocketUpdateResponse.Details info);
         void onSocketFailure();
     }
