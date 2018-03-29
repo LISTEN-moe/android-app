@@ -10,8 +10,8 @@ import retrofit2.http.Path;
 
 public interface ArtistsService {
     @GET("artists")
-    ErrorHandlingAdapter.WrappedCall<ArtistsResponse> getArtists(@Header("Authorization") String token);
+    ErrorHandlingAdapter.WrappedCall<ArtistsResponse> getArtists(@Header("Authorization") String token, @Header("library") String library);
 
     @POST("artists/{id}")
-    ErrorHandlingAdapter.WrappedCall<ArtistResponse> getArtist(@Header("Authorization") String token, @Path("id") String id);
+    ErrorHandlingAdapter.WrappedCall<ArtistResponse> getArtist(@Header("Authorization") String token, @Header("library") String library, @Path("id") String id);
 }

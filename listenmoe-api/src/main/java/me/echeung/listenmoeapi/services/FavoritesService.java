@@ -17,5 +17,5 @@ public interface FavoritesService {
     ErrorHandlingAdapter.WrappedCall<BaseResponse> removeFavorite(@Header("Authorization") String token, @Path("id") String id);
 
     @GET("favorites/{username}")
-    ErrorHandlingAdapter.WrappedCall<FavoritesResponse> getFavorites(@Header("Authorization") String token, @Path("username") String username);
+    ErrorHandlingAdapter.WrappedCall<FavoritesResponse> getFavorites(@Header("Authorization") String token, @Header("library") String library, @Path("username") String username);
 }

@@ -9,8 +9,8 @@ import retrofit2.http.Path;
 
 public interface SongsService {
     @GET("songs")
-    ErrorHandlingAdapter.WrappedCall<SongsResponse> getSongs(@Header("Authorization") String token);
+    ErrorHandlingAdapter.WrappedCall<SongsResponse> getSongs(@Header("Authorization") String token, @Header("library") String library);
 
     @GET("songs/{username}/uploads")
-    ErrorHandlingAdapter.WrappedCall<UploadsResponse> getUploads(@Header("Authorization") String token, @Path("username") String username);
+    ErrorHandlingAdapter.WrappedCall<UploadsResponse> getUploads(@Header("Authorization") String token, @Header("library") String library, @Path("username") String username);
 }

@@ -202,7 +202,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), "@me")
+        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), "jpop", "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     @Override
                     public void success(final FavoritesResponse response) {
@@ -304,7 +304,7 @@ public class APIClient {
             return;
         }
 
-        songsService.getSongs(authUtil.getAuthTokenWithPrefix())
+        songsService.getSongs(authUtil.getAuthTokenWithPrefix(), "jpop")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     @Override
                     public void success(final SongsResponse response) {
@@ -350,7 +350,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtists(authUtil.getAuthTokenWithPrefix())
+        artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), "jpop")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
                     @Override
                     public void success(final ArtistsResponse response) {
@@ -371,7 +371,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), artistId)
+        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), "jpop", artistId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
                     @Override
                     public void success(final ArtistResponse response) {
