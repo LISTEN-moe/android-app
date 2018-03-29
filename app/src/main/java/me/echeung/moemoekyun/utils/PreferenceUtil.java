@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
+import me.echeung.listenmoeapi.endpoints.Jpop;
+import me.echeung.listenmoeapi.endpoints.Kpop;
+
 public final class PreferenceUtil {
 
     public static final String PREF_GENERAL_THEME = "pref_general_theme";
@@ -32,6 +35,8 @@ public final class PreferenceUtil {
     public static final String DOWNLOAD_ALWAYS = "always";
     public static final String DOWNLOAD_WIFI = "wifi";
     public static final String DOWNLOAD_NEVER = "never";
+
+    private static final String LIBRARY_MODE = "library_mode";
 
     private static final String NOW_PLAYING_EXPANDED = "now_playing_expanded";
 
@@ -99,6 +104,20 @@ public final class PreferenceUtil {
 
     public boolean shouldColorNavbar() {
         return preferences.getBoolean(PREF_COLOR_NAVBAR, false);
+    }
+
+    public String getLibraryMode() {
+        return preferences.getString(LIBRARY_MODE, Jpop.NAME);
+    }
+
+    public String toggleLibraryMode() {
+        final String newMode = getLibraryMode().equals(Jpop.NAME) ? Kpop.NAME : Jpop.NAME;
+
+        preferences.edit()
+                .putString(LIBRARY_MODE, newMode)
+                .apply();
+
+        return newMode;
     }
 
     public boolean isNowPlayingExpanded() {

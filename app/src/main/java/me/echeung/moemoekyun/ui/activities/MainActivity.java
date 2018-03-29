@@ -22,6 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jakewharton.processphoenix.ProcessPhoenix;
+
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
@@ -240,7 +242,7 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_library:
-                // TODO: toggle between jpop and kpop
+                toggleLibraryMode();
                 return true;
 
             case R.id.action_logout:
@@ -382,6 +384,11 @@ public class MainActivity extends BaseActivity {
 
     private void showHistory() {
         new SongDetailsDialog(this, viewModel.getHistory());
+    }
+
+    private void toggleLibraryMode() {
+        final String newMode = App.getPreferenceUtil().toggleLibraryMode();
+//        ProcessPhoenix.triggerRebirth(this);
     }
 
 }

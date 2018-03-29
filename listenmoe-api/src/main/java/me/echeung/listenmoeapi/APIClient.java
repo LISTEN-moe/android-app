@@ -18,6 +18,8 @@ import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.callbacks.SongsCallback;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
+import me.echeung.listenmoeapi.endpoints.Jpop;
+import me.echeung.listenmoeapi.endpoints.Kpop;
 import me.echeung.listenmoeapi.endpoints.Library;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.SongListItem;
@@ -58,9 +60,6 @@ public class APIClient {
     private static Retrofit retrofit;
 
     @Getter
-    private static Library library;
-
-    @Getter
     private final Socket socket;
 
     @Getter
@@ -68,6 +67,9 @@ public class APIClient {
 
     @Getter
     private final AuthUtil authUtil;
+
+    @Getter
+    private static Library library;
 
     private final ArtistsService artistsService;
     private final AuthService authService;
@@ -77,9 +79,9 @@ public class APIClient {
     private final UsersService usersService;
     private final SongsCache songsCache;
 
-    public APIClient(Context context, String userAgent, Library library) {
+    public APIClient(Context context, String userAgent, String libraryName) {
         authUtil = new AuthUtil(context);
-        this.library = library;
+        setLibrary(libraryName);
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(chain -> {
@@ -96,7 +98,7 @@ public class APIClient {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(library.API_BASE)
+                .baseUrl(Library.API_BASE)
                 .client(okHttpClient)
                 .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -113,6 +115,10 @@ public class APIClient {
 
         socket = new Socket(okHttpClient, authUtil);
         stream = new Stream(context, userAgent);
+    }
+
+    public void setLibrary(String libraryName) {
+        APIClient.library = libraryName.equals(Kpop.NAME) ? Kpop.INSTANCE : Jpop.INSTANCE;
     }
 
     /**
@@ -206,7 +212,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), "jpop", "@me")
+        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), library.getName(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     @Override
                     public void success(final FavoritesResponse response) {
@@ -308,7 +314,7 @@ public class APIClient {
             return;
         }
 
-        songsService.getSongs(authUtil.getAuthTokenWithPrefix(), "jpop")
+        songsService.getSongs(authUtil.getAuthTokenWithPrefix(), library.getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     @Override
                     public void success(final SongsResponse response) {
@@ -354,7 +360,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), "jpop")
+        artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), library.getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
                     @Override
                     public void success(final ArtistsResponse response) {
@@ -375,7 +381,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), "jpop", artistId)
+        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), library.getName(), artistId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
                     @Override
                     public void success(final ArtistResponse response) {

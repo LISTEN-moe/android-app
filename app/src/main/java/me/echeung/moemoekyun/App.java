@@ -41,7 +41,7 @@ public class App extends Application implements ServiceConnection {
         preferenceUtil = new PreferenceUtil(this);
 
         // API client
-        apiClient = new APIClient(this, getUserAgent(), Jpop.INSTANCE);
+        apiClient = new APIClient(this, getUserAgent(), preferenceUtil.getLibraryMode());
 
         // UI view models
         authViewModel = new AuthViewModel(this);

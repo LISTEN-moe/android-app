@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/action_library"
-        android:title="@string/logout"
+        android:title="@string/action_library"
         android:icon="@drawable/ic_language_white_24dp"
         app:showAsAction="ifRoom" />
 
