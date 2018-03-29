@@ -32,6 +32,17 @@
         <item name="themeDefaultAvatarImage">@drawable/avatar_v4</item>
     </style>
 
+    <!-- 4.1 theme -->
+    <style name="AppThemeBlue" parent="AppTheme">
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+
+        <item name="themeColorAccent">@color/blue</item>
+        <item name="themeBackgroundImage">@drawable/background_blue</item>
+        <item name="themeLogoImage">@drawable/logo</item>
+    </style>
+
     <!-- Legacy 3.0 theme -->
     <style name="AppThemeLegacy" parent="AppTheme">
         <item name="android:windowBackground">@color/grey</item>

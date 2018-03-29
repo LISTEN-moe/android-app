@@ -3,12 +3,14 @@
 
     <string-array name="pref_theme_names">
         <item>3.0+1.0</item>
+        <item>Blue</item>
         <item>Legacy</item>
         <item>Christmas</item>
     </string-array>
 
     <string-array name="pref_theme_codes">
         <item>four</item>
+        <item>blue</item>
         <item>three</item>
         <item>christmas</item>
     </string-array>

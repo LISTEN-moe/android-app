@@ -19,6 +19,10 @@ public final class ThemeUtil {
                 context.setTheme(R.style.AppTheme);
                 break;
 
+            case PreferenceUtil.THEME_BLUE:
+                context.setTheme(R.style.AppThemeBlue);
+                break;
+
             case PreferenceUtil.THEME_LEGACY:
                 context.setTheme(R.style.AppThemeLegacy);
                 break;
