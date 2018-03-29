@@ -18,7 +18,7 @@ import me.echeung.listenmoeapi.callbacks.SearchCallback;
 import me.echeung.listenmoeapi.callbacks.SongsCallback;
 import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
 import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
-import me.echeung.listenmoeapi.endpoints.Endpoints;
+import me.echeung.listenmoeapi.endpoints.Library;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.listenmoeapi.models.SongListItem;
 import me.echeung.listenmoeapi.radio.Socket;
@@ -58,6 +58,9 @@ public class APIClient {
     private static Retrofit retrofit;
 
     @Getter
+    private static Library library;
+
+    @Getter
     private final Socket socket;
 
     @Getter
@@ -74,8 +77,9 @@ public class APIClient {
     private final UsersService usersService;
     private final SongsCache songsCache;
 
-    public APIClient(Context context, String userAgent) {
+    public APIClient(Context context, String userAgent, Library library) {
         authUtil = new AuthUtil(context);
+        this.library = library;
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(chain -> {
@@ -92,7 +96,7 @@ public class APIClient {
                 .build();
 
         retrofit = new Retrofit.Builder()
-                .baseUrl(Endpoints.API_BASE)
+                .baseUrl(library.API_BASE)
                 .client(okHttpClient)
                 .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())

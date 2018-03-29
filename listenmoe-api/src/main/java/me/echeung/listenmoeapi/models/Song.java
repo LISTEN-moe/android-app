@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import me.echeung.listenmoeapi.endpoints.Endpoints;
+import me.echeung.listenmoeapi.endpoints.Library;
 
 @Getter
 @EqualsAndHashCode
@@ -81,7 +81,7 @@ public class Song implements Parcelable {
         if (!albums.isEmpty()) {
             for (SongDescriptor album : albums) {
                 if (album.getImage() != null) {
-                    return Endpoints.CDN_ALBUM_ART_URL + album.getImage();
+                    return Library.CDN_ALBUM_ART_URL + album.getImage();
                 }
             }
         }

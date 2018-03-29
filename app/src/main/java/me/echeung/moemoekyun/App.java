@@ -12,6 +12,7 @@ import android.os.IBinder;
 
 import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.auth.AuthUtil;
+import me.echeung.listenmoeapi.endpoints.Jpop;
 import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
@@ -40,7 +41,7 @@ public class App extends Application implements ServiceConnection {
         preferenceUtil = new PreferenceUtil(this);
 
         // API client
-        apiClient = new APIClient(this, getUserAgent());
+        apiClient = new APIClient(this, getUserAgent(), Jpop.INSTANCE);
 
         // UI view models
         authViewModel = new AuthViewModel(this);

@@ -2,7 +2,7 @@ package me.echeung.listenmoeapi.radio;
 
 import android.content.Context;
 
-import me.echeung.listenmoeapi.endpoints.Endpoints;
+import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.player.StreamPlayer;
 
 public class Stream {
@@ -11,7 +11,7 @@ public class Stream {
     private Listener listener;
 
     public Stream(Context context, String userAgent) {
-        this.player = new StreamPlayer(context, Endpoints.STREAM_MP3, userAgent);
+        this.player = new StreamPlayer(context, APIClient.getLibrary().STREAM_MP3, userAgent);
     }
 
     public void setListener(Listener listener) {

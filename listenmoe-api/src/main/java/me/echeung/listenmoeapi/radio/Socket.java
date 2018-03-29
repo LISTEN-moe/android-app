@@ -6,8 +6,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.auth.AuthUtil;
-import me.echeung.listenmoeapi.endpoints.Endpoints;
 import me.echeung.listenmoeapi.responses.socket.SocketBaseResponse;
 import me.echeung.listenmoeapi.responses.socket.SocketConnectResponse;
 import me.echeung.listenmoeapi.responses.socket.SocketUpdateResponse;
@@ -58,7 +58,7 @@ public class Socket extends WebSocketListener {
             disconnect();
         }
 
-        final Request request = new Request.Builder().url(Endpoints.SOCKET).build();
+        final Request request = new Request.Builder().url(APIClient.getLibrary().SOCKET).build();
         socket = client.newWebSocket(request, this);
     }
 
