@@ -11,7 +11,7 @@ public class Stream {
     private Listener listener;
 
     public Stream(Context context, String userAgent) {
-        this.player = new StreamPlayer(context, APIClient.getLibrary().STREAM_MP3, userAgent);
+        this.player = new StreamPlayer(context, APIClient.getLibrary().getStreamUrl(), userAgent);
     }
 
     public void setListener(Listener listener) {

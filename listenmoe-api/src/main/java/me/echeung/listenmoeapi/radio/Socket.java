@@ -58,7 +58,7 @@ public class Socket extends WebSocketListener {
             disconnect();
         }
 
-        final Request request = new Request.Builder().url(APIClient.getLibrary().SOCKET).build();
+        final Request request = new Request.Builder().url(APIClient.getLibrary().getSocketUrl()).build();
         socket = client.newWebSocket(request, this);
     }
 
