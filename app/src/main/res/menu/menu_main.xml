@@ -5,6 +5,12 @@
     tools:context=".ui.activities.MainActivity">
 
     <item
+        android:id="@+id/action_library"
+        android:title="@string/logout"
+        android:icon="@drawable/ic_language_white_24dp"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_logout"
         android:title="@string/logout"
         app:showAsAction="never" />

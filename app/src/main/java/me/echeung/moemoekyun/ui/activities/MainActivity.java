@@ -239,6 +239,10 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_library:
+                // TODO: toggle between jpop and kpop
+                return true;
+
             case R.id.action_logout:
                 showLogoutDialog();
                 return true;

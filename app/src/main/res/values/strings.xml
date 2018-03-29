@@ -25,6 +25,7 @@
     <string name="action_unfavorite">Unfavorite</string>
     <string name="action_request">Request</string>
     <string name="action_undo">Undo</string>
+    <string name="action_library">Toggle j-pop and k-pop</string>
 
 
     <!-- == Sleep timer == -->
