@@ -25,7 +25,6 @@ public class App extends Application implements ServiceConnection {
     private static boolean isServiceBound = false;
 
     private static APIClient apiClient;
-    private static AuthUtil authUtil;
 
     private static AuthViewModel authViewModel;
     private static RadioViewModel radioViewModel;
@@ -41,8 +40,7 @@ public class App extends Application implements ServiceConnection {
         preferenceUtil = new PreferenceUtil(this);
 
         // API client
-        authUtil = new AuthUtil(this);
-        apiClient = new APIClient(this, authUtil, getUserAgent());
+        apiClient = new APIClient(this, getUserAgent());
 
         // UI view models
         authViewModel = new AuthViewModel(this);
@@ -59,7 +57,7 @@ public class App extends Application implements ServiceConnection {
     }
 
     public static AuthUtil getAuthUtil() {
-        return authUtil;
+        return apiClient.getAuthUtil();
     }
 
     public static AuthViewModel getAuthViewModel() {

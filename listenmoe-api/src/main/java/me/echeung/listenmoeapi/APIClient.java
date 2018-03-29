@@ -59,8 +59,12 @@ public class APIClient {
 
     @Getter
     private final Socket socket;
+
     @Getter
     private final Stream stream;
+
+    @Getter
+    private final AuthUtil authUtil;
 
     private final ArtistsService artistsService;
     private final AuthService authService;
@@ -68,13 +72,9 @@ public class APIClient {
     private final RequestsService requestsService;
     private final SongsService songsService;
     private final UsersService usersService;
-
-    private final AuthUtil authUtil;
     private final SongsCache songsCache;
 
-    public APIClient(Context context, AuthUtil authUtil, String userAgent) {
-        this.authUtil = authUtil;
-
+    public APIClient(Context context, String userAgent) {
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(chain -> {
                     final Request request = chain.request();
@@ -104,6 +104,8 @@ public class APIClient {
         usersService = retrofit.create(UsersService.class);
 
         songsCache = new SongsCache(this);
+
+        authUtil = new AuthUtil(context);
 
         socket = new Socket(okHttpClient, authUtil);
         stream = new Stream(context, userAgent);
