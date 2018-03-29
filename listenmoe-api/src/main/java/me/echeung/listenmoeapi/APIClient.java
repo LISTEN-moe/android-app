@@ -43,7 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIClient {
 
-    // TODO: better handle this and onError logging
+    // TODO: better handle this
     public static final String AUTH_ERROR = "api-auth-error";
 
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
@@ -75,6 +75,8 @@ public class APIClient {
     private final SongsCache songsCache;
 
     public APIClient(Context context, String userAgent) {
+        authUtil = new AuthUtil(context);
+
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor(chain -> {
                     final Request request = chain.request();
@@ -105,8 +107,6 @@ public class APIClient {
 
         songsCache = new SongsCache(this);
 
-        authUtil = new AuthUtil(context);
-
         socket = new Socket(okHttpClient, authUtil);
         stream = new Stream(context, userAgent);
     }
@@ -120,7 +120,7 @@ public class APIClient {
      */
     public void authenticate(final String username, final String password, final LoginCallback callback) {
         authService.login(new AuthService.LoginBody(username, password))
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
                     @Override
                     public void success(final AuthResponse response) {
                         final String userToken = response.getToken();
@@ -134,11 +134,6 @@ public class APIClient {
                         authUtil.setAuthToken(userToken);
                         callback.onSuccess(userToken);
                     }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
-                    }
                 });
     }
 
@@ -150,18 +145,13 @@ public class APIClient {
      */
     public void authenticateMfa(final String otpToken, final LoginCallback callback) {
         authService.mfa(authUtil.getMfaAuthTokenWithPrefix(), new AuthService.LoginMfaBody(otpToken))
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
                     @Override
                     public void success(final AuthResponse response) {
                         final String userToken = response.getToken();
                         authUtil.setAuthToken(userToken);
                         authUtil.clearMfaAuthToken();
                         callback.onSuccess(userToken);
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -173,15 +163,10 @@ public class APIClient {
      */
     public void register(final String email, final String username, final String password, final RegisterCallback callback) {
         authService.register(new AuthService.RegisterBody(email, username, password))
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
                     public void success(final BaseResponse response) {
                         callback.onSuccess(response.getMessage());
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -198,15 +183,10 @@ public class APIClient {
         }
 
         usersService.getUserInfo(authUtil.getAuthTokenWithPrefix(), "@me")
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>(callback) {
                     @Override
                     public void success(final UserResponse response) {
                         callback.onSuccess(response.getUser());
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -223,7 +203,7 @@ public class APIClient {
         }
 
         favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), "@me")
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     @Override
                     public void success(final FavoritesResponse response) {
                         List<Song> favorites = response.getFavorites();
@@ -231,11 +211,6 @@ public class APIClient {
                             song.setFavorite(true);
                         }
                         callback.onSuccess(favorites);
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -268,15 +243,10 @@ public class APIClient {
         }
 
         favoritesService.favorite(authUtil.getAuthTokenWithPrefix(), songId)
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
                     public void success(final BaseResponse response) {
                         callback.onSuccess();
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -294,15 +264,10 @@ public class APIClient {
         }
 
         favoritesService.removeFavorite(authUtil.getAuthTokenWithPrefix(), songId)
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
                     public void success(final BaseResponse response) {
                         callback.onSuccess();
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -320,15 +285,10 @@ public class APIClient {
         }
 
         requestsService.request(authUtil.getAuthTokenWithPrefix(), songId)
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
                     public void success(final BaseResponse response) {
                         callback.onSuccess();
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -345,15 +305,10 @@ public class APIClient {
         }
 
         songsService.getSongs(authUtil.getAuthTokenWithPrefix())
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     @Override
                     public void success(final SongsResponse response) {
                         callback.onSuccess(response.getSongs());
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -396,15 +351,10 @@ public class APIClient {
         }
 
         artistsService.getArtists(authUtil.getAuthTokenWithPrefix())
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
                     @Override
                     public void success(final ArtistsResponse response) {
                         callback.onSuccess(response.getArtists());
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }
@@ -422,15 +372,10 @@ public class APIClient {
         }
 
         artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), artistId)
-                .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>() {
+                .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
                     @Override
                     public void success(final ArtistResponse response) {
                         callback.onSuccess(response.getArtist());
-                    }
-
-                    @Override
-                    public void error(final String message) {
-                        callback.onFailure(message);
                     }
                 });
     }

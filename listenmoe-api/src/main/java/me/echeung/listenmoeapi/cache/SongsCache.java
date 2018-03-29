@@ -16,7 +16,7 @@ public class SongsCache {
 
     private static String TAG = SongsCache.class.getSimpleName();
 
-    private static final int MAX_AGE = 1000 * 60 * 60 * 24;
+    private static final int MAX_AGE = 1000 * 60 * 60 * 24;  // 24 hours
 
     private APIClient apiClient;
 

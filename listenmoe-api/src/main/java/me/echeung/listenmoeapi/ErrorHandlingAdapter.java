@@ -8,6 +8,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import lombok.RequiredArgsConstructor;
+import me.echeung.listenmoeapi.callbacks.BaseCallback;
 import me.echeung.listenmoeapi.responses.BaseResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -28,9 +30,15 @@ public class ErrorHandlingAdapter {
         WrappedCall<T> clone();
     }
 
-    interface WrappedCallback<T extends BaseResponse> {
-        void success(T response);
-        void error(String message);
+    @RequiredArgsConstructor
+    public static abstract class WrappedCallback<T extends BaseResponse> {
+        private final BaseCallback callback;
+
+        abstract void success(T response);
+
+        public void error(String message) {
+            callback.onFailure(message);
+        }
     }
 
     public static class ErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
@@ -122,8 +130,9 @@ public class ErrorHandlingAdapter {
         }
 
         private void error(final WrappedCallback<T> callback, final String message) {
-            Log.e(TAG, message);
+            Log.e(TAG, "API error: " + message);
             callback.error(message);
         }
     }
+
 }
