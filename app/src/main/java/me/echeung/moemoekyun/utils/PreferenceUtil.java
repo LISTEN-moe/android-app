@@ -111,14 +111,10 @@ public final class PreferenceUtil {
         return preferences.getString(LIBRARY_MODE, Jpop.NAME);
     }
 
-    public String toggleLibraryMode() {
-        final String newMode = getLibraryMode().equals(Jpop.NAME) ? Kpop.NAME : Jpop.NAME;
-
+    public void setLibraryMode(String mode) {
         preferences.edit()
-                .putString(LIBRARY_MODE, newMode)
+                .putString(LIBRARY_MODE, mode)
                 .apply();
-
-        return newMode;
     }
 
     public boolean isNowPlayingExpanded() {

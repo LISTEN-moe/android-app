@@ -7,8 +7,21 @@
     <item
         android:id="@+id/action_library"
         android:title="@string/action_library"
-        android:icon="@drawable/ic_language_white_24dp"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never">
+
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_library_jpop"
+                    android:title="@string/jpop" />
+
+                <item
+                    android:id="@+id/action_library_kpop"
+                    android:title="@string/kpop" />
+            </group>
+        </menu>
+
+    </item>
 
     <item
         android:id="@+id/action_logout"

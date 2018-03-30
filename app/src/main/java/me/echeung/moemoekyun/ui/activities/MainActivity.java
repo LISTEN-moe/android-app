@@ -22,8 +22,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jakewharton.processphoenix.ProcessPhoenix;
-
+import me.echeung.listenmoeapi.endpoints.Jpop;
+import me.echeung.listenmoeapi.endpoints.Kpop;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
@@ -231,9 +231,20 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // Toggle visibility of login/logout items based on authentication status
+        // Toggle visibility of logout option based on authentication status
         final boolean authenticated = App.getAuthUtil().isAuthenticated();
         menu.findItem(R.id.action_logout).setVisible(authenticated);
+
+        // Pre-check the library mode
+        switch (App.getPreferenceUtil().getLibraryMode()) {
+            case Jpop.NAME:
+                menu.findItem(R.id.action_library_jpop).setChecked(true);
+                break;
+
+            case Kpop.NAME:
+                menu.findItem(R.id.action_library_kpop).setChecked(true);
+                break;
+        }
 
         return true;
     }
@@ -241,8 +252,12 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_library:
-                toggleLibraryMode();
+            case R.id.action_library_jpop:
+                setLibraryMode(Jpop.NAME);
+                return true;
+
+            case R.id.action_library_kpop:
+                setLibraryMode(Kpop.NAME);
                 return true;
 
             case R.id.action_logout:
@@ -386,9 +401,11 @@ public class MainActivity extends BaseActivity {
         new SongDetailsDialog(this, viewModel.getHistory());
     }
 
-    private void toggleLibraryMode() {
-        final String newMode = App.getPreferenceUtil().toggleLibraryMode();
-//        ProcessPhoenix.triggerRebirth(this);
+    private void setLibraryMode(String libraryMode) {
+        App.getPreferenceUtil().setLibraryMode(libraryMode);
+
+        // TODO: proper library toggling
+        Toast.makeText(this, R.string.restart_required, Toast.LENGTH_SHORT).show();
     }
 
 }
