@@ -12,7 +12,6 @@ import android.os.IBinder;
 
 import me.echeung.listenmoeapi.APIClient;
 import me.echeung.listenmoeapi.auth.AuthUtil;
-import me.echeung.listenmoeapi.endpoints.Jpop;
 import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.PreferenceUtil;

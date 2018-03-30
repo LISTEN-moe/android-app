@@ -13,6 +13,10 @@
   <string name="action_unfavorite">Unfavourite</string>
   <string name="action_request">Request</string>
   <string name="action_undo">Undo</string>
+  <!-- == Library modes == -->
+  <string name="action_library">Library mode</string>
+  <string name="jpop">J-pop</string>
+  <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Sleep timer</string>
   <string name="set">Set</string>
@@ -82,10 +86,6 @@
   <string name="play_history">Song history</string>
   <string name="discord">Join us on Discord</string>
   <string name="patreon">Support on Patreon</string>
-  <!--
-        To get list of collaborators from OneSky:
-        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
-    -->
   <!-- == Settings == -->
   <string name="settings">Settings</string>
   <string name="pref_header_general">General</string>

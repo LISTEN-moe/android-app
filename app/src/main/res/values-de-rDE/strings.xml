@@ -13,6 +13,10 @@
   <string name="action_unfavorite">Favorit entfernen</string>
   <string name="action_request">Musikwunsch</string>
   <string name="action_undo">Rückgängig</string>
+  <!-- == Library modes == -->
+  <string name="action_library">Sammlungsmodus</string>
+  <string name="jpop">J-pop</string>
+  <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Schlaf-Timer</string>
   <string name="set">Setzen</string>
@@ -82,10 +86,6 @@
   <string name="play_history">Zuletzt gespielt</string>
   <string name="discord">Trete uns auf Discord bei</string>
   <string name="patreon">Auf Patreon unterstützen</string>
-  <!--
-        To get list of collaborators from OneSky:
-        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
-    -->
   <!-- == Settings == -->
   <string name="settings">Einstellungen</string>
   <string name="pref_header_general">Generell</string>

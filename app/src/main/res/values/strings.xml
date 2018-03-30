@@ -30,8 +30,8 @@
     <!-- == Library modes == -->
 
     <string name="action_library">Library mode</string>
-    <string name="jpop">Jpop</string>
-    <string name="kpop">Kpop</string>
+    <string name="jpop">J-pop</string>
+    <string name="kpop">K-pop</string>
 
 
     <!-- == Sleep timer == -->

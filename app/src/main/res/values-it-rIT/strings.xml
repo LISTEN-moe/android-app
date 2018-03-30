@@ -3,6 +3,7 @@
 <resources>
   <!-- == Generic strings == -->
   <!-- == Actions (notification, dialogs) == -->
+  <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <!-- == Search == -->
   <!-- e.g. No results for "user's search query" -->
@@ -18,9 +19,5 @@
   <!-- == No Internet view == -->
   <!-- == About == -->
   <!-- e.g. Version 1.0 -->
-  <!--
-        To get list of collaborators from OneSky:
-        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
-    -->
   <!-- == Settings == -->
 </resources>

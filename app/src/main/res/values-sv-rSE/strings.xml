@@ -11,6 +11,7 @@
   <string name="action_favorite">Favorit</string>
   <string name="action_unfavorite">Ta bort favorit</string>
   <string name="action_undo">Ångra</string>
+  <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="set">Starta</string>
   <string name="close">Stäng</string>
@@ -66,10 +67,6 @@
   <string name="open_in_browser">Öppna i webbläsare</string>
   <string name="discord">Joina oss på Discord</string>
   <string name="patreon">Stöd på Patreon</string>
-  <!--
-        To get list of collaborators from OneSky:
-        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
-    -->
   <!-- == Settings == -->
   <string name="settings">Inställningar</string>
   <string name="pref_header_general">Allmänt</string>

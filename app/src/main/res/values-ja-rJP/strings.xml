@@ -12,6 +12,7 @@
   <string name="action_unfavorite">お気に入りから削除</string>
   <string name="action_request">リクエスト</string>
   <string name="action_undo">アンドゥ</string>
+  <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="sleep_timer">スリープタイマー</string>
   <string name="close">閉じる</string>
@@ -61,10 +62,6 @@
   <string name="version">バージョン %s</string>
   <string name="translators">翻訳者</string>
   <string name="listenmoe">LISTEN.moe ラジオ</string>
-  <!--
-        To get list of collaborators from OneSky:
-        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
-    -->
   <!-- == Settings == -->
   <string name="settings">設定</string>
   <string name="pref_title_language">言語</string>

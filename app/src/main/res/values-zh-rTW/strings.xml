@@ -12,6 +12,7 @@
   <string name="action_unfavorite">從最愛刪除</string>
   <string name="action_request">點歌</string>
   <string name="action_undo">取消</string>
+  <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="sleep_timer">睡眠計時</string>
   <string name="close">關閉</string>
@@ -47,10 +48,6 @@
   <string name="about">關於</string>
   <!-- e.g. Version 1.0 -->
   <string name="version">版本 %s</string>
-  <!--
-        To get list of collaborators from OneSky:
-        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
-    -->
   <!-- == Settings == -->
   <string name="settings">設定</string>
   <string name="pref_header_general">一般</string>

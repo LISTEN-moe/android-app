@@ -12,6 +12,7 @@
   <string name="action_unfavorite">Remover dos favoritos</string>
   <string name="action_request">Solicitar</string>
   <string name="action_undo">Anular</string>
+  <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Temporizador de espera</string>
   <string name="set">Definir</string>
@@ -67,10 +68,6 @@
   <string name="open_in_browser">Abrir no navegador</string>
   <string name="discord">Junte-se a nos no Discord</string>
   <string name="patreon">Contribuir no Patreon</string>
-  <!--
-        To get list of collaborators from OneSky:
-        Array.from(document.querySelectorAll('.platform-name h3 a')).map(a => a.innerText).sort((a, b) => a.toLowerCase() > b.toLowerCase()).reduce((a, b) => a + b + '\n\\n', '')
-    -->
   <!-- == Settings == -->
   <string name="settings">Definições</string>
   <string name="pref_header_general">Geral</string>

@@ -6,7 +6,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import me.echeung.listenmoeapi.endpoints.Jpop;
-import me.echeung.listenmoeapi.endpoints.Kpop;
 
 public final class PreferenceUtil {
 
