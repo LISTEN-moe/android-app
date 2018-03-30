@@ -24,11 +24,6 @@
     </item>
 
     <item
-        android:id="@+id/action_logout"
-        android:title="@string/logout"
-        app:showAsAction="never" />
-
-    <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
         app:showAsAction="never" />
@@ -41,6 +36,11 @@
     <item
         android:id="@+id/action_sleep_timer"
         android:title="@string/sleep_timer"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/logout"
         app:showAsAction="never" />
 
 </menu>
