@@ -14,6 +14,8 @@
   <string name="action_request">Запросить</string>
   <string name="action_undo">Отменить</string>
   <!-- == Library modes == -->
+  <string name="jpop">J-Pop</string>
+  <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Таймер сна</string>
   <string name="set">Установить</string>

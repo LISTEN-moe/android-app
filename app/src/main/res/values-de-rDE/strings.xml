@@ -7,7 +7,7 @@
   <string name="copied_to_clipboard">In Zwischenablage kopiert</string>
   <!-- == Actions (notification, dialogs) == -->
   <string name="action_play">Play</string>
-  <string name="action_pause">Pausieren</string>
+  <string name="action_pause">Pause</string>
   <string name="action_stop">Stop</string>
   <string name="action_favorite">Favorisieren</string>
   <string name="action_unfavorite">Favorit entfernen</string>
@@ -15,8 +15,8 @@
   <string name="action_undo">Rückgängig</string>
   <!-- == Library modes == -->
   <string name="action_library">Sammlungsmodus</string>
-  <string name="jpop">J-pop</string>
-  <string name="kpop">K-pop</string>
+  <string name="jpop">J-Pop</string>
+  <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Schlaf-Timer</string>
   <string name="set">Setzen</string>
@@ -41,7 +41,7 @@
   <string name="username">Benutzername</string>
   <string name="email">E-Mail-Adresse</string>
   <string name="password">Passwort</string>
-  <string name="password_confirm">Bestätige das Kennwort</string>
+  <string name="password_confirm">Passwort bestätigen</string>
   <string name="mfa_prompt">Gebe den Sicherheitscode von der Authenticator App ein.</string>
   <string name="mfa_hint">6-stelligen Sicherheitscode</string>
   <string name="logout_confirmation">Bist du dir sicher, dass du dich ausloggen willst?</string>
@@ -66,7 +66,7 @@
   <string name="all_cooldown">Alle Songs sind auf Abklingzeit</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
-  <string name="requested_song">Wünsche %s</string>
+  <string name="requested_song">%s gewünscht</string>
   <string name="requested_random_song">Zufälliges Lied gewünscht</string>
   <string name="supporter_required">Supporter Status benötigt</string>
   <!-- == No Internet view == -->
