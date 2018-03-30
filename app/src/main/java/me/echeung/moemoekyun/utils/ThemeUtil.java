@@ -72,7 +72,7 @@ public final class ThemeUtil {
             }
         }
 
-        return Color.WHITE;
+        return Color.BLACK;
     }
 
 }

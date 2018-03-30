@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
@@ -14,7 +15,6 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
-import me.echeung.moemoekyun.utils.ThemeUtil;
 
 public class AppNotification {
 
@@ -56,23 +56,25 @@ public class AppNotification {
 
         MediaStyle style = new MediaStyle().setMediaSession(service.getMediaSession().getSessionToken());
 
-        int color = AlbumArtUtil.isDefaultAlbumArt()
-                ? ThemeUtil.getAccentColor(service)
-                : AlbumArtUtil.getCurrentAccentColor();
-
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_icon)
                 .setLargeIcon(albumArt)
-                .setColor(color)  // For pre-Oreo colored notifications
                 .setContentIntent(clickIntent)
                 .setDeleteIntent(deleteIntent)
                 .addAction(playPauseAction)
                 .setContentTitle(service.getString(R.string.app_name))
                 .setOngoing(isPlaying)
                 .setShowWhen(false)
-                .setStyle(style.setShowActionsInCompactView(0))
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setOnlyAlertOnce(true);
+
+        // For pre-Oreo colored notifications
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !AlbumArtUtil.isDefaultAlbumArt()) {
+            builder.setColor(AlbumArtUtil.getCurrentAccentColor());
+        }
+
+        // Needs to be set after setting the color
+        builder.setStyle(style.setShowActionsInCompactView(0));
 
         if (song != null) {
             builder.setContentTitle(song.getTitle());
