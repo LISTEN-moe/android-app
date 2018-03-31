@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
 import me.echeung.listenmoeapi.endpoints.Jpop;
+import me.echeung.moemoekyun.App;
 
 public final class PreferenceUtil {
 
@@ -114,6 +115,8 @@ public final class PreferenceUtil {
         preferences.edit()
                 .putString(LIBRARY_MODE, mode)
                 .apply();
+
+        App.getApiClient().changeLibrary(mode);
     }
 
     public boolean isNowPlayingExpanded() {

@@ -253,10 +253,12 @@ public class MainActivity extends BaseActivity {
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_library_jpop:
+                item.setChecked(true);
                 setLibraryMode(Jpop.NAME);
                 return true;
 
             case R.id.action_library_kpop:
+                item.setChecked(true);
                 setLibraryMode(Kpop.NAME);
                 return true;
 
@@ -403,9 +405,7 @@ public class MainActivity extends BaseActivity {
 
     private void setLibraryMode(String libraryMode) {
         App.getPreferenceUtil().setLibraryMode(libraryMode);
-
-        // TODO: proper library toggling
-        Toast.makeText(this, R.string.restart_required, Toast.LENGTH_SHORT).show();
+        broadcastAuthEvent();
     }
 
 }

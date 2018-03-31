@@ -117,8 +117,16 @@ public class APIClient {
         stream = new Stream(context, userAgent);
     }
 
-    public void setLibrary(String libraryName) {
-        APIClient.library = libraryName.equals(Kpop.NAME) ? Kpop.INSTANCE : Jpop.INSTANCE;
+    public void changeLibrary(String newMode) {
+        setLibrary(newMode);
+
+        socket.reconnect();
+
+        final boolean wasPlaying = stream.isPlaying();
+        stream.stop();
+        if (wasPlaying) {
+            stream.play();
+        }
     }
 
     /**
@@ -388,6 +396,10 @@ public class APIClient {
                         callback.onSuccess(response.getArtist());
                     }
                 });
+    }
+
+    private void setLibrary(String libraryName) {
+        APIClient.library = libraryName.equals(Kpop.NAME) ? Kpop.INSTANCE : Jpop.INSTANCE;
     }
 
     private List<Song> filterSongs(List<SongListItem> songs, String query) {

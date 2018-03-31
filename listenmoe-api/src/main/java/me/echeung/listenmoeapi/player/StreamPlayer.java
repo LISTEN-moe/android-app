@@ -22,6 +22,8 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
+import me.echeung.listenmoeapi.APIClient;
+
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
 import static com.google.android.exoplayer2.C.USAGE_MEDIA;
 
@@ -34,12 +36,10 @@ public class StreamPlayer {
     private SimpleExoPlayer player;
 
     private Context context;
-    private String streamUrl;
     private String userAgent;
 
-    public StreamPlayer(Context context, String streamUrl, String userAgent) {
+    public StreamPlayer(Context context, String userAgent) {
         this.context = context;
-        this.streamUrl = streamUrl;
         this.userAgent = userAgent;
 
         this.wifiLock =
@@ -191,7 +191,8 @@ public class StreamPlayer {
 
         final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
         final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        final MediaSource streamSource = new ExtractorMediaSource(Uri.parse(streamUrl), dataSourceFactory, extractorsFactory, null, null);
+        final Uri streamUri = Uri.parse(APIClient.getLibrary().getStreamUrl());
+        final MediaSource streamSource = new ExtractorMediaSource(streamUri, dataSourceFactory, extractorsFactory, null, null);
 
         player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
         player.prepare(streamSource);

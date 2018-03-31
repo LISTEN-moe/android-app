@@ -105,7 +105,6 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
                         case SongActionsUtil.FAVORITE_EVENT:
-                        case SongActionsUtil.REQUEST_EVENT:
                             initUserContent();
                             break;
                     }
