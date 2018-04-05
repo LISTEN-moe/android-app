@@ -62,7 +62,7 @@ public class Song implements Parcelable {
 
     public String getSourcesString() {
         StringBuilder s = new StringBuilder();
-        if (artists != null) {
+        if (sources != null) {
             for (SongDescriptor source : sources) {
                 if (s.length() != 0)
                     s.append(", ");

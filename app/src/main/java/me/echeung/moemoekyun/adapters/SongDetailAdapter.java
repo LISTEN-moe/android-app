@@ -29,7 +29,11 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
 
         final Song song = getItem(position);
         binding.setSong(song);
-        binding.setDetailed(true);
+        binding.setShowCoverArt(true);
+
+        binding.getRoot().setOnClickListener(view -> {
+            binding.setShowDetails(!binding.getShowDetails());
+        });
 
         binding.getRoot().setOnLongClickListener(view -> {
             SongActionsUtil.copyToClipboard(view.getContext(), song);

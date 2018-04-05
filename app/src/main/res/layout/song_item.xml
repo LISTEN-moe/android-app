@@ -4,13 +4,18 @@
 
     <data>
         <variable name="song" type="me.echeung.listenmoeapi.models.Song" />
-        <variable name="detailed" type="boolean" />
+        <variable name="showCoverArt" type="boolean" />
+        <variable name="showDetails" type="boolean" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,11 +23,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:baselineAligned="false"
             android:gravity="fill_horizontal"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="8dp">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="60dp"
@@ -32,7 +33,7 @@
                 android:imageUrl="@{song.albumArtUrl}"
                 android:scaleType="centerCrop"
                 android:src="@drawable/blank"
-                android:visibility="@{detailed}"
+                android:visibility="@{showCoverArt}"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout
@@ -84,27 +85,24 @@
 
         </LinearLayout>
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical">-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:visibility="@{showDetails}">
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@{song.albumsString}" />-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{song.albumsString}" />
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@{song.sourcesString}" />-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{song.sourcesString}" />
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="@{song.duration}" />-->
-
-        <!--</LinearLayout>-->
+        </LinearLayout>
 
     </LinearLayout>
 
