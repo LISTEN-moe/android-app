@@ -13,6 +13,7 @@ import java.util.List;
 import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.SongItemBinding;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 
 public class SongDetailAdapter extends ArrayAdapter<Song> {
 
@@ -29,6 +30,11 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
         final Song song = getItem(position);
         binding.setSong(song);
         binding.setDetailed(true);
+
+        binding.getRoot().setOnLongClickListener(view -> {
+            SongActionsUtil.copyToClipboard(view.getContext(), song);
+            return true;
+        });
 
         return binding.getRoot();
     }
