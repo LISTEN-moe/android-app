@@ -34,8 +34,6 @@ public final class SongActionsUtil {
 
         final SongItemBinding binding = DataBindingUtil.inflate(activity.getLayoutInflater(), R.layout.song_item, null, false);
         binding.setSong(song);
-        binding.setShowCoverArt(true);
-        binding.setShowDetails(true);
 
         new AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setView(binding.getRoot())

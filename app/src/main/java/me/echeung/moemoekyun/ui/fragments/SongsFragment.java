@@ -22,7 +22,6 @@ import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
 import me.echeung.moemoekyun.adapters.songslist.SongList;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.SongActionsUtil;
 
 public class SongsFragment extends Fragment implements SongList.SongListLoader {
 

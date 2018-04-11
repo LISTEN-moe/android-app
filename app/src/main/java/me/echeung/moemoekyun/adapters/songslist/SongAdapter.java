@@ -16,9 +16,8 @@ import java.util.List;
 import java.util.Random;
 
 import me.echeung.listenmoeapi.models.Song;
-import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.databinding.SongItemBinding;
+import me.echeung.moemoekyun.databinding.SongItemSimpleBinding;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 
@@ -57,7 +56,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        final SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
+        final SongItemSimpleBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item_simple, parent, false);
         return new SongViewHolder(binding, this);
     }
 
@@ -144,9 +143,9 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
     private static class SongViewHolder extends RecyclerView.ViewHolder {
 
-        private SongItemBinding binding;
+        private SongItemSimpleBinding binding;
 
-        SongViewHolder(final SongItemBinding binding, final SongAdapter adapter) {
+        SongViewHolder(final SongItemSimpleBinding binding, final SongAdapter adapter) {
             super(binding.getRoot());
 
             this.binding = binding;
@@ -166,7 +165,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
         }
 
         void bind(final Song song) {
-            binding.setVariable(BR.song, song);
+            binding.setSong(song);
 
             binding.executePendingBindings();
         }
