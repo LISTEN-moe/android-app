@@ -107,6 +107,18 @@
     <string name="supporter_required">Supporter status required</string>
 
 
+    <!-- == Song details == -->
+
+    <string name="song_album">Album</string>
+    <string name="song_artist">Artist</string>
+    <string name="song_source">Source</string>
+    <string name="song_duration">Duration</string>
+    <string name="song_release_date">Release date</string>
+    <string name="song_uploader">Uploader</string>
+    <string name="song_last_played">Last played</string>
+    <string name="song_tags">Tags</string>
+
+
     <!-- == No Internet view == -->
 
     <string name="no_internet">Can\'t connect to LISTEN.moe\n\nCheck your Internet connection</string>
