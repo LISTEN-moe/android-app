@@ -3,6 +3,8 @@ package me.echeung.listenmoeapi.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,6 +20,24 @@ public class SongDescriptor implements Parcelable {
     private String nameRomaji;
     private String image;
     private String releaseDate;
+
+    public static String getSongDescriptorsString(List<SongDescriptor> songDescriptors) {
+        StringBuilder s = new StringBuilder();
+        if (songDescriptors != null) {
+            for (SongDescriptor songDescriptor : songDescriptors) {
+                if (songDescriptor == null || songDescriptor.getName() == null) {
+                    continue;
+                }
+
+                if (s.length() != 0) {
+                    s.append(", ");
+                }
+
+                s.append(songDescriptor.getName());
+            }
+        }
+        return s.toString();
+    }
 
     @Override
     public int describeContents() {
