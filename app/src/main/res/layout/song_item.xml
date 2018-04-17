@@ -18,7 +18,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/selectableItemBackground"
             android:baselineAligned="false"
             android:gravity="fill_horizontal"
             android:orientation="horizontal">
@@ -37,6 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -51,34 +51,39 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-light"
                     android:singleLine="true"
-                    android:text="@{song.artistsString}"
+                    android:text="@{song.durationString}"
                     android:textColor="@color/white" />
 
             </LinearLayout>
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/request_btn"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/round_selector"
+                android:contentDescription="@string/action_request"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_play_arrow_white_24dp"
+                android:tint="@color/white" />
+
+            <ImageView
+                android:id="@+id/favorite_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginStart="8dp"
-                android:orientation="vertical"
-                android:visibility="@{song.favorite}">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_white_24dp"
-                    android:tint="?attr/colorAccent" />
-
-                <!--<ImageView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:src="@drawable/ic_star_white_24dp"-->
-                    <!--android:tint="@color/white" />-->
-
-            </LinearLayout>
+                android:background="@drawable/round_selector"
+                android:contentDescription="@{song.favorite ? @string/action_unfavorite : @string/action_favorite}"
+                android:padding="8dp"
+                android:scaleType="fitCenter"
+                android:src="@{song.favorite ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}"
+                android:tint="@color/white" />
 
         </LinearLayout>
 
@@ -91,7 +96,49 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/light_grey"
+                android:text="@string/song_artist" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{song.artistsString}" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/light_grey"
+                android:text="@string/song_album" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@{song.albumsString}" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textColor="@color/light_grey"
+                android:text="@string/song_source" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -48,6 +48,18 @@ public class Song implements Parcelable {
         return SongDescriptor.getSongDescriptorsString(sources);
     }
 
+    public String getDurationString() {
+        long minutes = duration / 60;
+        long seconds = duration % 60;
+        if (minutes < 60) {
+            return String.format("%01d:%02d", minutes, seconds);
+        } else {
+            long hours = minutes / 60;
+            minutes = minutes % 60;
+            return String.format("%d:%02d:%02d", hours, minutes, seconds);
+        }
+    }
+
     @Override
     public String toString() {
         return String.format("%s - %s", getTitle(), getArtistsString());
