@@ -153,7 +153,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
             binding.getRoot().setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION) {
                     final Song song = adapter.getSongs().get(getLayoutPosition());
-                    SongActionsUtil.showSongActionsDialog(adapter.getActivity(), adapter, song);
+                    SongActionsUtil.showSongsDialog(adapter.getActivity(), null, song);
                 }
             });
 

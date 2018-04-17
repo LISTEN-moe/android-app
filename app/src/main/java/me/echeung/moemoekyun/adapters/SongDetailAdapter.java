@@ -1,6 +1,6 @@
 package me.echeung.moemoekyun.adapters;
 
-import android.content.Context;
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -17,8 +17,12 @@ import me.echeung.moemoekyun.utils.SongActionsUtil;
 
 public class SongDetailAdapter extends ArrayAdapter<Song> {
 
-    public SongDetailAdapter(@NonNull Context context, List<Song> songs) {
-        super(context, 0, songs);
+    private Activity activity;
+
+    public SongDetailAdapter(@NonNull Activity activity, List<Song> songs) {
+        super(activity, 0, songs);
+
+        this.activity = activity;
     }
 
     @NonNull
@@ -30,8 +34,15 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
         final Song song = getItem(position);
         binding.setSong(song);
 
-        binding.getRoot().setOnClickListener(view -> {
-            // TODO: song actions
+        binding.requestBtn.setOnClickListener(view -> {
+            SongActionsUtil.request(activity, song);
+        });
+
+        binding.favoriteBtn.setOnClickListener(view -> {
+            SongActionsUtil.toggleFavorite(activity, song);
+
+//            song.setFavorite(!song.isFavorite());
+//            binding.executePendingBindings();
         });
 
         binding.getRoot().setOnLongClickListener(view -> {

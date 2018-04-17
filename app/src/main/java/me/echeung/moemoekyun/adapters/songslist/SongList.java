@@ -110,8 +110,12 @@ public class SongList {
         }
     }
 
+    public void notifyDataSetChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
     private boolean handleMenuItemClick(MenuItem item) {
-        final Activity activityRef = this.activity.get();
+        final Activity activityRef = activity.get();
         if (activityRef == null) return false;
 
         if (SongSortUtil.handleSortMenuItem(item, adapter)) {
@@ -121,7 +125,7 @@ public class SongList {
         if (item.getItemId() == R.id.action_random_request) {
             final Song randomSong = adapter.getRandomRequestSong();
             if (randomSong != null) {
-                SongActionsUtil.request(activityRef, adapter, randomSong);
+                SongActionsUtil.request(activityRef, randomSong);
             } else {
                 Toast.makeText(activityRef, activityRef.getString(R.string.all_cooldown), Toast.LENGTH_SHORT).show();
             }

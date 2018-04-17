@@ -31,7 +31,6 @@ import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
-import me.echeung.moemoekyun.ui.dialogs.SongDetailsDialog;
 import me.echeung.moemoekyun.utils.DozeUtil;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
@@ -400,7 +399,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showHistory() {
-        new SongDetailsDialog(this, viewModel.getHistory());
+        SongActionsUtil.showSongsDialog(this, getString(R.string.last_played), viewModel.getHistory());
     }
 
     private void setLibraryMode(String libraryMode) {

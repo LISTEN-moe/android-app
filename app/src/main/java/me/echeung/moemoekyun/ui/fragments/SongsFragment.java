@@ -22,6 +22,7 @@ import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
 import me.echeung.moemoekyun.adapters.songslist.SongList;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
+import me.echeung.moemoekyun.utils.SongActionsUtil;
 
 public class SongsFragment extends Fragment implements SongList.SongListLoader {
 
@@ -92,6 +93,10 @@ public class SongsFragment extends Fragment implements SongList.SongListLoader {
                         case MainActivity.AUTH_EVENT:
                             songList.loadSongs();
                             break;
+
+                        case SongActionsUtil.FAVORITE_EVENT:
+                            songList.notifyDataSetChanged();
+                            break;
                     }
                 }
             }
@@ -99,6 +104,7 @@ public class SongsFragment extends Fragment implements SongList.SongListLoader {
 
         intentFilter = new IntentFilter();
         intentFilter.addAction(MainActivity.AUTH_EVENT);
+        intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT);
 
         getActivity().registerReceiver(intentReceiver, intentFilter);
         receiverRegistered = true;
