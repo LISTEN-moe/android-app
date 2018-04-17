@@ -33,6 +33,7 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
 
         final Song song = getItem(position);
         binding.setSong(song);
+        binding.setIsFavorite(song.isFavorite());
 
         binding.requestBtn.setOnClickListener(view -> {
             SongActionsUtil.request(activity, song);
@@ -41,8 +42,8 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
         binding.favoriteBtn.setOnClickListener(view -> {
             SongActionsUtil.toggleFavorite(activity, song);
 
-//            song.setFavorite(!song.isFavorite());
-//            binding.executePendingBindings();
+            song.setFavorite(!song.isFavorite());
+            binding.setIsFavorite(song.isFavorite());
         });
 
         binding.getRoot().setOnLongClickListener(view -> {
