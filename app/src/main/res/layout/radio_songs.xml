@@ -60,22 +60,6 @@
                 android:textColor="@{vm.bodyColor}"
                 android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:alpha="0.75"
-                android:ellipsize="marquee"
-                android:fontFamily="sans-serif-light"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:selected="@{true}"
-                android:singleLine="true"
-                android:text="@{vm.currentSong.albumsString}"
-                android:textAlignment="center"
-                android:textColor="@{vm.bodyColor}"
-                android:textSize="18sp"
-                android:visibility="@{!TextUtils.isEmpty(vm.currentSong.albumsString)}" />
-
         </LinearLayout>
 
     </RelativeLayout>
