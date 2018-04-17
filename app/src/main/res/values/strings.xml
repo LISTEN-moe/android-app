@@ -109,6 +109,7 @@
 
     <!-- == Song details == -->
 
+    <string name="song_title">Title</string>
     <string name="song_album">Album</string>
     <string name="song_artist">Artist</string>
     <string name="song_source">Source</string>
