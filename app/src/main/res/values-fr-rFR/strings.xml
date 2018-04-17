@@ -69,6 +69,15 @@
   <string name="requested_song">Une requête à été faite pour %s</string>
   <string name="requested_random_song">Musique aléatoire demandée</string>
   <string name="supporter_required">Grade Supporteur requis</string>
+  <!-- == Song details == -->
+  <string name="song_album">Album</string>
+  <string name="song_artist">Artiste</string>
+  <string name="song_source">Source</string>
+  <string name="song_duration">Durée</string>
+  <string name="song_release_date">Date de sortie</string>
+  <string name="song_uploader">Metteur en ligne</string>
+  <string name="song_last_played">Joué récemment</string>
+  <string name="song_tags">Tags</string>
   <!-- == No Internet view == -->
   <string name="no_internet">Impossible de se connecter à LISTEN.moe\n\nMerci de vérifier votre connexion internet</string>
   <string name="retry">Réessayez</string>

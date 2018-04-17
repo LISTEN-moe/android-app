@@ -53,6 +53,7 @@
   <!-- Requested song title -->
   <string name="requested_song">Requestade %s</string>
   <string name="supporter_required">Supporter status krävs</string>
+  <!-- == Song details == -->
   <!-- == No Internet view == -->
   <string name="no_internet">Kan inte ansluta till LISTEN.moe\n\nKolla din ansluting</string>
   <string name="retry">Försök igen</string>

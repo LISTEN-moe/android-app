@@ -69,6 +69,15 @@
   <string name="requested_song">%s gewünscht</string>
   <string name="requested_random_song">Zufälliges Lied gewünscht</string>
   <string name="supporter_required">Supporter Status benötigt</string>
+  <!-- == Song details == -->
+  <string name="song_album">Album</string>
+  <string name="song_artist">Künstler</string>
+  <string name="song_source">Quelle</string>
+  <string name="song_duration">Dauer</string>
+  <string name="song_release_date">Release-Datum</string>
+  <string name="song_uploader">Uploader</string>
+  <string name="song_last_played">Zuletzt gespielt</string>
+  <string name="song_tags">Tags</string>
   <!-- == No Internet view == -->
   <string name="no_internet">Konnte keine Verbindung zu LISTEN.moe herstellen.\nÜberprüfe deine Internet Verbindung.</string>
   <string name="retry">Erneut versuchen</string>

@@ -63,6 +63,7 @@
   <string name="requested_song">%s 以请求</string>
   <string name="requested_random_song">请求一首随机歌曲</string>
   <string name="supporter_required">需要支持者的状态</string>
+  <!-- == Song details == -->
   <!-- == No Internet view == -->
   <string name="no_internet">无法连接到 LISTEN.moe\n\n请检查您的 Internet 连接</string>
   <string name="retry">重试</string>

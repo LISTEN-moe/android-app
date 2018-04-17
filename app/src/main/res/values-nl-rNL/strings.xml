@@ -62,6 +62,7 @@
   <string name="requested_song">Verzocht %s</string>
   <string name="requested_random_song">Willekeurig nummer aanvragen</string>
   <string name="supporter_required">Supporterstatus vereist</string>
+  <!-- == Song details == -->
   <!-- == No Internet view == -->
   <string name="no_internet">Kan geen verbinding maken met LISTEN.moe\n\nControleer uw internet verbinding</string>
   <string name="retry">Opnieuw proberen</string>

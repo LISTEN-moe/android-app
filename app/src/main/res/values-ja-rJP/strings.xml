@@ -56,6 +56,7 @@
   <!-- == Song item actions == -->
   <!-- Requested song title -->
   <string name="requested_song">%sをリクエストしました</string>
+  <!-- == Song details == -->
   <!-- == No Internet view == -->
   <string name="no_internet">サーバーに接続できません\n\nインターネット接続を確認してください</string>
   <string name="retry">再試行</string>
