@@ -83,9 +83,9 @@ dependencies {
     implementation "com.android.support:recyclerview-v7:$support_lib_version"
     implementation "com.android.support:cardview-v7:$support_lib_version"
     implementation "com.android.support:design:$support_lib_version"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta6'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
-    final glide_version = '4.6.1'
+    final glide_version = '4.7.1'
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
 
