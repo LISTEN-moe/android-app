@@ -27,6 +27,11 @@
     <string name="action_undo">Undo</string>
 
 
+    <!-- == Google Cast == -->
+
+    <string name="media_route_menu_title" translatable="false">Cast</string>
+
+
     <!-- == Library modes == -->
 
     <string name="action_library">Library mode</string>
