@@ -29,6 +29,7 @@ import me.echeung.moemoekyun.api.endpoints.Jpop;
 import me.echeung.moemoekyun.api.endpoints.Kpop;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
+import me.echeung.moemoekyun.ui.base.BaseActivity;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;
 import me.echeung.moemoekyun.util.DozeUtil;
 import me.echeung.moemoekyun.util.NetworkUtil;

@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import de.psdev.licensesdialog.LicensesDialog;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.ui.base.BaseActivity;
 import me.echeung.moemoekyun.util.UrlUtil;
 
 public class AboutActivity extends BaseActivity implements View.OnClickListener {

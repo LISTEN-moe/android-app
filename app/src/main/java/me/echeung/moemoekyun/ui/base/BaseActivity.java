@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.ui.activities;
+package me.echeung.moemoekyun.ui.base;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +23,11 @@ import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.model.User;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
+import me.echeung.moemoekyun.ui.base.BaseFragment;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodel.UserViewModel;
 
-public class UserFragment extends Fragment implements SongList.SongListLoader {
+public class UserFragment extends BaseFragment implements SongList.SongListLoader {
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
 
