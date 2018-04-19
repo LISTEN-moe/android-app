@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.viewmodels;
+package me.echeung.moemoekyun.viewmodel;
 
 import android.content.Context;
 import android.databinding.BaseObservable;
@@ -17,8 +17,8 @@ import java.lang.ref.WeakReference;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
-import me.echeung.moemoekyun.utils.LocaleUtil;
-import me.echeung.moemoekyun.utils.ThemeUtil;
+import me.echeung.moemoekyun.util.LocaleUtil;
+import me.echeung.moemoekyun.util.ThemeUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
 

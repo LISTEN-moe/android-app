@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import me.echeung.moemoekyun.App;
-import me.echeung.moemoekyun.utils.LocaleUtil;
-import me.echeung.moemoekyun.utils.PreferenceUtil;
-import me.echeung.moemoekyun.utils.ThemeUtil;
+import me.echeung.moemoekyun.util.LocaleUtil;
+import me.echeung.moemoekyun.util.PreferenceUtil;
+import me.echeung.moemoekyun.util.ThemeUtil;
 
 public abstract class BaseActivity extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
 
