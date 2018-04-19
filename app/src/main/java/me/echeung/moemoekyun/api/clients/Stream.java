@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.player;
+package me.echeung.moemoekyun.api.clients;
 
 import android.content.Context;
 import android.net.Uri;
@@ -17,23 +17,23 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
-import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
 import static com.google.android.exoplayer2.C.USAGE_MEDIA;
 
-public class StreamPlayer {
+public class Stream {
 
     private static final String WIFI_LOCK_TAG = "listenmoe_wifi_lock";
 
     private final WifiManager.WifiLock wifiLock;
     private final Player.EventListener eventListener;
     private SimpleExoPlayer player;
+    private Listener listener;
 
     private Context context;
 
-    public StreamPlayer(Context context) {
+    public Stream(Context context) {
         this.context = context;
 
         this.wifiLock =
@@ -57,6 +57,14 @@ public class StreamPlayer {
         };
     }
 
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
+
+    public void removeListener() {
+        this.listener = null;
+    }
+
     public boolean isStarted() {
         return player != null;
     }
@@ -65,57 +73,57 @@ public class StreamPlayer {
         return player != null && player.getPlayWhenReady();
     }
 
-    public boolean play() {
+    public void play() {
         if (player == null) {
             init();
         }
 
-        if (isPlaying()) {
-            return false;
+        if (!isPlaying()) {
+            acquireWifiLock();
+
+            player.setPlayWhenReady(true);
+            player.seekToDefaultPosition();
         }
 
-        acquireWifiLock();
-
-        player.setPlayWhenReady(true);
-        player.seekToDefaultPosition();
-
-        return true;
+        if (listener != null) {
+            listener.onStreamPlay();
+        }
     }
 
-    public boolean pause() {
-        if (player == null) {
-            return false;
+    public void pause() {
+        if (player != null) {
+            player.setPlayWhenReady(false);
+
+            releaseWifiLock();
         }
 
-        player.setPlayWhenReady(false);
-
-        releaseWifiLock();
-
-        return true;
+        if (listener != null) {
+            listener.onStreamPause();
+        }
     }
 
-    public boolean stop() {
-        if (player == null) {
-            return false;
+    public void stop() {
+        if (player != null) {
+            player.stop(true);
+
+            releasePlayer();
+            releaseWifiLock();
         }
 
-        player.stop(true);
-
-        releasePlayer();
-        releaseWifiLock();
-
-        return true;
+        if (listener != null) {
+            listener.onStreamStop();
+        }
     }
 
-    public void fadeOut(Runnable callback) {
+    public void fadeOut() {
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if (player == null) {
                     stop();
-                    if (callback != null) {
-                        callback.run();
+                    if (listener != null) {
+                        listener.onStreamStop();
                     }
                     return;
                 }
@@ -124,8 +132,8 @@ public class StreamPlayer {
                 float newVol = vol - 0.05f;
                 if (newVol <= 0) {
                     stop();
-                    if (callback != null) {
-                        callback.run();
+                    if (listener != null) {
+                        listener.onStreamStop();
                     }
                     return;
                 }
@@ -192,6 +200,12 @@ public class StreamPlayer {
         if (wifiLock != null && wifiLock.isHeld()) {
             wifiLock.release();
         }
+    }
+
+    public interface Listener {
+        void onStreamPlay();
+        void onStreamPause();
+        void onStreamStop();
     }
 
 }

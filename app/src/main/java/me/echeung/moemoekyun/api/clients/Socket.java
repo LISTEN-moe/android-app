@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.radio;
+package me.echeung.moemoekyun.api.clients;
 
 import android.os.Handler;
 import android.os.SystemClock;
@@ -6,7 +6,6 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.responses.socket.SocketBaseResponse;
 import me.echeung.moemoekyun.api.responses.socket.SocketConnectResponse;
 import me.echeung.moemoekyun.api.responses.socket.SocketUpdateResponse;

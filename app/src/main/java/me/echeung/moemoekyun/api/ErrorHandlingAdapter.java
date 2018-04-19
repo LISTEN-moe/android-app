@@ -10,6 +10,7 @@ import java.lang.reflect.Type;
 
 import lombok.RequiredArgsConstructor;
 import me.echeung.moemoekyun.api.callbacks.BaseCallback;
+import me.echeung.moemoekyun.api.clients.APIClient;
 import me.echeung.moemoekyun.api.responses.BaseResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -34,7 +35,7 @@ public class ErrorHandlingAdapter {
     public static abstract class WrappedCallback<T extends BaseResponse> {
         private final BaseCallback callback;
 
-        abstract void success(T response);
+        public abstract void success(T response);
 
         public void error(String message) {
             callback.onFailure(message);

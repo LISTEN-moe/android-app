@@ -10,7 +10,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 
-import me.echeung.moemoekyun.api.APIClient;
+import me.echeung.moemoekyun.api.clients.APIClient;
 import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.utils.AuthUtil;

@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api;
+package me.echeung.moemoekyun.api.clients;
 
 import android.content.Context;
 
@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import me.echeung.moemoekyun.api.ErrorHandlingAdapter;
 import me.echeung.moemoekyun.api.cache.SongsCache;
 import me.echeung.moemoekyun.api.callbacks.ArtistCallback;
 import me.echeung.moemoekyun.api.callbacks.ArtistsCallback;
@@ -20,8 +21,6 @@ import me.echeung.moemoekyun.api.callbacks.UserInfoCallback;
 import me.echeung.moemoekyun.api.endpoints.Jpop;
 import me.echeung.moemoekyun.api.endpoints.Kpop;
 import me.echeung.moemoekyun.api.endpoints.Library;
-import me.echeung.moemoekyun.api.radio.Socket;
-import me.echeung.moemoekyun.api.radio.Stream;
 import me.echeung.moemoekyun.api.responses.ArtistResponse;
 import me.echeung.moemoekyun.api.responses.ArtistsResponse;
 import me.echeung.moemoekyun.api.responses.AuthResponse;
