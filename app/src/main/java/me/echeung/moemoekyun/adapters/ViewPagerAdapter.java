@@ -25,7 +25,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @NonNull
     private final Context context;
 
-    public ViewPagerAdapter(@NonNull final Context context, final FragmentManager fragmentManager) {
+    public ViewPagerAdapter(@NonNull Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
         this.context = context;
 
@@ -36,9 +36,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     @NonNull
     @Override
-    public Object instantiateItem(@NonNull final ViewGroup container, final int position) {
-        final Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        final WeakReference<Fragment> fragmentRef = fragments.get(position);
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        WeakReference<Fragment> fragmentRef = fragments.get(position);
         if (fragmentRef != null) {
             fragmentRef.clear();
         }
@@ -47,9 +47,9 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public void destroyItem(final ViewGroup container, final int position, final Object object) {
+    public void destroyItem(ViewGroup container, int position, Object object) {
         super.destroyItem(container, position, object);
-        final WeakReference<Fragment> mWeakFragment = fragments.get(position);
+        WeakReference<Fragment> mWeakFragment = fragments.get(position);
         if (mWeakFragment != null) {
             mWeakFragment.clear();
         }
@@ -61,8 +61,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(final int position) {
-        final TabHolder holder = holders.get(position);
+    public Fragment getItem(int position) {
+        TabHolder holder = holders.get(position);
         return Fragment.instantiate(context, holder.className, holder.params);
     }
 
@@ -75,8 +75,8 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return holders.get(position).drawableId;
     }
 
-    private void add(@NonNull final Class<? extends Fragment> className, final int drawableId) {
-        final TabHolder holder = new TabHolder();
+    private void add(@NonNull Class<? extends Fragment> className, int drawableId) {
+        TabHolder holder = new TabHolder();
         holder.className = className.getName();
         holder.drawableId = drawableId;
         holder.params = null;

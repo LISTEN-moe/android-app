@@ -63,7 +63,7 @@ public class SettingsActivity extends BaseActivity {
         }
 
         private void invalidateSettings() {
-            final Preference themeSetting = findPreference(PreferenceUtil.PREF_GENERAL_THEME);
+            Preference themeSetting = findPreference(PreferenceUtil.PREF_GENERAL_THEME);
             setSummary(themeSetting);
             themeSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(themeSetting, o);
@@ -71,7 +71,7 @@ public class SettingsActivity extends BaseActivity {
                 return true;
             });
 
-            final Preference languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE);
+            Preference languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE);
             setSummary(languageSetting);
             languageSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(languageSetting, o);
@@ -79,7 +79,7 @@ public class SettingsActivity extends BaseActivity {
                 return true;
             });
 
-            final Preference downloadSetting = findPreference(PreferenceUtil.PREF_GENERAL_DOWNLOAD);
+            Preference downloadSetting = findPreference(PreferenceUtil.PREF_GENERAL_DOWNLOAD);
             setSummary(downloadSetting);
             downloadSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(downloadSetting, o);
@@ -87,7 +87,7 @@ public class SettingsActivity extends BaseActivity {
             });
 
             if (BuildConfig.DEBUG) {
-                final Preference clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE);
+                Preference clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE);
                 clearCache.setOnPreferenceClickListener(preference -> {
                     clearGlideCache();
                     return true;
@@ -100,7 +100,7 @@ public class SettingsActivity extends BaseActivity {
         }
 
         private void setSummary(Preference preference, @NonNull Object value) {
-            final String stringValue = value.toString();
+            String stringValue = value.toString();
             if (preference instanceof ListPreference) {
                 ListPreference listPreference = (ListPreference) preference;
                 int index = listPreference.findIndexOfValue(stringValue);
@@ -121,14 +121,14 @@ public class SettingsActivity extends BaseActivity {
         }
 
         private void promptAppRestart() {
-            final Activity activity = getActivity();
+            Activity activity = getActivity();
             if (activity != null) {
                 Toast.makeText(activity, R.string.restart_required, Toast.LENGTH_SHORT).show();
             }
         }
 
         private void clearGlideCache() {
-            final Context context = getContext();
+            Context context = getContext();
             if (context == null) return;
 
             new AsyncTask<Void, Void, Void>() {

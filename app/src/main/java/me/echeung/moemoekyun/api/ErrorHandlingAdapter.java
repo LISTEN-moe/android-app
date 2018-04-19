@@ -86,7 +86,7 @@ public class ErrorHandlingAdapter {
         }
 
         @Override
-        public void enqueue(final WrappedCallback<T> callback) {
+        public void enqueue( WrappedCallback<T> callback) {
             call.enqueue(new Callback<T>() {
                 @Override
                 public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
@@ -130,7 +130,7 @@ public class ErrorHandlingAdapter {
             return new WrappedCallAdapter<>(call.clone());
         }
 
-        private void error(final WrappedCallback<T> callback, final String message) {
+        private void error( WrappedCallback<T> callback, final String message) {
             Log.e(TAG, "API error: " + message);
             callback.error(message);
         }

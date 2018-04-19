@@ -55,15 +55,15 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        final LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        final SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
         return new SongViewHolder(binding, this);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final Song song = visibleSongs.get(position);
-        final SongViewHolder songHolder = (SongViewHolder) holder;
+        Song song = visibleSongs.get(position);
+        SongViewHolder songHolder = (SongViewHolder) holder;
         songHolder.bind(song);
     }
 
@@ -88,7 +88,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
     }
 
     public void sortType(String sortType) {
-        final Activity activityRef = activity.get();
+        Activity activityRef = activity.get();
         if (activityRef == null) return;
 
         SongSortUtil.setListSortType(activityRef, listId, sortType);
@@ -96,7 +96,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
     }
 
     public void sortDescending(boolean descending) {
-        final Activity activityRef = activity.get();
+        Activity activityRef = activity.get();
         if (activityRef == null) return;
 
         SongSortUtil.setListSortDescending(activityRef, listId, descending);
@@ -104,7 +104,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
     }
 
     private void updateSongs() {
-        final Activity activityRef = activity.get();
+        Activity activityRef = activity.get();
         if (activityRef == null) return;
 
         if (allSongs == null || allSongs.isEmpty()) return;
@@ -113,7 +113,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
         if (!TextUtils.isEmpty(filterQuery)) {
             visibleSongs = new ArrayList<>();
-            for (final Song song : allSongs) {
+            for (Song song : allSongs) {
                 if (song.search(filterQuery)) {
                     visibleSongs.add(song);
                 }
@@ -145,26 +145,26 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
         private SongItemBinding binding;
 
-        SongViewHolder(final SongItemBinding binding, final SongAdapter adapter) {
+        SongViewHolder(SongItemBinding binding, SongAdapter adapter) {
             super(binding.getRoot());
 
             this.binding = binding;
 
             binding.getRoot().setOnClickListener(v -> {
                 if (getAdapterPosition() != RecyclerView.NO_POSITION) {
-                    final Song song = adapter.getSongs().get(getLayoutPosition());
+                    Song song = adapter.getSongs().get(getLayoutPosition());
                     SongActionsUtil.showSongsDialog(adapter.getActivity(), null, song);
                 }
             });
 
             binding.getRoot().setOnLongClickListener(v -> {
-                final Song song = adapter.getSongs().get(getLayoutPosition());
+                Song song = adapter.getSongs().get(getLayoutPosition());
                 SongActionsUtil.copyToClipboard(adapter.getActivity(), song);
                 return true;
             });
         }
 
-        void bind(final Song song) {
+        void bind(Song song) {
             binding.setSong(song);
 
             binding.executePendingBindings();

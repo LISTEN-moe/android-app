@@ -12,7 +12,7 @@ public final class NetworkUtil {
 
     public static boolean isNetworkAvailable(Context context) {
         if (context != null) {
-            final NetworkInfo activeNetworkInfo = getActiveNetworkInfo(context);
+            NetworkInfo activeNetworkInfo = getActiveNetworkInfo(context);
 
             boolean isAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
@@ -29,7 +29,7 @@ public final class NetworkUtil {
             return false;
         }
 
-        final NetworkInfo activeNetworkInfo = getActiveNetworkInfo(context);
+        NetworkInfo activeNetworkInfo = getActiveNetworkInfo(context);
 
         return activeNetworkInfo != null
                 && activeNetworkInfo.getType() == ConnectivityManager.TYPE_WIFI
@@ -46,7 +46,7 @@ public final class NetworkUtil {
     }
 
     private static NetworkInfo getActiveNetworkInfo(Context context) {
-        final ConnectivityManager connectivityManager
+        ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return connectivityManager.getActiveNetworkInfo();

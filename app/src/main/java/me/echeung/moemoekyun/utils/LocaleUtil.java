@@ -22,13 +22,13 @@ public final class LocaleUtil {
             return context;
         }
 
-        final String language = App.getPreferenceUtil().getLanguage();
+        String language = App.getPreferenceUtil().getLanguage();
         return setLocale(context, language);
     }
 
     public static Context setLocale(@NonNull Context context, String language) {
-        final Resources res = context.getResources();
-        final Configuration config = new Configuration(res.getConfiguration());
+        Resources res = context.getResources();
+        Configuration config = new Configuration(res.getConfiguration());
 
         if (!language.equals(DEFAULT)) {
             Locale locale;

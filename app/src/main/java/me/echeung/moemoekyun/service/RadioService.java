@@ -188,9 +188,9 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
     @Override
     public void onSocketReceive(SocketUpdateResponse.Details info) {
-        final RadioViewModel viewModel = App.getRadioViewModel();
+        RadioViewModel viewModel = App.getRadioViewModel();
 
-        final Song song = info.getSong();
+        Song song = info.getSong();
         viewModel.setCurrentSong(song);
 
         try {
@@ -229,21 +229,21 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     }
 
     private void updateMediaSession() {
-        final Song currentSong = App.getRadioViewModel().getCurrentSong();
+        Song currentSong = App.getRadioViewModel().getCurrentSong();
 
         if (currentSong == null) {
             mediaSession.setMetadata(null);
             return;
         }
 
-        final MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
+        MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistsString())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumsString())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
-            final Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
+            Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
             if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
                 metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
                 updateNotification();
@@ -260,7 +260,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         }
 
         // Play/pause state
-        final PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
+        PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
                 .setActions(MEDIA_SESSION_ACTIONS)
                 .setState(isStreamStarted()
                                 ? isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED
@@ -269,8 +269,8 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
         // Favorite action
         if (App.getAuthUtil().isAuthenticated()) {
-            final Song currentSong = App.getRadioViewModel().getCurrentSong();
-            final int favoriteIcon = currentSong == null || !currentSong.isFavorite() ?
+            Song currentSong = App.getRadioViewModel().getCurrentSong();
+            int favoriteIcon = currentSong == null || !currentSong.isFavorite() ?
                     R.drawable.ic_star_border_white_24dp :
                     R.drawable.ic_star_white_24dp;
 
@@ -302,7 +302,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     private boolean handleIntent(Intent intent) {
         if (intent == null) return true;
 
-        final String action = intent.getAction();
+        String action = intent.getAction();
         if (action != null) {
             switch (action) {
                 case RadioService.PLAY_PAUSE:
@@ -335,12 +335,12 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
                 // Headphone media button action
                 case Intent.ACTION_MEDIA_BUTTON:
-                    final Bundle extras = intent.getExtras();
+                    Bundle extras = intent.getExtras();
                     if (extras == null) {
                         return false;
                     }
 
-                    final KeyEvent keyEvent = (KeyEvent) extras.get(Intent.EXTRA_KEY_EVENT);
+                    KeyEvent keyEvent = (KeyEvent) extras.get(Intent.EXTRA_KEY_EVENT);
                     if (keyEvent == null || keyEvent.getAction() != KeyEvent.ACTION_DOWN) {
                         return false;
                     }
@@ -468,7 +468,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             }
         };
 
-        final IntentFilter intentFilter = new IntentFilter();
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(RadioService.PLAY_PAUSE);
         intentFilter.addAction(RadioService.STOP);
         intentFilter.addAction(RadioService.TOGGLE_FAVORITE);
@@ -544,10 +544,10 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     }
 
     private void favoriteCurrentSong() {
-        final Song currentSong = App.getRadioViewModel().getCurrentSong();
+        Song currentSong = App.getRadioViewModel().getCurrentSong();
         if (currentSong == null) return;
 
-        final int songId = currentSong.getId();
+        int songId = currentSong.getId();
         if (songId == -1) return;
 
         if (!App.getAuthUtil().isAuthenticated()) {
@@ -555,17 +555,17 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             return;
         }
 
-        final boolean isCurrentlyFavorite = currentSong.isFavorite();
+        boolean isCurrentlyFavorite = currentSong.isFavorite();
 
-        final FavoriteSongCallback callback = new FavoriteSongCallback() {
+        FavoriteSongCallback callback = new FavoriteSongCallback() {
             @Override
             public void onSuccess() {
-                final Song currentSong = App.getRadioViewModel().getCurrentSong();
+                Song currentSong = App.getRadioViewModel().getCurrentSong();
                 if (currentSong.getId() == songId) {
                     App.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
                 }
 
-                final Intent favIntent = new Intent(SongActionsUtil.FAVORITE_EVENT);
+                Intent favIntent = new Intent(SongActionsUtil.FAVORITE_EVENT);
                 sendBroadcast(favIntent);
 
                 updateNotification();
@@ -573,7 +573,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure(String message) {
                 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
             }
         };
@@ -590,14 +590,14 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
      *
      * @param action The broadcast event.
      */
-    public void sendPublicIntent(final String action) {
-        final Song song = App.getRadioViewModel().getCurrentSong();
+    public void sendPublicIntent(String action) {
+        Song song = App.getRadioViewModel().getCurrentSong();
         if (song == null || !App.getPreferenceUtil().shouldBroadcastIntent()) return;
 
         // Scrobbling only works if there's actually progress
         if (song.getDuration() == 0 || trackStartTime == null) return;
 
-        final Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
+        Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
 
         intent.putExtra("id", song.getId());
 

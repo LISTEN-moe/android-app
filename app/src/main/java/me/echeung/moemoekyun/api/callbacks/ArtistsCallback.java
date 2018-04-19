@@ -5,5 +5,5 @@ import java.util.List;
 import me.echeung.moemoekyun.models.ArtistSummary;
 
 public interface ArtistsCallback extends BaseCallback {
-    void onSuccess(final List<ArtistSummary> artists);
+    void onSuccess( List<ArtistSummary> artists);
 }

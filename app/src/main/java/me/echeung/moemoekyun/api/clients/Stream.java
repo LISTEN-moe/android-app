@@ -33,7 +33,7 @@ public class Stream {
         @Override
         public void onPlayerError(ExoPlaybackException error) {
             // Try to reconnect to the stream
-            final boolean wasPlaying = isPlaying();
+            boolean wasPlaying = isPlaying();
 
             releasePlayer();
 

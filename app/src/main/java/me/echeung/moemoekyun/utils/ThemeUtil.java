@@ -36,7 +36,7 @@ public final class ThemeUtil {
     }
 
     public static void colorNavigationBar(Activity activity) {
-        final int color = App.getPreferenceUtil().shouldColorNavbar()
+        int color = App.getPreferenceUtil().shouldColorNavbar()
                 ? ThemeUtil.getAccentColor(activity)
                 : Color.BLACK;
 
@@ -61,7 +61,7 @@ public final class ThemeUtil {
     @ColorInt
     private static int resolveColorAttr(Context context, int attrId) {
         if (context != null) {
-            final TypedValue typedValue = new TypedValue();
+            TypedValue typedValue = new TypedValue();
             Resources.Theme theme = context.getTheme();
 
             boolean wasResolved = theme.resolveAttribute(attrId, typedValue, true);

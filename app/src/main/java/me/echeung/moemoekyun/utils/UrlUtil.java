@@ -7,7 +7,7 @@ import android.net.Uri;
 public final class UrlUtil {
 
     public static void openUrl(Context context, String url) {
-        final Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         context.startActivity(browserIntent);
     }
 

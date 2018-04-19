@@ -100,7 +100,7 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
         intentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                final String action = intent.getAction();
+                String action = intent.getAction();
                 if (action != null) {
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
@@ -132,7 +132,7 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
     private void getUserInfo() {
         App.getApiClient().getUserInfo(new UserInfoCallback() {
             @Override
-            public void onSuccess(final User user) {
+            public void onSuccess(User user) {
                 viewModel.setUser(user);
 
                 if (user.getAvatarImage() != null) {
@@ -145,7 +145,7 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure(String message) {
             }
         });
     }
@@ -154,7 +154,7 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
     public void loadSongs(SongAdapter adapter) {
         App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
             @Override
-            public void onSuccess(final List<Song> favorites) {
+            public void onSuccess(List<Song> favorites) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         songList.showLoading(false);
@@ -166,7 +166,7 @@ public class UserFragment extends Fragment implements SongList.SongListLoader {
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure(String message) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         songList.showLoading(false);

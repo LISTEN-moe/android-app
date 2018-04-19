@@ -24,7 +24,7 @@ public class SquareLayout extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        final int dimen = Math.min(getMeasuredWidth(), getMeasuredHeight());
+        int dimen = Math.min(getMeasuredWidth(), getMeasuredHeight());
         setMeasuredDimension(dimen, dimen);
     }
 

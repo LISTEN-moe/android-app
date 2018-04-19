@@ -39,12 +39,13 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
 
     private void setupInfo() {
         try {
-            final PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            final TextView txtVersion = findViewById(R.id.app_version);
+            PackageInfo packageInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             String versionText = getString(R.string.version, packageInfo.versionName);
             if (BuildConfig.DEBUG) {
                 versionText += String.format(" (%s)", packageInfo.packageName);
             }
+
+            TextView txtVersion = findViewById(R.id.app_version);
             txtVersion.setText(versionText);
         } catch (PackageManager.NameNotFoundException e) {
         }
@@ -73,8 +74,8 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.about_app_rate:
                 UrlUtil.openUrl(this, URL_STORE);
                 break;

@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import me.echeung.moemoekyun.App;
@@ -99,10 +98,9 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         // Kill service/notification if killing activity and not playing
-        final RadioService service = App.getService();
+        RadioService service = App.getService();
         if (service != null && !service.isPlaying()) {
-            final Intent stopIntent = new Intent(RadioService.STOP);
-            sendBroadcast(stopIntent);
+            sendBroadcast(new Intent(RadioService.STOP));
         }
 
         if (viewPager != null) {
@@ -144,8 +142,7 @@ public class MainActivity extends BaseActivity {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
 
-            final Intent updateIntent = new Intent(RadioService.UPDATE);
-            sendBroadcast(updateIntent);
+            sendBroadcast(new Intent(RadioService.UPDATE));
         }
     }
 
@@ -159,16 +156,15 @@ public class MainActivity extends BaseActivity {
 
         // Set up ViewPager and adapter
         viewPager = binding.pager;
-        final ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(this, getSupportFragmentManager());
+        ViewPagerAdapter mViewPagerAdapter = new ViewPagerAdapter(this, getSupportFragmentManager());
         viewPager.setAdapter(mViewPagerAdapter);
 
         // Set up tabs
-        final TabLayout tabLayout = binding.tabs;
+        TabLayout tabLayout = binding.tabs;
         tabLayout.setupWithViewPager(viewPager);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-        final int tabCount = tabLayout.getTabCount();
-        for (int i = 0; i < tabCount; i++) {
+        for (int i = 0; i < tabLayout.getTabCount(); i++) {
             tabLayout.getTabAt(i).setIcon(mViewPagerAdapter.getIcon(i));
         }
     }
@@ -207,18 +203,14 @@ public class MainActivity extends BaseActivity {
         });
 
         // Clickable links
-        final TextView vRequestBy = binding.nowPlaying.content.radioControls.requestedBy;
-        vRequestBy.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.nowPlaying.content.radioControls.requestedBy.setMovementMethod(LinkMovementMethod.getInstance());
 
         initPlayPause();
 
-        final ImageButton vHistoryBtn = binding.nowPlaying.content.radioControls.historyBtn;
-        vHistoryBtn.setOnClickListener(v -> showHistory());
+        binding.nowPlaying.content.radioControls.historyBtn.setOnClickListener(v -> showHistory());
+        binding.nowPlaying.content.radioControls.favoriteBtn.setOnClickListener(v -> favorite());
 
-        final ImageButton vFavoriteBtn = binding.nowPlaying.content.radioControls.favoriteBtn;
-        vFavoriteBtn.setOnClickListener(v -> favorite());
-
-        final LinearLayout vCurrentSong = binding.nowPlaying.content.radioSongs.currentSong;
+        LinearLayout vCurrentSong = binding.nowPlaying.content.radioSongs.currentSong;
         vCurrentSong.setOnClickListener(v -> showHistory());
         vCurrentSong.setOnLongClickListener(v -> {
             SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
@@ -231,8 +223,7 @@ public class MainActivity extends BaseActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
         // Toggle visibility of logout option based on authentication status
-        final boolean authenticated = App.getAuthUtil().isAuthenticated();
-        menu.findItem(R.id.action_logout).setVisible(authenticated);
+        menu.findItem(R.id.action_logout).setVisible(App.getAuthUtil().isAuthenticated());
 
         // Pre-check the library mode
         switch (App.getPreferenceUtil().getLibraryMode()) {
@@ -249,7 +240,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_library_jpop:
                 item.setChecked(true);
@@ -297,8 +288,7 @@ public class MainActivity extends BaseActivity {
 
         switch (requestCode) {
             case LOGIN_FAVORITE_REQUEST:
-                final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
-                sendBroadcast(favIntent);
+                sendBroadcast(new Intent(RadioService.TOGGLE_FAVORITE));
                 break;
         }
     }
@@ -313,8 +303,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void broadcastAuthEvent() {
-        final Intent authEventIntent = new Intent(MainActivity.AUTH_EVENT);
-        sendBroadcast(authEventIntent);
+        sendBroadcast(new Intent(MainActivity.AUTH_EVENT));
 
         viewModel.setIsAuthed(App.getAuthUtil().isAuthenticated());
     }
@@ -377,15 +366,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setPlayPauseDrawable() {
-        final AnimatedVectorDrawable drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
+        AnimatedVectorDrawable drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
         vPlayPauseBtn.setImageDrawable(drawable);
         vMiniPlayPauseBtn.setImageDrawable(drawable);
         drawable.start();
     }
 
     private void togglePlayPause() {
-        final Intent playPauseIntent = new Intent(RadioService.PLAY_PAUSE);
-        sendBroadcast(playPauseIntent);
+        sendBroadcast(new Intent(RadioService.PLAY_PAUSE));
     }
 
     private void favorite() {
@@ -394,8 +382,7 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        final Intent favIntent = new Intent(RadioService.TOGGLE_FAVORITE);
-        sendBroadcast(favIntent);
+        sendBroadcast(new Intent(RadioService.TOGGLE_FAVORITE));
     }
 
     private void showHistory() {

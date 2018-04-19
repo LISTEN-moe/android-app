@@ -25,14 +25,14 @@ public final class SongActionsUtil {
     public static final String REQUEST_EVENT = "req_event";
     public static final String FAVORITE_EVENT = "fav_event";
 
-    public static void showSongsDialog(final Activity activity, final String title, final Song song) {
+    public static void showSongsDialog(Activity activity, String title, Song song) {
         List<Song> songList = new ArrayList<>();
         songList.add(song);
 
         showSongsDialog(activity, title, songList);
     }
 
-    public static void showSongsDialog(final Activity activity, final String title, final List<Song> songs) {
+    public static void showSongsDialog(Activity activity, String title, List<Song> songs) {
         if (activity == null) return;
 
         new AlertDialog.Builder(activity, R.style.DialogTheme)
@@ -48,11 +48,11 @@ public final class SongActionsUtil {
      *
      * @param song The song to update the favorite status of.
      */
-    public static void toggleFavorite(final Activity activity, final Song song) {
-        final int songId = song.getId();
-        final boolean isCurrentlyFavorite = song.isFavorite();
+    public static void toggleFavorite(Activity activity, Song song) {
+        int songId = song.getId();
+        boolean isCurrentlyFavorite = song.isFavorite();
 
-        final FavoriteSongCallback callback = new FavoriteSongCallback() {
+        FavoriteSongCallback callback = new FavoriteSongCallback() {
             @Override
             public void onSuccess() {
                 if (App.getRadioViewModel().getCurrentSong().getId() == songId) {
@@ -64,14 +64,13 @@ public final class SongActionsUtil {
 
                 activity.runOnUiThread(() -> {
                     // Broadcast event
-                    final Intent favIntent = new Intent(SongActionsUtil.FAVORITE_EVENT);
-                    activity.sendBroadcast(favIntent);
+                    activity.sendBroadcast(new Intent(SongActionsUtil.FAVORITE_EVENT));
 
                     if (isCurrentlyFavorite) {
                         // Undo action
-                        final View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
+                        View coordinatorLayout = activity.findViewById(R.id.coordinator_layout);
                         if (coordinatorLayout != null) {
-                            final Snackbar undoBar = Snackbar.make(coordinatorLayout,
+                            Snackbar undoBar = Snackbar.make(coordinatorLayout,
                                     String.format(activity.getString(R.string.unfavorited), song.toString()),
                                     Snackbar.LENGTH_LONG);
                             undoBar.setAction(R.string.action_undo, v -> toggleFavorite(activity, song));
@@ -82,7 +81,7 @@ public final class SongActionsUtil {
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure(String message) {
                 if (activity == null) return;
 
                 activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
@@ -97,8 +96,8 @@ public final class SongActionsUtil {
      *
      * @param song The song to request.
      */
-    public static void request(final Activity activity, final Song song) {
-        final int requests = App.getUserViewModel().getUser().getRequestsRemaining();
+    public static void request(Activity activity, Song song) {
+        int requests = App.getUserViewModel().getUser().getRequestsRemaining();
         App.getApiClient().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
             @Override
             public void onSuccess() {
@@ -106,14 +105,13 @@ public final class SongActionsUtil {
 
                 activity.runOnUiThread(() -> {
                     // Broadcast event
-                    final Intent reqEvent = new Intent(SongActionsUtil.REQUEST_EVENT);
-                    activity.sendBroadcast(reqEvent);
+                    activity.sendBroadcast(new Intent(SongActionsUtil.REQUEST_EVENT));
 
                     // Instantly update remaining requests number to appear responsive
-                    final int remainingRequests = requests - 1;
+                    int remainingRequests = requests - 1;
                     App.getUserViewModel().setRequestsRemaining(remainingRequests);
 
-                    final String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
+                    String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
                             ? activity.getString(R.string.requested_song, song.toString())
                             : activity.getString(R.string.requested_random_song);
 
@@ -122,7 +120,7 @@ public final class SongActionsUtil {
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure(String message) {
                 if (activity == null) return;
 
                 activity.runOnUiThread(() -> Toast.makeText(activity.getApplicationContext(), message, Toast.LENGTH_SHORT).show());
@@ -130,13 +128,13 @@ public final class SongActionsUtil {
         });
     }
 
-    public static void copyToClipboard(final Context context, final Song song) {
+    public static void copyToClipboard(Context context, Song song) {
         if (context == null) return;
 
         copyToClipboard(context, song.toString());
     }
 
-    public static void copyToClipboard(final Context context, final String songInfo) {
+    public static void copyToClipboard(Context context, String songInfo) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("song", songInfo);
         clipboard.setPrimaryClip(clip);

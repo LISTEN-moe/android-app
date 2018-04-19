@@ -46,7 +46,7 @@ public class AuthActivity extends BaseActivity {
 
         binding.authBtn.setOnClickListener(v -> submit());
 
-        final TextView.OnEditorActionListener onSubmit = (v, actionId, event) -> {
+        TextView.OnEditorActionListener onSubmit = (v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 submit();
                 return true;
@@ -59,7 +59,7 @@ public class AuthActivity extends BaseActivity {
 
         loginCallback = new LoginCallback() {
             @Override
-            public void onSuccess(final String token) {
+            public void onSuccess(String token) {
                 runOnUiThread(() -> {
                     Intent returnIntent = new Intent();
                     setResult(Activity.RESULT_OK, returnIntent);
@@ -68,12 +68,12 @@ public class AuthActivity extends BaseActivity {
             }
 
             @Override
-            public void onMfaRequired(final String token) {
+            public void onMfaRequired(String token) {
                 showMfaDialog();
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure(String message) {
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());
             }
         };
@@ -104,8 +104,8 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void login() {
-        final String userLogin = getText(binding.authLogin);
-        final String password = getText(binding.authPassword);
+        String userLogin = getText(binding.authLogin);
+        String password = getText(binding.authPassword);
 
         setError(binding.authLogin, userLogin.isEmpty(), getString(R.string.required));
         setError(binding.authPassword, password.isEmpty(), getString(R.string.required));
@@ -117,15 +117,15 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void showMfaDialog() {
-        final View layout = getLayoutInflater().inflate(R.layout.dialog_auth_mfa, findViewById(R.id.layout_root_mfa));
-        final TextInputEditText otpText = layout.findViewById(R.id.mfa_otp);
+        View layout = getLayoutInflater().inflate(R.layout.dialog_auth_mfa, findViewById(R.id.layout_root_mfa));
+        TextInputEditText otpText = layout.findViewById(R.id.mfa_otp);
 
         runOnUiThread(() -> {
             mfaDialog = new AlertDialog.Builder(this, R.style.DialogTheme)
                     .setTitle(R.string.mfa_prompt)
                     .setView(layout)
                     .setPositiveButton(R.string.submit, (dialogInterface, i) -> {
-                        final String otpToken = otpText.getText().toString().trim();
+                        String otpToken = otpText.getText().toString().trim();
                         if (otpToken.length() != OTP_LENGTH) {
                             return;
                         }
@@ -143,21 +143,21 @@ public class AuthActivity extends BaseActivity {
             return;
         }
 
-        final ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         if (clipboard == null) {
             return;
         }
 
-        final ClipData clipData = clipboard.getPrimaryClip();
+        ClipData clipData = clipboard.getPrimaryClip();
         if (clipData == null || clipData.getItemCount() == 0) {
             return;
         }
 
-        final ClipData.Item clipDataItem = clipData.getItemAt(0);
-        final String clipboardText = clipDataItem.getText().toString();
+        ClipData.Item clipDataItem = clipData.getItemAt(0);
+        String clipboardText = clipDataItem.getText().toString();
 
         if (clipboardText.length() == OTP_LENGTH && clipboardText.matches("^[0-9]*$")) {
-            final TextInputEditText otpText = mfaDialog.findViewById(R.id.mfa_otp);
+            TextInputEditText otpText = mfaDialog.findViewById(R.id.mfa_otp);
             if (otpText != null) {
                 otpText.setText(clipboardText);
             }
@@ -165,10 +165,10 @@ public class AuthActivity extends BaseActivity {
     }
 
     private void register() {
-        final String username = getText(binding.authUsername);
-        final String email = getText(binding.authEmail);
-        final String password = getText(binding.authPassword);
-        final String passwordConfirm = getText(binding.authPasswordConfirm);
+        String username = getText(binding.authUsername);
+        String email = getText(binding.authEmail);
+        String password = getText(binding.authPassword);
+        String passwordConfirm = getText(binding.authPasswordConfirm);
 
         setError(binding.authUsername, username.isEmpty(), getString(R.string.required));
         setError(binding.authEmail, email.isEmpty(), getString(R.string.required));

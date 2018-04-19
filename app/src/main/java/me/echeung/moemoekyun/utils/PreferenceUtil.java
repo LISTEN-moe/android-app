@@ -45,7 +45,7 @@ public final class PreferenceUtil {
 
     private final SharedPreferences preferences;
 
-    public PreferenceUtil(@NonNull final Context context) {
+    public PreferenceUtil(@NonNull Context context) {
         preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
@@ -66,7 +66,7 @@ public final class PreferenceUtil {
     }
 
     public boolean shouldDownloadImage(Context context) {
-        final String pref = preferences.getString(PREF_GENERAL_DOWNLOAD, DOWNLOAD_ALWAYS);
+        String pref = preferences.getString(PREF_GENERAL_DOWNLOAD, DOWNLOAD_ALWAYS);
         return pref.equals(DOWNLOAD_ALWAYS)
                 || pref.equals(DOWNLOAD_WIFI) && NetworkUtil.isWifi(context);
     }

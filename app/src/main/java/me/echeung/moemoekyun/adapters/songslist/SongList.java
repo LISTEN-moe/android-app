@@ -34,7 +34,7 @@ public class SongList {
 
         // List adapter
         this.adapter = new SongAdapter(activity, listId);
-        final RecyclerView songsList = binding.list;
+        RecyclerView songsList = binding.list;
         songsList.setLayoutManager(new LinearLayoutManager(activity));
         songsList.setAdapter(adapter);
 
@@ -75,7 +75,7 @@ public class SongList {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                final String query = editable.toString().trim().toLowerCase();
+                String query = editable.toString().trim().toLowerCase();
                 adapter.filter(query);
 
                 boolean hasResults = adapter.getItemCount() != 0;
@@ -88,10 +88,10 @@ public class SongList {
 
         // Menu
         binding.overflowBtn.setOnClickListener(v -> {
-            final Activity activityRef = this.activity.get();
+            Activity activityRef = this.activity.get();
             if (activityRef == null) return;
 
-            final PopupMenu popupMenu = new PopupMenu(activityRef, binding.overflowBtn);
+            PopupMenu popupMenu = new PopupMenu(activityRef, binding.overflowBtn);
             popupMenu.inflate(R.menu.menu_sort);
 
             SongSortUtil.initSortMenu(activityRef, listId, popupMenu.getMenu());
@@ -115,7 +115,7 @@ public class SongList {
     }
 
     private boolean handleMenuItemClick(MenuItem item) {
-        final Activity activityRef = activity.get();
+        Activity activityRef = activity.get();
         if (activityRef == null) return false;
 
         if (SongSortUtil.handleSortMenuItem(item, adapter)) {
@@ -123,7 +123,7 @@ public class SongList {
         }
 
         if (item.getItemId() == R.id.action_random_request) {
-            final Song randomSong = adapter.getRandomRequestSong();
+            Song randomSong = adapter.getRandomRequestSong();
             if (randomSong != null) {
                 SongActionsUtil.request(activityRef, randomSong);
             } else {

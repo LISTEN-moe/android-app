@@ -22,23 +22,23 @@ public final class SongSortUtil {
     private static final String SORT_TITLE = "song_sort_title";
     private static final String SORT_ARTIST = "song_sort_artist";
 
-    public static void setListSortType(final Context context, final String listId, final String sortType) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    public static void setListSortType(Context context, String listId, String sortType) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putString(PREF_LIST_PREFIX_TYPE + listId, sortType)
                 .apply();
     }
 
-    public static void setListSortDescending(final Context context, final String listId, final boolean descending) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    public static void setListSortDescending(Context context, String listId, boolean descending) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         sharedPrefs.edit()
                 .putBoolean(PREF_LIST_PREFIX_DESC + listId, descending)
                 .apply();
     }
 
-    public static void sort(final Context context, final String listId, final List<Song> songs) {
-        final String sortType = getSortTypeByListId(context, listId);
-        final boolean sortDescending = getSortDescendingByListId(context, listId);
+    public static void sort(Context context, String listId, List<Song> songs) {
+        String sortType = getSortTypeByListId(context, listId);
+        boolean sortDescending = getSortDescendingByListId(context, listId);
 
         Comparator<Song> sorter;
         switch (sortType) {
@@ -60,7 +60,7 @@ public final class SongSortUtil {
     }
 
     public static void initSortMenu(Context context, String listId, Menu menu) {
-        final String sortType = getSortTypeByListId(context, listId);
+        String sortType = getSortTypeByListId(context, listId);
         switch (sortType) {
             case SORT_ARTIST:
                 menu.findItem(R.id.action_sort_type_artist).setChecked(true);
@@ -72,7 +72,7 @@ public final class SongSortUtil {
                 break;
         }
 
-        final boolean sortDescending = getSortDescendingByListId(context, listId);
+        boolean sortDescending = getSortDescendingByListId(context, listId);
         menu.findItem(R.id.action_sort_desc).setChecked(sortDescending);
     }
 
@@ -97,13 +97,13 @@ public final class SongSortUtil {
         return false;
     }
 
-    private static String getSortTypeByListId(final Context context, final String listKey) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    private static String getSortTypeByListId(Context context, String listKey) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getString(PREF_LIST_PREFIX_TYPE + listKey, SORT_TITLE);
     }
 
-    private static boolean getSortDescendingByListId(final Context context, final String listKey) {
-        final SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+    private static boolean getSortDescendingByListId(Context context, String listKey) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPrefs.getBoolean(PREF_LIST_PREFIX_DESC + listKey, false);
     }
 

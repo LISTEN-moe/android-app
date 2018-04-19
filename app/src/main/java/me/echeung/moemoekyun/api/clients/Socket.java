@@ -153,7 +153,7 @@ public class Socket extends WebSocketListener {
         }
     }
 
-    private void parseWebSocketResponse(final String jsonString) {
+    private void parseWebSocketResponse( String jsonString) {
         if (listener == null) {
             Log.d(TAG, "Listener is null");
             return;

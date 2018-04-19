@@ -87,7 +87,7 @@ public class SongsFragment extends Fragment implements SongList.SongListLoader {
         intentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                final String action = intent.getAction();
+                String action = intent.getAction();
                 if (action != null) {
                     switch (action) {
                         case MainActivity.AUTH_EVENT:
@@ -116,7 +116,7 @@ public class SongsFragment extends Fragment implements SongList.SongListLoader {
 
         App.getApiClient().search(null, new SearchCallback() {
             @Override
-            public void onSuccess(final List<Song> results) {
+            public void onSuccess(List<Song> results) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         songList.showLoading(false);
@@ -126,7 +126,7 @@ public class SongsFragment extends Fragment implements SongList.SongListLoader {
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure(String message) {
                 if (getActivity() != null) {
                     getActivity().runOnUiThread(() -> {
                         songList.showLoading(false);

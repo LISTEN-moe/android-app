@@ -56,7 +56,7 @@ public final class AlbumArtUtil {
     }
 
     public static void updateAlbumArt(Context context, Song song) {
-        final String albumArtUrl = song.getAlbumArtUrl();
+        String albumArtUrl = song.getAlbumArtUrl();
         if (albumArtUrl != null && App.getPreferenceUtil().shouldDownloadImage(context)) {
             downloadAlbumArtBitmap(context, albumArtUrl);
             return;
@@ -125,7 +125,7 @@ public final class AlbumArtUtil {
     }
 
     private static int getMaxScreenLength() {
-        final DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
+        DisplayMetrics displayMetrics = Resources.getSystem().getDisplayMetrics();
         return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels);
     }
 

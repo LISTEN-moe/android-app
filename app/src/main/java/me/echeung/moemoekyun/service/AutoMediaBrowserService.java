@@ -28,7 +28,7 @@ public class AutoMediaBrowserService extends MediaBrowserServiceCompat implement
         if (App.isServiceBound()) {
             setSessionToken();
         } else {
-            final Intent intent = new Intent(getApplicationContext(), RadioService.class);
+            Intent intent = new Intent(getApplicationContext(), RadioService.class);
             getApplicationContext().bindService(intent, this, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
         }
     }
@@ -46,8 +46,8 @@ public class AutoMediaBrowserService extends MediaBrowserServiceCompat implement
 
     @Override
     public void onServiceConnected(ComponentName className, IBinder service) {
-        final RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
-        final RadioService radioService = binder.getService();
+        RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
+        RadioService radioService = binder.getService();
 
         App.setService(radioService);
         setSessionToken();
@@ -59,7 +59,7 @@ public class AutoMediaBrowserService extends MediaBrowserServiceCompat implement
     }
 
     private void setSessionToken() {
-        final MediaSessionCompat mediaSession = App.getService().getMediaSession();
+        MediaSessionCompat mediaSession = App.getService().getMediaSession();
         setSessionToken(mediaSession.getSessionToken());
     }
 }

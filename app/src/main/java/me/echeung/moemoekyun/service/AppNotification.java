@@ -36,27 +36,27 @@ public class AppNotification {
             return;
         }
 
-        final Song song = getCurrentSong();
-        final Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
+        Song song = getCurrentSong();
+        Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
 
-        final boolean isPlaying = service.isPlaying();
+        boolean isPlaying = service.isPlaying();
 
         // Play/pause action
-        final NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
+        NotificationCompat.Action playPauseAction = new NotificationCompat.Action(
                 isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp,
                 isPlaying ? service.getString(R.string.action_pause) : service.getString(R.string.action_play),
                 getPlaybackActionService(RadioService.PLAY_PAUSE));
 
         // Build the notification
-        final Intent action = new Intent(service, MainActivity.class);
+        Intent action = new Intent(service, MainActivity.class);
         action.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        final PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
-        final PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
+        PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
         MediaStyle style = new MediaStyle().setMediaSession(service.getMediaSession().getSessionToken());
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_icon)
                 .setLargeIcon(albumArt)
                 .setContentIntent(clickIntent)
@@ -92,7 +92,7 @@ public class AppNotification {
             }
         }
 
-        final Notification notification = builder.build();
+        Notification notification = builder.build();
 
         if (isPlaying) {
             service.startForeground(NOTIFICATION_ID, notification);
@@ -106,8 +106,8 @@ public class AppNotification {
         return App.getRadioViewModel().getCurrentSong();
     }
 
-    private PendingIntent getPlaybackActionService(final String action) {
-        final Intent intent = new Intent(service, RadioService.class);
+    private PendingIntent getPlaybackActionService(String action) {
+        Intent intent = new Intent(service, RadioService.class);
         intent.setAction(action);
 
         return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

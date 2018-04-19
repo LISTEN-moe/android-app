@@ -136,11 +136,11 @@ public class APIClient {
      * @param password User's password.
      * @param callback Listener to handle the response.
      */
-    public void authenticate(final String username, final String password, final LoginCallback callback) {
+    public void authenticate( String username, final String password, final LoginCallback callback) {
         authService.login(new AuthService.LoginBody(username, password))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
                     @Override
-                    public void success(final AuthResponse response) {
+                    public void success( AuthResponse response) {
                         final String userToken = response.getToken();
 
                         if (response.isMfa()) {
@@ -161,11 +161,11 @@ public class APIClient {
      * @param otpToken User's one-time password token.
      * @param callback Listener to handle the response.
      */
-    public void authenticateMfa(final String otpToken, final LoginCallback callback) {
+    public void authenticateMfa( String otpToken, final LoginCallback callback) {
         authService.mfa(authUtil.getMfaAuthTokenWithPrefix(), new AuthService.LoginMfaBody(otpToken))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
                     @Override
-                    public void success(final AuthResponse response) {
+                    public void success( AuthResponse response) {
                         final String userToken = response.getToken();
                         authUtil.setAuthToken(userToken);
                         authUtil.clearMfaAuthToken();
@@ -179,11 +179,11 @@ public class APIClient {
      *
      * @param callback Listener to handle the response.
      */
-    public void register(final String email, final String username, final String password, final RegisterCallback callback) {
+    public void register( String email, final String username, final String password, final RegisterCallback callback) {
         authService.register(new AuthService.RegisterBody(email, username, password))
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
-                    public void success(final BaseResponse response) {
+                    public void success( BaseResponse response) {
                         callback.onSuccess(response.getMessage());
                     }
                 });
@@ -194,7 +194,7 @@ public class APIClient {
      *
      * @param callback Listener to handle the response.
      */
-    public void getUserInfo(final UserInfoCallback callback) {
+    public void getUserInfo( UserInfoCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -203,7 +203,7 @@ public class APIClient {
         usersService.getUserInfo(authUtil.getAuthTokenWithPrefix(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<UserResponse>(callback) {
                     @Override
-                    public void success(final UserResponse response) {
+                    public void success( UserResponse response) {
                         callback.onSuccess(response.getUser());
                     }
                 });
@@ -214,7 +214,7 @@ public class APIClient {
      *
      * @param callback Listener to handle the response.
      */
-    public void getUserFavorites(final UserFavoritesCallback callback) {
+    public void getUserFavorites( UserFavoritesCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -223,7 +223,7 @@ public class APIClient {
         favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), library.getName(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     @Override
-                    public void success(final FavoritesResponse response) {
+                    public void success( FavoritesResponse response) {
                         List<Song> favorites = response.getFavorites();
                         for (Song song : favorites) {
                             song.setFavorite(true);
@@ -240,7 +240,7 @@ public class APIClient {
      * @param isFavorite Whether the song is currently favorited.
      * @param callback Listener to handle the response.
      */
-    public void toggleFavorite(final String songId, final boolean isFavorite, final FavoriteSongCallback callback) {
+    public void toggleFavorite( String songId, final boolean isFavorite, final FavoriteSongCallback callback) {
         if (isFavorite) {
             unfavoriteSong(songId, callback);
         } else {
@@ -254,7 +254,7 @@ public class APIClient {
      * @param songId   Song to favorite.
      * @param callback Listener to handle the response.
      */
-    public void favoriteSong(final String songId, final FavoriteSongCallback callback) {
+    public void favoriteSong( String songId, final FavoriteSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -263,7 +263,7 @@ public class APIClient {
         favoritesService.favorite(authUtil.getAuthTokenWithPrefix(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
-                    public void success(final BaseResponse response) {
+                    public void success( BaseResponse response) {
                         callback.onSuccess();
                     }
                 });
@@ -275,7 +275,7 @@ public class APIClient {
      * @param songId   Song to unfavorite.
      * @param callback Listener to handle the response.
      */
-    public void unfavoriteSong(final String songId, final FavoriteSongCallback callback) {
+    public void unfavoriteSong( String songId, final FavoriteSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -284,7 +284,7 @@ public class APIClient {
         favoritesService.removeFavorite(authUtil.getAuthTokenWithPrefix(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
-                    public void success(final BaseResponse response) {
+                    public void success( BaseResponse response) {
                         callback.onSuccess();
                     }
                 });
@@ -296,7 +296,7 @@ public class APIClient {
      * @param songId   Song to request.
      * @param callback Listener to handle the response.
      */
-    public void requestSong(final String songId, final RequestSongCallback callback) {
+    public void requestSong( String songId, final RequestSongCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -305,7 +305,7 @@ public class APIClient {
         requestsService.request(authUtil.getAuthTokenWithPrefix(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
-                    public void success(final BaseResponse response) {
+                    public void success( BaseResponse response) {
                         callback.onSuccess();
                     }
                 });
@@ -316,7 +316,7 @@ public class APIClient {
      *
      * @param callback Listener to handle the response.
      */
-    public void getSongs(final SongsCallback callback) {
+    public void getSongs( SongsCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -325,7 +325,7 @@ public class APIClient {
         songsService.getSongs(authUtil.getAuthTokenWithPrefix(), library.getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     @Override
-                    public void success(final SongsResponse response) {
+                    public void success( SongsResponse response) {
                         callback.onSuccess(response.getSongs());
                     }
                 });
@@ -337,7 +337,7 @@ public class APIClient {
      * @param query    Search query string.
      * @param callback Listener to handle the response.
      */
-    public void search(final String query, final SearchCallback callback) {
+    public void search( String query, final SearchCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -351,7 +351,7 @@ public class APIClient {
             }
 
             @Override
-            public void onFailure(final String message) {
+            public void onFailure( String message) {
                 callback.onFailure(message);
             }
         });
@@ -362,7 +362,7 @@ public class APIClient {
      *
      * @param callback Listener to handle the response.
      */
-    public void getArtists(final ArtistsCallback callback) {
+    public void getArtists( ArtistsCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -371,7 +371,7 @@ public class APIClient {
         artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), library.getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
                     @Override
-                    public void success(final ArtistsResponse response) {
+                    public void success( ArtistsResponse response) {
                         callback.onSuccess(response.getArtists());
                     }
                 });
@@ -383,7 +383,7 @@ public class APIClient {
      * @param artistId Artist to get.
      * @param callback Listener to handle the response.
      */
-    public void getArtist(final String artistId, final ArtistCallback callback) {
+    public void getArtist( String artistId, final ArtistCallback callback) {
         if (!authUtil.isAuthenticated()) {
             callback.onFailure(AUTH_ERROR);
             return;
@@ -392,7 +392,7 @@ public class APIClient {
         artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), library.getName(), artistId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
                     @Override
-                    public void success(final ArtistResponse response) {
+                    public void success( ArtistResponse response) {
                         callback.onSuccess(response.getArtist());
                     }
                 });

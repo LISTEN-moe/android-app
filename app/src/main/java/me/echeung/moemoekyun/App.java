@@ -97,13 +97,13 @@ public class App extends Application implements ServiceConnection {
     }
 
     private void initService() {
-        final Intent intent = new Intent(getApplicationContext(), RadioService.class);
+        Intent intent = new Intent(getApplicationContext(), RadioService.class);
         getApplicationContext().bindService(intent, this, Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT);
     }
 
     @Override
     public void onServiceConnected(ComponentName className, IBinder service) {
-        final RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
+        RadioService.ServiceBinder binder = (RadioService.ServiceBinder) service;
         setService(binder.getService());
     }
 
@@ -114,12 +114,12 @@ public class App extends Application implements ServiceConnection {
 
     private void initNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            final NotificationChannel notifChannel = new NotificationChannel(
+            NotificationChannel notifChannel = new NotificationChannel(
                     AppNotification.NOTIFICATION_CHANNEL_ID,
                     AppNotification.NOTIFICATION_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_LOW);
 
-            final NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationManager notifManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notifManager.createNotificationChannel(notifChannel);
         }
     }

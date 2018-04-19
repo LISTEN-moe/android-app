@@ -42,7 +42,7 @@ public class AuthUtil {
         }
 
         // Check token is valid (max 28 days)
-        final long lastAuth = getTokenAge();
+        long lastAuth = getTokenAge();
         if (Math.round((System.currentTimeMillis() / 1000 - lastAuth) / 86400.0) >= 28) {
             clearAuthToken();
             return false;
@@ -92,7 +92,7 @@ public class AuthUtil {
      * @param token The auth token to store, provided via the LISTEN.moe API.
      */
     public void setAuthToken(String token) {
-        final Context context = contextRef.get();
+        Context context = contextRef.get();
         if (context == null) {
             return;
         }
@@ -108,7 +108,7 @@ public class AuthUtil {
      * Removes the stored auth token.
      */
     public void clearAuthToken() {
-        final Context context = contextRef.get();
+        Context context = contextRef.get();
         if (context == null) {
             return;
         }
@@ -121,7 +121,7 @@ public class AuthUtil {
     }
 
     private String getAuthToken() {
-        final Context context = contextRef.get();
+        Context context = contextRef.get();
         if (context == null) {
             return null;
         }
@@ -138,7 +138,7 @@ public class AuthUtil {
      * @return The time in seconds since the stored auth token was stored.
      */
     private long getTokenAge() {
-        final Context context = contextRef.get();
+        Context context = contextRef.get();
         if (context == null) {
             return 0L;
         }

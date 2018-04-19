@@ -5,5 +5,5 @@ import java.util.List;
 import me.echeung.moemoekyun.models.Song;
 
 public interface UserFavoritesCallback extends BaseCallback {
-    void onSuccess(final List<Song> favorites);
+    void onSuccess( List<Song> favorites);
 }

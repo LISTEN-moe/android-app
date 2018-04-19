@@ -91,7 +91,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     @ColorInt
     public int getBackgroundColor() {
         if (App.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
-            final int accentColor = AlbumArtUtil.getCurrentAccentColor();
+            int accentColor = AlbumArtUtil.getCurrentAccentColor();
             if (accentColor != 0) {
                 return accentColor;
             }
@@ -104,7 +104,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     @ColorInt
     public int getBodyColor() {
         if (App.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
-            final int bodyColor = AlbumArtUtil.getCurrentBodyColor();
+            int bodyColor = AlbumArtUtil.getCurrentBodyColor();
             if (bodyColor != 0) {
                 return bodyColor;
             }
@@ -160,7 +160,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
 
     @Bindable
     public String getRequester() {
-        final Context context = getContext();
+        Context context = getContext();
         if (context == null || requester == null || TextUtils.isEmpty(requester.getDisplayName())) {
             return null;
         }
