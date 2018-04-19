@@ -15,8 +15,8 @@ import java.util.List;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
-import me.echeung.moemoekyun.adapters.songslist.SongList;
+import me.echeung.moemoekyun.adapter.songslist.SongAdapter;
+import me.echeung.moemoekyun.adapter.songslist.SongList;
 import me.echeung.moemoekyun.api.callbacks.UserFavoritesCallback;
 import me.echeung.moemoekyun.api.callbacks.UserInfoCallback;
 import me.echeung.moemoekyun.api.endpoints.Library;

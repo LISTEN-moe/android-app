@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
+import me.echeung.moemoekyun.adapter.songslist.SongAdapter;
 import me.echeung.moemoekyun.models.Song;
 
 public final class SongSortUtil {

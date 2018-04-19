@@ -24,7 +24,7 @@ import android.widget.Toast;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
+import me.echeung.moemoekyun.adapter.ViewPagerAdapter;
 import me.echeung.moemoekyun.api.endpoints.Jpop;
 import me.echeung.moemoekyun.api.endpoints.Kpop;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
