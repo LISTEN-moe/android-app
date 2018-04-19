@@ -17,49 +17,40 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
 import static com.google.android.exoplayer2.C.USAGE_MEDIA;
 
+@RequiredArgsConstructor
 public class Stream {
 
     private static final String WIFI_LOCK_TAG = "listenmoe_wifi_lock";
 
-    private final WifiManager.WifiLock wifiLock;
-    private final Player.EventListener eventListener;
-    private SimpleExoPlayer player;
-    private Listener listener;
+    private final Player.EventListener eventListener = new Player.DefaultEventListener() {
+        @Override
+        public void onPlayerError(ExoPlaybackException error) {
+            // Try to reconnect to the stream
+            final boolean wasPlaying = isPlaying();
 
-    private Context context;
+            releasePlayer();
 
-    public Stream(Context context) {
-        this.context = context;
-
-        this.wifiLock =
-                ((WifiManager) context.getApplicationContext()
-                        .getSystemService(Context.WIFI_SERVICE))
-                        .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
-
-        this.eventListener = new Player.DefaultEventListener() {
-            @Override
-            public void onPlayerError(ExoPlaybackException error) {
-                // Try to reconnect to the stream
-                final boolean wasPlaying = isPlaying();
-
-                releasePlayer();
-
-                init();
-                if (wasPlaying) {
-                    play();
-                }
+            init();
+            if (wasPlaying) {
+                play();
             }
-        };
-    }
+        }
+    };
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
+    private final Context context;
+
+    private WifiManager.WifiLock wifiLock;
+    private SimpleExoPlayer player;
+
+    @Setter
+    private Listener listener;
 
     public void removeListener() {
         this.listener = null;
@@ -163,9 +154,9 @@ public class Stream {
         // In case there's already an instance somehow
         releasePlayer();
 
-        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
-        final Uri streamUri = Uri.parse(APIClient.getLibrary().getStreamUrl());
-        final MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
+        Uri streamUri = Uri.parse(APIClient.getLibrary().getStreamUrl());
+        MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .setExtractorsFactory(new DefaultExtractorsFactory())
                 .createMediaSource(streamUri, null, null);
 
@@ -174,7 +165,7 @@ public class Stream {
         player.addListener(eventListener);
         player.setVolume(1f);
 
-        final AudioAttributes audioAttributes = new AudioAttributes.Builder()
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(CONTENT_TYPE_MUSIC)
                 .setUsage(USAGE_MEDIA)
                 .build();
@@ -190,10 +181,13 @@ public class Stream {
     }
 
     private void acquireWifiLock() {
-        if (wifiLock != null) {
-            releaseWifiLock();
-            wifiLock.acquire();
+        if (wifiLock == null) {
+            this.wifiLock = ((WifiManager) context.getApplicationContext()
+                    .getSystemService(Context.WIFI_SERVICE))
+                    .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
         }
+
+        wifiLock.acquire();
     }
 
     private void releaseWifiLock() {
