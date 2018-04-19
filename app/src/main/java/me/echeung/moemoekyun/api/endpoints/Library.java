@@ -1,5 +1,9 @@
 package me.echeung.moemoekyun.api.endpoints;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public abstract class Library {
 
     public static final String API_BASE = "https://listen.moe/api/";
@@ -8,8 +12,11 @@ public abstract class Library {
     public static final String CDN_AVATAR_URL = "https://cdn.listen.moe/avatars/";
     public static final String CDN_BANNER_URL = "https://cdn.listen.moe/banners/";
 
-    public abstract String getName();
-    public abstract String getSocketUrl();
-    public abstract String getStreamUrl();
+    @Getter
+    private final String name;
+    @Getter
+    private final String socketUrl;
+    @Getter
+    private final String streamUrl;
 
 }
