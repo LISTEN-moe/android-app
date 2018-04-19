@@ -7,18 +7,13 @@ import android.os.Handler;
 
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
-import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
@@ -47,7 +42,7 @@ public class StreamPlayer {
                         .getSystemService(Context.WIFI_SERVICE))
                         .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
 
-        this.eventListener = new Player.EventListener() {
+        this.eventListener = new Player.DefaultEventListener() {
             @Override
             public void onPlayerError(ExoPlaybackException error) {
                 // Try to reconnect to the stream
@@ -59,34 +54,6 @@ public class StreamPlayer {
                 if (wasPlaying) {
                     play();
                 }
-            }
-
-            @Override
-            public void onTimelineChanged(Timeline timeline, Object manifest) {
-            }
-
-            @Override
-            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-            }
-
-            @Override
-            public void onLoadingChanged(boolean isLoading) {
-            }
-
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-            }
-
-            @Override
-            public void onRepeatModeChanged(int repeatMode) {
-            }
-
-            @Override
-            public void onPositionDiscontinuity() {
-            }
-
-            @Override
-            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
             }
         };
     }
@@ -133,7 +100,7 @@ public class StreamPlayer {
             return false;
         }
 
-        player.setPlayWhenReady(false);
+        player.stop(true);
 
         releasePlayer();
         releaseWifiLock();
@@ -190,9 +157,10 @@ public class StreamPlayer {
         releasePlayer();
 
         final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
-        final ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         final Uri streamUri = Uri.parse(APIClient.getLibrary().getStreamUrl());
-        final MediaSource streamSource = new ExtractorMediaSource(streamUri, dataSourceFactory, extractorsFactory, null, null);
+        final MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                .setExtractorsFactory(new DefaultExtractorsFactory())
+                .createMediaSource(streamUri, null, null);
 
         player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
         player.prepare(streamSource);
@@ -208,8 +176,8 @@ public class StreamPlayer {
 
     private void releasePlayer() {
         if (player != null) {
-            player.release();
             player.removeListener(eventListener);
+            player.release();
             player = null;
         }
     }
