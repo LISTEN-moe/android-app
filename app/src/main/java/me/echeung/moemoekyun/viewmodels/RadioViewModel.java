@@ -10,12 +10,12 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.echeung.listenmoeapi.models.Event;
-import me.echeung.listenmoeapi.models.Song;
-import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.api.models.Event;
+import me.echeung.moemoekyun.api.models.Song;
+import me.echeung.moemoekyun.api.models.User;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.utils.ThemeUtil;

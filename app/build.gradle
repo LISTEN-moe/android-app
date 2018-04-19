@@ -70,8 +70,6 @@ android {
 }
 
 dependencies {
-    implementation project(':listenmoe-api')
-
     final support_lib_version = '27.1.1'
     implementation "com.android.support:support-core-ui:$support_lib_version"
     implementation "com.android.support:support-media-compat:$support_lib_version"
@@ -84,9 +82,21 @@ dependencies {
     implementation "com.android.support:design:$support_lib_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
 
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
+
     final glide_version = '4.7.1'
     implementation "com.github.bumptech.glide:glide:$glide_version"
     annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.7.3'
+
+    final retrofit_version = '2.4.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    final lombok_version = '1.16.20'
+    compileOnly "org.projectlombok:lombok:$lombok_version"
+    annotationProcessor "org.projectlombok:lombok:$lombok_version"
 
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.3'
 }

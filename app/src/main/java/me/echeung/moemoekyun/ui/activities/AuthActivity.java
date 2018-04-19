@@ -13,10 +13,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import me.echeung.listenmoeapi.callbacks.LoginCallback;
-import me.echeung.listenmoeapi.callbacks.RegisterCallback;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.api.callbacks.LoginCallback;
+import me.echeung.moemoekyun.api.callbacks.RegisterCallback;
 import me.echeung.moemoekyun.databinding.ActivityAuthBinding;
 import me.echeung.moemoekyun.viewmodels.AuthViewModel;
 

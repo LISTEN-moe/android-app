@@ -13,12 +13,12 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import me.echeung.listenmoeapi.callbacks.FavoriteSongCallback;
-import me.echeung.listenmoeapi.callbacks.RequestSongCallback;
-import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongDetailAdapter;
+import me.echeung.moemoekyun.api.callbacks.FavoriteSongCallback;
+import me.echeung.moemoekyun.api.callbacks.RequestSongCallback;
+import me.echeung.moemoekyun.api.models.Song;
 
 public final class SongActionsUtil {
 

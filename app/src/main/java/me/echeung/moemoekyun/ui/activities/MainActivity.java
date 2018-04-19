@@ -22,12 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import me.echeung.listenmoeapi.endpoints.Jpop;
-import me.echeung.listenmoeapi.endpoints.Kpop;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.ViewPagerAdapter;
+import me.echeung.moemoekyun.api.endpoints.Jpop;
+import me.echeung.moemoekyun.api.endpoints.Kpop;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.dialogs.SleepTimerDialog;

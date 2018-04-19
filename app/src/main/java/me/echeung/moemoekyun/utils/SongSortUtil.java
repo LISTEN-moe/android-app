@@ -10,9 +10,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import me.echeung.listenmoeapi.models.Song;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
+import me.echeung.moemoekyun.api.models.Song;
 
 public final class SongSortUtil {
 

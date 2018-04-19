@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 
-import me.echeung.listenmoeapi.endpoints.Jpop;
 import me.echeung.moemoekyun.App;
+import me.echeung.moemoekyun.api.endpoints.Jpop;
 
 public final class PreferenceUtil {
 

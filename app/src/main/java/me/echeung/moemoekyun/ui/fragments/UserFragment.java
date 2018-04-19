@@ -13,15 +13,15 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-import me.echeung.listenmoeapi.callbacks.UserFavoritesCallback;
-import me.echeung.listenmoeapi.callbacks.UserInfoCallback;
-import me.echeung.listenmoeapi.endpoints.Library;
-import me.echeung.listenmoeapi.models.Song;
-import me.echeung.listenmoeapi.models.User;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
 import me.echeung.moemoekyun.adapters.songslist.SongList;
+import me.echeung.moemoekyun.api.callbacks.UserFavoritesCallback;
+import me.echeung.moemoekyun.api.callbacks.UserInfoCallback;
+import me.echeung.moemoekyun.api.endpoints.Library;
+import me.echeung.moemoekyun.api.models.Song;
+import me.echeung.moemoekyun.api.models.User;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
