@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import me.echeung.moemoekyun.api.responses.socket.SocketBaseResponse;
 import me.echeung.moemoekyun.api.responses.socket.SocketConnectResponse;
 import me.echeung.moemoekyun.api.responses.socket.SocketUpdateResponse;
@@ -16,6 +18,7 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
+@RequiredArgsConstructor
 public class Socket extends WebSocketListener {
 
     private static final String TAG = Socket.class.getSimpleName();
@@ -34,21 +37,11 @@ public class Socket extends WebSocketListener {
     private final AuthUtil authUtil;
 
     private WebSocket socket;
+    @Setter
     private Listener listener;
 
-    private Handler heartbeatHandler;
+    private Handler heartbeatHandler = new Handler();
     private Runnable heartbeatTask;
-
-    public Socket(OkHttpClient client, AuthUtil authUtil) {
-        this.client = client;
-        this.authUtil = authUtil;
-
-        heartbeatHandler = new Handler();
-    }
-
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
 
     public void connect() {
         Log.d(TAG, "Connecting to socket...");
