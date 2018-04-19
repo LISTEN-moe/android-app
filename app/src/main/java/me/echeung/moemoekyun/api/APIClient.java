@@ -38,6 +38,7 @@ import me.echeung.moemoekyun.api.services.UsersService;
 import me.echeung.moemoekyun.models.Song;
 import me.echeung.moemoekyun.models.SongListItem;
 import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.utils.NetworkUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
@@ -79,7 +80,7 @@ public class APIClient {
     private final UsersService usersService;
     private final SongsCache songsCache;
 
-    public APIClient(Context context, String userAgent, String libraryName) {
+    public APIClient(Context context, String libraryName) {
         authUtil = new AuthUtil(context);
         setLibrary(libraryName);
 
@@ -88,7 +89,7 @@ public class APIClient {
                     final Request request = chain.request();
 
                     final Request newRequest = request.newBuilder()
-                            .addHeader(HEADER_USER_AGENT, userAgent)
+                            .addHeader(HEADER_USER_AGENT, NetworkUtil.getUserAgent())
                             .addHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE)
                             .addHeader(HEADER_ACCEPT, ACCEPT)
                             .build();
@@ -114,7 +115,7 @@ public class APIClient {
         songsCache = new SongsCache(this);
 
         socket = new Socket(okHttpClient, authUtil);
-        stream = new Stream(context, userAgent);
+        stream = new Stream(context);
     }
 
     public void changeLibrary(String newMode) {

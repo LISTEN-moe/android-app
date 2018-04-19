@@ -18,6 +18,7 @@ import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import me.echeung.moemoekyun.api.APIClient;
+import me.echeung.moemoekyun.utils.NetworkUtil;
 
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
 import static com.google.android.exoplayer2.C.USAGE_MEDIA;
@@ -31,11 +32,9 @@ public class StreamPlayer {
     private SimpleExoPlayer player;
 
     private Context context;
-    private String userAgent;
 
-    public StreamPlayer(Context context, String userAgent) {
+    public StreamPlayer(Context context) {
         this.context = context;
-        this.userAgent = userAgent;
 
         this.wifiLock =
                 ((WifiManager) context.getApplicationContext()
@@ -156,7 +155,7 @@ public class StreamPlayer {
         // In case there's already an instance somehow
         releasePlayer();
 
-        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, userAgent);
+        final DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
         final Uri streamUri = Uri.parse(APIClient.getLibrary().getStreamUrl());
         final MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .setExtractorsFactory(new DefaultExtractorsFactory())

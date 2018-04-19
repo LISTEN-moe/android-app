@@ -9,8 +9,8 @@ public class Stream {
     private StreamPlayer player;
     private Listener listener;
 
-    public Stream(Context context, String userAgent) {
-        this.player = new StreamPlayer(context, userAgent);
+    public Stream(Context context) {
+        this.player = new StreamPlayer(context);
     }
 
     public void setListener(Listener listener) {
