@@ -12,7 +12,7 @@ import android.support.v4.media.app.NotificationCompat.MediaStyle;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.models.Song;
+import me.echeung.moemoekyun.models.Song;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
 

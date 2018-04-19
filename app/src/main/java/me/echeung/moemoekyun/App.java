@@ -11,9 +11,9 @@ import android.os.Build;
 import android.os.IBinder;
 
 import me.echeung.moemoekyun.api.APIClient;
-import me.echeung.moemoekyun.api.auth.AuthUtil;
 import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
+import me.echeung.moemoekyun.utils.AuthUtil;
 import me.echeung.moemoekyun.utils.PreferenceUtil;
 import me.echeung.moemoekyun.viewmodels.AuthViewModel;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;

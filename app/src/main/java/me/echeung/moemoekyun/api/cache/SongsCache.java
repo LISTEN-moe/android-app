@@ -7,7 +7,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.api.APIClient;
 import me.echeung.moemoekyun.api.callbacks.SongsCallback;
-import me.echeung.moemoekyun.api.models.SongListItem;
+import me.echeung.moemoekyun.models.SongListItem;
 
 /**
  * A naive cache of the songs data from the API for faster loading/searching.

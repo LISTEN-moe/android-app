@@ -3,9 +3,9 @@ package me.echeung.moemoekyun.api.responses.socket;
 import java.util.List;
 
 import lombok.Getter;
-import me.echeung.moemoekyun.api.models.Event;
-import me.echeung.moemoekyun.api.models.Song;
-import me.echeung.moemoekyun.api.models.User;
+import me.echeung.moemoekyun.models.Event;
+import me.echeung.moemoekyun.models.Song;
+import me.echeung.moemoekyun.models.User;
 
 @Getter
 public class SocketUpdateResponse extends SocketBaseResponse {

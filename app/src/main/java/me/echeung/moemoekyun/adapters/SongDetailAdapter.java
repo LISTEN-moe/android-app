@@ -11,8 +11,8 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.databinding.SongDetailsBinding;
+import me.echeung.moemoekyun.models.Song;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 
 public class SongDetailAdapter extends ArrayAdapter<Song> {

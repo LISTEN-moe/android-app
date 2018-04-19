@@ -19,8 +19,8 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.songslist.SongAdapter;
 import me.echeung.moemoekyun.adapters.songslist.SongList;
 import me.echeung.moemoekyun.api.callbacks.SearchCallback;
-import me.echeung.moemoekyun.api.models.Song;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
+import me.echeung.moemoekyun.models.Song;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 

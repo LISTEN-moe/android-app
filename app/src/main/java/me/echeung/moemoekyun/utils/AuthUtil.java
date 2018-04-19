@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.auth;
+package me.echeung.moemoekyun.utils;
 
 import android.content.Context;
 import android.preference.PreferenceManager;

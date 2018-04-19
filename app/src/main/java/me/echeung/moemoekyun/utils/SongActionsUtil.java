@@ -18,7 +18,7 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapters.SongDetailAdapter;
 import me.echeung.moemoekyun.api.callbacks.FavoriteSongCallback;
 import me.echeung.moemoekyun.api.callbacks.RequestSongCallback;
-import me.echeung.moemoekyun.api.models.Song;
+import me.echeung.moemoekyun.models.Song;
 
 public final class SongActionsUtil {
 

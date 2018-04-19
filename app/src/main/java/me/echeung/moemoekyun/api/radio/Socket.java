@@ -7,10 +7,10 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import me.echeung.moemoekyun.api.APIClient;
-import me.echeung.moemoekyun.api.auth.AuthUtil;
 import me.echeung.moemoekyun.api.responses.socket.SocketBaseResponse;
 import me.echeung.moemoekyun.api.responses.socket.SocketConnectResponse;
 import me.echeung.moemoekyun.api.responses.socket.SocketUpdateResponse;
+import me.echeung.moemoekyun.utils.AuthUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
