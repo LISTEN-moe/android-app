@@ -5,7 +5,7 @@ import android.databinding.Bindable;
 
 import com.android.databinding.library.baseAdapters.BR;
 
-import me.echeung.moemoekyun.models.User;
+import me.echeung.moemoekyun.model.User;
 
 public class UserViewModel extends BaseViewModel {
 

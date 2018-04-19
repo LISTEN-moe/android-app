@@ -1,7 +1,7 @@
 package me.echeung.moemoekyun.socket.responses;
 
 import lombok.Getter;
-import me.echeung.moemoekyun.models.User;
+import me.echeung.moemoekyun.model.User;
 
 @Getter
 public class ConnectResponse extends BaseResponse {

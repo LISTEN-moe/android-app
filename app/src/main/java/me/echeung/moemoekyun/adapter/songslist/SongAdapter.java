@@ -17,7 +17,7 @@ import java.util.Random;
 
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.SongItemBinding;
-import me.echeung.moemoekyun.models.Song;
+import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 import me.echeung.moemoekyun.utils.SongSortUtil;
 

@@ -12,7 +12,7 @@
 -keep class sun.misc.Unsafe { *; }
 
 # Application classes that will be serialized/deserialized over Gson
--keep class me.echeung.moemoekyun.models.** { *; }
+-keep class me.echeung.moemoekyun.model.** { *; }
 
 # Prevent proguard from stripping interface information from TypeAdapterFactory,
 # JsonSerializer, JsonDeserializer instances (so they can be used in @JsonAdapter)

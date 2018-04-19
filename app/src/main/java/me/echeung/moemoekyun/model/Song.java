@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.models;
+package me.echeung.moemoekyun.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

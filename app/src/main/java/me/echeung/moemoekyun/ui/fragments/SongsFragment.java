@@ -20,7 +20,7 @@ import me.echeung.moemoekyun.adapter.songslist.SongAdapter;
 import me.echeung.moemoekyun.adapter.songslist.SongList;
 import me.echeung.moemoekyun.api.callbacks.SearchCallback;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
-import me.echeung.moemoekyun.models.Song;
+import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.SongActionsUtil;
 

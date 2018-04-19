@@ -30,7 +30,7 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.callbacks.FavoriteSongCallback;
-import me.echeung.moemoekyun.models.Song;
+import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.socket.Socket;
 import me.echeung.moemoekyun.socket.responses.UpdateResponse;
 import me.echeung.moemoekyun.stream.Stream;
