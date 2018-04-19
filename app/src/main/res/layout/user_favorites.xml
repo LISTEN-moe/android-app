@@ -3,7 +3,7 @@
     xmlns:binding="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="userVm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
+        <variable name="userVm" type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
     </data>
 
     <FrameLayout

@@ -39,7 +39,7 @@ import me.echeung.moemoekyun.util.AlbumArtUtil;
 import me.echeung.moemoekyun.util.ISO8601;
 import me.echeung.moemoekyun.util.PreferenceUtil;
 import me.echeung.moemoekyun.util.SongActionsUtil;
-import me.echeung.moemoekyun.viewmodels.RadioViewModel;
+import me.echeung.moemoekyun.viewmodel.RadioViewModel;
 
 public class RadioService extends Service implements Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 

@@ -5,8 +5,8 @@
     tools:context=".ui.fragments.UserFragment">
 
     <data>
-        <variable name="radioVm" type="me.echeung.moemoekyun.viewmodels.RadioViewModel" />
-        <variable name="userVm" type="me.echeung.moemoekyun.viewmodels.UserViewModel" />
+        <variable name="radioVm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
+        <variable name="userVm" type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
     </data>
 
     <LinearLayout

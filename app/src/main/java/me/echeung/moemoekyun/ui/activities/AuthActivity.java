@@ -18,7 +18,7 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.callbacks.LoginCallback;
 import me.echeung.moemoekyun.api.callbacks.RegisterCallback;
 import me.echeung.moemoekyun.databinding.ActivityAuthBinding;
-import me.echeung.moemoekyun.viewmodels.AuthViewModel;
+import me.echeung.moemoekyun.viewmodel.AuthViewModel;
 
 public class AuthActivity extends BaseActivity {
 

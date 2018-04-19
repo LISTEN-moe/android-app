@@ -25,7 +25,7 @@ import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.model.User;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.util.SongActionsUtil;
-import me.echeung.moemoekyun.viewmodels.UserViewModel;
+import me.echeung.moemoekyun.viewmodel.UserViewModel;
 
 public class UserFragment extends Fragment implements SongList.SongListLoader {
 

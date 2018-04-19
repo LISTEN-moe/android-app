@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodels.SongListViewModel" />
+        <variable name="vm" type="me.echeung.moemoekyun.viewmodel.SongListViewModel" />
         <variable name="searchHint" type="java.lang.String" />
     </data>
 

@@ -15,9 +15,9 @@ import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.util.AuthUtil;
 import me.echeung.moemoekyun.util.PreferenceUtil;
-import me.echeung.moemoekyun.viewmodels.AuthViewModel;
-import me.echeung.moemoekyun.viewmodels.RadioViewModel;
-import me.echeung.moemoekyun.viewmodels.UserViewModel;
+import me.echeung.moemoekyun.viewmodel.AuthViewModel;
+import me.echeung.moemoekyun.viewmodel.RadioViewModel;
+import me.echeung.moemoekyun.viewmodel.UserViewModel;
 
 public class App extends Application implements ServiceConnection {
 
