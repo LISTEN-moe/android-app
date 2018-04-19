@@ -15,8 +15,8 @@ import java.lang.ref.WeakReference;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.databinding.SongsListBinding;
 import me.echeung.moemoekyun.model.Song;
-import me.echeung.moemoekyun.utils.SongActionsUtil;
-import me.echeung.moemoekyun.utils.SongSortUtil;
+import me.echeung.moemoekyun.util.SongActionsUtil;
+import me.echeung.moemoekyun.util.SongSortUtil;
 import me.echeung.moemoekyun.viewmodels.SongListViewModel;
 
 public class SongList {

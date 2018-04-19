@@ -16,9 +16,9 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.model.Event;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.model.User;
-import me.echeung.moemoekyun.utils.AlbumArtUtil;
-import me.echeung.moemoekyun.utils.PreferenceUtil;
-import me.echeung.moemoekyun.utils.ThemeUtil;
+import me.echeung.moemoekyun.util.AlbumArtUtil;
+import me.echeung.moemoekyun.util.PreferenceUtil;
+import me.echeung.moemoekyun.util.ThemeUtil;
 
 public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 

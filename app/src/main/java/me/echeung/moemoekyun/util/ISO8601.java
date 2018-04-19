@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.utils;
+package me.echeung.moemoekyun.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

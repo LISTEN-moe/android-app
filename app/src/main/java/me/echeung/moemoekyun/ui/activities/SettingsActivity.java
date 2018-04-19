@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.utils.PreferenceUtil;
+import me.echeung.moemoekyun.util.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
 

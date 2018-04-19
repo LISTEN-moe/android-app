@@ -35,10 +35,10 @@ import me.echeung.moemoekyun.socket.Socket;
 import me.echeung.moemoekyun.socket.responses.UpdateResponse;
 import me.echeung.moemoekyun.stream.Stream;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.AlbumArtUtil;
-import me.echeung.moemoekyun.utils.ISO8601;
-import me.echeung.moemoekyun.utils.PreferenceUtil;
-import me.echeung.moemoekyun.utils.SongActionsUtil;
+import me.echeung.moemoekyun.util.AlbumArtUtil;
+import me.echeung.moemoekyun.util.ISO8601;
+import me.echeung.moemoekyun.util.PreferenceUtil;
+import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodels.RadioViewModel;
 
 public class RadioService extends Service implements Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {

@@ -12,7 +12,7 @@ import me.echeung.moemoekyun.api.clients.APIClient;
 import me.echeung.moemoekyun.socket.responses.BaseResponse;
 import me.echeung.moemoekyun.socket.responses.ConnectResponse;
 import me.echeung.moemoekyun.socket.responses.UpdateResponse;
-import me.echeung.moemoekyun.utils.AuthUtil;
+import me.echeung.moemoekyun.util.AuthUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

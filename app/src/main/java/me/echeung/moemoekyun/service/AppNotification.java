@@ -14,7 +14,7 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.AlbumArtUtil;
+import me.echeung.moemoekyun.util.AlbumArtUtil;
 
 public class AppNotification {
 

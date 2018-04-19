@@ -22,7 +22,7 @@ import me.echeung.moemoekyun.api.callbacks.SearchCallback;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 import me.echeung.moemoekyun.model.Song;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
-import me.echeung.moemoekyun.utils.SongActionsUtil;
+import me.echeung.moemoekyun.util.SongActionsUtil;
 
 public class SongsFragment extends Fragment implements SongList.SongListLoader {
 

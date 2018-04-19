@@ -20,7 +20,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import me.echeung.moemoekyun.api.clients.APIClient;
-import me.echeung.moemoekyun.utils.NetworkUtil;
+import me.echeung.moemoekyun.util.NetworkUtil;
 
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
 import static com.google.android.exoplayer2.C.USAGE_MEDIA;

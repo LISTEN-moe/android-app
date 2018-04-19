@@ -16,7 +16,7 @@ import android.widget.Toast;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.service.RadioService;
-import me.echeung.moemoekyun.utils.PluralsUtil;
+import me.echeung.moemoekyun.util.PluralsUtil;
 
 public class SleepTimerDialog {
 
