@@ -19,20 +19,20 @@ public interface AuthService {
     ErrorHandlingAdapter.WrappedCall<AuthResponse> mfa(@Header("Authorization") String token, @Body LoginMfaBody body);
 
     @AllArgsConstructor
-    public class RegisterBody {
-        final String email;
-        final String username;
-        final String password;
+    class RegisterBody {
+        String email;
+        String username;
+        String password;
     }
 
     @AllArgsConstructor
-    public class LoginBody {
-        final String username;
-        final String password;
+    class LoginBody {
+        String username;
+        String password;
     }
 
     @AllArgsConstructor
-    public class LoginMfaBody {
-        final String token;
+    class LoginMfaBody {
+        String token;
     }
 }

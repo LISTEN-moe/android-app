@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.clients;
+package me.echeung.moemoekyun.stream;
 
 import android.content.Context;
 import android.net.Uri;
@@ -19,6 +19,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import me.echeung.moemoekyun.api.clients.APIClient;
 import me.echeung.moemoekyun.utils.NetworkUtil;
 
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;

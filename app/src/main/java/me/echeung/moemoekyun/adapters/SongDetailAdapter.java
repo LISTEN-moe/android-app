@@ -28,10 +28,10 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
     @NonNull
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-        final LayoutInflater inflater = LayoutInflater.from(getContext());
-        final SongDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.song_details, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        SongDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.song_details, parent, false);
 
-        final Song song = getItem(position);
+        Song song = getItem(position);
         binding.setSong(song);
         binding.setIsFavorite(song.isFavorite());
 

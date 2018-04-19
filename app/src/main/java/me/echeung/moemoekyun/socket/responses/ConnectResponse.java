@@ -1,10 +1,10 @@
-package me.echeung.moemoekyun.api.responses.socket;
+package me.echeung.moemoekyun.socket.responses;
 
 import lombok.Getter;
 import me.echeung.moemoekyun.models.User;
 
 @Getter
-public class SocketConnectResponse extends SocketBaseResponse {
+public class ConnectResponse extends BaseResponse {
     private Details d;
 
     @Getter

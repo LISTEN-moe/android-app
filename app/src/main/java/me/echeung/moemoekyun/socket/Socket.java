@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.clients;
+package me.echeung.moemoekyun.socket;
 
 import android.os.Handler;
 import android.os.SystemClock;
@@ -8,9 +8,10 @@ import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import me.echeung.moemoekyun.api.responses.socket.SocketBaseResponse;
-import me.echeung.moemoekyun.api.responses.socket.SocketConnectResponse;
-import me.echeung.moemoekyun.api.responses.socket.SocketUpdateResponse;
+import me.echeung.moemoekyun.api.clients.APIClient;
+import me.echeung.moemoekyun.socket.responses.BaseResponse;
+import me.echeung.moemoekyun.socket.responses.ConnectResponse;
+import me.echeung.moemoekyun.socket.responses.UpdateResponse;
 import me.echeung.moemoekyun.utils.AuthUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -164,17 +165,17 @@ public class Socket extends WebSocketListener {
             return;
         }
 
-        final SocketBaseResponse baseResponse = GSON.fromJson(jsonString, SocketBaseResponse.class);
+        final BaseResponse baseResponse = GSON.fromJson(jsonString, BaseResponse.class);
         switch (baseResponse.getOp()) {
             // Heartbeat init
             case 0:
-                final SocketConnectResponse connectResponse = GSON.fromJson(jsonString, SocketConnectResponse.class);
+                final ConnectResponse connectResponse = GSON.fromJson(jsonString, ConnectResponse.class);
                 heartbeat(connectResponse.getD().getHeartbeat());
                 break;
 
             // Track update
             case 1:
-                final SocketUpdateResponse updateResponse = GSON.fromJson(jsonString, SocketUpdateResponse.class);
+                final UpdateResponse updateResponse = GSON.fromJson(jsonString, UpdateResponse.class);
                 if (!updateResponse.getT().equals(TRACK_UPDATE) && !updateResponse.getT().equals(TRACK_UPDATE_REQUEST)) return;
                 listener.onSocketReceive(updateResponse.getD());
                 break;
@@ -189,7 +190,7 @@ public class Socket extends WebSocketListener {
     }
 
     public interface Listener {
-        void onSocketReceive(SocketUpdateResponse.Details info);
+        void onSocketReceive(UpdateResponse.Details info);
         void onSocketFailure();
     }
 

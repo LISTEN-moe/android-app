@@ -30,10 +30,10 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.api.callbacks.FavoriteSongCallback;
-import me.echeung.moemoekyun.api.clients.Socket;
-import me.echeung.moemoekyun.api.clients.Stream;
-import me.echeung.moemoekyun.api.responses.socket.SocketUpdateResponse;
 import me.echeung.moemoekyun.models.Song;
+import me.echeung.moemoekyun.socket.Socket;
+import me.echeung.moemoekyun.socket.responses.UpdateResponse;
+import me.echeung.moemoekyun.stream.Stream;
 import me.echeung.moemoekyun.ui.activities.MainActivity;
 import me.echeung.moemoekyun.utils.AlbumArtUtil;
 import me.echeung.moemoekyun.utils.ISO8601;
@@ -187,7 +187,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     }
 
     @Override
-    public void onSocketReceive(SocketUpdateResponse.Details info) {
+    public void onSocketReceive(UpdateResponse.Details info) {
         RadioViewModel viewModel = App.getRadioViewModel();
 
         Song song = info.getSong();

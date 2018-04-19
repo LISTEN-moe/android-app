@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.api.responses.socket;
+package me.echeung.moemoekyun.socket.responses;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import me.echeung.moemoekyun.models.Song;
 import me.echeung.moemoekyun.models.User;
 
 @Getter
-public class SocketUpdateResponse extends SocketBaseResponse {
+public class UpdateResponse extends BaseResponse {
     private String t;
     private Details d;
 
