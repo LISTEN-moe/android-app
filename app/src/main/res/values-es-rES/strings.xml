@@ -13,6 +13,7 @@
   <string name="action_unfavorite">Sacar de favoritos</string>
   <string name="action_request">Pedir</string>
   <string name="action_undo">Deshacer</string>
+  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
@@ -68,6 +69,9 @@
   <string name="requested_random_song">Haz pedido una canción aleatoria</string>
   <string name="supporter_required">Necesitas ser supporter</string>
   <!-- == Song details == -->
+  <string name="song_title">Título</string>
+  <string name="song_album">Álbum</string>
+  <string name="song_artist">Artista</string>
   <!-- == No Internet view == -->
   <string name="no_internet">No se pudo conectar a LISTEN.moe\n\nPor favor asegúrate de estar conectado a internet</string>
   <string name="retry">Reintentar</string>

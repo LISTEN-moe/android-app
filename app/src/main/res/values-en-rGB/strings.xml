@@ -13,6 +13,7 @@
   <string name="action_unfavorite">Unfavourite</string>
   <string name="action_request">Request</string>
   <string name="action_undo">Undo</string>
+  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <string name="action_library">Library mode</string>
   <string name="jpop">J-pop</string>
@@ -70,6 +71,7 @@
   <string name="requested_random_song">Requested a random song</string>
   <string name="supporter_required">Supporter status required</string>
   <!-- == Song details == -->
+  <string name="song_title">Title</string>
   <string name="song_album">Album</string>
   <string name="song_artist">Artist</string>
   <string name="song_source">Source</string>

@@ -11,6 +11,7 @@
   <string name="action_favorite">Favorit</string>
   <string name="action_unfavorite">Ta bort favorit</string>
   <string name="action_undo">Ångra</string>
+  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="set">Starta</string>

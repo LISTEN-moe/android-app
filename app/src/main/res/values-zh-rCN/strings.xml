@@ -13,7 +13,11 @@
   <string name="action_unfavorite">取消喜爱</string>
   <string name="action_request">请求</string>
   <string name="action_undo">撤销</string>
+  <!-- == Google Cast == -->
   <!-- == Library modes == -->
+  <string name="action_library">库模式</string>
+  <string name="jpop">日本流行音乐</string>
+  <string name="kpop">韩国流行音乐</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">睡眠定时停止播放</string>
   <string name="set">设定</string>
@@ -44,8 +48,11 @@
   <string name="logout_confirmation">您确定要登出吗？</string>
   <string name="logged_out">以登出</string>
   <string name="login_required">登录来使用这个功能</string>
+  <string name="required">必填</string>
+  <string name="password_mismatch">密码不匹配</string>
   <!-- == Radio tab == -->
   <string name="play_pause">播放/暂停</string>
+  <string name="last_played">上次播放</string>
   <string name="favorite">我的最爱</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">请求者：%s</string>
@@ -64,6 +71,15 @@
   <string name="requested_random_song">请求一首随机歌曲</string>
   <string name="supporter_required">需要支持者的状态</string>
   <!-- == Song details == -->
+  <string name="song_title">标题</string>
+  <string name="song_album">专辑</string>
+  <string name="song_artist">艺术家</string>
+  <string name="song_source">源</string>
+  <string name="song_duration">时长</string>
+  <string name="song_release_date">发行日期</string>
+  <string name="song_uploader">上传者</string>
+  <string name="song_last_played">上次播放</string>
+  <string name="song_tags">标签</string>
   <!-- == No Internet view == -->
   <string name="no_internet">无法连接到 LISTEN.moe\n\n请检查您的 Internet 连接</string>
   <string name="retry">重试</string>
@@ -106,4 +122,6 @@
   <string name="pref_header_color">颜色</string>
   <string name="pref_title_color_now_playing">根据封面专辑适应 “正在播放” 颜色</string>
   <string name="pref_title_color_navbar">沉浸式屏幕导航栏</string>
+  <string name="pref_header_advanced">高级</string>
+  <string name="pref_title_advanced_clear_image_cache">清除图片缓存</string>
 </resources>
