@@ -22,7 +22,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.model.Song;
+import me.echeung.moemoekyun.client.model.Song;
 
 public final class AlbumArtUtil {
 

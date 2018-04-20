@@ -22,7 +22,7 @@ import me.echeung.moemoekyun.util.ThemeUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
 
-    private WeakReference<Context> contextRef;
+    private final WeakReference<Context> contextRef;
 
     public BaseViewModel(Context context) {
         this.contextRef = new WeakReference<>(context);

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-        <variable name="song" type="me.echeung.moemoekyun.model.Song" />
+        <variable name="song" type="me.echeung.moemoekyun.client.model.Song" />
     </data>
 
     <LinearLayout

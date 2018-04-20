@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.api.callback.LoginCallback;
-import me.echeung.moemoekyun.api.callback.RegisterCallback;
+import me.echeung.moemoekyun.client.api.callback.LoginCallback;
+import me.echeung.moemoekyun.client.api.callback.RegisterCallback;
 import me.echeung.moemoekyun.databinding.ActivityAuthBinding;
 import me.echeung.moemoekyun.ui.base.BaseActivity;
 import me.echeung.moemoekyun.viewmodel.AuthViewModel;
