@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="pref_key_general_theme">pref_general_theme</string>
+    <string name="pref_key_general_language">pref_general_language</string>
+    <string name="pref_key_general_download">pref_general_download</string>
+    <string name="pref_key_general_broadcast_intent">pref_general_broadcast_intent</string>
+    <string name="pref_key_general_romaji">pref_general_romaji</string>
+    <string name="pref_key_general_random_request_title">pref_general_random_request_title</string>
+
+    <string name="pref_key_audio_pause_on_noisy">pref_audio_pause_on_noisy</string>
+    <string name="pref_key_audio_duck">pref_audio_duck</string>
+    <string name="pref_key_audio_pause_on_loss">pref_audio_pause_on_loss</string>
+
+    <string name="pref_key_lockscreen_albumart">pref_lockscreen_albumart</string>
+
+    <string name="pref_key_color_now_playing">pref_color_now_playing</string>
+    <string name="pref_key_color_navbar">pref_color_navbar</string>
+
+    <string name="pref_key_advanced_clear_image_cache">pref_advanced_clear_image_cache</string>
+
+    <string name="pref_value_theme_default">four</string>
+    <string name="pref_value_theme_blue">blue</string>
+    <string name="pref_value_theme_legacy">three</string>
+    <string name="pref_value_theme_christmas">christmas</string>
+
+    <string name="pref_value_download_always">always</string>
+    <string name="pref_value_download_wifi">wifi</string>
+    <string name="pref_value_download_never">never</string>
+
+    <string name="library_mode">library_mode</string>
+    <string name="now_playing_expanded">now_playing_expanded</string>
+    <string name="sleep_timer_mins">pref_sleep_timer</string>
+
+</resources>

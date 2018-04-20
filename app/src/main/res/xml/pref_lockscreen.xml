@@ -5,8 +5,8 @@
         android:title="@string/pref_header_lockscreen">
 
         <android.support.v7.preference.SwitchPreferenceCompat
+            android:key="@string/pref_key_lockscreen_albumart"
             android:defaultValue="true"
-            android:key="pref_lockscreen_albumart"
             android:title="@string/pref_title_lockscreen_albumart"
             android:summary="@string/pref_title_lockscreen_albumart_summary" />
 

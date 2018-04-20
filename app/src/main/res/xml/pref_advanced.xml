@@ -5,7 +5,7 @@
         android:title="@string/pref_header_advanced">
 
         <android.support.v7.preference.Preference
-            android:key="pref_advanced_clear_image_cache"
+            android:key="@string/pref_key_advanced_clear_image_cache"
             android:title="@string/pref_title_advanced_clear_image_cache" />
 
     </android.support.v7.preference.PreferenceCategory>

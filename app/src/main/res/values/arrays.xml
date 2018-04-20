@@ -9,10 +9,10 @@
     </string-array>
 
     <string-array name="pref_theme_codes">
-        <item>four</item>
-        <item>blue</item>
-        <item>three</item>
-        <item>christmas</item>
+        <item>@string/pref_value_theme_legacy</item>
+        <item>@string/pref_value_theme_blue</item>
+        <item>@string/pref_value_theme_legacy</item>
+        <item>@string/pref_value_theme_christmas</item>
     </string-array>
 
     <string-array name="pref_language_names">
@@ -54,9 +54,9 @@
     </string-array>
 
     <string-array name="pref_download_codes">
-        <item>always</item>
-        <item>wifi</item>
-        <item>never</item>
+        <item>@string/pref_value_download_always</item>
+        <item>@string/pref_value_download_wifi</item>
+        <item>@string/pref_value_download_never</item>
     </string-array>
 
 </resources>
