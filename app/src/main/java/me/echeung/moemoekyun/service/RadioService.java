@@ -590,6 +590,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
      *
      * @param action The broadcast event.
      */
+    @SuppressWarnings("deprecation")
     public void sendPublicIntent(String action) {
         Song song = App.getRadioViewModel().getCurrentSong();
         if (song == null || !App.getPreferenceUtil().shouldBroadcastIntent()) return;

@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+import java.util.Locale;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,11 +53,11 @@ public class Song implements Parcelable {
         long minutes = duration / 60;
         long seconds = duration % 60;
         if (minutes < 60) {
-            return String.format("%01d:%02d", minutes, seconds);
+            return String.format(Locale.getDefault(), "%01d:%02d", minutes, seconds);
         } else {
             long hours = minutes / 60;
             minutes = minutes % 60;
-            return String.format("%d:%02d:%02d", hours, minutes, seconds);
+            return String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds);
         }
     }
 
@@ -156,6 +157,7 @@ public class Song implements Parcelable {
         parcel.writeByte(favorite ? (byte) 1 : 0);
     }
 
+    @SuppressWarnings("unchecked")
     public Song(Parcel in) {
         this.id = in.readInt();
         this.title = in.readString();
