@@ -7,7 +7,7 @@
         <variable name="vm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
     </data>
 
-    <me.echeung.moemoekyun.ui.views.SquareLayout
+    <me.echeung.moemoekyun.ui.view.SquareLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -39,6 +39,6 @@
 
         </android.support.v7.widget.CardView>
 
-    </me.echeung.moemoekyun.ui.views.SquareLayout>
+    </me.echeung.moemoekyun.ui.view.SquareLayout>
 
 </layout>

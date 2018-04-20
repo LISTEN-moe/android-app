@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:binding="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.activities.MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
     <data>
         <variable name="vm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />

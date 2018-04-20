@@ -8,10 +8,10 @@ import com.google.gson.Gson;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import me.echeung.moemoekyun.api.clients.APIClient;
-import me.echeung.moemoekyun.socket.responses.BaseResponse;
-import me.echeung.moemoekyun.socket.responses.ConnectResponse;
-import me.echeung.moemoekyun.socket.responses.UpdateResponse;
+import me.echeung.moemoekyun.api.client.APIClient;
+import me.echeung.moemoekyun.socket.response.BaseResponse;
+import me.echeung.moemoekyun.socket.response.ConnectResponse;
+import me.echeung.moemoekyun.socket.response.UpdateResponse;
 import me.echeung.moemoekyun.util.AuthUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

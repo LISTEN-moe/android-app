@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import me.echeung.moemoekyun.api.endpoints.Library;
+import me.echeung.moemoekyun.api.library.Library;
 
 @Getter
 @EqualsAndHashCode

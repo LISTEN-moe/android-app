@@ -5,8 +5,8 @@ import android.util.Log;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import me.echeung.moemoekyun.api.callbacks.SongsCallback;
-import me.echeung.moemoekyun.api.clients.APIClient;
+import me.echeung.moemoekyun.api.callback.SongsCallback;
+import me.echeung.moemoekyun.api.client.APIClient;
 import me.echeung.moemoekyun.model.SongListItem;
 
 /**

@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.ui.fragments.SongsFragment;
-import me.echeung.moemoekyun.ui.fragments.UserFragment;
+import me.echeung.moemoekyun.ui.fragment.SongsFragment;
+import me.echeung.moemoekyun.ui.fragment.UserFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

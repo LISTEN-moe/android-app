@@ -9,9 +9,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import lombok.RequiredArgsConstructor;
-import me.echeung.moemoekyun.api.callbacks.BaseCallback;
-import me.echeung.moemoekyun.api.clients.APIClient;
-import me.echeung.moemoekyun.api.responses.BaseResponse;
+import me.echeung.moemoekyun.api.callback.BaseCallback;
+import me.echeung.moemoekyun.api.client.APIClient;
+import me.echeung.moemoekyun.api.response.BaseResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.CallAdapter;
