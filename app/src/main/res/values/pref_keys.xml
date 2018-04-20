@@ -24,12 +24,14 @@
     <string name="pref_value_theme_legacy">three</string>
     <string name="pref_value_theme_christmas">christmas</string>
 
+    <string name="pref_value_language_default">default</string>
+
     <string name="pref_value_download_always">always</string>
     <string name="pref_value_download_wifi">wifi</string>
     <string name="pref_value_download_never">never</string>
 
-    <string name="library_mode">library_mode</string>
-    <string name="now_playing_expanded">now_playing_expanded</string>
-    <string name="sleep_timer_mins">pref_sleep_timer</string>
+    <string name="setting_library_mode">library_mode</string>
+    <string name="setting_now_playing_expanded">now_playing_expanded</string>
+    <string name="setting_sleep_timer_mins">pref_sleep_timer</string>
 
 </resources>

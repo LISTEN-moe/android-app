@@ -6,13 +6,13 @@
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_color_now_playing"
-            android:defaultValue="true"
-            android:title="@string/pref_title_color_now_playing" />
+            android:title="@string/pref_title_color_now_playing"
+            android:defaultValue="true" />
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_color_navbar"
-            android:defaultValue="false"
-            android:title="@string/pref_title_color_navbar" />
+            android:title="@string/pref_title_color_navbar"
+            android:defaultValue="false" />
 
     </android.support.v7.preference.PreferenceCategory>
 

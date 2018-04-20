@@ -9,27 +9,27 @@
             android:title="@string/pref_title_theme"
             android:entries="@array/pref_theme_names"
             android:entryValues="@array/pref_theme_codes"
-            android:defaultValue="four" />
+            android:defaultValue="@string/pref_value_theme_default" />
 
         <android.support.v7.preference.ListPreference
             android:key="@string/pref_key_general_language"
             android:title="@string/pref_title_language"
             android:entries="@array/pref_language_names"
             android:entryValues="@array/pref_language_codes"
-            android:defaultValue="default" />
+            android:defaultValue="@string/pref_value_language_default" />
 
         <android.support.v7.preference.ListPreference
             android:key="@string/pref_key_general_download"
             android:title="@string/pref_title_general_download"
             android:entries="@array/pref_download_names"
             android:entryValues="@array/pref_download_codes"
-            android:defaultValue="always" />
+            android:defaultValue="@string/pref_value_download_always" />
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_general_broadcast_intent"
-            android:defaultValue="false"
             android:title="@string/pref_title_general_broadcast_intent"
-            android:summary="@string/pref_title_general_broadcast_intent_summary" />
+            android:summary="@string/pref_title_general_broadcast_intent_summary"
+            android:defaultValue="false" />
 
         <!--<android.support.v7.preference.SwitchPreferenceCompat-->
             <!--android:key="@string/pref_key_general_romaji"-->
@@ -39,8 +39,8 @@
 
         <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_general_random_request_title"
-            android:defaultValue="true"
-            android:title="@string/pref_title_general_random_request_title" />
+            android:title="@string/pref_title_general_random_request_title"
+            android:defaultValue="true" />
 
     </android.support.v7.preference.PreferenceCategory>
 
