@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util;
+package me.echeung.moemoekyun.util.system;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 // Based on https://stackoverflow.com/a/10621553
-public final class ISO8601 {
+public final class TimeUtil {
 
     // Example string: "2018-01-20T10:36:35.680Z"
     public static Calendar toCalendar(String iso8601string) throws ParseException {

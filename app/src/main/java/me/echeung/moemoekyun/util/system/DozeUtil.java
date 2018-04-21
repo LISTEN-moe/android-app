@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util;
+package me.echeung.moemoekyun.util.system;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,7 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.provider.Settings;
 
-public class DozeUtil {
+public final class DozeUtil {
 
     public static boolean isWhitelisted(Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

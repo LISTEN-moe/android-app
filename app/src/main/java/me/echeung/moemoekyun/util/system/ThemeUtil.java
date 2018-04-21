@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util;
+package me.echeung.moemoekyun.util.system;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,6 +10,7 @@ import android.util.TypedValue;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.util.PreferenceUtil;
 
 public final class ThemeUtil {
 

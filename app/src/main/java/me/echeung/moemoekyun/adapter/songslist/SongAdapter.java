@@ -19,7 +19,6 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.SongItemBinding;
 import me.echeung.moemoekyun.util.SongActionsUtil;
-import me.echeung.moemoekyun.util.SongSortUtil;
 
 public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 

@@ -36,9 +36,9 @@ import me.echeung.moemoekyun.client.socket.response.UpdateResponse;
 import me.echeung.moemoekyun.client.stream.Stream;
 import me.echeung.moemoekyun.ui.activity.MainActivity;
 import me.echeung.moemoekyun.util.AlbumArtUtil;
-import me.echeung.moemoekyun.util.ISO8601;
 import me.echeung.moemoekyun.util.PreferenceUtil;
 import me.echeung.moemoekyun.util.SongActionsUtil;
+import me.echeung.moemoekyun.util.system.TimeUtil;
 import me.echeung.moemoekyun.viewmodel.RadioViewModel;
 
 public class RadioService extends Service implements Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -194,7 +194,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         viewModel.setCurrentSong(song);
 
         try {
-            this.trackStartTime = ISO8601.toCalendar(info.getStartTime());
+            this.trackStartTime = TimeUtil.toCalendar(info.getStartTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }

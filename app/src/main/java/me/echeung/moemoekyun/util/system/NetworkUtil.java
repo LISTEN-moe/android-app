@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util;
+package me.echeung.moemoekyun.util.system;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

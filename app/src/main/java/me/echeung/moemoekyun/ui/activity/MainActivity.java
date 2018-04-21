@@ -31,9 +31,9 @@ import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.base.BaseActivity;
 import me.echeung.moemoekyun.ui.dialog.SleepTimerDialog;
-import me.echeung.moemoekyun.util.DozeUtil;
-import me.echeung.moemoekyun.util.NetworkUtil;
 import me.echeung.moemoekyun.util.SongActionsUtil;
+import me.echeung.moemoekyun.util.system.DozeUtil;
+import me.echeung.moemoekyun.util.system.NetworkUtil;
 import me.echeung.moemoekyun.viewmodel.RadioViewModel;
 
 public class MainActivity extends BaseActivity {

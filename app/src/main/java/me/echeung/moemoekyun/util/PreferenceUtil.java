@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.client.api.library.Jpop;
+import me.echeung.moemoekyun.util.system.LocaleUtil;
+import me.echeung.moemoekyun.util.system.NetworkUtil;
 
 public final class PreferenceUtil {
 

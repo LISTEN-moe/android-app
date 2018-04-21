@@ -38,7 +38,7 @@ import me.echeung.moemoekyun.client.model.SongListItem;
 import me.echeung.moemoekyun.client.socket.Socket;
 import me.echeung.moemoekyun.client.stream.Stream;
 import me.echeung.moemoekyun.util.AuthUtil;
-import me.echeung.moemoekyun.util.NetworkUtil;
+import me.echeung.moemoekyun.util.system.NetworkUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;

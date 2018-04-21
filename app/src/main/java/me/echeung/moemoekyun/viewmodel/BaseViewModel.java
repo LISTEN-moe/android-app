@@ -17,8 +17,8 @@ import java.lang.ref.WeakReference;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
-import me.echeung.moemoekyun.util.LocaleUtil;
-import me.echeung.moemoekyun.util.ThemeUtil;
+import me.echeung.moemoekyun.util.system.LocaleUtil;
+import me.echeung.moemoekyun.util.system.ThemeUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
 

@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util;
+package me.echeung.moemoekyun.util.system;
 
 import android.app.Activity;
 import android.content.Context;
