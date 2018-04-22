@@ -1,25 +1,18 @@
 package me.echeung.moemoekyun.client.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.List;
 import java.util.Locale;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import me.echeung.moemoekyun.client.api.library.Library;
 
 @Getter
 @EqualsAndHashCode
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class Song implements Parcelable {
+public class Song {
     private int id;
     private String title;
     private String titleRomaji;
@@ -133,56 +126,4 @@ public class Song implements Parcelable {
 
         return false;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(id);
-        parcel.writeString(title);
-        parcel.writeString(titleRomaji);
-        parcel.writeString(titleSearchRomaji);
-        parcel.writeTypedList(albums);
-        parcel.writeTypedList(artists);
-        parcel.writeTypedList(sources);
-        parcel.writeStringList(groups);
-        parcel.writeStringList(tags);
-        parcel.writeString(notes);
-        parcel.writeInt(duration);
-        parcel.writeByte(enabled ? (byte) 1 : 0);
-        parcel.writeParcelable(uploader, 0);
-        parcel.writeByte(favorite ? (byte) 1 : 0);
-    }
-
-    @SuppressWarnings("unchecked")
-    public Song(Parcel in) {
-        this.id = in.readInt();
-        this.title = in.readString();
-        this.titleRomaji = in.readString();
-        this.titleSearchRomaji = in.readString();
-        in.readTypedList(this.albums, SongDescriptor.CREATOR);
-        in.readTypedList(this.artists, SongDescriptor.CREATOR);
-        in.readTypedList(this.sources, SongDescriptor.CREATOR);
-        in.readStringList(this.groups);
-        in.readStringList(this.tags);
-        this.notes = in.readString();
-        this.duration = in.readInt();
-        this.enabled = in.readByte() == 1;
-        this.uploader = in.readParcelable(User.class.getClassLoader());
-        this.favorite = in.readByte() == 1;
-    }
-
-    public static final Creator CREATOR = new Creator() {
-        public Song createFromParcel(Parcel in) {
-            return new Song(in);
-        }
-
-        public Song[] newArray(int size) {
-            return new Song[size];
-        }
-    };
-
 }
