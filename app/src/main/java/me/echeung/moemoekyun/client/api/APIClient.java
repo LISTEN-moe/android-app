@@ -42,7 +42,7 @@ import me.echeung.moemoekyun.util.system.NetworkUtil;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class APIClient {
 
@@ -102,7 +102,7 @@ public class APIClient {
                 .baseUrl(Library.API_BASE)
                 .client(okHttpClient)
                 .addCallAdapterFactory(new ErrorHandlingAdapter.ErrorHandlingCallAdapterFactory())
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create())
                 .build();
 
         artistsService = retrofit.create(ArtistsService.class);
