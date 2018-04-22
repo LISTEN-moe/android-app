@@ -98,8 +98,9 @@ public class AppNotification {
             service.startForeground(NOTIFICATION_ID, notification);
         } else {
             service.stopForeground(false);
-            notificationManager.notify(NOTIFICATION_ID, notification);
         }
+
+        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
     private Song getCurrentSong() {
