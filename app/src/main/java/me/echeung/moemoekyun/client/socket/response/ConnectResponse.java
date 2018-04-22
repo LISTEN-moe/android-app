@@ -8,7 +8,7 @@ public class ConnectResponse extends BaseResponse {
     private Details d;
 
     @Getter
-    public class Details {
+    public static class Details {
         private int heartbeat;
         private String message;
         private User user;

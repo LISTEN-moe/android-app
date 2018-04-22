@@ -13,7 +13,7 @@ public class UpdateResponse extends BaseResponse {
     private Details d;
 
     @Getter
-    public class Details {
+    public static class Details {
         private Song song;
         private String startTime;
         private List<Song> lastPlayed;
@@ -24,7 +24,7 @@ public class UpdateResponse extends BaseResponse {
     }
 
     @Getter
-    public class Queue {
+    public static class Queue {
         private int inQueue;
         private int inQueueByUser;
         private int inQueueBeforeUser;

@@ -93,7 +93,6 @@ dependencies {
 
     final retrofit_version = '2.4.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     final lombok_version = '1.16.20'

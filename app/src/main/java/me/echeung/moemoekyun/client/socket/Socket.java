@@ -4,7 +4,9 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.google.gson.Gson;
+import com.squareup.moshi.Moshi;
+
+import java.io.IOException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -24,7 +26,7 @@ public class Socket extends WebSocketListener {
 
     private static final String TAG = Socket.class.getSimpleName();
 
-    private static final Gson GSON = new Gson();
+    private static final Moshi MOSHI = new Moshi.Builder().build();
 
     private static final String TRACK_UPDATE = "TRACK_UPDATE";
     private static final String TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST";
@@ -154,7 +156,7 @@ public class Socket extends WebSocketListener {
         }
     }
 
-    private void parseWebSocketResponse( String jsonString) {
+    private void parseWebSocketResponse(String jsonString) {
         if (listener == null) {
             Log.d(TAG, "Listener is null");
             return;
@@ -165,27 +167,32 @@ public class Socket extends WebSocketListener {
             return;
         }
 
-        final BaseResponse baseResponse = GSON.fromJson(jsonString, BaseResponse.class);
-        switch (baseResponse.getOp()) {
-            // Heartbeat init
-            case 0:
-                final ConnectResponse connectResponse = GSON.fromJson(jsonString, ConnectResponse.class);
-                heartbeat(connectResponse.getD().getHeartbeat());
-                break;
+        try {
+            final BaseResponse baseResponse = MOSHI.adapter(BaseResponse.class).fromJson(jsonString);
+            switch (baseResponse.getOp()) {
+                // Heartbeat init
+                case 0:
+                    final ConnectResponse connectResponse = MOSHI.adapter(ConnectResponse.class).fromJson(jsonString);
+                    heartbeat(connectResponse.getD().getHeartbeat());
+                    break;
 
-            // Track update
-            case 1:
-                final UpdateResponse updateResponse = GSON.fromJson(jsonString, UpdateResponse.class);
-                if (!updateResponse.getT().equals(TRACK_UPDATE) && !updateResponse.getT().equals(TRACK_UPDATE_REQUEST)) return;
-                listener.onSocketReceive(updateResponse.getD());
-                break;
+                // Track update
+                case 1:
+                    final UpdateResponse updateResponse = MOSHI.adapter(UpdateResponse.class).fromJson(jsonString);
+                    if (!updateResponse.getT().equals(TRACK_UPDATE) && !updateResponse.getT().equals(TRACK_UPDATE_REQUEST))
+                        return;
+                    listener.onSocketReceive(updateResponse.getD());
+                    break;
 
-            // Heartbeat ACK
-            case 10:
-                break;
+                // Heartbeat ACK
+                case 10:
+                    break;
 
-            default:
-                Log.d(TAG, "Received invalid socket data: " + jsonString);
+                default:
+                    Log.d(TAG, "Received invalid socket data: " + jsonString);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to parse socket data: " + jsonString, e);
         }
     }
 

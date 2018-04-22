@@ -17,7 +17,7 @@ public class Artist {
     private List<Object> songs;
 
     @Getter
-    public class Album {
+    public static class Album {
         private ArtistAlbum artistAlbum;
         private int id;
         private String image;
@@ -34,7 +34,7 @@ public class Artist {
     }
 
     @Getter
-    public class Song {
+    public static class Song {
         private List<AlbumSummary> albums;
         private ArtistSong artistSong;
         private List<ArtistSummary> artists;
@@ -47,20 +47,20 @@ public class Artist {
         private User uploader;
 
         @Getter
-        public class AlbumSummary {
+        public static class AlbumSummary {
             private int albumId;
             private int songId;
             private int trackNumber;
         }
 
         @Getter
-        public class ArtistSong {
+        public static class ArtistSong {
             private int artistId;
             private int songId;
         }
 
         @Getter
-        public class ArtistSummary {
+        public static class ArtistSummary {
             private ArtistSong artistSong;
             private int id;
             private String name;
