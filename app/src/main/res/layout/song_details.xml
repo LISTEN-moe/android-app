@@ -4,6 +4,7 @@
 
     <data>
         <variable name="song" type="me.echeung.moemoekyun.client.model.Song" />
+        <variable name="isAuthenticated" type="boolean" />
         <variable name="isFavorite" type="boolean" />
     </data>
 
@@ -34,7 +35,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="@{isAuthenticated}">
 
                 <ImageView
                     android:id="@+id/request_btn"

@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 
 import java.util.List;
 
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.SongDetailsBinding;
@@ -33,6 +34,7 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
 
         Song song = getItem(position);
         binding.setSong(song);
+        binding.setIsAuthenticated(App.getAuthUtil().isAuthenticated());
         binding.setIsFavorite(song.isFavorite());
 
         binding.requestBtn.setOnClickListener(view -> {
