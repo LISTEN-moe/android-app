@@ -303,7 +303,7 @@ public class APIClient {
             return;
         }
 
-        requestsService.request(authUtil.getAuthTokenWithPrefix(), songId)
+        requestsService.request(authUtil.getAuthTokenWithPrefix(), library.getName(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
                     public void success(BaseResponse response) {
