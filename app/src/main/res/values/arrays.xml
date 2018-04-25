@@ -9,7 +9,7 @@
     </string-array>
 
     <string-array name="pref_theme_codes">
-        <item>@string/pref_value_theme_legacy</item>
+        <item>@string/pref_value_theme_default</item>
         <item>@string/pref_value_theme_blue</item>
         <item>@string/pref_value_theme_legacy</item>
         <item>@string/pref_value_theme_christmas</item>
