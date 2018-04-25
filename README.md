@@ -30,12 +30,6 @@ This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/stor
 - [Android Studio](https://developer.android.com/studio/index.html)
 - [Lombok Plugin](https://projectlombok.org/setup/android#android-studio) for Android Studio
 
-### Project structure
-
-The project contains 2 submodules:
-- `app`: The Android app itself.
-- `listenmoe-api`: An Android library that wraps the [LISTEN.moe API](https://listen-moe.github.io/documentation/), including the websocket and stream.
-
 ### Translations
 
 Translations are crowdsourced through [CrowdIn](https://crwd.in/listenmoe-android-app) and managed by [@arkon](https://github.com/arkon/).
