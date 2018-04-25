@@ -15,16 +15,23 @@
         android:paddingEnd="@dimen/activity_horizontal_margin"
         android:paddingStart="@dimen/activity_horizontal_margin">
 
-        <include
-            android:id="@+id/radio_album_art"
-            layout="@layout/album_art_card"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/radio_album_art_wrapper"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/radio_songs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            binding:vm="@{vm}" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                layout="@layout/album_art_card"
+                binding:vm="@{vm}" />
+
+        </RelativeLayout>
 
         <include
             android:id="@+id/radio_songs"
@@ -34,7 +41,7 @@
             app:layout_constraintBottom_toTopOf="@+id/radio_controls"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radio_album_art"
+            app:layout_constraintTop_toBottomOf="@+id/radio_album_art_wrapper"
             binding:vm="@{vm}" />
 
         <include
