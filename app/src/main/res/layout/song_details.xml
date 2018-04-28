@@ -38,24 +38,24 @@
                 android:orientation="horizontal"
                 android:visibility="@{isAuthenticated}">
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/request_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:background="@drawable/round_selector"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/action_request"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_play_arrow_white_24dp"
                     android:tint="@color/white" />
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/favorite_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:background="@drawable/round_selector"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@{isFavorite ? @string/action_unfavorite : @string/action_favorite}"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
