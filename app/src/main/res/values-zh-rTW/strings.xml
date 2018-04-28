@@ -12,7 +12,6 @@
   <string name="action_unfavorite">從最愛刪除</string>
   <string name="action_request">點歌</string>
   <string name="action_undo">取消</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="sleep_timer">睡眠計時</string>

@@ -12,7 +12,6 @@
   <string name="action_unfavorite">Remover dos favoritos</string>
   <string name="action_request">Solicitar</string>
   <string name="action_undo">Anular</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Temporizador de espera</string>

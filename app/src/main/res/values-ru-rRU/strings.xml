@@ -13,7 +13,6 @@
   <string name="action_unfavorite">Удалить из избранного</string>
   <string name="action_request">Запросить</string>
   <string name="action_undo">Отменить</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <string name="action_library">Жанр музыки</string>
   <string name="jpop">J-Pop</string>

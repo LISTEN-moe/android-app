@@ -13,7 +13,6 @@
   <string name="action_unfavorite">Retirer des favoris</string>
   <string name="action_request">Requête</string>
   <string name="action_undo">Annuler</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <string name="action_library">Mode bibliothèque</string>
   <string name="jpop">J-pop</string>

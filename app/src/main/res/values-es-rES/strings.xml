@@ -13,7 +13,6 @@
   <string name="action_unfavorite">Sacar de favoritos</string>
   <string name="action_request">Pedir</string>
   <string name="action_undo">Deshacer</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>

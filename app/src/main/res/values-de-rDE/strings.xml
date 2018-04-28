@@ -13,7 +13,6 @@
   <string name="action_unfavorite">Favorit entfernen</string>
   <string name="action_request">Musikwunsch</string>
   <string name="action_undo">Rückgängig</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <string name="action_library">Sammlungsmodus</string>
   <string name="jpop">J-Pop</string>

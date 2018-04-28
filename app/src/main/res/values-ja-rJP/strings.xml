@@ -12,7 +12,6 @@
   <string name="action_unfavorite">お気に入りから削除</string>
   <string name="action_request">リクエスト</string>
   <string name="action_undo">アンドゥ</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="sleep_timer">スリープタイマー</string>

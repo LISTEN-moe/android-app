@@ -13,7 +13,6 @@
   <string name="action_unfavorite">取消喜爱</string>
   <string name="action_request">请求</string>
   <string name="action_undo">撤销</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <string name="action_library">库模式</string>
   <string name="jpop">日本流行音乐</string>

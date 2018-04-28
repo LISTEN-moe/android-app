@@ -12,7 +12,6 @@
   <string name="action_unfavorite">Verwijder als favoriet</string>
   <string name="action_request">Aanvragen</string>
   <string name="action_undo">Ongedaan maken</string>
-  <!-- == Google Cast == -->
   <!-- == Library modes == -->
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Slaaptimer</string>
