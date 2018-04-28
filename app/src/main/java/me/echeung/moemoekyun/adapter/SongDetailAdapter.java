@@ -30,7 +30,15 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        SongDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.song_details, parent, false);
+        SongDetailsBinding binding;
+
+        if (convertView == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.song_details, parent, false);
+            convertView = binding.getRoot();
+            convertView.setTag(binding);
+        } else {
+            binding = (SongDetailsBinding) convertView.getTag();
+        }
 
         Song song = getItem(position);
         binding.setSong(song);
