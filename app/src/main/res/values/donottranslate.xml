@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name" translatable="false">LISTEN.moe</string>
+    <string name="asset_statements" translatable="false">
+    [{
+        \"include\": \"https://listen.moe/.well-known/assetlinks.json\"
+    }]
+    </string>
+
+    <string name="media_route_menu_title" translatable="false">Cast</string>
+
+    <string name="translators_list" translatable="false">
+        anonymousthing
+        \nCalvin_c64
+        \nCrawl
+        \ncshih.calvin
+        \ndeletescape
+        \nhazexcs_jmt
+        \njimimbi97
+        \nKana
+        \nKayo
+        \nLiliace
+        \nMiinc
+        \nNogooduser
+        \nNoobping
+        \nPraxic
+        \nRainBee
+        \nRuslan Nurislamov
+        \nsakaikazuki
+        \nvzwGrey
+        \nwongtszwing87
+    </string>
+
+    <string-array name="pref_theme_names" translatable="false">
+        <item>3.0+1.0</item>
+        <item>Blue</item>
+        <item>Legacy</item>
+        <item>Christmas</item>
+    </string-array>
+
+    <string-array name="pref_theme_codes" translatable="false">
+        <item>@string/pref_value_theme_default</item>
+        <item>@string/pref_value_theme_blue</item>
+        <item>@string/pref_value_theme_legacy</item>
+        <item>@string/pref_value_theme_christmas</item>
+    </string-array>
+
+    <string-array name="pref_language_names" translatable="false">
+        <item>@string/system_default</item>
+        <item>Deutsch</item>
+        <item>English (UK)</item>
+        <item>English (US)</item>
+        <item>Español</item>
+        <item>Français</item>
+        <item>Nederlands</item>
+        <item>Svenska</item>
+        <item>Português</item>
+        <item>Русский</item>
+        <item>日本語</item>
+        <item>简体中文</item>
+        <item>繁體中文</item>
+    </string-array>
+
+    <string-array name="pref_language_codes" translatable="false">
+        <item>default</item>
+        <item>de</item>
+        <item>en-rGB</item>
+        <item>en-rUS</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>nl</item>
+        <item>sv</item>
+        <item>pt</item>
+        <item>ru</item>
+        <item>ja</item>
+        <item>zh-rCN</item>
+        <item>zh-rTW</item>
+    </string-array>
+
+    <string-array name="pref_download_codes" translatable="false">
+        <item>@string/pref_value_download_always</item>
+        <item>@string/pref_value_download_wifi</item>
+        <item>@string/pref_value_download_never</item>
+    </string-array>
+
+</resources>

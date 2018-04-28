@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name" translatable="false">LISTEN.moe</string>
-    <string name="asset_statements" translatable="false">
-    [{
-        \"include\": \"https://listen.moe/.well-known/assetlinks.json\"
-    }]
-    </string>
-
-
     <!-- == Generic strings == -->
 
     <string name="submit">Submit</string>
@@ -25,11 +17,6 @@
     <string name="action_unfavorite">Unfavorite</string>
     <string name="action_request">Request</string>
     <string name="action_undo">Undo</string>
-
-
-    <!-- == Google Cast == -->
-
-    <string name="media_route_menu_title" translatable="false">Cast</string>
 
 
     <!-- == Library modes == -->
@@ -146,28 +133,6 @@
     <string name="play_history">Song history</string>
     <string name="discord">Join us on Discord</string>
     <string name="patreon">Support on Patreon</string>
-
-    <string name="translators_list" translatable="false">
-        anonymousthing
-        \nCalvin_c64
-        \nCrawl
-        \ncshih.calvin
-        \ndeletescape
-        \nhazexcs_jmt
-        \njimimbi97
-        \nKana
-        \nKayo
-        \nLiliace
-        \nMiinc
-        \nNogooduser
-        \nNoobping
-        \nPraxic
-        \nRainBee
-        \nRuslan Nurislamov
-        \nsakaikazuki
-        \nvzwGrey
-        \nwongtszwing87
-    </string>
 
 
     <!-- == Settings == -->

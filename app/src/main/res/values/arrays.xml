@@ -1,62 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string-array name="pref_theme_names">
-        <item>3.0+1.0</item>
-        <item>Blue</item>
-        <item>Legacy</item>
-        <item>Christmas</item>
-    </string-array>
-
-    <string-array name="pref_theme_codes">
-        <item>@string/pref_value_theme_default</item>
-        <item>@string/pref_value_theme_blue</item>
-        <item>@string/pref_value_theme_legacy</item>
-        <item>@string/pref_value_theme_christmas</item>
-    </string-array>
-
-    <string-array name="pref_language_names">
-        <item>@string/system_default</item>
-        <item>Deutsch</item>
-        <item>English (UK)</item>
-        <item>English (US)</item>
-        <item>Español</item>
-        <item>Français</item>
-        <item>Nederlands</item>
-        <item>Svenska</item>
-        <item>Português</item>
-        <item>Русский</item>
-        <item>日本語</item>
-        <item>简体中文</item>
-        <item>繁體中文</item>
-    </string-array>
-
-    <string-array name="pref_language_codes">
-        <item>default</item>
-        <item>de</item>
-        <item>en-rGB</item>
-        <item>en-rUS</item>
-        <item>es</item>
-        <item>fr</item>
-        <item>nl</item>
-        <item>sv</item>
-        <item>pt</item>
-        <item>ru</item>
-        <item>ja</item>
-        <item>zh-rCN</item>
-        <item>zh-rTW</item>
-    </string-array>
-
     <string-array name="pref_download_names">
         <item>Always</item>
         <item>Only on Wi-Fi</item>
         <item>Never</item>
-    </string-array>
-
-    <string-array name="pref_download_codes">
-        <item>@string/pref_value_download_always</item>
-        <item>@string/pref_value_download_wifi</item>
-        <item>@string/pref_value_download_never</item>
     </string-array>
 
 </resources>
