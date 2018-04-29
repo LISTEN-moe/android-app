@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,18 +31,18 @@ public class SongsFragment extends BaseFragment<FragmentSongsBinding> implements
     private SongList songList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public int getLayout() {
+        return R.layout.fragment_songs;
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
         songList = new SongList(getActivity(), binding.songsList, LIST_ID, this);
         songList.loadSongs();
 
         return view;
-    }
-
-    @Override
-    public int getLayout() {
-        return R.layout.fragment_songs;
     }
 
     @Override

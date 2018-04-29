@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,11 +21,15 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     private boolean receiverRegistered = false;
 
     public abstract int getLayout();
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, getLayout(), container, false);
 
-        initBroadcastReceiver();
+        intentReceiver = getBroadcastReceiver();
+        intentFilter = getIntentFilter();
+
+        registerReceiver();
 
         return binding.getRoot();
     }
@@ -34,8 +39,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         super.onResume();
 
         if (!receiverRegistered) {
-            getActivity().registerReceiver(intentReceiver, intentFilter);
-            receiverRegistered = true;
+            registerReceiver();
         }
     }
 
@@ -43,18 +47,12 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     public void onPause() {
         super.onPause();
 
-        if (receiverRegistered) {
-            getActivity().unregisterReceiver(intentReceiver);
-            receiverRegistered = false;
-        }
+        unregisterReceiver();
     }
 
     @Override
     public void onDestroy() {
-        if (receiverRegistered) {
-            getActivity().unregisterReceiver(intentReceiver);
-            receiverRegistered = false;
-        }
+        unregisterReceiver();
 
         if (binding != null) {
             binding.unbind();
@@ -67,12 +65,18 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
 
     public abstract IntentFilter getIntentFilter();
 
-    private void initBroadcastReceiver() {
-        intentReceiver = getBroadcastReceiver();
-        intentFilter = getIntentFilter();
+    private void registerReceiver() {
+        if (intentReceiver != null && intentFilter != null) {
+            getActivity().registerReceiver(intentReceiver, intentFilter);
+            receiverRegistered = true;
+        }
+    }
 
-        getActivity().registerReceiver(intentReceiver, intentFilter);
-        receiverRegistered = true;
+    private void unregisterReceiver() {
+        if (receiverRegistered) {
+            getActivity().unregisterReceiver(intentReceiver);
+            receiverRegistered = false;
+        }
     }
 
 }
