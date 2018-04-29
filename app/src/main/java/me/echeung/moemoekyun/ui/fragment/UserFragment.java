@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,24 +26,17 @@ import me.echeung.moemoekyun.ui.base.BaseFragment;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodel.UserViewModel;
 
-public class UserFragment extends BaseFragment implements SongList.SongListLoader {
+public class UserFragment extends BaseFragment<FragmentUserBinding> implements SongList.SongListLoader {
 
     private static final String LIST_ID = "USER_FAVORITES_LIST";
-
-    private FragmentUserBinding binding;
 
     private UserViewModel viewModel;
 
     private SongList songList;
 
-    // Receiver
-    private IntentFilter intentFilter;
-    private BroadcastReceiver intentReceiver;
-    private boolean receiverRegistered = false;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_user, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
         viewModel = App.getUserViewModel();
 
@@ -53,51 +45,19 @@ public class UserFragment extends BaseFragment implements SongList.SongListLoade
 
         songList = new SongList(getActivity(), binding.favorites.favoritesList, LIST_ID, this);
 
-        initBroadcastReceiver();
         initUserContent();
 
-        return binding.getRoot();
+        return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        // In case favorites were updated
-        initUserContent();
-
-        if (!receiverRegistered) {
-            getActivity().registerReceiver(intentReceiver, intentFilter);
-            receiverRegistered = true;
-        }
+    public int getLayout() {
+        return R.layout.fragment_user;
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        if (receiverRegistered) {
-            getActivity().unregisterReceiver(intentReceiver);
-            receiverRegistered = false;
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (receiverRegistered) {
-            getActivity().unregisterReceiver(intentReceiver);
-            receiverRegistered = false;
-        }
-
-        if (binding != null) {
-            binding.unbind();
-        }
-
-        super.onDestroy();
-    }
-
-    private void initBroadcastReceiver() {
-        intentReceiver = new BroadcastReceiver() {
+    public BroadcastReceiver getBroadcastReceiver() {
+        return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
@@ -111,13 +71,41 @@ public class UserFragment extends BaseFragment implements SongList.SongListLoade
                 }
             }
         };
+    }
 
-        intentFilter = new IntentFilter();
+    @Override
+    public IntentFilter getIntentFilter() {
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MainActivity.AUTH_EVENT);
         intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT);
 
-        getActivity().registerReceiver(intentReceiver, intentFilter);
-        receiverRegistered = true;
+        return intentFilter;
+    }
+
+    @Override
+    public void loadSongs(SongAdapter adapter) {
+        App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
+            @Override
+            public void onSuccess(List<Song> favorites) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        songList.showLoading(false);
+                        adapter.setSongs(favorites);
+                    });
+                }
+
+                viewModel.setHasFavorites(!favorites.isEmpty());
+            }
+
+            @Override
+            public void onFailure(String message) {
+                if (getActivity() != null) {
+                    getActivity().runOnUiThread(() -> {
+                        songList.showLoading(false);
+                    });
+                }
+            }
+        });
     }
 
     private void initUserContent() {
@@ -146,32 +134,6 @@ public class UserFragment extends BaseFragment implements SongList.SongListLoade
 
             @Override
             public void onFailure(String message) {
-            }
-        });
-    }
-
-    @Override
-    public void loadSongs(SongAdapter adapter) {
-        App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
-            @Override
-            public void onSuccess(List<Song> favorites) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        songList.showLoading(false);
-                        adapter.setSongs(favorites);
-                    });
-                }
-
-                viewModel.setHasFavorites(!favorites.isEmpty());
-            }
-
-            @Override
-            public void onFailure(String message) {
-                if (getActivity() != null) {
-                    getActivity().runOnUiThread(() -> {
-                        songList.showLoading(false);
-                    });
-                }
             }
         });
     }

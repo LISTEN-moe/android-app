@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,67 +23,30 @@ import me.echeung.moemoekyun.ui.activity.MainActivity;
 import me.echeung.moemoekyun.ui.base.BaseFragment;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 
-public class SongsFragment extends BaseFragment implements SongList.SongListLoader {
+public class SongsFragment extends BaseFragment<FragmentSongsBinding> implements SongList.SongListLoader {
 
     private static final String LIST_ID = "SONGS_LIST";
 
-    private FragmentSongsBinding binding;
-
     private SongList songList;
-
-    // Receiver
-    private IntentFilter intentFilter;
-    private BroadcastReceiver intentReceiver;
-    private boolean receiverRegistered = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_songs, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
 
         songList = new SongList(getActivity(), binding.songsList, LIST_ID, this);
         songList.loadSongs();
 
-        initBroadcastReceiver();
-
-        return binding.getRoot();
+        return view;
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        if (!receiverRegistered) {
-            getActivity().registerReceiver(intentReceiver, intentFilter);
-            receiverRegistered = true;
-        }
+    public int getLayout() {
+        return R.layout.fragment_songs;
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-
-        if (receiverRegistered) {
-            getActivity().unregisterReceiver(intentReceiver);
-            receiverRegistered = false;
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        if (receiverRegistered) {
-            getActivity().unregisterReceiver(intentReceiver);
-            receiverRegistered = false;
-        }
-
-        if (binding != null) {
-            binding.unbind();
-        }
-
-        super.onDestroy();
-    }
-
-    private void initBroadcastReceiver() {
-        intentReceiver = new BroadcastReceiver() {
+    public BroadcastReceiver getBroadcastReceiver() {
+        return new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
@@ -101,13 +63,15 @@ public class SongsFragment extends BaseFragment implements SongList.SongListLoad
                 }
             }
         };
+    }
 
-        intentFilter = new IntentFilter();
+    @Override
+    public IntentFilter getIntentFilter() {
+        IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MainActivity.AUTH_EVENT);
         intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT);
 
-        getActivity().registerReceiver(intentReceiver, intentFilter);
-        receiverRegistered = true;
+        return intentFilter;
     }
 
     @Override
