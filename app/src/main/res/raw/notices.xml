@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <notices>
     <notice>
+        <name>Android ConstraintLayout</name>
+        <url>https://developer.android.com/reference/android/support/constraint/ConstraintLayout</url>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
         <name>Android Data Binding Library</name>
         <url>https://developer.android.com/topic/libraries/data-binding/</url>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>Android Support Libraries</name>
-        <url>http://developer.android.com/tools/support-library/index.html</url>
-        <license>Apache Software License 2.0</license>
-    </notice>
-    <notice>
-        <name>Android ConstraintLayout</name>
-        <url>https://developer.android.com/reference/android/support/constraint/ConstraintLayout</url>
+        <url>http://developer.android.com/tools/support-library/</url>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>ExoPlayer</name>
-        <url>https://github.com/google/ExoPlayer</url>
+        <url>https://google.github.io/ExoPlayer/</url>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>Glide</name>
-        <url>https://github.com/bumptech/glide</url>
+        <url>https://bumptech.github.io/glide/</url>
         <license>BSD 3-Clause License</license>
     </notice>
     <notice>
@@ -37,12 +37,12 @@
     </notice>
     <notice>
         <name>OkHttp</name>
-        <url>https://github.com/square/okhttp</url>
+        <url>http://square.github.io/okhttp/</url>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>Retrofit</name>
-        <url>https://github.com/square/retrofit</url>
+        <url>http://square.github.io/retrofit/</url>
         <license>Apache Software License 2.0</license>
     </notice>
 </notices>
