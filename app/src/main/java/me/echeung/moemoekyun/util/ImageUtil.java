@@ -1,6 +1,8 @@
 package me.echeung.moemoekyun.util;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +40,20 @@ public class ImageUtil {
                             .placeholder(v.getDrawable()))
                     .into(v);
         }
+    }
+
+    public static void clearCache(Context context) {
+        if (context == null) return;
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                Glide.get(context).clearDiskCache();
+                return null;
+            }
+        }.execute();
+
+        Glide.get(context).clearMemory();
     }
 
 }

@@ -1,8 +1,6 @@
 package me.echeung.moemoekyun.ui.activity;
 
 import android.app.Activity;
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.ListPreference;
@@ -12,11 +10,10 @@ import android.support.v7.preference.PreferenceManager;
 import android.view.View;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.base.BaseActivity;
+import me.echeung.moemoekyun.util.ImageUtil;
 import me.echeung.moemoekyun.util.PreferenceUtil;
 
 public class SettingsActivity extends BaseActivity {
@@ -79,7 +76,7 @@ public class SettingsActivity extends BaseActivity {
             if (BuildConfig.DEBUG) {
                 Preference clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE);
                 clearCache.setOnPreferenceClickListener(preference -> {
-                    clearGlideCache();
+                    ImageUtil.clearCache(getContext());
                     return true;
                 });
             }
@@ -115,21 +112,6 @@ public class SettingsActivity extends BaseActivity {
             if (activity != null) {
                 Toast.makeText(activity, R.string.restart_required, Toast.LENGTH_SHORT).show();
             }
-        }
-
-        private void clearGlideCache() {
-            Context context = getContext();
-            if (context == null) return;
-
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    Glide.get(context).clearDiskCache();
-                    return null;
-                }
-            }.execute();
-
-            Glide.get(context).clearMemory();
         }
 
     }
