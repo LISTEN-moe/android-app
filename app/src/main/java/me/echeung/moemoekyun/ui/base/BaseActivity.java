@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.util.PreferenceUtil;
@@ -22,6 +23,15 @@ public abstract class BaseActivity extends AppCompatActivity implements SharedPr
         App.getPreferenceUtil().registerListener(this);
 
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finishAfterTransition();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

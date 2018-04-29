@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     private BroadcastReceiver intentReceiver;
     private boolean receiverRegistered = false;
 
+    @LayoutRes
     public abstract int getLayout();
 
     @Override
@@ -61,9 +63,13 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         super.onDestroy();
     }
 
-    public abstract BroadcastReceiver getBroadcastReceiver();
+    public BroadcastReceiver getBroadcastReceiver() {
+        return null;
+    }
 
-    public abstract IntentFilter getIntentFilter();
+    public IntentFilter getIntentFilter() {
+        return null;
+    }
 
     private void registerReceiver() {
         if (intentReceiver != null && intentFilter != null) {

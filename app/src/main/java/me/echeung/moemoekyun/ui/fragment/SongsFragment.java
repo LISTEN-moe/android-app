@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,7 @@ public class SongsFragment extends BaseFragment<FragmentSongsBinding> implements
     private SongList songList;
 
     @Override
+    @LayoutRes
     public int getLayout() {
         return R.layout.fragment_songs;
     }
