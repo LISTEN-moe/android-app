@@ -17,15 +17,6 @@ import me.echeung.moemoekyun.util.system.UrlUtil;
 
 public class AboutActivity extends BaseActivity implements View.OnClickListener {
 
-    private static final String URL_STORE = "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun";
-    private static final String URL_GITHUB = "https://github.com/LISTEN-moe/android-app";
-    private static final String URL_TRANSLATE = "https://crwd.in/listenmoe-android-app";
-
-    private static final String URL_LISTENMOE = "https://listen.moe";
-    private static final String URL_TWITTER_NP = "https://twitter.com/LISTEN_moe_NP";
-    private static final String URL_DISCORD = "https://discordapp.com/invite/4S8JYr8"; // https://listen.moe/discord
-    private static final String URL_PATREON = "https://www.patreon.com/odysseyradio";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,15 +69,15 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.about_app_rate:
-                UrlUtil.openUrl(this, URL_STORE);
+                UrlUtil.openUrl(this, getString(R.string.url_store));
                 break;
 
             case R.id.about_app_github:
-                UrlUtil.openUrl(this, URL_GITHUB);
+                UrlUtil.openUrl(this, getString(R.string.url_github));
                 break;
 
             case R.id.about_app_translate:
-                UrlUtil.openUrl(this, URL_TRANSLATE);
+                UrlUtil.openUrl(this, getString(R.string.url_translate));
                 break;
 
             case R.id.about_app_licenses:
@@ -94,19 +85,19 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.about_listenmoe_website:
-                UrlUtil.openUrl(this, URL_LISTENMOE);
+                UrlUtil.openUrl(this, getString(R.string.url_listenmoe));
                 break;
 
             case R.id.about_listenmoe_play_history:
-                UrlUtil.openUrl(this, URL_TWITTER_NP);
+                UrlUtil.openUrl(this, getString(R.string.url_twitter_np));
                 break;
 
             case R.id.about_listenmoe_discord:
-                UrlUtil.openUrl(this, URL_DISCORD);
+                UrlUtil.openUrl(this, getString(R.string.url_discord));
                 break;
 
             case R.id.about_listenmoe_patreon:
-                UrlUtil.openUrl(this, URL_PATREON);
+                UrlUtil.openUrl(this, getString(R.string.url_patreon));
                 break;
         }
     }

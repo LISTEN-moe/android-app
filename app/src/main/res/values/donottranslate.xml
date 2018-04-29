@@ -10,6 +10,16 @@
 
     <string name="media_route_menu_title" translatable="false">Cast</string>
 
+    <string name="url_store" translatable="false">https://play.google.com/store/apps/details?id=me.echeung.moemoekyun</string>
+    <string name="url_github" translatable="false">https://github.com/LISTEN-moe/android-app</string>
+    <string name="url_translate" translatable="false">https://crwd.in/listenmoe-android-app</string>
+
+    <string name="url_listenmoe" translatable="false">https://listen.moe</string>
+    <string name="url_twitter_np" translatable="false">https://twitter.com/LISTEN_moe_NP</string>
+    <!-- https://listen.moe/discord -->
+    <string name="url_discord" translatable="false">https://discordapp.com/invite/4S8JYr8</string>
+    <string name="url_patreon" translatable="false">https://www.patreon.com/odysseyradio</string>
+
     <string name="translators_list" translatable="false">
         anonymousthing
         \nCalvin_c64
