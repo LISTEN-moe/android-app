@@ -22,7 +22,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     private boolean receiverRegistered = false;
 
     @LayoutRes
-    public abstract int getLayout();
+    protected abstract int getLayout();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,11 +63,11 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
         super.onDestroy();
     }
 
-    public BroadcastReceiver getBroadcastReceiver() {
+    protected BroadcastReceiver getBroadcastReceiver() {
         return null;
     }
 
-    public IntentFilter getIntentFilter() {
+    protected IntentFilter getIntentFilter() {
         return null;
     }
 
