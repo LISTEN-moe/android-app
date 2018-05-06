@@ -70,6 +70,15 @@
   <string name="requested_random_song">Запрошена случайная песня</string>
   <string name="supporter_required">Необходимо пожертвовать для использования этой функции</string>
   <!-- == Song details == -->
+  <string name="song_title">Название</string>
+  <string name="song_album">Альбом</string>
+  <string name="song_artist">Исполнитель</string>
+  <string name="song_source">Источник</string>
+  <string name="song_duration">Длительность</string>
+  <string name="song_release_date">Дата выхода</string>
+  <string name="song_uploader">Загрузивший</string>
+  <string name="song_last_played">Предыдущие песни</string>
+  <string name="song_tags">Теги</string>
   <!-- == No Internet view == -->
   <string name="no_internet">Невозможно соединиться с LISTEN.moe\n\nПроверьте интернет-соединение</string>
   <string name="retry">Повторить</string>
