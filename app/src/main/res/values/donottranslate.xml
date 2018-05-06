@@ -63,11 +63,13 @@
 
     <string-array name="pref_language_names" translatable="false">
         <item>@string/system_default</item>
+        <item>Bahasa Indonesia</item>
         <item>Deutsch</item>
         <item>English (UK)</item>
         <item>English (US)</item>
         <item>Español</item>
         <item>Français</item>
+        <item>Italiano</item>
         <item>Nederlands</item>
         <item>Svenska</item>
         <item>Português</item>
@@ -79,11 +81,13 @@
 
     <string-array name="pref_language_codes" translatable="false">
         <item>default</item>
+        <item>in</item>
         <item>de</item>
         <item>en-rGB</item>
         <item>en-rUS</item>
         <item>es</item>
         <item>fr</item>
+        <item>it</item>
         <item>nl</item>
         <item>sv</item>
         <item>pt</item>
