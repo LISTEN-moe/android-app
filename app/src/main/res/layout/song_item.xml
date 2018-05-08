@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="@{song.title}"
+                android:text="@{song.titleString}"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 

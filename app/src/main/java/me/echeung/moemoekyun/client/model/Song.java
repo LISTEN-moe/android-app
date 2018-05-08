@@ -30,6 +30,10 @@ public class Song {
     @Setter
     private boolean favorite;
 
+    public String getTitleString() {
+        return title;
+    }
+
     public String getAlbumsString() {
         return SongDescriptor.getSongDescriptorsString(albums);
     }
@@ -56,7 +60,7 @@ public class Song {
 
     @Override
     public String toString() {
-        return String.format("%s - %s", getTitle(), getArtistsString());
+        return String.format("%s - %s", getTitleString(), getArtistsString());
     }
 
     public String getAlbumArtUrl() {

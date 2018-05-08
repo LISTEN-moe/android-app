@@ -50,8 +50,8 @@ public final class SongSortUtil {
             case SORT_TITLE:
             default:
                 sorter = sortDescending
-                        ? (song, t1) -> t1.getTitle().compareToIgnoreCase(song.getTitle())
-                        : (song, t1) -> song.getTitle().compareToIgnoreCase(t1.getTitle());
+                        ? (song, t1) -> t1.getTitleString().compareToIgnoreCase(song.getTitleString())
+                        : (song, t1) -> song.getTitleString().compareToIgnoreCase(t1.getTitleString());
                 break;
         }
 

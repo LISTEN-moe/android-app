@@ -77,7 +77,7 @@ public class AppNotification {
         builder.setStyle(style.setShowActionsInCompactView(0));
 
         if (song != null) {
-            builder.setContentTitle(song.getTitle());
+            builder.setContentTitle(song.getTitleString());
             builder.setContentText(song.getArtistsString());
             builder.setSubText(song.getAlbumsString());
 

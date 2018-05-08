@@ -237,7 +237,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         }
 
         MediaMetadataCompat.Builder metaData = new MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitle())
+                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitleString())
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistsString())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumsString())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
@@ -604,7 +604,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
         intent.putExtra("artist", song.getAlbumsString());
         intent.putExtra("album", song.getAlbumsString());
-        intent.putExtra("track", song.getTitle());
+        intent.putExtra("track", song.getTitleString());
 
         intent.putExtra("duration", song.getDuration());
         intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - trackStartTime.getTimeInMillis());

@@ -37,7 +37,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:selected="@{true}"
                 android:singleLine="true"
-                android:text="@{vm.currentSong.title}"
+                android:text="@{vm.currentSong.titleString}"
                 android:textAlignment="center"
                 android:textColor="@{vm.bodyColor}"
                 android:textSize="24sp" />
