@@ -270,6 +270,10 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
+            case PreferenceUtil.PREF_GENERAL_ROMAJI:
+                notifyPropertyChanged(BR.currentSong);
+                break;
+
             case PreferenceUtil.PREF_COLOR_NOW_PLAYING:
                 notifyPropertyChanged(BR.backgroundColor);
                 notifyPropertyChanged(BR.bodyColor);

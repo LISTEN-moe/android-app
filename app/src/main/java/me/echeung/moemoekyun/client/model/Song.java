@@ -1,5 +1,7 @@
 package me.echeung.moemoekyun.client.model;
 
+import android.text.TextUtils;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -7,6 +9,7 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.client.api.library.Library;
 
 @Getter
@@ -31,6 +34,10 @@ public class Song {
     private boolean favorite;
 
     public String getTitleString() {
+        if (App.getPreferenceUtil().shouldPreferRomaji() && !TextUtils.isEmpty(titleRomaji)) {
+            return titleRomaji;
+        }
+
         return title;
     }
 
