@@ -87,8 +87,7 @@ public class SleepTimerDialog {
         AlarmManager am = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi);
 
-        Toast.makeText(activity, PluralsUtil.getString(activity, R.plurals.sleep_timer_set, minutes), Toast.LENGTH_SHORT)
-                .show();
+        Toast.makeText(activity, PluralsUtil.getString(activity, R.plurals.sleep_timer_set, minutes), Toast.LENGTH_SHORT).show();
     }
 
     private void cancelAlarm() {
@@ -100,8 +99,7 @@ public class SleepTimerDialog {
 
             App.getPreferenceUtil().clearSleepTimer();
 
-            Toast.makeText(activity, activity.getString(R.string.sleep_timer_canceled), Toast.LENGTH_SHORT)
-                    .show();
+            Toast.makeText(activity, activity.getString(R.string.sleep_timer_canceled), Toast.LENGTH_SHORT).show();
         }
     }
 

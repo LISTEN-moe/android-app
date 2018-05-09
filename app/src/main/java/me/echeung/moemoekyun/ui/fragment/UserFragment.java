@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.ui.fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -25,18 +24,13 @@ import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.client.model.User;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activity.MainActivity;
-import me.echeung.moemoekyun.ui.base.BaseFragment;
-import me.echeung.moemoekyun.util.PreferenceUtil;
+import me.echeung.moemoekyun.ui.base.SongsListBaseFragment;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodel.UserViewModel;
 
-public class UserFragment extends BaseFragment<FragmentUserBinding> implements SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
-
-    private static final String LIST_ID = "USER_FAVORITES_LIST";
+public class UserFragment extends SongsListBaseFragment<FragmentUserBinding> implements SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private UserViewModel viewModel;
-
-    private SongList songList;
 
     @Override
     @LayoutRes
@@ -53,20 +47,14 @@ public class UserFragment extends BaseFragment<FragmentUserBinding> implements S
         binding.setRadioVm(App.getRadioViewModel());
         binding.setUserVm(viewModel);
 
-        songList = new SongList(getActivity(), binding.favorites.favoritesList, LIST_ID, this);
-
         initUserContent();
-
-        App.getPreferenceUtil().registerListener(this);
 
         return view;
     }
 
     @Override
-    public void onDestroy() {
-        App.getPreferenceUtil().unregisterListener(this);
-
-        super.onDestroy();
+    public SongList initSongList(FragmentUserBinding binding) {
+        return new SongList(getActivity(), binding.favorites.favoritesList, "USER_FAVORITES_LIST", this);
     }
 
     @Override
@@ -85,15 +73,6 @@ public class UserFragment extends BaseFragment<FragmentUserBinding> implements S
                 }
             }
         };
-    }
-
-    @Override
-    public IntentFilter getIntentFilter() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MainActivity.AUTH_EVENT);
-        intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT);
-
-        return intentFilter;
     }
 
     @Override
@@ -150,15 +129,6 @@ public class UserFragment extends BaseFragment<FragmentUserBinding> implements S
             public void onFailure(String message) {
             }
         });
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case PreferenceUtil.PREF_GENERAL_ROMAJI:
-                songList.notifyDataSetChanged();
-                break;
-        }
     }
 
 }

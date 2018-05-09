@@ -3,14 +3,8 @@ package me.echeung.moemoekyun.ui.fragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.List;
@@ -23,16 +17,10 @@ import me.echeung.moemoekyun.client.api.callback.SearchCallback;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 import me.echeung.moemoekyun.ui.activity.MainActivity;
-import me.echeung.moemoekyun.ui.base.BaseFragment;
-import me.echeung.moemoekyun.util.PreferenceUtil;
+import me.echeung.moemoekyun.ui.base.SongsListBaseFragment;
 import me.echeung.moemoekyun.util.SongActionsUtil;
-import me.echeung.moemoekyun.util.system.ThemeUtil;
 
-public class SongsFragment extends BaseFragment<FragmentSongsBinding> implements SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
-
-    private static final String LIST_ID = "SONGS_LIST";
-
-    private SongList songList;
+public class SongsFragment extends SongsListBaseFragment<FragmentSongsBinding> implements SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
     @Override
     @LayoutRes
@@ -41,22 +29,8 @@ public class SongsFragment extends BaseFragment<FragmentSongsBinding> implements
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-
-        songList = new SongList(getActivity(), binding.songsList, LIST_ID, this);
-        songList.loadSongs();
-
-        App.getPreferenceUtil().registerListener(this);
-
-        return view;
-    }
-
-    @Override
-    public void onDestroy() {
-        App.getPreferenceUtil().unregisterListener(this);
-
-        super.onDestroy();
+    public SongList initSongList(FragmentSongsBinding binding) {
+        return new SongList(getActivity(), binding.songsList,  "SONGS_LIST", this);
     }
 
     @Override
@@ -78,15 +52,6 @@ public class SongsFragment extends BaseFragment<FragmentSongsBinding> implements
                 }
             }
         };
-    }
-
-    @Override
-    public IntentFilter getIntentFilter() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MainActivity.AUTH_EVENT);
-        intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT);
-
-        return intentFilter;
     }
 
     @Override
@@ -114,15 +79,6 @@ public class SongsFragment extends BaseFragment<FragmentSongsBinding> implements
                 }
             }
         });
-    }
-
-    @Override
-    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        switch (key) {
-            case PreferenceUtil.PREF_GENERAL_ROMAJI:
-                songList.notifyDataSetChanged();
-                break;
-        }
     }
 
 }
