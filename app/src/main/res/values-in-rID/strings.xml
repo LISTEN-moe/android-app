@@ -61,11 +61,66 @@
   <!-- e.g. Unfavorited song title -->
   <string name="unfavorited">Tidak Favorit %s</string>
   <!-- e.g. 2 in queue, 10 before yours -->
+  <string name="queue_info">%d dalam antrian, %d sebelum kamu</string>
+  <string name="random_request">Meminta lagu acak</string>
+  <string name="all_cooldown">Semua lagu sedang turun</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <string name="requested_song">Meminta %s</string>
+  <string name="requested_random_song">Meminta lagu acak</string>
+  <string name="supporter_required">Di butuhkan status pendukung</string>
   <!-- == Song details == -->
+  <string name="song_title">Judul</string>
+  <string name="song_album">Album</string>
+  <string name="song_artist">Artis</string>
+  <string name="song_source">Sumber</string>
+  <string name="song_duration">Durasi</string>
+  <string name="song_release_date">Tanggal rilis</string>
+  <string name="song_uploader">Pengunggah</string>
+  <string name="song_last_played">Terakhir diputar</string>
+  <string name="song_tags">Tag</string>
   <!-- == No Internet view == -->
+  <string name="no_internet">Tidak dapat terhubung ke LISTEN.moe\n\nCek koneksi internet kamu</string>
+  <string name="retry">Coba lagi</string>
   <!-- == About == -->
+  <string name="about">Tentang</string>
   <!-- e.g. Version 1.0 -->
+  <string name="version">Versi %s</string>
+  <string name="rate">Berikan nilai di Google Play</string>
+  <string name="github">Berikan bintang di Github</string>
+  <string name="translate">Bantu menterjemahkan aplikasi ini</string>
+  <string name="translators">Penerjemah</string>
+  <string name="licenses">Lisensi</string>
+  <string name="listenmoe">LISTEN.moe radio</string>
+  <string name="open_in_browser">Buka di browser</string>
+  <string name="play_history">Riwayat lagu</string>
+  <string name="discord">Gabung di Discord</string>
+  <string name="patreon">Dukung di Patreon</string>
   <!-- == Settings == -->
+  <string name="settings">Pengaturan</string>
+  <string name="pref_header_general">Umum</string>
+  <string name="pref_title_theme">Tema</string>
+  <string name="pref_title_language">Bahasa</string>
+  <string name="system_default">Sistem default</string>
+  <string name="restart_required">Perubahan akan diterapkan setelah aplikasi di buka ulang</string>
+  <string name="pref_title_general_download">Otomatis mengunduh gambar</string>
+  <string name="pref_title_general_broadcast_intent">Menyiarkan pembaharuan lagu</string>
+  <string name="pref_title_general_broadcast_intent_summary">Dukungan scrobbling Last.fm</string>
+  <string name="pref_title_general_romaji">Pilih romaji</string>
+  <string name="pref_title_general_romaji_summary">\"Nanahira\" daripada \"ななひら\"</string>
+  <string name="pref_title_general_random_request_title">Perlihatkan judul lagu acak yang diminta</string>
+  <string name="pref_header_audio">Audio</string>
+  <string name="pref_title_pause_on_noisy">Jeda ketika headphone dilepas</string>
+  <string name="pref_title_audio_duck">Volume rendah pada kehilangan fokus sementara</string>
+  <string name="pref_title_audio_duck_summary">Notifikasi, navigasi, dll.</string>
+  <string name="pref_title_audio_pause_on_loss">Jeda pada kehilangan fokus</string>
+  <string name="pref_title_audio_pause_on_loss_summary">Video, musik lainnya, dll.</string>
+  <string name="pref_header_lockscreen">Lockscreen</string>
+  <string name="pref_title_lockscreen_albumart">Perlihatkan cover album</string>
+  <string name="pref_title_lockscreen_albumart_summary">Perlihatkan gambar album di lockscreen dan Android Auto</string>
+  <string name="pref_header_color">Warna</string>
+  <string name="pref_title_color_now_playing">Sekarang warna diperlihatkan sesuai gambar album</string>
+  <string name="pref_title_color_navbar">Tema layar navigasi</string>
+  <string name="pref_header_advanced">Lanjutan</string>
+  <string name="pref_title_advanced_clear_image_cache">Hapus cache gambar</string>
 </resources>

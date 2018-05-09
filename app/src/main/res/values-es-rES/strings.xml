@@ -14,6 +14,7 @@
   <string name="action_request">Pedir</string>
   <string name="action_undo">Deshacer</string>
   <!-- == Library modes == -->
+  <string name="action_library">Modo biblioteca</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -50,6 +51,7 @@
   <string name="password_mismatch">Las contraseñas no coinciden</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Play/Pausa</string>
+  <string name="last_played">Última reproducción</string>
   <string name="favorite">Favorito</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Pedido por: %s</string>
@@ -71,6 +73,12 @@
   <string name="song_title">Título</string>
   <string name="song_album">Álbum</string>
   <string name="song_artist">Artista</string>
+  <string name="song_source">Fuente</string>
+  <string name="song_duration">Duración</string>
+  <string name="song_release_date">Fecha de lanzamiento</string>
+  <string name="song_uploader">Subido por</string>
+  <string name="song_last_played">Última reproducción</string>
+  <string name="song_tags">Etiquetas</string>
   <!-- == No Internet view == -->
   <string name="no_internet">No se pudo conectar a LISTEN.moe\n\nPor favor asegúrate de estar conectado a internet</string>
   <string name="retry">Reintentar</string>
