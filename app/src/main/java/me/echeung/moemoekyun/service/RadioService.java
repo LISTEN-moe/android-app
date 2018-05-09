@@ -620,6 +620,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         switch (key) {
             case PreferenceUtil.PREF_LOCKSCREEN_ALBUMART:
+            case PreferenceUtil.PREF_GENERAL_ROMAJI:
                 updateMediaSession();
                 break;
         }
