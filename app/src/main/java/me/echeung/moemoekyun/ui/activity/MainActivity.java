@@ -367,11 +367,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setPlayPauseDrawable() {
-        boolean isPlaying = App.getService() != null
-                ? App.getService().isPlaying() :
-                viewModel.getIsPlaying();
-
-        AnimatedVectorDrawable drawable = isPlaying ? playToPause : pauseToPlay;
+        AnimatedVectorDrawable drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
         vPlayPauseBtn.setImageDrawable(drawable);
         vMiniPlayPauseBtn.setImageDrawable(drawable);
         drawable.start();
