@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.adapter.songslist;
+package me.echeung.moemoekyun.adapter;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;

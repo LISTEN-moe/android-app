@@ -10,8 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import me.echeung.moemoekyun.App;
-import me.echeung.moemoekyun.adapter.songslist.SongList;
 import me.echeung.moemoekyun.ui.activity.MainActivity;
+import me.echeung.moemoekyun.ui.view.SongList;
 import me.echeung.moemoekyun.util.PreferenceUtil;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 

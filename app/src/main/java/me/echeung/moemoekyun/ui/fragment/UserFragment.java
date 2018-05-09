@@ -15,8 +15,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapter.songslist.SongAdapter;
-import me.echeung.moemoekyun.adapter.songslist.SongList;
+import me.echeung.moemoekyun.adapter.SongAdapter;
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback;
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback;
 import me.echeung.moemoekyun.client.api.library.Library;
@@ -25,6 +24,7 @@ import me.echeung.moemoekyun.client.model.User;
 import me.echeung.moemoekyun.databinding.FragmentUserBinding;
 import me.echeung.moemoekyun.ui.activity.MainActivity;
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment;
+import me.echeung.moemoekyun.ui.view.SongList;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.viewmodel.UserViewModel;
 

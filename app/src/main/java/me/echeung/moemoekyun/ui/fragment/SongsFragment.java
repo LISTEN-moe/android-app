@@ -11,13 +11,13 @@ import java.util.List;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapter.songslist.SongAdapter;
-import me.echeung.moemoekyun.adapter.songslist.SongList;
+import me.echeung.moemoekyun.adapter.SongAdapter;
 import me.echeung.moemoekyun.client.api.callback.SearchCallback;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
 import me.echeung.moemoekyun.ui.activity.MainActivity;
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment;
+import me.echeung.moemoekyun.ui.view.SongList;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 
 public class SongsFragment extends SongsListBaseFragment<FragmentSongsBinding> implements SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {

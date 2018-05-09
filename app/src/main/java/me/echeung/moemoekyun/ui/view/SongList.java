@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.adapter.songslist;
+package me.echeung.moemoekyun.ui.view;
 
 import android.app.Activity;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +13,7 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.adapter.SongAdapter;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.SongsListBinding;
 import me.echeung.moemoekyun.util.SongActionsUtil;
