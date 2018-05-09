@@ -21,7 +21,7 @@ import me.echeung.moemoekyun.databinding.SongItemBinding;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.util.SongSortUtil;
 
-public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
+public class SongsAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
     private static final DiffUtil.ItemCallback<Song> DIFF_CALLBACK =
             new DiffUtil.ItemCallback<Song>() {
@@ -44,7 +44,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
     private String filterQuery;
 
-    public SongAdapter(Activity activity, String listId) {
+    public SongsAdapter(Activity activity, String listId) {
         super(DIFF_CALLBACK);
 
         this.activity = new WeakReference<>(activity);
@@ -145,7 +145,7 @@ public class SongAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
 
         private SongItemBinding binding;
 
-        SongViewHolder(SongItemBinding binding, SongAdapter adapter) {
+        SongViewHolder(SongItemBinding binding, SongsAdapter adapter) {
             super(binding.getRoot());
 
             this.binding = binding;

@@ -11,7 +11,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapter.SongAdapter;
+import me.echeung.moemoekyun.adapter.SongsAdapter;
 import me.echeung.moemoekyun.client.api.callback.SearchCallback;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding;
@@ -55,7 +55,7 @@ public class SongsFragment extends SongsListBaseFragment<FragmentSongsBinding> i
     }
 
     @Override
-    public void loadSongs(SongAdapter adapter) {
+    public void loadSongs(SongsAdapter adapter) {
         songList.showLoading(true);
 
         App.getApiClient().search(null, new SearchCallback() {

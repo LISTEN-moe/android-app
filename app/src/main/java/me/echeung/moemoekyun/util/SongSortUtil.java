@@ -11,7 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapter.SongAdapter;
+import me.echeung.moemoekyun.adapter.SongsAdapter;
 import me.echeung.moemoekyun.client.model.Song;
 
 public final class SongSortUtil {
@@ -76,7 +76,7 @@ public final class SongSortUtil {
         menu.findItem(R.id.action_sort_desc).setChecked(sortDescending);
     }
 
-    public static boolean handleSortMenuItem(MenuItem item, SongAdapter adapter) {
+    public static boolean handleSortMenuItem(MenuItem item, SongsAdapter adapter) {
         switch (item.getItemId()) {
             case R.id.action_sort_desc:
                 item.setChecked(!item.isChecked());

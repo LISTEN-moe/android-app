@@ -13,7 +13,7 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapter.SongAdapter;
+import me.echeung.moemoekyun.adapter.SongsAdapter;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.SongsListBinding;
 import me.echeung.moemoekyun.util.SongActionsUtil;
@@ -23,7 +23,7 @@ import me.echeung.moemoekyun.viewmodel.SongListViewModel;
 public class SongList {
 
     private WeakReference<Activity> activity;
-    private SongAdapter adapter;
+    private SongsAdapter adapter;
     private SongListLoader loader;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -34,7 +34,7 @@ public class SongList {
         this.loader = loader;
 
         // List adapter
-        this.adapter = new SongAdapter(activity, listId);
+        this.adapter = new SongsAdapter(activity, listId);
         RecyclerView songsList = binding.list;
         songsList.setLayoutManager(new LinearLayoutManager(activity));
         songsList.setAdapter(adapter);
@@ -137,7 +137,7 @@ public class SongList {
     }
 
     public interface SongListLoader {
-        void loadSongs(SongAdapter adapter);
+        void loadSongs(SongsAdapter adapter);
     }
 
 }

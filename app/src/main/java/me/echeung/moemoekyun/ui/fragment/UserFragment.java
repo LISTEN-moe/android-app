@@ -15,7 +15,7 @@ import java.util.List;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
-import me.echeung.moemoekyun.adapter.SongAdapter;
+import me.echeung.moemoekyun.adapter.SongsAdapter;
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback;
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback;
 import me.echeung.moemoekyun.client.api.library.Library;
@@ -76,7 +76,7 @@ public class UserFragment extends SongsListBaseFragment<FragmentUserBinding> imp
     }
 
     @Override
-    public void loadSongs(SongAdapter adapter) {
+    public void loadSongs(SongsAdapter adapter) {
         App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
             @Override
             public void onSuccess(List<Song> favorites) {
