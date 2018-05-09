@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.adapter.songslist;
+package me.echeung.moemoekyun.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import me.echeung.moemoekyun.R;
+import me.echeung.moemoekyun.adapter.songslist.SongAdapter;
 import me.echeung.moemoekyun.client.model.Song;
 
 public final class SongSortUtil {
