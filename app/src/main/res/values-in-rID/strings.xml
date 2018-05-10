@@ -19,10 +19,10 @@
   <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Waktu Tidur</string>
-  <string name="set">Set</string>
+  <string name="set">Atur</string>
   <string name="close">Tutup</string>
-  <string name="cancel_timer">Membatalkan Waktu</string>
-  <string name="sleep_timer_canceled">Waktu Dibatalkan</string>
+  <string name="cancel_timer">Batalkan pengatur waktu</string>
+  <string name="sleep_timer_canceled">Pengatur waktu dibatalkan</string>
   <!-- == Search == -->
   <string name="search">Cari</string>
   <string name="clear_query">Hapus Antrian</string>
@@ -56,7 +56,7 @@
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Diminta oleh: %s</string>
   <!-- == User tab == -->
-  <string name="no_favorites">Belum Favorit</string>
+  <string name="no_favorites">Belum ada favorit</string>
   <string name="filter_favorites">Menyaring Favorit</string>
   <!-- e.g. Unfavorited song title -->
   <string name="unfavorited">Tidak Favorit %s</string>
