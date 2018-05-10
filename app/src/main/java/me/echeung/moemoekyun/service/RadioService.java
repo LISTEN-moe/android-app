@@ -24,7 +24,6 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
@@ -46,6 +45,8 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     private static final String TAG = RadioService.class.getSimpleName();
 
     private static final String APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID;
+
+    private static final int MILLISECONDS_IN_SECOND = 1000;
 
     public static final String PLAY_PAUSE = APP_PACKAGE_NAME + ".play_pause";
     public static final String STOP = APP_PACKAGE_NAME + ".stop";
@@ -240,7 +241,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitleString())
                 .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistsString())
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumsString())
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration());
+                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration() * MILLISECONDS_IN_SECOND);
 
         if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
             Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
@@ -265,7 +266,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 .setState(isStreamStarted()
                                 ? isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED
                                 : PlaybackStateCompat.STATE_STOPPED,
-                        0, 1);
+                        getSongProgress(), 1);
 
         // Favorite action
         if (App.getAuthUtil().isAuthenticated()) {
@@ -596,7 +597,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         if (song == null || !App.getPreferenceUtil().shouldBroadcastIntent()) return;
 
         // Scrobbling only works if there's actually progress
-        if (song.getDuration() == 0 || trackStartTime == null) return;
+        if (getSongProgress() != 0) return;
 
         Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
 
@@ -606,14 +607,23 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         intent.putExtra("album", song.getAlbumsString());
         intent.putExtra("track", song.getTitleString());
 
-        intent.putExtra("duration", song.getDuration());
-        intent.putExtra("position", GregorianCalendar.getInstance().getTimeInMillis() - trackStartTime.getTimeInMillis());
+        intent.putExtra("duration", song.getDuration() * MILLISECONDS_IN_SECOND);
+        intent.putExtra("position", getSongProgress());
 
         intent.putExtra("playing", isPlaying());
 
         intent.putExtra("scrobbling_source", APP_PACKAGE_NAME);
 
         sendStickyBroadcast(intent);
+    }
+
+    private long getSongProgress() {
+        Song currentSong = App.getRadioViewModel().getCurrentSong();
+        if (trackStartTime == null || currentSong == null || currentSong.getDuration() == 0) {
+            return 0;
+        }
+
+        return System.currentTimeMillis() - trackStartTime.getTimeInMillis();
     }
 
     @Override
