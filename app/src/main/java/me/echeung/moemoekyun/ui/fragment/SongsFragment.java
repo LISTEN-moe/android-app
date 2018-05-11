@@ -58,7 +58,7 @@ public class SongsFragment extends SongsListBaseFragment<FragmentSongsBinding> i
     public void loadSongs(SongsAdapter adapter) {
         songList.showLoading(true);
 
-        App.getApiClient().search(null, new SearchCallback() {
+        App.getRadioClient().getApi().search(null, new SearchCallback() {
             @Override
             public void onSuccess(List<Song> results) {
                 if (getActivity() != null) {

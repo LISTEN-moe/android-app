@@ -14,7 +14,6 @@ import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import me.echeung.moemoekyun.App;

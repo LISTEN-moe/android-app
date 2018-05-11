@@ -100,8 +100,8 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         initMediaSession();
         initAudioManager();
 
-        stream = App.getApiClient().getStream();
-        socket = App.getApiClient().getSocket();
+        stream = App.getRadioClient().getStream();
+        socket = App.getRadioClient().getSocket();
 
         stream.setListener(new Stream.Listener() {
             @Override
@@ -465,11 +465,11 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 // Handles changing library mode via Android Auto
                 switch (mediaId) {
                     case LIBRARY_JPOP:
-                        App.getApiClient().changeLibrary(Jpop.NAME);
+                        App.getRadioClient().changeLibrary(Jpop.NAME);
                         break;
 
                     case LIBRARY_KPOP:
-                        App.getApiClient().changeLibrary(Kpop.NAME);
+                        App.getRadioClient().changeLibrary(Kpop.NAME);
                         break;
                 }
             }
@@ -599,7 +599,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             }
         };
 
-        App.getApiClient().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
+        App.getRadioClient().getApi().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
     }
 
     private void showLoginRequiredToast() {

@@ -19,7 +19,7 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import me.echeung.moemoekyun.client.api.APIClient;
+import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.util.system.NetworkUtil;
 
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
@@ -156,7 +156,7 @@ public class Stream {
         releasePlayer();
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
-        Uri streamUri = Uri.parse(APIClient.getLibrary().getStreamUrl());
+        Uri streamUri = Uri.parse(RadioClient.getLibrary().getStreamUrl());
         MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .setExtractorsFactory(new DefaultExtractorsFactory())
                 .createMediaSource(streamUri, null, null);

@@ -88,7 +88,7 @@ public final class SongActionsUtil {
             }
         };
 
-        App.getApiClient().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
+        App.getRadioClient().getApi().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
     }
 
     /**
@@ -98,7 +98,7 @@ public final class SongActionsUtil {
      */
     public static void request(Activity activity, Song song) {
         int requests = App.getUserViewModel().getUser().getRequestsRemaining();
-        App.getApiClient().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
+        App.getRadioClient().getApi().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
             @Override
             public void onSuccess() {
                 if (activity == null) return;

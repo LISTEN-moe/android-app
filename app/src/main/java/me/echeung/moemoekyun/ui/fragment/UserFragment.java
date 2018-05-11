@@ -77,7 +77,7 @@ public class UserFragment extends SongsListBaseFragment<FragmentUserBinding> imp
 
     @Override
     public void loadSongs(SongsAdapter adapter) {
-        App.getApiClient().getUserFavorites(new UserFavoritesCallback() {
+        App.getRadioClient().getApi().getUserFavorites(new UserFavoritesCallback() {
             @Override
             public void onSuccess(List<Song> favorites) {
                 if (getActivity() != null) {
@@ -111,7 +111,7 @@ public class UserFragment extends SongsListBaseFragment<FragmentUserBinding> imp
     }
 
     private void getUserInfo() {
-        App.getApiClient().getUserInfo(new UserInfoCallback() {
+        App.getRadioClient().getApi().getUserInfo(new UserInfoCallback() {
             @Override
             public void onSuccess(User user) {
                 viewModel.setUser(user);

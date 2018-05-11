@@ -10,7 +10,7 @@ import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
 
-import me.echeung.moemoekyun.client.api.APIClient;
+import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.service.AppNotification;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.util.AuthUtil;
@@ -24,7 +24,7 @@ public class App extends Application implements ServiceConnection {
     private static RadioService service;
     private static boolean isServiceBound = false;
 
-    private static APIClient apiClient;
+    private static RadioClient radioClient;
 
     private static AuthViewModel authViewModel;
     private static RadioViewModel radioViewModel;
@@ -36,11 +36,9 @@ public class App extends Application implements ServiceConnection {
     public void onCreate() {
         super.onCreate();
 
-        // Preferences
         preferenceUtil = new PreferenceUtil(this);
 
-        // API client
-        apiClient = new APIClient(this, preferenceUtil.getLibraryMode());
+        radioClient = new RadioClient(this);
 
         // UI view models
         authViewModel = new AuthViewModel(this);
@@ -52,12 +50,12 @@ public class App extends Application implements ServiceConnection {
         initService();
     }
 
-    public static APIClient getApiClient() {
-        return apiClient;
+    public static RadioClient getRadioClient() {
+        return radioClient;
     }
 
     public static AuthUtil getAuthUtil() {
-        return apiClient.getAuthUtil();
+        return radioClient.getAuthUtil();
     }
 
     public static AuthViewModel getAuthViewModel() {
@@ -89,7 +87,7 @@ public class App extends Application implements ServiceConnection {
 
     public static void clearService() {
         isServiceBound = false;
-        apiClient.getSocket().setListener(null);
+        radioClient.getSocket().setListener(null);
     }
 
     public static boolean isServiceBound() {

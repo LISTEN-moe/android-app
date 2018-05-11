@@ -1,11 +1,10 @@
 package me.echeung.moemoekyun.client.api;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
+import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.client.api.cache.SongsCache;
 import me.echeung.moemoekyun.client.api.callback.ArtistCallback;
 import me.echeung.moemoekyun.client.api.callback.ArtistsCallback;
@@ -17,8 +16,6 @@ import me.echeung.moemoekyun.client.api.callback.SearchCallback;
 import me.echeung.moemoekyun.client.api.callback.SongsCallback;
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback;
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback;
-import me.echeung.moemoekyun.client.api.library.Jpop;
-import me.echeung.moemoekyun.client.api.library.Kpop;
 import me.echeung.moemoekyun.client.api.library.Library;
 import me.echeung.moemoekyun.client.api.response.ArtistResponse;
 import me.echeung.moemoekyun.client.api.response.ArtistsResponse;
@@ -35,12 +32,8 @@ import me.echeung.moemoekyun.client.api.service.SongsService;
 import me.echeung.moemoekyun.client.api.service.UsersService;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.client.model.SongListItem;
-import me.echeung.moemoekyun.client.socket.Socket;
-import me.echeung.moemoekyun.client.stream.Stream;
 import me.echeung.moemoekyun.util.AuthUtil;
-import me.echeung.moemoekyun.util.system.NetworkUtil;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 
@@ -49,28 +42,8 @@ public class APIClient {
     // TODO: better handle this
     public static final String AUTH_ERROR = "api-auth-error";
 
-    private static final String HEADER_CONTENT_TYPE = "Content-Type";
-    private static final String CONTENT_TYPE = "application/json";
-
-    private static final String HEADER_ACCEPT = "Accept";
-    private static final String ACCEPT = "application/vnd.listen.v4+json";
-
-    private static final String HEADER_USER_AGENT = "User-Agent";
-
     @Getter
     private static Retrofit retrofit;
-
-    @Getter
-    private final Socket socket;
-
-    @Getter
-    private final Stream stream;
-
-    @Getter
-    private final AuthUtil authUtil;
-
-    @Getter
-    private static Library library;
 
     private final ArtistsService artistsService;
     private final AuthService authService;
@@ -80,23 +53,10 @@ public class APIClient {
     private final UsersService usersService;
     private final SongsCache songsCache;
 
-    public APIClient(Context context, String libraryName) {
-        authUtil = new AuthUtil(context);
-        setLibrary(libraryName);
+    private AuthUtil authUtil;
 
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addNetworkInterceptor(chain -> {
-                    final Request request = chain.request();
-
-                    final Request newRequest = request.newBuilder()
-                            .addHeader(HEADER_USER_AGENT, NetworkUtil.getUserAgent())
-                            .addHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE)
-                            .addHeader(HEADER_ACCEPT, ACCEPT)
-                            .build();
-
-                    return chain.proceed(newRequest);
-                })
-                .build();
+    public APIClient(OkHttpClient okHttpClient, AuthUtil authUtil) {
+        this.authUtil = authUtil;
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(Library.API_BASE)
@@ -113,21 +73,6 @@ public class APIClient {
         usersService = retrofit.create(UsersService.class);
 
         songsCache = new SongsCache(this);
-
-        socket = new Socket(okHttpClient, authUtil);
-        stream = new Stream(context);
-    }
-
-    public void changeLibrary(String newMode) {
-        setLibrary(newMode);
-
-        socket.reconnect();
-
-        final boolean wasPlaying = stream.isPlaying();
-        stream.stop();
-        if (wasPlaying) {
-            stream.play();
-        }
     }
 
     /**
@@ -221,7 +166,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), library.getName(), "@me")
+        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     @Override
                     public void success(FavoritesResponse response) {
@@ -303,7 +248,7 @@ public class APIClient {
             return;
         }
 
-        requestsService.request(authUtil.getAuthTokenWithPrefix(), library.getName(), songId)
+        requestsService.request(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
                     public void success(BaseResponse response) {
@@ -323,7 +268,7 @@ public class APIClient {
             return;
         }
 
-        songsService.getSongs(authUtil.getAuthTokenWithPrefix(), library.getName())
+        songsService.getSongs(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     @Override
                     public void success(SongsResponse response) {
@@ -369,7 +314,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), library.getName())
+        artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
                     @Override
                     public void success(ArtistsResponse response) {
@@ -390,17 +335,13 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), library.getName(), artistId)
+        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName(), artistId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
                     @Override
                     public void success(ArtistResponse response) {
                         callback.onSuccess(response.getArtist());
                     }
                 });
-    }
-
-    private void setLibrary(String libraryName) {
-        APIClient.library = libraryName.equals(Kpop.NAME) ? Kpop.INSTANCE : Jpop.INSTANCE;
     }
 
     private List<Song> filterSongs(List<SongListItem> songs, String query) {

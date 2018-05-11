@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import me.echeung.moemoekyun.client.api.APIClient;
+import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.client.socket.response.BaseResponse;
 import me.echeung.moemoekyun.client.socket.response.ConnectResponse;
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse;
@@ -53,7 +53,7 @@ public class Socket extends WebSocketListener {
             disconnect();
         }
 
-        final Request request = new Request.Builder().url(APIClient.getLibrary().getSocketUrl()).build();
+        final Request request = new Request.Builder().url(RadioClient.getLibrary().getSocketUrl()).build();
         socket = client.newWebSocket(request, this);
     }
 

@@ -114,7 +114,7 @@ public class AuthActivity extends BaseActivity {
             return;
         }
 
-        App.getApiClient().authenticate(userLogin, password, loginCallback);
+        App.getRadioClient().getApi().authenticate(userLogin, password, loginCallback);
     }
 
     private void showMfaDialog() {
@@ -131,7 +131,7 @@ public class AuthActivity extends BaseActivity {
                             return;
                         }
 
-                        App.getApiClient().authenticateMfa(otpToken, loginCallback);
+                        App.getRadioClient().getApi().authenticateMfa(otpToken, loginCallback);
                     })
                     .create();
 
@@ -185,7 +185,7 @@ public class AuthActivity extends BaseActivity {
             return;
         }
 
-        App.getApiClient().register(email, username, password, new RegisterCallback() {
+        App.getRadioClient().getApi().register(email, username, password, new RegisterCallback() {
             @Override
             public void onSuccess(String message) {
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());
