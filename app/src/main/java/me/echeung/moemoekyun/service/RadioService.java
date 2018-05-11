@@ -29,6 +29,8 @@ import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback;
+import me.echeung.moemoekyun.client.api.library.Jpop;
+import me.echeung.moemoekyun.client.api.library.Kpop;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.client.socket.Socket;
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse;
@@ -51,6 +53,8 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     public static final String PLAY_PAUSE = APP_PACKAGE_NAME + ".play_pause";
     public static final String STOP = APP_PACKAGE_NAME + ".stop";
     public static final String TOGGLE_FAVORITE = APP_PACKAGE_NAME + ".toggle_favorite";
+    public static final String LIBRARY_JPOP = APP_PACKAGE_NAME + ".library_jpop";
+    public static final String LIBRARY_KPOP = APP_PACKAGE_NAME + ".library_kpop";
     public static final String UPDATE = APP_PACKAGE_NAME + ".update";
     public static final String TIMER_STOP = APP_PACKAGE_NAME + ".timer_stop";
 
@@ -452,6 +456,22 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 // We don't support searching for specific things since it's just a radio stream
                 // so just toggle playback
                 togglePlayPause();
+            }
+
+            @Override
+            public void onPlayFromMediaId(String mediaId, Bundle extras) {
+                super.onPlayFromMediaId(mediaId, extras);
+
+                // Handles changing library mode via Android Auto
+                switch (mediaId) {
+                    case LIBRARY_JPOP:
+                        App.getApiClient().changeLibrary(Jpop.NAME);
+                        break;
+
+                    case LIBRARY_KPOP:
+                        App.getApiClient().changeLibrary(Kpop.NAME);
+                        break;
+                }
             }
         });
 

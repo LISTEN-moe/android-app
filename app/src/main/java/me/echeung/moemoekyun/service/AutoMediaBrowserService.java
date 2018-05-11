@@ -10,12 +10,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserServiceCompat;
+import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import me.echeung.moemoekyun.App;
+import me.echeung.moemoekyun.R;
 
 public class AutoMediaBrowserService extends MediaBrowserServiceCompat implements ServiceConnection {
 
@@ -41,7 +44,12 @@ public class AutoMediaBrowserService extends MediaBrowserServiceCompat implement
 
     @Override
     public void onLoadChildren(@NonNull String parentId, @NonNull Result<List<MediaBrowserCompat.MediaItem>> result) {
-        result.sendResult(Collections.emptyList());
+        List<MediaBrowserCompat.MediaItem> mediaItems = new ArrayList<>();
+
+        mediaItems.add(createPlayableMediaItem(RadioService.LIBRARY_JPOP, getResources().getString(R.string.jpop)));
+        mediaItems.add(createPlayableMediaItem(RadioService.LIBRARY_KPOP, getResources().getString(R.string.kpop)));
+
+        result.sendResult(mediaItems);
     }
 
     @Override
@@ -62,4 +70,14 @@ public class AutoMediaBrowserService extends MediaBrowserServiceCompat implement
         MediaSessionCompat mediaSession = App.getService().getMediaSession();
         setSessionToken(mediaSession.getSessionToken());
     }
+
+    private MediaBrowserCompat.MediaItem createPlayableMediaItem(String mediaId, String title) {
+        MediaDescriptionCompat.Builder builder = new MediaDescriptionCompat.Builder()
+                .setMediaId(mediaId)
+                .setTitle(title);
+
+        return new MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE);
+    }
+
+
 }
