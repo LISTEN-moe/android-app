@@ -43,7 +43,17 @@
             <include
                 layout="@layout/about_card_translations"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/about_privacy_policy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="@string/privacy_policy"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
         </LinearLayout>
 

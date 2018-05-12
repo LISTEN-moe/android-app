@@ -63,6 +63,8 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.about_listenmoe_play_history).setOnClickListener(this);
         findViewById(R.id.about_listenmoe_discord).setOnClickListener(this);
         findViewById(R.id.about_listenmoe_patreon).setOnClickListener(this);
+
+        findViewById(R.id.about_privacy_policy).setOnClickListener(this);
     }
 
     @Override
@@ -98,6 +100,10 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
 
             case R.id.about_listenmoe_patreon:
                 UrlUtil.openUrl(this, getString(R.string.url_patreon));
+                break;
+
+            case R.id.about_privacy_policy:
+                UrlUtil.openUrl(this, getString(R.string.url_privacy_policy));
                 break;
         }
     }
