@@ -86,6 +86,7 @@
   <!-- e.g. Version 1.0 -->
   <string name="version">Versija %s</string>
   <string name="rate">Ivertink Google Play programėlėje</string>
+  <string name="github">Uždėti žvaigždutę GitHub platformoje</string>
   <string name="translate">Padėkite išversti programėlę</string>
   <string name="translators">Vertėjai</string>
   <string name="licenses">Licenzijos</string>
@@ -93,6 +94,7 @@
   <string name="open_in_browser">Atidaryti naršyklėje</string>
   <string name="play_history">Dainų istorija</string>
   <string name="discord">Prisijunkite prie mūsų Discord\'e</string>
+  <string name="patreon">Paremti per Patreon</string>
   <!-- == Settings == -->
   <string name="settings">Nustatymai</string>
   <string name="pref_header_general">Bendra</string>
@@ -101,6 +103,10 @@
   <string name="system_default">Sistemos numatytoji reikšmė</string>
   <string name="restart_required">Pakeitimai bus matomi po aplikacijos paleidimo iš naujo</string>
   <string name="pref_title_general_download">Automatiškai atsisiųsti paveikslėlius</string>
+  <string name="pref_title_general_broadcast_intent">Transliuoti dainų atnaujinimus</string>
+  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling palaikymas</string>
+  <string name="pref_title_general_romaji">Naudoti romaji</string>
+  <string name="pref_title_general_romaji_summary">\"Nanahira\" vietoje \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Rodyti atsitiktinai užsakytos dainos pavadinimą</string>
   <string name="pref_header_audio">Garsas</string>
   <string name="pref_title_pause_on_noisy">Pristabdyti, kai pašalinamos ausinės</string>
@@ -113,5 +119,7 @@
   <string name="pref_title_lockscreen_albumart_summary">Rodyti albumo iliustracija ekrano užrakte ir Android Auto</string>
   <string name="pref_header_color">Spalva</string>
   <string name="pref_title_color_now_playing">Spalva pagal albumo viršelį</string>
+  <string name="pref_title_color_navbar">Rodyti temą ekrano naršymo juostoje</string>
+  <string name="pref_header_advanced">Papildomi</string>
   <string name="pref_title_advanced_clear_image_cache">Išvalyti paveikslėlių kešą</string>
 </resources>
