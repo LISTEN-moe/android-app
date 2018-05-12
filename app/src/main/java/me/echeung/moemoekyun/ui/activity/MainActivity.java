@@ -3,13 +3,16 @@ package me.echeung.moemoekyun.ui.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
@@ -52,8 +55,8 @@ public class MainActivity extends BaseActivity {
     private Observable.OnPropertyChangedCallback playPauseCallback;
     private FloatingActionButton vPlayPauseBtn;
     private ImageButton vMiniPlayPauseBtn;
-    private AnimatedVectorDrawableCompat playToPause;
-    private AnimatedVectorDrawableCompat pauseToPlay;
+    private Drawable pauseIcon;
+    private Drawable playIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -348,8 +351,14 @@ public class MainActivity extends BaseActivity {
         vMiniPlayPauseBtn = binding.nowPlaying.miniPlayPause;
         vMiniPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
 
-        playToPause = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_play_to_pause);
-        pauseToPlay = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_pause_to_play);
+        // AnimatedVectorDrawables don't work well below API 25
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            pauseIcon = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_play_to_pause);
+            playIcon = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_pause_to_play);
+        } else {
+            pauseIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_white_24dp);
+            playIcon = ContextCompat.getDrawable(this, R.drawable.ic_play_arrow_white_24dp);
+        }
 
         setPlayPauseDrawable();
 
@@ -366,10 +375,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setPlayPauseDrawable() {
-        AnimatedVectorDrawableCompat drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
+        Drawable drawable = viewModel.getIsPlaying() ? pauseIcon : playIcon;
         vPlayPauseBtn.setImageDrawable(drawable);
         vMiniPlayPauseBtn.setImageDrawable(drawable);
-        drawable.start();
+
+        // AnimatedVectorDrawables don't work well below API 25
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            ((AnimatedVectorDrawableCompat) drawable).start();
+        }
     }
 
     private void togglePlayPause() {

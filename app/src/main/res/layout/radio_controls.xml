@@ -48,7 +48,7 @@
                 android:layout_margin="16dp"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_anim_play" />
+                android:src="@drawable/ic_play_arrow_white_24dp" />
 
             <ImageButton
                 android:id="@+id/favorite_btn"

@@ -102,7 +102,7 @@
                 android:contentDescription="@string/play_pause"
                 android:padding="16dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_anim_play"
+                android:src="@drawable/ic_play_arrow_white_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
