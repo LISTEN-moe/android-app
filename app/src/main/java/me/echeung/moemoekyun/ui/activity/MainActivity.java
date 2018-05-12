@@ -3,14 +3,13 @@ package me.echeung.moemoekyun.ui.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
@@ -53,8 +52,8 @@ public class MainActivity extends BaseActivity {
     private Observable.OnPropertyChangedCallback playPauseCallback;
     private FloatingActionButton vPlayPauseBtn;
     private ImageButton vMiniPlayPauseBtn;
-    private AnimatedVectorDrawable playToPause;
-    private AnimatedVectorDrawable pauseToPlay;
+    private AnimatedVectorDrawableCompat playToPause;
+    private AnimatedVectorDrawableCompat pauseToPlay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,8 +348,8 @@ public class MainActivity extends BaseActivity {
         vMiniPlayPauseBtn = binding.nowPlaying.miniPlayPause;
         vMiniPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
 
-        playToPause = (AnimatedVectorDrawable) ContextCompat.getDrawable(this, R.drawable.avd_play_to_pause);
-        pauseToPlay = (AnimatedVectorDrawable) ContextCompat.getDrawable(this, R.drawable.avd_pause_to_play);
+        playToPause = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_play_to_pause);
+        pauseToPlay = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_pause_to_play);
 
         setPlayPauseDrawable();
 
@@ -367,7 +366,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setPlayPauseDrawable() {
-        AnimatedVectorDrawable drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
+        AnimatedVectorDrawableCompat drawable = viewModel.getIsPlaying() ? playToPause : pauseToPlay;
         vPlayPauseBtn.setImageDrawable(drawable);
         vMiniPlayPauseBtn.setImageDrawable(drawable);
         drawable.start();
