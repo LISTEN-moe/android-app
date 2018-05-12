@@ -19,7 +19,7 @@
     <!-- https://listen.moe/discord -->
     <string name="url_discord" translatable="false">https://discordapp.com/invite/4S8JYr8</string>
     <string name="url_patreon" translatable="false">https://www.patreon.com/odysseyradio</string>
-    <string name="url_privacy_policy" translatable="false">https://listen.moe</string>
+    <string name="url_privacy_policy" translatable="false">https://listen-moe.github.io/android-app/privacy.txt</string>
 
     <string name="translators_list" translatable="false">
         anonymousthing
