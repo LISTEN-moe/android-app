@@ -68,10 +68,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:alpha="@{vm.currentSong != null}"
             android:text="@{@plurals/current_listeners(vm.listeners, vm.listeners, vm.listeners, vm.listeners)}"
             android:textAlignment="center"
-            android:textColor="@{vm.bodyColor}"
-            android:visibility="@{vm.currentSong != null}" />
+            android:textColor="@{vm.bodyColor}" />
 
     </LinearLayout>
 

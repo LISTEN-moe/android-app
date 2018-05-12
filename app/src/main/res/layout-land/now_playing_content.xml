@@ -48,6 +48,8 @@
             layout="@layout/radio_songs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             app:layout_constraintBottom_toTopOf="@+id/radio_controls"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/middle_vertical_guideline"

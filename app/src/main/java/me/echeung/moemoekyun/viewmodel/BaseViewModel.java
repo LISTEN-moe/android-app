@@ -72,6 +72,11 @@ public abstract class BaseViewModel extends BaseObservable {
     // Helpers
     // ========================================================================
 
+    @BindingAdapter("android:alpha")
+    public static void setAlpha(View v, boolean visible) {
+        v.setAlpha(visible ? 1 : 0);
+    }
+
     @BindingAdapter("android:selected")
     public static void setSelected(TextView v, boolean selected) {
         v.setSelected(selected);
