@@ -96,6 +96,7 @@
   <string name="play_history">Zuletzt gespielt</string>
   <string name="discord">Trete uns auf Discord bei</string>
   <string name="patreon">Auf Patreon unterstützen</string>
+  <string name="privacy_policy">Datenschutzerklärung</string>
   <!-- == Settings == -->
   <string name="settings">Einstellungen</string>
   <string name="pref_header_general">Generell</string>

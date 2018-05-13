@@ -96,6 +96,7 @@
   <string name="play_history">Riwayat lagu</string>
   <string name="discord">Gabung di Discord</string>
   <string name="patreon">Dukung di Patreon</string>
+  <string name="privacy_policy">Kebijakan privasi</string>
   <!-- == Settings == -->
   <string name="settings">Pengaturan</string>
   <string name="pref_header_general">Umum</string>

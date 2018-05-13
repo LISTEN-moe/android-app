@@ -96,6 +96,7 @@
   <string name="play_history">Song history</string>
   <string name="discord">Join us on Discord</string>
   <string name="patreon">Support on Patreon</string>
+  <string name="privacy_policy">Privacy policy</string>
   <!-- == Settings == -->
   <string name="settings">Settings</string>
   <string name="pref_header_general">General</string>

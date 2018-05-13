@@ -96,6 +96,7 @@
   <string name="play_history">Historial de canciones</string>
   <string name="discord">Únete en Discord</string>
   <string name="patreon">Ayúdanos en Patreon</string>
+  <string name="privacy_policy">Política de privacidad</string>
   <!-- == Settings == -->
   <string name="settings">Opciones</string>
   <string name="pref_header_general">General</string>
