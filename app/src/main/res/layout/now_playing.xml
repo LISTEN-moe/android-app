@@ -23,18 +23,24 @@
             android:layout_height="match_parent"
             android:background="@{vm.backgroundColor}">
 
-            <ImageButton
-                android:id="@+id/collapse_btn"
-                android:layout_width="@dimen/now_playing_drag_bar_size"
-                android:layout_height="@dimen/now_playing_drag_bar_size"
-                android:layout_gravity="center_horizontal"
-                android:alpha="0.5"
-                android:background="?selectableItemBackgroundBorderless"
-                android:padding="8dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_drag_pill_white_24dp"
-                android:tint="@{vm.bodyColor}"
-                tools:ignore="ContentDescription" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+
+                <ImageButton
+                    android:id="@+id/collapse_btn"
+                    android:layout_width="@dimen/now_playing_drag_bar_size"
+                    android:layout_height="@dimen/now_playing_drag_bar_size"
+                    android:layout_gravity="center"
+                    android:alpha="0.5"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:padding="8dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_drag_pill_white_24dp"
+                    android:tint="@{vm.bodyColor}"
+                    tools:ignore="ContentDescription" />
+
+            </FrameLayout>
 
             <include
                 android:id="@+id/content"
