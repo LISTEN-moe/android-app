@@ -3,23 +3,18 @@ package me.echeung.moemoekyun.ui.activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.Observable;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.text.method.LinkMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -33,6 +28,7 @@ import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.base.BaseActivity;
 import me.echeung.moemoekyun.ui.dialog.SleepTimerDialog;
+import me.echeung.moemoekyun.ui.view.PlayPauseView;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.util.system.DozeUtil;
 import me.echeung.moemoekyun.util.system.NetworkUtil;
@@ -53,10 +49,8 @@ public class MainActivity extends BaseActivity {
     private BottomSheetBehavior nowPlayingSheet;
 
     private Observable.OnPropertyChangedCallback playPauseCallback;
-    private FloatingActionButton vPlayPauseBtn;
-    private ImageButton vMiniPlayPauseBtn;
-    private Drawable pauseIcon;
-    private Drawable playIcon;
+    private PlayPauseView playPauseView;
+    private PlayPauseView miniPlayPauseView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -345,23 +339,15 @@ public class MainActivity extends BaseActivity {
     // =============================================================================================
 
     private void initPlayPause() {
-        vPlayPauseBtn = binding.nowPlaying.content.radioControls.playPauseBtn;
-        vPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
+        ImageView playPauseBtn = binding.nowPlaying.content.radioControls.playPauseBtn;
+        playPauseBtn.setOnClickListener(v -> togglePlayPause());
+        playPauseView = new PlayPauseView(this, playPauseBtn);
 
-        vMiniPlayPauseBtn = binding.nowPlaying.miniPlayPause;
-        vMiniPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
-
-        // AnimatedVectorDrawables don't work well below API 25
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            pauseIcon = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_play_to_pause);
-            playIcon = AnimatedVectorDrawableCompat.create(this, R.drawable.avd_pause_to_play);
-        } else {
-            pauseIcon = ContextCompat.getDrawable(this, R.drawable.ic_pause_white_24dp);
-            playIcon = ContextCompat.getDrawable(this, R.drawable.ic_play_arrow_white_24dp);
-        }
+        ImageView miniPlayPauseBtn = binding.nowPlaying.miniPlayPause;
+        miniPlayPauseBtn.setOnClickListener(v -> togglePlayPause());
+        miniPlayPauseView = new PlayPauseView(this, miniPlayPauseBtn);
 
         setPlayPauseDrawable();
-
         playPauseCallback = new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
@@ -375,14 +361,9 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setPlayPauseDrawable() {
-        Drawable drawable = viewModel.getIsPlaying() ? pauseIcon : playIcon;
-        vPlayPauseBtn.setImageDrawable(drawable);
-        vMiniPlayPauseBtn.setImageDrawable(drawable);
-
-        // AnimatedVectorDrawables don't work well below API 25
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            ((AnimatedVectorDrawableCompat) drawable).start();
-        }
+        boolean isPlaying = viewModel.getIsPlaying();
+        playPauseView.toggle(isPlaying);
+        miniPlayPauseView.toggle(isPlaying);
     }
 
     private void togglePlayPause() {
