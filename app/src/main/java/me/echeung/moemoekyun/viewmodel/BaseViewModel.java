@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.viewmodel;
 
-import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
@@ -11,18 +10,8 @@ import android.widget.TextView;
 
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.util.ImageUtil;
-import me.echeung.moemoekyun.util.system.LocaleUtil;
-import me.echeung.moemoekyun.util.system.ThemeUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
-
-    Context wrapContext(Context context) {
-        context = LocaleUtil.setLocale(context);
-        context = ThemeUtil.setTheme(context);
-
-        return context;
-    }
-
 
     // Network connection
     // ========================================================================

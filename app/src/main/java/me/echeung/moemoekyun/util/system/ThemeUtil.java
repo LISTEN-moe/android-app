@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.ColorInt;
+import android.support.annotation.StyleRes;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 
@@ -15,25 +16,34 @@ import me.echeung.moemoekyun.util.PreferenceUtil;
 public final class ThemeUtil {
 
     public static Context setTheme(Context context) {
-        switch (App.getPreferenceUtil().getTheme()) {
-            case PreferenceUtil.THEME_DEFAULT:
-                context.setTheme(R.style.AppTheme);
-                break;
+        context.setTheme(getThemeStyle());
+        return context;
+    }
 
+    @StyleRes
+    public static int getThemeStyle() {
+        int style;
+
+        switch (App.getPreferenceUtil().getTheme()) {
             case PreferenceUtil.THEME_BLUE:
-                context.setTheme(R.style.AppThemeBlue);
+                style = R.style.AppThemeBlue;
                 break;
 
             case PreferenceUtil.THEME_LEGACY:
-                context.setTheme(R.style.AppThemeLegacy);
+                style = R.style.AppThemeLegacy;
                 break;
 
             case PreferenceUtil.THEME_CHRISTMAS:
-                context.setTheme(R.style.AppThemeChristmas);
+                style = R.style.AppThemeChristmas;
+                break;
+
+            case PreferenceUtil.THEME_DEFAULT:
+            default:
+                style = R.style.AppTheme;
                 break;
         }
 
-        return context;
+        return style;
     }
 
     public static void colorNavigationBar(Activity activity) {
