@@ -9,8 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.lang.ref.WeakReference;
-
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.util.ImageUtil;
 import me.echeung.moemoekyun.util.system.LocaleUtil;
@@ -18,18 +16,7 @@ import me.echeung.moemoekyun.util.system.ThemeUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
 
-    private final WeakReference<Context> contextRef;
-
-    public BaseViewModel(Context context) {
-        this.contextRef = new WeakReference<>(context);
-    }
-
-    protected Context getContext() {
-        Context context = contextRef.get();
-        if (context == null) {
-            return null;
-        }
-
+    Context wrapContext(Context context) {
         context = LocaleUtil.setLocale(context);
         context = ThemeUtil.setTheme(context);
 

@@ -21,7 +21,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@{vm.backgroundColor}">
+            android:background="@{vm.getBackgroundColor(context, vm.albumArt)}">
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -37,7 +37,7 @@
                     android:padding="8dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_drag_pill_white_24dp"
-                    android:tint="@{vm.bodyColor}"
+                    android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
                     tools:ignore="ContentDescription" />
 
             </FrameLayout>

@@ -36,7 +36,7 @@
                 android:singleLine="true"
                 android:text="@{vm.currentSong.titleString}"
                 android:textAlignment="center"
-                android:textColor="@{vm.bodyColor}"
+                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:textSize="24sp" />
 
             <TextView
@@ -51,7 +51,7 @@
                 android:singleLine="true"
                 android:text="@{vm.currentSong.artistsString}"
                 android:textAlignment="center"
-                android:textColor="@{vm.bodyColor}"
+                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:textSize="18sp" />
 
         </LinearLayout>

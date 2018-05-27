@@ -45,9 +45,9 @@ public class App extends Application implements ServiceConnection {
         radioClient = new RadioClient(this);
 
         // UI view models
-        authViewModel = new AuthViewModel(this);
-        radioViewModel = new RadioViewModel(this);
-        userViewModel = new UserViewModel(this);
+        authViewModel = new AuthViewModel();
+        radioViewModel = new RadioViewModel();
+        userViewModel = new UserViewModel();
 
         // Music player service
         initNotificationChannel();

@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.viewmodel;
 
-import android.content.Context;
 import android.databinding.Bindable;
 
 import com.android.databinding.library.baseAdapters.BR;
@@ -14,10 +13,6 @@ public class UserViewModel extends BaseViewModel {
     private String bannerUrl;
 
     private boolean hasFavorites;
-
-    public UserViewModel(Context context) {
-        super(context);
-    }
 
     public void reset() {
         setUser(null);

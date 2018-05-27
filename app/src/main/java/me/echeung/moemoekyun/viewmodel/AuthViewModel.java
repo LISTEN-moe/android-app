@@ -1,20 +1,12 @@
 package me.echeung.moemoekyun.viewmodel;
 
-import android.content.Context;
 import android.databinding.Bindable;
 
 import com.android.databinding.library.baseAdapters.BR;
 
 public class AuthViewModel extends BaseViewModel {
 
-    private boolean showRegister;
-
-    public AuthViewModel(Context context) {
-        super(context);
-
-        // Defaults
-        showRegister = false;
-    }
+    private boolean showRegister = false;
 
     @Bindable
     public boolean getShowRegister() {

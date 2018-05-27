@@ -55,10 +55,12 @@ public final class AlbumArtUtil {
     }
 
     public static void updateAlbumArt(Context context, Song song) {
-        String albumArtUrl = song.getAlbumArtUrl();
-        if (albumArtUrl != null && App.getPreferenceUtil().shouldDownloadImage(context)) {
-            downloadAlbumArtBitmap(context, albumArtUrl);
-            return;
+        if (song != null) {
+            String albumArtUrl = song.getAlbumArtUrl();
+            if (albumArtUrl != null && App.getPreferenceUtil().shouldDownloadImage(context)) {
+                downloadAlbumArtBitmap(context, albumArtUrl);
+                return;
+            }
         }
 
         updateListeners(getDefaultAlbumArt(context));
