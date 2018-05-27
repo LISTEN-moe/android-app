@@ -160,12 +160,11 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
 
     @Bindable
     public String getRequester() {
-        Context context = getContext();
-        if (context == null || requester == null || TextUtils.isEmpty(requester.getDisplayName())) {
+        if (requester == null || TextUtils.isEmpty(requester.getDisplayName())) {
             return null;
         }
 
-        return String.format(context.getString(R.string.requested_by), requester.getDisplayName());
+        return requester.getDisplayName();
     }
 
     public void setRequester(User requester) {
