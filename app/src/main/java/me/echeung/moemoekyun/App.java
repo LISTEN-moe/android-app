@@ -32,9 +32,13 @@ public class App extends Application implements ServiceConnection {
 
     private static PreferenceUtil preferenceUtil;
 
+    private static App instance;
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+        instance = this;
 
         preferenceUtil = new PreferenceUtil(this);
 
@@ -48,6 +52,10 @@ public class App extends Application implements ServiceConnection {
         // Music player service
         initNotificationChannel();
         initService();
+    }
+
+    public static Context getContext() {
+        return instance;
     }
 
     public static RadioClient getRadioClient() {
