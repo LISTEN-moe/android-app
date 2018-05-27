@@ -1,14 +1,14 @@
 package me.echeung.moemoekyun.ui.activity;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 import android.view.View;
-import android.widget.Toast;
 
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
@@ -54,7 +54,7 @@ public class SettingsActivity extends BaseActivity {
             setSummary(themeSetting);
             themeSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(themeSetting, o);
-                promptAppRestart();
+                recreateBackStack();
                 return true;
             });
 
@@ -62,7 +62,7 @@ public class SettingsActivity extends BaseActivity {
             setSummary(languageSetting);
             languageSetting.setOnPreferenceChangeListener((preference, o) -> {
                 setSummary(languageSetting, o);
-                promptAppRestart();
+                recreateBackStack();
                 return true;
             });
 
@@ -107,11 +107,11 @@ public class SettingsActivity extends BaseActivity {
                     .getString(preference.getKey(), "");
         }
 
-        private void promptAppRestart() {
-            Activity activity = getActivity();
-            if (activity != null) {
-                Toast.makeText(activity, R.string.restart_required, Toast.LENGTH_SHORT).show();
-            }
+        private void recreateBackStack() {
+            TaskStackBuilder.create(getActivity())
+                    .addNextIntent(new Intent(getActivity(), MainActivity.class))
+                    .addNextIntent(getActivity().getIntent())
+                    .startActivities();
         }
 
     }
