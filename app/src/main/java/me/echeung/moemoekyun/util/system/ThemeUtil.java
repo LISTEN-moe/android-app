@@ -56,17 +56,17 @@ public final class ThemeUtil {
 
     @ColorInt
     public static int getAccentColor(Context context) {
-        return resolveColorAttr(context, R.attr.themeColorAccent);
+        return resolveColorAttr(setTheme(context), R.attr.themeColorAccent);
     }
 
     @ColorInt
     public static int getBackgroundColor(Context context) {
-        return resolveColorAttr(context, android.R.attr.windowBackground);
+        return resolveColorAttr(setTheme(context), android.R.attr.windowBackground);
     }
 
     @ColorInt
     public static int getBodyColor(Context context) {
-        return resolveColorAttr(context, android.R.attr.textColorPrimary);
+        return resolveColorAttr(setTheme(context), android.R.attr.textColorPrimary);
     }
 
     @ColorInt

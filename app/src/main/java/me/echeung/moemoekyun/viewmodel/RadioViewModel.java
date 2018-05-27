@@ -91,7 +91,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
             }
         }
 
-        return ThemeUtil.getBackgroundColor(ThemeUtil.setTheme(context));
+        return ThemeUtil.getBackgroundColor(context);
     }
 
     // Indirectly bind to albumArt: https://stackoverflow.com/a/39087434
@@ -104,7 +104,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
             }
         }
 
-        return ThemeUtil.getBodyColor(ThemeUtil.setTheme(context));
+        return ThemeUtil.getBodyColor(context);
     }
 
     @Override
