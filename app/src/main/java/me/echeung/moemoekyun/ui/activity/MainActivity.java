@@ -30,7 +30,6 @@ import me.echeung.moemoekyun.ui.base.BaseActivity;
 import me.echeung.moemoekyun.ui.dialog.SleepTimerDialog;
 import me.echeung.moemoekyun.ui.view.PlayPauseView;
 import me.echeung.moemoekyun.util.SongActionsUtil;
-import me.echeung.moemoekyun.util.system.DozeUtil;
 import me.echeung.moemoekyun.util.system.NetworkUtil;
 import me.echeung.moemoekyun.viewmodel.RadioViewModel;
 
@@ -84,11 +83,6 @@ public class MainActivity extends BaseActivity {
         viewModel.setIsAuthed(isAuthed);
         if (!isAuthed) {
             App.getUserViewModel().reset();
-        }
-
-        // Prompt to turn off battery optimizations
-        if (!DozeUtil.isWhitelisted(this)) {
-            DozeUtil.requestWhitelist(this);
         }
     }
 
