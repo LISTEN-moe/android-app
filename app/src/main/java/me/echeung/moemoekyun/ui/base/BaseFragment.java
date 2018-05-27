@@ -37,22 +37,6 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-
-        if (!receiverRegistered) {
-            registerReceiver();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        unregisterReceiver();
-    }
-
-    @Override
     public void onDestroy() {
         unregisterReceiver();
 
@@ -72,7 +56,7 @@ public abstract class BaseFragment<T extends ViewDataBinding> extends Fragment {
     }
 
     private void registerReceiver() {
-        if (intentReceiver != null && intentFilter != null) {
+        if (!receiverRegistered && intentReceiver != null && intentFilter != null) {
             getActivity().registerReceiver(intentReceiver, intentFilter);
             receiverRegistered = true;
         }
