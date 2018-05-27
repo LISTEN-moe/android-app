@@ -96,6 +96,7 @@
   <string name="play_history">播放历史</string>
   <string name="discord">在 Discord 上加入我们</string>
   <string name="patreon">在 Patreon 上赞助我们</string>
+  <string name="privacy_policy">隐私政策</string>
   <!-- == Settings == -->
   <string name="settings">设置</string>
   <string name="pref_header_general">通用</string>

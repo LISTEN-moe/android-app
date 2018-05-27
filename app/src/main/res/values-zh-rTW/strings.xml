@@ -13,6 +13,8 @@
   <string name="action_request">點歌</string>
   <string name="action_undo">取消</string>
   <!-- == Library modes == -->
+  <string name="jpop">日本流行音樂</string>
+  <string name="kpop">韓國流行音樂</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">睡眠計時</string>
   <string name="close">關閉</string>
@@ -52,5 +54,8 @@
   <!-- == Settings == -->
   <string name="settings">設定</string>
   <string name="pref_header_general">一般</string>
+  <string name="pref_title_general_download">自動下載圖像</string>
+  <string name="pref_header_audio">音訊</string>
   <string name="pref_title_pause_on_noisy">耳機拔出時暫停</string>
+  <string name="pref_header_color">顏色</string>
 </resources>

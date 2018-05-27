@@ -96,6 +96,7 @@
   <string name="play_history">История песен</string>
   <string name="discord">Присоединиться к нам в Discord</string>
   <string name="patreon">Поддержать на Patreon</string>
+  <string name="privacy_policy">Политика конфиденциальности</string>
   <!-- == Settings == -->
   <string name="settings">Настройки</string>
   <string name="pref_header_general">Основные</string>
