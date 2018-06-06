@@ -30,6 +30,7 @@ public class Socket extends WebSocketListener {
 
     private static final String TRACK_UPDATE = "TRACK_UPDATE";
     private static final String TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST";
+    private static final String QUEUE_UPDATE = "QUEUE_UPDATE";
 
     private static final int RETRY_TIME_MIN = 250;
     private static final int RETRY_TIME_MAX = 4000;
@@ -179,8 +180,9 @@ public class Socket extends WebSocketListener {
                 // Track update
                 case 1:
                     final UpdateResponse updateResponse = MOSHI.adapter(UpdateResponse.class).fromJson(jsonString);
-                    if (!updateResponse.getT().equals(TRACK_UPDATE) && !updateResponse.getT().equals(TRACK_UPDATE_REQUEST))
+                    if (!isValidUpdate(updateResponse)) {
                         return;
+                    }
                     listener.onSocketReceive(updateResponse.getD());
                     break;
 
@@ -194,6 +196,12 @@ public class Socket extends WebSocketListener {
         } catch (IOException e) {
             Log.e(TAG, "Failed to parse socket data: " + jsonString, e);
         }
+    }
+
+    private boolean isValidUpdate(UpdateResponse updateResponse) {
+        return updateResponse.getT().equals(TRACK_UPDATE)
+                || updateResponse.getT().equals(TRACK_UPDATE_REQUEST)
+                || updateResponse.getT().equals(QUEUE_UPDATE);
     }
 
     public interface Listener {
