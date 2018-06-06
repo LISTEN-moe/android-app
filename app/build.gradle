@@ -1,15 +1,15 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.0'
 
     flavorDimensions 'variant'
 
     defaultConfig {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 55
         versionName '3.0.0'
 
