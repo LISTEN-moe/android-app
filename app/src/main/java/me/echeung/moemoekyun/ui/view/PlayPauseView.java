@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.ui.view;
 
 import android.content.Context;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
@@ -32,8 +33,8 @@ public class PlayPauseView {
         Drawable drawable = isPlaying ? pauseDrawable : playDrawable;
         view.setImageDrawable(drawable);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
-            ((AnimatedVectorDrawableCompat) drawable).start();
+        if (drawable instanceof Animatable) {
+            ((Animatable) drawable).start();
         }
     }
 
