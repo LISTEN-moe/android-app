@@ -41,6 +41,10 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
         }
 
         Song song = getItem(position);
+        if (song == null) {
+            return binding.getRoot();
+        }
+
         binding.setSong(song);
         binding.setIsAuthenticated(App.getAuthUtil().isAuthenticated());
         binding.setIsFavorite(song.isFavorite());
