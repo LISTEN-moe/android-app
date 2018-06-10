@@ -18,8 +18,8 @@
 
             <ImageButton
                 android:id="@+id/history_btn"
-                android:layout_width="@dimen/fab_size"
-                android:layout_height="@dimen/fab_size"
+                android:layout_width="@dimen/small_fab_size"
+                android:layout_height="@dimen/small_fab_size"
                 android:layout_margin="16dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/last_played"
@@ -40,8 +40,8 @@
 
             <ImageButton
                 android:id="@+id/favorite_btn"
-                android:layout_width="@dimen/fab_size"
-                android:layout_height="@dimen/fab_size"
+                android:layout_width="@dimen/small_fab_size"
+                android:layout_height="@dimen/small_fab_size"
                 android:layout_margin="16dp"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/favorite"
