@@ -14,6 +14,8 @@ import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.client.auth.AuthUtil;
 import me.echeung.moemoekyun.client.socket.response.BaseResponse;
 import me.echeung.moemoekyun.client.socket.response.ConnectResponse;
+import me.echeung.moemoekyun.client.socket.response.EventNotificationResponse;
+import me.echeung.moemoekyun.client.socket.response.NotificationResponse;
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -31,6 +33,7 @@ public class Socket extends WebSocketListener {
     private static final String TRACK_UPDATE = "TRACK_UPDATE";
     private static final String TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST";
     private static final String QUEUE_UPDATE = "QUEUE_UPDATE";
+    private static final String NOTIFICATION = "NOTIFICATION";
 
     private static final int RETRY_TIME_MIN = 250;
     private static final int RETRY_TIME_MAX = 4000;
@@ -169,18 +172,22 @@ public class Socket extends WebSocketListener {
         }
 
         try {
-            final BaseResponse baseResponse = MOSHI.adapter(BaseResponse.class).fromJson(jsonString);
+            BaseResponse baseResponse = getResponse(BaseResponse.class, jsonString);
             switch (baseResponse.getOp()) {
                 // Heartbeat init
                 case 0:
-                    final ConnectResponse connectResponse = MOSHI.adapter(ConnectResponse.class).fromJson(jsonString);
+                    ConnectResponse connectResponse = getResponse(ConnectResponse.class, jsonString);
                     heartbeat(connectResponse.getD().getHeartbeat());
                     break;
 
-                // Track update
+                // Update
                 case 1:
-                    final UpdateResponse updateResponse = MOSHI.adapter(UpdateResponse.class).fromJson(jsonString);
+                    UpdateResponse updateResponse = getResponse(UpdateResponse.class, jsonString);
                     if (!isValidUpdate(updateResponse)) {
+                        return;
+                    }
+                    if (isNotification(updateResponse)) {
+                        parseNotification(jsonString);
                         return;
                     }
                     listener.onSocketReceive(updateResponse.getD());
@@ -198,10 +205,34 @@ public class Socket extends WebSocketListener {
         }
     }
 
+    private void parseNotification(String jsonString) {
+        try {
+            NotificationResponse notificationResponse = getResponse(NotificationResponse.class, jsonString);
+            switch (notificationResponse.getT()) {
+                case EventNotificationResponse.TYPE:
+                    EventNotificationResponse eventResponse = getResponse(EventNotificationResponse.class, jsonString);
+                    // TODO: do something with eventResponse
+                    Log.i(TAG, "Got event: " + eventResponse.getD().getEvent().getName());
+                    break;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to parse notification data: " + jsonString, e);
+        }
+    }
+
     private boolean isValidUpdate(UpdateResponse updateResponse) {
         return updateResponse.getT().equals(TRACK_UPDATE)
                 || updateResponse.getT().equals(TRACK_UPDATE_REQUEST)
-                || updateResponse.getT().equals(QUEUE_UPDATE);
+                || updateResponse.getT().equals(QUEUE_UPDATE)
+                || isNotification(updateResponse);
+    }
+
+    private boolean isNotification(UpdateResponse updateResponse) {
+        return updateResponse.getT().equals(NOTIFICATION);
+    }
+
+    private <T> T getResponse(Class<T> responseClass, String jsonString) throws IOException {
+        return MOSHI.adapter(responseClass).fromJson(jsonString);
     }
 
     public interface Listener {
