@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:alpha="0.75"
+                android:alpha="0.7"
                 android:ellipsize="marquee"
                 android:fontFamily="sans-serif-light"
                 android:marqueeRepeatLimit="marquee_forever"
@@ -52,7 +52,7 @@
                 android:text="@{vm.currentSong.artistsString}"
                 android:textAlignment="center"
                 android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
