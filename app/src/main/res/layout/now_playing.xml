@@ -25,13 +25,15 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="?attr/actionBarSize"
+                android:paddingEnd="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin">
 
                 <ImageButton
                     android:id="@+id/collapse_btn"
                     android:layout_width="@dimen/now_playing_drag_bar_size"
                     android:layout_height="@dimen/now_playing_drag_bar_size"
-                    android:layout_gravity="center"
+                    android:layout_gravity="center_vertical"
                     android:alpha="0.5"
                     android:background="?selectableItemBackgroundBorderless"
                     android:padding="8dp"
