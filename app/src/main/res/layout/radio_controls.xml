@@ -57,8 +57,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="horizontal"
-            android:alpha="@{vm.currentSong == null ? 0f : 0.5f}">
+            android:alpha="0.5"
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -107,7 +107,6 @@
                 android:visibility="@{vm.event != null || vm.requester != null}" />
 
         </LinearLayout>
-
 
     </LinearLayout>
 
