@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="8dp"
-                android:text="•"
+                android:text="@string/separator"
                 android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:textSize="14sp"
                 android:visibility="@{vm.event != null || vm.requester != null}" />

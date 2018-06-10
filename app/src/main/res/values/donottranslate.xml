@@ -8,6 +8,8 @@
     }]
     </string>
 
+    <string name="separator" translatable="false">•</string>
+
     <string name="media_route_menu_title" translatable="false">Cast</string>
 
     <string name="url_store" translatable="false">https://play.google.com/store/apps/details?id=me.echeung.moemoekyun</string>
