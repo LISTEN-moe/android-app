@@ -195,18 +195,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     public void onSocketReceive(UpdateResponse.Details info) {
         RadioViewModel viewModel = App.getRadioViewModel();
 
-        Song song = info.getSong();
-        viewModel.setCurrentSong(song);
-
-        try {
-            this.trackStartTime = TimeUtil.toCalendar(info.getStartTime());
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        viewModel.setLastSong(info.getLastPlayed().get(0));
-        viewModel.setSecondLastSong(info.getLastPlayed().get(1));
-
         viewModel.setListeners(info.getListeners());
         viewModel.setRequester(info.getRequester());
         viewModel.setEvent(info.getEvent());
@@ -215,6 +203,16 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             viewModel.setQueueSize(info.getQueue().getInQueue());
             viewModel.setInQueueByUser(info.getQueue().getInQueueByUser());
             viewModel.setQueuePosition(info.getQueue().getInQueueBeforeUser());
+        }
+
+        viewModel.setCurrentSong(info.getSong());
+        viewModel.setLastSong(info.getLastPlayed().get(0));
+        viewModel.setSecondLastSong(info.getLastPlayed().get(1));
+
+        try {
+            this.trackStartTime = TimeUtil.toCalendar(info.getStartTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
         updateMediaSession();

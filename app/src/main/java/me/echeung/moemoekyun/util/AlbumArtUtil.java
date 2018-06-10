@@ -59,9 +59,19 @@ public final class AlbumArtUtil {
     }
 
     public static void updateAlbumArt(Context context, Song song) {
-        if (song != null) {
+        if (App.getPreferenceUtil().shouldDownloadImage(context) && song != null) {
             String albumArtUrl = song.getAlbumArtUrl();
-            if (albumArtUrl != null && App.getPreferenceUtil().shouldDownloadImage(context)) {
+
+            // Get event image if available when there's no regular album art
+            if (albumArtUrl == null && App.getRadioViewModel().getEvent() != null) {
+                String eventImageUrl = App.getRadioViewModel().getEvent().getImage();
+                if (eventImageUrl != null) {
+                    downloadAlbumArtBitmap(context, eventImageUrl);
+                    return;
+                }
+            }
+
+            if (albumArtUrl != null) {
                 downloadAlbumArtBitmap(context, albumArtUrl);
                 return;
             }
