@@ -37,7 +37,7 @@ public class AppNotification {
         }
 
         Song song = getCurrentSong();
-        Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
+        Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt(250);
 
         boolean isPlaying = service.isPlaying();
 
