@@ -10,22 +10,10 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/requested_by"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@{vm.event != null ? vm.event.name : vm.requester != null ? @string/requested_by(vm.requester) : null}"
-            android:textAlignment="center"
-            android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
-            android:textColorLink="?attr/themeColorAccent"
-            android:textSize="14sp" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
             android:gravity="center">
 
             <ImageButton
@@ -65,13 +53,61 @@
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:alpha="@{vm.currentSong != null}"
-            android:text="@{@plurals/current_listeners(vm.listeners, vm.listeners, vm.listeners, vm.listeners)}"
-            android:textAlignment="center"
-            android:textColor="@{vm.getBodyColor(context, vm.albumArt)}" />
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            android:alpha="@{vm.currentSong == null ? 0f : 0.5f}">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_headset_white_24dp"
+                android:tint="@{vm.getBodyColor(context, vm.albumArt)}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{String.valueOf(vm.listeners)}"
+                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="8dp"
+                android:text="•"
+                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:textSize="14sp"
+                android:visibility="@{vm.event != null || vm.requester != null}" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="8dp"
+                android:src="@{vm.event != null ? @drawable/ic_event_white_24dp : @drawable/ic_person_add_white_24dp}"
+                android:visibility="@{vm.event != null || vm.requester != null}"
+                android:tint="@{vm.getBodyColor(context, vm.albumArt)}" />
+
+            <TextView
+                android:id="@+id/requested_by"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@{vm.event != null ? vm.event.name : vm.requester}"
+                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:textColorLink="?attr/themeColorAccent"
+                android:textSize="14sp"
+                android:visibility="@{vm.event != null || vm.requester != null}" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
