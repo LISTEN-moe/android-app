@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.socket.response;
 
 import lombok.Getter;
+import me.echeung.moemoekyun.client.model.Event;
 
 @Getter
 public class EventNotificationResponse extends NotificationResponse {
@@ -11,13 +12,5 @@ public class EventNotificationResponse extends NotificationResponse {
     @Getter
     public static class Details extends NotificationResponse.Details {
         private Event event;
-    }
-
-    @Getter
-    public static class Event {
-        private int id;
-        private String image;
-        private String name;
-        private String slug;
     }
 }
