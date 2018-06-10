@@ -109,6 +109,7 @@
   <string name="pref_title_general_random_request_title">Visualizza il titolo delle canzoni casuali richieste</string>
   <string name="pref_header_audio">Audio</string>
   <string name="pref_title_pause_on_noisy">Metti in pausa quando le cuffie vengono rimosse</string>
+  <string name="pref_title_audio_duck">Abbassare il volume sulla perdita di messa a fuoco</string>
   <string name="pref_title_audio_duck_summary">Notifiche, navigazione, ecc.</string>
   <string name="pref_title_audio_pause_on_loss">Pausa sulla perdita di messa a fuoco</string>
   <string name="pref_title_audio_pause_on_loss_summary">Video, musica, ecc.</string>
@@ -116,6 +117,7 @@
   <string name="pref_title_lockscreen_albumart">Visualizza copertina album</string>
   <string name="pref_title_lockscreen_albumart_summary">Visualizza copertina dell\'album sulla schermata di blocco e su Android Auto</string>
   <string name="pref_header_color">Colore</string>
+  <string name="pref_title_color_now_playing">Colore in riproduzione basato sulla copertina dell\'album</string>
   <string name="pref_title_color_navbar">Tema sullo schermo della barra di navigazione</string>
   <string name="pref_header_advanced">Avanzate</string>
   <string name="pref_title_advanced_clear_image_cache">Pulisci cache immagini</string>
