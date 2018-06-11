@@ -51,6 +51,9 @@ public final class AlbumArtUtil {
     }
 
     public static Bitmap getCurrentAlbumArt(int maxSize) {
+        if (currentAlbumArt == null) {
+            return null;
+        }
         return Bitmap.createScaledBitmap(currentAlbumArt, maxSize, maxSize, false);
     }
 
