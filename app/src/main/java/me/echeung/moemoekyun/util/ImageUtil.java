@@ -13,33 +13,35 @@ import me.echeung.moemoekyun.App;
 public class ImageUtil {
 
     public static void loadImage(ImageView v, Bitmap bitmap) {
-        // Free up previous resources
-        Glide.with(v.getContext())
-                .clear(v);
+        clearImageView(v);
 
-        if (App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
-            Glide.with(v.getContext())
-                    .load(bitmap)
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .placeholder(v.getDrawable()))
-                    .into(v);
+        if (!App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
+            return;
         }
+
+        Glide.with(v.getContext())
+                .load(bitmap)
+                .apply(new RequestOptions()
+                        .placeholder(v.getDrawable())
+                        .override(v.getWidth(), v.getHeight())
+                        .centerCrop())
+                .into(v);
     }
 
     public static void loadImage(ImageView v, String url) {
-        // Free up previous resources
-        Glide.with(v.getContext())
-                .clear(v);
+        clearImageView(v);
 
-        if (App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
-            Glide.with(v.getContext())
-                    .load(url)
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .placeholder(v.getDrawable()))
-                    .into(v);
+        if (!App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
+            return;
         }
+
+        Glide.with(v.getContext())
+                .load(url)
+                .apply(new RequestOptions()
+                        .placeholder(v.getDrawable())
+                        .override(v.getWidth(), v.getHeight())
+                        .centerCrop())
+                .into(v);
     }
 
     public static void clearCache(Context context) {
@@ -54,6 +56,11 @@ public class ImageUtil {
         }.execute();
 
         Glide.get(context).clearMemory();
+    }
+
+    private static void clearImageView(ImageView v) {
+        Glide.with(v.getContext())
+                .clear(v);
     }
 
 }
