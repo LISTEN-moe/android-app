@@ -38,7 +38,7 @@
                     android:background="?selectableItemBackgroundBorderless"
                     android:padding="8dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/ic_drag_pill_white_24dp"
+                    android:src="@drawable/ic_down_arrow_white_24dp"
                     android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
                     tools:ignore="ContentDescription" />
 
