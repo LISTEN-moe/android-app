@@ -54,7 +54,13 @@ public final class AlbumArtUtil {
         if (currentAlbumArt == null) {
             return null;
         }
-        return Bitmap.createScaledBitmap(currentAlbumArt, maxSize, maxSize, false);
+
+        try {
+            return Bitmap.createScaledBitmap(currentAlbumArt, maxSize, maxSize, false);
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static boolean isDefaultAlbumArt() {
