@@ -188,7 +188,9 @@ public class Stream {
                     .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG);
         }
 
-        wifiLock.acquire();
+        if (!wifiLock.isHeld()) {
+            wifiLock.acquire();
+        }
     }
 
     private void releaseWifiLock() {
