@@ -19,6 +19,7 @@ import me.echeung.moemoekyun.adapter.SongDetailAdapter;
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback;
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback;
 import me.echeung.moemoekyun.client.model.Song;
+import me.echeung.moemoekyun.client.model.User;
 
 public final class SongActionsUtil {
 
@@ -97,7 +98,11 @@ public final class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(Activity activity, Song song) {
-        int requests = App.getUserViewModel().getUser().getRequestsRemaining();
+        User user = App.getUserViewModel().getUser();
+        if (user == null) {
+            return;
+        }
+
         App.getRadioClient().getApi().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
             @Override
             public void onSuccess() {
@@ -108,7 +113,7 @@ public final class SongActionsUtil {
                     activity.sendBroadcast(new Intent(SongActionsUtil.REQUEST_EVENT));
 
                     // Instantly update remaining requests number to appear responsive
-                    int remainingRequests = requests - 1;
+                    int remainingRequests = user.getRequestsRemaining() - 1;
                     App.getUserViewModel().setRequestsRemaining(remainingRequests);
 
                     String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
