@@ -47,6 +47,7 @@ public class SongDetailAdapter extends ArrayAdapter<Song> {
 
         binding.setSong(song);
         binding.setIsAuthenticated(App.getAuthUtil().isAuthenticated());
+        binding.setCanRequest(App.getUserViewModel().getRequestsRemaining() != 0);
         binding.setIsFavorite(song.isFavorite());
 
         binding.requestBtn.setOnClickListener(view -> {

@@ -5,6 +5,7 @@
     <data>
         <variable name="song" type="me.echeung.moemoekyun.client.model.Song" />
         <variable name="isAuthenticated" type="boolean" />
+        <variable name="canRequest" type="boolean" />
         <variable name="isFavorite" type="boolean" />
     </data>
 
@@ -48,7 +49,8 @@
                     android:padding="8dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_play_arrow_white_24dp"
-                    android:tint="@color/white" />
+                    android:tint="@color/white"
+                    android:visibility="@{canRequest}" />
 
                 <ImageButton
                     android:id="@+id/favorite_btn"
