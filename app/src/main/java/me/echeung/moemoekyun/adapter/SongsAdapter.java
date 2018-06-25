@@ -130,7 +130,9 @@ public class SongsAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
      */
     public Song getRandomRequestSong() {
         List<Song> songs = getSongs();
-        return songs.isEmpty() ? null : songs.get(new Random().nextInt(songs.size()));
+        return songs == null || songs.isEmpty()
+                ? null
+                : songs.get(new Random().nextInt(songs.size()));
     }
 
     private List<Song> getSongs() {
