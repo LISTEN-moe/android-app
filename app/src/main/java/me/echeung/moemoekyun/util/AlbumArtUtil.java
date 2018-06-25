@@ -119,13 +119,18 @@ public final class AlbumArtUtil {
                         public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
                             isDefaultAlbumArt = false;
 
-                            Palette.Swatch swatch = Palette.from(resource).generate().getVibrantSwatch();
-                            if (swatch == null) {
-                                swatch = Palette.from(resource).generate().getMutedSwatch();
-                            }
-                            if (swatch != null) {
-                                currentAccentColor = swatch.getRgb();
-                                currentBodyColor = swatch.getBodyTextColor();
+                            try {
+                                Palette.Swatch swatch = Palette.from(resource).generate().getVibrantSwatch();
+                                if (swatch == null) {
+                                    swatch = Palette.from(resource).generate().getMutedSwatch();
+                                }
+                                if (swatch != null) {
+                                    currentAccentColor = swatch.getRgb();
+                                    currentBodyColor = swatch.getBodyTextColor();
+                                }
+                            } catch (Exception e) {
+                                // Ignore things like OutOfMemoryExceptions
+                                setDefaultColors();
                             }
 
                             updateListeners(resource);
@@ -140,10 +145,14 @@ public final class AlbumArtUtil {
         }
 
         isDefaultAlbumArt = true;
-        currentAccentColor = Color.BLACK;
-        currentBodyColor = Color.WHITE;
+        setDefaultColors();
 
         return defaultAlbumArt;
+    }
+
+    private static void setDefaultColors() {
+        currentAccentColor = Color.BLACK;
+        currentBodyColor = Color.WHITE;
     }
 
     private static int getMaxScreenLength() {
