@@ -24,6 +24,7 @@ import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapter.ViewPagerAdapter;
 import me.echeung.moemoekyun.client.api.library.Jpop;
 import me.echeung.moemoekyun.client.api.library.Kpop;
+import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.ActivityMainBinding;
 import me.echeung.moemoekyun.service.RadioService;
 import me.echeung.moemoekyun.ui.base.BaseActivity;
@@ -31,6 +32,7 @@ import me.echeung.moemoekyun.ui.dialog.SleepTimerDialog;
 import me.echeung.moemoekyun.ui.view.PlayPauseView;
 import me.echeung.moemoekyun.util.SongActionsUtil;
 import me.echeung.moemoekyun.util.system.NetworkUtil;
+import me.echeung.moemoekyun.util.system.UrlUtil;
 import me.echeung.moemoekyun.viewmodel.RadioViewModel;
 
 public class MainActivity extends BaseActivity {
@@ -201,10 +203,25 @@ public class MainActivity extends BaseActivity {
         binding.nowPlaying.content.radioControls.historyBtn.setOnClickListener(v -> showHistory());
         binding.nowPlaying.content.radioControls.favoriteBtn.setOnClickListener(v -> favorite());
 
+
         LinearLayout vCurrentSong = binding.nowPlaying.content.radioSongs.currentSong;
         vCurrentSong.setOnClickListener(v -> showHistory());
         vCurrentSong.setOnLongClickListener(v -> {
             SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
+            return true;
+        });
+
+        binding.nowPlaying.content.radioAlbumArt.getRoot().setOnLongClickListener(v -> {
+            Song currentSong = viewModel.getCurrentSong();
+            if (currentSong == null) {
+                return false;
+            }
+            String albumArtUrl = currentSong.getAlbumArtUrl();
+            if (albumArtUrl == null) {
+                return false;
+            }
+
+            UrlUtil.open(this, albumArtUrl);
             return true;
         });
     }

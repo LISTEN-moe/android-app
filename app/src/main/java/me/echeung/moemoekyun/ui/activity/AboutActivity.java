@@ -1,9 +1,7 @@
 package me.echeung.moemoekyun.ui.activity;
 
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,6 +13,7 @@ import de.psdev.licensesdialog.LicensesDialog;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.ui.base.BaseActivity;
+import me.echeung.moemoekyun.util.system.UrlUtil;
 
 public class AboutActivity extends BaseActivity implements View.OnClickListener {
 
@@ -72,15 +71,15 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.about_app_rate:
-                openUrl(getString(R.string.url_store));
+                UrlUtil.open(this, getString(R.string.url_store));
                 break;
 
             case R.id.about_app_github:
-                openUrl(getString(R.string.url_github));
+                UrlUtil.open(this, getString(R.string.url_github));
                 break;
 
             case R.id.about_app_translate:
-                openUrl(getString(R.string.url_translate));
+                UrlUtil.open(this, getString(R.string.url_translate));
                 break;
 
             case R.id.about_app_licenses:
@@ -88,23 +87,23 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
                 break;
 
             case R.id.about_listenmoe_website:
-                openUrl(getString(R.string.url_listenmoe));
+                UrlUtil.open(this, getString(R.string.url_listenmoe));
                 break;
 
             case R.id.about_listenmoe_play_history:
-                openUrl(getString(R.string.url_twitter_np));
+                UrlUtil.open(this, getString(R.string.url_twitter_np));
                 break;
 
             case R.id.about_listenmoe_discord:
-                openUrl(getString(R.string.url_discord));
+                UrlUtil.open(this, getString(R.string.url_discord));
                 break;
 
             case R.id.about_listenmoe_patreon:
-                openUrl(getString(R.string.url_patreon));
+                UrlUtil.open(this, getString(R.string.url_patreon));
                 break;
 
             case R.id.about_privacy_policy:
-                openUrl(getString(R.string.url_privacy_policy));
+                UrlUtil.open(this, getString(R.string.url_privacy_policy));
                 break;
         }
     }
@@ -118,11 +117,6 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
                 .setNoticesCssStyle(R.string.licenses_css)
                 .build()
                 .show();
-    }
-
-    private void openUrl(String url) {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(browserIntent);
     }
 
 }

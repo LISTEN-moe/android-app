@@ -31,9 +31,10 @@
                 android:orientation="vertical">
 
                 <include
+                    android:id="@+id/radio_album_art"
+                    layout="@layout/album_art_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    layout="@layout/album_art_card"
                     binding:vm="@{vm}" />
 
                 <include
