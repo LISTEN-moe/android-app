@@ -8,11 +8,15 @@
   <!-- == Actions (notification, dialogs) == -->
   <string name="action_play">Afspelen</string>
   <string name="action_pause">Pauze</string>
+  <string name="action_stop">Stop</string>
   <string name="action_favorite">Favorieten</string>
   <string name="action_unfavorite">Verwijder als favoriet</string>
   <string name="action_request">Aanvragen</string>
   <string name="action_undo">Ongedaan maken</string>
   <!-- == Library modes == -->
+  <string name="action_library">Bibliotheek-modus</string>
+  <string name="jpop">J-pop</string>
+  <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
   <string name="sleep_timer">Slaaptimer</string>
   <string name="set">Instellen</string>
@@ -43,8 +47,11 @@
   <string name="logout_confirmation">Weet je zeker dat je wil afmelden?</string>
   <string name="logged_out">Afgemeld</string>
   <string name="login_required">Je moet je aanmelden om deze functie te gebruiken.</string>
+  <string name="required">Vereist</string>
+  <string name="password_mismatch">Wachtwoorden komen niet overeen</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Start/pauze</string>
+  <string name="last_played">Laatst gespeeld</string>
   <string name="favorite">Favorieten</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Aangevraagd door: %s</string>
@@ -63,6 +70,15 @@
   <string name="requested_random_song">Willekeurig nummer aanvragen</string>
   <string name="supporter_required">Supporterstatus vereist</string>
   <!-- == Song details == -->
+  <string name="song_title">Titel</string>
+  <string name="song_album">Album</string>
+  <string name="song_artist">Artiest</string>
+  <string name="song_source">Bron</string>
+  <string name="song_duration">Duur</string>
+  <string name="song_release_date">Datum van publicatie</string>
+  <string name="song_uploader">Uploader</string>
+  <string name="song_last_played">Laatst gespeeld</string>
+  <string name="song_tags">Tags</string>
   <!-- == No Internet view == -->
   <string name="no_internet">Kan geen verbinding maken met LISTEN.moe\n\nControleer uw internet verbinding</string>
   <string name="retry">Opnieuw proberen</string>
@@ -75,10 +91,12 @@
   <string name="translate">Help de app te vertalen</string>
   <string name="translators">Vertalers</string>
   <string name="licenses">Licenties</string>
+  <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Openen in de browser</string>
   <string name="play_history">Muziek geschiedenis </string>
   <string name="discord">Doe mee op Discord</string>
   <string name="patreon">Steun ons op Patreon</string>
+  <string name="privacy_policy">Privacybeleid</string>
   <!-- == Settings == -->
   <string name="settings">Instellingen</string>
   <string name="pref_header_general">Algemeen</string>
@@ -104,4 +122,6 @@
   <string name="pref_header_color">Kleur</string>
   <string name="pref_title_color_now_playing">Kleur baseren op album afbeelding</string>
   <string name="pref_title_color_navbar">Navigatie balk thema op het scherm</string>
+  <string name="pref_header_advanced">Geavanceerd</string>
+  <string name="pref_title_advanced_clear_image_cache">Clear image cache</string>
 </resources>

@@ -3,7 +3,7 @@
 <resources>
   <string-array name="pref_download_names">
     <item>항상</item>
-    <item>Only on Wi-Fi</item>
+    <item>와이파이에서만 가능</item>
     <item>결코</item>
   </string-array>
 </resources>

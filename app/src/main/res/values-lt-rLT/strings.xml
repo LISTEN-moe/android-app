@@ -63,6 +63,7 @@
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d eilėje, %d prieš jūsų</string>
   <string name="random_request">Užsakyti atsitiktinę dainą</string>
+  <string name="all_cooldown">Užsakyti daugiau dainų negalima</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
   <string name="requested_song">Užsakyta %s</string>
@@ -95,6 +96,7 @@
   <string name="play_history">Dainų istorija</string>
   <string name="discord">Prisijunkite prie mūsų Discord\'e</string>
   <string name="patreon">Paremti per Patreon</string>
+  <string name="privacy_policy">Privatumo politika</string>
   <!-- == Settings == -->
   <string name="settings">Nustatymai</string>
   <string name="pref_header_general">Bendra</string>
