@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.lang.ref.WeakReference;
 
@@ -127,8 +126,6 @@ public class SongList {
             Song randomSong = adapter.getRandomRequestSong();
             if (randomSong != null) {
                 SongActionsUtil.request(activityRef, randomSong);
-            } else {
-                Toast.makeText(activityRef, activityRef.getString(R.string.all_cooldown), Toast.LENGTH_SHORT).show();
             }
             return true;
         }
