@@ -23,7 +23,7 @@
   <string name="cancel_timer">Cancelar temporizador</string>
   <string name="sleep_timer_canceled">Temporizador cancelado</string>
   <!-- == Search == -->
-  <string name="search">Procurar</string>
+  <string name="search">Procurar...</string>
   <string name="clear_query">Limpar pesquisa</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Nenhum resultado encontrado para \"%s\"</string>
@@ -34,8 +34,6 @@
   <string name="sort_desc">Ordem descendente</string>
   <!-- == Auth == -->
   <string name="register">Registar</string>
-  <string name="login">Login</string>
-  <string name="logout">Logout</string>
   <string name="username_or_email">Nome de usuário / endereço de e-mail</string>
   <string name="username">Utilizador</string>
   <string name="email">Endereço de e-mail</string>
@@ -51,7 +49,6 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Reproduzir/pausa</string>
   <string name="last_played">Músicas anteriores</string>
-  <string name="favorite">Adicionar aos favoritos</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Solicitado por: %s</string>
   <!-- == User tab == -->
@@ -86,14 +83,12 @@
   <string name="version">Versão %s</string>
   <string name="rate">Avaliar no Google Play</string>
   <string name="github">Dar uma estrela no GitHub</string>
-  <string name="translate">Ajudar a traduzir a aplicação</string>
   <string name="translators">Tradutores</string>
   <string name="licenses">Licenças</string>
   <string name="listenmoe">Rádio LISTEN.moe</string>
   <string name="open_in_browser">Abrir no navegador</string>
   <string name="play_history">Histórico de músicas</string>
   <string name="discord">Junte-se a nos no Discord</string>
-  <string name="patreon">Contribuir no Patreon</string>
   <string name="privacy_policy">Política de privacidade</string>
   <!-- == Settings == -->
   <string name="settings">Definições</string>

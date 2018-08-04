@@ -23,7 +23,7 @@
   <string name="cancel_timer">Удалить таймер</string>
   <string name="sleep_timer_canceled">Таймер удалён</string>
   <!-- == Search == -->
-  <string name="search">Поиск</string>
+  <string name="search">Поиск...</string>
   <string name="clear_query">Очистить запрос</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">По вашему запросу \"%s\" ничего не найдено</string>
@@ -34,7 +34,6 @@
   <string name="sort_desc">По убыванию</string>
   <!-- == Auth == -->
   <string name="register">Зарегистрироваться</string>
-  <string name="login">Войти</string>
   <string name="logout">Выйти</string>
   <string name="username_or_email">Имя пользователя или адрес email</string>
   <string name="username">Имя пользователя</string>
@@ -51,7 +50,6 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Возпроизвести/пауза</string>
   <string name="last_played">Предыдущие песни</string>
-  <string name="favorite">Добавить в избранное</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Запрошено %s</string>
   <!-- == User tab == -->
@@ -86,14 +84,12 @@
   <string name="version">Версия %s</string>
   <string name="rate">Оценить в Google Play</string>
   <string name="github">Оценить на GitHub</string>
-  <string name="translate">Помогите перевести приложение</string>
   <string name="translators">Переводчики</string>
   <string name="licenses">Лицензия</string>
   <string name="listenmoe">Радио LISTEN.moe</string>
   <string name="open_in_browser">Открыть в браузере</string>
   <string name="play_history">История песен</string>
   <string name="discord">Присоединиться к нам в Discord</string>
-  <string name="patreon">Поддержать на Patreon</string>
   <string name="privacy_policy">Политика конфиденциальности</string>
   <!-- == Settings == -->
   <string name="settings">Настройки</string>

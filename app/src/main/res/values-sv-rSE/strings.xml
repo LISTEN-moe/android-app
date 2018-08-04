@@ -23,7 +23,7 @@
   <string name="cancel_timer">Avbryt timer</string>
   <string name="sleep_timer_canceled">Timer avbruten</string>
   <!-- == Search == -->
-  <string name="search">Sök</string>
+  <string name="search">Sök...</string>
   <string name="clear_query">Rensa sökfält</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Inga resultat för \"%s\"</string>
@@ -52,7 +52,7 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Spela/pausa</string>
   <string name="last_played">Senast spelade</string>
-  <string name="favorite">Favorit</string>
+  <string name="favorite">Lägg till favoriter</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Requestad av: %s</string>
   <!-- == User tab == -->
@@ -87,14 +87,12 @@
   <string name="version">Version %s</string>
   <string name="rate">Betygsätt på Google Play</string>
   <string name="github">Sätt en stjärna på GitHub</string>
-  <string name="translate">Hjälp till att översätta appen</string>
   <string name="translators">Översättare</string>
   <string name="licenses">Licenser</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Öppna i webbläsare</string>
   <string name="play_history">Låt historia</string>
   <string name="discord">Joina oss på Discord</string>
-  <string name="patreon">Stöd på Patreon</string>
   <string name="privacy_policy">Sekretesspolicy</string>
   <!-- == Settings == -->
   <string name="settings">Inställningar</string>

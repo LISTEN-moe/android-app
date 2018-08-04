@@ -21,7 +21,7 @@
   <string name="cancel_timer">取消計時</string>
   <string name="sleep_timer_canceled">已取消計時</string>
   <!-- == Search == -->
-  <string name="search">搜尋</string>
+  <string name="search">搜尋...</string>
   <!-- e.g. No results for "user's search query" -->
   <!-- == Sort == -->
   <string name="sort_title">歌名</string>
@@ -37,7 +37,6 @@
   <string name="login_required">本功能使用前必須登入</string>
   <!-- == Radio tab == -->
   <string name="play_pause">播放/暫停</string>
-  <string name="favorite">我的最愛</string>
   <!-- e.g. Requested by: username -->
   <!-- == User tab == -->
   <string name="no_favorites">目前沒有最愛</string>

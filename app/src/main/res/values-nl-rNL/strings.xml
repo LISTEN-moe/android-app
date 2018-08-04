@@ -14,6 +14,7 @@
   <string name="action_request">Aanvragen</string>
   <string name="action_undo">Ongedaan maken</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Station</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -23,7 +24,7 @@
   <string name="cancel_timer">timer annuleren</string>
   <string name="sleep_timer_canceled">Timer geannuleerd</string>
   <!-- == Search == -->
-  <string name="search">Zoek</string>
+  <string name="search">Zoek...</string>
   <string name="clear_query">Rij vrijmaken</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Geen resultaten voor \"%s\"</string>
@@ -35,7 +36,7 @@
   <!-- == Auth == -->
   <string name="register">Registreren</string>
   <string name="login">Aanmelden</string>
-  <string name="logout">Afmelden</string>
+  <string name="logout">Uitloggen</string>
   <string name="username_or_email">Gebruikersnaam / e-mailadres</string>
   <string name="username">Gebruikersnaam</string>
   <string name="email">e-mailadres</string>
@@ -52,7 +53,7 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Start/pauze</string>
   <string name="last_played">Laatst gespeeld</string>
-  <string name="favorite">Favorieten</string>
+  <string name="favorite">Toevoegen aan Favorieten</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Aangevraagd door: %s</string>
   <!-- == User tab == -->
@@ -87,14 +88,14 @@
   <string name="version">Versie %s</string>
   <string name="rate">Op Google Play beoordelen</string>
   <string name="github">Geef het een ster op Github</string>
-  <string name="translate">Help de app te vertalen</string>
+  <string name="translate">Help ons vertalen</string>
   <string name="translators">Vertalers</string>
   <string name="licenses">Licenties</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Openen in de browser</string>
   <string name="play_history">Muziek geschiedenis </string>
   <string name="discord">Doe mee op Discord</string>
-  <string name="patreon">Steun ons op Patreon</string>
+  <string name="patreon">Krijg nummer aanvragen / Steun ons</string>
   <string name="privacy_policy">Privacybeleid</string>
   <!-- == Settings == -->
   <string name="settings">Instellingen</string>

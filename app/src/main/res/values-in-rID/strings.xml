@@ -23,7 +23,7 @@
   <string name="cancel_timer">Batalkan pengatur waktu</string>
   <string name="sleep_timer_canceled">Pengatur waktu dibatalkan</string>
   <!-- == Search == -->
-  <string name="search">Cari</string>
+  <string name="search">Cari...</string>
   <string name="clear_query">Hapus Antrian</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Tidak ada hasil untuk \"%s\"</string>
@@ -51,7 +51,6 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Putar / Jeda</string>
   <string name="last_played">Terakhir Diputar</string>
-  <string name="favorite">Favorit</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Diminta oleh: %s</string>
   <!-- == User tab == -->
@@ -86,14 +85,12 @@
   <string name="version">Versi %s</string>
   <string name="rate">Berikan nilai di Google Play</string>
   <string name="github">Berikan bintang di Github</string>
-  <string name="translate">Bantu menterjemahkan aplikasi ini</string>
   <string name="translators">Penerjemah</string>
   <string name="licenses">Lisensi</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Buka di browser</string>
   <string name="play_history">Riwayat lagu</string>
   <string name="discord">Gabung di Discord</string>
-  <string name="patreon">Dukung di Patreon</string>
   <string name="privacy_policy">Kebijakan privasi</string>
   <!-- == Settings == -->
   <string name="settings">Pengaturan</string>

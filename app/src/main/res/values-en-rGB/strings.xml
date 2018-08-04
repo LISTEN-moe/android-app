@@ -24,7 +24,7 @@
   <string name="cancel_timer">Cancel timer</string>
   <string name="sleep_timer_canceled">Cancelled timer</string>
   <!-- == Search == -->
-  <string name="search">Search</string>
+  <string name="search">Search...</string>
   <string name="clear_query">Clear query</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">No results for \"%s \"</string>
@@ -35,8 +35,8 @@
   <string name="sort_desc">Descending</string>
   <!-- == Auth == -->
   <string name="register">Register</string>
-  <string name="login">Login</string>
-  <string name="logout">Logout</string>
+  <string name="login">Log in</string>
+  <string name="logout">Log out</string>
   <string name="username_or_email">Username / email address</string>
   <string name="username">Username</string>
   <string name="email">Email address</string>
@@ -53,7 +53,7 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Play/pause</string>
   <string name="last_played">Last played</string>
-  <string name="favorite">Favourite</string>
+  <string name="favorite">Add to favourites</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Requested by: %s</string>
   <!-- == User tab == -->
@@ -88,14 +88,14 @@
   <string name="version">Version %s</string>
   <string name="rate">Rate on Google Play</string>
   <string name="github">Star on GitHub</string>
-  <string name="translate">Help translate the app</string>
+  <string name="translate">Help us translate</string>
   <string name="translators">Translators</string>
   <string name="licenses">Licenses</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Open in browser</string>
   <string name="play_history">Song history</string>
   <string name="discord">Join us on Discord</string>
-  <string name="patreon">Support on Patreon</string>
+  <string name="patreon">Get Requests / Support us</string>
   <string name="privacy_policy">Privacy policy</string>
   <!-- == Settings == -->
   <string name="settings">Settings</string>

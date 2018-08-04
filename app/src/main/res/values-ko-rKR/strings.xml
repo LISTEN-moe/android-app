@@ -23,7 +23,7 @@
   <string name="cancel_timer">타이머 취소</string>
   <string name="sleep_timer_canceled">타이머가 취소되었습니다</string>
   <!-- == Search == -->
-  <string name="search">검색</string>
+  <string name="search">검색...</string>
   <string name="clear_query">쿼리 지우기</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">%s 에 대한 검색결과가 없습니다</string>
@@ -35,7 +35,7 @@
   <!-- == Auth == -->
   <string name="register">내림차순</string>
   <string name="login">로그인</string>
-  <string name="logout">로그아웃</string>
+  <string name="logout">로그 아웃</string>
   <string name="username_or_email">아이디 또는 이메일 주소</string>
   <string name="username">아이디</string>
   <string name="email">이메일 주소</string>
@@ -51,7 +51,6 @@
   <!-- == Radio tab == -->
   <string name="play_pause">재생/일시정지</string>
   <string name="last_played">이전곤</string>
-  <string name="favorite">즐겨찿기</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">요청한 사람:%s</string>
   <!-- == User tab == -->
@@ -86,14 +85,12 @@
   <string name="version">버전 %s</string>
   <string name="rate">구글플레이 평점을 남겨주세요</string>
   <string name="github">GitHub에 스타주기</string>
-  <string name="translate">이 앱을 통역하는데 도움을 주세요</string>
   <string name="translators">통역자</string>
   <string name="licenses">라이센스</string>
   <string name="listenmoe">LISTEN.moe 라디오</string>
   <string name="open_in_browser">브라우저에서 열기</string>
   <string name="play_history">노래 기록</string>
   <string name="discord">Discord 서버에 들어오기</string>
-  <string name="patreon">Patreon 을 통해 도와주기</string>
   <string name="privacy_policy">개인 정보 정책</string>
   <!-- == Settings == -->
   <string name="settings">설정</string>

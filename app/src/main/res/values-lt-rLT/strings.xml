@@ -23,7 +23,7 @@
   <string name="cancel_timer">Atšaukti laimkatį</string>
   <string name="sleep_timer_canceled">Laikmatis atšauktas</string>
   <!-- == Search == -->
-  <string name="search">Paieška</string>
+  <string name="search">Ieškoti...</string>
   <string name="clear_query">Išvalyti užklausą</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Užklausa \"%s\" neturi rezultatų</string>
@@ -51,7 +51,6 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Groti/Pauzė</string>
   <string name="last_played">Paskutinį kartą grota</string>
-  <string name="favorite">Mėgstamos</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Užsakovas: %s</string>
   <!-- == User tab == -->
@@ -86,14 +85,13 @@
   <string name="version">Versija %s</string>
   <string name="rate">Ivertink Google Play programėlėje</string>
   <string name="github">Uždėti žvaigždutę GitHub platformoje</string>
-  <string name="translate">Padėkite išversti programėlę</string>
   <string name="translators">Vertėjai</string>
   <string name="licenses">Licenzijos</string>
   <string name="listenmoe">LISTEN.moe radijas</string>
   <string name="open_in_browser">Atidaryti naršyklėje</string>
   <string name="play_history">Dainų istorija</string>
   <string name="discord">Prisijunkite prie mūsų Discord\'e</string>
-  <string name="patreon">Paremti per Patreon</string>
+  <string name="patreon">Gauti prašymų / Paremti mus</string>
   <string name="privacy_policy">Privatumo politika</string>
   <!-- == Settings == -->
   <string name="settings">Nustatymai</string>

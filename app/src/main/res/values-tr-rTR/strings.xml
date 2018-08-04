@@ -3,14 +3,54 @@
 <resources>
   <!-- == Generic strings == -->
   <!-- == Actions (notification, dialogs) == -->
+  <string name="action_play">Oynat</string>
+  <string name="action_pause">Duraklat</string>
+  <string name="action_stop">Durdur</string>
+  <string name="action_favorite">Favorilere Ekle</string>
+  <string name="action_unfavorite">Favorilerden Çıkar</string>
+  <string name="action_request">İstek</string>
+  <string name="action_undo">Geri Al</string>
   <!-- == Radio stations == -->
+  <string name="action_library">İstasyon</string>
+  <string name="jpop">J-Pop</string>
+  <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
+  <string name="sleep_timer">Uyku zamanlayıcısı</string>
+  <string name="set">Ayarla</string>
+  <string name="close">Kapat</string>
+  <string name="cancel_timer">Zamanlayıcıyı iptal et</string>
+  <string name="sleep_timer_canceled">Zamanlayıcı iptal edildi</string>
   <!-- == Search == -->
+  <string name="search">Ara...</string>
+  <string name="clear_query">Sorguyu temizle</string>
   <!-- e.g. No results for "user's search query" -->
+  <string name="no_results">\"%s\" için sonuç yok</string>
   <!-- == Sort == -->
+  <string name="sort">Sırala</string>
+  <string name="sort_title">Başlık</string>
+  <string name="sort_artist">Sanatçı</string>
+  <string name="sort_desc">Azalan</string>
   <!-- == Auth == -->
+  <string name="register">Üye Ol</string>
+  <string name="logout">Çıkış Yap</string>
+  <string name="username_or_email">Kullanıcı Adı / e-Posta adresi</string>
+  <string name="username">Kullanıcı Adı</string>
+  <string name="email">e-Posta adresi</string>
+  <string name="password">Şifre</string>
+  <string name="password_confirm">Şifreyi Onayla</string>
+  <string name="mfa_prompt">Kimlik doğrulayıcı uygulaması tarafından oluşturulan güvenlik kodunu girin.</string>
+  <string name="mfa_hint">6 Haneli Güvenlik Kodu</string>
+  <string name="logout_confirmation">Çıkış yapmak istediğinizden emin misiniz?</string>
+  <string name="logged_out">Çıkış Yapıldı</string>
+  <string name="login_required">Bu özelliği kullanmak için giriş yap.</string>
+  <string name="required">Gerekli</string>
+  <string name="password_mismatch">Şifreler eşleşmiyor</string>
+  <string name="forgot_password">Şifrenizi mi unuttunuz?</string>
   <!-- == Radio tab == -->
+  <string name="play_pause">Oynat/Duraklat</string>
+  <string name="last_played">Son Çalınan</string>
   <!-- e.g. Requested by: username -->
+  <string name="requested_by">%s tarafından istendi</string>
   <!-- == User tab == -->
   <!-- e.g. Unfavorited <Song Title> -->
   <!-- e.g. 2 in queue, 10 before yours -->
@@ -18,8 +58,18 @@
   <!-- Requested song title -->
   <!-- e.g. Requested <Song Title> -->
   <!-- == Song details == -->
+  <string name="song_title">Başlık</string>
+  <string name="song_artist">Sanatçı</string>
+  <string name="song_last_played">Son Çalınan</string>
   <!-- == No Internet view == -->
   <!-- == About == -->
   <!-- e.g. Version 1.0 -->
+  <string name="translate">Çevirmemize yardımcı olun</string>
   <!-- == Settings == -->
+  <string name="pref_header_lockscreen">Kilit Ekranı</string>
+  <string name="pref_title_lockscreen_albumart">Albüm kapağını göster</string>
+  <string name="pref_title_lockscreen_albumart_summary">Kilit ekranında ve Andoid Auto\'da albüm kapağını gösterir</string>
+  <string name="pref_header_color">Renk</string>
+  <string name="pref_header_advanced">Gelişmiş</string>
+  <string name="pref_title_advanced_clear_image_cache">Görüntü önbelleğini temizle</string>
 </resources>

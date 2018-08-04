@@ -23,7 +23,7 @@
   <string name="cancel_timer">取消倒计时</string>
   <string name="sleep_timer_canceled">已取消计时器</string>
   <!-- == Search == -->
-  <string name="search">搜索</string>
+  <string name="search">搜索...</string>
   <string name="clear_query">清除查询</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">没有 \"%s\" 的搜索结果</string>
@@ -51,7 +51,6 @@
   <!-- == Radio tab == -->
   <string name="play_pause">播放/暂停</string>
   <string name="last_played">上次播放</string>
-  <string name="favorite">我的最爱</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">请求者：%s</string>
   <!-- == User tab == -->
@@ -86,14 +85,12 @@
   <string name="version">版本 %s</string>
   <string name="rate">在 Google Play 上帮我们评分</string>
   <string name="github">在 GitHub 上 Star 我们</string>
-  <string name="translate">帮助翻译这个应用</string>
   <string name="translators">翻译者</string>
   <string name="licenses">开源许可证</string>
   <string name="listenmoe">LISTEN.moe 电台</string>
   <string name="open_in_browser">在浏览器中打开</string>
   <string name="play_history">播放历史</string>
   <string name="discord">在 Discord 上加入我们</string>
-  <string name="patreon">在 Patreon 上赞助我们</string>
   <string name="privacy_policy">隐私政策</string>
   <!-- == Settings == -->
   <string name="settings">设置</string>

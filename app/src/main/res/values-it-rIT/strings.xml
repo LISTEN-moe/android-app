@@ -11,8 +11,10 @@
   <string name="action_stop">Stop</string>
   <string name="action_favorite">Preferito</string>
   <string name="action_unfavorite">Rimuovi preferito</string>
+  <string name="action_request">Richiesta</string>
   <string name="action_undo">Annulla</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Stazione</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -22,7 +24,6 @@
   <string name="cancel_timer">Annulla sveglia</string>
   <string name="sleep_timer_canceled">Sveglia annullata</string>
   <!-- == Search == -->
-  <string name="search">Cerca</string>
   <string name="clear_query">Pulisci query</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Nessun risultato per \"%s\"</string>
@@ -34,7 +35,6 @@
   <!-- == Auth == -->
   <string name="register">Crea account</string>
   <string name="login">Accedi</string>
-  <string name="logout">Logout</string>
   <string name="username_or_email">Nome utente / indirizzo email</string>
   <string name="username">Nome utente</string>
   <string name="email">Indirizzo email</string>
@@ -50,7 +50,6 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Play/pausa</string>
   <string name="last_played">Ultima ascoltata</string>
-  <string name="favorite">Preferito</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Richiesta da: %s</string>
   <!-- == User tab == -->
@@ -85,14 +84,12 @@
   <string name="version">Versione %s</string>
   <string name="rate">Valuta su Google Play</string>
   <string name="github">Stella su GitHub</string>
-  <string name="translate">Aiuta a tradurre l\'app</string>
   <string name="translators">Traduttori</string>
   <string name="licenses">Licenze</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Apri nel browser</string>
   <string name="play_history">Canzoni precedenti</string>
   <string name="discord">Unisciti a noi su Discord</string>
-  <string name="patreon">Supportaci su Patreon</string>
   <string name="privacy_policy">Informativa sulla privacy</string>
   <!-- == Settings == -->
   <string name="settings">Impostazioni</string>

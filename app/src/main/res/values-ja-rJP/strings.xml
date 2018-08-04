@@ -23,7 +23,7 @@
   <string name="cancel_timer">タイマーをキャンセル</string>
   <string name="sleep_timer_canceled">タイマーをキャンセルしました</string>
   <!-- == Search == -->
-  <string name="search">検索</string>
+  <string name="search">検索...</string>
   <string name="clear_query">クリア</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">\"%s\"との一致はありません</string>
@@ -47,7 +47,6 @@
   <string name="required">必須</string>
   <!-- == Radio tab == -->
   <string name="play_pause">再生/一時停止</string>
-  <string name="favorite">お気に入りに追加</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">%s さんからのリクエスト</string>
   <!-- == User tab == -->
@@ -81,7 +80,6 @@
   <string name="licenses">ライセンス</string>
   <string name="listenmoe">LISTEN.moe ラジオ</string>
   <string name="play_history">歌歴</string>
-  <string name="patreon">Patreon のサポート</string>
   <string name="privacy_policy">プライバシー ポリシー</string>
   <!-- == Settings == -->
   <string name="settings">設定</string>

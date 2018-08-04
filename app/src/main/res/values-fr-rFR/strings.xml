@@ -14,6 +14,7 @@
   <string name="action_request">Requête</string>
   <string name="action_undo">Annuler</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Station</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -23,7 +24,7 @@
   <string name="cancel_timer">Annuler la minuterie</string>
   <string name="sleep_timer_canceled">Minuterie annulée</string>
   <!-- == Search == -->
-  <string name="search">Rechercher</string>
+  <string name="search">Rechercher...</string>
   <string name="clear_query">Supprimer la requête</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Pas de résultats pour \"%s\"</string>
@@ -52,7 +53,7 @@
   <!-- == Radio tab == -->
   <string name="play_pause">Play/pause</string>
   <string name="last_played">Joué récemment</string>
-  <string name="favorite">Favori</string>
+  <string name="favorite">Ajouter aux favoris</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Demandé par : %s</string>
   <!-- == User tab == -->
@@ -87,14 +88,14 @@
   <string name="version">Version %s</string>
   <string name="rate">Noter sur le Google Play</string>
   <string name="github">Star on GitHub</string>
-  <string name="translate">Aidez à traduire l\'application</string>
+  <string name="translate">Aidez-nous à traduire</string>
   <string name="translators">Traducteurs</string>
   <string name="licenses">Licenses</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Ouvrir dans le navigateur</string>
   <string name="play_history">Historique des musiques</string>
   <string name="discord">Rejoignez-nous sur Discord</string>
-  <string name="patreon">Supportez sur Patreon</string>
+  <string name="patreon">Obtenez des requêtes / Supportez-nous</string>
   <string name="privacy_policy">Politique de confidentialité</string>
   <!-- == Settings == -->
   <string name="settings">Paramètres</string>
