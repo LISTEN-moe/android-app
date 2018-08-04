@@ -13,7 +13,7 @@
   <string name="action_unfavorite">Remover dos favoritos</string>
   <string name="action_request">Solicitar</string>
   <string name="action_undo">Anular</string>
-  <!-- == Library modes == -->
+  <!-- == Radio stations == -->
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -57,17 +57,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">Ainda não existem favoritos</string>
   <string name="filter_favorites">Filtrar favoritos</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">%s foi removida dos favoritos</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d na lista de reprodução, %d antes da sua vez</string>
   <string name="random_request">Solicitar música aleatória</string>
-  <string name="all_cooldown">Nenhuma música pode ser escolhida</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">%s foi solicitada</string>
   <string name="requested_random_song">Solicitar música aleatória</string>
-  <string name="supporter_required">É necessario estatuto de contribuidor</string>
   <!-- == Song details == -->
   <string name="song_title">Título</string>
   <string name="song_album">Álbum</string>

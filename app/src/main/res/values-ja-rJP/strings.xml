@@ -13,7 +13,7 @@
   <string name="action_unfavorite">お気に入りから削除</string>
   <string name="action_request">リクエスト</string>
   <string name="action_undo">アンドゥ</string>
-  <!-- == Library modes == -->
+  <!-- == Radio stations == -->
   <string name="jpop">J-POP</string>
   <string name="kpop">K-POP</string>
   <!-- == Sleep timer == -->
@@ -53,11 +53,12 @@
   <!-- == User tab == -->
   <string name="no_favorites">お気に入りはいません</string>
   <string name="filter_favorites">お気に入りをフィルター</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="random_request">ランダムな曲をリクエストする</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">%sをリクエストしました</string>
   <!-- == Song details == -->
   <string name="song_title">タイトル</string>

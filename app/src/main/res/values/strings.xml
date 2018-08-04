@@ -68,6 +68,7 @@
     <string name="login_required">Log in to use this feature.</string>
     <string name="required">Required</string>
     <string name="password_mismatch">Passwords don\'t match</string>
+    <string name="forgot_password">Forgot your password?</string>
 
 
     <!-- == Radio tab == -->

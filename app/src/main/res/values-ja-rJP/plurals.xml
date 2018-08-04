@@ -9,9 +9,11 @@
   <plurals name="current_listeners">
     <item quantity="other">聞いている%d人</item>
   </plurals>
+  <!-- Timer -->
   <plurals name="minutes">
     <item quantity="other">%d分</item>
   </plurals>
+  <!-- Confirmation of timer being set -->
   <plurals name="sleep_timer_set">
     <item quantity="other">タイマーを%d分にセット</item>
   </plurals>

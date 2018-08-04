@@ -13,8 +13,7 @@
   <string name="action_unfavorite">Удалить из избранного</string>
   <string name="action_request">Запросить</string>
   <string name="action_undo">Отменить</string>
-  <!-- == Library modes == -->
-  <string name="action_library">Жанр музыки</string>
+  <!-- == Radio stations == -->
   <string name="jpop">J-Pop</string>
   <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
@@ -58,17 +57,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">У вас нет ничего в избранном</string>
   <string name="filter_favorites">Поиск по избранному</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">%s удалено из избранного</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d в очереди, %d перед вашей</string>
   <string name="random_request">Запросить случайную песню</string>
-  <string name="all_cooldown">Все песни сейчас недоступны</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">Запрошено %s</string>
   <string name="requested_random_song">Запрошена случайная песня</string>
-  <string name="supporter_required">Необходимо пожертвовать для использования этой функции</string>
   <!-- == Song details == -->
   <string name="song_title">Название</string>
   <string name="song_album">Альбом</string>

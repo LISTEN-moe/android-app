@@ -13,8 +13,7 @@
   <string name="action_unfavorite">Ta bort favorit</string>
   <string name="action_request">Requestade</string>
   <string name="action_undo">Ångra</string>
-  <!-- == Library modes == -->
-  <string name="action_library">Bibloteks läge</string>
+  <!-- == Radio stations == -->
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -49,6 +48,7 @@
   <string name="login_required">Du måste logga in för att använda den här funktionen</string>
   <string name="required">Krävs</string>
   <string name="password_mismatch">Lösenorden matchar inte</string>
+  <string name="forgot_password">Glömt lösenord?</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Spela/pausa</string>
   <string name="last_played">Senast spelade</string>
@@ -58,17 +58,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">Inga favoriter ännu</string>
   <string name="filter_favorites">Filtrera favoriter</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">Tog bort %s från favoriter</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d i kön, %d före din</string>
   <string name="random_request">Requesta en random låt</string>
-  <string name="all_cooldown">Alla låtar är på cool down</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">Requestade %s</string>
   <string name="requested_random_song">Requesta en slumpmässig låt</string>
-  <string name="supporter_required">Supporter status krävs</string>
   <!-- == Song details == -->
   <string name="song_title">Titel</string>
   <string name="song_album">Album</string>

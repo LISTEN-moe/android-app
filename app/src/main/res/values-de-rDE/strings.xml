@@ -13,8 +13,7 @@
   <string name="action_unfavorite">Favorit entfernen</string>
   <string name="action_request">Musikwunsch</string>
   <string name="action_undo">Rückgängig</string>
-  <!-- == Library modes == -->
-  <string name="action_library">Sammlungsmodus</string>
+  <!-- == Radio stations == -->
   <string name="jpop">J-Pop</string>
   <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
@@ -49,6 +48,7 @@
   <string name="login_required">Du must eingeloggt sein, um dieses Feature zu benutzen.</string>
   <string name="required">Erforderlich</string>
   <string name="password_mismatch">Kennwörter stimmen nicht überein</string>
+  <string name="forgot_password">Passwort vergessen?</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Play/Pause</string>
   <string name="last_played">Zuletzt gespielt</string>
@@ -58,17 +58,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">Keine Favoriten</string>
   <string name="filter_favorites">Favoriten filtern</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">%s von Favoriten entfernt</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d in der Warteschlange, %d vor deinen</string>
   <string name="random_request">Wünsche eine zufälliges Lied</string>
-  <string name="all_cooldown">Alle Songs sind auf Abklingzeit</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">%s gewünscht</string>
   <string name="requested_random_song">Zufälliges Lied gewünscht</string>
-  <string name="supporter_required">Supporter Status benötigt</string>
   <!-- == Song details == -->
   <string name="song_title">Titel</string>
   <string name="song_album">Album</string>

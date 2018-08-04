@@ -15,12 +15,14 @@
     <item quantity="many">%d klausytojų</item>
     <item quantity="other">%d klausytojų</item>
   </plurals>
+  <!-- Timer -->
   <plurals name="minutes">
     <item quantity="one">1 minutė</item>
     <item quantity="few">%d minutės</item>
     <item quantity="many">%d minutės</item>
     <item quantity="other">%d minutės</item>
   </plurals>
+  <!-- Confirmation of timer being set -->
   <plurals name="sleep_timer_set">
     <item quantity="one">Nustatyti laikmatį 1 minutei</item>
     <item quantity="few">Nustatyti laikmatį %d minutėms</item>

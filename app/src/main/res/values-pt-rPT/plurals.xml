@@ -11,10 +11,12 @@
     <item quantity="one">1 pessoa a ouvir</item>
     <item quantity="other">%d pessoas a ouvir</item>
   </plurals>
+  <!-- Timer -->
   <plurals name="minutes">
     <item quantity="one">1 minuto</item>
     <item quantity="other">%d minutos</item>
   </plurals>
+  <!-- Confirmation of timer being set -->
   <plurals name="sleep_timer_set">
     <item quantity="one">Temporizador configurado para 1 minuto</item>
     <item quantity="other">Temporizador configurado para %d minutos</item>

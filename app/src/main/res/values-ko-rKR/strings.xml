@@ -13,8 +13,7 @@
   <string name="action_unfavorite">즐겨찾기 취소</string>
   <string name="action_request">요청</string>
   <string name="action_undo">되돌리기</string>
-  <!-- == Library modes == -->
-  <string name="action_library">라이버러리 모드</string>
+  <!-- == Radio stations == -->
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -58,20 +57,68 @@
   <!-- == User tab == -->
   <string name="no_favorites">즐겨찾기가 아직없습니다</string>
   <string name="filter_favorites">즐겨찾기 필터링</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">%s 즐겨찾기가 취소되었습니다.</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">대기열에 %d 곡, 유저의 노래까지 %d 곡 남음</string>
   <string name="random_request">노래 무작위로 요청하기</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
+  <string name="requested_song">%s 요청했습니다</string>
+  <string name="requested_random_song">무작위로 노래를 선택했습니다</string>
   <!-- == Song details == -->
   <string name="song_title">제목</string>
+  <string name="song_album">앨범</string>
   <string name="song_artist">아티스트</string>
+  <string name="song_source">소스</string>
+  <string name="song_duration">기간</string>
+  <string name="song_release_date">출시 날짜</string>
+  <string name="song_uploader">업로더</string>
   <string name="song_last_played">이전곤</string>
+  <string name="song_tags">태그</string>
   <!-- == No Internet view == -->
+  <string name="no_internet">LISTEN.moe\n\n 연결이 되지 않습니다 인터넷 상태를 확인해주세요</string>
+  <string name="retry">다시 시도</string>
   <!-- == About == -->
+  <string name="about">에 대한</string>
   <!-- e.g. Version 1.0 -->
+  <string name="version">버전 %s</string>
+  <string name="rate">구글플레이 평점을 남겨주세요</string>
+  <string name="github">GitHub에 스타주기</string>
+  <string name="translate">이 앱을 통역하는데 도움을 주세요</string>
+  <string name="translators">통역자</string>
+  <string name="licenses">라이센스</string>
+  <string name="listenmoe">LISTEN.moe 라디오</string>
+  <string name="open_in_browser">브라우저에서 열기</string>
+  <string name="play_history">노래 기록</string>
+  <string name="discord">Discord 서버에 들어오기</string>
+  <string name="patreon">Patreon 을 통해 도와주기</string>
+  <string name="privacy_policy">개인 정보 정책</string>
   <!-- == Settings == -->
+  <string name="settings">설정</string>
+  <string name="pref_header_general">일반</string>
+  <string name="pref_title_theme">테마</string>
+  <string name="pref_title_language">언어</string>
+  <string name="system_default">시스템 기본</string>
+  <string name="restart_required">앱을 다시 시작한 후 변경 내용이 적용 됩니다</string>
+  <string name="pref_title_general_download">이미지 자동 다운로드</string>
+  <string name="pref_title_general_broadcast_intent">노래 업데이트 방송하기</string>
+  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling 지원</string>
+  <string name="pref_title_general_romaji">영어식 일본어 선호</string>
+  <string name="pref_title_general_romaji_summary">\"ななひら\" 대신 \"Nanahira\"</string>
+  <string name="pref_title_general_random_request_title">무작위로 신청한 노래 제목 보기</string>
+  <string name="pref_header_audio">오디오</string>
+  <string name="pref_title_pause_on_noisy">헤드폰을 제거 하면 일시정지 하기</string>
+  <string name="pref_title_audio_duck">눈을 떄면 노래 소리 줄이기</string>
+  <string name="pref_title_audio_duck_summary">알림, 탐색, 등</string>
+  <string name="pref_title_audio_pause_on_loss">눈을 떄면 노래 소리 줄이기</string>
+  <string name="pref_title_audio_pause_on_loss_summary">동영상, 기타 음악, 기타 등</string>
+  <string name="pref_header_lockscreen">잠금화면</string>
+  <string name="pref_title_lockscreen_albumart">앨범 커버 보기</string>
+  <string name="pref_title_lockscreen_albumart_summary">잠금화면에 앨범 사진 보기</string>
+  <string name="pref_header_color">색깔</string>
+  <string name="pref_title_color_now_playing">앨범 아트를 기반으로 하는 색깔</string>
+  <string name="pref_header_advanced">고급</string>
   <string name="pref_title_advanced_clear_image_cache">이미지 캐시 지우기</string>
 </resources>

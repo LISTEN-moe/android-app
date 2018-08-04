@@ -13,8 +13,7 @@
   <string name="action_unfavorite">Pašalinti iš mėgstamų</string>
   <string name="action_request">Užsakyti</string>
   <string name="action_undo">Atšaukti</string>
-  <!-- == Library modes == -->
-  <string name="action_library">Muzikos žanras</string>
+  <!-- == Radio stations == -->
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -58,17 +57,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">Dar nėra mėgstamų</string>
   <string name="filter_favorites">Filtruoti mėgstamas</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">%s pašalinta iš mėgstamų</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d eilėje, %d prieš jūsų</string>
   <string name="random_request">Užsakyti atsitiktinę dainą</string>
-  <string name="all_cooldown">Užsakyti daugiau dainų negalima</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">Užsakyta %s</string>
   <string name="requested_random_song">Užsakyta atsitiktinė daina</string>
-  <string name="supporter_required">Reikalingas palaikytojo statusas</string>
   <!-- == Song details == -->
   <string name="song_title">Pavadinimas</string>
   <string name="song_album">Albumas</string>

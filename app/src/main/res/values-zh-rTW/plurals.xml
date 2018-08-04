@@ -9,9 +9,11 @@
   <plurals name="current_listeners">
     <item quantity="other">%d 位聆聽者</item>
   </plurals>
+  <!-- Timer -->
   <plurals name="minutes">
     <item quantity="other">%d 分鐘</item>
   </plurals>
+  <!-- Confirmation of timer being set -->
   <plurals name="sleep_timer_set">
     <item quantity="other">計時設為 %d 分鐘</item>
   </plurals>

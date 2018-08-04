@@ -12,7 +12,7 @@
   <string name="action_unfavorite">從最愛刪除</string>
   <string name="action_request">點歌</string>
   <string name="action_undo">取消</string>
-  <!-- == Library modes == -->
+  <!-- == Radio stations == -->
   <string name="jpop">日本流行音樂</string>
   <string name="kpop">韓國流行音樂</string>
   <!-- == Sleep timer == -->
@@ -41,10 +41,11 @@
   <!-- e.g. Requested by: username -->
   <!-- == User tab == -->
   <string name="no_favorites">目前沒有最愛</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <!-- e.g. 2 in queue, 10 before yours -->
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <!-- == Song details == -->
   <string name="song_title">歌名</string>
   <!-- == No Internet view == -->

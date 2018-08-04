@@ -13,8 +13,7 @@
   <string name="action_unfavorite">取消喜爱</string>
   <string name="action_request">请求</string>
   <string name="action_undo">撤销</string>
-  <!-- == Library modes == -->
-  <string name="action_library">库模式</string>
+  <!-- == Radio stations == -->
   <string name="jpop">日本流行音乐</string>
   <string name="kpop">韩国流行音乐</string>
   <!-- == Sleep timer == -->
@@ -58,17 +57,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">还没有喜爱的歌曲</string>
   <string name="filter_favorites">过滤喜爱的歌曲</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">取消了喜爱 %d</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d 在队列中，在您的歌曲前有 %d</string>
   <string name="random_request">请求随机歌曲</string>
-  <string name="all_cooldown">所有歌曲CD中</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">%s 以请求</string>
   <string name="requested_random_song">请求一首随机歌曲</string>
-  <string name="supporter_required">需要支持者的状态</string>
   <!-- == Song details == -->
   <string name="song_title">标题</string>
   <string name="song_album">专辑</string>

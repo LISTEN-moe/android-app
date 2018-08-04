@@ -3,7 +3,7 @@
 <resources>
   <!-- == Generic strings == -->
   <!-- == Actions (notification, dialogs) == -->
-  <!-- == Library modes == -->
+  <!-- == Radio stations == -->
   <!-- == Sleep timer == -->
   <!-- == Search == -->
   <!-- e.g. No results for "user's search query" -->
@@ -12,10 +12,11 @@
   <!-- == Radio tab == -->
   <!-- e.g. Requested by: username -->
   <!-- == User tab == -->
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <!-- e.g. 2 in queue, 10 before yours -->
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <!-- == Song details == -->
   <!-- == No Internet view == -->
   <!-- == About == -->

@@ -15,12 +15,14 @@
     <item quantity="many">%d слушателей</item>
     <item quantity="other">%d слушателей</item>
   </plurals>
+  <!-- Timer -->
   <plurals name="minutes">
     <item quantity="one">1 минута</item>
     <item quantity="few">%d минуты</item>
     <item quantity="many">%d минут</item>
     <item quantity="other">%d минут</item>
   </plurals>
+  <!-- Confirmation of timer being set -->
   <plurals name="sleep_timer_set">
     <item quantity="one">Установить таймер на 1 минуту</item>
     <item quantity="few">Установить таймер на %d минуты</item>

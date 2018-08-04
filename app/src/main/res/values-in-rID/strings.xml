@@ -13,8 +13,7 @@
   <string name="action_unfavorite">Tidak Favorit</string>
   <string name="action_request">Meminta</string>
   <string name="action_undo">Batalkan</string>
-  <!-- == Library modes == -->
-  <string name="action_library">Mode Perpustakaan</string>
+  <!-- == Radio stations == -->
   <string name="jpop">J-Pop</string>
   <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
@@ -58,17 +57,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">Belum ada favorit</string>
   <string name="filter_favorites">Menyaring Favorit</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">Tidak Favorit %s</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d dalam antrian, %d sebelum kamu</string>
   <string name="random_request">Meminta lagu acak</string>
-  <string name="all_cooldown">Semua lagu sedang turun</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">Meminta %s</string>
   <string name="requested_random_song">Meminta lagu acak</string>
-  <string name="supporter_required">Di butuhkan status pendukung</string>
   <!-- == Song details == -->
   <string name="song_title">Judul</string>
   <string name="song_album">Album</string>

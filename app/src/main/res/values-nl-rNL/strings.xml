@@ -13,8 +13,7 @@
   <string name="action_unfavorite">Verwijder als favoriet</string>
   <string name="action_request">Aanvragen</string>
   <string name="action_undo">Ongedaan maken</string>
-  <!-- == Library modes == -->
-  <string name="action_library">Bibliotheek-modus</string>
+  <!-- == Radio stations == -->
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -49,6 +48,7 @@
   <string name="login_required">Je moet je aanmelden om deze functie te gebruiken.</string>
   <string name="required">Vereist</string>
   <string name="password_mismatch">Wachtwoorden komen niet overeen</string>
+  <string name="forgot_password">Wachtwoord vergeten?</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Start/pauze</string>
   <string name="last_played">Laatst gespeeld</string>
@@ -58,17 +58,16 @@
   <!-- == User tab == -->
   <string name="no_favorites">Nog geen favorieten</string>
   <string name="filter_favorites">Favorieten sorteren</string>
-  <!-- e.g. Unfavorited song title -->
+  <!-- e.g. Unfavorited <Song Title> -->
   <string name="unfavorited">Verwijder %s als favoriet </string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d in de rij, %d voor jouw verzoek </string>
   <string name="random_request">Willekeurig nummer aanvragen</string>
-  <string name="all_cooldown">Je kan tijdelijk geen nummers aanvragen</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
+  <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">Verzocht %s</string>
   <string name="requested_random_song">Willekeurig nummer aanvragen</string>
-  <string name="supporter_required">Supporterstatus vereist</string>
   <!-- == Song details == -->
   <string name="song_title">Titel</string>
   <string name="song_album">Album</string>
