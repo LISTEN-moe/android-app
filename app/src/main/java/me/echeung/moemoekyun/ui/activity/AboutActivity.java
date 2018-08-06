@@ -60,7 +60,6 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
         findViewById(R.id.about_app_licenses).setOnClickListener(this);
 
         findViewById(R.id.about_listenmoe_website).setOnClickListener(this);
-        findViewById(R.id.about_listenmoe_play_history).setOnClickListener(this);
         findViewById(R.id.about_listenmoe_discord).setOnClickListener(this);
         findViewById(R.id.about_listenmoe_patreon).setOnClickListener(this);
 
@@ -88,10 +87,6 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
 
             case R.id.about_listenmoe_website:
                 UrlUtil.open(this, getString(R.string.url_listenmoe));
-                break;
-
-            case R.id.about_listenmoe_play_history:
-                UrlUtil.open(this, getString(R.string.url_twitter_np));
                 break;
 
             case R.id.about_listenmoe_discord:

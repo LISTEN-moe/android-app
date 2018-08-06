@@ -52,35 +52,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/about_listenmoe_play_history"
-            style="@style/AboutItem">
-
-            <ImageView
-                android:layout_width="@dimen/md_listitem_height"
-                android:layout_height="@dimen/md_listitem_height"
-                android:src="@drawable/ic_history_white_24dp"
-                android:tint="@color/light_grey"
-                tools:ignore="ContentDescription" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:orientation="vertical"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/play_history"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/about_listenmoe_discord"
             style="@style/AboutItem">
 
