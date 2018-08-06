@@ -14,6 +14,7 @@
   <string name="action_request">Pedir</string>
   <string name="action_undo">Deshacer</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Estaciones de radio</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -34,6 +35,7 @@
   <string name="sort_desc">Descendiente</string>
   <!-- == Auth == -->
   <string name="register">Registrar</string>
+  <string name="login">Inicia sesión</string>
   <string name="logout">Cerrar sesión</string>
   <string name="username_or_email">Usuario / dirección de mail</string>
   <string name="username">Usuario</string>
@@ -86,6 +88,7 @@
   <string name="version">Versión %s</string>
   <string name="rate">Calificar en Google Play</string>
   <string name="github">Star en GitHub</string>
+  <string name="translate">Ayúdanos a traducir</string>
   <string name="translators">Traductores</string>
   <string name="licenses">Licencias</string>
   <string name="listenmoe">radio LISTEN.moe</string>
