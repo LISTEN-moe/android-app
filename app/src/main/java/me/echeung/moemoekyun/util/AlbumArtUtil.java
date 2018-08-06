@@ -57,7 +57,8 @@ public final class AlbumArtUtil {
 
         try {
             return Bitmap.createScaledBitmap(currentAlbumArt, maxSize, maxSize, false);
-        } catch (OutOfMemoryError e) {
+        } catch (Throwable e) {
+            // Typically OutOfMemoryError or NullPointerException
             e.printStackTrace();
             return null;
         }

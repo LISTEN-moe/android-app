@@ -258,10 +258,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     }
 
     private void updateMediaSessionPlaybackState() {
-        if (!mediaSession.isActive()) {
-            return;
-        }
-
         // Play/pause state
         PlaybackStateCompat.Builder stateBuilder = new PlaybackStateCompat.Builder()
                 .setActions(MEDIA_SESSION_ACTIONS)
@@ -282,7 +278,9 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                     .build());
         }
 
-        mediaSession.setPlaybackState(stateBuilder.build());
+        if (mediaSession.isActive()) {
+            mediaSession.setPlaybackState(stateBuilder.build());
+        }
     }
 
     @Override

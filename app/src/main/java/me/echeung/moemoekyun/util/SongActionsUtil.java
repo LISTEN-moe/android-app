@@ -134,7 +134,7 @@ public final class SongActionsUtil {
     }
 
     public static void copyToClipboard(Context context, Song song) {
-        if (context == null) return;
+        if (context == null || song == null) return;
 
         copyToClipboard(context, song.toString());
     }
