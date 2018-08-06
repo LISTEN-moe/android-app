@@ -23,32 +23,36 @@
     <string name="url_patreon" translatable="false">https://www.patreon.com/odysseyradio</string>
     <string name="url_privacy_policy" translatable="false">https://listen-moe.github.io/android-app/privacy.txt</string>
 
+    <!--
+        On https://crowdin.com/project/listenmoe-android-app/settings#members
+        [...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n\\n')
+    -->
     <string name="translators_list" translatable="false">
-        anonymousthing
-        \nCalvin_c64
+        arkon94
+        \nAtFr
         \nCrawl
-        \ncshih.calvin
-        \ndeletescape
         \nditokp
+        \nditokurniap
+        \nDominique Chapelier
+        \nEmachii 🦋
+        \nErinç Esen
         \nForbidden
-        \nhazexcs_jmt
-        \njimimbi97
         \nKana
-        \nKayo
-        \nLiliace
+        \nLeozard
+        \nMayra Ignacia Celedon Vidal
+        \nMelisa Wijaya
         \nMiinc
         \nnicoro
-        \nNogooduser
-        \nNoobping
-        \nPraxic
+        \nniseee
+        \nOsoitz
+        \nPoussinou
         \nPytey
         \nRainBee
-        \nRuslan Nurislamov
+        \nrobflop
+        \nspoonm
         \nTacoTheDank
-        \nsakaikazuki
-        \nvzwGrey
+        \nTill Kottmann
         \nWarrock3280
-        \nwongtszwing87
         \nxTheEc0
     </string>
 
