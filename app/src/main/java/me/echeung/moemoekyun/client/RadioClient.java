@@ -41,9 +41,8 @@ public class RadioClient {
 
         socket.reconnect();
 
-        final boolean wasPlaying = stream.isPlaying();
-        stream.stop();
-        if (wasPlaying) {
+        // Force it to play with new stream
+        if (stream.isPlaying()) {
             stream.play();
         }
     }

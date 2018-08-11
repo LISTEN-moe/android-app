@@ -38,7 +38,7 @@ public class Stream {
 
             releasePlayer();
 
-            init();
+            init(RadioClient.getLibrary().getStreamUrl());
             if (wasPlaying) {
                 play();
             }
@@ -46,6 +46,8 @@ public class Stream {
     };
 
     private final Context context;
+
+    private String currentStreamUrl;
 
     private WifiManager.WifiLock wifiLock;
     private SimpleExoPlayer player;
@@ -66,8 +68,8 @@ public class Stream {
     }
 
     public void play() {
-        if (player == null) {
-            init();
+        if (player == null || !currentStreamUrl.equals(RadioClient.getLibrary().getStreamUrl())) {
+            init(RadioClient.getLibrary().getStreamUrl());
         }
 
         if (!isPlaying()) {
@@ -151,26 +153,29 @@ public class Stream {
         }
     }
 
-    private void init() {
-        // In case there's already an instance somehow
-        releasePlayer();
+    private void init(String streamUrl) {
+        if (player == null) {
+            player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
+
+            player.addListener(eventListener);
+            player.setVolume(1f);
+
+            AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(CONTENT_TYPE_MUSIC)
+                    .setUsage(USAGE_MEDIA)
+                    .build();
+            player.setAudioAttributes(audioAttributes);
+        }
 
         DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
-        Uri streamUri = Uri.parse(RadioClient.getLibrary().getStreamUrl());
+        Uri streamUri = Uri.parse(streamUrl);
         MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                 .setExtractorsFactory(new DefaultExtractorsFactory())
-                .createMediaSource(streamUri, null, null);
+                .createMediaSource(streamUri);
 
-        player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
         player.prepare(streamSource);
-        player.addListener(eventListener);
-        player.setVolume(1f);
 
-        AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                .setContentType(CONTENT_TYPE_MUSIC)
-                .setUsage(USAGE_MEDIA)
-                .build();
-        player.setAudioAttributes(audioAttributes);
+        currentStreamUrl = streamUrl;
     }
 
     private void releasePlayer() {

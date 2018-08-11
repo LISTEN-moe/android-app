@@ -376,8 +376,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                     break;
 
                 case ConnectivityManager.CONNECTIVITY_ACTION:
-                    Log.d(TAG, "Connection change");
-
                     // Ignore the initial sticky broadcast on app start
                     if (isFirstConnectivityChange) {
                         isFirstConnectivityChange = false;
