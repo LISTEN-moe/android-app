@@ -514,7 +514,9 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 case AudioManager.AUDIOFOCUS_LOSS:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     wasPlayingBeforeLoss = isPlaying();
-                    if (wasPlayingBeforeLoss && App.getPreferenceUtil().shouldPauseAudioOnLoss()) {
+                    if (wasPlayingBeforeLoss &&
+                            (App.getPreferenceUtil().shouldPauseAudioOnLoss()
+                                    || AutoMediaBrowserService.isCarUiMode(this))) {
                         pause();
                     }
                     break;
