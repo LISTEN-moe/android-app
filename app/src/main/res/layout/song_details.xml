@@ -164,7 +164,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{song.durationString}" />
+                android:text='@{song.duration != 0 ? song.durationString : ""}' />
 
         </LinearLayout>
 
