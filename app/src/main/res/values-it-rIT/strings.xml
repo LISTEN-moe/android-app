@@ -24,6 +24,7 @@
   <string name="cancel_timer">Annulla sveglia</string>
   <string name="sleep_timer_canceled">Sveglia annullata</string>
   <!-- == Search == -->
+  <string name="search">Cerca...</string>
   <string name="clear_query">Pulisci query</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Nessun risultato per \"%s\"</string>
@@ -35,6 +36,7 @@
   <!-- == Auth == -->
   <string name="register">Crea account</string>
   <string name="login">Accedi</string>
+  <string name="logout">Logout</string>
   <string name="username_or_email">Nome utente / indirizzo email</string>
   <string name="username">Nome utente</string>
   <string name="email">Indirizzo email</string>
@@ -84,6 +86,7 @@
   <string name="version">Versione %s</string>
   <string name="rate">Valuta su Google Play</string>
   <string name="github">Stella su GitHub</string>
+  <string name="translate">Aiutaci a tradurre</string>
   <string name="translators">Traduttori</string>
   <string name="licenses">Licenze</string>
   <string name="listenmoe">LISTEN.moe radio</string>

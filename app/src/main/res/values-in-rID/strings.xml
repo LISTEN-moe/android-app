@@ -4,7 +4,7 @@
   <!-- == Generic strings == -->
   <string name="submit">Kirim</string>
   <string name="error">Terjadi Kesalahan</string>
-  <string name="copied_to_clipboard">Disalin ke clipboard</string>
+  <string name="copied_to_clipboard">Tersalin ke papan klip</string>
   <!-- == Actions (notification, dialogs) == -->
   <string name="action_play">Putar</string>
   <string name="action_pause">Jeda</string>
@@ -14,17 +14,18 @@
   <string name="action_request">Meminta</string>
   <string name="action_undo">Batalkan</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Stasiun</string>
   <string name="jpop">J-Pop</string>
   <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
-  <string name="sleep_timer">Waktu Tidur</string>
+  <string name="sleep_timer">Pengatur waktu tidur</string>
   <string name="set">Atur</string>
   <string name="close">Tutup</string>
   <string name="cancel_timer">Batalkan pengatur waktu</string>
   <string name="sleep_timer_canceled">Pengatur waktu dibatalkan</string>
   <!-- == Search == -->
   <string name="search">Cari...</string>
-  <string name="clear_query">Hapus Antrian</string>
+  <string name="clear_query">Bersihkan kueri</string>
   <!-- e.g. No results for "user's search query" -->
   <string name="no_results">Tidak ada hasil untuk \"%s\"</string>
   <!-- == Sort == -->
@@ -36,36 +37,38 @@
   <string name="register">Daftar</string>
   <string name="login">Masuk</string>
   <string name="logout">Keluar</string>
-  <string name="username_or_email">Nama Pengguna / Email</string>
-  <string name="username">Nama Pengguna</string>
-  <string name="email">Email</string>
-  <string name="password">Kata Sandi</string>
-  <string name="password_confirm">Konfirmasi Kata Sandi</string>
-  <string name="mfa_prompt">Masukan Kode Keamanan Yang Diperoleh dari Aplikasi Autentikator Anda.</string>
-  <string name="mfa_hint">6 Digit Kode Keamanan</string>
-  <string name="logout_confirmation">Apakah Anda Yakin Ingin Keluar?</string>
-  <string name="logged_out">Anda Telah Keluar</string>
+  <string name="username_or_email">Nama pengguna / alamat surel</string>
+  <string name="username">Nama pengguna</string>
+  <string name="email">Alamat surel</string>
+  <string name="password">Kata sandi</string>
+  <string name="password_confirm">Konfirmasi kata sandi</string>
+  <string name="mfa_prompt">Masukan kode keamanan yang dihasilkan oleh aplikasi autentikator Anda.</string>
+  <string name="mfa_hint">6-digit kode keamanan</string>
+  <string name="logout_confirmation">Apakah Anda yakin ingin keluar?</string>
+  <string name="logged_out">Anda telah keluar</string>
   <string name="login_required">Masuk untuk menggunakan fitur ini.</string>
   <string name="required">Diperlukan</string>
-  <string name="password_mismatch">Kata Sandi Tidak Sesuai</string>
+  <string name="password_mismatch">Kata sandi tidak sesuai</string>
+  <string name="forgot_password">Lupa kata sandi Anda?</string>
   <!-- == Radio tab == -->
-  <string name="play_pause">Putar / Jeda</string>
-  <string name="last_played">Terakhir Diputar</string>
+  <string name="play_pause">Putar/Jeda</string>
+  <string name="last_played">Terakhir diputar</string>
+  <string name="favorite">Tambahkan ke favorit</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Diminta oleh: %s</string>
   <!-- == User tab == -->
   <string name="no_favorites">Belum ada favorit</string>
-  <string name="filter_favorites">Menyaring Favorit</string>
+  <string name="filter_favorites">Saring favorit</string>
   <!-- e.g. Unfavorited <Song Title> -->
-  <string name="unfavorited">Tidak Favorit %s</string>
+  <string name="unfavorited">Tidak favorit %s</string>
   <!-- e.g. 2 in queue, 10 before yours -->
-  <string name="queue_info">%d dalam antrian, %d sebelum kamu</string>
+  <string name="queue_info">%d dalam antrean, %d sebelum milik anda</string>
   <string name="random_request">Meminta lagu acak</string>
   <!-- == Song item actions == -->
   <!-- Requested song title -->
   <!-- e.g. Requested <Song Title> -->
-  <string name="requested_song">Meminta %s</string>
-  <string name="requested_random_song">Meminta lagu acak</string>
+  <string name="requested_song">Diminta %s</string>
+  <string name="requested_random_song">Diminta lagu acak</string>
   <!-- == Song details == -->
   <string name="song_title">Judul</string>
   <string name="song_album">Album</string>
@@ -85,12 +88,14 @@
   <string name="version">Versi %s</string>
   <string name="rate">Berikan nilai di Google Play</string>
   <string name="github">Berikan bintang di Github</string>
+  <string name="translate">Bantu kami menerjemahkan</string>
   <string name="translators">Penerjemah</string>
   <string name="licenses">Lisensi</string>
-  <string name="listenmoe">LISTEN.moe radio</string>
-  <string name="open_in_browser">Buka di browser</string>
+  <string name="listenmoe">Radio LISTEN.moe</string>
+  <string name="open_in_browser">Buka di peramban</string>
   <string name="play_history">Riwayat lagu</string>
-  <string name="discord">Gabung di Discord</string>
+  <string name="discord">Bergabunglah dengan kami di Discord</string>
+  <string name="patreon">Dapatkan permintaan / Dukung kami</string>
   <string name="privacy_policy">Kebijakan privasi</string>
   <!-- == Settings == -->
   <string name="settings">Pengaturan</string>
@@ -102,7 +107,7 @@
   <string name="pref_title_general_download">Otomatis mengunduh gambar</string>
   <string name="pref_title_general_broadcast_intent">Menyiarkan pembaharuan lagu</string>
   <string name="pref_title_general_broadcast_intent_summary">Dukungan scrobbling Last.fm</string>
-  <string name="pref_title_general_romaji">Pilih romaji</string>
+  <string name="pref_title_general_romaji">Lebih memilih romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" daripada \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Perlihatkan judul lagu acak yang diminta</string>
   <string name="pref_header_audio">Audio</string>
@@ -111,12 +116,12 @@
   <string name="pref_title_audio_duck_summary">Notifikasi, navigasi, dll.</string>
   <string name="pref_title_audio_pause_on_loss">Jeda pada kehilangan fokus</string>
   <string name="pref_title_audio_pause_on_loss_summary">Video, musik lainnya, dll.</string>
-  <string name="pref_header_lockscreen">Lockscreen</string>
-  <string name="pref_title_lockscreen_albumart">Perlihatkan cover album</string>
-  <string name="pref_title_lockscreen_albumart_summary">Perlihatkan gambar album di lockscreen dan Android Auto</string>
+  <string name="pref_header_lockscreen">Layar kunci</string>
+  <string name="pref_title_lockscreen_albumart">Tampilkan sampul album</string>
+  <string name="pref_title_lockscreen_albumart_summary">Menampilkan seni album pada layar kunci dan Android Auto</string>
   <string name="pref_header_color">Warna</string>
-  <string name="pref_title_color_now_playing">Sekarang warna diperlihatkan sesuai gambar album</string>
-  <string name="pref_title_color_navbar">Tema layar navigasi</string>
+  <string name="pref_title_color_now_playing">Warna sekarang diputar berdasarkan seni album</string>
+  <string name="pref_title_color_navbar">Tema pada layar bilah navigasi</string>
   <string name="pref_header_advanced">Lanjutan</string>
   <string name="pref_title_advanced_clear_image_cache">Hapus cache gambar</string>
 </resources>
