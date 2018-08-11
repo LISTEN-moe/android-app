@@ -37,8 +37,7 @@ public class Stream {
             boolean wasPlaying = isPlaying();
 
             releasePlayer();
-
-            init(RadioClient.getLibrary().getStreamUrl());
+            init();
             if (wasPlaying) {
                 play();
             }
@@ -47,10 +46,10 @@ public class Stream {
 
     private final Context context;
 
-    private String currentStreamUrl;
-
     private WifiManager.WifiLock wifiLock;
     private SimpleExoPlayer player;
+
+    private String currentStreamUrl;
 
     @Setter
     private Listener listener;
@@ -68,9 +67,7 @@ public class Stream {
     }
 
     public void play() {
-        if (player == null || !currentStreamUrl.equals(RadioClient.getLibrary().getStreamUrl())) {
-            init(RadioClient.getLibrary().getStreamUrl());
-        }
+        init();
 
         if (!isPlaying()) {
             acquireWifiLock();
@@ -153,7 +150,8 @@ public class Stream {
         }
     }
 
-    private void init(String streamUrl) {
+    private void init() {
+        // Create ExoPlayer instance
         if (player == null) {
             player = ExoPlayerFactory.newSimpleInstance(context, new DefaultTrackSelector());
 
@@ -167,15 +165,17 @@ public class Stream {
             player.setAudioAttributes(audioAttributes);
         }
 
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
-        Uri streamUri = Uri.parse(streamUrl);
-        MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
-                .setExtractorsFactory(new DefaultExtractorsFactory())
-                .createMediaSource(streamUri);
+        // Set stream
+        String streamUrl = RadioClient.getLibrary().getStreamUrl();
+        if (!streamUrl.equals(currentStreamUrl)) {
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
+            MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
+                    .setExtractorsFactory(new DefaultExtractorsFactory())
+                    .createMediaSource(Uri.parse(streamUrl));
 
-        player.prepare(streamSource);
-
-        currentStreamUrl = streamUrl;
+            player.prepare(streamSource);
+            currentStreamUrl = streamUrl;
+        }
     }
 
     private void releasePlayer() {
