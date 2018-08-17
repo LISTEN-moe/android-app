@@ -14,10 +14,11 @@
   <string name="action_request">요청</string>
   <string name="action_undo">되돌리기</string>
   <!-- == Radio stations == -->
+  <string name="action_library">스테이션</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
-  <string name="sleep_timer">절전 타이머</string>
+  <string name="sleep_timer">슬립 타이머</string>
   <string name="set">설정</string>
   <string name="close">닫기</string>
   <string name="cancel_timer">타이머 취소</string>
@@ -33,7 +34,7 @@
   <string name="sort_artist">아티스트</string>
   <string name="sort_desc">내림차순</string>
   <!-- == Auth == -->
-  <string name="register">내림차순</string>
+  <string name="register">회원가입</string>
   <string name="login">로그인</string>
   <string name="logout">로그 아웃</string>
   <string name="username_or_email">아이디 또는 이메일 주소</string>
@@ -46,13 +47,15 @@
   <string name="logout_confirmation">로그아웃을 하시겠습니까?</string>
   <string name="logged_out">로그아웃이 되었습니다</string>
   <string name="login_required">회원만 이용하실 수 있습니다</string>
-  <string name="required">핅수</string>
+  <string name="required">필수</string>
   <string name="password_mismatch">비밀번호가 일치하지 않습니다</string>
+  <string name="forgot_password">비밀번호를 잊어 버렸습니까?</string>
   <!-- == Radio tab == -->
   <string name="play_pause">재생/일시정지</string>
-  <string name="last_played">이전곤</string>
+  <string name="last_played">마지막으로 재생한 항목</string>
+  <string name="favorite">즐겨 찾기에 추가</string>
   <!-- e.g. Requested by: username -->
-  <string name="requested_by">요청한 사람:%s</string>
+  <string name="requested_by">요청한 사람: %s</string>
   <!-- == User tab == -->
   <string name="no_favorites">즐겨찾기가 아직없습니다</string>
   <string name="filter_favorites">즐겨찾기 필터링</string>
@@ -65,7 +68,7 @@
   <!-- Requested song title -->
   <!-- e.g. Requested <Song Title> -->
   <string name="requested_song">%s 요청했습니다</string>
-  <string name="requested_random_song">무작위로 노래를 선택했습니다</string>
+  <string name="requested_random_song">무작위로 노래를 신청했습니다</string>
   <!-- == Song details == -->
   <string name="song_title">제목</string>
   <string name="song_album">앨범</string>
@@ -74,23 +77,25 @@
   <string name="song_duration">기간</string>
   <string name="song_release_date">출시 날짜</string>
   <string name="song_uploader">업로더</string>
-  <string name="song_last_played">이전곤</string>
+  <string name="song_last_played">마지막으로 재생한 항목</string>
   <string name="song_tags">태그</string>
   <!-- == No Internet view == -->
-  <string name="no_internet">LISTEN.moe\n\n 연결이 되지 않습니다 인터넷 상태를 확인해주세요</string>
+  <string name="no_internet">LISTEN.moe\n\n연결이 되지 않습니다 인터넷 상태를 확인해주세요</string>
   <string name="retry">다시 시도</string>
   <!-- == About == -->
   <string name="about">에 대한</string>
   <!-- e.g. Version 1.0 -->
   <string name="version">버전 %s</string>
-  <string name="rate">구글플레이 평점을 남겨주세요</string>
+  <string name="rate">구글 플레이에 평점을 남겨주세요</string>
   <string name="github">GitHub에 스타주기</string>
-  <string name="translators">통역자</string>
+  <string name="translate">번역을 도와주세요</string>
+  <string name="translators">번역가</string>
   <string name="licenses">라이센스</string>
   <string name="listenmoe">LISTEN.moe 라디오</string>
   <string name="open_in_browser">브라우저에서 열기</string>
   <string name="play_history">노래 기록</string>
   <string name="discord">Discord 서버에 들어오기</string>
+  <string name="patreon">요청 받기, 지원하기</string>
   <string name="privacy_policy">개인 정보 정책</string>
   <!-- == Settings == -->
   <string name="settings">설정</string>
@@ -116,6 +121,7 @@
   <string name="pref_title_lockscreen_albumart_summary">잠금화면에 앨범 사진 보기</string>
   <string name="pref_header_color">색깔</string>
   <string name="pref_title_color_now_playing">앨범 아트를 기반으로 하는 색깔</string>
+  <string name="pref_title_color_navbar">테마 화면상의 네비게이션 바</string>
   <string name="pref_header_advanced">고급</string>
   <string name="pref_title_advanced_clear_image_cache">이미지 캐시 지우기</string>
 </resources>

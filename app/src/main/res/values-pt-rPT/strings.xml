@@ -12,8 +12,9 @@
   <string name="action_favorite">Adicionar aos favoritos</string>
   <string name="action_unfavorite">Remover dos favoritos</string>
   <string name="action_request">Solicitar</string>
-  <string name="action_undo">Anular</string>
+  <string name="action_undo">Desfazer</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Estação</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -34,6 +35,8 @@
   <string name="sort_desc">Ordem descendente</string>
   <!-- == Auth == -->
   <string name="register">Registar</string>
+  <string name="login">Iniciar sessão</string>
+  <string name="logout">Sair</string>
   <string name="username_or_email">Nome de usuário / endereço de e-mail</string>
   <string name="username">Utilizador</string>
   <string name="email">Endereço de e-mail</string>
@@ -46,9 +49,11 @@
   <string name="login_required">É necessario efetuar login para usar esta função.</string>
   <string name="required">Obrigatório</string>
   <string name="password_mismatch">As senhas são diferentes</string>
+  <string name="forgot_password">Esqueceu sua senha?</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Reproduzir/pausa</string>
   <string name="last_played">Músicas anteriores</string>
+  <string name="favorite">Adicionar aos favoritos</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Solicitado por: %s</string>
   <!-- == User tab == -->
@@ -83,12 +88,14 @@
   <string name="version">Versão %s</string>
   <string name="rate">Avaliar no Google Play</string>
   <string name="github">Dar uma estrela no GitHub</string>
+  <string name="translate">Ajude-nos a traduzir</string>
   <string name="translators">Tradutores</string>
   <string name="licenses">Licenças</string>
   <string name="listenmoe">Rádio LISTEN.moe</string>
   <string name="open_in_browser">Abrir no navegador</string>
   <string name="play_history">Histórico de músicas</string>
   <string name="discord">Junte-se a nos no Discord</string>
+  <string name="patreon">Obter solicitações / suporte nos</string>
   <string name="privacy_policy">Política de privacidade</string>
   <!-- == Settings == -->
   <string name="settings">Definições</string>
@@ -102,6 +109,7 @@
   <string name="pref_title_general_broadcast_intent_summary">Suporte para scrobbling no Last.fm</string>
   <string name="pref_title_general_romaji">Preferir romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" em vez de \"ななひら\"</string>
+  <string name="pref_title_general_random_request_title">Mostrar o título da canção solicitada aleatoriamente</string>
   <string name="pref_header_audio">Áudio</string>
   <string name="pref_title_pause_on_noisy">Pausar quando os auscultadores são removidos</string>
   <string name="pref_title_audio_duck">Baixar volume durante focos de mudança de áudio pequenos</string>
@@ -111,4 +119,9 @@
   <string name="pref_header_lockscreen">Ecrã de bloqueio</string>
   <string name="pref_title_lockscreen_albumart">Mostrar capa do álbum</string>
   <string name="pref_title_lockscreen_albumart_summary">Mostra a capa do álbum no ecrã de bloqueio e no Android Auto</string>
+  <string name="pref_header_color">Cor</string>
+  <string name="pref_title_color_now_playing">Reprodução de cor baseado na arte do álbum</string>
+  <string name="pref_title_color_navbar">Aplicar tema na barra de navegação da tela</string>
+  <string name="pref_header_advanced">Avançado</string>
+  <string name="pref_title_advanced_clear_image_cache">Limpar cache de imagens</string>
 </resources>

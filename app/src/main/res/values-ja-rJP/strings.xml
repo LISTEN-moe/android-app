@@ -40,19 +40,26 @@
   <string name="username">ユーザー名</string>
   <string name="email">電子メールアドレス</string>
   <string name="password">パスワード</string>
+  <string name="password_confirm">パスワードの確認</string>
+  <string name="mfa_prompt">認証アプリで生成されたセキュリティコードを入力してください。</string>
   <string name="mfa_hint">6桁のセキュリティコード</string>
   <string name="logout_confirmation">ログアウトします。よろしいですか？</string>
   <string name="logged_out">ログアウトしました</string>
   <string name="login_required">ログインユーザーのみの機能</string>
   <string name="required">必須</string>
+  <string name="password_mismatch">パスワードが一致しません</string>
+  <string name="forgot_password">パスワードを忘れてしまいましたか？</string>
   <!-- == Radio tab == -->
   <string name="play_pause">再生/一時停止</string>
+  <string name="last_played">最後に再生された曲</string>
+  <string name="favorite">お気に入りに追加</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">%s さんからのリクエスト</string>
   <!-- == User tab == -->
   <string name="no_favorites">お気に入りはいません</string>
   <string name="filter_favorites">お気に入りをフィルター</string>
   <!-- e.g. Unfavorited <Song Title> -->
+  <string name="unfavorited">%s をお気に入りからはずす</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="random_request">ランダムな曲をリクエストする</string>
   <!-- == Song item actions == -->
@@ -67,28 +74,47 @@
   <string name="song_duration">期間</string>
   <string name="song_release_date">発売日</string>
   <string name="song_uploader">アップローダー</string>
+  <string name="song_last_played">最後に再生された曲</string>
   <string name="song_tags">タグ</string>
   <!-- == No Internet view == -->
   <string name="no_internet">サーバーに接続できません\n\nインターネット接続を確認してください</string>
   <string name="retry">再試行</string>
   <!-- == About == -->
+  <string name="about">About</string>
   <!-- e.g. Version 1.0 -->
   <string name="version">バージョン %s</string>
   <string name="rate">Google Play の率</string>
   <string name="github">GitHub 上でスター</string>
+  <string name="translate">翻訳にご協力お願いします</string>
   <string name="translators">翻訳者</string>
   <string name="licenses">ライセンス</string>
   <string name="listenmoe">LISTEN.moe ラジオ</string>
+  <string name="open_in_browser">ブラウザで開く</string>
   <string name="play_history">歌歴</string>
+  <string name="discord">Discord に参加する</string>
   <string name="privacy_policy">プライバシー ポリシー</string>
   <!-- == Settings == -->
   <string name="settings">設定</string>
+  <string name="pref_header_general">一般的な設定</string>
   <string name="pref_title_theme">テーマ</string>
   <string name="pref_title_language">言語</string>
+  <string name="system_default">システムのデフォルト</string>
+  <string name="restart_required">変更はアプリの再起動後に適用されます</string>
   <string name="pref_title_general_download">画像の自動ダウンロード</string>
+  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling サポート</string>
   <string name="pref_title_general_romaji">ローマ字を使う</string>
   <string name="pref_title_general_romaji_summary">「ななひら」ではなく「Nanahira」</string>
   <string name="pref_header_audio">オーディオ</string>
+  <string name="pref_title_pause_on_noisy">ヘッドフォンを外すと一時停止</string>
+  <string name="pref_title_audio_duck_summary">通知、ナビゲーションなど</string>
+  <string name="pref_title_audio_pause_on_loss">フォーカスが外れたら一時停止</string>
+  <string name="pref_title_audio_pause_on_loss_summary">ビデオや他の音楽の再生時など</string>
+  <string name="pref_header_lockscreen">ロックスクリーン</string>
+  <string name="pref_title_lockscreen_albumart">アルバムカバーを表示</string>
+  <string name="pref_title_lockscreen_albumart_summary">LockscreenとAndroid Autoにアルバムアートを表示します</string>
   <string name="pref_header_color">色</string>
+  <string name="pref_title_color_now_playing">アルバムアートに基づいた色付け</string>
+  <string name="pref_title_color_navbar">ナビゲーションバーにテーマを適用</string>
   <string name="pref_header_advanced">高度な</string>
+  <string name="pref_title_advanced_clear_image_cache">画像のキャッシュをクリア</string>
 </resources>

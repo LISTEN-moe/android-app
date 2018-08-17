@@ -4,7 +4,7 @@
   <!-- Setting for downloading stuff -->
   <string-array name="pref_download_names">
     <item>Selalu</item>
-    <item>Hanya dengan Wi-Fi</item>
+    <item>Hanya pada Wi-Fi</item>
     <item>Tidak pernah</item>
   </string-array>
 </resources>
