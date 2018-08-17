@@ -203,14 +203,21 @@ public class MainActivity extends BaseActivity {
         binding.nowPlaying.content.radioControls.historyBtn.setOnClickListener(v -> showHistory());
         binding.nowPlaying.content.radioControls.favoriteBtn.setOnClickListener(v -> favorite());
 
-
+        // Press song info to show history
         LinearLayout vCurrentSong = binding.nowPlaying.content.radioSongs.currentSong;
-        vCurrentSong.setOnClickListener(v -> showHistory());
+        vCurrentSong.setOnClickListener(v -> {
+            if (viewModel.getCurrentSong() != null) {
+                showHistory();
+            }
+        });
+
+        // Long press song info to copy to clipboard
         vCurrentSong.setOnLongClickListener(v -> {
             SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
             return true;
         });
 
+        // Long press album art to open in browser
         binding.nowPlaying.content.radioAlbumArt.getRoot().setOnLongClickListener(v -> {
             Song currentSong = viewModel.getCurrentSong();
             if (currentSong == null) {
