@@ -7,14 +7,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.graphics.Palette;
 import android.util.DisplayMetrics;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.SimpleTarget;
-import com.bumptech.glide.request.transition.Transition;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,11 +118,17 @@ public final class AlbumArtUtil {
                     .load(url)
                     .thumbnail(0.5f)
                     .apply(new RequestOptions()
+                            .override(MAX_SCREEN_SIZE, MAX_SCREEN_SIZE)
                             .centerCrop()
                             .dontAnimate())
-                    .into(new SimpleTarget<Bitmap>(MAX_SCREEN_SIZE, MAX_SCREEN_SIZE) {
+                    .listener(new RequestListener<Bitmap>() {
                         @Override
-                        public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(Bitmap resource, Object model, Target<Bitmap> target, DataSource dataSource, boolean isFirstResource) {
                             isDefaultAlbumArt = false;
 
                             try {
@@ -134,12 +142,17 @@ public final class AlbumArtUtil {
                                 }
                             } catch (Exception e) {
                                 // Ignore things like OutOfMemoryExceptions
+                                e.printStackTrace();
+
                                 setDefaultColors();
                             }
 
                             updateListeners(resource);
+
+                            return true;
                         }
-                    });
+                    })
+                    .submit();
         });
     }
 
