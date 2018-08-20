@@ -68,7 +68,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/last_played"
                 android:padding="8dp"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_history_white_24dp"
                 android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:visibility="@{vm.currentSong != null}" />
@@ -79,7 +79,7 @@
                 android:layout_height="@dimen/fab_size"
                 android:layout_margin="16dp"
                 android:contentDescription="@string/play_pause"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@drawable/ic_play_arrow_white_24dp" />
 
             <ImageButton
@@ -90,7 +90,7 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/favorite"
                 android:padding="8dp"
-                android:scaleType="fitXY"
+                android:scaleType="fitCenter"
                 android:src="@{vm.isFavorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}"
                 android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:visibility="@{vm.currentSong != null}" />
