@@ -114,7 +114,10 @@ public final class AlbumArtUtil {
             Glide.with(context.getApplicationContext())
                     .asBitmap()
                     .load(url)
-                    .apply(new RequestOptions().centerCrop())
+                    .thumbnail(0.5f)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .dontAnimate())
                     .into(new SimpleTarget<Bitmap>(MAX_SCREEN_SIZE, MAX_SCREEN_SIZE) {
                         @Override
                         public void onResourceReady(@NonNull Bitmap resource, Transition<? super Bitmap> transition) {

@@ -21,10 +21,12 @@ public class ImageUtil {
 
         Glide.with(v.getContext())
                 .load(bitmap)
+                .thumbnail(0.5f)
                 .apply(new RequestOptions()
                         .placeholder(v.getDrawable())
                         .override(v.getWidth(), v.getHeight())
-                        .centerCrop())
+                        .centerCrop()
+                        .dontAnimate())
                 .into(v);
     }
 
@@ -37,10 +39,12 @@ public class ImageUtil {
 
         Glide.with(v.getContext())
                 .load(url)
+                .thumbnail(0.5f)
                 .apply(new RequestOptions()
                         .placeholder(v.getDrawable())
                         .override(v.getWidth(), v.getHeight())
-                        .centerCrop())
+                        .centerCrop()
+                        .dontAnimate())
                 .into(v);
     }
 
