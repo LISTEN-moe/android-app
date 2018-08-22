@@ -4,12 +4,14 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
+import android.support.annotation.ColorInt;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.util.ImageUtil;
+import me.echeung.moemoekyun.util.ViewUtil;
 
 public abstract class BaseViewModel extends BaseObservable {
 
@@ -71,6 +73,11 @@ public abstract class BaseViewModel extends BaseObservable {
     @BindingAdapter("android:imageUrl")
     public static void loadImage(ImageView v, String url) {
         ImageUtil.loadImage(v, url);
+    }
+
+    @BindingAdapter("android:transitionBackgroundColor")
+    public static void transitionBackgroundColor(View v, @ColorInt int toColor) {
+        ViewUtil.transitionBackgroundColor(v, toColor);
     }
 
 }

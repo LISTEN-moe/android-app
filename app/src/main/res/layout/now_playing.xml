@@ -21,7 +21,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@{vm.getBackgroundColor(context, vm.albumArt)}">
+            android:transitionBackgroundColor="@{vm.getBackgroundColor(context, vm.albumArt)}">
 
             <FrameLayout
                 android:layout_width="match_parent"
