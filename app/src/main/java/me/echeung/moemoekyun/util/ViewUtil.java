@@ -8,7 +8,7 @@ import android.view.animation.LinearInterpolator;
 
 public class ViewUtil {
 
-    private static final long BACKGROUND_COLOR_TRANSITION_DURATION = 500L;
+    protected static final int TRANSITION_DURATION = 250;
 
     public static void transitionBackgroundColor(View view, @ColorInt int toColor) {
         if (view.getBackground() == null) {
@@ -19,7 +19,7 @@ public class ViewUtil {
         int fromColor = ((ColorDrawable) view.getBackground()).getColor();
 
         ValueAnimator valueAnimator = ValueAnimator.ofArgb(fromColor, toColor);
-        valueAnimator.setDuration(BACKGROUND_COLOR_TRANSITION_DURATION);
+        valueAnimator.setDuration(TRANSITION_DURATION);
         valueAnimator.setInterpolator(new LinearInterpolator());
         valueAnimator.addUpdateListener(animator -> view.setBackgroundColor((Integer) animator.getAnimatedValue()));
         valueAnimator.start();

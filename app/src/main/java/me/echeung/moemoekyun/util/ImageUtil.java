@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
 import me.echeung.moemoekyun.App;
@@ -21,7 +22,7 @@ public class ImageUtil {
 
         Glide.with(v.getContext())
                 .load(bitmap)
-                .thumbnail(0.5f)
+                .transition(DrawableTransitionOptions.withCrossFade(ViewUtil.TRANSITION_DURATION))
                 .apply(new RequestOptions()
                         .placeholder(v.getDrawable())
                         .override(v.getWidth(), v.getHeight())
@@ -39,7 +40,7 @@ public class ImageUtil {
 
         Glide.with(v.getContext())
                 .load(url)
-                .thumbnail(0.5f)
+                .transition(DrawableTransitionOptions.withCrossFade(ViewUtil.TRANSITION_DURATION))
                 .apply(new RequestOptions()
                         .placeholder(v.getDrawable())
                         .override(v.getWidth(), v.getHeight())

@@ -116,7 +116,6 @@ public final class AlbumArtUtil {
             Glide.with(context.getApplicationContext())
                     .asBitmap()
                     .load(url)
-                    .thumbnail(0.5f)
                     .apply(new RequestOptions()
                             .override(MAX_SCREEN_SIZE, MAX_SCREEN_SIZE)
                             .centerCrop()
