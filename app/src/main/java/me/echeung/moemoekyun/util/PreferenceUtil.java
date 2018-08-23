@@ -3,7 +3,7 @@ package me.echeung.moemoekyun.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.client.api.library.Jpop;

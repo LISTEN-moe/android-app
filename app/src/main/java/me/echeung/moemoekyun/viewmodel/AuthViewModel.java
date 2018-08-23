@@ -1,8 +1,8 @@
 package me.echeung.moemoekyun.viewmodel;
 
-import android.databinding.Bindable;
+import androidx.databinding.Bindable;
 
-import com.android.databinding.library.baseAdapters.BR;
+import androidx.databinding.library.baseAdapters.BR;
 
 public class AuthViewModel extends BaseViewModel {
 

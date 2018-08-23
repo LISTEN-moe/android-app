@@ -7,11 +7,11 @@
         <variable name="vm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/top_horizontal_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,14 +29,14 @@
             app:layout_constraintTop_toBottomOf="@+id/top_horizontal_guideline"
             binding:vm="@{vm}" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/bottom_horizontal_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.85" />
 
-        <android.support.constraint.Guideline
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/middle_vertical_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,6 +67,6 @@
             app:layout_constraintStart_toStartOf="@+id/middle_vertical_guideline"
             binding:vm="@{vm}" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

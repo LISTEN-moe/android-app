@@ -1,9 +1,9 @@
 package me.echeung.moemoekyun.viewmodel;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
 
-import com.android.databinding.library.baseAdapters.BR;
+import androidx.databinding.library.baseAdapters.BR;
 
 public class SongListViewModel extends BaseObservable {
 

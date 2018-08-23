@@ -7,8 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.media.app.NotificationCompat.MediaStyle;
+import androidx.core.app.NotificationCompat;
 
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
@@ -54,7 +53,7 @@ public class AppNotification {
         PendingIntent clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent deleteIntent = getPlaybackActionService(RadioService.STOP);
 
-        MediaStyle style = new MediaStyle().setMediaSession(service.getMediaSession().getSessionToken());
+        androidx.media.app.NotificationCompat.MediaStyle style = new androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(service.getMediaSession().getSessionToken());
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_icon)

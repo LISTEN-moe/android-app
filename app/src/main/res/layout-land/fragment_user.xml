@@ -30,7 +30,7 @@
 
         </FrameLayout>
 
-        <android.support.v4.widget.SwipeRefreshLayout
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/user_favorites_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
@@ -40,7 +40,7 @@
                 layout="@layout/user_favorites"
                 binding:userVm="@{userVm}" />
 
-        </android.support.v4.widget.SwipeRefreshLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     </LinearLayout>
 

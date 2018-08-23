@@ -2,9 +2,9 @@ package me.echeung.moemoekyun.viewmodel;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.databinding.Bindable;
+import androidx.databinding.Bindable;
 import android.graphics.Bitmap;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
