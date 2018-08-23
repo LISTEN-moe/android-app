@@ -1,11 +1,8 @@
 package me.echeung.moemoekyun.adapter;
 
 import android.app.Activity;
-import android.databinding.DataBindingUtil;
-import android.support.annotation.NonNull;
-import android.support.v7.recyclerview.extensions.ListAdapter;
-import android.support.v7.util.DiffUtil;
-import android.support.v7.widget.RecyclerView;
+import androidx.databinding.DataBindingUtil;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.client.model.Song;
 import me.echeung.moemoekyun.databinding.SongItemBinding;

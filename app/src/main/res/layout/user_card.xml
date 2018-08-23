@@ -8,7 +8,7 @@
         <variable name="userVm" type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
     </data>
 
-    <android.support.v7.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/dark_grey"
@@ -46,7 +46,7 @@
                 android:padding="8dp">
 
                 <!-- Avatar -->
-                <android.support.v7.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:layout_width="@dimen/avatar_size"
                     android:layout_height="@dimen/avatar_size"
                     android:layout_gravity="center"
@@ -63,7 +63,7 @@
                         android:src="?attr/themeDefaultAvatarImage"
                         tools:ignore="ContentDescription" />
 
-                </android.support.v7.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
                 <!-- User info -->
                 <LinearLayout
@@ -108,6 +108,6 @@
 
         </FrameLayout>
 
-    </android.support.v7.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </layout>

@@ -7,8 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.annotation.Nullable;
-import android.support.v7.graphics.Palette;
+import androidx.annotation.Nullable;
 import android.util.DisplayMetrics;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +20,7 @@ import com.bumptech.glide.request.target.Target;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.palette.graphics.Palette;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.client.model.Song;

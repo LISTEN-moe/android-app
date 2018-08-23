@@ -1,16 +1,16 @@
 package me.echeung.moemoekyun.ui.view;
 
 import android.app.Activity;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.PopupMenu;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 
 import java.lang.ref.WeakReference;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapter.SongsAdapter;
 import me.echeung.moemoekyun.client.model.Song;

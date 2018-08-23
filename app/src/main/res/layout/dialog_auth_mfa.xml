@@ -9,12 +9,12 @@
     android:paddingRight="20dp"
     android:paddingTop="8dp">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColorHint="@color/light_grey">
 
-        <android.support.design.widget.TextInputEditText
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/mfa_otp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,6 +23,6 @@
             android:singleLine="true"
             tools:ignore="LabelFor" />
 
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

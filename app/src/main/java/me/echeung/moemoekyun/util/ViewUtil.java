@@ -2,7 +2,7 @@ package me.echeung.moemoekyun.util;
 
 import android.animation.ValueAnimator;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
