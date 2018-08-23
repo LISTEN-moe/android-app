@@ -194,8 +194,11 @@ public class MainActivity extends BaseActivity {
             nowPlayingSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
         });
 
-        // Collapse button
+        // Collapse button / when toolbar is tapped
         binding.nowPlaying.collapseBtn.setOnClickListener(v -> {
+            nowPlayingSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        });
+        binding.nowPlaying.toolbar.setOnClickListener(v -> {
             nowPlayingSheet.setState(BottomSheetBehavior.STATE_COLLAPSED);
         });
 
