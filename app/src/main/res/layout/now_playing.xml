@@ -33,12 +33,11 @@
                     android:layout_width="@dimen/now_playing_drag_bar_size"
                     android:layout_height="@dimen/now_playing_drag_bar_size"
                     android:layout_gravity="center_vertical"
-                    android:alpha="0.5"
                     android:background="?selectableItemBackgroundBorderless"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_down_arrow_white_24dp"
-                    android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
+                    android:tint="@color/white"
                     tools:ignore="ContentDescription" />
 
             </android.support.v7.widget.Toolbar>
