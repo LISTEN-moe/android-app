@@ -49,6 +49,7 @@ public class MainActivity extends BaseActivity {
 
     private ViewPager viewPager;
     private BottomSheetBehavior nowPlayingSheet;
+    private Menu nowPlayingSheetMenu;
 
     private Observable.OnPropertyChangedCallback playPauseCallback;
     private PlayPauseView playPauseView;
@@ -166,10 +167,7 @@ public class MainActivity extends BaseActivity {
     private void initNowPlaying() {
         nowPlayingSheet = BottomSheetBehavior.from(binding.nowPlaying.nowPlayingSheet);
 
-        // Menu
-        Toolbar toolbar = binding.nowPlaying.toolbar;
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+        initNowPlayingMenu();
 
         // Restore previous expanded state
         if (App.getPreferenceUtil().isNowPlayingExpanded()) {
@@ -239,10 +237,31 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+    private void initNowPlayingMenu() {
+        Toolbar toolbar = binding.nowPlaying.toolbar;
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setOnMenuItemClickListener(this::onOptionsItemSelected);
+
+        nowPlayingSheetMenu = toolbar.getMenu();
+        updateMenuOptions(nowPlayingSheetMenu);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        updateMenuOptions(menu);
+
+        return true;
+    }
+
+    @Override
+    public void invalidateOptionsMenu() {
+        super.invalidateOptionsMenu();
+        updateMenuOptions(nowPlayingSheetMenu);
+    }
+
+    private void updateMenuOptions(Menu menu) {
         // Toggle visibility of logout option based on authentication status
         menu.findItem(R.id.action_logout).setVisible(App.getAuthUtil().isAuthenticated());
 
@@ -256,8 +275,6 @@ public class MainActivity extends BaseActivity {
                 menu.findItem(R.id.action_library_kpop).setChecked(true);
                 break;
         }
-
-        return true;
     }
 
     @Override
@@ -410,6 +427,7 @@ public class MainActivity extends BaseActivity {
     private void setLibraryMode(String libraryMode) {
         App.getPreferenceUtil().setLibraryMode(libraryMode);
         broadcastAuthEvent();
+        invalidateOptionsMenu();
     }
 
 }
