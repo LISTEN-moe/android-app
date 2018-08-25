@@ -99,7 +99,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_gravity="center"
             android:alpha="0.5"
             android:orientation="horizontal"
@@ -138,8 +138,8 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:src="@{vm.event != null ? @drawable/ic_event_white_24dp : @drawable/ic_person_add_white_24dp}"
-                android:visibility="@{vm.event != null || vm.requester != null}"
                 android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:visibility="@{vm.event != null || vm.requester != null}"
                 tools:ignore="ContentDescription" />
 
             <TextView
