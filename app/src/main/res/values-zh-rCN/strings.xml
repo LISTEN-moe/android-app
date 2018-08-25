@@ -57,7 +57,7 @@
   <string name="no_favorites">还没有喜爱的歌曲</string>
   <string name="filter_favorites">过滤喜爱的歌曲</string>
   <!-- e.g. Unfavorited <Song Title> -->
-  <string name="unfavorited">取消了喜爱 %d</string>
+  <string name="unfavorited">取消了喜爱 %s</string>
   <!-- e.g. 2 in queue, 10 before yours -->
   <string name="queue_info">%d 在队列中，在您的歌曲前有 %d</string>
   <string name="random_request">请求随机歌曲</string>
