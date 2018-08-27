@@ -183,6 +183,7 @@ public class Stream {
             player.removeListener(eventListener);
             player.release();
             player = null;
+            currentStreamUrl = null;
         }
     }
 
