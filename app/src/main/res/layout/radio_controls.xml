@@ -122,20 +122,11 @@
                 android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:textSize="14sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="8dp"
-                android:text="@string/separator"
-                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
-                android:textSize="14sp"
-                android:visibility="@{vm.event != null || vm.requester != null}" />
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:src="@{vm.event != null ? @drawable/ic_event_white_24dp : @drawable/ic_person_add_white_24dp}"
                 android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
