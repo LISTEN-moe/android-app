@@ -95,7 +95,8 @@
                     android:fontFamily="sans-serif-light"
                     android:singleLine="true"
                     android:text="@{vm.currentSong.artistsString}"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
