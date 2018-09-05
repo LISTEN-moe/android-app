@@ -74,8 +74,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     private Stream stream;
     private Socket socket;
 
-    private Calendar trackStartTime;
-
     private MediaSessionCompat mediaSession;
 
     private AudioManager audioManager;
@@ -205,15 +203,16 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             viewModel.setQueuePosition(info.getQueue().getInQueueBeforeUser());
         }
 
-        viewModel.setCurrentSong(info.getSong());
-        viewModel.setLastSong(info.getLastPlayed().get(0));
-        viewModel.setSecondLastSong(info.getLastPlayed().get(1));
-
+        Calendar startTime = null;
         try {
-            this.trackStartTime = TimeUtil.toCalendar(info.getStartTime());
+            startTime = TimeUtil.toCalendar(info.getStartTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        viewModel.setCurrentSong(info.getSong(), startTime);
+        viewModel.setLastSong(info.getLastPlayed().get(0));
+        viewModel.setSecondLastSong(info.getLastPlayed().get(1));
 
         updateMediaSession();
         updateNotification();
@@ -264,7 +263,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 .setState(isStreamStarted()
                                 ? isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED
                                 : PlaybackStateCompat.STATE_STOPPED,
-                        getSongProgress(), 1);
+                        App.getRadioViewModel().getCurrentSongProgress(), 1);
 
         // Favorite action
         if (App.getAuthUtil().isAuthenticated()) {
@@ -613,7 +612,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         if (song == null || !App.getPreferenceUtil().shouldBroadcastIntent()) return;
 
         // Scrobbling only works if there's actually progress
-        if (getSongProgress() != 0) return;
+        if (App.getRadioViewModel().getCurrentSongProgress() != 0) return;
 
         Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
 
@@ -624,22 +623,13 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         intent.putExtra("track", song.getTitleString());
 
         intent.putExtra("duration", song.getDuration() * MILLISECONDS_IN_SECOND);
-        intent.putExtra("position", getSongProgress());
+        intent.putExtra("position", App.getRadioViewModel().getCurrentSongProgress());
 
         intent.putExtra("playing", isPlaying());
 
         intent.putExtra("scrobbling_source", APP_PACKAGE_NAME);
 
         sendStickyBroadcast(intent);
-    }
-
-    private long getSongProgress() {
-        Song currentSong = App.getRadioViewModel().getCurrentSong();
-        if (trackStartTime == null || currentSong == null || currentSong.getDuration() == 0) {
-            return 0;
-        }
-
-        return System.currentTimeMillis() - trackStartTime.getTimeInMillis();
     }
 
     @Override

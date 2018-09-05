@@ -4,8 +4,10 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
+import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -78,6 +80,12 @@ public abstract class BaseViewModel extends BaseObservable {
     @BindingAdapter("android:transitionBackgroundColor")
     public static void transitionBackgroundColor(View v, @ColorInt int toColor) {
         ViewUtil.transitionBackgroundColor(v, toColor);
+    }
+
+    @BindingAdapter("android:chronometerProgress")
+    public static void setChronometerProgress(Chronometer v, long progress) {
+        v.setBase(SystemClock.elapsedRealtime() - progress);
+        v.start();
     }
 
 }

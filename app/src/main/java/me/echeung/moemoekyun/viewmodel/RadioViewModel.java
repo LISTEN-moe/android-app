@@ -8,6 +8,7 @@ import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import me.echeung.moemoekyun.App;
@@ -22,6 +23,7 @@ import me.echeung.moemoekyun.util.system.ThemeUtil;
 public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private Song currentSong;
+    private Calendar currentSongStart;
 
     private boolean isPlaying = false;
     private int listeners;
@@ -43,7 +45,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     }
 
     public void reset() {
-        setCurrentSong(null);
+        setCurrentSong(null, null);
 
         setListeners(0);
         setRequester(null);
@@ -66,14 +68,25 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
         return currentSong;
     }
 
-    public void setCurrentSong(Song currentSong) {
+    @Bindable
+    public long getCurrentSongProgress() {
+        if (currentSongStart == null || currentSong == null || currentSong.getDuration() == 0) {
+            return 0;
+        }
+
+        return System.currentTimeMillis() - currentSongStart.getTimeInMillis();
+    }
+
+    public void setCurrentSong(Song currentSong, Calendar startTime) {
         this.currentSong = currentSong;
+        this.currentSongStart = startTime;
 
         setIsFavorited(currentSong != null && currentSong.isFavorite());
 
         AlbumArtUtil.updateAlbumArt(App.getContext(), currentSong);
 
         notifyPropertyChanged(BR.currentSong);
+        notifyPropertyChanged(BR.currentSongProgress);
     }
 
     @Bindable
