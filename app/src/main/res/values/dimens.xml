@@ -6,7 +6,6 @@
     <dimen name="fab_size">56dp</dimen>
     <dimen name="small_fab_size">48dp</dimen>
 
-    <dimen name="avatar_container_size">100dp</dimen>
     <dimen name="avatar_size">96dp</dimen>
 
     <dimen name="md_listitem_height">24dp</dimen>
