@@ -34,6 +34,7 @@
                 android:backgroundTint="@color/light_grey"
                 android:hint="@{searchHint}"
                 android:importantForAutofill="no"
+                android:inputType="text"
                 android:paddingEnd="80dp"
                 android:paddingStart="16dp"
                 android:singleLine="true"

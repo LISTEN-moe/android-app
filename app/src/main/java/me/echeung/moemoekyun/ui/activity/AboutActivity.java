@@ -40,6 +40,7 @@ public class AboutActivity extends BaseActivity implements View.OnClickListener 
             TextView txtVersion = findViewById(R.id.app_version);
             txtVersion.setText(versionText);
         } catch (PackageManager.NameNotFoundException e) {
+            // Ignore
         }
 
         // Hide Play Store item depending on build flavor

@@ -54,6 +54,7 @@ public class SongsAdapter extends ListAdapter<Song, RecyclerView.ViewHolder> {
     }
 
     @Override
+    @NonNull
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         SongItemBinding binding = DataBindingUtil.inflate(layoutInflater, R.layout.song_item, parent, false);
