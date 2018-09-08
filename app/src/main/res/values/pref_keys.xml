@@ -4,7 +4,6 @@
     <string name="pref_key_general_theme">pref_general_theme</string>
     <string name="pref_key_general_language">pref_general_language</string>
     <string name="pref_key_general_download">pref_general_download</string>
-    <string name="pref_key_general_broadcast_intent">pref_general_broadcast_intent</string>
     <string name="pref_key_general_romaji">pref_general_romaji</string>
     <string name="pref_key_general_random_request_title">pref_general_random_request_title</string>
 

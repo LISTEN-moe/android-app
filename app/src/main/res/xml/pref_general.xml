@@ -26,12 +26,6 @@
             android:defaultValue="@string/pref_value_download_always" />
 
         <android.support.v7.preference.SwitchPreferenceCompat
-            android:key="@string/pref_key_general_broadcast_intent"
-            android:title="@string/pref_title_general_broadcast_intent"
-            android:summary="@string/pref_title_general_broadcast_intent_summary"
-            android:defaultValue="false" />
-
-        <android.support.v7.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_general_romaji"
             android:title="@string/pref_title_general_romaji"
             android:summary="@string/pref_title_general_romaji_summary"

@@ -58,10 +58,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     public static final String UPDATE = APP_PACKAGE_NAME + ".update";
     public static final String TIMER_STOP = APP_PACKAGE_NAME + ".timer_stop";
 
-    private static final String MUSIC_PACKAGE_NAME = "com.android.music";
-    public static final String META_CHANGED = APP_PACKAGE_NAME + ".metachanged";
-    public static final String PLAY_STATE_CHANGED = APP_PACKAGE_NAME + ".playstatechanged";
-
     private static final long MEDIA_SESSION_ACTIONS = PlaybackStateCompat.ACTION_PLAY
             | PlaybackStateCompat.ACTION_PAUSE
             | PlaybackStateCompat.ACTION_PLAY_PAUSE
@@ -108,8 +104,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
                 updateNotification();
                 updateMediaSessionPlaybackState();
-
-                sendPublicIntent(PLAY_STATE_CHANGED);
             }
 
             @Override
@@ -118,8 +112,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
                 updateNotification();
                 updateMediaSessionPlaybackState();
-
-                sendPublicIntent(PLAY_STATE_CHANGED);
             }
 
             @Override
@@ -133,8 +125,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 App.getRadioViewModel().setIsPlaying(false);
 
                 updateMediaSessionPlaybackState();
-
-                sendPublicIntent(PLAY_STATE_CHANGED);
             }
         });
 
@@ -216,8 +206,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
         updateMediaSession();
         updateNotification();
-
-        sendPublicIntent(RadioService.META_CHANGED);
     }
 
     @Override
@@ -599,37 +587,6 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
     private void showLoginRequiredToast() {
         Toast.makeText(getApplicationContext(), R.string.login_required, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Sends an intent out for services like Last.fm.
-     *
-     * @param action The broadcast event.
-     */
-    @SuppressWarnings("deprecation")
-    public void sendPublicIntent(String action) {
-        Song song = App.getRadioViewModel().getCurrentSong();
-        if (song == null || !App.getPreferenceUtil().shouldBroadcastIntent()) return;
-
-        // Scrobbling only works if there's actually progress
-        if (App.getRadioViewModel().getCurrentSongProgress() != 0) return;
-
-        Intent intent = new Intent(action.replace(APP_PACKAGE_NAME, MUSIC_PACKAGE_NAME));
-
-        intent.putExtra("id", song.getId());
-
-        intent.putExtra("artist", song.getAlbumsString());
-        intent.putExtra("album", song.getAlbumsString());
-        intent.putExtra("track", song.getTitleString());
-
-        intent.putExtra("duration", song.getDuration() * MILLISECONDS_IN_SECOND);
-        intent.putExtra("position", App.getRadioViewModel().getCurrentSongProgress());
-
-        intent.putExtra("playing", isPlaying());
-
-        intent.putExtra("scrobbling_source", APP_PACKAGE_NAME);
-
-        sendStickyBroadcast(intent);
     }
 
     @Override

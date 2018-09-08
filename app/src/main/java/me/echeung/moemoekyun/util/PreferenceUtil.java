@@ -15,7 +15,6 @@ public final class PreferenceUtil {
     public static final String PREF_GENERAL_THEME = "pref_general_theme";
     public static final String PREF_GENERAL_LANGUAGE = "pref_general_language";
     public static final String PREF_GENERAL_DOWNLOAD = "pref_general_download";
-    public static final String PREF_GENERAL_BROADCAST_INTENT = "pref_general_broadcast_intent";
     public static final String PREF_GENERAL_ROMAJI = "pref_general_romaji";
     public static final String PREF_GENERAL_RANDOM_REQUEST_TITLE = "pref_general_random_request_title";
 
@@ -71,10 +70,6 @@ public final class PreferenceUtil {
         String pref = preferences.getString(PREF_GENERAL_DOWNLOAD, DOWNLOAD_ALWAYS);
         return pref.equals(DOWNLOAD_ALWAYS)
                 || pref.equals(DOWNLOAD_WIFI) && NetworkUtil.isWifi(context);
-    }
-
-    public boolean shouldBroadcastIntent() {
-        return preferences.getBoolean(PREF_GENERAL_BROADCAST_INTENT, false);
     }
 
     public boolean shouldPreferRomaji() {
