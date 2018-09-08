@@ -43,7 +43,9 @@ public class Socket extends WebSocketListener {
     private final OkHttpClient client;
     private final AuthUtil authUtil;
 
-    private WebSocket socket;
+    private volatile WebSocket socket;
+    private final Object socketLock = new Object();
+
     @Setter
     private Listener listener;
 
@@ -51,25 +53,29 @@ public class Socket extends WebSocketListener {
     private Runnable heartbeatTask;
 
     public void connect() {
-        Log.d(TAG, "Connecting to socket...");
+        synchronized (socketLock) {
+            Log.d(TAG, "Connecting to socket...");
 
-        if (socket != null) {
-            disconnect();
+            if (socket != null) {
+                disconnect();
+            }
+
+            final Request request = new Request.Builder().url(RadioClient.getLibrary().getSocketUrl()).build();
+            socket = client.newWebSocket(request, this);
         }
-
-        final Request request = new Request.Builder().url(RadioClient.getLibrary().getSocketUrl()).build();
-        socket = client.newWebSocket(request, this);
     }
 
     public void disconnect() {
-        clearHeartbeat();
+        synchronized (socketLock) {
+            clearHeartbeat();
 
-        if (socket != null) {
-            socket.cancel();
-            socket = null;
+            if (socket != null) {
+                socket.cancel();
+                socket = null;
+            }
+
+            Log.d(TAG, "Disconnected from socket");
         }
-
-        Log.d(TAG, "Disconnected from socket");
     }
 
     public void reconnect() {
@@ -91,14 +97,16 @@ public class Socket extends WebSocketListener {
     }
 
     public void update() {
-        Log.d(TAG, "Requesting update from socket");
+        synchronized (socketLock) {
+            Log.d(TAG, "Requesting update from socket");
 
-        if (socket == null) {
-            connect();
-            return;
+            if (socket == null) {
+                connect();
+                return;
+            }
+
+            socket.send("{ \"op\": 2 }");
         }
-
-        socket.send("{ \"op\": 2 }");
     }
 
     @Override
@@ -138,13 +146,15 @@ public class Socket extends WebSocketListener {
         heartbeatTask = new Runnable() {
             @Override
             public void run() {
-                if (socket == null) return;
+                synchronized (socketLock) {
+                    if (socket == null) return;
 
-                Log.d(TAG, "Sending heartbeat to socket");
-                socket.send("{ \"op\": 9 }");
+                    Log.d(TAG, "Sending heartbeat to socket");
+                    socket.send("{ \"op\": 9 }");
 
-                // Repeat
-                heartbeatHandler.postDelayed(this, milliseconds);
+                    // Repeat
+                    heartbeatHandler.postDelayed(this, milliseconds);
+                }
             }
         };
 
