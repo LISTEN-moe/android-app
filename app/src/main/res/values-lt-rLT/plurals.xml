@@ -8,13 +8,6 @@
     <item quantity="many">Liko %d prašymų</item>
     <item quantity="other">Liko %d prašymų</item>
   </plurals>
-  <!-- e.g. 420 listeners -->
-  <plurals name="current_listeners">
-    <item quantity="one">1 klausytojas</item>
-    <item quantity="few">%d klausytojų</item>
-    <item quantity="many">%d klausytojų</item>
-    <item quantity="other">%d klausytojų</item>
-  </plurals>
   <!-- Timer -->
   <plurals name="minutes">
     <item quantity="one">1 minutė</item>

@@ -93,7 +93,6 @@
   <string name="licenses">Licenses</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Open in browser</string>
-  <string name="play_history">Song history</string>
   <string name="discord">Join us on Discord</string>
   <string name="patreon">Get Requests / Support us</string>
   <string name="privacy_policy">Privacy policy</string>
@@ -105,8 +104,6 @@
   <string name="system_default">System default</string>
   <string name="restart_required">Changes will be applied after the app is restarted</string>
   <string name="pref_title_general_download">Auto-download images</string>
-  <string name="pref_title_general_broadcast_intent">Broadcast song updates</string>
-  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling support</string>
   <string name="pref_title_general_romaji">Prefer romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" instead of \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Show randomly requested song title</string>

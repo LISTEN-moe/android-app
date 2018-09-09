@@ -91,7 +91,6 @@
   <string name="licenses">Licenser</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Öppna i webbläsare</string>
-  <string name="play_history">Låt historia</string>
   <string name="discord">Joina oss på Discord</string>
   <string name="privacy_policy">Sekretesspolicy</string>
   <!-- == Settings == -->
@@ -102,8 +101,6 @@
   <string name="system_default">Systemstandard</string>
   <string name="restart_required">Ändringar kommer att tillämpas när appen startas om</string>
   <string name="pref_title_general_download">Automatiskt hämta bilder</string>
-  <string name="pref_title_general_broadcast_intent">Dela låt uppdateringar</string>
-  <string name="pref_title_general_broadcast_intent_summary">Support för Last.fm skrobbling</string>
   <string name="pref_title_general_romaji">Föredra romaji</string>
   <string name="pref_title_general_romaji_summary">”Nanahira” istället för ”ななひら”</string>
   <string name="pref_title_general_random_request_title">Visa slumpmässigt önskade låttitel</string>

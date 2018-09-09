@@ -8,13 +8,6 @@
     <item quantity="many">%d запросов осталось</item>
     <item quantity="other">%d запросов осталось</item>
   </plurals>
-  <!-- e.g. 420 listeners -->
-  <plurals name="current_listeners">
-    <item quantity="one">1 слушатель</item>
-    <item quantity="few">%d слушателя</item>
-    <item quantity="many">%d слушателей</item>
-    <item quantity="other">%d слушателей</item>
-  </plurals>
   <!-- Timer -->
   <plurals name="minutes">
     <item quantity="one">1 минута</item>

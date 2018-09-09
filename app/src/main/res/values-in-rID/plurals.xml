@@ -5,10 +5,6 @@
   <plurals name="user_requests">
     <item quantity="other">%d permintaan tersisa</item>
   </plurals>
-  <!-- e.g. 420 listeners -->
-  <plurals name="current_listeners">
-    <item quantity="other">%d pendengar</item>
-  </plurals>
   <!-- Timer -->
   <plurals name="minutes">
     <item quantity="other">%d menit</item>

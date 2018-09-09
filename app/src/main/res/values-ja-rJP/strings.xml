@@ -14,6 +14,7 @@
   <string name="action_request">リクエスト</string>
   <string name="action_undo">アンドゥ</string>
   <!-- == Radio stations == -->
+  <string name="action_library">ステーション</string>
   <string name="jpop">J-POP</string>
   <string name="kpop">K-POP</string>
   <!-- == Sleep timer == -->
@@ -91,7 +92,6 @@
   <string name="licenses">ライセンス</string>
   <string name="listenmoe">LISTEN.moe ラジオ</string>
   <string name="open_in_browser">ブラウザで開く</string>
-  <string name="play_history">歌歴</string>
   <string name="discord">Discord に参加する</string>
   <string name="patreon">リクエストを取得 / 私たちをサポート</string>
   <string name="privacy_policy">プライバシー ポリシー</string>
@@ -103,12 +103,12 @@
   <string name="system_default">システムのデフォルト</string>
   <string name="restart_required">変更はアプリの再起動後に適用されます</string>
   <string name="pref_title_general_download">画像の自動ダウンロード</string>
-  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling サポート</string>
   <string name="pref_title_general_romaji">ローマ字を使う</string>
   <string name="pref_title_general_romaji_summary">「ななひら」ではなく「Nanahira」</string>
   <string name="pref_title_general_random_request_title">ランダムにリクエストされた曲のタイトルを表示する</string>
   <string name="pref_header_audio">オーディオ</string>
   <string name="pref_title_pause_on_noisy">ヘッドフォンを外すと一時停止</string>
+  <string name="pref_title_audio_duck">フォーカスが一時的に失われたときに音量を下げる</string>
   <string name="pref_title_audio_duck_summary">通知、ナビゲーションなど</string>
   <string name="pref_title_audio_pause_on_loss">フォーカスが外れたら一時停止</string>
   <string name="pref_title_audio_pause_on_loss_summary">ビデオや他の音楽の再生時など</string>

@@ -88,7 +88,6 @@
   <string name="licenses">Лицензия</string>
   <string name="listenmoe">Радио LISTEN.moe</string>
   <string name="open_in_browser">Открыть в браузере</string>
-  <string name="play_history">История песен</string>
   <string name="discord">Присоединиться к нам в Discord</string>
   <string name="privacy_policy">Политика конфиденциальности</string>
   <!-- == Settings == -->
@@ -99,8 +98,6 @@
   <string name="system_default">Язык системы</string>
   <string name="restart_required">Изменения будут применены после перезапуска приложения</string>
   <string name="pref_title_general_download">Скачивать изображения автоматически</string>
-  <string name="pref_title_general_broadcast_intent">Воспроизводить обновления песни</string>
-  <string name="pref_title_general_broadcast_intent_summary">Поддержка скробблинга Last.fm</string>
   <string name="pref_title_general_romaji">Предпочитать ромадзи</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" вместо \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Показать название запрошенной случайно песни</string>

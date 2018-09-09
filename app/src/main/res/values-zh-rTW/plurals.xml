@@ -5,10 +5,6 @@
   <plurals name="user_requests">
     <item quantity="other">點播歌曲剩餘 %d 首</item>
   </plurals>
-  <!-- e.g. 420 listeners -->
-  <plurals name="current_listeners">
-    <item quantity="other">%d 位聆聽者</item>
-  </plurals>
   <!-- Timer -->
   <plurals name="minutes">
     <item quantity="other">%d 分鐘</item>

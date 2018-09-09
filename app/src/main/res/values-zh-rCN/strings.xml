@@ -89,7 +89,6 @@
   <string name="licenses">开源许可证</string>
   <string name="listenmoe">LISTEN.moe 电台</string>
   <string name="open_in_browser">在浏览器中打开</string>
-  <string name="play_history">播放历史</string>
   <string name="discord">在 Discord 上加入我们</string>
   <string name="privacy_policy">隐私政策</string>
   <!-- == Settings == -->
@@ -100,8 +99,6 @@
   <string name="system_default">系统默认</string>
   <string name="restart_required">更改将在应用重启后生效</string>
   <string name="pref_title_general_download">自动下载专辑封面</string>
-  <string name="pref_title_general_broadcast_intent">广播歌曲更新</string>
-  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling 支持</string>
   <string name="pref_title_general_romaji">偏好罗马音</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" 而不是 \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">显示随机请求的歌曲名</string>

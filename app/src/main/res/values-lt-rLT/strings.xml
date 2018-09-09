@@ -89,7 +89,6 @@
   <string name="licenses">Licenzijos</string>
   <string name="listenmoe">LISTEN.moe radijas</string>
   <string name="open_in_browser">Atidaryti naršyklėje</string>
-  <string name="play_history">Dainų istorija</string>
   <string name="discord">Prisijunkite prie mūsų Discord\'e</string>
   <string name="patreon">Gauti prašymų / Paremti mus</string>
   <string name="privacy_policy">Privatumo politika</string>
@@ -101,8 +100,6 @@
   <string name="system_default">Sistemos numatytoji reikšmė</string>
   <string name="restart_required">Pakeitimai bus matomi po aplikacijos paleidimo iš naujo</string>
   <string name="pref_title_general_download">Automatiškai atsisiųsti paveikslėlius</string>
-  <string name="pref_title_general_broadcast_intent">Transliuoti dainų atnaujinimus</string>
-  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling palaikymas</string>
   <string name="pref_title_general_romaji">Naudoti romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" vietoje \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Rodyti atsitiktinai užsakytos dainos pavadinimą</string>

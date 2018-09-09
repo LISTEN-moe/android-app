@@ -93,7 +93,6 @@
   <string name="licenses">Lisensi</string>
   <string name="listenmoe">Radio LISTEN.moe</string>
   <string name="open_in_browser">Buka di peramban</string>
-  <string name="play_history">Riwayat lagu</string>
   <string name="discord">Bergabunglah dengan kami di Discord</string>
   <string name="patreon">Dapatkan permintaan / Dukung kami</string>
   <string name="privacy_policy">Kebijakan privasi</string>
@@ -105,8 +104,6 @@
   <string name="system_default">Sistem default</string>
   <string name="restart_required">Perubahan akan diterapkan setelah aplikasi di buka ulang</string>
   <string name="pref_title_general_download">Otomatis mengunduh gambar</string>
-  <string name="pref_title_general_broadcast_intent">Menyiarkan pembaharuan lagu</string>
-  <string name="pref_title_general_broadcast_intent_summary">Dukungan scrobbling Last.fm</string>
   <string name="pref_title_general_romaji">Lebih memilih romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" daripada \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Perlihatkan judul lagu acak yang diminta</string>

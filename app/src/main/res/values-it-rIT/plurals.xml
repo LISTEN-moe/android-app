@@ -6,11 +6,6 @@
     <item quantity="one">1 richiesta rimanente</item>
     <item quantity="other">%d richieste rimanenti</item>
   </plurals>
-  <!-- e.g. 420 listeners -->
-  <plurals name="current_listeners">
-    <item quantity="one">1 ascoltatore</item>
-    <item quantity="other">%d ascoltatori</item>
-  </plurals>
   <!-- Timer -->
   <plurals name="minutes">
     <item quantity="one">1 minuto</item>

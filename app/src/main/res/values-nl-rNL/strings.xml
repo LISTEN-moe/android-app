@@ -76,7 +76,7 @@
   <string name="song_source">Bron</string>
   <string name="song_duration">Duur</string>
   <string name="song_release_date">Datum van publicatie</string>
-  <string name="song_uploader">Uploader</string>
+  <string name="song_uploader">Uploaden</string>
   <string name="song_last_played">Laatst gespeeld</string>
   <string name="song_tags">Tags</string>
   <!-- == No Internet view == -->
@@ -93,7 +93,6 @@
   <string name="licenses">Licenties</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Openen in de browser</string>
-  <string name="play_history">Muziek geschiedenis </string>
   <string name="discord">Doe mee op Discord</string>
   <string name="patreon">Krijg nummer aanvragen / Steun ons</string>
   <string name="privacy_policy">Privacybeleid</string>
@@ -105,8 +104,6 @@
   <string name="system_default">Systeem standaard</string>
   <string name="restart_required">De weizigingen worden toegepast na het herstarten van de App. </string>
   <string name="pref_title_general_download">Auto-download afbeeldingen</string>
-  <string name="pref_title_general_broadcast_intent">Nummer informatie</string>
-  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling ondersteuning</string>
   <string name="pref_title_general_romaji">Voorkeur voor romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" I.P.V. \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Toon willekeurig gegenereerde titel</string>

@@ -93,7 +93,6 @@
   <string name="licenses">라이센스</string>
   <string name="listenmoe">LISTEN.moe 라디오</string>
   <string name="open_in_browser">브라우저에서 열기</string>
-  <string name="play_history">노래 기록</string>
   <string name="discord">Discord 서버에 들어오기</string>
   <string name="patreon">요청 받기, 지원하기</string>
   <string name="privacy_policy">개인 정보 정책</string>
@@ -105,8 +104,6 @@
   <string name="system_default">시스템 기본</string>
   <string name="restart_required">앱을 다시 시작한 후 변경 내용이 적용 됩니다</string>
   <string name="pref_title_general_download">이미지 자동 다운로드</string>
-  <string name="pref_title_general_broadcast_intent">노래 업데이트 방송하기</string>
-  <string name="pref_title_general_broadcast_intent_summary">Last.fm scrobbling 지원</string>
   <string name="pref_title_general_romaji">영어식 일본어 선호</string>
   <string name="pref_title_general_romaji_summary">\"ななひら\" 대신 \"Nanahira\"</string>
   <string name="pref_title_general_random_request_title">무작위로 신청한 노래 제목 보기</string>

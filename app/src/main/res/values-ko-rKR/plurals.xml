@@ -5,10 +5,6 @@
   <plurals name="user_requests">
     <item quantity="other">요청 %d개 남은</item>
   </plurals>
-  <!-- e.g. 420 listeners -->
-  <plurals name="current_listeners">
-    <item quantity="other">%d 청취자</item>
-  </plurals>
   <!-- Timer -->
   <plurals name="minutes">
     <item quantity="other">%d 분</item>

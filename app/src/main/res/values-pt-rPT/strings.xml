@@ -93,7 +93,6 @@
   <string name="licenses">Licenças</string>
   <string name="listenmoe">Rádio LISTEN.moe</string>
   <string name="open_in_browser">Abrir no navegador</string>
-  <string name="play_history">Histórico de músicas</string>
   <string name="discord">Junte-se a nos no Discord</string>
   <string name="patreon">Obter solicitações / suporte nos</string>
   <string name="privacy_policy">Política de privacidade</string>
@@ -105,8 +104,6 @@
   <string name="system_default">Predefinido do sistema</string>
   <string name="restart_required">As alterações serão aplicadas depois que o aplicativo for reiniciado</string>
   <string name="pref_title_general_download">Download automático de imagens</string>
-  <string name="pref_title_general_broadcast_intent">Transmitir atualizações de músicas</string>
-  <string name="pref_title_general_broadcast_intent_summary">Suporte para scrobbling no Last.fm</string>
   <string name="pref_title_general_romaji">Preferir romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" em vez de \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Mostrar o título da canção solicitada aleatoriamente</string>

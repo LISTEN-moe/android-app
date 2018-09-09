@@ -49,9 +49,11 @@
   <string name="login_required">Accedi per utilizzare questa funzionalità.</string>
   <string name="required">Obbligatorio</string>
   <string name="password_mismatch">Le password non corrispondono</string>
+  <string name="forgot_password">Hai dimenticato la password?</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Play/pausa</string>
   <string name="last_played">Ultima ascoltata</string>
+  <string name="favorite">Aggiungi ai preferiti</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Richiesta da: %s</string>
   <!-- == User tab == -->
@@ -91,8 +93,8 @@
   <string name="licenses">Licenze</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Apri nel browser</string>
-  <string name="play_history">Canzoni precedenti</string>
   <string name="discord">Unisciti a noi su Discord</string>
+  <string name="patreon">Fai una richiesta / Supportaci</string>
   <string name="privacy_policy">Informativa sulla privacy</string>
   <!-- == Settings == -->
   <string name="settings">Impostazioni</string>
@@ -102,8 +104,6 @@
   <string name="system_default">Predefinito sistema</string>
   <string name="restart_required">Riavvia l\'app per applicare le modifiche</string>
   <string name="pref_title_general_download">Download automatico di immagini</string>
-  <string name="pref_title_general_broadcast_intent">Trasmetti aggiornamenti canzone</string>
-  <string name="pref_title_general_broadcast_intent_summary">Supporto Last.fm scrobbling</string>
   <string name="pref_title_general_romaji">Romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" invece di \"ななひら\"</string>
   <string name="pref_title_general_random_request_title">Visualizza il titolo delle canzoni casuali richieste</string>
