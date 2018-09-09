@@ -11,12 +11,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:visibility="@{vm.currentSong.duration != 0}">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:gravity="center"-->
+            <!--android:visibility="@{vm.currentSong.duration != 0}">-->
+
+            <!--<SeekBar-->
+                <!--android:id="@+id/song_progress_bar"-->
+                <!--android:layout_height="2dp"-->
+                <!--android:layout_width="match_parent"-->
+                <!--tools:ignore="RtlHardcoded,UnusedAttribute" />-->
 
             <!--<FrameLayout-->
                 <!--android:layout_width="match_parent"-->
@@ -35,25 +41,25 @@
 
             <!--</FrameLayout>-->
 
-            <Chronometer
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="8dp"
-                android:alpha="0.5"
-                android:chronometerProgress="@{vm.currentSongProgress}"
-                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}" />
+            <!--<Chronometer-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentStart="true"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:alpha="0.5"-->
+                <!--android:chronometerProgress="@{vm.currentSongProgress}"-->
+                <!--android:textColor="@{vm.getBodyColor(context, vm.albumArt)}" />-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="8dp"
-                android:alpha="0.5"
-                android:text="@{vm.currentSong.durationString}"
-                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignParentEnd="true"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:alpha="0.5"-->
+                <!--android:text="@{vm.currentSong.durationString}"-->
+                <!--android:textColor="@{vm.getBodyColor(context, vm.albumArt)}" />-->
 
-        </RelativeLayout>
+        <!--</RelativeLayout>-->
 
         <LinearLayout
             android:layout_width="wrap_content"
