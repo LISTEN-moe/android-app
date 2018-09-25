@@ -64,8 +64,12 @@ public class ImageUtil {
     }
 
     private static void clearImageView(ImageView v) {
-        Glide.with(v.getContext())
-                .clear(v);
+        if (v == null) return;
+
+        Context context = v.getContext();
+        if (context == null) return;
+
+        Glide.with(context).clear(v);
     }
 
 }
