@@ -30,7 +30,7 @@ public class SongsFragment extends SongsListBaseFragment<FragmentSongsBinding> i
 
     @Override
     public SongList initSongList(FragmentSongsBinding binding) {
-        return new SongList(getActivity(), binding.songsList,  "SONGS_LIST", this);
+        return new SongList(getActivity(), binding.songsList, "SONGS_LIST", this);
     }
 
     @Override

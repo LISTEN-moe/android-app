@@ -62,6 +62,7 @@ public class SongsCache {
 
     public interface Callback {
         void onRetrieve(List<SongListItem> songs);
+
         void onFailure(String message);
     }
 

@@ -26,7 +26,9 @@ public class ErrorHandlingAdapter {
 
     public interface WrappedCall<T extends BaseResponse> {
         void enqueue(WrappedCallback<T> callback);
+
         void cancel();
+
         WrappedCall<T> clone();
     }
 
@@ -76,7 +78,9 @@ public class ErrorHandlingAdapter {
         }
     }
 
-    /** Adapts a {@link Call} to {@link WrappedCall}. */
+    /**
+     * Adapts a {@link Call} to {@link WrappedCall}.
+     */
     static class WrappedCallAdapter<T extends BaseResponse> implements WrappedCall<T> {
         private final Call<T> call;
 
@@ -85,7 +89,7 @@ public class ErrorHandlingAdapter {
         }
 
         @Override
-        public void enqueue( WrappedCallback<T> callback) {
+        public void enqueue(WrappedCallback<T> callback) {
             call.enqueue(new Callback<T>() {
                 @Override
                 public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
@@ -129,7 +133,7 @@ public class ErrorHandlingAdapter {
             return new WrappedCallAdapter<>(call.clone());
         }
 
-        private void error( WrappedCallback<T> callback, final String message) {
+        private void error(WrappedCallback<T> callback, final String message) {
             Log.e(TAG, "API error: " + message);
             callback.error(message);
         }

@@ -247,6 +247,7 @@ public class Socket extends WebSocketListener {
 
     public interface Listener {
         void onSocketReceive(UpdateResponse.Details info);
+
         void onSocketFailure();
     }
 

@@ -8,5 +8,5 @@ import retrofit2.http.Path;
 
 public interface RequestsService {
     @POST("requests/{id}")
-    ErrorHandlingAdapter.WrappedCall<BaseResponse> request(@Header("Authorization") String token,  @Header("library") String library, @Path("id") String id);
+    ErrorHandlingAdapter.WrappedCall<BaseResponse> request(@Header("Authorization") String token, @Header("library") String library, @Path("id") String id);
 }
