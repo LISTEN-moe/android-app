@@ -14,6 +14,7 @@
   <string name="action_request">请求</string>
   <string name="action_undo">撤销</string>
   <!-- == Radio stations == -->
+  <string name="action_library">电台</string>
   <string name="jpop">日本流行音乐</string>
   <string name="kpop">韩国流行音乐</string>
   <!-- == Sleep timer == -->
@@ -48,9 +49,11 @@
   <string name="login_required">登录来使用这个功能</string>
   <string name="required">必填</string>
   <string name="password_mismatch">密码不匹配</string>
+  <string name="forgot_password">忘记密码？</string>
   <!-- == Radio tab == -->
   <string name="play_pause">播放/暂停</string>
   <string name="last_played">上次播放</string>
+  <string name="favorite">收藏</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">请求者：%s</string>
   <!-- == User tab == -->
@@ -85,11 +88,13 @@
   <string name="version">版本 %s</string>
   <string name="rate">在 Google Play 上帮我们评分</string>
   <string name="github">在 GitHub 上 Star 我们</string>
+  <string name="translate">帮助翻译</string>
   <string name="translators">翻译者</string>
   <string name="licenses">开源许可证</string>
   <string name="listenmoe">LISTEN.moe 电台</string>
   <string name="open_in_browser">在浏览器中打开</string>
   <string name="discord">在 Discord 上加入我们</string>
+  <string name="patreon">获取请求/支持我们</string>
   <string name="privacy_policy">隐私政策</string>
   <!-- == Settings == -->
   <string name="settings">设置</string>
