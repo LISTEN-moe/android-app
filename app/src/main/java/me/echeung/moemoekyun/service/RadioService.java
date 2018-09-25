@@ -69,7 +69,8 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     private Stream stream;
     private Socket socket;
 
-    private MediaSessionCompat mediaSession;
+    private volatile MediaSessionCompat mediaSession;
+    private final Object mediaSessionLock = new Object();
 
     private AudioManager audioManager;
     private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener;
@@ -160,10 +161,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             receiverRegistered = false;
         }
 
-        if (mediaSession != null) {
-            mediaSession.setActive(false);
-            mediaSession.release();
-        }
+        destroyMediaSession();
 
         App.getPreferenceUtil().unregisterListener(this);
 
@@ -239,8 +237,10 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             }
         }
 
-        mediaSession.setMetadata(metaData.build());
-        updateMediaSessionPlaybackState();
+        synchronized (mediaSessionLock) {
+            mediaSession.setMetadata(metaData.build());
+            updateMediaSessionPlaybackState();
+        }
     }
 
     private void updateMediaSessionPlaybackState() {
@@ -377,88 +377,99 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     }
 
     private void initMediaSession() {
-        mediaSession = new MediaSessionCompat(this, APP_PACKAGE_NAME, null, null);
-        mediaSession.setRatingType(RatingCompat.RATING_HEART);
-        mediaSession.setCallback(new MediaSessionCompat.Callback() {
-            @Override
-            public void onPlay() {
-                play();
-            }
-
-            @Override
-            public void onPause() {
-                pause();
-            }
-
-            @Override
-            public void onStop() {
-                stop();
-            }
-
-            @Override
-            public void onSkipToNext() {
-            }
-
-            @Override
-            public void onSkipToPrevious() {
-            }
-
-            @Override
-            public void onSeekTo(long pos) {
-            }
-
-            @Override
-            public void onSetRating(RatingCompat rating) {
-                favoriteCurrentSong();
-            }
-
-            @Override
-            public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
-                return handleIntent(mediaButtonEvent);
-            }
-
-            @Override
-            public void onCustomAction(@NonNull String action, Bundle extras) {
-                switch (action) {
-                    case TOGGLE_FAVORITE:
-                        favoriteCurrentSong();
-                        updateMediaSessionPlaybackState();
-                        break;
-
-                    default:
-                        Log.d(TAG, "Unsupported action: " + action);
-                        break;
+        synchronized (mediaSessionLock) {
+            mediaSession = new MediaSessionCompat(this, APP_PACKAGE_NAME, null, null);
+            mediaSession.setRatingType(RatingCompat.RATING_HEART);
+            mediaSession.setCallback(new MediaSessionCompat.Callback() {
+                @Override
+                public void onPlay() {
+                    play();
                 }
-            }
 
-            @Override
-            public void onPlayFromSearch(String query, Bundle extras) {
-                // We don't support searching for specific things since it's just a radio stream
-                // so just toggle playback
-                togglePlayPause();
-            }
-
-            @Override
-            public void onPlayFromMediaId(String mediaId, Bundle extras) {
-                super.onPlayFromMediaId(mediaId, extras);
-
-                // Handles changing library mode via Android Auto
-                switch (mediaId) {
-                    case LIBRARY_JPOP:
-                        App.getRadioClient().changeLibrary(Jpop.NAME);
-                        break;
-
-                    case LIBRARY_KPOP:
-                        App.getRadioClient().changeLibrary(Kpop.NAME);
-                        break;
+                @Override
+                public void onPause() {
+                    pause();
                 }
+
+                @Override
+                public void onStop() {
+                    stop();
+                }
+
+                @Override
+                public void onSkipToNext() {
+                }
+
+                @Override
+                public void onSkipToPrevious() {
+                }
+
+                @Override
+                public void onSeekTo(long pos) {
+                }
+
+                @Override
+                public void onSetRating(RatingCompat rating) {
+                    favoriteCurrentSong();
+                }
+
+                @Override
+                public boolean onMediaButtonEvent(Intent mediaButtonEvent) {
+                    return handleIntent(mediaButtonEvent);
+                }
+
+                @Override
+                public void onCustomAction(@NonNull String action, Bundle extras) {
+                    switch (action) {
+                        case TOGGLE_FAVORITE:
+                            favoriteCurrentSong();
+                            updateMediaSessionPlaybackState();
+                            break;
+
+                        default:
+                            Log.d(TAG, "Unsupported action: " + action);
+                            break;
+                    }
+                }
+
+                @Override
+                public void onPlayFromSearch(String query, Bundle extras) {
+                    // We don't support searching for specific things since it's just a radio stream
+                    // so just toggle playback
+                    togglePlayPause();
+                }
+
+                @Override
+                public void onPlayFromMediaId(String mediaId, Bundle extras) {
+                    super.onPlayFromMediaId(mediaId, extras);
+
+                    // Handles changing library mode via Android Auto
+                    switch (mediaId) {
+                        case LIBRARY_JPOP:
+                            App.getRadioClient().changeLibrary(Jpop.NAME);
+                            break;
+
+                        case LIBRARY_KPOP:
+                            App.getRadioClient().changeLibrary(Kpop.NAME);
+                            break;
+                    }
+                }
+            });
+
+            mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
+                    | MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
+
+            mediaSession.setActive(true);
+        }
+    }
+
+    private void destroyMediaSession() {
+        synchronized (mediaSessionLock) {
+            if (mediaSession != null) {
+                mediaSession.setActive(false);
+                mediaSession.release();
             }
-        });
-
-        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS
-                | MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
-
-        mediaSession.setActive(true);
+        }
     }
 
     private void initBroadcastReceiver() {
