@@ -4,11 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.annotation.LayoutRes;
 import android.widget.Toast;
 
 import java.util.List;
 
+import androidx.annotation.LayoutRes;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.adapter.SongsAdapter;

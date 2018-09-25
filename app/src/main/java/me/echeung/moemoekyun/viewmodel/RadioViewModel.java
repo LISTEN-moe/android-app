@@ -2,15 +2,15 @@ package me.echeung.moemoekyun.viewmodel;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.databinding.Bindable;
 import android.graphics.Bitmap;
-import android.support.annotation.ColorInt;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
+import androidx.databinding.Bindable;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.client.model.Event;

@@ -5,11 +5,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import me.echeung.moemoekyun.App;
 
 // https://proandroiddev.com/change-language-programmatically-at-runtime-on-android-5e6bc15c758

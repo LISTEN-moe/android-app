@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.v7.preference.PreferenceCategory
+    <androidx.preference.PreferenceCategory
         android:title="@string/pref_header_audio">
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_audio_pause_on_noisy"
             android:title="@string/pref_title_pause_on_noisy"
             android:defaultValue="true" />
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_audio_duck"
             android:title="@string/pref_title_audio_duck"
             android:summary="@string/pref_title_audio_duck_summary"
             android:defaultValue="true" />
 
-        <android.support.v7.preference.SwitchPreferenceCompat
+        <androidx.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_audio_pause_on_loss"
             android:title="@string/pref_title_audio_pause_on_loss"
             android:summary="@string/pref_title_audio_pause_on_loss_summary"
             android:defaultValue="true" />
 
-    </android.support.v7.preference.PreferenceCategory>
+    </androidx.preference.PreferenceCategory>
 
-</android.support.v7.preference.PreferenceScreen>
+</androidx.preference.PreferenceScreen>

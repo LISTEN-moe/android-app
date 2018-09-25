@@ -1,16 +1,16 @@
 package me.echeung.moemoekyun.viewmodel;
 
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.databinding.BindingAdapter;
 import android.graphics.Bitmap;
 import android.os.SystemClock;
-import android.support.annotation.ColorInt;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
 import me.echeung.moemoekyun.BR;
 import me.echeung.moemoekyun.util.ImageUtil;
 import me.echeung.moemoekyun.util.ViewUtil;

@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.client.api;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+import androidx.annotation.NonNull;
 import lombok.RequiredArgsConstructor;
 import me.echeung.moemoekyun.client.api.callback.BaseCallback;
 import me.echeung.moemoekyun.client.api.response.BaseResponse;

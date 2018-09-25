@@ -2,13 +2,13 @@ package me.echeung.moemoekyun.ui.base;
 
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.ViewDataBinding;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.ui.activity.MainActivity;
 import me.echeung.moemoekyun.ui.view.SongList;

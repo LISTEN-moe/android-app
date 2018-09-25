@@ -13,7 +13,6 @@ import android.net.ConnectivityManager;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.NonNull;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.RatingCompat;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -25,6 +24,7 @@ import android.widget.Toast;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import androidx.annotation.NonNull;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.BuildConfig;
 import me.echeung.moemoekyun.R;

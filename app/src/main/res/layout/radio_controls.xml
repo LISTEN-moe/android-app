@@ -80,7 +80,7 @@
                 android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:visibility="@{vm.currentSong != null}" />
 
-            <android.support.design.widget.FloatingActionButton
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/play_pause_btn"
                 android:layout_width="@dimen/fab_size"
                 android:layout_height="@dimen/fab_size"

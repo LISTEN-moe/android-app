@@ -4,11 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.R;
 import me.echeung.moemoekyun.util.PreferenceUtil;

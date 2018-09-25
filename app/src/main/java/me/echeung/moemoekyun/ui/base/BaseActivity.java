@@ -3,9 +3,9 @@ package me.echeung.moemoekyun.ui.base;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.AppCompatActivity;
 import me.echeung.moemoekyun.App;
 import me.echeung.moemoekyun.util.PreferenceUtil;
 import me.echeung.moemoekyun.util.system.LocaleUtil;
