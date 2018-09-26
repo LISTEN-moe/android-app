@@ -17,15 +17,12 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.util.system.NetworkUtil;
 
 import static com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC;
 import static com.google.android.exoplayer2.C.USAGE_MEDIA;
 
-@RequiredArgsConstructor
 public class Stream {
 
     private static final String WIFI_LOCK_TAG = "listenmoe_wifi_lock";
@@ -51,8 +48,15 @@ public class Stream {
 
     private String currentStreamUrl;
 
-    @Setter
     private Listener listener;
+
+    public Stream(Context context) {
+        this.context = context;
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
 
     public void removeListener() {
         this.listener = null;
@@ -166,7 +170,7 @@ public class Stream {
         }
 
         // Set stream
-        String streamUrl = RadioClient.getLibrary().getStreamUrl();
+        String streamUrl = RadioClient.Companion.getLibrary().getStreamUrl();
         if (!streamUrl.equals(currentStreamUrl)) {
             DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
             MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)

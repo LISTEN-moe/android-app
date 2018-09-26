@@ -8,8 +8,6 @@ import com.squareup.moshi.Moshi;
 
 import java.io.IOException;
 
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.client.auth.AuthUtil;
 import me.echeung.moemoekyun.client.socket.response.BaseResponse;
@@ -23,7 +21,6 @@ import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
-@RequiredArgsConstructor
 public class Socket extends WebSocketListener {
 
     private static final String TAG = Socket.class.getSimpleName();
@@ -46,11 +43,19 @@ public class Socket extends WebSocketListener {
     private volatile WebSocket socket;
     private final Object socketLock = new Object();
 
-    @Setter
     private Listener listener;
 
     private Handler heartbeatHandler = new Handler();
     private Runnable heartbeatTask;
+
+    public Socket(OkHttpClient client, AuthUtil authUtil) {
+        this.client = client;
+        this.authUtil = authUtil;
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
+    }
 
     public void connect() {
         synchronized (socketLock) {
@@ -60,7 +65,7 @@ public class Socket extends WebSocketListener {
                 disconnect();
             }
 
-            final Request request = new Request.Builder().url(RadioClient.getLibrary().getSocketUrl()).build();
+            final Request request = new Request.Builder().url(RadioClient.Companion.getLibrary().getSocketUrl()).build();
             socket = client.newWebSocket(request, this);
         }
     }

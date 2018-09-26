@@ -111,7 +111,7 @@ public final class PreferenceUtil {
                 .putString(LIBRARY_MODE, mode)
                 .apply();
 
-        App.getRadioClient().changeLibrary(mode);
+        App.Companion.getRadioClient().changeLibrary(mode);
     }
 
     public boolean isNowPlayingExpanded() {

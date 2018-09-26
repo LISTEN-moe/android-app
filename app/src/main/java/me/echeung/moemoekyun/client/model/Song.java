@@ -34,7 +34,7 @@ public class Song {
     private boolean favorite;
 
     public String getTitleString() {
-        if (App.getPreferenceUtil().shouldPreferRomaji() && !TextUtils.isEmpty(titleRomaji)) {
+        if (App.Companion.getPreferenceUtil().shouldPreferRomaji() && !TextUtils.isEmpty(titleRomaji)) {
             return titleRomaji;
         }
 

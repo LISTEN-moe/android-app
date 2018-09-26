@@ -57,8 +57,8 @@ public final class SongActionsUtil {
         FavoriteSongCallback callback = new FavoriteSongCallback() {
             @Override
             public void onSuccess() {
-                if (App.getRadioViewModel().getCurrentSong().getId() == songId) {
-                    App.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
+                if (App.Companion.getRadioViewModel().getCurrentSong().getId() == songId) {
+                    App.Companion.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
                 }
                 song.setFavorite(!isCurrentlyFavorite);
 
@@ -90,7 +90,7 @@ public final class SongActionsUtil {
             }
         };
 
-        App.getRadioClient().getApi().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
+        App.Companion.getRadioClient().getApi().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
     }
 
     /**
@@ -99,12 +99,12 @@ public final class SongActionsUtil {
      * @param song The song to request.
      */
     public static void request(Activity activity, Song song) {
-        User user = App.getUserViewModel().getUser();
+        User user = App.Companion.getUserViewModel().getUser();
         if (user == null) {
             return;
         }
 
-        App.getRadioClient().getApi().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
+        App.Companion.getRadioClient().getApi().requestSong(String.valueOf(song.getId()), new RequestSongCallback() {
             @Override
             public void onSuccess() {
                 if (activity == null) return;
@@ -115,9 +115,9 @@ public final class SongActionsUtil {
 
                     // Instantly update remaining requests number to appear responsive
                     int remainingRequests = user.getRequestsRemaining() - 1;
-                    App.getUserViewModel().setRequestsRemaining(remainingRequests);
+                    App.Companion.getUserViewModel().setRequestsRemaining(remainingRequests);
 
-                    String toastMsg = App.getPreferenceUtil().shouldShowRandomRequestTitle()
+                    String toastMsg = App.Companion.getPreferenceUtil().shouldShowRandomRequestTitle()
                             ? activity.getString(R.string.requested_song, song.toString())
                             : activity.getString(R.string.requested_random_song);
 

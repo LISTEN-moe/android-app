@@ -82,7 +82,7 @@ public class AppNotification {
             builder.setSubText(song.getAlbumsString());
 
             // Add favorite action if logged in
-            if (App.getAuthUtil().isAuthenticated()) {
+            if (App.Companion.getAuthUtil().isAuthenticated()) {
                 builder.addAction(new NotificationCompat.Action(
                         song.isFavorite() ? R.drawable.ic_star_white_24dp : R.drawable.ic_star_border_white_24dp,
                         song.isFavorite() ? service.getString(R.string.action_unfavorite) : service.getString(R.string.action_favorite),
@@ -104,7 +104,7 @@ public class AppNotification {
     }
 
     private Song getCurrentSong() {
-        return App.getRadioViewModel().getCurrentSong();
+        return App.Companion.getRadioViewModel().getCurrentSong();
     }
 
     private PendingIntent getPlaybackActionService(String action) {

@@ -18,7 +18,7 @@ public class SongDescriptor {
     private String releaseDate;
 
     public static String getSongDescriptorsString(List<SongDescriptor> songDescriptors) {
-        boolean preferRomaji = App.getPreferenceUtil().shouldPreferRomaji();
+        boolean preferRomaji = App.Companion.getPreferenceUtil().shouldPreferRomaji();
 
         StringBuilder s = new StringBuilder();
         if (songDescriptors != null) {

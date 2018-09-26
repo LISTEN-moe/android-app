@@ -20,7 +20,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SharedPr
 
         ThemeUtil.colorNavigationBar(this);
 
-        App.getPreferenceUtil().registerListener(this);
+        App.Companion.getPreferenceUtil().registerListener(this);
 
         super.onCreate(savedInstanceState);
     }
@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity implements SharedPr
 
     @Override
     protected void onDestroy() {
-        App.getPreferenceUtil().unregisterListener(this);
+        App.Companion.getPreferenceUtil().unregisterListener(this);
 
         super.onDestroy();
     }

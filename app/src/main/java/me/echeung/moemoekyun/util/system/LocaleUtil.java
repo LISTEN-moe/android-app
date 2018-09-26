@@ -18,11 +18,11 @@ public final class LocaleUtil {
     public static final String DEFAULT = "default";
 
     public static Context setLocale(@NonNull Context context) {
-        if (App.getPreferenceUtil() == null) {
+        if (App.Companion.getPreferenceUtil() == null) {
             return context;
         }
 
-        String language = App.getPreferenceUtil().getLanguage();
+        String language = App.Companion.getPreferenceUtil().getLanguage();
         return setLocale(context, language);
     }
 

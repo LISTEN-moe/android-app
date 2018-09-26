@@ -24,7 +24,7 @@ public final class ThemeUtil {
     public static int getThemeStyle() {
         int style;
 
-        switch (App.getPreferenceUtil().getTheme()) {
+        switch (App.Companion.getPreferenceUtil().getTheme()) {
             case PreferenceUtil.THEME_CHRISTMAS:
                 style = R.style.AppThemeChristmas;
                 break;
@@ -39,7 +39,7 @@ public final class ThemeUtil {
     }
 
     public static void colorNavigationBar(Activity activity) {
-        int color = App.getPreferenceUtil().shouldColorNavbar()
+        int color = App.Companion.getPreferenceUtil().shouldColorNavbar()
                 ? ThemeUtil.getAccentColor(activity)
                 : Color.BLACK;
 

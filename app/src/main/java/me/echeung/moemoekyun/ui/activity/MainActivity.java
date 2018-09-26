@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        viewModel = App.getRadioViewModel();
+        viewModel = App.Companion.getRadioViewModel();
         binding.setVm(viewModel);
 
         binding.btnRetry.setOnClickListener(v -> retry());
@@ -84,17 +84,17 @@ public class MainActivity extends BaseActivity {
         initNowPlaying();
 
         // Invalidate token if needed
-        boolean isAuthed = App.getAuthUtil().checkAuthTokenValidity();
+        boolean isAuthed = App.Companion.getAuthUtil().checkAuthTokenValidity();
         viewModel.setIsAuthed(isAuthed);
         if (!isAuthed) {
-            App.getUserViewModel().reset();
+            App.Companion.getUserViewModel().reset();
         }
     }
 
     @Override
     protected void onDestroy() {
         // Kill service/notification if killing activity and not playing
-        RadioService service = App.getService();
+        RadioService service = App.Companion.getService();
         if (service != null && !service.isPlaying()) {
             sendBroadcast(new Intent(RadioService.STOP));
         }
@@ -171,7 +171,7 @@ public class MainActivity extends BaseActivity {
         initNowPlayingMenu();
 
         // Restore previous expanded state
-        if (App.getPreferenceUtil().isNowPlayingExpanded()) {
+        if (App.Companion.getPreferenceUtil().isNowPlayingExpanded()) {
             nowPlayingSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
         } else {
             viewModel.setMiniPlayerAlpha(1f);
@@ -180,7 +180,7 @@ public class MainActivity extends BaseActivity {
         nowPlayingSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                App.getPreferenceUtil().setIsNowPlayingExpanded(newState == BottomSheetBehavior.STATE_EXPANDED);
+                App.Companion.getPreferenceUtil().setIsNowPlayingExpanded(newState == BottomSheetBehavior.STATE_EXPANDED);
             }
 
             @Override
@@ -267,10 +267,10 @@ public class MainActivity extends BaseActivity {
 
     private void updateMenuOptions(Menu menu) {
         // Toggle visibility of logout option based on authentication status
-        menu.findItem(R.id.action_logout).setVisible(App.getAuthUtil().isAuthenticated());
+        menu.findItem(R.id.action_logout).setVisible(App.Companion.getAuthUtil().isAuthenticated());
 
         // Pre-check the library mode
-        switch (App.getPreferenceUtil().getLibraryMode()) {
+        switch (App.Companion.getPreferenceUtil().getLibraryMode()) {
             case Jpop.NAME:
                 menu.findItem(R.id.action_library_jpop).setChecked(true);
                 break;
@@ -340,18 +340,18 @@ public class MainActivity extends BaseActivity {
     }
 
     public void showLoginActivity(int requestCode) {
-        App.getAuthViewModel().setShowRegister(false);
+        App.Companion.getAuthViewModel().setShowRegister(false);
         startActivityForResult(new Intent(this, AuthActivity.class), requestCode);
     }
 
     private void broadcastAuthEvent() {
         sendBroadcast(new Intent(MainActivity.AUTH_EVENT));
 
-        viewModel.setIsAuthed(App.getAuthUtil().isAuthenticated());
+        viewModel.setIsAuthed(App.Companion.getAuthUtil().isAuthenticated());
     }
 
     private void showRegisterActivity() {
-        App.getAuthViewModel().setShowRegister(true);
+        App.Companion.getAuthViewModel().setShowRegister(true);
         startActivity(new Intent(this, AuthActivity.class));
     }
 
@@ -366,12 +366,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void logout() {
-        if (!App.getAuthUtil().isAuthenticated()) {
+        if (!App.Companion.getAuthUtil().isAuthenticated()) {
             return;
         }
 
-        App.getAuthUtil().clearAuthToken();
-        App.getUserViewModel().reset();
+        App.Companion.getAuthUtil().clearAuthToken();
+        App.Companion.getUserViewModel().reset();
 
         Toast.makeText(getApplicationContext(), getString(R.string.logged_out), Toast.LENGTH_LONG).show();
         invalidateOptionsMenu();
@@ -416,7 +416,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void favorite() {
-        if (!App.getAuthUtil().isAuthenticated()) {
+        if (!App.Companion.getAuthUtil().isAuthenticated()) {
             showLoginActivity(MainActivity.LOGIN_FAVORITE_REQUEST);
             return;
         }
@@ -429,7 +429,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setLibraryMode(String libraryMode) {
-        App.getPreferenceUtil().setLibraryMode(libraryMode);
+        App.Companion.getPreferenceUtil().setLibraryMode(libraryMode);
         broadcastAuthEvent();
         invalidateOptionsMenu();
     }

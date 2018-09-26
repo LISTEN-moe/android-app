@@ -34,7 +34,7 @@ public class SleepTimerDialog {
         SeekBar sleepTimerSeekBar = layout.findViewById(R.id.sleep_timer_seekbar);
 
         // Init seekbar + text
-        int prevSleepTimer = App.getPreferenceUtil().getSleepTimer();
+        int prevSleepTimer = App.Companion.getPreferenceUtil().getSleepTimer();
         if (prevSleepTimer != 0) {
             sleepTimerSeekBar.setProgress(prevSleepTimer);
         }
@@ -81,7 +81,7 @@ public class SleepTimerDialog {
 
         PendingIntent pi = makeTimerPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT);
 
-        App.getPreferenceUtil().setSleepTimer(minutes);
+        App.Companion.getPreferenceUtil().setSleepTimer(minutes);
 
         long timerTime = SystemClock.elapsedRealtime() + (minutes * 60 * 1000);
         AlarmManager am = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
@@ -97,7 +97,7 @@ public class SleepTimerDialog {
             am.cancel(previous);
             previous.cancel();
 
-            App.getPreferenceUtil().clearSleepTimer();
+            App.Companion.getPreferenceUtil().clearSleepTimer();
 
             Toast.makeText(activity, activity.getString(R.string.sleep_timer_canceled), Toast.LENGTH_SHORT).show();
         }

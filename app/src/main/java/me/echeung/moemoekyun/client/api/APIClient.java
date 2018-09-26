@@ -166,7 +166,7 @@ public class APIClient {
             return;
         }
 
-        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName(), "@me")
+        favoritesService.getFavorites(authUtil.getAuthTokenWithPrefix(), RadioClient.Companion.getLibrary().getName(), "@me")
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     @Override
                     public void success(FavoritesResponse response) {
@@ -248,7 +248,7 @@ public class APIClient {
             return;
         }
 
-        requestsService.request(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName(), songId)
+        requestsService.request(authUtil.getAuthTokenWithPrefix(), RadioClient.Companion.getLibrary().getName(), songId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     @Override
                     public void success(BaseResponse response) {
@@ -268,7 +268,7 @@ public class APIClient {
             return;
         }
 
-        songsService.getSongs(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName())
+        songsService.getSongs(authUtil.getAuthTokenWithPrefix(), RadioClient.Companion.getLibrary().getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     @Override
                     public void success(SongsResponse response) {
@@ -314,7 +314,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName())
+        artistsService.getArtists(authUtil.getAuthTokenWithPrefix(), RadioClient.Companion.getLibrary().getName())
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
                     @Override
                     public void success(ArtistsResponse response) {
@@ -335,7 +335,7 @@ public class APIClient {
             return;
         }
 
-        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), RadioClient.getLibrary().getName(), artistId)
+        artistsService.getArtist(authUtil.getAuthTokenWithPrefix(), RadioClient.Companion.getLibrary().getName(), artistId)
                 .enqueue(new ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
                     @Override
                     public void success(ArtistResponse response) {

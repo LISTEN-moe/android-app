@@ -26,7 +26,7 @@ public abstract class SongsListBaseFragment<T extends ViewDataBinding> extends B
         songList = initSongList(binding);
         songList.loadSongs();
 
-        App.getPreferenceUtil().registerListener(this);
+        App.Companion.getPreferenceUtil().registerListener(this);
 
         return view;
     }
@@ -35,7 +35,7 @@ public abstract class SongsListBaseFragment<T extends ViewDataBinding> extends B
 
     @Override
     public void onDestroy() {
-        App.getPreferenceUtil().unregisterListener(this);
+        App.Companion.getPreferenceUtil().unregisterListener(this);
 
         super.onDestroy();
     }

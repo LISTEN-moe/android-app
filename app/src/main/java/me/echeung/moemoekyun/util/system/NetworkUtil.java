@@ -16,7 +16,7 @@ public final class NetworkUtil {
 
             boolean isAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected();
 
-            App.getRadioViewModel().setIsConnected(isAvailable);
+            App.Companion.getRadioViewModel().setIsConnected(isAvailable);
 
             return isAvailable;
         }

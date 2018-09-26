@@ -41,7 +41,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
 
     public RadioViewModel() {
         AlbumArtUtil.registerListener(this);
-        App.getPreferenceUtil().registerListener(this);
+        App.Companion.getPreferenceUtil().registerListener(this);
     }
 
     public void reset() {
@@ -83,7 +83,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
 
         setIsFavorited(currentSong != null && currentSong.isFavorite());
 
-        AlbumArtUtil.updateAlbumArt(App.getContext(), currentSong);
+        AlbumArtUtil.updateAlbumArt(App.Companion.getContext(), currentSong);
 
         notifyPropertyChanged(BR.currentSong);
         notifyPropertyChanged(BR.currentSongProgress);
@@ -97,7 +97,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     // Indirectly bind to albumArt: https://stackoverflow.com/a/39087434
     @ColorInt
     public int getBackgroundColor(Context context, Bitmap albumArt) {
-        if (App.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
+        if (App.Companion.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
             int accentColor = AlbumArtUtil.getCurrentAccentColor();
             if (accentColor != 0) {
                 return accentColor;
@@ -110,7 +110,7 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
     // Indirectly bind to albumArt: https://stackoverflow.com/a/39087434
     @ColorInt
     public int getBodyColor(Context context, Bitmap albumArt) {
-        if (App.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
+        if (App.Companion.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
             int bodyColor = AlbumArtUtil.getCurrentBodyColor();
             if (bodyColor != 0) {
                 return bodyColor;

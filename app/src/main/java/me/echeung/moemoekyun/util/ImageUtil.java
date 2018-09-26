@@ -16,7 +16,7 @@ public class ImageUtil {
     public static void loadImage(ImageView v, Bitmap bitmap) {
         clearImageView(v);
 
-        if (!App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
+        if (!App.Companion.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
             return;
         }
 
@@ -34,7 +34,7 @@ public class ImageUtil {
     public static void loadImage(ImageView v, String url) {
         clearImageView(v);
 
-        if (!App.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
+        if (!App.Companion.getPreferenceUtil().shouldDownloadImage(v.getContext())) {
             return;
         }
 

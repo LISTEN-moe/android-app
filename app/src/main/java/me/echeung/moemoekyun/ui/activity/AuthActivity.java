@@ -39,7 +39,7 @@ public class AuthActivity extends BaseActivity {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth);
 
-        viewModel = App.getAuthViewModel();
+        viewModel = App.Companion.getAuthViewModel();
         binding.setVm(viewModel);
 
         setSupportActionBar(findViewById(R.id.appbar));
@@ -115,7 +115,7 @@ public class AuthActivity extends BaseActivity {
             return;
         }
 
-        App.getRadioClient().getApi().authenticate(userLogin, password, loginCallback);
+        App.Companion.getRadioClient().getApi().authenticate(userLogin, password, loginCallback);
     }
 
     private void showMfaDialog() {
@@ -132,7 +132,7 @@ public class AuthActivity extends BaseActivity {
                             return;
                         }
 
-                        App.getRadioClient().getApi().authenticateMfa(otpToken, loginCallback);
+                        App.Companion.getRadioClient().getApi().authenticateMfa(otpToken, loginCallback);
                     })
                     .create();
 
@@ -186,7 +186,7 @@ public class AuthActivity extends BaseActivity {
             return;
         }
 
-        App.getRadioClient().getApi().register(email, username, password, new RegisterCallback() {
+        App.Companion.getRadioClient().getApi().register(email, username, password, new RegisterCallback() {
             @Override
             public void onSuccess(String message) {
                 runOnUiThread(() -> Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show());

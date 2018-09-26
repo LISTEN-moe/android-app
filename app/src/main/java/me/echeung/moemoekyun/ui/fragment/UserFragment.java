@@ -42,9 +42,9 @@ public class UserFragment extends SongsListBaseFragment<FragmentUserBinding> imp
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
 
-        viewModel = App.getUserViewModel();
+        viewModel = App.Companion.getUserViewModel();
 
-        binding.setRadioVm(App.getRadioViewModel());
+        binding.setRadioVm(App.Companion.getRadioViewModel());
         binding.setUserVm(viewModel);
 
         initUserContent();
@@ -77,7 +77,7 @@ public class UserFragment extends SongsListBaseFragment<FragmentUserBinding> imp
 
     @Override
     public void loadSongs(SongsAdapter adapter) {
-        App.getRadioClient().getApi().getUserFavorites(new UserFavoritesCallback() {
+        App.Companion.getRadioClient().getApi().getUserFavorites(new UserFavoritesCallback() {
             @Override
             public void onSuccess(List<Song> favorites) {
                 if (getActivity() != null) {
@@ -104,14 +104,14 @@ public class UserFragment extends SongsListBaseFragment<FragmentUserBinding> imp
     private void initUserContent() {
         songList.showLoading(true);
 
-        if (App.getAuthUtil().isAuthenticated()) {
+        if (App.Companion.getAuthUtil().isAuthenticated()) {
             getUserInfo();
             songList.loadSongs();
         }
     }
 
     private void getUserInfo() {
-        App.getRadioClient().getApi().getUserInfo(new UserInfoCallback() {
+        App.Companion.getRadioClient().getApi().getUserInfo(new UserInfoCallback() {
             @Override
             public void onSuccess(User user) {
                 viewModel.setUser(user);

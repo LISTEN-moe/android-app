@@ -94,13 +94,13 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         initMediaSession();
         initAudioManager();
 
-        stream = App.getRadioClient().getStream();
-        socket = App.getRadioClient().getSocket();
+        stream = App.Companion.getRadioClient().getStream();
+        socket = App.Companion.getRadioClient().getSocket();
 
         stream.setListener(new Stream.Listener() {
             @Override
             public void onStreamPlay() {
-                App.getRadioViewModel().setIsPlaying(true);
+                App.Companion.getRadioViewModel().setIsPlaying(true);
 
                 updateNotification();
                 updateMediaSessionPlaybackState();
@@ -108,7 +108,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
             @Override
             public void onStreamPause() {
-                App.getRadioViewModel().setIsPlaying(false);
+                App.Companion.getRadioViewModel().setIsPlaying(false);
 
                 updateNotification();
                 updateMediaSessionPlaybackState();
@@ -121,8 +121,8 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 stopForeground(true);
                 stopSelf();
 
-                App.getPreferenceUtil().clearSleepTimer();
-                App.getRadioViewModel().setIsPlaying(false);
+                App.Companion.getPreferenceUtil().clearSleepTimer();
+                App.Companion.getRadioViewModel().setIsPlaying(false);
 
                 updateMediaSessionPlaybackState();
             }
@@ -131,7 +131,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         socket.setListener(this);
         socket.connect();
 
-        App.getPreferenceUtil().registerListener(this);
+        App.Companion.getPreferenceUtil().registerListener(this);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
         destroyMediaSession();
 
-        App.getPreferenceUtil().unregisterListener(this);
+        App.Companion.getPreferenceUtil().unregisterListener(this);
 
         super.onDestroy();
     }
@@ -178,7 +178,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
     @Override
     public void onSocketReceive(UpdateResponse.Details info) {
-        RadioViewModel viewModel = App.getRadioViewModel();
+        RadioViewModel viewModel = App.Companion.getRadioViewModel();
 
         viewModel.setListeners(info.getListeners());
         viewModel.setRequester(info.getRequester());
@@ -207,7 +207,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
     @Override
     public void onSocketFailure() {
-        App.getRadioViewModel().reset();
+        App.Companion.getRadioViewModel().reset();
         updateNotification();
     }
 
@@ -216,7 +216,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     }
 
     private void updateMediaSession() {
-        Song currentSong = App.getRadioViewModel().getCurrentSong();
+        Song currentSong = App.Companion.getRadioViewModel().getCurrentSong();
 
         if (currentSong == null) {
             mediaSession.setMetadata(null);
@@ -229,7 +229,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumsString())
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.getDuration() * MILLISECONDS_IN_SECOND);
 
-        if (App.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
+        if (App.Companion.getPreferenceUtil().shouldShowLockscreenAlbumArt()) {
             Bitmap albumArt = AlbumArtUtil.getCurrentAlbumArt();
             if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt()) {
                 metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt);
@@ -250,11 +250,11 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 .setState(isStreamStarted()
                                 ? isPlaying() ? PlaybackStateCompat.STATE_PLAYING : PlaybackStateCompat.STATE_PAUSED
                                 : PlaybackStateCompat.STATE_STOPPED,
-                        App.getRadioViewModel().getCurrentSongProgress(), 1);
+                        App.Companion.getRadioViewModel().getCurrentSongProgress(), 1);
 
         // Favorite action
-        if (App.getAuthUtil().isAuthenticated()) {
-            Song currentSong = App.getRadioViewModel().getCurrentSong();
+        if (App.Companion.getAuthUtil().isAuthenticated()) {
+            Song currentSong = App.Companion.getRadioViewModel().getCurrentSong();
             int favoriteIcon = currentSong == null || !currentSong.isFavorite() ?
                     R.drawable.ic_star_border_white_24dp :
                     R.drawable.ic_star_white_24dp;
@@ -315,7 +315,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
                 // Pause when headphones unplugged
                 case AudioManager.ACTION_AUDIO_BECOMING_NOISY:
-                    if (App.getPreferenceUtil().shouldPauseOnNoisy()) {
+                    if (App.Companion.getPreferenceUtil().shouldPauseOnNoisy()) {
                         pause();
                     }
                     break;
@@ -355,8 +355,8 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
                 case MainActivity.AUTH_EVENT:
                     socket.reconnect();
-                    if (!App.getAuthUtil().isAuthenticated()) {
-                        App.getRadioViewModel().setIsFavorited(false);
+                    if (!App.Companion.getAuthUtil().isAuthenticated()) {
+                        App.Companion.getRadioViewModel().setIsFavorited(false);
                         updateNotification();
                     }
                     break;
@@ -446,11 +446,11 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                     // Handles changing library mode via Android Auto
                     switch (mediaId) {
                         case LIBRARY_JPOP:
-                            App.getRadioClient().changeLibrary(Jpop.NAME);
+                            App.Companion.getRadioClient().changeLibrary(Jpop.NAME);
                             break;
 
                         case LIBRARY_KPOP:
-                            App.getRadioClient().changeLibrary(Kpop.NAME);
+                            App.Companion.getRadioClient().changeLibrary(Kpop.NAME);
                             break;
                     }
                 }
@@ -510,7 +510,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                     wasPlayingBeforeLoss = isPlaying();
                     if (wasPlayingBeforeLoss &&
-                            (App.getPreferenceUtil().shouldPauseAudioOnLoss()
+                            (App.Companion.getPreferenceUtil().shouldPauseAudioOnLoss()
                                     || AutoMediaBrowserService.isCarUiMode(this))) {
                         pause();
                     }
@@ -518,7 +518,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     wasPlayingBeforeLoss = isPlaying();
-                    if (App.getPreferenceUtil().shouldDuckAudio()) {
+                    if (App.Companion.getPreferenceUtil().shouldDuckAudio()) {
                         stream.duck();
                     }
                     break;
@@ -558,13 +558,13 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
     }
 
     private void favoriteCurrentSong() {
-        Song currentSong = App.getRadioViewModel().getCurrentSong();
+        Song currentSong = App.Companion.getRadioViewModel().getCurrentSong();
         if (currentSong == null) return;
 
         int songId = currentSong.getId();
         if (songId == -1) return;
 
-        if (!App.getAuthUtil().isAuthenticated()) {
+        if (!App.Companion.getAuthUtil().isAuthenticated()) {
             showLoginRequiredToast();
             return;
         }
@@ -574,9 +574,9 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
         FavoriteSongCallback callback = new FavoriteSongCallback() {
             @Override
             public void onSuccess() {
-                Song currentSong = App.getRadioViewModel().getCurrentSong();
+                Song currentSong = App.Companion.getRadioViewModel().getCurrentSong();
                 if (currentSong.getId() == songId) {
-                    App.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
+                    App.Companion.getRadioViewModel().setIsFavorited(!isCurrentlyFavorite);
                 }
 
                 Intent favIntent = new Intent(SongActionsUtil.FAVORITE_EVENT);
@@ -592,7 +592,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
             }
         };
 
-        App.getRadioClient().getApi().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
+        App.Companion.getRadioClient().getApi().toggleFavorite(String.valueOf(songId), isCurrentlyFavorite, callback);
     }
 
     private void showLoginRequiredToast() {
