@@ -8,13 +8,10 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="light_grey">#747574</color>
-    <color name="grey">#2B2E41</color>
     <color name="dark_grey">#1D1F2B</color>
 
     <color name="christmas_accent">#E53935</color>
     <color name="four_dark_grey">#212330</color>
 
     <color name="pink">#EC1A55</color>
-
-    <color name="blue">#30A9ED</color>
 </resources>

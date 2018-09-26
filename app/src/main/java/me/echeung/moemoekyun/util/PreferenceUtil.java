@@ -30,8 +30,6 @@ public final class PreferenceUtil {
     public static final String PREF_ADVANCED_CLEAR_IMAGE_CACHE = "pref_advanced_clear_image_cache";
 
     public static final String THEME_DEFAULT = "four";
-    public static final String THEME_BLUE = "blue";
-    public static final String THEME_LEGACY = "three";
     public static final String THEME_CHRISTMAS = "christmas";
 
     public static final String DOWNLOAD_ALWAYS = "always";

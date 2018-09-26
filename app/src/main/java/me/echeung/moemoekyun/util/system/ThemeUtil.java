@@ -25,14 +25,6 @@ public final class ThemeUtil {
         int style;
 
         switch (App.getPreferenceUtil().getTheme()) {
-            case PreferenceUtil.THEME_BLUE:
-                style = R.style.AppThemeBlue;
-                break;
-
-            case PreferenceUtil.THEME_LEGACY:
-                style = R.style.AppThemeLegacy;
-                break;
-
             case PreferenceUtil.THEME_CHRISTMAS:
                 style = R.style.AppThemeChristmas;
                 break;

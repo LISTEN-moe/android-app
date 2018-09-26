@@ -71,15 +71,11 @@
 
     <string-array name="pref_theme_names" translatable="false">
         <item>3.0+1.0</item>
-        <item>Blue</item>
-        <item>Legacy</item>
         <item>Christmas</item>
     </string-array>
 
     <string-array name="pref_theme_codes" translatable="false">
         <item>@string/pref_value_theme_default</item>
-        <item>@string/pref_value_theme_blue</item>
-        <item>@string/pref_value_theme_legacy</item>
         <item>@string/pref_value_theme_christmas</item>
     </string-array>
 
