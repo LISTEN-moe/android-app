@@ -22,14 +22,14 @@ object SongActionsUtil {
     const val REQUEST_EVENT = "req_event"
     const val FAVORITE_EVENT = "fav_event"
 
-    fun showSongsDialog(activity: Activity, title: String, song: Song) {
+    fun showSongsDialog(activity: Activity, title: String?, song: Song) {
         val songList = ArrayList<Song>()
         songList.add(song)
 
         showSongsDialog(activity, title, songList)
     }
 
-    fun showSongsDialog(activity: Activity?, title: String, songs: List<Song>) {
+    fun showSongsDialog(activity: Activity?, title: String?, songs: List<Song>) {
         if (activity == null) return
 
         AlertDialog.Builder(activity, R.style.DialogTheme)

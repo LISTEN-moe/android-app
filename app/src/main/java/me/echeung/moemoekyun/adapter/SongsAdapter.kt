@@ -112,7 +112,7 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
             binding.root.setOnClickListener { v ->
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val song = adapter.songs!![layoutPosition]
-                    SongActionsUtil.showSongsDialog(adapter.getActivity(), null!!, song)
+                    SongActionsUtil.showSongsDialog(adapter.getActivity(), null, song)
                 }
             }
 
