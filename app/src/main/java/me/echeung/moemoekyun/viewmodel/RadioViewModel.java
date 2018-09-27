@@ -107,19 +107,6 @@ public class RadioViewModel extends BaseViewModel implements AlbumArtUtil.Callba
         return ThemeUtil.getBackgroundColor(context);
     }
 
-    // Indirectly bind to albumArt: https://stackoverflow.com/a/39087434
-    @ColorInt
-    public int getBodyColor(Context context, Bitmap albumArt) {
-        if (App.Companion.getPreferenceUtil().shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt()) {
-            int bodyColor = AlbumArtUtil.getCurrentBodyColor();
-            if (bodyColor != 0) {
-                return bodyColor;
-            }
-        }
-
-        return ThemeUtil.getBodyColor(context);
-    }
-
     @Override
     public void onAlbumArtReady(Bitmap bitmap) {
         notifyPropertyChanged(BR.albumArt);

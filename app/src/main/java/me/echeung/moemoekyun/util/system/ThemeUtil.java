@@ -57,11 +57,6 @@ public final class ThemeUtil {
     }
 
     @ColorInt
-    public static int getBodyColor(Context context) {
-        return resolveColorAttr(setTheme(context), android.R.attr.textColorPrimary);
-    }
-
-    @ColorInt
     private static int resolveColorAttr(Context context, int attrId) {
         if (context != null) {
             TypedValue typedValue = new TypedValue();

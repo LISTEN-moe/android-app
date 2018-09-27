@@ -77,7 +77,6 @@
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_history_white_24dp"
-                android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:visibility="@{vm.currentSong != null}" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -99,7 +98,6 @@
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@{vm.isFavorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}"
-                android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
                 android:visibility="@{vm.currentSong != null}" />
 
         </LinearLayout>
@@ -118,7 +116,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_headset_white_24dp"
-                android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:tint="@color/white"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -126,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@{String.valueOf(vm.listeners)}"
-                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:textColor="@color/white"
                 android:textSize="14sp" />
 
             <ImageView
@@ -136,7 +134,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:src="@{vm.event != null ? @drawable/ic_event_white_24dp : @drawable/ic_person_add_white_24dp}"
-                android:tint="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:tint="@color/white"
                 android:visibility="@{vm.event != null || vm.requester != null}"
                 tools:ignore="ContentDescription" />
 
@@ -146,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@{vm.event != null ? vm.event.name : vm.requester}"
-                android:textColor="@{vm.getBodyColor(context, vm.albumArt)}"
+                android:textColor="@color/white"
                 android:textColorLink="?attr/themeColorAccent"
                 android:textSize="14sp"
                 android:visibility="@{vm.event != null || vm.requester != null}" />

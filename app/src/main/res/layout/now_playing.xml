@@ -37,7 +37,6 @@
                     android:padding="8dp"
                     android:scaleType="fitCenter"
                     android:src="@drawable/ic_down_arrow_white_24dp"
-                    android:tint="@color/white"
                     tools:ignore="ContentDescription" />
 
             </androidx.appcompat.widget.Toolbar>
