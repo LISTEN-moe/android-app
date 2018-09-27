@@ -192,7 +192,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
         Calendar startTime = null;
         try {
-            startTime = TimeUtil.INSTANCE.toCalendar(info.getStartTime());
+            startTime = TimeUtil.toCalendar(info.getStartTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }

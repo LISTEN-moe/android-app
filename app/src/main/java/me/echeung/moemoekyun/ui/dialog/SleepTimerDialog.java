@@ -39,11 +39,11 @@ public class SleepTimerDialog {
             sleepTimerSeekBar.setProgress(prevSleepTimer);
         }
 
-        sleepTimerText.setText(PluralsUtil.INSTANCE.getString(activity, R.plurals.minutes, prevSleepTimer));
+        sleepTimerText.setText(PluralsUtil.getString(activity, R.plurals.minutes, prevSleepTimer));
         sleepTimerSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                sleepTimerText.setText(PluralsUtil.INSTANCE.getString(activity, R.plurals.minutes, progress));
+                sleepTimerText.setText(PluralsUtil.getString(activity, R.plurals.minutes, progress));
             }
 
             @Override
@@ -87,7 +87,7 @@ public class SleepTimerDialog {
         AlarmManager am = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi);
 
-        Toast.makeText(activity, PluralsUtil.INSTANCE.getString(activity, R.plurals.sleep_timer_set, minutes), Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, PluralsUtil.getString(activity, R.plurals.sleep_timer_set, minutes), Toast.LENGTH_SHORT).show();
     }
 
     private void cancelAlarm() {

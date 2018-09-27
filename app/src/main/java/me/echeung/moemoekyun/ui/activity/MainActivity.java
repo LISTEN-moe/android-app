@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity {
         binding.btnRegister.setOnClickListener(v -> showRegisterActivity());
 
         // Check network connectivity
-        if (!NetworkUtil.INSTANCE.isNetworkAvailable(this)) {
+        if (!NetworkUtil.isNetworkAvailable(this)) {
             return;
         }
 
@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity {
      * For retry button in no internet view.
      */
     private void retry() {
-        if (NetworkUtil.INSTANCE.isNetworkAvailable(this)) {
+        if (NetworkUtil.isNetworkAvailable(this)) {
             recreate();
 
             sendBroadcast(new Intent(RadioService.UPDATE));
@@ -236,7 +236,7 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
 
-            UrlUtil.INSTANCE.open(this, albumArtUrl);
+            UrlUtil.open(this, albumArtUrl);
             return true;
         });
     }
