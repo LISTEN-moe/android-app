@@ -21,7 +21,7 @@ class RadioClient(context: Context) {
     init {
         setLibrary(App.preferenceUtil!!.libraryMode)
 
-        val okHttpClient = NetworkClient.getClient()
+        val okHttpClient = NetworkClient.client
 
         this.authUtil = AuthUtil(context)
         this.api = APIClient(okHttpClient, authUtil)
