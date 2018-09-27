@@ -152,8 +152,8 @@
 
         <!-- Now playing bottom sheet -->
         <include
-            layout="@layout/now_playing"
             android:id="@+id/now_playing"
+            layout="@layout/now_playing"
             binding:vm="@{vm}" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
