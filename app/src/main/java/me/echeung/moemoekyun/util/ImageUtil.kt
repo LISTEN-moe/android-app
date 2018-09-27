@@ -13,7 +13,6 @@ import me.echeung.moemoekyun.App
 
 object ImageUtil {
 
-    @JvmStatic
     fun loadImage(v: ImageView, bitmap: Bitmap?) {
         clearImageView(v)
 
@@ -32,7 +31,6 @@ object ImageUtil {
                 .into(v)
     }
 
-    @JvmStatic
     fun loadImage(v: ImageView, url: String?) {
         clearImageView(v)
 
@@ -51,7 +49,6 @@ object ImageUtil {
                 .into(v)
     }
 
-    @JvmStatic
     fun clearCache(context: Context?) {
         if (context == null) return
 
@@ -65,7 +62,6 @@ object ImageUtil {
         Glide.get(context).clearMemory()
     }
 
-    @JvmStatic
     private fun clearImageView(v: ImageView?) {
         if (v == null) return
 

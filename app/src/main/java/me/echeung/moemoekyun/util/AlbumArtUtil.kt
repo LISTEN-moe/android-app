@@ -40,19 +40,16 @@ object AlbumArtUtil {
             return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels)
         }
 
-    @JvmStatic
     fun registerListener(callback: Callback) {
         listeners.add(callback)
     }
 
-    @JvmStatic
     fun unregisterListener(callback: Callback) {
         if (listeners.contains(callback)) {
             listeners.remove(callback)
         }
     }
 
-    @JvmStatic
     fun getCurrentAlbumArt(maxSize: Int): Bitmap? {
         if (currentAlbumArt == null) {
             return null
@@ -65,10 +62,8 @@ object AlbumArtUtil {
             e.printStackTrace()
             null
         }
-
     }
 
-    @JvmStatic
     fun updateAlbumArt(context: Context, song: Song?) {
         if (App.preferenceUtil!!.shouldDownloadImage(context) && song != null) {
             val albumArtUrl = song.albumArtUrl
@@ -91,7 +86,6 @@ object AlbumArtUtil {
         updateListeners(getDefaultAlbumArt(context))
     }
 
-    @JvmStatic
     private fun updateListeners(bitmap: Bitmap) {
         currentAlbumArt = bitmap
         for (listener in listeners) {
@@ -99,7 +93,6 @@ object AlbumArtUtil {
         }
     }
 
-    @JvmStatic
     private fun downloadAlbumArtBitmap(context: Context?, url: String) {
         Handler(Looper.getMainLooper()).post(fun() {
             if (context == null) {
@@ -145,7 +138,6 @@ object AlbumArtUtil {
         })
     }
 
-    @JvmStatic
     private fun getDefaultAlbumArt(context: Context): Bitmap {
         if (defaultAlbumArt == null) {
             defaultAlbumArt = BitmapFactory.decodeResource(context.resources, R.drawable.blank)
@@ -157,7 +149,6 @@ object AlbumArtUtil {
         return defaultAlbumArt!!
     }
 
-    @JvmStatic
     private fun setDefaultColors() {
         currentAccentColor = Color.BLACK
     }

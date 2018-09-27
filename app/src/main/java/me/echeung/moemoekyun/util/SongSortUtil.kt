@@ -17,7 +17,6 @@ object SongSortUtil {
     private const val SORT_TITLE = "song_sort_title"
     private const val SORT_ARTIST = "song_sort_artist"
 
-    @JvmStatic
     fun setListSortType(context: Context, listId: String, sortType: String) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
@@ -25,7 +24,6 @@ object SongSortUtil {
                 .apply()
     }
 
-    @JvmStatic
     fun setListSortDescending(context: Context, listId: String, descending: Boolean) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
@@ -33,7 +31,6 @@ object SongSortUtil {
                 .apply()
     }
 
-    @JvmStatic
     fun sort(context: Context, listId: String, songs: List<Song>) {
         val sortType = getSortTypeByListId(context, listId)
         val sortDescending = getSortDescendingByListId(context, listId)
@@ -57,7 +54,6 @@ object SongSortUtil {
         Collections.sort(songs, sorter)
     }
 
-    @JvmStatic
     fun initSortMenu(context: Context, listId: String, menu: Menu) {
         val sortType = getSortTypeByListId(context, listId)
         when (sortType) {
@@ -71,7 +67,6 @@ object SongSortUtil {
         menu.findItem(R.id.action_sort_desc).isChecked = sortDescending
     }
 
-    @JvmStatic
     fun handleSortMenuItem(item: MenuItem, adapter: SongsAdapter): Boolean {
         when (item.itemId) {
             R.id.action_sort_desc -> {
@@ -96,13 +91,11 @@ object SongSortUtil {
         return false
     }
 
-    @JvmStatic
     private fun getSortTypeByListId(context: Context, listKey: String): String {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getString(PREF_LIST_PREFIX_TYPE + listKey, SORT_TITLE)!!
     }
 
-    @JvmStatic
     private fun getSortDescendingByListId(context: Context, listKey: String): Boolean {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getBoolean(PREF_LIST_PREFIX_DESC + listKey, false)

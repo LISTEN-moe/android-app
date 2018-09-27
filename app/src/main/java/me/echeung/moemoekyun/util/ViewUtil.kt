@@ -11,7 +11,6 @@ object ViewUtil {
 
     const val TRANSITION_DURATION = 250
 
-    @JvmStatic
     fun transitionBackgroundColor(view: View, @ColorInt toColor: Int) {
         if (view.background == null) {
             view.setBackgroundColor(toColor)

@@ -13,7 +13,6 @@ object NetworkClient {
 
     private const val HEADER_USER_AGENT = "User-Agent"
 
-    @JvmStatic
     val client: OkHttpClient = OkHttpClient.Builder()
                 .addNetworkInterceptor { chain ->
                     val request = chain.request()

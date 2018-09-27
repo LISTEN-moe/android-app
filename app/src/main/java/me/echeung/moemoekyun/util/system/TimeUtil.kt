@@ -8,7 +8,6 @@ import java.util.*
 object TimeUtil {
 
     // Example string: "2018-01-20T10:36:35.680Z"
-    @JvmStatic
     @Throws(ParseException::class)
     fun toCalendar(iso8601string: String): Calendar {
         val calendar = GregorianCalendar.getInstance()

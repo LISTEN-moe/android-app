@@ -6,7 +6,6 @@ import android.net.Uri
 
 object UrlUtil {
 
-    @JvmStatic
     fun open(context: Context, url: String) {
         val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         context.startActivity(browserIntent)

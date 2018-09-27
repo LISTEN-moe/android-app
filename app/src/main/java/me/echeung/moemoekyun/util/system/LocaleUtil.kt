@@ -13,7 +13,6 @@ object LocaleUtil {
 
     const val DEFAULT = "default"
 
-    @JvmStatic
     fun setLocale(context: Context): Context {
         if (App.preferenceUtil == null) {
             return context
@@ -23,7 +22,6 @@ object LocaleUtil {
         return setLocale(context, language)
     }
 
-    @JvmStatic
     fun setLocale(context: Context, language: String): Context {
         var context = context
         val res = context.resources
@@ -45,7 +43,6 @@ object LocaleUtil {
         return context
     }
 
-    @JvmStatic
     fun setTitle(activity: Activity) {
         try {
             val label = activity

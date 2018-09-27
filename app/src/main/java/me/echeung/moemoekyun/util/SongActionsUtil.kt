@@ -22,7 +22,6 @@ object SongActionsUtil {
     const val REQUEST_EVENT = "req_event"
     const val FAVORITE_EVENT = "fav_event"
 
-    @JvmStatic
     fun showSongsDialog(activity: Activity, title: String, song: Song) {
         val songList = ArrayList<Song>()
         songList.add(song)
@@ -30,7 +29,6 @@ object SongActionsUtil {
         showSongsDialog(activity, title, songList)
     }
 
-    @JvmStatic
     fun showSongsDialog(activity: Activity?, title: String, songs: List<Song>) {
         if (activity == null) return
 
@@ -47,7 +45,6 @@ object SongActionsUtil {
      *
      * @param song The song to update the favorite status of.
      */
-    @JvmStatic
     fun toggleFavorite(activity: Activity?, song: Song) {
         val songId = song.id
         val isCurrentlyFavorite = song.isFavorite
@@ -94,7 +91,6 @@ object SongActionsUtil {
      *
      * @param song The song to request.
      */
-    @JvmStatic
     fun request(activity: Activity?, song: Song) {
         val user = App.userViewModel!!.user ?: return
 
@@ -127,14 +123,12 @@ object SongActionsUtil {
         })
     }
 
-    @JvmStatic
     fun copyToClipboard(context: Context?, song: Song?) {
         if (context == null || song == null) return
 
         copyToClipboard(context, song.toString())
     }
 
-    @JvmStatic
     fun copyToClipboard(context: Context, songInfo: String) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("song", songInfo)

@@ -10,7 +10,6 @@ import me.echeung.moemoekyun.BuildConfig
 
 object NetworkUtil {
 
-    @JvmStatic
     val userAgent: String
         get() = String.format("%s/%s (%s; %s; Android %s)",
                 BuildConfig.APPLICATION_ID,
@@ -19,7 +18,6 @@ object NetworkUtil {
                 Build.BRAND,
                 Build.VERSION.SDK_INT)
 
-    @JvmStatic
     fun isNetworkAvailable(context: Context?): Boolean {
         if (context != null) {
             val activeNetworkInfo = getActiveNetworkInfo(context)
@@ -34,7 +32,6 @@ object NetworkUtil {
         return false
     }
 
-    @JvmStatic
     fun isWifi(context: Context?): Boolean {
         if (context == null || !isNetworkAvailable(context)) {
             return false
@@ -47,7 +44,6 @@ object NetworkUtil {
                 && activeNetworkInfo.isConnectedOrConnecting)
     }
 
-    @JvmStatic
     private fun getActiveNetworkInfo(context: Context): NetworkInfo? {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
