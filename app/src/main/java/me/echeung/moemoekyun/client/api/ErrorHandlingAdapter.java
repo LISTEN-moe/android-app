@@ -8,7 +8,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import androidx.annotation.NonNull;
-import lombok.RequiredArgsConstructor;
 import me.echeung.moemoekyun.client.api.callback.BaseCallback;
 import me.echeung.moemoekyun.client.api.response.BaseResponse;
 import okhttp3.ResponseBody;
@@ -32,9 +31,12 @@ public class ErrorHandlingAdapter {
         WrappedCall<T> clone();
     }
 
-    @RequiredArgsConstructor
     public static abstract class WrappedCallback<T extends BaseResponse> {
         private final BaseCallback callback;
+
+        public WrappedCallback(BaseCallback callback) {
+            this.callback = callback;
+        }
 
         public abstract void success(T response);
 
@@ -45,9 +47,10 @@ public class ErrorHandlingAdapter {
 
     public static class ErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
         @Override
-        public CallAdapter<?, ?> get(@NonNull Type returnType,
-                                     @NonNull Annotation[] annotations,
-                                     @NonNull Retrofit retrofit) {
+        public CallAdapter<?, ?> get(
+                @NonNull Type returnType,
+                @NonNull Annotation[] annotations,
+                @NonNull Retrofit retrofit) {
             if (getRawType(returnType) != WrappedCall.class) {
                 return null;
             }

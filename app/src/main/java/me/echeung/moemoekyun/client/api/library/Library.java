@@ -1,9 +1,5 @@
 package me.echeung.moemoekyun.client.api.library;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public abstract class Library {
 
     public static final String API_BASE = "https://listen.moe/api/";
@@ -12,11 +8,26 @@ public abstract class Library {
     public static final String CDN_AVATAR_URL = "https://cdn.listen.moe/avatars/";
     public static final String CDN_BANNER_URL = "https://cdn.listen.moe/banners/";
 
-    @Getter
     private final String name;
-    @Getter
     private final String socketUrl;
-    @Getter
     private final String streamUrl;
+
+    public Library(String name, String socketUrl, String streamUrl) {
+        this.name = name;
+        this.socketUrl = socketUrl;
+        this.streamUrl = streamUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSocketUrl() {
+        return socketUrl;
+    }
+
+    public String getStreamUrl() {
+        return streamUrl;
+    }
 
 }

@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.client.api;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Getter;
 import me.echeung.moemoekyun.client.RadioClient;
 import me.echeung.moemoekyun.client.api.cache.SongsCache;
 import me.echeung.moemoekyun.client.api.callback.ArtistCallback;
@@ -42,7 +41,6 @@ public class APIClient {
     // TODO: better handle this
     public static final String AUTH_ERROR = "api-auth-error";
 
-    @Getter
     private static Retrofit retrofit;
 
     private final ArtistsService artistsService;
@@ -54,6 +52,10 @@ public class APIClient {
     private final SongsCache songsCache;
 
     private AuthUtil authUtil;
+
+    public static Retrofit getRetrofit() {
+        return retrofit;
+    }
 
     public APIClient(OkHttpClient okHttpClient, AuthUtil authUtil) {
         this.authUtil = authUtil;

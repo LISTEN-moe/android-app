@@ -26,11 +26,6 @@
         <license>BSD 3-Clause License</license>
     </notice>
     <notice>
-        <name>Lombok</name>
-        <url>https://projectlombok.org/</url>
-        <license>MIT License</license>
-    </notice>
-    <notice>
         <name>Moshi</name>
         <url>https://github.com/square/moshi</url>
         <license>Apache Software License 2.0</license>
