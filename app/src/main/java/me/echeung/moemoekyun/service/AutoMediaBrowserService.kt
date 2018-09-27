@@ -55,7 +55,7 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
 
     private fun setSessionToken() {
         val mediaSession = App.service!!.mediaSession
-        sessionToken = mediaSession.sessionToken
+        sessionToken = mediaSession!!.sessionToken
     }
 
     private fun createPlayableMediaItem(mediaId: String, title: String): MediaBrowserCompat.MediaItem {

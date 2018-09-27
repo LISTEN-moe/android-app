@@ -17,9 +17,9 @@ interface AuthService {
     @POST("login/mfa")
     fun mfa(@Header("Authorization") token: String, @Body body: LoginMfaBody): ErrorHandlingAdapter.WrappedCall<AuthResponse>
 
-    class RegisterBody(email: String, username: String, password: String)
+    class RegisterBody(val email: String, val username: String, val password: String)
 
-    class LoginBody(username: String, password: String)
+    class LoginBody(val username: String, val password: String)
 
-    class LoginMfaBody(token: String)
+    class LoginMfaBody(val token: String)
 }

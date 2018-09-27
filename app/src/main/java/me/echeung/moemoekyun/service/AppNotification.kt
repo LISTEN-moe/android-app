@@ -44,7 +44,7 @@ class AppNotification internal constructor(private val service: RadioService) {
         val clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT)
         val deleteIntent = getPlaybackActionService(RadioService.STOP)
 
-        val style = MediaStyle().setMediaSession(service.mediaSession.sessionToken)
+        val style = MediaStyle().setMediaSession(service.mediaSession!!.sessionToken)
 
         val builder = NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_icon)
@@ -59,8 +59,8 @@ class AppNotification internal constructor(private val service: RadioService) {
                 .setOnlyAlertOnce(true)
 
         // For pre-Oreo colored notifications
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !AlbumArtUtil.isDefaultAlbumArt()) {
-            builder.color = AlbumArtUtil.getCurrentAccentColor()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !AlbumArtUtil.isDefaultAlbumArt) {
+            builder.color = AlbumArtUtil.currentAccentColor
         }
 
         // Needs to be set after setting the color

@@ -180,7 +180,7 @@ public class MainActivity extends BaseActivity {
         nowPlayingSheet.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                App.Companion.getPreferenceUtil().setIsNowPlayingExpanded(newState == BottomSheetBehavior.STATE_EXPANDED);
+                App.Companion.getPreferenceUtil().setNowPlayingExpanded(newState == BottomSheetBehavior.STATE_EXPANDED);
             }
 
             @Override
@@ -221,7 +221,7 @@ public class MainActivity extends BaseActivity {
 
         // Long press song info to copy to clipboard
         vCurrentSong.setOnLongClickListener(v -> {
-            SongActionsUtil.copyToClipboard(this, viewModel.getCurrentSong());
+            SongActionsUtil.INSTANCE.copyToClipboard(this, viewModel.getCurrentSong());
             return true;
         });
 
@@ -396,7 +396,7 @@ public class MainActivity extends BaseActivity {
         playPauseCallback = new Observable.OnPropertyChangedCallback() {
             @Override
             public void onPropertyChanged(Observable sender, int propertyId) {
-                if (propertyId == BR.isPlaying) {
+                if (propertyId == BR.playing) {
                     setPlayPauseDrawable();
                 }
             }
@@ -406,7 +406,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setPlayPauseDrawable() {
-        boolean isPlaying = viewModel.getIsPlaying();
+        boolean isPlaying = viewModel.isPlaying();
         playPauseView.toggle(isPlaying);
         miniPlayPauseView.toggle(isPlaying);
     }
@@ -425,7 +425,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showHistory() {
-        SongActionsUtil.showSongsDialog(this, getString(R.string.last_played), viewModel.getHistory());
+        SongActionsUtil.INSTANCE.showSongsDialog(this, getString(R.string.last_played), viewModel.getHistory());
     }
 
     private void setLibraryMode(String libraryMode) {
