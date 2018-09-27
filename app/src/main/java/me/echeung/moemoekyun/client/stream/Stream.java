@@ -172,7 +172,7 @@ public class Stream {
         // Set stream
         String streamUrl = RadioClient.Companion.getLibrary().getStreamUrl();
         if (!streamUrl.equals(currentStreamUrl)) {
-            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.getUserAgent());
+            DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(context, NetworkUtil.INSTANCE.getUserAgent());
             MediaSource streamSource = new ExtractorMediaSource.Factory(dataSourceFactory)
                     .setExtractorsFactory(new DefaultExtractorsFactory())
                     .createMediaSource(Uri.parse(streamUrl));

@@ -67,7 +67,7 @@ public final class PreferenceUtil {
     public boolean shouldDownloadImage(Context context) {
         String pref = preferences.getString(PREF_GENERAL_DOWNLOAD, DOWNLOAD_ALWAYS);
         return pref.equals(DOWNLOAD_ALWAYS)
-                || pref.equals(DOWNLOAD_WIFI) && NetworkUtil.isWifi(context);
+                || pref.equals(DOWNLOAD_WIFI) && NetworkUtil.INSTANCE.isWifi(context);
     }
 
     public boolean shouldPreferRomaji() {

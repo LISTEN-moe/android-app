@@ -192,7 +192,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
 
         Calendar startTime = null;
         try {
-            startTime = TimeUtil.toCalendar(info.getStartTime());
+            startTime = TimeUtil.INSTANCE.toCalendar(info.getStartTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -511,7 +511,7 @@ public class RadioService extends Service implements Socket.Listener, AlbumArtUt
                     wasPlayingBeforeLoss = isPlaying();
                     if (wasPlayingBeforeLoss &&
                             (App.Companion.getPreferenceUtil().shouldPauseAudioOnLoss()
-                                    || AutoMediaBrowserService.isCarUiMode(this))) {
+                                    || AutoMediaBrowserService.Companion.isCarUiMode(this))) {
                         pause();
                     }
                     break;

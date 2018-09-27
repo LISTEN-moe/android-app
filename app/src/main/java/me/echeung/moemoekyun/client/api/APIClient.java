@@ -349,7 +349,7 @@ public class APIClient {
 
         for (SongListItem song : songs) {
             if (query == null || song.search(query)) {
-                filteredSongs.add(SongListItem.toSong(song));
+                filteredSongs.add(SongListItem.Companion.toSong(song));
             }
         }
 
