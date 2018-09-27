@@ -68,24 +68,24 @@ class Song {
     fun search(query: String): Boolean {
         val query = query.toLowerCase().trim()
 
-        if (title!!.toLowerCase().contains(query)) {
+        if (title != null && title!!.toLowerCase()!!.contains(query)) {
             return true
         }
 
-        if (titleRomaji!!.toLowerCase().contains(query)) {
+        if (titleRomaji != null && titleRomaji!!.toLowerCase().contains(query)) {
             return true
         }
 
-        if (titleSearchRomaji!!.toLowerCase().contains(query)) {
+        if (titleSearchRomaji != null && titleSearchRomaji!!.toLowerCase()!!.contains(query)) {
             return true
         }
 
         if (albums != null) {
             for (album in albums!!) {
-                if (album.name!!.toLowerCase().contains(query)) {
+                if (album.name != null && album.name!!.toLowerCase().contains(query)) {
                     return true
                 }
-                if (album.nameRomaji!!.toLowerCase().contains(query)) {
+                if (album.nameRomaji != null && album.nameRomaji!!.toLowerCase().contains(query)) {
                     return true
                 }
             }
@@ -93,10 +93,10 @@ class Song {
 
         if (artists != null) {
             for (artist in artists!!) {
-                if (artist.name!!.toLowerCase().contains(query)) {
+                if (artist.name != null && artist.name!!.toLowerCase().contains(query)) {
                     return true
                 }
-                if (artist.nameRomaji!!.toLowerCase().contains(query)) {
+                if (artist.nameRomaji != null && artist.nameRomaji!!.toLowerCase().contains(query)) {
                     return true
                 }
             }

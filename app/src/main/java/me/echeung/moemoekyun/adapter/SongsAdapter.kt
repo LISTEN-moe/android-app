@@ -20,8 +20,8 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
 
     private val activity: WeakReference<Activity> = WeakReference(activity)
 
-    private var allSongs: MutableList<Song>? = null
-    private var visibleSongs: MutableList<Song>? = null
+    private var allSongs: List<Song>? = null
+    private var visibleSongs: List<Song>? = null
 
     private var filterQuery: String? = null
 
@@ -37,7 +37,7 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
                 songs[Random().nextInt(songs.size)]
         }
 
-    var songs: MutableList<Song>?
+    var songs: List<Song>?
         get() = visibleSongs
         set(songs) {
             this.allSongs = songs
@@ -95,12 +95,7 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
         visibleSongs = allSongs
 
         if (!TextUtils.isEmpty(filterQuery)) {
-            visibleSongs = ArrayList()
-            for (song in allSongs!!) {
-                if (song.search(filterQuery!!)) {
-                    visibleSongs!!.add(song)
-                }
-            }
+            visibleSongs = allSongs!!.filter { song -> song.search(filterQuery!!) }.toList()
         }
 
         SongSortUtil.sort(activityRef, listId, visibleSongs!!)

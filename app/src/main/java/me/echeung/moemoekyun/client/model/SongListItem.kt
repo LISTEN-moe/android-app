@@ -38,15 +38,15 @@ class SongListItem {
     fun search(query: String): Boolean {
         val query = query.toLowerCase().trim()
 
-        if (title!!.toLowerCase().contains(query)) {
+        if (title != null && title!!.toLowerCase().contains(query)) {
             return true
         }
 
-        if (titleRomaji!!.toLowerCase().contains(query)) {
+        if (titleRomaji != null && titleRomaji!!.toLowerCase().contains(query)) {
             return true
         }
 
-        if (titleSearchRomaji!!.toLowerCase().contains(query)) {
+        if (titleSearchRomaji != null && titleSearchRomaji!!.toLowerCase().contains(query)) {
             return true
         }
 
