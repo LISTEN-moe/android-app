@@ -23,12 +23,14 @@ class SettingsActivity : BaseActivity() {
         setSupportActionBar(findViewById(R.id.appbar))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        supportFragmentManager.beginTransaction().replace(R.id.content_frame, SettingsFragment()).commit()
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.content_frame, SettingsFragment())
+                .commit()
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
 
-        override fun onCreatePreferences(bundle: Bundle, s: String) {
+        override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_general)
             addPreferencesFromResource(R.xml.pref_lockscreen)
             addPreferencesFromResource(R.xml.pref_color)
