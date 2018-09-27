@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
 
         // Invalidate token if needed
         boolean isAuthed = App.Companion.getAuthUtil().checkAuthTokenValidity();
-        viewModel.setIsAuthed(isAuthed);
+        viewModel.setAuthed(isAuthed);
         if (!isAuthed) {
             App.Companion.getUserViewModel().reset();
         }
@@ -347,7 +347,7 @@ public class MainActivity extends BaseActivity {
     private void broadcastAuthEvent() {
         sendBroadcast(new Intent(MainActivity.AUTH_EVENT));
 
-        viewModel.setIsAuthed(App.Companion.getAuthUtil().isAuthenticated());
+        viewModel.setAuthed(App.Companion.getAuthUtil().isAuthenticated());
     }
 
     private void showRegisterActivity() {
