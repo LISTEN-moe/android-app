@@ -2,10 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
-repositories {
-    mavenCentral()
-}
-
 android {
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
@@ -105,4 +101,14 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.3'
+}
+
+buildscript {
+    ext.kotlin_version = '1.2.71'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
 }
