@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.adapter
 
 import android.content.Context
-import android.os.Bundle
 import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -26,8 +25,7 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position) as Fragment
-        val fragmentRef = fragments.get(position)
-        fragmentRef?.clear()
+        fragments.get(position)?.clear()
         fragments.put(position, WeakReference(fragment))
         return fragment
     }
@@ -44,7 +42,7 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
 
     override fun getItem(position: Int): Fragment {
         val holder = holders[position]
-        return Fragment.instantiate(context, holder.className, holder.params)
+        return Fragment.instantiate(context, holder.className)
     }
 
     override fun getPageTitle(position: Int): CharSequence {
@@ -56,19 +54,12 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
     }
 
     private fun add(className: Class<out Fragment>, drawableId: Int) {
-        val holder = TabHolder()
-        holder.className = className.name
-        holder.drawableId = drawableId
-        holder.params = null
-
-        holders.add(holder)
+        holders.add(TabHolder(className.name, drawableId))
         notifyDataSetChanged()
     }
 
-    private class TabHolder {
-        internal var className: String? = null
-        internal var drawableId: Int = 0
-        internal var params: Bundle? = null
-    }
+    private data class TabHolder(
+            val className: String,
+            val drawableId: Int)
 
 }

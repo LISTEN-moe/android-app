@@ -23,8 +23,7 @@ class App : Application(), ServiceConnection {
 
     override fun onCreate() {
         super.onCreate()
-
-        instance = this
+        INSTANCE = this
 
         preferenceUtil = PreferenceUtil(this)
 
@@ -67,6 +66,7 @@ class App : Application(), ServiceConnection {
     }
 
     companion object {
+        private lateinit var INSTANCE: App
 
         var service: RadioService? = null
             set(radioService) {
@@ -91,10 +91,8 @@ class App : Application(), ServiceConnection {
         var preferenceUtil: PreferenceUtil? = null
             private set
 
-        private var instance: App? = null
-
-        val context: Context?
-            get() = instance
+        val context: Context
+            get() = INSTANCE
 
         val authUtil: AuthUtil
             get() = radioClient!!.authUtil

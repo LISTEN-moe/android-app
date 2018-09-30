@@ -33,7 +33,7 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
 
         isFavorited = currentSong != null && currentSong.isFavorite
 
-        AlbumArtUtil.updateAlbumArt(App.context!!, currentSong)
+        AlbumArtUtil.updateAlbumArt(App.context, currentSong)
 
         notifyPropertyChanged(BR.currentSong)
         notifyPropertyChanged(BR.currentSongProgress)
