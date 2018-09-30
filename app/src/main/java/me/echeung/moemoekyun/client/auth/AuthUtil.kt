@@ -11,9 +11,9 @@ import java.lang.ref.WeakReference
  */
 class AuthUtil(context: Context) {
 
-    private var mfaToken: String? = null
-
     private val contextRef: WeakReference<Context> = WeakReference(context)
+
+    private var mfaToken: String? = null
 
     /**
      * Checks if the user has previously logged in (i.e. a token is stored).
@@ -123,7 +123,7 @@ class AuthUtil(context: Context) {
     }
 
     private fun getPrefixedToken(token: String?): String {
-        return String.format("Bearer %s", token)
+        return "Bearer $token"
     }
 
     companion object {

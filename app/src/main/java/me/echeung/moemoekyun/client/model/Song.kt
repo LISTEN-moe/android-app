@@ -62,7 +62,7 @@ class Song {
         }
 
     override fun toString(): String {
-        return String.format("%s - %s", titleString, artistsString)
+        return "$titleString - $artistsString"
     }
 
     fun search(query: String): Boolean {

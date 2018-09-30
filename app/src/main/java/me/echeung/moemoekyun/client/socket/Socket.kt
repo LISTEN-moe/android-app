@@ -57,7 +57,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
     fun reconnect() {
         if (attemptingReconnect) return
 
-        Log.d(TAG, String.format("Reconnecting to socket in %d ms", retryTime))
+        Log.d(TAG, "Reconnecting to socket in $retryTime ms")
 
         disconnect()
 
@@ -93,7 +93,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
 
         // Handshake with socket
         val authToken = if (authUtil.isAuthenticated) authUtil.authTokenWithPrefix else ""
-        socket!!.send(String.format("{ \"op\": 0, \"d\": { \"auth\": \"%s\" } }", authToken))
+        socket!!.send("{ \"op\": 0, \"d\": { \"auth\": \"$authToken\" } }")
     }
 
     override fun onMessage(webSocket: WebSocket?, text: String?) {
@@ -130,7 +130,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
         }
 
         heartbeatHandler.postDelayed(heartbeatTask, milliseconds.toLong())
-        Log.d(TAG, String.format("Created heartbeat task for %d ms", milliseconds))
+        Log.d(TAG, "Created heartbeat task for $milliseconds ms")
     }
 
     private fun clearHeartbeat() {
