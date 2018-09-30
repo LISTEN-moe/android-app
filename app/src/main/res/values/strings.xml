@@ -144,10 +144,16 @@
     <string name="pref_header_general">General</string>
     <string name="pref_title_language">Language</string>
     <string name="pref_title_general_download">Auto-download images</string>
+
+    <string name="pref_header_music">Music</string>
     <string name="pref_title_general_romaji">Prefer romaji</string>
     <string name="pref_title_general_romaji_summary">\"Nanahira\" instead of \"ななひら\"</string>
     <string name="pref_title_general_random_request_title">Random request title</string>
     <string name="pref_title_general_random_request_summary">Show the requested song\'s title</string>
+    <string name="pref_title_lockscreen_albumart_title">Album art</string>
+    <string name="pref_title_lockscreen_albumart_summary">Show album art on lockscreen and Android Auto</string>
+    <string name="pref_title_color_now_playing_title">Color now playing screen</string>
+    <string name="pref_title_color_now_playing_summary">Use the album art\'s main color</string>
 
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy_title">Pause for headphones</string>
@@ -156,13 +162,5 @@
     <string name="pref_title_audio_pause_on_loss_summary">Music will pause when other media plays, such as videos or other music</string>
     <string name="pref_title_audio_duck_title">Volume ducking</string>
     <string name="pref_title_audio_duck_summary">Music volume will be lowered for notifications, navigation, etc.</string>
-
-    <string name="pref_header_lockscreen">Lockscreen</string>
-    <string name="pref_title_lockscreen_albumart_title">Album art</string>
-    <string name="pref_title_lockscreen_albumart_summary">Display album art on lockscreen and Android Auto</string>
-
-    <string name="pref_header_color">Color</string>
-    <string name="pref_title_color_now_playing_title">Color now playing</string>
-    <string name="pref_title_color_now_playing_summary">Use the album art\'s main color</string>
 
 </resources>

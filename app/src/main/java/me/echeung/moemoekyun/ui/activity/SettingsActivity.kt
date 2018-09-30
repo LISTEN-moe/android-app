@@ -30,8 +30,7 @@ class SettingsActivity : BaseActivity() {
 
         override fun onCreatePreferences(bundle: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.pref_general)
-            addPreferencesFromResource(R.xml.pref_lockscreen)
-            addPreferencesFromResource(R.xml.pref_color)
+            addPreferencesFromResource(R.xml.pref_music)
             addPreferencesFromResource(R.xml.pref_audio)
         }
 

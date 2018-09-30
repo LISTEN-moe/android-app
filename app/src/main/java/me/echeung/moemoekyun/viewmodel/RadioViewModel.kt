@@ -203,7 +203,7 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
         when (key) {
             PreferenceUtil.PREF_GENERAL_ROMAJI -> notifyPropertyChanged(BR.currentSong)
 
-            PreferenceUtil.PREF_COLOR_NOW_PLAYING -> notifyPropertyChanged(BR.albumArt)
+            PreferenceUtil.PREF_MUSIC_COLOR_NOW_PLAYING -> notifyPropertyChanged(BR.albumArt)
         }
     }
 

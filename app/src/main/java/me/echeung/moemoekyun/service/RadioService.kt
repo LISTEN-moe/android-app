@@ -506,7 +506,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
-            PreferenceUtil.PREF_LOCKSCREEN_ALBUMART, PreferenceUtil.PREF_GENERAL_ROMAJI -> updateMediaSession()
+            PreferenceUtil.PREF_MUSIC_LOCKSCREEN_ALBUMART, PreferenceUtil.PREF_GENERAL_ROMAJI -> updateMediaSession()
         }
     }
 

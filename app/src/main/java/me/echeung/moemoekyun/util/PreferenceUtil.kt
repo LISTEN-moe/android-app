@@ -55,7 +55,7 @@ class PreferenceUtil(context: Context) {
     }
 
     fun shouldShowRandomRequestTitle(): Boolean {
-        return preferences.getBoolean(PREF_GENERAL_RANDOM_REQUEST_TITLE, true)
+        return preferences.getBoolean(PREF_MUSIC_RANDOM_REQUEST_TITLE, true)
     }
 
     fun shouldPauseOnNoisy(): Boolean {
@@ -71,11 +71,11 @@ class PreferenceUtil(context: Context) {
     }
 
     fun shouldShowLockscreenAlbumArt(): Boolean {
-        return preferences.getBoolean(PREF_LOCKSCREEN_ALBUMART, true)
+        return preferences.getBoolean(PREF_MUSIC_LOCKSCREEN_ALBUMART, true)
     }
 
     fun shouldColorNowPlaying(): Boolean {
-        return preferences.getBoolean(PREF_COLOR_NOW_PLAYING, true)
+        return preferences.getBoolean(PREF_MUSIC_COLOR_NOW_PLAYING, true)
     }
 
     fun clearSleepTimer() {
@@ -85,26 +85,25 @@ class PreferenceUtil(context: Context) {
     }
 
     companion object {
+        private const val LIBRARY_MODE = "library_mode"
+        private const val NOW_PLAYING_EXPANDED = "now_playing_expanded"
+        private const val SLEEP_TIMER_MINS = "pref_sleep_timer"
+
         const val PREF_GENERAL_LANGUAGE = "pref_general_language"
         const val PREF_GENERAL_DOWNLOAD = "pref_general_download"
         const val PREF_GENERAL_ROMAJI = "pref_general_romaji"
-        const val PREF_GENERAL_RANDOM_REQUEST_TITLE = "pref_general_random_request_title"
+
+        const val PREF_MUSIC_RANDOM_REQUEST_TITLE = "pref_general_random_request_title"
+        const val PREF_MUSIC_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart"
+        const val PREF_MUSIC_COLOR_NOW_PLAYING = "pref_color_now_playing"
 
         const val PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy"
         const val PREF_AUDIO_DUCK = "pref_audio_duck"
         const val PREF_AUDIO_PAUSE_ON_LOSS = "pref_audio_pause_on_loss"
 
-        const val PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart"
-
-        const val PREF_COLOR_NOW_PLAYING = "pref_color_now_playing"
-
         const val DOWNLOAD_ALWAYS = "always"
         const val DOWNLOAD_WIFI = "wifi"
         const val DOWNLOAD_NEVER = "never"
-
-        private const val LIBRARY_MODE = "library_mode"
-        private const val NOW_PLAYING_EXPANDED = "now_playing_expanded"
-        private const val SLEEP_TIMER_MINS = "pref_sleep_timer"
     }
 
 }
