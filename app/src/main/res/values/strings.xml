@@ -140,7 +140,6 @@
     <string name="settings">Settings</string>
 
     <string name="pref_header_general">General</string>
-    <string name="pref_title_theme">Theme</string>
     <string name="pref_title_language">Language</string>
     <string name="system_default">System default</string>
     <string name="restart_required">Changes will be applied after the app is restarted</string>
@@ -162,7 +161,6 @@
 
     <string name="pref_header_color">Color</string>
     <string name="pref_title_color_now_playing">Color now playing based on album art</string>
-    <string name="pref_title_color_navbar">Theme on-screen navigation bar</string>
 
     <string name="pref_header_advanced">Advanced</string>
     <string name="pref_title_advanced_clear_image_cache">Clear image cache</string>

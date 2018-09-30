@@ -12,9 +12,6 @@ class PreferenceUtil(context: Context) {
 
     private val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
-    val theme: String
-        get() = preferences.getString(PREF_GENERAL_THEME, THEME_DEFAULT)!!
-
     val language: String
         get() = preferences.getString(PREF_GENERAL_LANGUAGE, LocaleUtil.DEFAULT)!!
 
@@ -81,10 +78,6 @@ class PreferenceUtil(context: Context) {
         return preferences.getBoolean(PREF_COLOR_NOW_PLAYING, true)
     }
 
-    fun shouldColorNavbar(): Boolean {
-        return preferences.getBoolean(PREF_COLOR_NAVBAR, false)
-    }
-
     fun clearSleepTimer() {
         preferences.edit()
                 .remove(SLEEP_TIMER_MINS)
@@ -105,12 +98,8 @@ class PreferenceUtil(context: Context) {
         const val PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart"
 
         const val PREF_COLOR_NOW_PLAYING = "pref_color_now_playing"
-        const val PREF_COLOR_NAVBAR = "pref_color_navbar"
 
         const val PREF_ADVANCED_CLEAR_IMAGE_CACHE = "pref_advanced_clear_image_cache"
-
-        const val THEME_DEFAULT = "four"
-        const val THEME_CHRISTMAS = "christmas"
 
         const val DOWNLOAD_ALWAYS = "always"
         const val DOWNLOAD_WIFI = "wifi"

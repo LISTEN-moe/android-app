@@ -5,13 +5,6 @@
         android:title="@string/pref_header_general">
 
         <androidx.preference.ListPreference
-            android:key="@string/pref_key_general_theme"
-            android:title="@string/pref_title_theme"
-            android:entries="@array/pref_theme_names"
-            android:entryValues="@array/pref_theme_codes"
-            android:defaultValue="@string/pref_value_theme_default" />
-
-        <androidx.preference.ListPreference
             android:key="@string/pref_key_general_language"
             android:title="@string/pref_title_language"
             android:entries="@array/pref_language_names"

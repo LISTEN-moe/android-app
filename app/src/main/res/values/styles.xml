@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="BaseTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -16,28 +16,11 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="android:textAppearanceButton">@style/ButtonTheme</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    </style>
-
-    <!-- 3.0 + 1.0 theme -->
-    <style name="AppTheme" parent="BaseTheme">
-        <item name="android:windowBackground">@color/four_dark_grey</item>
 
         <item name="themeColorAccent">@color/colorAccent</item>
         <item name="themeBackgroundImage">@drawable/background_four</item>
         <item name="themeLogoImage">@drawable/logo</item>
         <item name="themeDefaultAvatarImage">@drawable/avatar_v4</item>
-    </style>
-
-    <!-- Christmas theme -->
-    <style name="AppThemeChristmas" parent="AppTheme">
-        <item name="colorPrimary">@color/christmas_accent</item>
-        <item name="colorPrimaryDark">@color/christmas_accent</item>
-        <item name="colorAccent">@color/christmas_accent</item>
-
-        <item name="themeColorAccent">@color/christmas_accent</item>
-        <item name="themeBackgroundImage">@drawable/background_christmas</item>
-        <item name="themeLogoImage">@drawable/logo_christmas</item>
-        <item name="themeDefaultAvatarImage">@drawable/avatar_kanna_christmas</item>
     </style>
 
     <!-- TabHost -->

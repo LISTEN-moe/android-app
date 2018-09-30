@@ -47,14 +47,6 @@ class SettingsActivity : BaseActivity() {
         }
 
         private fun invalidateSettings() {
-            val themeSetting = findPreference(PreferenceUtil.PREF_GENERAL_THEME)
-            setSummary(themeSetting)
-            themeSetting.setOnPreferenceChangeListener { preference, o ->
-                setSummary(themeSetting, o)
-                recreateBackStack()
-                true
-            }
-
             val languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE)
             setSummary(languageSetting)
             languageSetting.setOnPreferenceChangeListener { preference, o ->

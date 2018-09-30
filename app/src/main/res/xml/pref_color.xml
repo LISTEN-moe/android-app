@@ -9,11 +9,6 @@
             android:title="@string/pref_title_color_now_playing"
             android:defaultValue="true" />
 
-        <androidx.preference.SwitchPreferenceCompat
-            android:key="@string/pref_key_color_navbar"
-            android:title="@string/pref_title_color_navbar"
-            android:defaultValue="false" />
-
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
