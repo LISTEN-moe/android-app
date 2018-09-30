@@ -16,7 +16,6 @@ import java.util.*
 
 class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
-    private val artistsService: ArtistsService
     private val authService: AuthService
     private val favoritesService: FavoritesService
     private val requestsService: RequestsService
@@ -32,7 +31,6 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
 
-        artistsService = retrofit.create(ArtistsService::class.java)
         authService = retrofit.create(AuthService::class.java)
         favoritesService = retrofit.create(FavoritesService::class.java)
         requestsService = retrofit.create(RequestsService::class.java)
@@ -80,7 +78,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                         val userToken = response.token
                         authUtil.authToken = userToken
                         authUtil.clearMfaAuthToken()
-                        callback.onSuccess(userToken!!)
+                        callback.onSuccess(userToken)
                     }
                 })
     }
@@ -94,7 +92,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
         authService.register(AuthService.RegisterBody(email, username, password))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse) {
-                        callback.onSuccess(response.message!!)
+                        callback.onSuccess(response.message)
                     }
                 })
     }
@@ -113,7 +111,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
         usersService.getUserInfo(authUtil.authTokenWithPrefix, "@me")
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<UserResponse>(callback) {
                     override fun success(response: UserResponse) {
-                        callback.onSuccess(response.user!!)
+                        callback.onSuccess(response.user)
                     }
                 })
     }
@@ -133,7 +131,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     override fun success(response: FavoritesResponse) {
                         val favorites = response.favorites
-                        for (song in favorites!!) {
+                        for (song in favorites) {
                             song.isFavorite = true
                         }
                         callback.onSuccess(favorites)
@@ -230,7 +228,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
         songsService.getSongs(authUtil.authTokenWithPrefix, RadioClient.library!!.name)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     override fun success(response: SongsResponse) {
-                        callback.onSuccess(response.songs!!)
+                        callback.onSuccess(response.songs)
                     }
                 })
     }
@@ -257,45 +255,6 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 callback.onFailure(message)
             }
         })
-    }
-
-    /**
-     * Gets a list of all artists.
-     *
-     * @param callback Listener to handle the response.
-     */
-    fun getArtists(callback: ArtistsCallback) {
-        if (!authUtil.isAuthenticated) {
-            callback.onFailure(AUTH_ERROR)
-            return
-        }
-
-        artistsService.getArtists(authUtil.authTokenWithPrefix, RadioClient.library!!.name)
-                .enqueue(object : ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
-                    override fun success(response: ArtistsResponse) {
-                        callback.onSuccess(response.artists!!)
-                    }
-                })
-    }
-
-    /**
-     * Gets an artist's info.
-     *
-     * @param artistId Artist to get.
-     * @param callback Listener to handle the response.
-     */
-    fun getArtist(artistId: String, callback: ArtistCallback) {
-        if (!authUtil.isAuthenticated) {
-            callback.onFailure(AUTH_ERROR)
-            return
-        }
-
-        artistsService.getArtist(authUtil.authTokenWithPrefix, RadioClient.library!!.name, artistId)
-                .enqueue(object : ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
-                    override fun success(response: ArtistResponse) {
-                        callback.onSuccess(response.artist!!)
-                    }
-                })
     }
 
     private fun filterSongs(songs: List<SongListItem>, query: String?): List<Song> {

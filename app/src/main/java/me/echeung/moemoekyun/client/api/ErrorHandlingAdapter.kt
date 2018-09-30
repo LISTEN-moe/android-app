@@ -84,7 +84,7 @@ object ErrorHandlingAdapter {
                 }
 
                 override fun onFailure(call: Call<T>, t: Throwable) {
-                    error(callback, t.message)
+                    error(callback, t.message!!)
                 }
             })
         }
@@ -97,8 +97,8 @@ object ErrorHandlingAdapter {
             return WrappedCallAdapter(call.clone())
         }
 
-        private fun error(callback: WrappedCallback<T>, message: String?) {
-            Log.e(TAG, "API error: " + message!!)
+        private fun error(callback: WrappedCallback<T>, message: String) {
+            Log.e(TAG, "API error: $message")
             callback.error(message)
         }
     }
