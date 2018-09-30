@@ -52,17 +52,17 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     fun authenticate(username: String, password: String, callback: LoginCallback) {
         authService.login(AuthService.LoginBody(username, password))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
-                    override fun success(response: AuthResponse?) {
-                        val userToken = response!!.token
+                    override fun success(response: AuthResponse) {
+                        val userToken = response.token
 
-                        if (response.isMfa) {
-                            authUtil.setMfaAuthToken(userToken!!)
+                        if (response.mfa) {
+                            authUtil.setMfaAuthToken(userToken)
                             callback.onMfaRequired(userToken)
                             return
                         }
 
                         authUtil.authToken = userToken
-                        callback.onSuccess(userToken!!)
+                        callback.onSuccess(userToken)
                     }
                 })
     }
@@ -76,8 +76,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     fun authenticateMfa(otpToken: String, callback: LoginCallback) {
         authService.mfa(authUtil.mfaAuthTokenWithPrefix, AuthService.LoginMfaBody(otpToken))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
-                    override fun success(response: AuthResponse?) {
-                        val userToken = response!!.token
+                    override fun success(response: AuthResponse) {
+                        val userToken = response.token
                         authUtil.authToken = userToken
                         authUtil.clearMfaAuthToken()
                         callback.onSuccess(userToken!!)
@@ -93,8 +93,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     fun register(email: String, username: String, password: String, callback: RegisterCallback) {
         authService.register(AuthService.RegisterBody(email, username, password))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
-                    override fun success(response: BaseResponse?) {
-                        callback.onSuccess(response!!.message!!)
+                    override fun success(response: BaseResponse) {
+                        callback.onSuccess(response.message!!)
                     }
                 })
     }
@@ -112,8 +112,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         usersService.getUserInfo(authUtil.authTokenWithPrefix, "@me")
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<UserResponse>(callback) {
-                    override fun success(response: UserResponse?) {
-                        callback.onSuccess(response!!.user!!)
+                    override fun success(response: UserResponse) {
+                        callback.onSuccess(response.user!!)
                     }
                 })
     }
@@ -131,8 +131,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         favoritesService.getFavorites(authUtil.authTokenWithPrefix, RadioClient.library!!.name, "@me")
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
-                    override fun success(response: FavoritesResponse?) {
-                        val favorites = response!!.favorites
+                    override fun success(response: FavoritesResponse) {
+                        val favorites = response.favorites
                         for (song in favorites!!) {
                             song.isFavorite = true
                         }
@@ -170,7 +170,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         favoritesService.favorite(authUtil.authTokenWithPrefix, songId)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
-                    override fun success(response: BaseResponse?) {
+                    override fun success(response: BaseResponse) {
                         callback.onSuccess()
                     }
                 })
@@ -190,7 +190,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         favoritesService.removeFavorite(authUtil.authTokenWithPrefix, songId)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
-                    override fun success(response: BaseResponse?) {
+                    override fun success(response: BaseResponse) {
                         callback.onSuccess()
                     }
                 })
@@ -210,7 +210,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         requestsService.request(authUtil.authTokenWithPrefix, RadioClient.library!!.name, songId)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
-                    override fun success(response: BaseResponse?) {
+                    override fun success(response: BaseResponse) {
                         callback.onSuccess()
                     }
                 })
@@ -229,8 +229,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         songsService.getSongs(authUtil.authTokenWithPrefix, RadioClient.library!!.name)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
-                    override fun success(response: SongsResponse?) {
-                        callback.onSuccess(response!!.songs!!)
+                    override fun success(response: SongsResponse) {
+                        callback.onSuccess(response.songs!!)
                     }
                 })
     }
@@ -272,8 +272,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         artistsService.getArtists(authUtil.authTokenWithPrefix, RadioClient.library!!.name)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<ArtistsResponse>(callback) {
-                    override fun success(response: ArtistsResponse?) {
-                        callback.onSuccess(response!!.artists!!)
+                    override fun success(response: ArtistsResponse) {
+                        callback.onSuccess(response.artists!!)
                     }
                 })
     }
@@ -292,8 +292,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         artistsService.getArtist(authUtil.authTokenWithPrefix, RadioClient.library!!.name, artistId)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<ArtistResponse>(callback) {
-                    override fun success(response: ArtistResponse?) {
-                        callback.onSuccess(response!!.artist!!)
+                    override fun success(response: ArtistResponse) {
+                        callback.onSuccess(response.artist!!)
                     }
                 })
     }

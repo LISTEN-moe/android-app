@@ -8,7 +8,8 @@ import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 
-// Based on https://github.com/square/retrofit/blob/e6a7cd01657670807bed24f6f4ed56eb59c9c9ab/samples/src/main/java/com/example/retrofit/ErrorHandlingAdapter.java
+// Based on:
+// https://github.com/square/retrofit/blob/e6a7cd01657670807bed24f6f4ed56eb59c9c9ab/samples/src/main/java/com/example/retrofit/ErrorHandlingAdapter.java
 object ErrorHandlingAdapter {
 
     private val TAG = ErrorHandlingAdapter::class.java.simpleName
@@ -22,10 +23,10 @@ object ErrorHandlingAdapter {
     }
 
     abstract class WrappedCallback<T : BaseResponse>(private val callback: BaseCallback) {
-        abstract fun success(response: T?)
+        abstract fun success(response: T)
 
-        fun error(message: String?) {
-            callback.onFailure(message!!)
+        fun error(message: String) {
+            callback.onFailure(message)
         }
     }
 
@@ -61,7 +62,7 @@ object ErrorHandlingAdapter {
             call.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
                     if (response.isSuccessful) {
-                        callback.success(response.body())
+                        callback.success(response.body()!!)
                     } else {
                         if (response.errorBody() == null) {
                             error(callback, "Unsuccessful response: $response")

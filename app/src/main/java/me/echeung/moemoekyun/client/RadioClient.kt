@@ -45,7 +45,6 @@ class RadioClient(context: Context) {
     }
 
     companion object {
-
         var library: Library? = null
             private set
     }
