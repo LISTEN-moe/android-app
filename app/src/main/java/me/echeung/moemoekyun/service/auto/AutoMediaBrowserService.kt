@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.service
+package me.echeung.moemoekyun.service.auto
 
 import android.app.UiModeManager
 import android.content.ComponentName
@@ -13,6 +13,7 @@ import android.support.v4.media.MediaDescriptionCompat
 import androidx.media.MediaBrowserServiceCompat
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.service.RadioService
 import java.util.*
 
 class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {

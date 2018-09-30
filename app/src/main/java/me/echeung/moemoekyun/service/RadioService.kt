@@ -24,6 +24,7 @@ import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
+import me.echeung.moemoekyun.service.auto.AutoMediaBrowserService
 import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil

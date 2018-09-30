@@ -80,7 +80,7 @@
             android:name="com.google.android.gms.car.notification.SmallIcon"
             android:resource="@drawable/ic_icon" />
         <service
-            android:name=".service.AutoMediaBrowserService"
+            android:name=".service.auto.AutoMediaBrowserService"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
