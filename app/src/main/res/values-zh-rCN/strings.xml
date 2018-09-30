@@ -98,27 +98,12 @@
   <string name="privacy_policy">隐私政策</string>
   <!-- == Settings == -->
   <string name="settings">设置</string>
-  <string name="pref_header_general">通用</string>
-  <string name="pref_title_theme">主题</string>
-  <string name="pref_title_language">语言</string>
   <string name="system_default">系统默认</string>
-  <string name="restart_required">更改将在应用重启后生效</string>
+  <string name="pref_header_general">通用</string>
+  <string name="pref_title_language">语言</string>
   <string name="pref_title_general_download">自动下载专辑封面</string>
+  <string name="pref_header_music">音乐</string>
   <string name="pref_title_general_romaji">偏好罗马音</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" 而不是 \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">显示随机请求的歌曲名</string>
   <string name="pref_header_audio">音频</string>
-  <string name="pref_title_pause_on_noisy">在耳机被拔出时暂停</string>
-  <string name="pref_title_audio_duck">当暂时失去焦点时降低音量</string>
-  <string name="pref_title_audio_duck_summary">通知，导航提示等</string>
-  <string name="pref_title_audio_pause_on_loss">当失去焦点时暂停</string>
-  <string name="pref_title_audio_pause_on_loss_summary">播放视频，其他音乐等</string>
-  <string name="pref_header_lockscreen">锁屏</string>
-  <string name="pref_title_lockscreen_albumart">显示专辑封面</string>
-  <string name="pref_title_lockscreen_albumart_summary">在锁屏以及 Android Auto 上显示专辑封面</string>
-  <string name="pref_header_color">颜色</string>
-  <string name="pref_title_color_now_playing">根据封面专辑适应 “正在播放” 颜色</string>
-  <string name="pref_title_color_navbar">沉浸式屏幕导航栏</string>
-  <string name="pref_header_advanced">高级</string>
-  <string name="pref_title_advanced_clear_image_cache">清除图片缓存</string>
 </resources>

@@ -98,27 +98,12 @@
   <string name="privacy_policy">Política de privacidade</string>
   <!-- == Settings == -->
   <string name="settings">Definições</string>
-  <string name="pref_header_general">Geral</string>
-  <string name="pref_title_theme">Tema</string>
-  <string name="pref_title_language">Idioma</string>
   <string name="system_default">Predefinido do sistema</string>
-  <string name="restart_required">As alterações serão aplicadas depois que o aplicativo for reiniciado</string>
+  <string name="pref_header_general">Geral</string>
+  <string name="pref_title_language">Idioma</string>
   <string name="pref_title_general_download">Download automático de imagens</string>
+  <string name="pref_header_music">Músicas</string>
   <string name="pref_title_general_romaji">Preferir romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" em vez de \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">Mostrar o título da canção solicitada aleatoriamente</string>
   <string name="pref_header_audio">Áudio</string>
-  <string name="pref_title_pause_on_noisy">Pausar quando os auscultadores são removidos</string>
-  <string name="pref_title_audio_duck">Baixar volume durante focos de mudança de áudio pequenos</string>
-  <string name="pref_title_audio_duck_summary">Notificações, navegação, etc.</string>
-  <string name="pref_title_audio_pause_on_loss">Pausar na mudança de foco de audio.</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Vídeos, outras músicas, etc.</string>
-  <string name="pref_header_lockscreen">Ecrã de bloqueio</string>
-  <string name="pref_title_lockscreen_albumart">Mostrar capa do álbum</string>
-  <string name="pref_title_lockscreen_albumart_summary">Mostra a capa do álbum no ecrã de bloqueio e no Android Auto</string>
-  <string name="pref_header_color">Cor</string>
-  <string name="pref_title_color_now_playing">Reprodução de cor baseado na arte do álbum</string>
-  <string name="pref_title_color_navbar">Aplicar tema na barra de navegação da tela</string>
-  <string name="pref_header_advanced">Avançado</string>
-  <string name="pref_title_advanced_clear_image_cache">Limpar cache de imagens</string>
 </resources>

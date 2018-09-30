@@ -66,10 +66,4 @@
   <!-- e.g. Version 1.0 -->
   <string name="translate">Çevirmemize yardımcı olun</string>
   <!-- == Settings == -->
-  <string name="pref_header_lockscreen">Kilit Ekranı</string>
-  <string name="pref_title_lockscreen_albumart">Albüm kapağını göster</string>
-  <string name="pref_title_lockscreen_albumart_summary">Kilit ekranında ve Andoid Auto\'da albüm kapağını gösterir</string>
-  <string name="pref_header_color">Renk</string>
-  <string name="pref_header_advanced">Gelişmiş</string>
-  <string name="pref_title_advanced_clear_image_cache">Görüntü önbelleğini temizle</string>
 </resources>

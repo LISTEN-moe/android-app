@@ -92,27 +92,11 @@
   <string name="privacy_policy">Политика конфиденциальности</string>
   <!-- == Settings == -->
   <string name="settings">Настройки</string>
-  <string name="pref_header_general">Основные</string>
-  <string name="pref_title_theme">Тема</string>
-  <string name="pref_title_language">Язык</string>
   <string name="system_default">Язык системы</string>
-  <string name="restart_required">Изменения будут применены после перезапуска приложения</string>
+  <string name="pref_header_general">Основные</string>
+  <string name="pref_title_language">Язык</string>
   <string name="pref_title_general_download">Скачивать изображения автоматически</string>
   <string name="pref_title_general_romaji">Предпочитать ромадзи</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" вместо \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">Показать название запрошенной случайно песни</string>
   <string name="pref_header_audio">Звук</string>
-  <string name="pref_title_pause_on_noisy">Пауза, когда наушники отключены</string>
-  <string name="pref_title_audio_duck">Уменьшать громкость при временной потере фокуса</string>
-  <string name="pref_title_audio_duck_summary">Уведомления, навигация и т.д.</string>
-  <string name="pref_title_audio_pause_on_loss">Пауза при потере фокуса</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Видео, музыка и т.д.</string>
-  <string name="pref_header_lockscreen">Экран блокировки</string>
-  <string name="pref_title_lockscreen_albumart">Показывать обложку альбома</string>
-  <string name="pref_title_lockscreen_albumart_summary">Показывает обложку альбома на экране блокировки и в Android Auto</string>
-  <string name="pref_header_color">Цвет</string>
-  <string name="pref_title_color_now_playing">Перекрашивать уведомление на основе обложки альбома</string>
-  <string name="pref_title_color_navbar">Перекрашивать панель навигации</string>
-  <string name="pref_header_advanced">Дополнительно</string>
-  <string name="pref_title_advanced_clear_image_cache">Очистить кэш изображений</string>
 </resources>

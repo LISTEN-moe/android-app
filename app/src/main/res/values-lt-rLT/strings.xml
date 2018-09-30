@@ -94,27 +94,11 @@
   <string name="privacy_policy">Privatumo politika</string>
   <!-- == Settings == -->
   <string name="settings">Nustatymai</string>
-  <string name="pref_header_general">Bendra</string>
-  <string name="pref_title_theme">Tema</string>
-  <string name="pref_title_language">Kalba</string>
   <string name="system_default">Sistemos numatytoji reikšmė</string>
-  <string name="restart_required">Pakeitimai bus matomi po aplikacijos paleidimo iš naujo</string>
+  <string name="pref_header_general">Bendra</string>
+  <string name="pref_title_language">Kalba</string>
   <string name="pref_title_general_download">Automatiškai atsisiųsti paveikslėlius</string>
   <string name="pref_title_general_romaji">Naudoti romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" vietoje \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">Rodyti atsitiktinai užsakytos dainos pavadinimą</string>
   <string name="pref_header_audio">Garsas</string>
-  <string name="pref_title_pause_on_noisy">Pristabdyti, kai pašalinamos ausinės</string>
-  <string name="pref_title_audio_duck">Sumažinti garsą aplikacijai trumpam praradus fokusą</string>
-  <string name="pref_title_audio_duck_summary">Pranešimai, navigacija ir t.t.</string>
-  <string name="pref_title_audio_pause_on_loss">Pristabdyti praradus fokusą</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Vaizdo įrašai, kita muzika ir t.t.</string>
-  <string name="pref_header_lockscreen">Ekrano užraktas</string>
-  <string name="pref_title_lockscreen_albumart">Rodyti albumo viršelį</string>
-  <string name="pref_title_lockscreen_albumart_summary">Rodyti albumo iliustracija ekrano užrakte ir Android Auto</string>
-  <string name="pref_header_color">Spalva</string>
-  <string name="pref_title_color_now_playing">Spalva pagal albumo viršelį</string>
-  <string name="pref_title_color_navbar">Rodyti temą ekrano naršymo juostoje</string>
-  <string name="pref_header_advanced">Papildomi</string>
-  <string name="pref_title_advanced_clear_image_cache">Išvalyti paveikslėlių kešą</string>
 </resources>

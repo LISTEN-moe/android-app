@@ -97,27 +97,12 @@
   <string name="privacy_policy">プライバシー ポリシー</string>
   <!-- == Settings == -->
   <string name="settings">設定</string>
-  <string name="pref_header_general">一般的な設定</string>
-  <string name="pref_title_theme">テーマ</string>
-  <string name="pref_title_language">言語</string>
   <string name="system_default">システムのデフォルト</string>
-  <string name="restart_required">変更はアプリの再起動後に適用されます</string>
+  <string name="pref_header_general">一般的な設定</string>
+  <string name="pref_title_language">言語</string>
   <string name="pref_title_general_download">画像の自動ダウンロード</string>
+  <string name="pref_header_music">ミュージック</string>
   <string name="pref_title_general_romaji">ローマ字を使う</string>
   <string name="pref_title_general_romaji_summary">「ななひら」ではなく「Nanahira」</string>
-  <string name="pref_title_general_random_request_title">ランダムにリクエストされた曲のタイトルを表示する</string>
   <string name="pref_header_audio">オーディオ</string>
-  <string name="pref_title_pause_on_noisy">ヘッドフォンを外すと一時停止</string>
-  <string name="pref_title_audio_duck">フォーカスが一時的に失われたときに音量を下げる</string>
-  <string name="pref_title_audio_duck_summary">通知、ナビゲーションなど</string>
-  <string name="pref_title_audio_pause_on_loss">フォーカスが外れたら一時停止</string>
-  <string name="pref_title_audio_pause_on_loss_summary">ビデオや他の音楽の再生時など</string>
-  <string name="pref_header_lockscreen">ロックスクリーン</string>
-  <string name="pref_title_lockscreen_albumart">アルバムカバーを表示</string>
-  <string name="pref_title_lockscreen_albumart_summary">LockscreenとAndroid Autoにアルバムアートを表示します</string>
-  <string name="pref_header_color">色</string>
-  <string name="pref_title_color_now_playing">アルバムアートに基づいた色付け</string>
-  <string name="pref_title_color_navbar">ナビゲーションバーにテーマを適用</string>
-  <string name="pref_header_advanced">高度な</string>
-  <string name="pref_title_advanced_clear_image_cache">画像のキャッシュをクリア</string>
 </resources>

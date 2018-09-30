@@ -98,27 +98,11 @@
   <string name="privacy_policy">개인 정보 정책</string>
   <!-- == Settings == -->
   <string name="settings">설정</string>
-  <string name="pref_header_general">일반</string>
-  <string name="pref_title_theme">테마</string>
-  <string name="pref_title_language">언어</string>
   <string name="system_default">시스템 기본</string>
-  <string name="restart_required">앱을 다시 시작한 후 변경 내용이 적용 됩니다</string>
+  <string name="pref_header_general">일반</string>
+  <string name="pref_title_language">언어</string>
   <string name="pref_title_general_download">이미지 자동 다운로드</string>
   <string name="pref_title_general_romaji">영어식 일본어 선호</string>
   <string name="pref_title_general_romaji_summary">\"ななひら\" 대신 \"Nanahira\"</string>
-  <string name="pref_title_general_random_request_title">무작위로 신청한 노래 제목 보기</string>
   <string name="pref_header_audio">오디오</string>
-  <string name="pref_title_pause_on_noisy">헤드폰을 제거 하면 일시정지 하기</string>
-  <string name="pref_title_audio_duck">눈을 떄면 노래 소리 줄이기</string>
-  <string name="pref_title_audio_duck_summary">알림, 탐색, 등</string>
-  <string name="pref_title_audio_pause_on_loss">눈을 떄면 노래 소리 줄이기</string>
-  <string name="pref_title_audio_pause_on_loss_summary">동영상, 기타 음악, 기타 등</string>
-  <string name="pref_header_lockscreen">잠금화면</string>
-  <string name="pref_title_lockscreen_albumart">앨범 커버 보기</string>
-  <string name="pref_title_lockscreen_albumart_summary">잠금화면에 앨범 사진 보기</string>
-  <string name="pref_header_color">색깔</string>
-  <string name="pref_title_color_now_playing">앨범 아트를 기반으로 하는 색깔</string>
-  <string name="pref_title_color_navbar">테마 화면상의 네비게이션 바</string>
-  <string name="pref_header_advanced">고급</string>
-  <string name="pref_title_advanced_clear_image_cache">이미지 캐시 지우기</string>
 </resources>

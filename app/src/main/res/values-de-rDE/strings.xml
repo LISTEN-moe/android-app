@@ -98,27 +98,12 @@
   <string name="privacy_policy">Datenschutzerklärung</string>
   <!-- == Settings == -->
   <string name="settings">Einstellungen</string>
-  <string name="pref_header_general">Generell</string>
-  <string name="pref_title_theme">Stil</string>
-  <string name="pref_title_language">Sprache</string>
   <string name="system_default">Systemstandard</string>
-  <string name="restart_required">Änderungen werden übernommen, nachdem die App neu gestartet wird</string>
+  <string name="pref_header_general">Generell</string>
+  <string name="pref_title_language">Sprache</string>
   <string name="pref_title_general_download">Automatisch Bilder herunterladen</string>
+  <string name="pref_header_music">Musik</string>
   <string name="pref_title_general_romaji">Bevorzuge Romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" anstelle von \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">Zeige zufällig gewünschten Song</string>
   <string name="pref_header_audio">Audio</string>
-  <string name="pref_title_pause_on_noisy">Stoppe die Musik, wenn die Kopfhörer entfernt werden</string>
-  <string name="pref_title_audio_duck">Reduziere die Lautstärke bei Fokusverlust</string>
-  <string name="pref_title_audio_duck_summary">Benachrichtigungen, Navigation, usw.</string>
-  <string name="pref_title_audio_pause_on_loss">Pausiere die Musik beim Fokusverlust</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Videos, andere Musik, etc.</string>
-  <string name="pref_header_lockscreen">Sperrbildschirm</string>
-  <string name="pref_title_lockscreen_albumart">Zeige Albumcover</string>
-  <string name="pref_title_lockscreen_albumart_summary">Zeige das Albumcover auf dem Sperrbildschirm und Android Auto</string>
-  <string name="pref_header_color">Farbe</string>
-  <string name="pref_title_color_now_playing">Färbe \"Now playing\" anhand der Album Cover</string>
-  <string name="pref_title_color_navbar">Färbe On-Screen-Navigationsleiste</string>
-  <string name="pref_header_advanced">Erweitert</string>
-  <string name="pref_title_advanced_clear_image_cache">Lösche Bilder Cache</string>
 </resources>

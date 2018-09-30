@@ -95,26 +95,11 @@
   <string name="privacy_policy">Sekretesspolicy</string>
   <!-- == Settings == -->
   <string name="settings">Inställningar</string>
-  <string name="pref_header_general">Allmänt</string>
-  <string name="pref_title_theme">Tema</string>
-  <string name="pref_title_language">Språk</string>
   <string name="system_default">Systemstandard</string>
-  <string name="restart_required">Ändringar kommer att tillämpas när appen startas om</string>
+  <string name="pref_header_general">Allmänt</string>
+  <string name="pref_title_language">Språk</string>
   <string name="pref_title_general_download">Automatiskt hämta bilder</string>
   <string name="pref_title_general_romaji">Föredra romaji</string>
   <string name="pref_title_general_romaji_summary">”Nanahira” istället för ”ななひら”</string>
-  <string name="pref_title_general_random_request_title">Visa slumpmässigt önskade låttitel</string>
   <string name="pref_header_audio">Ljud</string>
-  <string name="pref_title_pause_on_noisy">Pausa när hörlurar blir borttagen</string>
-  <string name="pref_title_audio_duck">Sänk volym vid kortvarig förlorande av fokus</string>
-  <string name="pref_title_audio_duck_summary">Notifikationer, navigering, etc.</string>
-  <string name="pref_title_audio_pause_on_loss">Pausa vid förlorat fokus</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Videor, annan music, etc.</string>
-  <string name="pref_header_lockscreen">Låsskärm</string>
-  <string name="pref_title_lockscreen_albumart">Visa albumomslag</string>
-  <string name="pref_title_lockscreen_albumart_summary">Visar albumomslag på låsskärmen och Android Auto</string>
-  <string name="pref_header_color">Färg</string>
-  <string name="pref_title_color_now_playing">Färga spelar nu baserat på skivomslag</string>
-  <string name="pref_header_advanced">Avancerad</string>
-  <string name="pref_title_advanced_clear_image_cache">Töm bild cache</string>
 </resources>

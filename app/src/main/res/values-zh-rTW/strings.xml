@@ -57,6 +57,4 @@
   <string name="pref_header_general">一般</string>
   <string name="pref_title_general_download">自動下載圖像</string>
   <string name="pref_header_audio">音訊</string>
-  <string name="pref_title_pause_on_noisy">耳機拔出時暫停</string>
-  <string name="pref_header_color">顏色</string>
 </resources>

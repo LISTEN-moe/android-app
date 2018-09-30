@@ -98,27 +98,12 @@
   <string name="privacy_policy">Politique de confidentialité</string>
   <!-- == Settings == -->
   <string name="settings">Paramètres</string>
-  <string name="pref_header_general">Général</string>
-  <string name="pref_title_theme">Thème</string>
-  <string name="pref_title_language">Langue </string>
   <string name="system_default">Langue par défaut du système</string>
-  <string name="restart_required">Les modifications seront appliquées après le redémarrage de l\'application</string>
+  <string name="pref_header_general">Général</string>
+  <string name="pref_title_language">Langue </string>
   <string name="pref_title_general_download">Télécharger les images automatiquement</string>
+  <string name="pref_header_music">Musique</string>
   <string name="pref_title_general_romaji">Privilégier les romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" à la place de \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">Montrer le nom de la musique demandée aléatoirement</string>
   <string name="pref_header_audio">Audio</string>
-  <string name="pref_title_pause_on_noisy">Mettre en pause quand les écouteurs sont débranchés</string>
-  <string name="pref_title_audio_duck">Réduire le volume lors des pertes d\'attention temporaires</string>
-  <string name="pref_title_audio_duck_summary">Notifications, navigation, etc.</string>
-  <string name="pref_title_audio_pause_on_loss">Mettre en pause lors des pertes d\'attention</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Vidéos, autres musiques, etc.</string>
-  <string name="pref_header_lockscreen">Écran de verrouillage</string>
-  <string name="pref_title_lockscreen_albumart">Montrer la couverture de l\'album</string>
-  <string name="pref_title_lockscreen_albumart_summary">Afficher la couverture de l\'album sur l\'écran de verrouillage et Android Auto</string>
-  <string name="pref_header_color">Couleur</string>
-  <string name="pref_title_color_now_playing">Couleur affichée basée sur la couverture de l\'album diffusé</string>
-  <string name="pref_title_color_navbar">Thématiser la barre de navigation</string>
-  <string name="pref_header_advanced">Avancé</string>
-  <string name="pref_title_advanced_clear_image_cache">Effacer le cache des images</string>
 </resources>

@@ -98,27 +98,12 @@
   <string name="privacy_policy">Kebijakan privasi</string>
   <!-- == Settings == -->
   <string name="settings">Pengaturan</string>
-  <string name="pref_header_general">Umum</string>
-  <string name="pref_title_theme">Tema</string>
-  <string name="pref_title_language">Bahasa</string>
   <string name="system_default">Sistem default</string>
-  <string name="restart_required">Perubahan akan diterapkan setelah aplikasi di buka ulang</string>
+  <string name="pref_header_general">Umum</string>
+  <string name="pref_title_language">Bahasa</string>
   <string name="pref_title_general_download">Otomatis mengunduh gambar</string>
+  <string name="pref_header_music">Musik</string>
   <string name="pref_title_general_romaji">Lebih memilih romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" daripada \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">Perlihatkan judul lagu acak yang diminta</string>
   <string name="pref_header_audio">Audio</string>
-  <string name="pref_title_pause_on_noisy">Jeda ketika headphone dilepas</string>
-  <string name="pref_title_audio_duck">Volume rendah pada kehilangan fokus sementara</string>
-  <string name="pref_title_audio_duck_summary">Notifikasi, navigasi, dll.</string>
-  <string name="pref_title_audio_pause_on_loss">Jeda pada kehilangan fokus</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Video, musik lainnya, dll.</string>
-  <string name="pref_header_lockscreen">Layar kunci</string>
-  <string name="pref_title_lockscreen_albumart">Tampilkan sampul album</string>
-  <string name="pref_title_lockscreen_albumart_summary">Menampilkan seni album pada layar kunci dan Android Auto</string>
-  <string name="pref_header_color">Warna</string>
-  <string name="pref_title_color_now_playing">Warna sekarang diputar berdasarkan seni album</string>
-  <string name="pref_title_color_navbar">Tema pada layar bilah navigasi</string>
-  <string name="pref_header_advanced">Lanjutan</string>
-  <string name="pref_title_advanced_clear_image_cache">Hapus cache gambar</string>
 </resources>

@@ -98,27 +98,12 @@
   <string name="privacy_policy">Privacybeleid</string>
   <!-- == Settings == -->
   <string name="settings">Instellingen</string>
-  <string name="pref_header_general">Algemeen</string>
-  <string name="pref_title_theme">Thema</string>
-  <string name="pref_title_language">Taal</string>
   <string name="system_default">Systeem standaard</string>
-  <string name="restart_required">De weizigingen worden toegepast na het herstarten van de App. </string>
+  <string name="pref_header_general">Algemeen</string>
+  <string name="pref_title_language">Taal</string>
   <string name="pref_title_general_download">Auto-download afbeeldingen</string>
+  <string name="pref_header_music">Muziek</string>
   <string name="pref_title_general_romaji">Voorkeur voor romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" I.P.V. \"ななひら\"</string>
-  <string name="pref_title_general_random_request_title">Toon willekeurig gegenereerde titel</string>
   <string name="pref_header_audio">Geluid</string>
-  <string name="pref_title_pause_on_noisy">Pauzeer wanneer de koptelefoon is ontkoppeld</string>
-  <string name="pref_title_audio_duck">Volume verlagen bij focusverlies</string>
-  <string name="pref_title_audio_duck_summary">Meldingen, navigatie, etc.</string>
-  <string name="pref_title_audio_pause_on_loss">Pauzeer bij focusverlies</string>
-  <string name="pref_title_audio_pause_on_loss_summary">Video\'s, andere muziek, etc.</string>
-  <string name="pref_header_lockscreen">Vergrendelscherm</string>
-  <string name="pref_title_lockscreen_albumart">albumhoes weergeven</string>
-  <string name="pref_title_lockscreen_albumart_summary">Geeft albumillustraties weer op het vergrendelscherm</string>
-  <string name="pref_header_color">Kleur</string>
-  <string name="pref_title_color_now_playing">Kleur baseren op album afbeelding</string>
-  <string name="pref_title_color_navbar">Navigatie balk thema op het scherm</string>
-  <string name="pref_header_advanced">Geavanceerd</string>
-  <string name="pref_title_advanced_clear_image_cache">Clear image cache</string>
 </resources>
