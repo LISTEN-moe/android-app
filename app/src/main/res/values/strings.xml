@@ -162,7 +162,4 @@
     <string name="pref_header_color">Color</string>
     <string name="pref_title_color_now_playing">Color now playing based on album art</string>
 
-    <string name="pref_header_advanced">Advanced</string>
-    <string name="pref_title_advanced_clear_image_cache">Clear image cache</string>
-
 </resources>

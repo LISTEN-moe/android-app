@@ -14,8 +14,6 @@
 
     <string name="pref_key_color_now_playing">pref_color_now_playing</string>
 
-    <string name="pref_key_advanced_clear_image_cache">pref_advanced_clear_image_cache</string>
-
     <string name="pref_value_language_default">default</string>
 
     <string name="pref_value_download_always">always</string>

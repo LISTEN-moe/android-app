@@ -1,14 +1,10 @@
 package me.echeung.moemoekyun.util
 
-import android.content.Context
 import android.graphics.Bitmap
-import android.os.AsyncTask
 import android.widget.ImageView
-
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-
 import me.echeung.moemoekyun.App
 
 object ImageUtil {
@@ -47,19 +43,6 @@ object ImageUtil {
                         .centerCrop()
                         .dontAnimate())
                 .into(v)
-    }
-
-    fun clearCache(context: Context?) {
-        if (context == null) return
-
-        object : AsyncTask<Void, Void, Void>() {
-            override fun doInBackground(vararg params: Void): Void? {
-                Glide.get(context).clearDiskCache()
-                return null
-            }
-        }.execute()
-
-        Glide.get(context).clearMemory()
     }
 
     private fun clearImageView(v: ImageView?) {

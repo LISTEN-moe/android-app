@@ -8,10 +8,8 @@ import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.base.BaseActivity
-import me.echeung.moemoekyun.util.ImageUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 
 class SettingsActivity : BaseActivity() {
@@ -35,10 +33,6 @@ class SettingsActivity : BaseActivity() {
             addPreferencesFromResource(R.xml.pref_lockscreen)
             addPreferencesFromResource(R.xml.pref_color)
             addPreferencesFromResource(R.xml.pref_audio)
-
-            if (BuildConfig.DEBUG) {
-                addPreferencesFromResource(R.xml.pref_advanced)
-            }
         }
 
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,14 +54,6 @@ class SettingsActivity : BaseActivity() {
             downloadSetting.setOnPreferenceChangeListener { preference, o ->
                 setSummary(downloadSetting, o)
                 true
-            }
-
-            if (BuildConfig.DEBUG) {
-                val clearCache = findPreference(PreferenceUtil.PREF_ADVANCED_CLEAR_IMAGE_CACHE)
-                clearCache.setOnPreferenceClickListener { preference ->
-                    ImageUtil.clearCache(context)
-                    true
-                }
             }
         }
 

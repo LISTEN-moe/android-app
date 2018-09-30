@@ -85,7 +85,6 @@ class PreferenceUtil(context: Context) {
     }
 
     companion object {
-        const val PREF_GENERAL_THEME = "pref_general_theme"
         const val PREF_GENERAL_LANGUAGE = "pref_general_language"
         const val PREF_GENERAL_DOWNLOAD = "pref_general_download"
         const val PREF_GENERAL_ROMAJI = "pref_general_romaji"
@@ -98,8 +97,6 @@ class PreferenceUtil(context: Context) {
         const val PREF_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart"
 
         const val PREF_COLOR_NOW_PLAYING = "pref_color_now_playing"
-
-        const val PREF_ADVANCED_CLEAR_IMAGE_CACHE = "pref_advanced_clear_image_cache"
 
         const val DOWNLOAD_ALWAYS = "always"
         const val DOWNLOAD_WIFI = "wifi"
