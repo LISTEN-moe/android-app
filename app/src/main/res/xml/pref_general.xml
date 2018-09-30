@@ -27,6 +27,7 @@
         <androidx.preference.SwitchPreferenceCompat
             android:key="@string/pref_key_general_random_request_title"
             android:title="@string/pref_title_general_random_request_title"
+            android:summary="@string/pref_title_general_random_request_summary"
             android:defaultValue="true" />
 
     </androidx.preference.PreferenceCategory>
