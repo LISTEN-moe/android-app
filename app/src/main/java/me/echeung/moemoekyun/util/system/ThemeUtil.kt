@@ -5,14 +5,8 @@ import android.graphics.Color
 import android.util.TypedValue
 import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
-import me.echeung.moemoekyun.R
 
 object ThemeUtil {
-
-    @ColorInt
-    fun getAccentColor(context: Context): Int {
-        return resolveColorAttr(context, R.attr.themeColorAccent)
-    }
 
     @ColorInt
     fun getBackgroundColor(context: Context): Int {
