@@ -132,7 +132,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                     override fun success(response: FavoritesResponse) {
                         val favorites = response.favorites
                         for (song in favorites) {
-                            song.isFavorite = true
+                            song.favorite = true
                         }
                         callback.onSuccess(favorites)
                     }

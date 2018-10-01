@@ -214,7 +214,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         // Favorite action
         if (App.authUtil.isAuthenticated) {
             val currentSong = App.radioViewModel!!.currentSong
-            val favoriteIcon = if (currentSong == null || !currentSong.isFavorite)
+            val favoriteIcon = if (currentSong == null || !currentSong.favorite)
                 R.drawable.ic_star_border_white_24dp
             else
                 R.drawable.ic_star_white_24dp
@@ -476,7 +476,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             return
         }
 
-        val isCurrentlyFavorite = currentSong.isFavorite
+        val isCurrentlyFavorite = currentSong.favorite
 
         val callback = object : FavoriteSongCallback {
             override fun onSuccess() {

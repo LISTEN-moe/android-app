@@ -31,7 +31,7 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
         this.currentSong = currentSong
         this.currentSongStart = startTime
 
-        isFavorited = currentSong != null && currentSong.isFavorite
+        isFavorited = currentSong != null && currentSong.favorite
 
         AlbumArtUtil.updateAlbumArt(App.context, currentSong)
 
@@ -152,13 +152,13 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
         @Bindable
         get() = if (currentSong == null) {
             false
-        } else currentSong!!.isFavorite
+        } else currentSong!!.favorite
         set(isFavorited) {
             if (currentSong == null) {
                 return
             }
 
-            this.currentSong!!.isFavorite = isFavorited
+            this.currentSong!!.favorite = isFavorited
             notifyPropertyChanged(BR.favorited)
         }
 

@@ -47,14 +47,14 @@ object SongActionsUtil {
      */
     fun toggleFavorite(activity: Activity?, song: Song) {
         val songId = song.id
-        val isCurrentlyFavorite = song.isFavorite
+        val isCurrentlyFavorite = song.favorite
 
         val callback = object : FavoriteSongCallback {
             override fun onSuccess() {
                 if (App.radioViewModel!!.currentSong!!.id == songId) {
                     App.radioViewModel!!.isFavorited = !isCurrentlyFavorite
                 }
-                song.isFavorite = !isCurrentlyFavorite
+                song.favorite = !isCurrentlyFavorite
 
                 if (activity == null) return
 

@@ -16,8 +16,8 @@ class SongListItem {
     var artistsRomaji: List<String>? = null
     var artistsSearchRomaji: List<String>? = null
     var duration: Int = 0
-    var isEnabled: Boolean = false
-    var isFavorite: Boolean = false
+    var enabled: Boolean = false
+    var favorite: Boolean = false
     var groups: List<String>? = null
     var groupsId: List<Int>? = null
     var groupsRomaji: List<String>? = null
@@ -173,8 +173,8 @@ class SongListItem {
             song.groups = songListItem.groups
             song.tags = songListItem.tags
             song.duration = songListItem.duration
-            song.isFavorite = songListItem.isFavorite
-            song.isEnabled = songListItem.isEnabled
+            song.favorite = songListItem.favorite
+            song.enabled = songListItem.enabled
             song.uploader = uploader
 
             return song

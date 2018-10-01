@@ -17,9 +17,9 @@ class Song {
     var tags: List<String>? = null
     var notes: String? = null
     var duration: Int = 0
-    var isEnabled: Boolean = false
+    var enabled: Boolean = false
     var uploader: User? = null
-    var isFavorite: Boolean = false
+    var favorite: Boolean = false
 
     val titleString: String?
         get() = if (App.preferenceUtil!!.shouldPreferRomaji() && !TextUtils.isEmpty(titleRomaji)) {

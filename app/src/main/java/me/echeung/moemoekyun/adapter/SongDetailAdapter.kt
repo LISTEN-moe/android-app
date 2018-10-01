@@ -32,15 +32,15 @@ class SongDetailAdapter(private val activity: Activity, songs: List<Song>) : Arr
         binding.song = song
         binding.isAuthenticated = App.authUtil.isAuthenticated
         binding.canRequest = App.userViewModel!!.requestsRemaining != 0
-        binding.isFavorite = song.isFavorite
+        binding.isFavorite = song.favorite
 
         binding.requestBtn.setOnClickListener { _ -> SongActionsUtil.request(activity, song) }
 
         binding.favoriteBtn.setOnClickListener { _ ->
             SongActionsUtil.toggleFavorite(activity, song)
 
-            song.isFavorite = !song.isFavorite
-            binding.isFavorite = song.isFavorite
+            song.favorite = !song.favorite
+            binding.isFavorite = song.favorite
         }
 
         binding.root.setOnLongClickListener { v ->
