@@ -13,8 +13,6 @@ class AuthUtil(context: Context) {
 
     private val contextRef: WeakReference<Context> = WeakReference(context)
 
-    private var mfaToken: String? = null
-
     /**
      * Checks if the user has previously logged in (i.e. a token is stored).
      *
@@ -22,14 +20,6 @@ class AuthUtil(context: Context) {
      */
     val isAuthenticated: Boolean
         get() = authToken != null
-
-    /**
-     * Fetches the stored temporary MFA auth token with the "Bearer" prefix.
-     *
-     * @return The temporary MFA auth token with the "Bearer" prefix.
-     */
-    val mfaAuthTokenWithPrefix: String
-        get() = getPrefixedToken(mfaToken)
 
     /**
      * Fetches the stored auth token with the "Bearer" prefix.
@@ -63,6 +53,21 @@ class AuthUtil(context: Context) {
         }
 
     /**
+     * Stores the temporary auth token for MFA.
+     *
+     * @param token The auth token for MFA to store, provided via the LISTEN.moe API.
+     */
+    var mfaToken: String? = null
+
+    /**
+     * Fetches the stored temporary MFA auth token with the "Bearer" prefix.
+     *
+     * @return The temporary MFA auth token with the "Bearer" prefix.
+     */
+    val mfaAuthTokenWithPrefix: String
+        get() = getPrefixedToken(mfaToken)
+
+    /**
      * @return The time in seconds since the stored auth token was stored.
      */
     private val tokenAge: Long
@@ -94,22 +99,6 @@ class AuthUtil(context: Context) {
     }
 
     /**
-     * Stores the temporary auth token for MFA.
-     *
-     * @param token The auth token for MFA to store, provided via the LISTEN.moe API.
-     */
-    fun setMfaAuthToken(token: String) {
-        this.mfaToken = token
-    }
-
-    /**
-     * Removes the stored temporary MFA auth token.
-     */
-    fun clearMfaAuthToken() {
-        this.mfaToken = null
-    }
-
-    /**
      * Removes the stored auth token.
      */
     fun clearAuthToken() {
@@ -120,6 +109,13 @@ class AuthUtil(context: Context) {
                 .putString(USER_TOKEN, null)
                 .putLong(LAST_AUTH, 0)
                 .apply()
+    }
+
+    /**
+     * Removes the stored temporary MFA auth token.
+     */
+    fun clearMfaAuthToken() {
+        this.mfaToken = null
     }
 
     private fun getPrefixedToken(token: String?): String {

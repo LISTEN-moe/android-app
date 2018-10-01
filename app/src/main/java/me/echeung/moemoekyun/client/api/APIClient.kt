@@ -54,7 +54,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                         val userToken = response.token
 
                         if (response.mfa) {
-                            authUtil.setMfaAuthToken(userToken)
+                            authUtil.mfaToken = userToken
                             callback.onMfaRequired(userToken)
                             return
                         }
