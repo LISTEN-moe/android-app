@@ -23,7 +23,7 @@ object ErrorHandlingAdapter {
     }
 
     abstract class WrappedCallback<T : BaseResponse>(private val callback: BaseCallback) {
-        abstract fun success(response: T)
+        abstract fun success(response: T?)
 
         fun error(message: String) {
             callback.onFailure(message)
@@ -62,7 +62,7 @@ object ErrorHandlingAdapter {
             call.enqueue(object : Callback<T> {
                 override fun onResponse(call: Call<T>, response: Response<T>) {
                     if (response.isSuccessful) {
-                        callback.success(response.body()!!)
+                        callback.success(response.body())
                     } else {
                         if (response.errorBody() == null) {
                             error(callback, "Unsuccessful response: $response")
