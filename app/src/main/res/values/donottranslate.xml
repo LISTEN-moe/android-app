@@ -71,12 +71,12 @@
 
     <string-array name="pref_language_names" translatable="false">
         <item>@string/system_default</item>
-        <item>Bahasa Indonesia</item>
         <item>Deutsch</item>
         <item>English (UK)</item>
         <item>English (US)</item>
         <item>Español</item>
         <item>Français</item>
+        <item>Indonesia</item>
         <item>Italiano</item>
         <item>Lietuvių</item>
         <item>Nederlands</item>
@@ -91,12 +91,12 @@
 
     <string-array name="pref_language_codes" translatable="false">
         <item>default</item>
-        <item>in</item>
         <item>de</item>
         <item>en-rGB</item>
         <item>en-rUS</item>
         <item>es</item>
         <item>fr</item>
+        <item>in</item>
         <item>it</item>
         <item>lt</item>
         <item>nl</item>
