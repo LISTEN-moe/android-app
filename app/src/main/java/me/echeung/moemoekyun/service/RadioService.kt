@@ -215,9 +215,9 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         if (App.authUtil.isAuthenticated) {
             val currentSong = App.radioViewModel!!.currentSong
             val favoriteIcon = if (currentSong == null || !currentSong.favorite)
-                R.drawable.ic_star_border_white_24dp
+                R.drawable.ic_star_border_24dp
             else
-                R.drawable.ic_star_white_24dp
+                R.drawable.ic_star_24dp
 
             stateBuilder.addCustomAction(PlaybackStateCompat.CustomAction.Builder(
                     TOGGLE_FAVORITE, getString(R.string.favorite), favoriteIcon)

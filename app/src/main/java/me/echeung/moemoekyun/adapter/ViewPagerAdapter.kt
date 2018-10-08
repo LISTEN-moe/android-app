@@ -19,8 +19,8 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
 
     init {
         // Tabs
-        add(UserFragment::class.java, R.drawable.ic_person_white_24dp)
-        add(SongsFragment::class.java, R.drawable.ic_audiotrack_white_24dp)
+        add(UserFragment::class.java, R.drawable.ic_person_24dp)
+        add(SongsFragment::class.java, R.drawable.ic_audiotrack_24dp)
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {

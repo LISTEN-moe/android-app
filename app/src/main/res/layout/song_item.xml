@@ -53,7 +53,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_star_white_24dp"
+                android:src="@drawable/ic_star_24dp"
                 android:tint="?attr/colorAccent" />
 
         </LinearLayout>

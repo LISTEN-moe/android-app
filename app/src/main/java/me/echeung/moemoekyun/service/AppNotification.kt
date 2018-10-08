@@ -33,7 +33,7 @@ class AppNotification internal constructor(private val service: RadioService) {
 
         // Play/pause action
         val playPauseAction = NotificationCompat.Action(
-                if (isPlaying) R.drawable.ic_pause_white_24dp else R.drawable.ic_play_arrow_white_24dp,
+                if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp,
                 if (isPlaying) service.getString(R.string.action_pause) else service.getString(R.string.action_play),
                 getPlaybackActionService(RadioService.PLAY_PAUSE))
 
@@ -74,7 +74,7 @@ class AppNotification internal constructor(private val service: RadioService) {
             // Add favorite action if logged in
             if (App.authUtil.isAuthenticated) {
                 builder.addAction(NotificationCompat.Action(
-                        if (song.favorite) R.drawable.ic_star_white_24dp else R.drawable.ic_star_border_white_24dp,
+                        if (song.favorite) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp,
                         if (song.favorite) service.getString(R.string.action_unfavorite) else service.getString(R.string.action_favorite),
                         getPlaybackActionService(RadioService.TOGGLE_FAVORITE)))
 

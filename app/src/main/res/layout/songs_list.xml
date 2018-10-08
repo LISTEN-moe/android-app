@@ -54,7 +54,7 @@
                 android:contentDescription="@string/clear_query"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_cancel_white_24dp"
+                android:src="@drawable/ic_cancel_24dp"
                 android:visibility="@{vm.query != null &amp;&amp; !vm.query.isEmpty()}"
                 android:onClick="@{() -> vm.clearQuery()}"  />
 
@@ -68,7 +68,7 @@
                 android:contentDescription="@string/sort"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_more_vert_white_24dp"
+                android:src="@drawable/ic_more_vert_24dp"
                 android:tint="@color/light_grey" />
 
         </RelativeLayout>

@@ -21,8 +21,8 @@ class PlayPauseView(context: Context, private val view: ImageView) {
             playDrawable = AnimatedVectorDrawableCompat.create(context, R.drawable.avd_pause_to_play)!!
             pauseDrawable = AnimatedVectorDrawableCompat.create(context, R.drawable.avd_play_to_pause)!!
         } else {
-            playDrawable = ContextCompat.getDrawable(context, R.drawable.ic_play_arrow_white_24dp)!!
-            pauseDrawable = ContextCompat.getDrawable(context, R.drawable.ic_pause_white_24dp)!!
+            playDrawable = ContextCompat.getDrawable(context, R.drawable.ic_play_arrow_24dp)!!
+            pauseDrawable = ContextCompat.getDrawable(context, R.drawable.ic_pause_24dp)!!
         }
     }
 

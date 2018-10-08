@@ -76,7 +76,7 @@
                 android:contentDescription="@string/last_played"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_history_white_24dp"
+                android:src="@drawable/ic_history_24dp"
                 android:visibility="@{vm.currentSong != null}" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -86,7 +86,7 @@
                 android:layout_margin="16dp"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_play_arrow_white_24dp" />
+                android:src="@drawable/ic_play_arrow_24dp" />
 
             <ImageButton
                 android:id="@+id/favorite_btn"
@@ -97,7 +97,7 @@
                 android:contentDescription="@string/favorite"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@{vm.isFavorited ? @drawable/ic_star_white_24dp : @drawable/ic_star_border_white_24dp}"
+                android:src="@{vm.isFavorited ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}"
                 android:visibility="@{vm.currentSong != null}" />
 
         </LinearLayout>
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
-                android:src="@drawable/ic_headset_white_24dp"
+                android:src="@drawable/ic_headset_24dp"
                 android:tint="@color/white"
                 tools:ignore="ContentDescription" />
 
@@ -133,7 +133,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:src="@{vm.event != null ? @drawable/ic_event_white_24dp : @drawable/ic_person_add_white_24dp}"
+                android:src="@{vm.event != null ? @drawable/ic_event_24dp : @drawable/ic_person_add_24dp}"
                 android:tint="@color/white"
                 android:visibility="@{vm.event != null || vm.requester != null}"
                 tools:ignore="ContentDescription" />
