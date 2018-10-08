@@ -25,7 +25,7 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@drawable/blank"
+                android:src="@drawable/default_album_art"
                 tools:ignore="ContentDescription" />
 
             <!-- Shows downloaded album art -->

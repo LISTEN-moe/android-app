@@ -11,5 +11,5 @@
     android:layout_alignParentTop="true"
     android:adjustViewBounds="true"
     android:scaleType="centerCrop"
-    android:src="@drawable/background_four"
+    android:src="@drawable/background"
     tools:ignore="ContentDescription" />

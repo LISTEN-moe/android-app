@@ -28,7 +28,7 @@
                 android:adjustViewBounds="true"
                 android:imageUrl="@{song.albumArtUrl}"
                 android:scaleType="centerCrop"
-                android:src="@drawable/blank"
+                android:src="@drawable/default_album_art"
                 tools:ignore="ContentDescription" />
 
             <LinearLayout

@@ -140,7 +140,7 @@ object AlbumArtUtil {
 
     private fun getDefaultAlbumArt(context: Context): Bitmap {
         if (defaultAlbumArt == null) {
-            defaultAlbumArt = BitmapFactory.decodeResource(context.resources, R.drawable.blank)
+            defaultAlbumArt = BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
         }
 
         isDefaultAlbumArt = true
