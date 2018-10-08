@@ -37,7 +37,7 @@
                     <!--android:id="@+id/song_progress_bar"-->
                     <!--android:layout_width="10dp"-->
                     <!--android:layout_height="match_parent"-->
-                    <!--android:background="?attr/themeColorAccent" />-->
+                    <!--android:background="?attr/colorAccent" />-->
 
             <!--</FrameLayout>-->
 
@@ -145,7 +145,6 @@
                 android:layout_gravity="center"
                 android:text="@{vm.event != null ? vm.event.name : vm.requester}"
                 android:textColor="@color/white"
-                android:textColorLink="?attr/themeColorAccent"
                 android:textSize="14sp"
                 android:visibility="@{vm.event != null || vm.requester != null}" />
 

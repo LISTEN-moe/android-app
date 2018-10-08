@@ -10,5 +10,5 @@
     android:maxHeight="80dp"
     android:maxWidth="250dp"
     android:scaleType="fitCenter"
-    app:srcCompat="?attr/themeLogoImage"
+    app:srcCompat="@drawable/logo"
     tools:ignore="ContentDescription" />

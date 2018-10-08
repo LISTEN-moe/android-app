@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.MaterialComponents">
+        <!-- AppBar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Accent color -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:windowBackground">@color/four_dark_grey</item>
+        <!-- Base background/text colors -->
+        <item name="android:windowBackground">@color/dark_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/light_grey</item>
 
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
-        <item name="android:textAppearanceButton">@style/ButtonTheme</item>
-        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-
-        <item name="themeColorAccent">@color/colorAccent</item>
-        <item name="themeBackgroundImage">@drawable/background_four</item>
-        <item name="themeLogoImage">@drawable/logo</item>
-        <item name="themeDefaultAvatarImage">@drawable/avatar_v4</item>
+        <!-- UI widget theming -->
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="materialButtonStyle">@style/ButtonTheme</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+        <item name="tabStyle">@style/TabTheme</item>
+        <item name="dialogTheme">@style/DialogTheme</item>
+        <item name="alertDialogTheme">@style/DialogTheme</item>
     </style>
 
     <!-- TabHost -->
-    <style name="TabWidgetTheme" parent="AppTheme">
-        <item name="android:textColorPrimary">?attr/themeColorAccent</item>
-        <item name="android:textColorSecondary">@color/white</item>
+    <style name="TabTheme" parent="@style/Widget.MaterialComponents.TabLayout">
+        <item name="android:background">@null</item>
+        <item name="tabIconTint">@color/white</item>
     </style>
 
     <!-- Dialogs -->
-    <style name="DialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="DialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:background">@color/dark_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorLink">?attr/themeColorAccent</item>
-        <item name="colorAccent">?attr/themeColorAccent</item>
+        <item name="android:textColorLink">@color/colorAccent</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Buttons -->
-    <style name="ButtonTheme" parent="TextAppearance.AppCompat.Button">
+    <style name="ButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/white</item>
     </style>
 
