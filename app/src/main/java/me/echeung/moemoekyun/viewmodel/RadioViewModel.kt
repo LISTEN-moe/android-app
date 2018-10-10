@@ -168,11 +168,7 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
 
     val history: List<Song>
         get() {
-            val songs = ArrayList<Song>()
-            songs.add(currentSong!!)
-            songs.add(lastSong!!)
-            songs.add(secondLastSong!!)
-            return songs
+            return listOf(currentSong!!, lastSong!!, secondLastSong!!)
         }
 
     init {

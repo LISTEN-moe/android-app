@@ -12,7 +12,6 @@ import androidx.media.MediaBrowserServiceCompat
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
-import java.util.*
 
 class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
 
@@ -32,10 +31,9 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
     }
 
     override fun onLoadChildren(parentId: String, result: MediaBrowserServiceCompat.Result<List<MediaBrowserCompat.MediaItem>>) {
-        val mediaItems = ArrayList<MediaBrowserCompat.MediaItem>()
-
-        mediaItems.add(createPlayableMediaItem(RadioService.LIBRARY_JPOP, resources.getString(R.string.jpop)))
-        mediaItems.add(createPlayableMediaItem(RadioService.LIBRARY_KPOP, resources.getString(R.string.kpop)))
+        val mediaItems = listOf(
+                createPlayableMediaItem(RadioService.LIBRARY_JPOP, resources.getString(R.string.jpop)),
+                createPlayableMediaItem(RadioService.LIBRARY_KPOP, resources.getString(R.string.kpop)))
 
         result.sendResult(mediaItems)
     }

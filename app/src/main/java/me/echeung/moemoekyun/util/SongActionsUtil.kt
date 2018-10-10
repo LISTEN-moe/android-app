@@ -16,7 +16,6 @@ import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.system.toast
-import java.util.*
 
 object SongActionsUtil {
 
@@ -24,10 +23,7 @@ object SongActionsUtil {
     const val FAVORITE_EVENT = "fav_event"
 
     fun showSongsDialog(activity: Activity, title: String?, song: Song) {
-        val songList = ArrayList<Song>()
-        songList.add(song)
-
-        showSongsDialog(activity, title, songList)
+        showSongsDialog(activity, title, listOf(song))
     }
 
     fun showSongsDialog(activity: Activity?, title: String?, songs: List<Song>) {
