@@ -20,7 +20,7 @@ import me.echeung.moemoekyun.util.system.NetworkUtil
 
 class Stream(private val context: Context) {
 
-    private val eventListener = object : Player.DefaultEventListener() {
+    private val eventListener = object : Player.EventListener {
         override fun onPlayerError(error: ExoPlaybackException?) {
             // Try to reconnect to the stream
             val wasPlaying = isPlaying
