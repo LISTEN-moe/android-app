@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.util
 
 import android.app.Activity
 import android.content.ClipData
-import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -15,6 +14,7 @@ import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.toast
 
 object SongActionsUtil {
@@ -127,9 +127,8 @@ object SongActionsUtil {
     }
 
     fun copyToClipboard(context: Context, songInfo: String) {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("song", songInfo)
-        clipboard.primaryClip = clip
+        context.clipboardManager.primaryClip = clip
 
         context.toast(String.format("%s: %s", context.getString(R.string.copied_to_clipboard), songInfo))
     }

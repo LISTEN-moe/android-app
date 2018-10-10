@@ -2,9 +2,7 @@ package me.echeung.moemoekyun.util.system
 
 import android.content.Context
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Build
-
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BuildConfig
 

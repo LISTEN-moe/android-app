@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.ui.dialog
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.SystemClock
 import android.widget.SeekBar
@@ -13,6 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
+import me.echeung.moemoekyun.util.system.alarmManager
 import me.echeung.moemoekyun.util.system.getPluralString
 import me.echeung.moemoekyun.util.system.toast
 
@@ -73,8 +73,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
         App.preferenceUtil!!.sleepTimer = minutes
 
         val timerTime = SystemClock.elapsedRealtime() + minutes * 60 * 1000
-        val am = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi)
+        activity.alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi)
 
         activity.toast(activity.getPluralString(R.plurals.sleep_timer_set, minutes))
     }
@@ -82,8 +81,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
     private fun cancelAlarm() {
         val previous = makeTimerPendingIntent(PendingIntent.FLAG_NO_CREATE)
         if (previous != null) {
-            val am = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-            am.cancel(previous)
+            activity.alarmManager.cancel(previous)
             previous.cancel()
 
             App.preferenceUtil!!.clearSleepTimer()

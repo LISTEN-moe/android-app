@@ -1,8 +1,6 @@
 package me.echeung.moemoekyun.ui.activity
 
 import android.app.Activity
-import android.content.ClipboardManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -16,6 +14,7 @@ import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
+import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.AuthViewModel
 
@@ -134,9 +133,7 @@ class AuthActivity : BaseActivity() {
             return
         }
 
-        val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-
-        val clipData = clipboard.primaryClip
+        val clipData = clipboardManager.primaryClip
         if (clipData == null || clipData.itemCount == 0) {
             return
         }

@@ -1,12 +1,15 @@
 package me.echeung.moemoekyun.util.system
 
+import android.app.AlarmManager
 import android.app.NotificationManager
 import android.app.UiModeManager
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.widget.Toast
 import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
@@ -83,3 +86,21 @@ val Context.notificationManager: NotificationManager
  */
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+/**
+ * Property to get the wifi manager from the context.
+ */
+val Context.wifiManager: WifiManager
+    get() = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+/**
+ * Property to get the alarm manager from the context.
+ */
+val Context.alarmManager: AlarmManager
+    get() = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+/**
+ * Property to get the clipboard manager from the context.
+ */
+val Context.clipboardManager: ClipboardManager
+    get() = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager

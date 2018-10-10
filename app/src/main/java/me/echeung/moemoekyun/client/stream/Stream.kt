@@ -17,6 +17,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.util.system.NetworkUtil
+import me.echeung.moemoekyun.util.system.wifiManager
 
 class Stream(private val context: Context) {
 
@@ -176,8 +177,7 @@ class Stream(private val context: Context) {
 
     private fun acquireWifiLock() {
         if (wifiLock == null) {
-            this.wifiLock = (context.applicationContext
-                    .getSystemService(Context.WIFI_SERVICE) as WifiManager)
+            this.wifiLock = context.wifiManager
                     .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG)
         }
 
