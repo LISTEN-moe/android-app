@@ -1,8 +1,10 @@
 package me.echeung.moemoekyun.util.system
 
 import android.app.NotificationManager
+import android.app.UiModeManager
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.widget.Toast
@@ -60,6 +62,14 @@ fun Context.getResourceColor(@AttrRes resource: Int): Int {
 fun Context.openUrl(url: String) {
     val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
     startActivity(browserIntent)
+}
+
+/**
+ * Checks if the device is currently running in Android Auto mode.
+ */
+fun Context.isCarUiMode(): Boolean {
+    val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
+    return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
 }
 
 /**

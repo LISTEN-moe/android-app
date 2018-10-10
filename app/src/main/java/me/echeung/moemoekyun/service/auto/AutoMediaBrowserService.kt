@@ -1,11 +1,9 @@
 package me.echeung.moemoekyun.service.auto
 
-import android.app.UiModeManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.content.res.Configuration
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v4.media.MediaBrowserCompat
@@ -69,11 +67,6 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
 
     companion object {
         private const val MEDIA_ID_ROOT = "media_root"
-
-        fun isCarUiMode(context: Context): Boolean {
-            val uiModeManager = context.getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
-            return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
-        }
     }
 
 }

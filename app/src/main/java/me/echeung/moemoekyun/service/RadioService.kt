@@ -29,6 +29,7 @@ import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.TimeUtil
+import me.echeung.moemoekyun.util.system.isCarUiMode
 import me.echeung.moemoekyun.util.system.toast
 import java.text.ParseException
 import java.util.*
@@ -419,7 +420,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
                 AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                     wasPlayingBeforeLoss = isPlaying
-                    if (wasPlayingBeforeLoss && (App.preferenceUtil!!.shouldPauseAudioOnLoss() || AutoMediaBrowserService.isCarUiMode(this))) {
+                    if (wasPlayingBeforeLoss && (App.preferenceUtil!!.shouldPauseAudioOnLoss() || isCarUiMode())) {
                         pause()
                     }
                 }
