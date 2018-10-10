@@ -183,12 +183,11 @@ class AuthActivity : BaseActivity() {
     }
 
     private fun getText(editText: TextInputEditText): String {
-        return editText.text.toString().trim { it <= ' ' }
+        return editText.text.toString().trim()
     }
 
     companion object {
-
-        private val OTP_LENGTH = 6
+        private const val OTP_LENGTH = 6
     }
 
 }

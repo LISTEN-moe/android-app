@@ -54,7 +54,7 @@ class AppNotification internal constructor(private val service: RadioService) {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setOnlyAlertOnce(true)
 
-        // For pre-Oreo colored notifications
+        // Pre-Oreo (Android 8.x) colored notifications
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !AlbumArtUtil.isDefaultAlbumArt) {
             builder.color = AlbumArtUtil.currentAccentColor
         }

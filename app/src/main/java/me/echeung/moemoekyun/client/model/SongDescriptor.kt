@@ -12,24 +12,26 @@ class SongDescriptor {
 
     companion object {
         fun getSongDescriptorsString(songDescriptors: List<SongDescriptor>?): String {
+            if (songDescriptors == null) {
+                return ""
+            }
+
             val preferRomaji = App.preferenceUtil!!.shouldPreferRomaji()
 
             val s = StringBuilder()
-            if (songDescriptors != null) {
-                for (songDescriptor in songDescriptors) {
-                    if (songDescriptor.name == null) {
-                        continue
-                    }
+            for (songDescriptor in songDescriptors) {
+                if (songDescriptor.name == null) {
+                    continue
+                }
 
-                    if (s.isNotEmpty()) {
-                        s.append(", ")
-                    }
+                if (s.isNotEmpty()) {
+                    s.append(", ")
+                }
 
-                    if (preferRomaji && !TextUtils.isEmpty(songDescriptor.nameRomaji)) {
-                        s.append(songDescriptor.nameRomaji)
-                    } else {
-                        s.append(songDescriptor.name)
-                    }
+                if (preferRomaji && !TextUtils.isEmpty(songDescriptor.nameRomaji)) {
+                    s.append(songDescriptor.nameRomaji)
+                } else {
+                    s.append(songDescriptor.name)
                 }
             }
             return s.toString()
