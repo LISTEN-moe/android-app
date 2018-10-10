@@ -12,7 +12,6 @@ import me.echeung.moemoekyun.client.model.SongListItem
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import java.util.*
 
 class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
@@ -258,15 +257,10 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     }
 
     private fun filterSongs(songs: List<SongListItem>, query: String?): List<Song> {
-        val filteredSongs = ArrayList<Song>()
-
-        for (song in songs) {
-            if (query == null || song.search(query)) {
-                filteredSongs.add(SongListItem.toSong(song))
-            }
-        }
-
-        return filteredSongs
+        return songs.asSequence()
+                .filter { song -> query == null || song.search(query) }
+                .map { song -> SongListItem.toSong(song) }
+                .toList()
     }
 
     companion object {
