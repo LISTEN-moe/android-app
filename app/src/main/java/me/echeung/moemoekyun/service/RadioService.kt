@@ -14,7 +14,6 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.KeyEvent
-import android.widget.Toast
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
@@ -30,6 +29,7 @@ import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.TimeUtil
+import me.echeung.moemoekyun.util.system.toast
 import java.text.ParseException
 import java.util.*
 
@@ -493,7 +493,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             }
 
             override fun onFailure(message: String) {
-                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+                applicationContext.toast(message)
             }
         }
 
@@ -501,7 +501,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     }
 
     private fun showLoginRequiredToast() {
-        Toast.makeText(applicationContext, R.string.login_required, Toast.LENGTH_SHORT).show()
+        applicationContext.toast(R.string.login_required)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

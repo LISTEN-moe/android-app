@@ -29,7 +29,8 @@ import me.echeung.moemoekyun.ui.dialog.SleepTimerDialog
 import me.echeung.moemoekyun.ui.view.PlayPauseView
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
-import me.echeung.moemoekyun.util.system.UrlUtil
+import me.echeung.moemoekyun.util.system.openUrl
+import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class MainActivity : BaseActivity() {
@@ -206,7 +207,7 @@ class MainActivity : BaseActivity() {
 
             val albumArtUrl = currentSong.albumArtUrl ?: return@setOnLongClickListener false
 
-            UrlUtil.open(this, albumArtUrl)
+            openUrl(albumArtUrl)
             true
         }
     }
@@ -335,7 +336,7 @@ class MainActivity : BaseActivity() {
         App.authUtil.clearAuthToken()
         App.userViewModel!!.reset()
 
-        Toast.makeText(applicationContext, getString(R.string.logged_out), Toast.LENGTH_LONG).show()
+        applicationContext.toast(getString(R.string.logged_out), Toast.LENGTH_LONG)
         invalidateOptionsMenu()
 
         broadcastAuthEvent()

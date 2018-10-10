@@ -6,14 +6,14 @@ import android.view.View
 import android.widget.Chronometer
 import android.widget.ImageView
 import android.widget.TextView
-
 import androidx.annotation.ColorInt
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.BindingAdapter
 import me.echeung.moemoekyun.BR
-import me.echeung.moemoekyun.util.ImageUtil
-import me.echeung.moemoekyun.util.ViewUtil
+import me.echeung.moemoekyun.util.system.loadImage
+import me.echeung.moemoekyun.util.system.toggleVisibility
+import me.echeung.moemoekyun.util.system.transitionBackgroundColor
 
 abstract class BaseViewModel : BaseObservable() {
 
@@ -54,25 +54,25 @@ abstract class BaseViewModel : BaseObservable() {
         @JvmStatic
         @BindingAdapter("android:visibility")
         fun setVisibility(v: View, visible: Boolean) {
-            v.visibility = if (visible) View.VISIBLE else View.GONE
+            v.toggleVisibility(visible)
         }
 
         @JvmStatic
         @BindingAdapter("android:imageBitmap")
         fun loadImage(v: ImageView, bitmap: Bitmap?) {
-            ImageUtil.loadImage(v, bitmap)
+            v.loadImage(bitmap)
         }
 
         @JvmStatic
         @BindingAdapter("android:imageUrl")
         fun loadImage(v: ImageView, url: String?) {
-            ImageUtil.loadImage(v, url)
+            v.loadImage(url)
         }
 
         @JvmStatic
         @BindingAdapter("android:transitionBackgroundColor")
         fun transitionBackgroundColor(v: View, @ColorInt toColor: Int) {
-            ViewUtil.transitionBackgroundColor(v, toColor)
+            v.transitionBackgroundColor(toColor)
         }
 
         @JvmStatic

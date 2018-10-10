@@ -8,13 +8,13 @@ import android.content.Intent
 import android.os.SystemClock
 import android.widget.SeekBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
-import me.echeung.moemoekyun.util.system.PluralsUtil
+import me.echeung.moemoekyun.util.system.getPluralString
+import me.echeung.moemoekyun.util.system.toast
 
 class SleepTimerDialog(@param:NonNull private val activity: Activity) {
 
@@ -33,10 +33,10 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
             sleepTimerSeekBar.progress = prevSleepTimer
         }
 
-        sleepTimerText.text = PluralsUtil.getString(activity, R.plurals.minutes, prevSleepTimer)
+        sleepTimerText.text = activity.getPluralString(R.plurals.minutes, prevSleepTimer)
         sleepTimerSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                sleepTimerText.text = PluralsUtil.getString(activity, R.plurals.minutes, progress)
+                sleepTimerText.text = activity.getPluralString(R.plurals.minutes, progress)
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {}
@@ -76,7 +76,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
         val am = activity.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi)
 
-        Toast.makeText(activity, PluralsUtil.getString(activity, R.plurals.sleep_timer_set, minutes), Toast.LENGTH_SHORT).show()
+        activity.toast(activity.getPluralString(R.plurals.sleep_timer_set, minutes))
     }
 
     private fun cancelAlarm() {
@@ -88,7 +88,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
 
             App.preferenceUtil!!.clearSleepTimer()
 
-            Toast.makeText(activity, activity.getString(R.string.sleep_timer_canceled), Toast.LENGTH_SHORT).show()
+            activity.toast(activity.getString(R.string.sleep_timer_canceled))
         }
     }
 

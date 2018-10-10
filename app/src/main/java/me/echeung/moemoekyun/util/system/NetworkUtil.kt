@@ -20,7 +20,7 @@ object NetworkUtil {
 
     fun isNetworkAvailable(context: Context?): Boolean {
         if (context != null) {
-            val activeNetworkInfo = getActiveNetworkInfo(context)
+            val activeNetworkInfo = context.connectivityManager.activeNetworkInfo
 
             val isAvailable = activeNetworkInfo != null && activeNetworkInfo.isConnected
 
@@ -37,17 +37,11 @@ object NetworkUtil {
             return false
         }
 
-        val activeNetworkInfo = getActiveNetworkInfo(context)
+        val activeNetworkInfo = context.connectivityManager.activeNetworkInfo
 
         return (activeNetworkInfo != null
                 && activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI
                 && activeNetworkInfo.isConnectedOrConnecting)
-    }
-
-    private fun getActiveNetworkInfo(context: Context): NetworkInfo? {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-        return connectivityManager.activeNetworkInfo
     }
 
 }

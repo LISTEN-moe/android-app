@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.textfield.TextInputEditText
@@ -17,6 +16,7 @@ import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
+import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.AuthViewModel
 
 class AuthActivity : BaseActivity() {
@@ -67,7 +67,7 @@ class AuthActivity : BaseActivity() {
             }
 
             override fun onFailure(message: String) {
-                runOnUiThread { Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show() }
+                runOnUiThread { applicationContext.toast(message) }
             }
         }
     }
@@ -172,11 +172,11 @@ class AuthActivity : BaseActivity() {
 
         App.radioClient!!.api.register(email, username, password, object : RegisterCallback {
             override fun onSuccess(message: String) {
-                runOnUiThread { Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show() }
+                runOnUiThread { applicationContext.toast(message) }
             }
 
             override fun onFailure(message: String) {
-                runOnUiThread { Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show() }
+                runOnUiThread { applicationContext.toast(message) }
             }
         })
     }

@@ -1,8 +1,6 @@
 package me.echeung.moemoekyun.service
 
-import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
@@ -12,11 +10,9 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
+import me.echeung.moemoekyun.util.system.notificationManager
 
 class AppNotification internal constructor(private val service: RadioService) {
-
-    private val notificationManager: NotificationManager =
-            service.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     private val currentSong: Song?
         get() = App.radioViewModel!!.currentSong
@@ -90,7 +86,7 @@ class AppNotification internal constructor(private val service: RadioService) {
             service.stopForeground(false)
         }
 
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        service.notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
     private fun getPlaybackActionService(action: String): PendingIntent {

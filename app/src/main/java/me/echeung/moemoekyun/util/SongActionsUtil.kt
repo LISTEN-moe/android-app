@@ -15,6 +15,7 @@ import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.util.system.toast
 import java.util.*
 
 object SongActionsUtil {
@@ -79,7 +80,7 @@ object SongActionsUtil {
             override fun onFailure(message: String) {
                 if (activity == null) return
 
-                activity.runOnUiThread { Toast.makeText(activity.applicationContext, message, Toast.LENGTH_SHORT).show() }
+                activity.runOnUiThread { activity.applicationContext.toast(message) }
             }
         }
 
@@ -111,14 +112,14 @@ object SongActionsUtil {
                     else
                         activity.getString(R.string.requested_random_song)
 
-                    Toast.makeText(activity.applicationContext, toastMsg, Toast.LENGTH_LONG).show()
+                    activity.applicationContext.toast(toastMsg, Toast.LENGTH_LONG)
                 }
             }
 
             override fun onFailure(message: String) {
                 if (activity == null) return
 
-                activity.runOnUiThread { Toast.makeText(activity.applicationContext, message, Toast.LENGTH_SHORT).show() }
+                activity.runOnUiThread { activity.applicationContext.toast(message) }
             }
         })
     }
@@ -134,9 +135,7 @@ object SongActionsUtil {
         val clip = ClipData.newPlainText("song", songInfo)
         clipboard.primaryClip = clip
 
-        val text = String.format("%s: %s", context.getString(R.string.copied_to_clipboard), songInfo)
-
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
+        context.toast(String.format("%s: %s", context.getString(R.string.copied_to_clipboard), songInfo))
     }
 
 }

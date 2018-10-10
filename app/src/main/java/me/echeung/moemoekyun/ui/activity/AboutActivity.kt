@@ -10,7 +10,7 @@ import de.psdev.licensesdialog.LicensesDialog
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.base.BaseActivity
-import me.echeung.moemoekyun.util.system.UrlUtil
+import me.echeung.moemoekyun.util.system.openUrl
 
 class AboutActivity : BaseActivity(), View.OnClickListener {
 
@@ -65,21 +65,21 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.about_app_rate -> UrlUtil.open(this, getString(R.string.url_store))
+            R.id.about_app_rate -> openUrl(getString(R.string.url_store))
 
-            R.id.about_app_github -> UrlUtil.open(this, getString(R.string.url_github))
+            R.id.about_app_github -> openUrl(getString(R.string.url_github))
 
-            R.id.about_app_translate -> UrlUtil.open(this, getString(R.string.url_translate))
+            R.id.about_app_translate -> openUrl(getString(R.string.url_translate))
 
             R.id.about_app_licenses -> showLicensesDialog()
 
-            R.id.about_listenmoe_website -> UrlUtil.open(this, getString(R.string.url_listenmoe))
+            R.id.about_listenmoe_website -> openUrl(getString(R.string.url_listenmoe))
 
-            R.id.about_listenmoe_discord -> UrlUtil.open(this, getString(R.string.url_discord))
+            R.id.about_listenmoe_discord -> openUrl(getString(R.string.url_discord))
 
-            R.id.about_listenmoe_patreon -> UrlUtil.open(this, getString(R.string.url_patreon))
+            R.id.about_listenmoe_patreon -> openUrl(getString(R.string.url_patreon))
 
-            R.id.about_privacy_policy -> UrlUtil.open(this, getString(R.string.url_privacy_policy))
+            R.id.about_privacy_policy -> openUrl(getString(R.string.url_privacy_policy))
         }
     }
 

@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.widget.Toast
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
@@ -15,6 +14,7 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.util.system.toast
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -42,17 +42,17 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
         songList.showLoading(true)
 
         App.radioClient!!.api.search(null, object : SearchCallback {
-            override fun onSuccess(results: List<Song>) {
-                activity!!.runOnUiThread {
+            override fun onSuccess(favorites: List<Song>) {
+                activity?.runOnUiThread {
                     songList.showLoading(false)
-                    adapter.songs = results
+                    adapter.songs = favorites
                 }
             }
 
             override fun onFailure(message: String) {
-                activity!!.runOnUiThread {
+                activity?.runOnUiThread {
                     songList.showLoading(false)
-                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                    activity?.toast(message)
                 }
             }
         })

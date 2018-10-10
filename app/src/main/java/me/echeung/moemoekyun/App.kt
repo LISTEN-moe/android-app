@@ -15,6 +15,7 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.service.AppNotification
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.PreferenceUtil
+import me.echeung.moemoekyun.util.system.notificationManager
 import me.echeung.moemoekyun.viewmodel.AuthViewModel
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
@@ -60,8 +61,7 @@ class App : Application(), ServiceConnection {
                     AppNotification.NOTIFICATION_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_LOW)
 
-            val notifManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notifManager.createNotificationChannel(notifChannel)
+            notificationManager.createNotificationChannel(notifChannel)
         }
     }
 
