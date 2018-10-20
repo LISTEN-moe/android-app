@@ -78,9 +78,7 @@ class AuthActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        if (binding != null) {
-            binding!!.unbind()
-        }
+        binding?.unbind()
 
         super.onDestroy()
     }

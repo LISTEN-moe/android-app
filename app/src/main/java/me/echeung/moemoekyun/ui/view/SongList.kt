@@ -85,9 +85,7 @@ class SongList(activity: Activity, binding: SongsListBinding, listId: String, pr
     }
 
     fun showLoading(loading: Boolean) {
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.isRefreshing = loading
-        }
+        swipeRefreshLayout?.isRefreshing = loading
     }
 
     fun notifyDataSetChanged() {

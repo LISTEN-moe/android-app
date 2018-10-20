@@ -65,9 +65,7 @@ class Stream(private val context: Context) {
             player!!.seekToDefaultPosition()
         }
 
-        if (listener != null) {
-            listener!!.onStreamPlay()
-        }
+        listener?.onStreamPlay()
     }
 
     fun pause() {
@@ -77,9 +75,7 @@ class Stream(private val context: Context) {
             releaseWifiLock()
         }
 
-        if (listener != null) {
-            listener!!.onStreamPause()
-        }
+        listener?.onStreamPause()
     }
 
     fun stop() {
@@ -90,9 +86,7 @@ class Stream(private val context: Context) {
             releaseWifiLock()
         }
 
-        if (listener != null) {
-            listener!!.onStreamStop()
-        }
+        listener?.onStreamStop()
     }
 
     fun fadeOut() {
@@ -127,15 +121,11 @@ class Stream(private val context: Context) {
     }
 
     fun duck() {
-        if (player != null) {
-            player!!.volume = 0.5f
-        }
+        player?.volume = 0.5f
     }
 
     fun unduck() {
-        if (player != null) {
-            player!!.volume = 1f
-        }
+        player?.volume = 1f
     }
 
     private fun init() {
