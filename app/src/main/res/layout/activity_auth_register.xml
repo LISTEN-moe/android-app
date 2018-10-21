@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.activity.AuthLoginActivity">
+    tools:context=".ui.activity.AuthRegisterActivity">
 
     <data />
 
@@ -68,11 +68,26 @@
                                 android:textColorHint="@color/light_grey">
 
                                 <com.google.android.material.textfield.TextInputEditText
-                                    android:id="@+id/auth_login"
+                                    android:id="@+id/auth_username"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:autofillHints="username"
-                                    android:hint="@string/username_or_email"
+                                    android:hint="@string/username"
+                                    android:inputType="textNoSuggestions"
+                                    android:singleLine="true"
+                                    tools:ignore="LabelFor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/light_grey">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/auth_email"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/email"
                                     android:inputType="textNoSuggestions|textEmailAddress"
                                     android:singleLine="true"
                                     tools:ignore="LabelFor" />
@@ -91,6 +106,21 @@
                                     android:autofillHints="password"
                                     android:hint="@string/password"
                                     android:inputType="textPassword"
+                                    tools:ignore="LabelFor" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textColorHint="@color/light_grey">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/auth_password_confirm"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="@string/password_confirm"
+                                    android:inputType="textPassword"
                                     android:imeOptions="actionDone"
                                     tools:ignore="LabelFor" />
 
@@ -108,7 +138,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="?attr/selectableItemBackground"
-                            android:text="@string/login" />
+                            android:text="@string/register" />
 
                     </LinearLayout>
 

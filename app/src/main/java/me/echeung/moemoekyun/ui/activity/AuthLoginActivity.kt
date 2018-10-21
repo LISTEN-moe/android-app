@@ -11,17 +11,14 @@ import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
-import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.toast
-import me.echeung.moemoekyun.viewmodel.AuthViewModel
 
 class AuthLoginActivity : BaseActivity() {
 
     private var binding: ActivityAuthLoginBinding? = null
-    private var viewModel: AuthViewModel? = null
 
     private var loginCallback: LoginCallback? = null
 
@@ -31,9 +28,6 @@ class AuthLoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth_login)
-
-        viewModel = App.authViewModel
-        binding!!.vm = viewModel
 
         setSupportActionBar(findViewById(R.id.appbar))
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -50,7 +44,6 @@ class AuthLoginActivity : BaseActivity() {
         }
 
         binding!!.authPassword.setOnEditorActionListener(onSubmit)
-        binding!!.authPasswordConfirm.setOnEditorActionListener(onSubmit)
 
         loginCallback = object : LoginCallback {
             override fun onSuccess(token: String) {
@@ -84,11 +77,7 @@ class AuthLoginActivity : BaseActivity() {
     }
 
     private fun submit() {
-        if (viewModel!!.showRegister) {
-            register()
-        } else {
-            login()
-        }
+        login()
     }
 
     private fun login() {
@@ -143,37 +132,6 @@ class AuthLoginActivity : BaseActivity() {
             val otpText = mfaDialog!!.findViewById<TextInputEditText>(R.id.mfa_otp)
             otpText?.setText(clipboardText)
         }
-    }
-
-    private fun register() {
-        val username = getText(binding!!.authUsername)
-        val email = getText(binding!!.authEmail)
-        val password = getText(binding!!.authPassword)
-        val passwordConfirm = getText(binding!!.authPasswordConfirm)
-
-        setError(binding!!.authUsername, username.isEmpty(), getString(R.string.required))
-        setError(binding!!.authEmail, email.isEmpty(), getString(R.string.required))
-        setError(binding!!.authPassword, password.isEmpty(), getString(R.string.required))
-        setError(binding!!.authPasswordConfirm, passwordConfirm.isEmpty(), getString(R.string.required))
-        if (username.isEmpty() || email.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty()) {
-            return
-        }
-
-        setError(binding!!.authPassword, password != passwordConfirm, getString(R.string.password_mismatch))
-        setError(binding!!.authPasswordConfirm, password != passwordConfirm, getString(R.string.password_mismatch))
-        if (password != passwordConfirm) {
-            return
-        }
-
-        App.radioClient!!.api.register(email, username, password, object : RegisterCallback {
-            override fun onSuccess(message: String) {
-                runOnUiThread { applicationContext.toast(message) }
-            }
-
-            override fun onFailure(message: String) {
-                runOnUiThread { applicationContext.toast(message) }
-            }
-        })
     }
 
     private fun setError(editText: TextInputEditText, isError: Boolean, errorMessage: String) {
