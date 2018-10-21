@@ -18,7 +18,7 @@ import me.echeung.moemoekyun.util.system.toast
 
 class AuthLoginActivity : BaseActivity() {
 
-    private var binding: ActivityAuthLoginBinding? = null
+    private lateinit var binding: ActivityAuthLoginBinding
 
     private var loginCallback: LoginCallback? = null
 
@@ -33,7 +33,7 @@ class AuthLoginActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        binding!!.authBtn.setOnClickListener { v -> submit() }
+        binding.authBtn.setOnClickListener { v -> submit() }
 
         val onSubmit = TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -43,7 +43,7 @@ class AuthLoginActivity : BaseActivity() {
             false
         }
 
-        binding!!.authPassword.setOnEditorActionListener(onSubmit)
+        binding.authPassword.setOnEditorActionListener(onSubmit)
 
         loginCallback = object : LoginCallback {
             override fun onSuccess(token: String) {
@@ -81,11 +81,11 @@ class AuthLoginActivity : BaseActivity() {
     }
 
     private fun login() {
-        val userLogin = getText(binding!!.authLogin)
-        val password = getText(binding!!.authPassword)
+        val userLogin = getText(binding.authLogin)
+        val password = getText(binding.authPassword)
 
-        setError(binding!!.authLogin, userLogin.isEmpty(), getString(R.string.required))
-        setError(binding!!.authPassword, password.isEmpty(), getString(R.string.required))
+        setError(binding.authLogin, userLogin.isEmpty(), getString(R.string.required))
+        setError(binding.authPassword, password.isEmpty(), getString(R.string.required))
         if (userLogin.isEmpty() || password.isEmpty()) {
             return
         }

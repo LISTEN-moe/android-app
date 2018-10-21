@@ -14,7 +14,7 @@ import me.echeung.moemoekyun.util.system.toast
 
 class AuthRegisterActivity : BaseActivity() {
 
-    private var binding: ActivityAuthRegisterBinding? = null
+    private lateinit var binding: ActivityAuthRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +25,7 @@ class AuthRegisterActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        binding!!.authBtn.setOnClickListener { v -> submit() }
+        binding.authBtn.setOnClickListener { v -> submit() }
 
         val onSubmit = TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -35,7 +35,7 @@ class AuthRegisterActivity : BaseActivity() {
             false
         }
 
-        binding!!.authPasswordConfirm.setOnEditorActionListener(onSubmit)
+        binding.authPasswordConfirm.setOnEditorActionListener(onSubmit)
     }
 
     override fun onDestroy() {
@@ -49,21 +49,21 @@ class AuthRegisterActivity : BaseActivity() {
     }
 
     private fun register() {
-        val username = getText(binding!!.authUsername)
-        val email = getText(binding!!.authEmail)
-        val password = getText(binding!!.authPassword)
-        val passwordConfirm = getText(binding!!.authPasswordConfirm)
+        val username = getText(binding.authUsername)
+        val email = getText(binding.authEmail)
+        val password = getText(binding.authPassword)
+        val passwordConfirm = getText(binding.authPasswordConfirm)
 
-        setError(binding!!.authUsername, username.isEmpty(), getString(R.string.required))
-        setError(binding!!.authEmail, email.isEmpty(), getString(R.string.required))
-        setError(binding!!.authPassword, password.isEmpty(), getString(R.string.required))
-        setError(binding!!.authPasswordConfirm, passwordConfirm.isEmpty(), getString(R.string.required))
+        setError(binding.authUsername, username.isEmpty(), getString(R.string.required))
+        setError(binding.authEmail, email.isEmpty(), getString(R.string.required))
+        setError(binding.authPassword, password.isEmpty(), getString(R.string.required))
+        setError(binding.authPasswordConfirm, passwordConfirm.isEmpty(), getString(R.string.required))
         if (username.isEmpty() || email.isEmpty() || password.isEmpty() || passwordConfirm.isEmpty()) {
             return
         }
 
-        setError(binding!!.authPassword, password != passwordConfirm, getString(R.string.password_mismatch))
-        setError(binding!!.authPasswordConfirm, password != passwordConfirm, getString(R.string.password_mismatch))
+        setError(binding.authPassword, password != passwordConfirm, getString(R.string.password_mismatch))
+        setError(binding.authPasswordConfirm, password != passwordConfirm, getString(R.string.password_mismatch))
         if (password != passwordConfirm) {
             return
         }
