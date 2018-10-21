@@ -25,7 +25,7 @@ import me.echeung.moemoekyun.viewmodel.UserViewModel
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private var viewModel: UserViewModel? = null
+    private lateinit var viewModel: UserViewModel
 
     init {
         layout = R.layout.fragment_user
@@ -45,10 +45,10 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        viewModel = App.userViewModel
+        viewModel = App.userViewModel!!
 
-        binding!!.radioVm = App.radioViewModel
-        binding!!.userVm = viewModel
+        binding.radioVm = App.radioViewModel
+        binding.userVm = viewModel
 
         initUserContent()
 
@@ -56,22 +56,21 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     }
 
     override fun initSongList(binding: FragmentUserBinding): SongList {
-        return SongList(activity!!, binding.favorites.favoritesList, "USER_FAVORITES_LIST", this)
+        return SongList(requireActivity(), binding.favorites.favoritesList, "USER_FAVORITES_LIST", this)
     }
 
     override fun loadSongs(adapter: SongsAdapter) {
         App.radioClient!!.api.getUserFavorites(object : UserFavoritesCallback {
             override fun onSuccess(favorites: List<Song>) {
-                activity!!.runOnUiThread {
+                activity?.runOnUiThread {
                     songList.showLoading(false)
                     adapter.songs = favorites
+                    viewModel.hasFavorites = !favorites.isEmpty()
                 }
-
-                viewModel!!.hasFavorites = !favorites.isEmpty()
             }
 
             override fun onFailure(message: String) {
-                activity!!.runOnUiThread { songList.showLoading(false) }
+                activity?.runOnUiThread { songList.showLoading(false) }
             }
         })
     }
@@ -88,14 +87,14 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     private fun getUserInfo() {
         App.radioClient!!.api.getUserInfo(object : UserInfoCallback {
             override fun onSuccess(user: User) {
-                viewModel!!.user = user
+                viewModel.user = user
 
                 if (user.avatarImage != null) {
-                    viewModel!!.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage!!
+                    viewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage!!
                 }
 
                 if (user.bannerImage != null) {
-                    viewModel!!.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage!!
+                    viewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage!!
                 }
             }
 

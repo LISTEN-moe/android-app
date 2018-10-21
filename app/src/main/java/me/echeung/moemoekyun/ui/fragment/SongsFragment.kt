@@ -35,7 +35,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
     }
 
     override fun initSongList(binding: FragmentSongsBinding): SongList {
-        return SongList(activity!!, binding.songsList, "SONGS_LIST", this)
+        return SongList(requireActivity(), binding.songsList, "SONGS_LIST", this)
     }
 
     override fun loadSongs(adapter: SongsAdapter) {

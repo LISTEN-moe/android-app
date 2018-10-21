@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
-    protected var binding: T? = null
+    protected lateinit var binding: T
 
     // Receiver
     private var intentFilter: IntentFilter? = null
@@ -33,7 +33,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
         registerReceiver()
 
-        return binding!!.root
+        return binding.root
     }
 
     override fun onDestroy() {
@@ -50,14 +50,14 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     private fun registerReceiver() {
         if (!receiverRegistered && intentReceiver != null && intentFilter != null) {
-            activity!!.registerReceiver(intentReceiver, intentFilter)
+            requireActivity().registerReceiver(intentReceiver, intentFilter)
             receiverRegistered = true
         }
     }
 
     private fun unregisterReceiver() {
         if (receiverRegistered) {
-            activity!!.unregisterReceiver(intentReceiver)
+            requireActivity().unregisterReceiver(intentReceiver)
             receiverRegistered = false
         }
     }

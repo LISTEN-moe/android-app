@@ -20,7 +20,7 @@ abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), S
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        songList = initSongList(binding!!)
+        songList = initSongList(binding)
         songList.loadSongs()
 
         App.preferenceUtil!!.registerListener(this)

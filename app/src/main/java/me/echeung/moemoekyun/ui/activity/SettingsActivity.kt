@@ -77,9 +77,11 @@ class SettingsActivity : BaseActivity() {
         }
 
         private fun recreateBackStack() {
-            TaskStackBuilder.create(activity!!)
+            val activity = requireActivity()
+
+            TaskStackBuilder.create(activity)
                     .addNextIntent(Intent(activity, MainActivity::class.java))
-                    .addNextIntent(activity!!.intent)
+                    .addNextIntent(activity.intent)
                     .startActivities()
         }
 
