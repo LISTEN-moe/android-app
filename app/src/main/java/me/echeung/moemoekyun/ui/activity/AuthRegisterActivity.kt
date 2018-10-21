@@ -3,49 +3,32 @@ package me.echeung.moemoekyun.ui.activity
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
-import me.echeung.moemoekyun.ui.base.BaseActivity
+import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.system.toast
 
-class AuthRegisterActivity : BaseActivity() {
+class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding>() {
 
-    private lateinit var binding: ActivityAuthRegisterBinding
+    init {
+        layout = R.layout.activity_auth_register
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_auth_register)
+        binding.authBtn.setOnClickListener { v -> register() }
 
-        setSupportActionBar(findViewById(R.id.appbar))
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-
-        binding.authBtn.setOnClickListener { v -> submit() }
-
-        val onSubmit = TextView.OnEditorActionListener { v, actionId, event ->
+        binding.authPasswordConfirm.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                submit()
+                register()
                 return@OnEditorActionListener true
             }
             false
-        }
-
-        binding.authPasswordConfirm.setOnEditorActionListener(onSubmit)
-    }
-
-    override fun onDestroy() {
-        binding?.unbind()
-
-        super.onDestroy()
-    }
-
-    private fun submit() {
-        register()
+        })
     }
 
     private fun register() {

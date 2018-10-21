@@ -6,44 +6,26 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
-import me.echeung.moemoekyun.ui.base.BaseActivity
+import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.toast
 
-class AuthLoginActivity : BaseActivity() {
+class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
 
-    private lateinit var binding: ActivityAuthLoginBinding
-
-    private var loginCallback: LoginCallback? = null
-
+    private lateinit var loginCallback: LoginCallback
     private var mfaDialog: AlertDialog? = null
+
+    init {
+        layout = R.layout.activity_auth_login
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_auth_login)
-
-        setSupportActionBar(findViewById(R.id.appbar))
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-
-        binding.authBtn.setOnClickListener { v -> submit() }
-
-        val onSubmit = TextView.OnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                submit()
-                return@OnEditorActionListener true
-            }
-            false
-        }
-
-        binding.authPassword.setOnEditorActionListener(onSubmit)
 
         loginCallback = object : LoginCallback {
             override fun onSuccess(token: String) {
@@ -62,22 +44,22 @@ class AuthLoginActivity : BaseActivity() {
                 runOnUiThread { applicationContext.toast(message) }
             }
         }
+
+        binding.authBtn.setOnClickListener { v -> login() }
+
+        binding.authPassword.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                login()
+                return@OnEditorActionListener true
+            }
+            false
+        })
     }
 
     public override fun onResume() {
         super.onResume()
 
         autoPasteMfaToken()
-    }
-
-    override fun onDestroy() {
-        binding?.unbind()
-
-        super.onDestroy()
-    }
-
-    private fun submit() {
-        login()
     }
 
     private fun login() {
@@ -90,7 +72,7 @@ class AuthLoginActivity : BaseActivity() {
             return
         }
 
-        App.radioClient!!.api.authenticate(userLogin, password, loginCallback!!)
+        App.radioClient!!.api.authenticate(userLogin, password, loginCallback)
     }
 
     private fun showMfaDialog() {
@@ -107,7 +89,7 @@ class AuthLoginActivity : BaseActivity() {
                             return
                         }
 
-                        App.radioClient!!.api.authenticateMfa(otpToken, loginCallback!!)
+                        App.radioClient!!.api.authenticateMfa(otpToken, loginCallback)
                     })
                     .create()
 
@@ -128,7 +110,7 @@ class AuthLoginActivity : BaseActivity() {
         val clipDataItem = clipData.getItemAt(0)
         val clipboardText = clipDataItem.text.toString()
 
-        if (clipboardText.length == OTP_LENGTH && clipboardText.matches("^[0-9]*$".toRegex())) {
+        if (clipboardText.length == OTP_LENGTH && clipboardText.matches(OTP_REGEX)) {
             val otpText = mfaDialog!!.findViewById<TextInputEditText>(R.id.mfa_otp)
             otpText?.setText(clipboardText)
         }
@@ -144,6 +126,7 @@ class AuthLoginActivity : BaseActivity() {
 
     companion object {
         private const val OTP_LENGTH = 6
+        private val OTP_REGEX = "^[0-9]*$".toRegex()
     }
 
 }
