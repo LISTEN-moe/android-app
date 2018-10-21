@@ -12,15 +12,15 @@ import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
-import me.echeung.moemoekyun.databinding.ActivityAuthBinding
+import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.AuthViewModel
 
-class AuthActivity : BaseActivity() {
+class AuthLoginActivity : BaseActivity() {
 
-    private var binding: ActivityAuthBinding? = null
+    private var binding: ActivityAuthLoginBinding? = null
     private var viewModel: AuthViewModel? = null
 
     private var loginCallback: LoginCallback? = null
@@ -30,7 +30,7 @@ class AuthActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_auth_login)
 
         viewModel = App.authViewModel
         binding!!.vm = viewModel

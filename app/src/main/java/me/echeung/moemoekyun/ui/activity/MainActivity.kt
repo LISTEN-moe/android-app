@@ -304,7 +304,7 @@ class MainActivity : BaseActivity() {
     @JvmOverloads
     fun showLoginActivity(requestCode: Int = LOGIN_REQUEST) {
         App.authViewModel!!.showRegister = false
-        startActivityForResult(Intent(this, AuthActivity::class.java), requestCode)
+        startActivityForResult(Intent(this, AuthLoginActivity::class.java), requestCode)
     }
 
     private fun broadcastAuthEvent() {
@@ -315,7 +315,7 @@ class MainActivity : BaseActivity() {
 
     private fun showRegisterActivity() {
         App.authViewModel!!.showRegister = true
-        startActivity(Intent(this, AuthActivity::class.java))
+        startActivity(Intent(this, AuthLoginActivity::class.java))
     }
 
     private fun showLogoutDialog() {
