@@ -39,7 +39,7 @@
         <item name="android:background">@color/dark_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorLink">@color/colorAccent</item>
-        <item name="android:colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <!-- Buttons -->
