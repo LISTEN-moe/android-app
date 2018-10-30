@@ -109,14 +109,14 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
 
     private class SongViewHolder internal constructor(private val binding: SongItemBinding, adapter: SongsAdapter) : RecyclerView.ViewHolder(binding.root) {
         init {
-            binding.root.setOnClickListener { v ->
+            binding.root.setOnClickListener { _ ->
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val song = adapter.songs!![layoutPosition]
                     SongActionsUtil.showSongsDialog(adapter.getActivity(), null, song)
                 }
             }
 
-            binding.root.setOnLongClickListener { v ->
+            binding.root.setOnLongClickListener { _ ->
                 val song = adapter.songs!![layoutPosition]
                 SongActionsUtil.copyToClipboard(adapter.getActivity(), song)
                 true

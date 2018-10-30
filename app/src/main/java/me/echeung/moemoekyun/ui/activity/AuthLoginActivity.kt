@@ -46,9 +46,9 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             }
         }
 
-        binding.authBtn.setOnClickListener { v -> login() }
+        binding.authBtn.setOnClickListener { _ -> login() }
 
-        binding.authPassword.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        binding.authPassword.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 login()
                 return@OnEditorActionListener true
@@ -56,7 +56,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             false
         })
 
-        binding.forgotPassword.setOnClickListener { v -> openUrl(FORGOT_PASSWORD_URL) }
+        binding.forgotPassword.setOnClickListener { _ -> openUrl(FORGOT_PASSWORD_URL) }
     }
 
     public override fun onResume() {
@@ -86,7 +86,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             mfaDialog = AlertDialog.Builder(this, R.style.DialogTheme)
                     .setTitle(R.string.mfa_prompt)
                     .setView(layout)
-                    .setPositiveButton(R.string.submit, fun(dialogInterface, i) {
+                    .setPositiveButton(R.string.submit, fun(_, _) {
                         val otpToken = otpText.text.toString().trim { it <= ' ' }
                         if (otpToken.length != OTP_LENGTH) {
                             return

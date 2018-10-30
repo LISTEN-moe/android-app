@@ -56,7 +56,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
 
         // Show cancel button if a timer is currently set
         if (prevSleepTimer != 0) {
-            sleepTimerDialog.setNeutralButton(R.string.cancel_timer) { dialogInterface, i -> cancelAlarm() }
+            sleepTimerDialog.setNeutralButton(R.string.cancel_timer) { _, _ -> cancelAlarm() }
         }
 
         sleepTimerDialog.create().show()

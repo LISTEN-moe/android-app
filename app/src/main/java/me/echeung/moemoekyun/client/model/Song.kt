@@ -76,7 +76,7 @@ class Song {
             return true
         }
 
-        if (titleSearchRomaji != null && titleSearchRomaji!!.toLowerCase()!!.contains(query)) {
+        if (titleSearchRomaji != null && titleSearchRomaji!!.toLowerCase().contains(query)) {
             return true
         }
 

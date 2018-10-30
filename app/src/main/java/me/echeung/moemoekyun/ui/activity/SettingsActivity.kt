@@ -42,7 +42,7 @@ class SettingsActivity : BaseActivity() {
         private fun invalidateSettings() {
             val languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE)
             setSummary(languageSetting)
-            languageSetting.setOnPreferenceChangeListener { preference, o ->
+            languageSetting.setOnPreferenceChangeListener { _, o ->
                 setSummary(languageSetting, o)
                 recreateBackStack()
                 true
@@ -50,7 +50,7 @@ class SettingsActivity : BaseActivity() {
 
             val downloadSetting = findPreference(PreferenceUtil.PREF_GENERAL_DOWNLOAD)
             setSummary(downloadSetting)
-            downloadSetting.setOnPreferenceChangeListener { preference, o ->
+            downloadSetting.setOnPreferenceChangeListener { _, o ->
                 setSummary(downloadSetting, o)
                 true
             }

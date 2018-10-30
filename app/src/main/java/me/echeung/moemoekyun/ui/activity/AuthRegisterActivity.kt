@@ -20,9 +20,9 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding.authBtn.setOnClickListener { v -> register() }
+        binding.authBtn.setOnClickListener { _ -> register() }
 
-        binding.authPasswordConfirm.setOnEditorActionListener(TextView.OnEditorActionListener { v, actionId, event ->
+        binding.authPasswordConfirm.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 register()
                 return@OnEditorActionListener true
