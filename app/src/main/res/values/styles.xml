@@ -2,14 +2,17 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents">
-        <!-- AppBar -->
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
         <!-- Accent color -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorAccent</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- App bar -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Nav bar -->
+        <item name="android:navigationBarColor">@color/dark_grey</item>
 
         <!-- Base background/text colors -->
         <item name="android:windowBackground">@color/dark_grey</item>
