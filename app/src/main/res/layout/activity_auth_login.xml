@@ -110,6 +110,16 @@
                             android:background="?attr/selectableItemBackground"
                             android:text="@string/login" />
 
+                        <Button
+                            android:id="@+id/forgot_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:text="@string/forgot_password"
+                            android:textAlignment="center"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
+
+
                     </LinearLayout>
 
                 </androidx.cardview.widget.CardView>

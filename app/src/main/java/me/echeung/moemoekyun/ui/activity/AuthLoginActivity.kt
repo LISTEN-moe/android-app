@@ -13,6 +13,7 @@ import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.system.clipboardManager
+import me.echeung.moemoekyun.util.system.openUrl
 import me.echeung.moemoekyun.util.system.toast
 
 class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
@@ -54,6 +55,8 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             }
             false
         })
+
+        binding.forgotPassword.setOnClickListener { v -> openUrl(FORGOT_PASSWORD_URL) }
     }
 
     public override fun onResume() {
@@ -127,6 +130,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
     companion object {
         private const val OTP_LENGTH = 6
         private val OTP_REGEX = "^[0-9]*$".toRegex()
+        private const val FORGOT_PASSWORD_URL = "https://listen.moe/login/forgot"
     }
 
 }
