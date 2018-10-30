@@ -137,7 +137,6 @@
                             android:id="@+id/auth_btn"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="?attr/selectableItemBackground"
                             android:text="@string/register" />
 
                     </LinearLayout>
