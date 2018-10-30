@@ -105,5 +105,17 @@
   <string name="pref_header_music">音乐</string>
   <string name="pref_title_general_romaji">偏好罗马音</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" 而不是 \"ななひら\"</string>
+  <string name="pref_title_general_random_request_title">请求随机曲目</string>
+  <string name="pref_title_general_random_request_summary">显示请求的歌曲名</string>
+  <string name="pref_title_lockscreen_albumart_title">专辑封面</string>
+  <string name="pref_title_lockscreen_albumart_summary">在锁屏和Android车载系统上显示专辑封面</string>
+  <string name="pref_title_color_now_playing_title">为当前播放屏幕填充背景色</string>
+  <string name="pref_title_color_now_playing_summary">使用专辑封面的主色</string>
   <string name="pref_header_audio">音频</string>
+  <string name="pref_title_pause_on_noisy_title">拔出耳机时暂停</string>
+  <string name="pref_title_pause_on_noisy_summary">拔出耳机时音乐将暂停播放</string>
+  <string name="pref_title_audio_pause_on_loss_title">其他媒体播放时暂停</string>
+  <string name="pref_title_audio_pause_on_loss_summary">当其他媒体播放时，比如视频或其他音乐，音乐将暂停播放</string>
+  <string name="pref_title_audio_duck_title">音量回避</string>
+  <string name="pref_title_audio_duck_summary">当有通知或切换时，音乐音量将减弱</string>
 </resources>

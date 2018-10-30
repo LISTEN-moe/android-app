@@ -105,5 +105,17 @@
   <string name="pref_header_music">Musique</string>
   <string name="pref_title_general_romaji">Privilégier les romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" à la place de \"ななひら\"</string>
+  <string name="pref_title_general_random_request_title">Titres demandés aléatoirement</string>
+  <string name="pref_title_general_random_request_summary">Montrer le nom de la musique demandée</string>
+  <string name="pref_title_lockscreen_albumart_title">Couverture de l\'album</string>
+  <string name="pref_title_lockscreen_albumart_summary">Afficher la couverture de l\'album sur l\'écran de verrouillage et Android Auto</string>
+  <string name="pref_title_color_now_playing_title">Colorer l\'écran de diffusion</string>
+  <string name="pref_title_color_now_playing_summary">Utiliser la couleur principale de la couverture de l’album</string>
   <string name="pref_header_audio">Audio</string>
+  <string name="pref_title_pause_on_noisy_title">Pause pour les écouteurs</string>
+  <string name="pref_title_pause_on_noisy_summary">La musique sera mise en pause quand les écouteurs seront débranchés</string>
+  <string name="pref_title_audio_pause_on_loss_title">Pause pour les médias</string>
+  <string name="pref_title_audio_pause_on_loss_summary">La musique se mettra en pause quand d’autres médias, tels que des vidéos ou d\'autres musiques, seront joués</string>
+  <string name="pref_title_audio_duck_title">Ducking du volume</string>
+  <string name="pref_title_audio_duck_summary">Le volume de la musique sera baissé lors d\'une notification, pour la navigation, etc...</string>
 </resources>

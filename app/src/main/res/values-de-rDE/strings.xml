@@ -105,5 +105,17 @@
   <string name="pref_header_music">Musik</string>
   <string name="pref_title_general_romaji">Bevorzuge Romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" anstelle von \"ななひら\"</string>
+  <string name="pref_title_general_random_request_title">Zufallssongtitel</string>
+  <string name="pref_title_general_random_request_summary">Zufallssongtitel anzeigen</string>
+  <string name="pref_title_lockscreen_albumart_title">Albumcover</string>
+  <string name="pref_title_lockscreen_albumart_summary">Albumcover auf dem Sperrbildschirm und Android Auto anzeigen</string>
+  <string name="pref_title_color_now_playing_title">\"Now playing\" Bilschirm einfärben</string>
+  <string name="pref_title_color_now_playing_summary">Hauptfarbe des Albumcovers verwenden</string>
   <string name="pref_header_audio">Audio</string>
+  <string name="pref_title_pause_on_noisy_title">Für Kopfhörer pausieren</string>
+  <string name="pref_title_pause_on_noisy_summary">Musik wird pausiert, wenn Kopfhörer entfernt werden</string>
+  <string name="pref_title_audio_pause_on_loss_title">Für Medien pausieren</string>
+  <string name="pref_title_audio_pause_on_loss_summary">Musik wird pausiert, wenn andere Medien abgespielt werden, beispielsweise Videos oder andere Musik</string>
+  <string name="pref_title_audio_duck_title">Lautstärken-Ducking</string>
+  <string name="pref_title_audio_duck_summary">Musiklautstärke wird für Benachrichtigungen, Navigation usw. gesenkt.</string>
 </resources>

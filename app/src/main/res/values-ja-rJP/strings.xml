@@ -104,5 +104,6 @@
   <string name="pref_header_music">ミュージック</string>
   <string name="pref_title_general_romaji">ローマ字を使う</string>
   <string name="pref_title_general_romaji_summary">「ななひら」ではなく「Nanahira」</string>
+  <string name="pref_title_lockscreen_albumart_title">アルバムアート</string>
   <string name="pref_header_audio">オーディオ</string>
 </resources>

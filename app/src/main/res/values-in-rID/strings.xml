@@ -105,5 +105,17 @@
   <string name="pref_header_music">Musik</string>
   <string name="pref_title_general_romaji">Lebih memilih romaji</string>
   <string name="pref_title_general_romaji_summary">\"Nanahira\" daripada \"ななひら\"</string>
+  <string name="pref_title_general_random_request_title">Judul permintaan acak</string>
+  <string name="pref_title_general_random_request_summary">Perlihatkan judul lagu yang diminta</string>
+  <string name="pref_title_lockscreen_albumart_title">Seni album</string>
+  <string name="pref_title_lockscreen_albumart_summary">Perlihatkan seni album di layar kunci dan Android Auto</string>
+  <string name="pref_title_color_now_playing_title">Warna layar sekarang diputar</string>
+  <string name="pref_title_color_now_playing_summary">Gunakan warna utama seni album</string>
   <string name="pref_header_audio">Audio</string>
+  <string name="pref_title_pause_on_noisy_title">Jeda untuk headphone</string>
+  <string name="pref_title_pause_on_noisy_summary">Musik akan dijeda ketika headphone dilepas</string>
+  <string name="pref_title_audio_pause_on_loss_title">Jeda untuk media</string>
+  <string name="pref_title_audio_pause_on_loss_summary">Musik akan dijeda ketika media lain dimainkan, seperti video atau musik lainnya</string>
+  <string name="pref_title_audio_duck_title">Volume merunduk</string>
+  <string name="pref_title_audio_duck_summary">Volume musik akan diturunkan untuk notifikasi, navigasi, dll.</string>
 </resources>

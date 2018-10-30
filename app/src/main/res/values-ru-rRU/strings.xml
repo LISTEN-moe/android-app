@@ -14,6 +14,7 @@
   <string name="action_request">Запросить</string>
   <string name="action_undo">Отменить</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Станция</string>
   <string name="jpop">J-Pop</string>
   <string name="kpop">K-Pop</string>
   <!-- == Sleep timer == -->
@@ -34,6 +35,7 @@
   <string name="sort_desc">По убыванию</string>
   <!-- == Auth == -->
   <string name="register">Зарегистрироваться</string>
+  <string name="login">Логин</string>
   <string name="logout">Выйти</string>
   <string name="username_or_email">Имя пользователя или адрес email</string>
   <string name="username">Имя пользователя</string>
@@ -47,9 +49,11 @@
   <string name="login_required">Войдите, чтобы использовать эту функцию</string>
   <string name="required">Обязательно</string>
   <string name="password_mismatch">Пароли не совпадают</string>
+  <string name="forgot_password">Забыли пароль?</string>
   <!-- == Radio tab == -->
   <string name="play_pause">Возпроизвести/пауза</string>
   <string name="last_played">Предыдущие песни</string>
+  <string name="favorite">Добавить в избранное</string>
   <!-- e.g. Requested by: username -->
   <string name="requested_by">Запрошено %s</string>
   <!-- == User tab == -->
@@ -84,11 +88,13 @@
   <string name="version">Версия %s</string>
   <string name="rate">Оценить в Google Play</string>
   <string name="github">Оценить на GitHub</string>
+  <string name="translate">Помогите нам перевести</string>
   <string name="translators">Переводчики</string>
   <string name="licenses">Лицензия</string>
   <string name="listenmoe">Радио LISTEN.moe</string>
   <string name="open_in_browser">Открыть в браузере</string>
   <string name="discord">Присоединиться к нам в Discord</string>
+  <string name="patreon">Запросить песню / поддержать нас</string>
   <string name="privacy_policy">Политика конфиденциальности</string>
   <!-- == Settings == -->
   <string name="settings">Настройки</string>

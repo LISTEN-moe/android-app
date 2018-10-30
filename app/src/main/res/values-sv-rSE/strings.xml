@@ -14,6 +14,7 @@
   <string name="action_request">Requestade</string>
   <string name="action_undo">Ångra</string>
   <!-- == Radio stations == -->
+  <string name="action_library">Station</string>
   <string name="jpop">J-pop</string>
   <string name="kpop">K-pop</string>
   <!-- == Sleep timer == -->
@@ -87,11 +88,13 @@
   <string name="version">Version %s</string>
   <string name="rate">Betygsätt på Google Play</string>
   <string name="github">Sätt en stjärna på GitHub</string>
+  <string name="translate">Hjälp oss översätta</string>
   <string name="translators">Översättare</string>
   <string name="licenses">Licenser</string>
   <string name="listenmoe">LISTEN.moe radio</string>
   <string name="open_in_browser">Öppna i webbläsare</string>
   <string name="discord">Joina oss på Discord</string>
+  <string name="patreon">Få förfrågningar / Stöd oss</string>
   <string name="privacy_policy">Sekretesspolicy</string>
   <!-- == Settings == -->
   <string name="settings">Inställningar</string>
@@ -99,7 +102,20 @@
   <string name="pref_header_general">Allmänt</string>
   <string name="pref_title_language">Språk</string>
   <string name="pref_title_general_download">Automatiskt hämta bilder</string>
+  <string name="pref_header_music">Musik</string>
   <string name="pref_title_general_romaji">Föredra romaji</string>
   <string name="pref_title_general_romaji_summary">”Nanahira” istället för ”ななひら”</string>
+  <string name="pref_title_general_random_request_title">Slumpmässig förfrågnings titel</string>
+  <string name="pref_title_general_random_request_summary">Visa önskade låtens titel</string>
+  <string name="pref_title_lockscreen_albumart_title">Skivomslag</string>
+  <string name="pref_title_lockscreen_albumart_summary">Visa skivomslag på låsskärmen och i Android Auto</string>
+  <string name="pref_title_color_now_playing_title">Färglägg \"Nu spelar\" skärmen</string>
+  <string name="pref_title_color_now_playing_summary">Använd skivomslagets huvudsakliga färg</string>
   <string name="pref_header_audio">Ljud</string>
+  <string name="pref_title_pause_on_noisy_title">Pausa för hörlurar</string>
+  <string name="pref_title_pause_on_noisy_summary">Musiken pausas när hörlurar tas bort</string>
+  <string name="pref_title_audio_pause_on_loss_title">Pausa för media</string>
+  <string name="pref_title_audio_pause_on_loss_summary">Musiken pausas när andra medier spelar, till exempel videoklipp eller annan musik</string>
+  <string name="pref_title_audio_duck_title">Volymdroppning</string>
+  <string name="pref_title_audio_duck_summary">Musikvolymen kommer att sänkas för aviseringar, navigering, etc.</string>
 </resources>
