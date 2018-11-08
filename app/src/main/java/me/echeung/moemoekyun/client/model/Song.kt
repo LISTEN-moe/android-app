@@ -2,7 +2,7 @@ package me.echeung.moemoekyun.client.model
 
 import android.text.TextUtils
 import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.client.api.library.Library
+import me.echeung.moemoekyun.client.api.v4.library.Library
 import java.util.*
 
 class Song {

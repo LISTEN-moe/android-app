@@ -2,10 +2,10 @@ package me.echeung.moemoekyun.client
 
 import android.content.Context
 import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.client.api.APIClient
-import me.echeung.moemoekyun.client.api.library.Jpop
-import me.echeung.moemoekyun.client.api.library.Kpop
-import me.echeung.moemoekyun.client.api.library.Library
+import me.echeung.moemoekyun.client.api.v4.APIClient
+import me.echeung.moemoekyun.client.api.v4.library.Jpop
+import me.echeung.moemoekyun.client.api.v4.library.Kpop
+import me.echeung.moemoekyun.client.api.v4.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
