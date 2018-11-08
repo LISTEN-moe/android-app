@@ -10,6 +10,7 @@ import me.echeung.moemoekyun.client.api.callback.*
 import me.echeung.moemoekyun.client.api.v5.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import okhttp3.OkHttpClient
+import java.lang.RuntimeException
 
 class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
@@ -43,6 +44,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun authenticate(username: String, password: String, callback: LoginCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -52,6 +54,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun authenticateMfa(otpToken: String, callback: LoginCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -60,6 +63,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun register(email: String, username: String, password: String, callback: RegisterCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -68,6 +72,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun getUserInfo(callback: UserInfoCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -76,6 +81,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun getUserFavorites(callback: UserFavoritesCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -100,6 +106,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -109,6 +116,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -118,6 +126,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun requestSong(songId: String, callback: RequestSongCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -126,6 +135,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun getSongs(callback: SongsCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
@@ -135,6 +145,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun search(query: String?, callback: SearchCallback) {
+        throw RuntimeException("Not implemented yet")
     }
 
 }
