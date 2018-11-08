@@ -11,8 +11,8 @@ import com.google.android.material.snackbar.Snackbar
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
-import me.echeung.moemoekyun.client.api.v4.callback.FavoriteSongCallback
-import me.echeung.moemoekyun.client.api.v4.callback.RequestSongCallback
+import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.toast

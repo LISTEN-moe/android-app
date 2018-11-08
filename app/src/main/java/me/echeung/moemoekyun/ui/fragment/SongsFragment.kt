@@ -7,7 +7,7 @@ import android.content.SharedPreferences
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
-import me.echeung.moemoekyun.client.api.v4.callback.SearchCallback
+import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding
 import me.echeung.moemoekyun.ui.activity.MainActivity

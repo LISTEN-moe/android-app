@@ -1,7 +1,7 @@
 package me.echeung.moemoekyun.client.api.v4
 
 import android.util.Log
-import me.echeung.moemoekyun.client.api.v4.callback.BaseCallback
+import me.echeung.moemoekyun.client.api.callback.BaseCallback
 import me.echeung.moemoekyun.client.api.v4.response.BaseResponse
 import retrofit2.*
 import java.io.IOException

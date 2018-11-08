@@ -6,7 +6,7 @@ import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.api.v4.callback.RegisterCallback
+import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.system.toast

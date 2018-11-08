@@ -17,7 +17,7 @@ import android.view.KeyEvent
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.api.v4.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.v4.library.Jpop
 import me.echeung.moemoekyun.client.api.v4.library.Kpop
 import me.echeung.moemoekyun.client.socket.Socket

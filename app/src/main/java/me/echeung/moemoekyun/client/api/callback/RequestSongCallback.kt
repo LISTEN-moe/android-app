@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.api.v4.callback
+package me.echeung.moemoekyun.client.api.callback
 
 interface RequestSongCallback : BaseCallback {
     fun onSuccess()
