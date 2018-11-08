@@ -1,7 +1,0 @@
-query TestSongsQuery($offset: Int!, $count: Int!) {
-    songs(offset: $offset, count: $count) {
-        songs {
-            title
-        }
-    }
-}

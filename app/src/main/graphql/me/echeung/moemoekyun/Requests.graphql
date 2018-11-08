@@ -1,0 +1,4 @@
+query RequestSong($id: Int!, $kpop: Boolean) {
+    requestSong(id: $id, kpop: $kpop) {
+    }
+}

@@ -1,0 +1,12 @@
+query UserQuery() {
+    user(username: "@me") {
+        username
+        displayName
+        avatarImage
+        bannerImage
+        additionalSongRequests
+        requests {
+            count
+        }
+    }
+}

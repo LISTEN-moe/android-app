@@ -1,0 +1,10 @@
+mutation LoginMutation($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+        token
+    }
+}
+
+mutation RegisterMutation($email: String!, $username: String!, $password: String!) {
+    register(email: $email, username: $username, password: $password) {
+    }
+}
