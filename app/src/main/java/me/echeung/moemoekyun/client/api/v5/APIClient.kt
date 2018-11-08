@@ -6,22 +6,17 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import me.echeung.moemoekyun.TestSongsQuery
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import okhttp3.OkHttpClient
 
-class APIClient {
+class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
-    private fun setupApollo(): ApolloClient {
-        val okHttp = OkHttpClient
-                .Builder()
+    private val client: ApolloClient = ApolloClient.builder()
+                .serverUrl(Library.API_BASE)
+                .okHttpClient(okHttpClient)
                 .build()
-        return ApolloClient.builder()
-                .serverUrl("https://listen.moe/graphql")
-                .okHttpClient(okHttp)
-                .build()
-    }
 
     fun test() {
-        val client = setupApollo()
         client.query(TestSongsQuery
                 .builder()
                 .offset(0)
