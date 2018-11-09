@@ -1,5 +1,5 @@
-query UserQuery() {
-    user(username: "@me") {
+query UserQuery($username: String!) {
+    user(username: $username) {
         username
         displayName
         avatarImage

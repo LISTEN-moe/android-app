@@ -6,5 +6,6 @@ mutation LoginMutation($username: String!, $password: String!) {
 
 mutation RegisterMutation($email: String!, $username: String!, $password: String!) {
     register(email: $email, username: $username, password: $password) {
+        uuid
     }
 }

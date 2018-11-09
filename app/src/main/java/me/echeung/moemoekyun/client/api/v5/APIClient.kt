@@ -5,12 +5,11 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import me.echeung.moemoekyun.TestSongsQuery
+import me.echeung.moemoekyun.*
 import me.echeung.moemoekyun.client.api.callback.*
 import me.echeung.moemoekyun.client.api.v5.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import okhttp3.OkHttpClient
-import java.lang.RuntimeException
 
 class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
@@ -18,23 +17,6 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .serverUrl(Library.API_BASE)
                 .okHttpClient(okHttpClient)
                 .build()
-
-    fun test() {
-        client.query(TestSongsQuery
-                .builder()
-                .offset(0)
-                .count(1)
-                .build())
-                .enqueue(object : ApolloCall.Callback<TestSongsQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL test failure", e.message.toString())
-                    }
-
-                    override fun onResponse(response: Response<TestSongsQuery.Data>) {
-                        Log.d("GraphQL test response", response.data()?.songs().toString())
-                    }
-                })
-    }
 
     /**
      * Authenticates to the radio.
@@ -44,7 +26,20 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun authenticate(username: String, password: String, callback: LoginCallback) {
-        throw RuntimeException("Not implemented yet")
+        client.mutate(LoginMutation
+                .builder()
+                .username(username)
+                .password(password)
+                .build())
+                .enqueue(object : ApolloCall.Callback<LoginMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d("GraphQL failure", e.message.toString())
+                    }
+
+                    override fun onResponse(response: Response<LoginMutation.Data>) {
+                        Log.d("GraphQL response", response.data()?.login()?.token())
+                    }
+                })
     }
 
     /**
@@ -63,7 +58,21 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun register(email: String, username: String, password: String, callback: RegisterCallback) {
-        throw RuntimeException("Not implemented yet")
+        client.mutate(RegisterMutation
+                .builder()
+                .email(email)
+                .username(username)
+                .password(password)
+                .build())
+                .enqueue(object : ApolloCall.Callback<RegisterMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d("GraphQL failure", e.message.toString())
+                    }
+
+                    override fun onResponse(response: Response<RegisterMutation.Data>) {
+                        Log.d("GraphQL response", response.data()?.register()?.uuid())
+                    }
+                })
     }
 
     /**
@@ -72,7 +81,19 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun getUserInfo(callback: UserInfoCallback) {
-        throw RuntimeException("Not implemented yet")
+        client.query(UserQuery
+                .builder()
+                .username("@me")
+                .build())
+                .enqueue(object : ApolloCall.Callback<UserQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d("GraphQL failure", e.message.toString())
+                    }
+
+                    override fun onResponse(response: Response<UserQuery.Data>) {
+                        Log.d("GraphQL response", response.data()?.user()?.username())
+                    }
+                })
     }
 
     /**
@@ -81,7 +102,19 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun getUserFavorites(callback: UserFavoritesCallback) {
-        throw RuntimeException("Not implemented yet")
+        client.query(FavoritesQuery
+                .builder()
+                .username("@me")
+                .build())
+                .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d("GraphQL failure", e.message.toString())
+                    }
+
+                    override fun onResponse(response: Response<FavoritesQuery.Data>) {
+                        Log.d("GraphQL response", response.data()?.user()?.favorites()?.favorites()?.toString())
+                    }
+                })
     }
 
     /**
@@ -92,31 +125,19 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback   Listener to handle the response.
      */
     fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
-        if (isFavorite) {
-            unfavoriteSong(songId, callback)
-        } else {
-            favoriteSong(songId, callback)
-        }
-    }
+        client.mutate(FavoriteMutation
+                .builder()
+                .id(songId.toInt())
+                .build())
+                .enqueue(object : ApolloCall.Callback<FavoriteMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d("GraphQL failure", e.message.toString())
+                    }
 
-    /**
-     * Favorites a song.
-     *
-     * @param songId   Song to favorite.
-     * @param callback Listener to handle the response.
-     */
-    fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
-        throw RuntimeException("Not implemented yet")
-    }
-
-    /**
-     * Unfavorites a song.
-     *
-     * @param songId   Song to unfavorite.
-     * @param callback Listener to handle the response.
-     */
-    fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
-        throw RuntimeException("Not implemented yet")
+                    override fun onResponse(response: Response<FavoriteMutation.Data>) {
+                        Log.d("GraphQL response", response.data()?.favoriteSong()?.id()?.toString())
+                    }
+                })
     }
 
     /**
@@ -126,7 +147,20 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun requestSong(songId: String, callback: RequestSongCallback) {
-        throw RuntimeException("Not implemented yet")
+        client.mutate(RequestSongMutation
+                .builder()
+                .id(songId.toInt())
+//                .kpop()
+                .build())
+                .enqueue(object : ApolloCall.Callback<RequestSongMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d("GraphQL failure", e.message.toString())
+                    }
+
+                    override fun onResponse(response: Response<RequestSongMutation.Data>) {
+                        Log.d("GraphQL response", response.data()?.requestSong()?.id()?.toString())
+                    }
+                })
     }
 
     /**
@@ -135,7 +169,20 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun getSongs(callback: SongsCallback) {
-        throw RuntimeException("Not implemented yet")
+//        client.query(FavoritesQuery
+//                .builder()
+//                .username("@me")
+//                .build())
+//                .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
+//                    override fun onFailure(e: ApolloException) {
+//                        Log.d("GraphQL failure", e.message.toString())
+//                    }
+//
+//                    override fun onResponse(response: Response<FavoritesQuery.Data>) {
+//                        Log.d("GraphQL response", response.data()?.user()?.favorites()?.favorites()?.toString())
+//                    }
+//                })
+        throw java.lang.RuntimeException("Not implemented")
     }
 
     /**
@@ -145,7 +192,19 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun search(query: String?, callback: SearchCallback) {
-        throw RuntimeException("Not implemented yet")
+        client.query(SearchQuery
+                .builder()
+                .query(query!!)
+                .build())
+                .enqueue(object : ApolloCall.Callback<SearchQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        Log.d("GraphQL failure", e.message.toString())
+                    }
+
+                    override fun onResponse(response: Response<SearchQuery.Data>) {
+                        Log.d("GraphQL response", response.data()?.search()?.toString())
+                    }
+                })
     }
 
 }

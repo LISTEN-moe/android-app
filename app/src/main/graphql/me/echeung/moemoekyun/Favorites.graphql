@@ -1,16 +1,24 @@
-query FavoritesQuery() {
-    user(username: "@me") {
+query FavoritesQuery($username: String!) {
+    user(username: $username) {
         favorites {
-            song {
-                id
-                title
-                titleRomaji
-                artists {
-                    name
-                    nameRomaji
+            favorites {
+                song {
+                    id
+                    title
+                    titleRomaji
+                    artists {
+                        name
+                        nameRomaji
+                    }
                 }
+                createdAt
             }
-            createdAt
         }
+    }
+}
+
+mutation FavoriteMutation($id: Int!) {
+    favoriteSong(id: $id) {
+        id
     }
 }

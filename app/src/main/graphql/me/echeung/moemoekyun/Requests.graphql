@@ -1,4 +1,5 @@
-query RequestSong($id: Int!, $kpop: Boolean) {
+mutation RequestSong($id: Int!, $kpop: Boolean) {
     requestSong(id: $id, kpop: $kpop) {
+        id
     }
 }

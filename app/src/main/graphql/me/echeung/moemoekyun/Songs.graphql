@@ -1,11 +1,3 @@
-query TestSongsQuery($offset: Int!, $count: Int!) {
-    songs(offset: $offset, count: $count) {
-        songs {
-            title
-        }
-    }
-}
-
 query SongQuery($id: Int!) {
     song(id: $id) {
         title
@@ -24,4 +16,26 @@ query SongQuery($id: Int!) {
         }
         duration
     }
+}
+
+query SearchQuery($query: ID!) {
+  search(query: $query) {
+    ... on Song {
+        title
+        titleRomaji
+        artists {
+            name
+            nameRomaji
+        }
+        albums {
+            name
+            nameRomaji
+        }
+        sources {
+            name
+            nameRomaji
+        }
+        duration
+    }
+  }
 }
