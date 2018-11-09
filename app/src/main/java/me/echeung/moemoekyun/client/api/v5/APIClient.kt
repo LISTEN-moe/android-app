@@ -13,10 +13,26 @@ import okhttp3.OkHttpClient
 
 class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
-    private val client: ApolloClient = ApolloClient.builder()
-                .serverUrl(Library.API_BASE)
-                .okHttpClient(okHttpClient)
+    private val client: ApolloClient
+
+    init {
+        // Automatically add auth token to requests
+        val authClient = OkHttpClient.Builder()
+                .addInterceptor { chain ->
+                    val original = chain.request()
+                    val builder = original.newBuilder().method(original.method(), original.body())
+                    if (authUtil.isAuthenticated) {
+                        builder.header("Authorization", authUtil.authTokenWithPrefix)
+                    }
+                    chain.proceed(builder.build())
+                }
                 .build()
+
+        client = ApolloClient.builder()
+            .serverUrl(Library.API_BASE)
+            .okHttpClient(authClient)
+            .build()
+    }
 
     /**
      * Authenticates to the radio.
@@ -182,7 +198,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 //                        Log.d("GraphQL response", response.data()?.user()?.favorites()?.favorites()?.toString())
 //                    }
 //                })
-        throw java.lang.RuntimeException("Not implemented")
+        throw RuntimeException("Not implemented yet")
     }
 
     /**
