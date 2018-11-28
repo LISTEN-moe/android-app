@@ -41,7 +41,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
                 showMfaDialog()
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 runOnUiThread { applicationContext.toast(message) }
             }
         }

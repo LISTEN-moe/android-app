@@ -251,7 +251,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 callback.onSuccess(filteredSongs)
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 callback.onFailure(message)
             }
         })

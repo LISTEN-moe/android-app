@@ -49,7 +49,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 }
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 activity?.runOnUiThread {
                     songList.showLoading(false)
                     activity?.toast(message)

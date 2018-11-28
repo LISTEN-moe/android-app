@@ -25,7 +25,7 @@ object ErrorHandlingAdapter {
     abstract class WrappedCallback<T : BaseResponse>(private val callback: BaseCallback) {
         abstract fun success(response: T?)
 
-        fun error(message: String) {
+        fun error(message: String?) {
             callback.onFailure(message)
         }
     }
@@ -73,7 +73,7 @@ object ErrorHandlingAdapter {
                         val errorConverter = APIClient.retrofit.responseBodyConverter<BaseResponse>(BaseResponse::class.java, arrayOfNulls(0))
                         try {
                             val error = errorConverter.convert(response.errorBody()!!)
-                            error(callback, error.message)
+                            error(callback, error?.message)
                             return
                         } catch (e: IOException) {
                             e.printStackTrace()
@@ -97,7 +97,7 @@ object ErrorHandlingAdapter {
             return WrappedCallAdapter(call.clone())
         }
 
-        private fun error(callback: WrappedCallback<T>, message: String) {
+        private fun error(callback: WrappedCallback<T>, message: String?) {
             Log.e(TAG, "API error: $message")
             callback.error(message)
         }

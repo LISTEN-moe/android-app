@@ -35,7 +35,7 @@ class SongsCache(private val apiClient: APIClient) {
                 callback?.onRetrieve(cachedSongs)
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 Log.e(TAG, message)
                 callback?.onFailure(message)
             }
@@ -45,7 +45,7 @@ class SongsCache(private val apiClient: APIClient) {
     interface Callback {
         fun onRetrieve(songs: List<SongListItem>?)
 
-        fun onFailure(message: String)
+        fun onFailure(message: String?)
     }
 
     companion object {

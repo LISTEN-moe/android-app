@@ -56,7 +56,7 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
                 runOnUiThread { applicationContext.toast(message) }
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 runOnUiThread { applicationContext.toast(message) }
             }
         })

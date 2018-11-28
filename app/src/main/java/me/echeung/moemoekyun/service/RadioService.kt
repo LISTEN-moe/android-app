@@ -492,7 +492,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 updateMediaSessionPlaybackState()
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 applicationContext.toast(message)
             }
         }

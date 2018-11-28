@@ -73,7 +73,7 @@ object SongActionsUtil {
                 }
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 if (activity == null) return
 
                 activity.runOnUiThread { activity.applicationContext.toast(message) }
@@ -112,7 +112,7 @@ object SongActionsUtil {
                 }
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 if (activity == null) return
 
                 activity.runOnUiThread { activity.applicationContext.toast(message) }

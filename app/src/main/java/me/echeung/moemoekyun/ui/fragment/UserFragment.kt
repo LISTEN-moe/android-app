@@ -69,7 +69,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 }
             }
 
-            override fun onFailure(message: String) {
+            override fun onFailure(message: String?) {
                 activity?.runOnUiThread { songList.showLoading(false) }
             }
         })
@@ -98,7 +98,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 }
             }
 
-            override fun onFailure(message: String) {}
+            override fun onFailure(message: String?) {}
         })
     }
 
