@@ -12,6 +12,7 @@ import me.echeung.moemoekyun.client.model.SongListItem
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.create
 
 class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
@@ -30,11 +31,11 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .build()
 
-        authService = retrofit.create(AuthService::class.java)
-        favoritesService = retrofit.create(FavoritesService::class.java)
-        requestsService = retrofit.create(RequestsService::class.java)
-        songsService = retrofit.create(SongsService::class.java)
-        usersService = retrofit.create(UsersService::class.java)
+        authService = retrofit.create()
+        favoritesService = retrofit.create()
+        requestsService = retrofit.create()
+        songsService = retrofit.create()
+        usersService = retrofit.create()
 
         songsCache = SongsCache(this)
     }

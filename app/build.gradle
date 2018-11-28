@@ -99,7 +99,7 @@ dependencies {
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.9.1'
 
-    final retrofit_version = '2.4.0'
+    final retrofit_version = '2.5.0'
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
