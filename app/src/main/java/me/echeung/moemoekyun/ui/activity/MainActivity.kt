@@ -54,9 +54,9 @@ class MainActivity : BaseActivity() {
         viewModel = App.radioViewModel!!
         binding.vm = viewModel
 
-        binding.btnRetry.setOnClickListener { v -> retry() }
-        binding.btnLogin.setOnClickListener { v -> showLoginActivity() }
-        binding.btnRegister.setOnClickListener { v -> showRegisterActivity() }
+        binding.btnRetry.setOnClickListener { retry() }
+        binding.btnLogin.setOnClickListener { showLoginActivity() }
+        binding.btnRegister.setOnClickListener { showRegisterActivity() }
 
         // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(this)) {
@@ -174,29 +174,29 @@ class MainActivity : BaseActivity() {
         })
 
         // Expand when tap mini player
-        binding.nowPlaying.miniPlayer.setOnClickListener { v -> nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED) }
+        binding.nowPlaying.miniPlayer.setOnClickListener { nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED) }
 
         // Collapse button / when toolbar is tapped
-        binding.nowPlaying.collapseBtn.setOnClickListener { v -> nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_COLLAPSED) }
-        binding.nowPlaying.toolbar.setOnClickListener { v -> nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_COLLAPSED) }
+        binding.nowPlaying.collapseBtn.setOnClickListener { nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_COLLAPSED) }
+        binding.nowPlaying.toolbar.setOnClickListener { nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_COLLAPSED) }
 
         initPlayPause()
 
         val radioControls: RadioControlsBinding = binding.nowPlaying.radioControls
 
-        radioControls.historyBtn.setOnClickListener { v -> showHistory() }
-        radioControls.favoriteBtn.setOnClickListener { v -> favorite() }
+        radioControls.historyBtn.setOnClickListener { showHistory() }
+        radioControls.favoriteBtn.setOnClickListener { favorite() }
 
         // Press song info to show history
         val vCurrentSong = binding.nowPlaying.radioSongs.currentSong
-        vCurrentSong.setOnClickListener { v ->
+        vCurrentSong.setOnClickListener {
             if (viewModel.currentSong != null) {
                 showHistory()
             }
         }
 
         // Long press song info to copy to clipboard
-        vCurrentSong.setOnLongClickListener { v ->
+        vCurrentSong.setOnLongClickListener {
             SongActionsUtil.copyToClipboard(this, viewModel.currentSong)
             true
         }
@@ -346,11 +346,11 @@ class MainActivity : BaseActivity() {
 
     private fun initPlayPause() {
         val playPauseBtn = binding.nowPlaying.radioControls.playPauseBtn
-        playPauseBtn.setOnClickListener { v -> togglePlayPause() }
+        playPauseBtn.setOnClickListener { togglePlayPause() }
         playPauseView = PlayPauseView(this, playPauseBtn)
 
         val miniPlayPauseBtn = binding.nowPlaying.miniPlayPause
-        miniPlayPauseBtn.setOnClickListener { v -> togglePlayPause() }
+        miniPlayPauseBtn.setOnClickListener { togglePlayPause() }
         miniPlayPauseView = PlayPauseView(this, miniPlayPauseBtn)
 
         setPlayPauseDrawable()

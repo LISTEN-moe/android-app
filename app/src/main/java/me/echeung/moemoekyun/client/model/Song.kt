@@ -68,7 +68,7 @@ class Song {
     fun search(query: String): Boolean {
         val query = query.toLowerCase().trim()
 
-        if (title != null && title!!.toLowerCase()!!.contains(query)) {
+        if (title != null && title!!.toLowerCase().contains(query)) {
             return true
         }
 

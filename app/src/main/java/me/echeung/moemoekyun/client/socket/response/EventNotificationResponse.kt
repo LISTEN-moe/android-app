@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.client.socket.response
 import me.echeung.moemoekyun.client.model.Event
 
 class EventNotificationResponse : NotificationResponse() {
-
     override val d: Details? = null
 
     class Details : NotificationResponse.Details() {

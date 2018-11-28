@@ -34,9 +34,9 @@ class SongDetailAdapter(private val activity: Activity, songs: List<Song>) : Arr
         binding.canRequest = App.userViewModel!!.requestsRemaining != 0
         binding.isFavorite = song.favorite
 
-        binding.requestBtn.setOnClickListener { _ -> SongActionsUtil.request(activity, song) }
+        binding.requestBtn.setOnClickListener { SongActionsUtil.request(activity, song) }
 
-        binding.favoriteBtn.setOnClickListener { _ ->
+        binding.favoriteBtn.setOnClickListener {
             SongActionsUtil.toggleFavorite(activity, song)
 
             song.favorite = !song.favorite

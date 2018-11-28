@@ -46,7 +46,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             }
         }
 
-        binding.authBtn.setOnClickListener { _ -> login() }
+        binding.authBtn.setOnClickListener { login() }
 
         binding.authPassword.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -56,7 +56,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             false
         })
 
-        binding.forgotPassword.setOnClickListener { _ -> openUrl(FORGOT_PASSWORD_URL) }
+        binding.forgotPassword.setOnClickListener { openUrl(FORGOT_PASSWORD_URL) }
     }
 
     public override fun onResume() {

@@ -97,18 +97,18 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
     }
 
     override fun onMessage(webSocket: WebSocket?, text: String?) {
-        Log.d(TAG, "Received message from socket: " + text!!)
+        Log.d(TAG, "Received message from socket: $text")
 
         parseWebSocketResponse(text)
     }
 
     override fun onFailure(webSocket: WebSocket?, t: Throwable?, response: Response?) {
-        Log.e(TAG, "Socket failure: " + t!!.message, t)
+        Log.e(TAG, "Socket failure: " + t?.message, t)
         reconnect()
     }
 
     override fun onClosed(webSocket: WebSocket?, code: Int, reason: String?) {
-        Log.d(TAG, "Socket connection closed: " + reason!!)
+        Log.d(TAG, "Socket connection closed: $reason")
         reconnect()
     }
 

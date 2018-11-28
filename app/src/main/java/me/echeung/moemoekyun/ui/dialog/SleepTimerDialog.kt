@@ -48,7 +48,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
         val sleepTimerDialog = AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(R.string.sleep_timer)
                 .setView(layout)
-                .setPositiveButton(R.string.set) { dialogInterface, i ->
+                .setPositiveButton(R.string.set) { _, _ ->
                     val minutes = sleepTimerSeekBar.progress
                     setAlarm(minutes)
                 }
