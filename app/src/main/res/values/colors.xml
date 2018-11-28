@@ -3,12 +3,12 @@
     <color name="colorPrimary">@color/pink</color>
     <color name="colorAccent">@color/pink</color>
 
-    <color name="ic_launcher_background">#353953</color>
+    <color name="ic_launcher_background">@color/dark_grey</color>
 
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFF</color>
-    <color name="light_grey">#747574</color>
-    <color name="dark_grey">#1D1F2B</color>
+    <color name="light_grey">#C7CCD8</color>
+    <color name="dark_grey">#1C1E2A</color>
 
-    <color name="pink">#EC1A55</color>
+    <color name="pink">#FF015B</color>
 </resources>
