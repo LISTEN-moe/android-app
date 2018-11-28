@@ -1,11 +1,14 @@
 package me.echeung.moemoekyun.service
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.*
 import android.graphics.Bitmap
 import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.os.Binder
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
@@ -29,6 +32,7 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.util.system.isCarUiMode
+import me.echeung.moemoekyun.util.system.notificationManager
 import me.echeung.moemoekyun.util.system.toast
 import java.text.ParseException
 import java.util.*
@@ -67,6 +71,8 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
     override fun onCreate() {
         AlbumArtUtil.registerListener(this)
+
+        initNotificationChannel()
 
         initBroadcastReceiver()
         initMediaSession()
@@ -502,6 +508,17 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
     private fun showLoginRequiredToast() {
         applicationContext.toast(R.string.login_required)
+    }
+
+    private fun initNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notifChannel = NotificationChannel(
+                    AppNotification.NOTIFICATION_CHANNEL_ID,
+                    AppNotification.NOTIFICATION_CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_LOW)
+
+            notificationManager.createNotificationChannel(notifChannel)
+        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

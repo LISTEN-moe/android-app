@@ -1,21 +1,15 @@
 package me.echeung.moemoekyun
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
 import android.os.IBinder
-
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.service.AppNotification
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.PreferenceUtil
-import me.echeung.moemoekyun.util.system.notificationManager
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 
@@ -34,7 +28,6 @@ class App : Application(), ServiceConnection {
         userViewModel = UserViewModel()
 
         // Music player service
-        initNotificationChannel()
         initService()
     }
 
@@ -50,17 +43,6 @@ class App : Application(), ServiceConnection {
 
     override fun onServiceDisconnected(arg0: ComponentName) {
         clearService()
-    }
-
-    private fun initNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notifChannel = NotificationChannel(
-                    AppNotification.NOTIFICATION_CHANNEL_ID,
-                    AppNotification.NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_LOW)
-
-            notificationManager.createNotificationChannel(notifChannel)
-        }
     }
 
     companion object {
