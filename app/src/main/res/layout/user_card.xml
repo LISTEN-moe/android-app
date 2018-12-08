@@ -100,7 +100,7 @@
                         android:text="@{@string/queue_info(radioVm.queueSize, radioVm.queuePosition)}"
                         android:textColor="@color/white"
                         android:textSize="14sp"
-                        android:visibility="@{radioVm.inQueueByUser != 0}" />
+                        android:visibility="@{radioVm.queueSize != 0}" />
 
                 </LinearLayout>
 
