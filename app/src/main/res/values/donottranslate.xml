@@ -25,7 +25,8 @@
         [...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n\\n')
     -->
     <string name="translators_list" translatable="false">
-        arkon94
+        3316482
+        \narkon94
         \nAtFr
         \nCrawl
         \nDiavolo69
@@ -33,6 +34,7 @@
         \nditokurniap
         \nDominique Chapelier
         \nEmachii 🦋
+        \nemre özdemir
         \nErinç Esen
         \nFoorack
         \nForbidden
@@ -52,13 +54,14 @@
         \nnicoro
         \nniseee
         \nOnachi- San
-        \nOsoitz
         \nPoussinou
         \nPytey
         \nRainBee
         \nRap Management
         \nrobflop
+        \nŠarūnas
         \nspoonm
+        \nsunmoon
         \nTacoTheDank
         \nTAKAHASHI Shuuji
         \nTill Kottmann
