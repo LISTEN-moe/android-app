@@ -101,5 +101,4 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
             override fun onFailure(message: String?) {}
         })
     }
-
 }

@@ -69,5 +69,4 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
     private fun getText(editText: TextInputEditText): String {
         return editText.text.toString().trim()
     }
-
 }

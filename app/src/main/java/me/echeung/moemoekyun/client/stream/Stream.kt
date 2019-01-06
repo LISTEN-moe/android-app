@@ -191,5 +191,4 @@ class Stream(private val context: Context) {
     companion object {
         private const val WIFI_LOCK_TAG = "listenmoe_wifi_lock"
     }
-
 }

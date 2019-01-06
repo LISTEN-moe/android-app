@@ -80,5 +80,4 @@ class App : Application(), ServiceConnection {
             radioClient!!.socket.setListener(null)
         }
     }
-
 }

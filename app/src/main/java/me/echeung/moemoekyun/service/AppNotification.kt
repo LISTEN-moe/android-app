@@ -102,5 +102,4 @@ class AppNotification internal constructor(private val service: RadioService) {
 
         private const val NOTIFICATION_ID = 1
     }
-
 }

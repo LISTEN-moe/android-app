@@ -1,11 +1,26 @@
 package me.echeung.moemoekyun.client.api.v4
 
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.callback.*
+import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.LoginCallback
+import me.echeung.moemoekyun.client.api.callback.RegisterCallback
+import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
+import me.echeung.moemoekyun.client.api.callback.SearchCallback
+import me.echeung.moemoekyun.client.api.callback.SongsCallback
+import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
+import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.v4.cache.SongsCache
 import me.echeung.moemoekyun.client.api.v4.library.Library
-import me.echeung.moemoekyun.client.api.v4.response.*
-import me.echeung.moemoekyun.client.api.v4.service.*
+import me.echeung.moemoekyun.client.api.v4.response.AuthResponse
+import me.echeung.moemoekyun.client.api.v4.response.BaseResponse
+import me.echeung.moemoekyun.client.api.v4.response.FavoritesResponse
+import me.echeung.moemoekyun.client.api.v4.response.SongsResponse
+import me.echeung.moemoekyun.client.api.v4.response.UserResponse
+import me.echeung.moemoekyun.client.api.v4.service.AuthService
+import me.echeung.moemoekyun.client.api.v4.service.FavoritesService
+import me.echeung.moemoekyun.client.api.v4.service.RequestsService
+import me.echeung.moemoekyun.client.api.v4.service.SongsService
+import me.echeung.moemoekyun.client.api.v4.service.UsersService
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.SongListItem
@@ -142,9 +157,9 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     /**
      * Toggles a song's favorite status
      *
-     * @param songId     Song to update favorite status of.
+     * @param songId Song to update favorite status of.
      * @param isFavorite Whether the song is currently favorited.
-     * @param callback   Listener to handle the response.
+     * @param callback Listener to handle the response.
      */
     fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
         if (isFavorite) {
@@ -157,7 +172,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     /**
      * Favorites a song.
      *
-     * @param songId   Song to favorite.
+     * @param songId Song to favorite.
      * @param callback Listener to handle the response.
      */
     fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
@@ -177,7 +192,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     /**
      * Unfavorites a song.
      *
-     * @param songId   Song to unfavorite.
+     * @param songId Song to unfavorite.
      * @param callback Listener to handle the response.
      */
     fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
@@ -197,7 +212,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     /**
      * Sends a song request to the queue.
      *
-     * @param songId   Song to request.
+     * @param songId Song to request.
      * @param callback Listener to handle the response.
      */
     fun requestSong(songId: String, callback: RequestSongCallback) {
@@ -236,7 +251,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     /**
      * Searches for songs.
      *
-     * @param query    Search query string.
+     * @param query Search query string.
      * @param callback Listener to handle the response.
      */
     fun search(query: String?, callback: SearchCallback) {
@@ -270,5 +285,4 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
         lateinit var retrofit: Retrofit
     }
-
 }

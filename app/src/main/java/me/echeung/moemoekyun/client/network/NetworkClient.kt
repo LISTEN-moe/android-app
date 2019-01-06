@@ -26,5 +26,4 @@ object NetworkClient {
                     chain.proceed(newRequest)
                 }
                 .build()
-
 }

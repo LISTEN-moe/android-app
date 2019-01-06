@@ -100,5 +100,4 @@ object SongSortUtil {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getBoolean(PREF_LIST_PREFIX_DESC + listKey, false)
     }
-
 }

@@ -66,5 +66,4 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
     companion object {
         private const val MEDIA_ID_ROOT = "media_root"
     }
-
 }

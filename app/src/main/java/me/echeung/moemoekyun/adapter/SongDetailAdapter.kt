@@ -50,5 +50,4 @@ class SongDetailAdapter(private val activity: Activity, songs: List<Song>) : Arr
 
         return binding.root
     }
-
 }

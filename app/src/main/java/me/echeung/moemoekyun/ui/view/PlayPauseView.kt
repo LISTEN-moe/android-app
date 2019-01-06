@@ -34,5 +34,4 @@ class PlayPauseView(context: Context, private val view: ImageView) {
             (drawable as Animatable).start()
         }
     }
-
 }

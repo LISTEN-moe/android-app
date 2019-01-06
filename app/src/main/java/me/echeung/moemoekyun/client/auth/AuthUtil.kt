@@ -126,5 +126,4 @@ class AuthUtil(context: Context) {
         private const val USER_TOKEN = "user_token"
         private const val LAST_AUTH = "last_auth"
     }
-
 }

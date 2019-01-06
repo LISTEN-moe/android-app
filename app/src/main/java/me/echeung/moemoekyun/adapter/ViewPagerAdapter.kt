@@ -59,7 +59,7 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
     }
 
     private data class TabHolder(
-            val className: String,
-            val drawableId: Int)
-
+        val className: String,
+        val drawableId: Int
+    )
 }

@@ -156,5 +156,4 @@ object AlbumArtUtil {
     interface Callback {
         fun onAlbumArtReady(bitmap: Bitmap)
     }
-
 }

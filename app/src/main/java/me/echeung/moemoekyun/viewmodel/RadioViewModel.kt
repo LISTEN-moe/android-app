@@ -60,7 +60,6 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
         return if (requester == null || TextUtils.isEmpty(requester!!.displayName)) {
             null
         } else requester!!.displayName
-
     }
 
     fun setRequester(requester: User?) {
@@ -89,7 +88,6 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
             notifyPropertyChanged(BR.secondLastSong)
         }
 
-
     // Queue
     // ========================================================================
 
@@ -113,7 +111,6 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
             field = queuePosition
             notifyPropertyChanged(BR.queuePosition)
         }
-
 
     // Mini player
     // ========================================================================
@@ -162,7 +159,6 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
             notifyPropertyChanged(BR.favorited)
         }
 
-
     // History
     // ========================================================================
 
@@ -191,7 +187,6 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
         queuePosition = 0
     }
 
-
     // Misc.
     // ========================================================================
 
@@ -206,5 +201,4 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
     override fun onAlbumArtReady(bitmap: Bitmap) {
         notifyPropertyChanged(BR.albumArt)
     }
-
 }

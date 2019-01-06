@@ -51,7 +51,6 @@ class SongsCache(private val apiClient: APIClient) {
     companion object {
         private val TAG = SongsCache::class.java.simpleName
 
-        private const val MAX_AGE = 1000 * 60 * 60 * 24  // 24 hours
+        private const val MAX_AGE = 1000 * 60 * 60 * 24 // 24 hours
     }
-
 }

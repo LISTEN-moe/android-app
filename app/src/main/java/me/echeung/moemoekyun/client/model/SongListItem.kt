@@ -138,7 +138,7 @@ class SongListItem {
                 albumDescriptor.id = songListItem.albumsId!![i]
                 albumDescriptor.name = songListItem.albums!![i]
                 albumDescriptor.nameRomaji = songListItem.albumsRomaji!![i]
-                albumDescriptor.image= songListItem.albumsCover!![i]
+                albumDescriptor.image = songListItem.albumsCover!![i]
                 albumDescriptor.releaseDate = songListItem.albumsReleaseDate!![i]
 
                 albums.add(albumDescriptor)

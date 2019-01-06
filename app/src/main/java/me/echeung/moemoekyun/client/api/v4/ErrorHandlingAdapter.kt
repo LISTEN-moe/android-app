@@ -3,7 +3,11 @@ package me.echeung.moemoekyun.client.api.v4
 import android.util.Log
 import me.echeung.moemoekyun.client.api.callback.BaseCallback
 import me.echeung.moemoekyun.client.api.v4.response.BaseResponse
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.CallAdapter
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import java.io.IOException
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
@@ -32,7 +36,7 @@ object ErrorHandlingAdapter {
 
     class ErrorHandlingCallAdapterFactory : CallAdapter.Factory() {
         override fun get(returnType: Type, annotations: Array<Annotation>, retrofit: Retrofit): CallAdapter<*, *>? {
-            if (CallAdapter.Factory.getRawType(returnType) != WrappedCall::class.java ) {
+            if (CallAdapter.Factory.getRawType(returnType) != WrappedCall::class.java) {
                 return null
             }
             if (returnType !is ParameterizedType) {
@@ -102,5 +106,4 @@ object ErrorHandlingAdapter {
             callback.error(message)
         }
     }
-
 }

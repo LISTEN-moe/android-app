@@ -27,7 +27,6 @@ abstract class BaseViewModel : BaseObservable() {
             notifyPropertyChanged(BR.connected)
         }
 
-
     // Auth status
     // ========================================================================
 
@@ -82,5 +81,4 @@ abstract class BaseViewModel : BaseObservable() {
             v.start()
         }
     }
-
 }

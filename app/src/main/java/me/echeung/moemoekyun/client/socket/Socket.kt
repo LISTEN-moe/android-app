@@ -6,8 +6,16 @@ import android.util.Log
 import com.squareup.moshi.Moshi
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.socket.response.*
-import okhttp3.*
+import me.echeung.moemoekyun.client.socket.response.BaseResponse
+import me.echeung.moemoekyun.client.socket.response.ConnectResponse
+import me.echeung.moemoekyun.client.socket.response.EventNotificationResponse
+import me.echeung.moemoekyun.client.socket.response.NotificationResponse
+import me.echeung.moemoekyun.client.socket.response.UpdateResponse
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import java.io.IOException
 
 class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) : WebSocketListener() {
@@ -200,10 +208,10 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
     }
 
     private fun isValidUpdate(updateResponse: UpdateResponse): Boolean {
-        return (updateResponse.t == TRACK_UPDATE
-                || updateResponse.t == TRACK_UPDATE_REQUEST
-                || updateResponse.t == QUEUE_UPDATE
-                || isNotification(updateResponse))
+        return (updateResponse.t == TRACK_UPDATE ||
+                updateResponse.t == TRACK_UPDATE_REQUEST ||
+                updateResponse.t == QUEUE_UPDATE ||
+                isNotification(updateResponse))
     }
 
     private fun isNotification(updateResponse: UpdateResponse): Boolean {
@@ -234,5 +242,4 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
         private const val RETRY_TIME_MIN = 250
         private const val RETRY_TIME_MAX = 4000
     }
-
 }

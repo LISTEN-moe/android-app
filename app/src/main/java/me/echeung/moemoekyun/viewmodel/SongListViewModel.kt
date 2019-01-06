@@ -23,5 +23,4 @@ class SongListViewModel : BaseObservable() {
     fun clearQuery() {
         query = null
     }
-
 }

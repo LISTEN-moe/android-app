@@ -55,5 +55,4 @@ class UserViewModel : BaseViewModel() {
         requestsRemaining = 0
         hasFavorites = false
     }
-
 }

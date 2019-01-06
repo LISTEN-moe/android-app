@@ -11,5 +11,4 @@ object ThemeUtil {
     fun getBackgroundColor(context: Context): Int {
         return ContextCompat.getColor(context, R.color.dark_grey)
     }
-
 }

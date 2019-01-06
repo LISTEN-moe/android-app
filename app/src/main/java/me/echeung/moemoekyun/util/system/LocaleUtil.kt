@@ -55,7 +55,5 @@ object LocaleUtil {
         } catch (e: PackageManager.NameNotFoundException) {
             Log.e(activity.localClassName, e.message, e)
         }
-
     }
-
 }

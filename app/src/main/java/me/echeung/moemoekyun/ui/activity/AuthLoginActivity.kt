@@ -132,5 +132,4 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         private val OTP_REGEX = "^[0-9]*$".toRegex()
         private const val FORGOT_PASSWORD_URL = "https://listen.moe/login/forgot"
     }
-
 }

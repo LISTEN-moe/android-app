@@ -92,5 +92,4 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
                 .build()
                 .show()
     }
-
 }

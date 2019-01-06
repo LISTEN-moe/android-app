@@ -84,7 +84,5 @@ class SettingsActivity : BaseActivity() {
                     .addNextIntent(activity.intent)
                     .startActivities()
         }
-
     }
-
 }

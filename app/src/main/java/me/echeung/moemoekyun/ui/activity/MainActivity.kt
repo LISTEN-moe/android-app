@@ -284,7 +284,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-
     // Auth stuff
     // =============================================================================================
 
@@ -339,7 +338,6 @@ class MainActivity : BaseActivity() {
 
         broadcastAuthEvent()
     }
-
 
     // Now playing stuff
     // =============================================================================================
@@ -400,5 +398,4 @@ class MainActivity : BaseActivity() {
 
         const val AUTH_EVENT = "auth_event"
     }
-
 }

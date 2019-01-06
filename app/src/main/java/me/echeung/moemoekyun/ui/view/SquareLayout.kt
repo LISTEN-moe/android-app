@@ -20,5 +20,4 @@ class SquareLayout : FrameLayout {
         val dimen = Math.min(measuredWidth, measuredHeight)
         setMeasuredDimension(dimen, dimen)
     }
-
 }

@@ -37,9 +37,8 @@ object NetworkUtil {
 
         val activeNetworkInfo = context.connectivityManager.activeNetworkInfo
 
-        return (activeNetworkInfo != null
-                && activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI
-                && activeNetworkInfo.isConnectedOrConnecting)
+        return (activeNetworkInfo != null &&
+                activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI &&
+                activeNetworkInfo.isConnectedOrConnecting)
     }
-
 }

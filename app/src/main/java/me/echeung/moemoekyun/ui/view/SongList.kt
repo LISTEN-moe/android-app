@@ -113,5 +113,4 @@ class SongList(activity: Activity, binding: SongsListBinding, listId: String, pr
     interface SongListLoader {
         fun loadSongs(adapter: SongsAdapter)
     }
-
 }

@@ -105,5 +105,4 @@ class PreferenceUtil(context: Context) {
         const val DOWNLOAD_WIFI = "wifi"
         const val DOWNLOAD_NEVER = "never"
     }
-
 }

@@ -49,5 +49,4 @@ abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), S
             PreferenceUtil.PREF_GENERAL_ROMAJI -> songList.notifyDataSetChanged()
         }
     }
-
 }

@@ -28,5 +28,4 @@ abstract class BaseDataBindingActivity<T : ViewDataBinding> : BaseActivity() {
 
         super.onDestroy()
     }
-
 }

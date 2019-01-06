@@ -57,5 +57,4 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
             }
         })
     }
-
 }

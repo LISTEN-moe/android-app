@@ -11,7 +11,6 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.net.wifi.WifiManager
 import android.widget.Toast
-import androidx.annotation.AttrRes
 import androidx.annotation.StringRes
 
 /**

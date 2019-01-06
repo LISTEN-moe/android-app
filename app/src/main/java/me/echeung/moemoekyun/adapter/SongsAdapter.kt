@@ -141,5 +141,4 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
             }
         }
     }
-
 }

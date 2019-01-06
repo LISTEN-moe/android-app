@@ -3,7 +3,11 @@ package me.echeung.moemoekyun.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.media.AudioManager
 import android.net.ConnectivityManager
@@ -288,7 +292,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                         KeyEvent.KEYCODE_MEDIA_STOP -> stop()
                         KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
                         }
-                    }// Do nothing
+                    } // Do nothing
                 }
 
                 MainActivity.AUTH_EVENT -> {
@@ -552,5 +556,4 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 or PlaybackStateCompat.ACTION_STOP
                 or PlaybackStateCompat.ACTION_SET_RATING)
     }
-
 }

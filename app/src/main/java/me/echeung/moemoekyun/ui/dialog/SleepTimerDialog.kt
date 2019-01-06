@@ -98,5 +98,4 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
         return Intent(activity, RadioService::class.java)
                 .setAction(RadioService.TIMER_STOP)
     }
-
 }

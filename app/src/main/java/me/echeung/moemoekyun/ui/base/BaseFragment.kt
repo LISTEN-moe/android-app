@@ -61,5 +61,4 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
             receiverRegistered = false
         }
     }
-
 }
