@@ -7,7 +7,8 @@ import android.view.MenuItem
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
 import me.echeung.moemoekyun.client.model.Song
-import java.util.*
+import java.util.Collections
+import java.util.Comparator
 
 object SongSortUtil {
 

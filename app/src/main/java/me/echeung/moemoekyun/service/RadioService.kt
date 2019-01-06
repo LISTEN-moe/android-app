@@ -39,7 +39,7 @@ import me.echeung.moemoekyun.util.system.isCarUiMode
 import me.echeung.moemoekyun.util.system.notificationManager
 import me.echeung.moemoekyun.util.system.toast
 import java.text.ParseException
-import java.util.*
+import java.util.Calendar
 
 class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 

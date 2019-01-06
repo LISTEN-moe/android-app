@@ -1,6 +1,6 @@
 package me.echeung.moemoekyun.client.model
 
-import java.util.*
+import java.util.ArrayList
 
 class SongListItem {
     var albums: List<String>? = null

@@ -2,7 +2,10 @@ package me.echeung.moemoekyun.util.system
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.GregorianCalendar
+import java.util.Locale
+import java.util.TimeZone
 
 // Based on https://stackoverflow.com/a/10621553
 object TimeUtil {

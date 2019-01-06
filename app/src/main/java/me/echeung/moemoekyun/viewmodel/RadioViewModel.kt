@@ -14,7 +14,7 @@ import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.system.ThemeUtil
-import java.util.*
+import java.util.Calendar
 
 class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 

@@ -4,7 +4,7 @@ import android.util.Log
 import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.v4.APIClient
 import me.echeung.moemoekyun.client.model.SongListItem
-import java.util.*
+import java.util.GregorianCalendar
 
 /**
  * A naive cache of the songs data from the API for faster loading/searching.

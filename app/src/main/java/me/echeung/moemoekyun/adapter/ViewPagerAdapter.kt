@@ -10,7 +10,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.fragment.SongsFragment
 import me.echeung.moemoekyun.ui.fragment.UserFragment
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.ArrayList
 
 class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {
 

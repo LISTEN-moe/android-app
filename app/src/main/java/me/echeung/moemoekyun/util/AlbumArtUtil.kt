@@ -17,7 +17,7 @@ import com.bumptech.glide.request.target.Target
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
-import java.util.*
+import java.util.ArrayList
 
 object AlbumArtUtil {
 

@@ -14,7 +14,7 @@ import me.echeung.moemoekyun.databinding.SongItemBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import java.lang.ref.WeakReference
-import java.util.*
+import java.util.Random
 
 class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter<Song, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
 
