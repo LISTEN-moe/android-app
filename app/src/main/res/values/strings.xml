@@ -86,8 +86,10 @@
     <string name="filter_favorites">Filter favorites</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">Unfavorited %s</string>
-    <!-- e.g. 2 in queue, 10 before yours -->
-    <string name="queue_info">%d in queue, %d before yours</string>
+    <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d queued</string>
+    <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d queued, %d before yours</string>
     <string name="random_request">Request random song</string>
 
 
