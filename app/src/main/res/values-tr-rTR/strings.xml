@@ -61,7 +61,8 @@
     <string name="filter_favorites">Favorileri filtrele</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">%s favorilerden çıkarıldı</string>
-    <!-- e.g. 2 in queue, 10 before yours -->
+    <!-- e.g. 2 queued -->
+    <!-- e.g. 2 queued, 1 before yours -->
     <string name="queue_info">%d seninkinden önce %d sıradaydı</string>
     <string name="random_request">Rastgele bir şarkı iste</string>
     <!-- == Song item actions == -->

@@ -61,7 +61,10 @@
     <string name="filter_favorites">お気に入りをフィルター</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">%s をお気に入りからはずす</string>
-    <!-- e.g. 2 in queue, 10 before yours -->
+    <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d 件のキュー</string>
+    <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d 件のキュー / %d 件待ち</string>
     <string name="random_request">ランダムな曲をリクエストする</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
@@ -104,7 +107,17 @@
     <string name="pref_header_music">ミュージック</string>
     <string name="pref_title_general_romaji">ローマ字を使う</string>
     <string name="pref_title_general_romaji_summary">「ななひら」ではなく「Nanahira」</string>
+    <string name="pref_title_general_random_request_title">タイトルをランダムにリクエスト</string>
+    <string name="pref_title_general_random_request_summary">リクエスト曲のタイトルを表示</string>
     <string name="pref_title_lockscreen_albumart_title">アルバムアート</string>
     <string name="pref_title_lockscreen_albumart_summary">ロックスクリーンとAndroid Autoにアルバムアートを表示します</string>
+    <string name="pref_title_color_now_playing_title">Now playing 画面の色</string>
+    <string name="pref_title_color_now_playing_summary">アルバムアートのメインカラー</string>
     <string name="pref_header_audio">オーディオ</string>
+    <string name="pref_title_pause_on_noisy_title">ヘッドホンによる一時停止</string>
+    <string name="pref_title_pause_on_noisy_summary">ヘッドホンを外すと音楽を一時停止します</string>
+    <string name="pref_title_audio_pause_on_loss_title">メディアによる一時停止</string>
+    <string name="pref_title_audio_pause_on_loss_summary">ビデオや他の音楽など、他の音が再生されると一時停止します</string>
+    <string name="pref_title_audio_duck_title">音量の低下</string>
+    <string name="pref_title_audio_duck_summary">通知やナビゲーションなどがあった時に音楽の音量を下げます</string>
 </resources>

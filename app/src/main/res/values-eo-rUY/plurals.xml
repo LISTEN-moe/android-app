@@ -3,5 +3,9 @@
 <resources>
     <!-- e.g. 10 requests remaining -->
     <!-- Timer -->
+    <plurals name="minutes">
+        <item quantity="one">1 minuto</item>
+        <item quantity="other">%d minutoj</item>
+    </plurals>
     <!-- Confirmation of timer being set -->
 </resources>

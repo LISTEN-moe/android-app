@@ -61,8 +61,10 @@
     <string name="filter_favorites">Filtra preferiti</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">Rimosso %s</string>
-    <!-- e.g. 2 in queue, 10 before yours -->
-    <string name="queue_info">%d in coda, %d prima delle tue</string>
+    <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d in coda</string>
+    <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d in coda, %d prima della tua</string>
     <string name="random_request">Richiedi canzone casuale</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
@@ -105,7 +107,9 @@
     <string name="pref_header_music">Musica</string>
     <string name="pref_title_general_romaji">Romaji</string>
     <string name="pref_title_general_romaji_summary">\"Nanahira\" invece di \"ななひら\"</string>
+    <string name="pref_title_general_random_request_title">Titolo richiesta casuale</string>
     <string name="pref_title_general_random_request_summary">Visualizza il titolo delle canzoni casuali richieste</string>
+    <string name="pref_title_lockscreen_albumart_title">Copertina album</string>
     <string name="pref_title_lockscreen_albumart_summary">Visualizza copertina dell\'album sulla schermata di blocco e su Android Auto</string>
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy_summary">Metti in pausa quando le cuffie vengono rimosse</string>

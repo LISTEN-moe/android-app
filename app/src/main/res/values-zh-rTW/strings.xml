@@ -57,7 +57,8 @@
     <string name="no_favorites">目前沒有最愛</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">取消了喜愛：“%s”</string>
-    <!-- e.g. 2 in queue, 10 before yours -->
+    <!-- e.g. 2 queued -->
+    <!-- e.g. 2 queued, 1 before yours -->
     <string name="random_request">請求隨機歌曲</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->

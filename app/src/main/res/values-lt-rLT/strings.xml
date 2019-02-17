@@ -61,8 +61,8 @@
     <string name="filter_favorites">Filtruoti mėgstamas</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">%s pašalinta iš mėgstamų</string>
-    <!-- e.g. 2 in queue, 10 before yours -->
-    <string name="queue_info">%d eilėje, %d prieš jūsų</string>
+    <!-- e.g. 2 queued -->
+    <!-- e.g. 2 queued, 1 before yours -->
     <string name="random_request">Užsakyti atsitiktinę dainą</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
