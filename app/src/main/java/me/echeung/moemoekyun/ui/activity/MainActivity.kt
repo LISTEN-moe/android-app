@@ -319,7 +319,7 @@ class MainActivity : BaseActivity() {
         AlertDialog.Builder(this, R.style.DialogTheme)
                 .setTitle(R.string.logout)
                 .setMessage(getString(R.string.logout_confirmation))
-                .setPositiveButton(R.string.logout) { dialogInterface, i -> logout() }
+                .setPositiveButton(R.string.logout) { _, _ -> logout() }
                 .setNegativeButton(android.R.string.cancel, null)
                 .create()
                 .show()

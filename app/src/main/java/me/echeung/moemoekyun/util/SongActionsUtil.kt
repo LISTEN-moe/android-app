@@ -66,7 +66,7 @@ object SongActionsUtil {
                             val undoBar = Snackbar.make(coordinatorLayout,
                                     String.format(activity.getString(R.string.unfavorited), song.toString()),
                                     Snackbar.LENGTH_LONG)
-                            undoBar.setAction(R.string.action_undo) { v -> toggleFavorite(activity, song) }
+                            undoBar.setAction(R.string.action_undo) { _ -> toggleFavorite(activity, song) }
                             undoBar.show()
                         }
                     }
