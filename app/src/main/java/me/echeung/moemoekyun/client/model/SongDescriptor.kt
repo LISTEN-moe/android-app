@@ -8,7 +8,11 @@ class SongDescriptor {
     var name: String? = null
     var nameRomaji: String? = null
     var image: String? = null
-    var releaseDate: String? = null
+
+    fun contains(query: String): Boolean {
+        return name.orEmpty().contains(query, ignoreCase = true)
+                || nameRomaji.orEmpty().contains(query, ignoreCase = true)
+    }
 
     companion object {
         fun getSongDescriptorsString(songDescriptors: List<SongDescriptor>?): String {

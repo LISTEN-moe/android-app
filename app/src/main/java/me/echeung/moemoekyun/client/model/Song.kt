@@ -10,12 +10,9 @@ class Song {
     var title: String? = null
     var titleRomaji: String? = null
     var titleSearchRomaji: String? = null
-    var albums: List<SongDescriptor>? = null
     var artists: List<SongDescriptor>? = null
     var sources: List<SongDescriptor>? = null
-    var groups: List<String>? = null
-    var tags: List<String>? = null
-    var notes: String? = null
+    var albums: List<SongDescriptor>? = null
     var duration: Int = 0
     var enabled: Boolean = false
     var favorite: Boolean = false
@@ -69,42 +66,11 @@ class Song {
             return true
         }
 
-        val query = query.toLowerCase().trim()
-
-        if (title != null && title!!.toLowerCase().contains(query)) {
-            return true
-        }
-
-        if (titleRomaji != null && titleRomaji!!.toLowerCase().contains(query)) {
-            return true
-        }
-
-        if (titleSearchRomaji != null && titleSearchRomaji!!.toLowerCase().contains(query)) {
-            return true
-        }
-
-        if (albums != null) {
-            for (album in albums!!) {
-                if (album.name != null && album.name!!.toLowerCase().contains(query)) {
-                    return true
-                }
-                if (album.nameRomaji != null && album.nameRomaji!!.toLowerCase().contains(query)) {
-                    return true
-                }
-            }
-        }
-
-        if (artists != null) {
-            for (artist in artists!!) {
-                if (artist.name != null && artist.name!!.toLowerCase().contains(query)) {
-                    return true
-                }
-                if (artist.nameRomaji != null && artist.nameRomaji!!.toLowerCase().contains(query)) {
-                    return true
-                }
-            }
-        }
-
-        return false
+        return title.orEmpty().contains(query, ignoreCase = true)
+                || titleRomaji.orEmpty().contains(query, ignoreCase = true)
+                || titleSearchRomaji.orEmpty().contains(query, ignoreCase = true)
+                || artists.orEmpty().any { it.contains(query) }
+                || albums.orEmpty().any { it.contains(query) }
+                || sources.orEmpty().any { it.contains(query) }
     }
 }

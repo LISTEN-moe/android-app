@@ -6,11 +6,8 @@ class SongListItem {
     var albums: List<String>? = null
     var albumsId: List<Int>? = null
     var albumsCover: List<String>? = null
-    var albumsReleaseDate: List<String>? = null
     var albumsRomaji: List<String>? = null
     var albumsSearchRomaji: List<String>? = null
-    var albumsTrackNumber: List<Int>? = null
-    var albumsType: List<Int>? = null
     var artists: List<String>? = null
     var artistsId: List<Int>? = null
     var artistsRomaji: List<String>? = null
@@ -19,21 +16,13 @@ class SongListItem {
     var enabled: Boolean = false
     var favorite: Boolean = false
     var groups: List<String>? = null
-    var groupsId: List<Int>? = null
-    var groupsRomaji: List<String>? = null
-    var groupsSearchRomaji: List<String>? = null
     var id: Int = 0
-    var lastPlayed: String? = null
-    var snippet: String? = null
     var sources: List<String>? = null
     var sourcesRomaji: List<String>? = null
     var tags: List<String>? = null
     var title: String? = null
     var titleRomaji: String? = null
     var titleSearchRomaji: String? = null
-    var uploaderUuid: String? = null
-    var uploaderUsername: String? = null
-    var uploaderDisplayName: String? = null
 
     fun search(query: String?): Boolean {
         if (query.isNullOrEmpty()) {
@@ -102,30 +91,6 @@ class SongListItem {
             }
         }
 
-        if (groups != null) {
-            for (group in groups!!) {
-                if (group.toLowerCase().contains(query)) {
-                    return true
-                }
-            }
-        }
-
-        if (groupsRomaji != null) {
-            for (group in groupsRomaji!!) {
-                if (group.toLowerCase().contains(query)) {
-                    return true
-                }
-            }
-        }
-
-        if (groupsSearchRomaji != null) {
-            for (group in groupsSearchRomaji!!) {
-                if (group.toLowerCase().contains(query)) {
-                    return true
-                }
-            }
-        }
-
         return false
     }
 
@@ -138,7 +103,6 @@ class SongListItem {
                 albumDescriptor.name = songListItem.albums!![i]
                 albumDescriptor.nameRomaji = songListItem.albumsRomaji!![i]
                 albumDescriptor.image = songListItem.albumsCover!![i]
-                albumDescriptor.releaseDate = songListItem.albumsReleaseDate!![i]
 
                 albums.add(albumDescriptor)
             }
@@ -169,8 +133,6 @@ class SongListItem {
             song.albums = albums
             song.artists = artists
             song.sources = sources
-            song.groups = songListItem.groups
-            song.tags = songListItem.tags
             song.duration = songListItem.duration
             song.favorite = songListItem.favorite
             song.enabled = songListItem.enabled
