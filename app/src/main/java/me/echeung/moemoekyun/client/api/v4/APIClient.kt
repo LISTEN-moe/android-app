@@ -146,9 +146,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     override fun success(response: FavoritesResponse?) {
                         val favorites = response!!.favorites
-                        for (song in favorites) {
-                            song.favorite = true
-                        }
+                        favorites.forEach { it.favorite = true }
                         callback.onSuccess(favorites)
                     }
                 })

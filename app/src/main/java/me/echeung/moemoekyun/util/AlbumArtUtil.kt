@@ -88,9 +88,7 @@ object AlbumArtUtil {
 
     private fun updateListeners(bitmap: Bitmap) {
         currentAlbumArt = bitmap
-        for (listener in listeners) {
-            listener.onAlbumArtReady(bitmap)
-        }
+        listeners.forEach { it.onAlbumArtReady(bitmap) }
     }
 
     private fun downloadAlbumArtBitmap(context: Context?, url: String) {
