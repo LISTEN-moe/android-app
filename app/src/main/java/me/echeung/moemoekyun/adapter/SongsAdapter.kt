@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.adapter
 
 import android.app.Activity
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -92,13 +91,10 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
 
         if (allSongs == null || allSongs!!.isEmpty()) return
 
-        visibleSongs = allSongs
-
-        if (!TextUtils.isEmpty(filterQuery)) {
-            visibleSongs = allSongs!!.filter { song -> song.search(filterQuery!!) }.toList()
-        }
-
-        SongSortUtil.sort(activityRef, listId, visibleSongs!!)
+        visibleSongs = allSongs!!.asSequence()
+                .filter { song -> song.search(filterQuery) }
+                .sortedWith(SongSortUtil.getComparator(activityRef, listId))
+                .toList()
 
         notifyDataSetChanged()
     }

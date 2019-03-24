@@ -65,7 +65,11 @@ class Song {
         return "$titleString - $artistsString"
     }
 
-    fun search(query: String): Boolean {
+    fun search(query: String?): Boolean {
+        if (query.isNullOrEmpty()) {
+            return true
+        }
+
         val query = query.toLowerCase().trim()
 
         if (title != null && title!!.toLowerCase().contains(query)) {

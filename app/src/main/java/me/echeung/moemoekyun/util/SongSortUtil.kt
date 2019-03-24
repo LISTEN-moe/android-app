@@ -7,7 +7,6 @@ import android.view.MenuItem
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
 import me.echeung.moemoekyun.client.model.Song
-import java.util.Collections
 import java.util.Comparator
 
 object SongSortUtil {
@@ -32,27 +31,22 @@ object SongSortUtil {
                 .apply()
     }
 
-    fun sort(context: Context, listId: String, songs: List<Song>) {
+    fun getComparator(context: Context, listId: String): Comparator<Song> {
         val sortType = getSortTypeByListId(context, listId)
         val sortDescending = getSortDescendingByListId(context, listId)
 
-        val sorter: Comparator<Song> = when (sortType) {
+        return when (sortType) {
             SORT_ARTIST -> if (sortDescending)
                 Comparator { song, t1 -> t1.artistsString.compareTo(song.artistsString, ignoreCase = true) }
             else
                 Comparator { song, t1 -> song.artistsString.compareTo(t1.artistsString, ignoreCase = true) }
 
-            SORT_TITLE -> if (sortDescending)
-                Comparator { song, t1 -> t1.titleString!!.compareTo(song.titleString!!, ignoreCase = true) }
-            else
-                Comparator { song, t1 -> song.titleString!!.compareTo(t1.titleString!!, ignoreCase = true) }
+            //  Default is SORT_TITLE
             else -> if (sortDescending)
                 Comparator { song, t1 -> t1.titleString!!.compareTo(song.titleString!!, ignoreCase = true) }
             else
                 Comparator { song, t1 -> song.titleString!!.compareTo(t1.titleString!!, ignoreCase = true) }
         }
-
-        Collections.sort(songs, sorter)
     }
 
     fun initSortMenu(context: Context, listId: String, menu: Menu) {
