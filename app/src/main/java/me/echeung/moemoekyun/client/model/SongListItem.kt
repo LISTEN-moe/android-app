@@ -127,11 +127,6 @@ class SongListItem {
 
     companion object {
         fun toSong(songListItem: SongListItem): Song {
-            val uploader = User()
-            uploader.uuid = songListItem.uploaderUuid
-            uploader.displayName = songListItem.uploaderDisplayName
-            uploader.username = songListItem.uploaderUsername
-
             val albums = ArrayList<SongDescriptor>()
             for (i in 0 until songListItem.albums!!.size) {
                 val albumDescriptor = SongDescriptor()
@@ -175,7 +170,6 @@ class SongListItem {
             song.duration = songListItem.duration
             song.favorite = songListItem.favorite
             song.enabled = songListItem.enabled
-            song.uploader = uploader
 
             return song
         }

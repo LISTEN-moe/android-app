@@ -18,7 +18,6 @@ class Song {
     var notes: String? = null
     var duration: Int = 0
     var enabled: Boolean = false
-    var uploader: User? = null
     var favorite: Boolean = false
 
     val titleString: String?
