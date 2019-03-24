@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.client.model
 
-import android.text.TextUtils
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.v4.library.Library
 import java.util.Locale
@@ -18,7 +17,7 @@ class Song {
     var favorite: Boolean = false
 
     val titleString: String?
-        get() = if (App.preferenceUtil!!.shouldPreferRomaji() && !TextUtils.isEmpty(titleRomaji)) {
+        get() = if (App.preferenceUtil!!.shouldPreferRomaji() && !titleRomaji.isNullOrBlank()) {
             titleRomaji
         } else title
 

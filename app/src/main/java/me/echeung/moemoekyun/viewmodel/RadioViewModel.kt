@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.viewmodel
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
-import android.text.TextUtils
 import androidx.annotation.ColorInt
 import androidx.databinding.Bindable
 import me.echeung.moemoekyun.App
@@ -57,7 +56,7 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
 
     @Bindable
     fun getRequester(): String? {
-        return if (requester == null || TextUtils.isEmpty(requester!!.displayName)) {
+        return if (requester == null || requester!!.displayName.isNullOrBlank()) {
             null
         } else requester!!.displayName
     }

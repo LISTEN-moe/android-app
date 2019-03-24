@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.client.model
 
-import android.text.TextUtils
 import me.echeung.moemoekyun.App
 
 class SongDescriptor {
@@ -32,7 +31,7 @@ class SongDescriptor {
                     s.append(", ")
                 }
 
-                if (preferRomaji && !TextUtils.isEmpty(songDescriptor.nameRomaji)) {
+                if (preferRomaji && !songDescriptor.nameRomaji.isNullOrBlank()) {
                     s.append(songDescriptor.nameRomaji)
                 } else {
                     s.append(songDescriptor.name)
