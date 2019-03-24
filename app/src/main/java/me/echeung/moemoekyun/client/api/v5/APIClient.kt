@@ -30,7 +30,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
     init {
         // Automatically add auth token to requests
-        val authClient = OkHttpClient.Builder()
+        val authClient = okHttpClient.newBuilder()
                 .addInterceptor { chain ->
                     val original = chain.request()
                     val builder = original.newBuilder().method(original.method(), original.body())
