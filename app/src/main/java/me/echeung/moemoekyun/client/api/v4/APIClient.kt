@@ -274,7 +274,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
     private fun filterSongs(songs: List<SongListItem>, query: String?): List<Song> {
         return songs.asSequence()
-                .filter { song -> query == null || song.search(query) }
+                .filter { song -> song.search(query) }
                 .map { song -> SongListItem.toSong(song) }
                 .toList()
     }
