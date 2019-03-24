@@ -106,22 +106,6 @@ class Song {
             }
         }
 
-        if (groups != null) {
-            for (group in groups!!) {
-                if (group.toLowerCase().contains(query)) {
-                    return true
-                }
-            }
-        }
-
-        if (tags != null) {
-            for (tag in tags!!) {
-                if (tag.toLowerCase().contains(query)) {
-                    return true
-                }
-            }
-        }
-
         return false
     }
 }
