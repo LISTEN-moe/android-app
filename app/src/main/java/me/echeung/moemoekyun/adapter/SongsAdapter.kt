@@ -64,7 +64,7 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
     }
 
     override fun getItemCount(): Int {
-        return if (visibleSongs != null) visibleSongs!!.size else 0
+        return visibleSongs?.size ?: 0
     }
 
     fun filter(query: String) {

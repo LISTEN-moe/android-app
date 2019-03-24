@@ -113,24 +113,8 @@ object AlbumArtUtil {
 
                         override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
                             isDefaultAlbumArt = false
-
-                            try {
-                                var swatch: Palette.Swatch? = Palette.from(resource).generate().vibrantSwatch
-                                if (swatch == null) {
-                                    swatch = Palette.from(resource).generate().mutedSwatch
-                                }
-                                if (swatch != null) {
-                                    currentAccentColor = swatch.rgb
-                                }
-                            } catch (e: Exception) {
-                                // Ignore things like OutOfMemoryExceptions
-                                e.printStackTrace()
-
-                                setDefaultColors()
-                            }
-
+                            extractAccentColor(resource)
                             updateListeners(resource)
-
                             return true
                         }
                     })
@@ -147,6 +131,23 @@ object AlbumArtUtil {
         setDefaultColors()
 
         return defaultAlbumArt!!
+    }
+
+    private fun extractAccentColor(resource: Bitmap) {
+        try {
+            var swatch: Palette.Swatch? = Palette.from(resource).generate().vibrantSwatch
+            if (swatch == null) {
+                swatch = Palette.from(resource).generate().mutedSwatch
+            }
+            if (swatch != null) {
+                currentAccentColor = swatch.rgb
+            }
+        } catch (e: Exception) {
+            // Ignore things like OutOfMemoryExceptions
+            e.printStackTrace()
+
+            setDefaultColors()
+        }
     }
 
     private fun setDefaultColors() {

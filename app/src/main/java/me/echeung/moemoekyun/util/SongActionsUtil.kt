@@ -126,7 +126,7 @@ object SongActionsUtil {
         copyToClipboard(context, song.toString())
     }
 
-    fun copyToClipboard(context: Context, songInfo: String) {
+    private fun copyToClipboard(context: Context, songInfo: String) {
         val clip = ClipData.newPlainText("song", songInfo)
         context.clipboardManager.primaryClip = clip
 

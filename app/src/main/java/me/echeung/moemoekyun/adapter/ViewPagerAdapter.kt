@@ -32,8 +32,8 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         super.destroyItem(container, position, `object`)
-        val mWeakFragment = fragments.get(position)
-        mWeakFragment?.clear()
+        val fragment = fragments.get(position)
+        fragment?.clear()
     }
 
     override fun getCount(): Int {
