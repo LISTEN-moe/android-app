@@ -61,7 +61,7 @@ class Song {
     }
 
     fun search(query: String?): Boolean {
-        if (query.isNullOrEmpty()) {
+        if (query.isNullOrBlank()) {
             return true
         }
 

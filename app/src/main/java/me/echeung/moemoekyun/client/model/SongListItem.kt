@@ -20,7 +20,7 @@ class SongListItem {
     var favorite: Boolean = false
 
     fun search(query: String?): Boolean {
-        if (query.isNullOrEmpty()) {
+        if (query.isNullOrBlank()) {
             return true
         }
 
