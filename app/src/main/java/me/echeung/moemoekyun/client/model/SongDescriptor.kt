@@ -2,11 +2,11 @@ package me.echeung.moemoekyun.client.model
 
 import me.echeung.moemoekyun.App
 
-class SongDescriptor {
-    var id: Int = 0
-    var name: String? = null
-    var nameRomaji: String? = null
-    var image: String? = null
+data class SongDescriptor(
+        val id: Int = 0,
+        val name: String? = null,
+        val nameRomaji: String? = null,
+        val image: String? = null) {
 
     fun contains(query: String): Boolean {
         return name.orEmpty().contains(query, ignoreCase = true)
@@ -14,7 +14,7 @@ class SongDescriptor {
     }
 
     companion object {
-        fun getSongDescriptorsString(songDescriptors: List<SongDescriptor>?): String {
+        fun getDisplayString(songDescriptors: List<SongDescriptor>?): String {
             if (songDescriptors == null) {
                 return ""
             }

@@ -1,23 +1,23 @@
 package me.echeung.moemoekyun.client.model
 
-class SongListItem {
-    var id: Int = 0
-    var title: String? = null
-    var titleRomaji: String? = null
-    var titleSearchRomaji: String? = null
-    var artists: List<String>? = null
-    var artistsId: List<Int>? = null
-    var artistsRomaji: List<String>? = null
-    var artistsSearchRomaji: List<String>? = null
-    var albums: List<String>? = null
-    var albumsId: List<Int>? = null
-    var albumsCover: List<String>? = null
-    var albumsRomaji: List<String>? = null
-    var albumsSearchRomaji: List<String>? = null
-    var sources: List<String>? = null
-    var sourcesRomaji: List<String>? = null
-    var duration: Int = 0
-    var favorite: Boolean = false
+data class SongListItem(
+        var id: Int = 0,
+        var title: String? = null,
+        var titleRomaji: String? = null,
+        var titleSearchRomaji: String? = null,
+        var artists: List<String>? = null,
+        var artistsId: List<Int>? = null,
+        var artistsRomaji: List<String>? = null,
+        var artistsSearchRomaji: List<String>? = null,
+        var albums: List<String>? = null,
+        var albumsId: List<Int>? = null,
+        var albumsCover: List<String>? = null,
+        var albumsRomaji: List<String>? = null,
+        var albumsSearchRomaji: List<String>? = null,
+        var sources: List<String>? = null,
+        var sourcesRomaji: List<String>? = null,
+        var duration: Int = 0,
+        var favorite: Boolean = false) {
 
     fun search(query: String?): Boolean {
         if (query.isNullOrBlank()) {
@@ -38,25 +38,25 @@ class SongListItem {
     companion object {
         fun toSong(songListItem: SongListItem): Song {
             val songAlbums = songListItem.albums.orEmpty()
-                .mapIndexed { i, _ -> SongDescriptor().apply {
-                    id = songListItem.albumsId!![i]
-                    name = songListItem.albums!![i]
-                    nameRomaji = songListItem.albumsRomaji!![i]
-                    image = songListItem.albumsCover!![i]
-                }}
+                    .mapIndexed { i, _ -> SongDescriptor(
+                            id = songListItem.albumsId!![i],
+                            name = songListItem.albums!![i],
+                            nameRomaji = songListItem.albumsRomaji!![i],
+                            image = songListItem.albumsCover!![i])
+                    }
 
             val songArtists = songListItem.artists.orEmpty()
-                .mapIndexed { i, _ -> SongDescriptor().apply {
-                    id = songListItem.artistsId!![i]
-                    name = songListItem.artists!![i]
-                    nameRomaji = songListItem.artistsRomaji!![i]
-                }}
+                    .mapIndexed { i, _ -> SongDescriptor(
+                            id = songListItem.artistsId!![i],
+                            name = songListItem.artists!![i],
+                            nameRomaji = songListItem.artistsRomaji!![i])
+                    }
 
             val songSources = songListItem.sources.orEmpty()
-                    .mapIndexed { i, _ ->  SongDescriptor().apply {
-                        name = songListItem.sources!![i]
-                        nameRomaji = songListItem.sourcesRomaji!![i]
-                    }}
+                    .mapIndexed { i, _ -> SongDescriptor(
+                            name = songListItem.sources!![i],
+                            nameRomaji = songListItem.sourcesRomaji!![i])
+                    }
 
             return Song().apply {
                 id = songListItem.id

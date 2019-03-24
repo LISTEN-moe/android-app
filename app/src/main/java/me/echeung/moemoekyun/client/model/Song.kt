@@ -4,17 +4,17 @@ import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.v4.library.Library
 import java.util.Locale
 
-class Song {
-    var id: Int = 0
-    var title: String? = null
-    var titleRomaji: String? = null
-    var titleSearchRomaji: String? = null
-    var artists: List<SongDescriptor>? = null
-    var sources: List<SongDescriptor>? = null
-    var albums: List<SongDescriptor>? = null
-    var duration: Int = 0
-    var enabled: Boolean = false
-    var favorite: Boolean = false
+data class Song(
+        var id: Int = 0,
+        var title: String? = null,
+        var titleRomaji: String? = null,
+        var titleSearchRomaji: String? = null,
+        var artists: List<SongDescriptor>? = null,
+        var sources: List<SongDescriptor>? = null,
+        var albums: List<SongDescriptor>? = null,
+        var duration: Int = 0,
+        var enabled: Boolean = false,
+        var favorite: Boolean = false) {
 
     val titleString: String?
         get() = if (App.preferenceUtil!!.shouldPreferRomaji() && !titleRomaji.isNullOrBlank()) {
@@ -22,13 +22,13 @@ class Song {
         } else title
 
     val albumsString: String
-        get() = SongDescriptor.getSongDescriptorsString(albums)
+        get() = SongDescriptor.getDisplayString(albums)
 
     val artistsString: String
-        get() = SongDescriptor.getSongDescriptorsString(artists)
+        get() = SongDescriptor.getDisplayString(artists)
 
     val sourcesString: String
-        get() = SongDescriptor.getSongDescriptorsString(sources)
+        get() = SongDescriptor.getDisplayString(sources)
 
     val durationString: String
         get() {
