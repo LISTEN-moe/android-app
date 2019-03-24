@@ -37,26 +37,26 @@ object SongSortUtil {
 
         return when (sortType) {
             SORT_ARTIST -> if (sortDescending)
-                Comparator { song, t1 -> t1.artistsString.compareTo(song.artistsString, ignoreCase = true) }
+                compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.artistsString }
             else
-                Comparator { song, t1 -> song.artistsString.compareTo(t1.artistsString, ignoreCase = true) }
+                compareBy(String.CASE_INSENSITIVE_ORDER) { it.artistsString }
 
-            //  Default is SORT_TITLE
+            // Default is SORT_TITLE
             else -> if (sortDescending)
-                Comparator { song, t1 -> t1.titleString!!.compareTo(song.titleString!!, ignoreCase = true) }
+                compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.titleString!! }
             else
-                Comparator { song, t1 -> song.titleString!!.compareTo(t1.titleString!!, ignoreCase = true) }
+                compareBy(String.CASE_INSENSITIVE_ORDER) { it.titleString!! }
         }
     }
 
     fun initSortMenu(context: Context, listId: String, menu: Menu) {
         val sortType = getSortTypeByListId(context, listId)
-        when (sortType) {
-            SORT_ARTIST -> menu.findItem(R.id.action_sort_type_artist).isChecked = true
-
-            SORT_TITLE -> menu.findItem(R.id.action_sort_type_title).isChecked = true
-            else -> menu.findItem(R.id.action_sort_type_title).isChecked = true
+        val sortTypeId = when (sortType) {
+            SORT_ARTIST -> R.id.action_sort_type_artist
+            // Default is SORT_TITLE
+            else -> R.id.action_sort_type_title
         }
+        menu.findItem(sortTypeId).isChecked = true
 
         val sortDescending = getSortDescendingByListId(context, listId)
         menu.findItem(R.id.action_sort_desc).isChecked = sortDescending
