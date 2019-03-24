@@ -137,7 +137,7 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
             }
 
             override fun areContentsTheSame(oldSong: Song, newSong: Song): Boolean {
-                return oldSong == newSong
+                return oldSong.id == newSong.id
             }
         }
     }
