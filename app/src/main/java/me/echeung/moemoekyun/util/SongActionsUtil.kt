@@ -32,7 +32,6 @@ object SongActionsUtil {
         AlertDialog.Builder(activity, R.style.DialogTheme)
                 .setTitle(title)
                 .setAdapter(SongDetailAdapter(activity, songs), null)
-                .setPositiveButton(R.string.close, null)
                 .create()
                 .show()
     }
@@ -66,7 +65,7 @@ object SongActionsUtil {
                             val undoBar = Snackbar.make(coordinatorLayout,
                                     String.format(activity.getString(R.string.unfavorited), song.toString()),
                                     Snackbar.LENGTH_LONG)
-                            undoBar.setAction(R.string.action_undo) { _ -> toggleFavorite(activity, song) }
+                            undoBar.setAction(R.string.action_undo) { toggleFavorite(activity, song) }
                             undoBar.show()
                         }
                     }
