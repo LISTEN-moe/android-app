@@ -116,7 +116,6 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_headset_24dp"
-                android:tint="@color/white"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -134,7 +133,6 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
                 android:src="@{vm.event != null ? @drawable/ic_event_24dp : @drawable/ic_person_add_24dp}"
-                android:tint="@color/white"
                 android:visibility="@{vm.event != null || vm.requester != null}"
                 tools:ignore="ContentDescription" />
 
