@@ -6,7 +6,9 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     app:cardBackgroundColor="@color/dark_grey"
-    app:cardUseCompatPadding="true">
+    app:cardElevation="0dp"
+    app:strokeColor="@color/grey"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"

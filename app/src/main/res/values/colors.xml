@@ -8,6 +8,7 @@
     <color name="transparent">#00FFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="light_grey">#C7CCD8</color>
+    <color name="grey">#2D2E2D</color>
     <color name="dark_grey">#1C1D1C</color>
 
     <color name="pink">#FF015B</color>
