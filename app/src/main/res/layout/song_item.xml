@@ -39,7 +39,8 @@
                 android:fontFamily="sans-serif-light"
                 android:singleLine="true"
                 android:text="@{song.artistsString}"
-                android:textColor="@color/white" />
+                android:textColor="@color/light_grey"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
