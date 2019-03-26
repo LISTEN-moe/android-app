@@ -21,13 +21,13 @@ data class Song(
             titleRomaji
         } else title
 
-    val albumsString: String
-        get() = SongDescriptor.getDisplayString(albums)
-
-    val artistsString: String
+    val artistsString: String?
         get() = SongDescriptor.getDisplayString(artists)
 
-    val sourcesString: String
+    val albumsString: String?
+        get() = SongDescriptor.getDisplayString(albums)
+
+    val sourcesString: String?
         get() = SongDescriptor.getDisplayString(sources)
 
     val durationString: String

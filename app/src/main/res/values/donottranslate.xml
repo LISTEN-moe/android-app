@@ -10,6 +10,8 @@
 
     <string name="media_route_menu_title" translatable="false">Cast</string>
 
+    <string name="song_info_blank" translatable="false">-</string>
+
     <string name="url_store" translatable="false">https://play.google.com/store/apps/details?id=me.echeung.moemoekyun</string>
     <string name="url_github" translatable="false">https://github.com/LISTEN-moe/android-app</string>
     <string name="url_translate" translatable="false">https://crwd.in/listenmoe-android-app</string>

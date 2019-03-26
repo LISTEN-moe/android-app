@@ -14,9 +14,9 @@ data class SongDescriptor(
     }
 
     companion object {
-        fun getDisplayString(songDescriptors: List<SongDescriptor>?): String {
+        fun getDisplayString(songDescriptors: List<SongDescriptor>?): String? {
             if (songDescriptors == null) {
-                return ""
+                return null
             }
 
             val preferRomaji = App.preferenceUtil!!.shouldPreferRomaji()

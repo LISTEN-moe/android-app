@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -18,13 +19,14 @@
         android:paddingRight="16dp"
         android:paddingTop="8dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
                 android:adjustViewBounds="true"
                 android:imageUrl="@{song.albumArtUrl}"
                 android:scaleType="centerCrop"
@@ -34,77 +36,27 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal"
-                android:visibility="@{isAuthenticated}">
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/request_btn"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/action_request"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_play_arrow_24dp"
-                    android:tint="@color/white"
-                    android:visibility="@{canRequest}" />
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@{song.titleString}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
 
-                <ImageButton
-                    android:id="@+id/favorite_btn"
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@{isFavorite ? @string/action_unfavorite : @string/action_favorite}"
-                    android:padding="8dp"
-                    android:scaleType="fitCenter"
-                    android:src="@{isFavorite ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}"
-                    android:tint="@color/white" />
+                    android:fontFamily="sans-serif-light"
+                    android:text='@{song.artistsString + " · " +  song.durationString}'
+                    android:textColor="@color/light_grey"
+                    android:textSize="14sp" />
 
             </LinearLayout>
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/light_grey"
-                android:text="@string/song_title" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{song.titleString}" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="8dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/light_grey"
-                android:text="@string/song_artist" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{song.artistsString}" />
 
         </LinearLayout>
 
@@ -124,7 +76,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{song.albumsString}" />
+                android:text="@{song.albumsString ?? @string/song_info_blank}" />
 
         </LinearLayout>
 
@@ -144,27 +96,37 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{song.sourcesString}" />
+                android:text="@{song.sourcesString ?? @string/song_info_blank}" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="8dp">
+            android:orientation="horizontal"
+            android:visibility="@{isAuthenticated}"
+            android:weightSum="1">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/request_btn"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/light_grey"
-                android:text="@string/song_duration" />
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0.5"
+                android:enabled="@{canRequest}"
+                android:scaleType="fitCenter"
+                android:text="@string/action_request"
+                android:drawableStart="@{@drawable/ic_play_arrow_24dp}" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/favorite_btn"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text='@{song.duration != 0 ? song.durationString : ""}' />
+                android:layout_marginStart="8dp"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:text="@{isFavorite ? @string/action_unfavorite : @string/action_favorite}"
+                android:drawableStart="@{isFavorite ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}" />
 
         </LinearLayout>
 
