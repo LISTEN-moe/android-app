@@ -30,6 +30,7 @@ import me.echeung.moemoekyun.ui.view.PlayPauseView
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import me.echeung.moemoekyun.util.system.openUrl
+import me.echeung.moemoekyun.util.system.startActivity
 import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
@@ -266,12 +267,12 @@ class MainActivity : BaseActivity() {
             }
 
             R.id.action_settings -> {
-                startActivity(Intent(this, SettingsActivity::class.java))
+                startActivity<SettingsActivity>(this)
                 return true
             }
 
             R.id.action_about -> {
-                startActivity(Intent(this, AboutActivity::class.java))
+                startActivity<AboutActivity>(this)
                 return true
             }
 
@@ -312,7 +313,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showRegisterActivity() {
-        startActivity(Intent(this, AuthRegisterActivity::class.java))
+        startActivity<AuthRegisterActivity>(this)
     }
 
     private fun showLogoutDialog() {

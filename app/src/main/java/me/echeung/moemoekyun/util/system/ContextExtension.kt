@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.util.system
 
+import android.app.Activity
 import android.app.AlarmManager
 import android.app.NotificationManager
 import android.app.UiModeManager
@@ -12,6 +13,15 @@ import android.net.Uri
 import android.net.wifi.WifiManager
 import android.widget.Toast
 import androidx.annotation.StringRes
+
+/**
+ * Starts an activity.
+ *
+ * @param context Package context.
+ */
+inline fun <reified T : Activity> Activity.startActivity(context: Context) {
+    startActivity(Intent(context, T::class.java))
+}
 
 /**
  * Gets a plural string resource using the given quantity value.

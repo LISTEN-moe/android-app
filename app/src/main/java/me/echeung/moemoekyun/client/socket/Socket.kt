@@ -161,17 +161,17 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
         }
 
         try {
-            val baseResponse = getResponse(BaseResponse::class.java, jsonString)
+            val baseResponse = getResponse<BaseResponse>(jsonString)
             when (baseResponse!!.op) {
                 // Heartbeat init
                 0 -> {
-                    val connectResponse = getResponse(ConnectResponse::class.java, jsonString)
+                    val connectResponse = getResponse<ConnectResponse>(jsonString)
                     heartbeat(connectResponse!!.d!!.heartbeat)
                 }
 
                 // Update
                 1 -> {
-                    val updateResponse = getResponse(UpdateResponse::class.java, jsonString)
+                    val updateResponse = getResponse<UpdateResponse>(jsonString)
                     if (!isValidUpdate(updateResponse!!)) {
                         return
                     }
@@ -194,12 +194,12 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
 
     private fun parseNotification(jsonString: String) {
         try {
-            val notificationResponse = getResponse(NotificationResponse::class.java, jsonString)
+            val notificationResponse = getResponse<NotificationResponse>(jsonString)
             when (notificationResponse!!.t) {
                 EventNotificationResponse.TYPE -> {
-                    val eventResponse = getResponse(EventNotificationResponse::class.java, jsonString)
+                    val eventResponse = getResponse<EventNotificationResponse>(jsonString)
                     // TODO: do something with eventResponse
-                    Log.i(TAG, "Got event: " + eventResponse!!.d!!.event!!.name!!)
+                    Log.i(TAG, "Got event: " + eventResponse!!.d!!.event!!.name)
                 }
             }
         } catch (e: IOException) {
@@ -219,8 +219,8 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
     }
 
     @Throws(IOException::class)
-    private fun <T> getResponse(responseClass: Class<T>, jsonString: String): T? {
-        return MOSHI.adapter(responseClass).fromJson(jsonString)
+    private inline fun <reified T> getResponse(jsonString: String): T? {
+        return MOSHI.adapter(T::class.java).fromJson(jsonString)
     }
 
     interface Listener {
