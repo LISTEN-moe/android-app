@@ -103,6 +103,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
             android:visibility="@{isAuthenticated}"
             android:weightSum="1">
@@ -116,7 +117,8 @@
                 android:enabled="@{canRequest}"
                 android:scaleType="fitCenter"
                 android:text="@string/action_request"
-                android:drawableStart="@{@drawable/ic_play_arrow_24dp}" />
+                android:drawableStart="@{@drawable/ic_play_arrow_24dp}"
+                style="@style/OutlinedButton" />
 
             <Button
                 android:id="@+id/favorite_btn"
@@ -126,7 +128,8 @@
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:text="@{isFavorite ? @string/action_unfavorite : @string/action_favorite}"
-                android:drawableStart="@{isFavorite ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}" />
+                android:drawableStart="@{isFavorite ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}"
+                style="@style/OutlinedButton" />
 
         </LinearLayout>
 
