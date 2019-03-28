@@ -21,23 +21,17 @@ data class SongDescriptor(
 
             val preferRomaji = App.preferenceUtil!!.shouldPreferRomaji()
 
-            val s = StringBuilder()
-            for (songDescriptor in songDescriptors) {
-                if (songDescriptor.name == null) {
-                    continue
-                }
+            val displayString = songDescriptors
+                    .mapNotNull {
+                        if (preferRomaji && !it.nameRomaji.isNullOrBlank()) {
+                            it.nameRomaji
+                        } else {
+                            it.name
+                        }
+                    }
+                    .joinToString(", ")
 
-                if (s.isNotEmpty()) {
-                    s.append(", ")
-                }
-
-                if (preferRomaji && !songDescriptor.nameRomaji.isNullOrBlank()) {
-                    s.append(songDescriptor.nameRomaji)
-                } else {
-                    s.append(songDescriptor.name)
-                }
-            }
-            return s.toString()
+            return if (displayString.isNotEmpty()) displayString else null
         }
     }
 }
