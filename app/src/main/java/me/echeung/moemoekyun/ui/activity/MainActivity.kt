@@ -266,6 +266,11 @@ class MainActivity : BaseActivity() {
                 return true
             }
 
+            R.id.action_search -> {
+                startActivity<SearchActivity>(this)
+                return true
+            }
+
             R.id.action_settings -> {
                 startActivity<SettingsActivity>(this)
                 return true

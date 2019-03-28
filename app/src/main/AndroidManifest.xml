@@ -34,30 +34,30 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ui.activity.SearchActivity"
+            android:label="@string/search"
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/settings"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activity.MainActivity" />
-
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/about"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activity.MainActivity" />
-
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AuthLoginActivity"
             android:label="@string/login"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activity.MainActivity" />
-
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AuthRegisterActivity"
             android:label="@string/register"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.RadioService"
@@ -68,7 +68,6 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </service>
-
 
         <!-- Screen support -->
         <meta-data
@@ -85,6 +84,7 @@
         <meta-data
             android:name="com.google.android.gms.car.notification.SmallIcon"
             android:resource="@drawable/ic_icon" />
+
         <service
             android:name=".service.auto.AutoMediaBrowserService"
             android:exported="true"
