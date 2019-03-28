@@ -90,11 +90,11 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 viewModel.user = user
 
                 if (user.avatarImage != null) {
-                    viewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage!!
+                    viewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
                 }
 
                 if (user.bannerImage != null) {
-                    viewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage!!
+                    viewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
                 }
             }
 
