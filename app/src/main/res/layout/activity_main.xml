@@ -65,6 +65,11 @@
                         android:layout_height="?attr/actionBarSize"
                         android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
+                        <androidx.appcompat.widget.ActionMenuView
+                            android:id="@+id/appbar_search_menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent" />
+
                         <com.google.android.material.tabs.TabLayout
                             android:id="@+id/tabs"
                             android:layout_width="wrap_content"

@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.ActionMenuView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.viewpager.widget.ViewPager
@@ -34,12 +35,14 @@ import me.echeung.moemoekyun.util.system.startActivity
 import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
+
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: RadioViewModel
 
     private var viewPager: ViewPager? = null
+    private var searchMenu: ActionMenuView? = null
     private var nowPlayingSheet: BottomSheetBehavior<*>? = null
     private var nowPlayingSheetMenu: Menu? = null
 
@@ -133,8 +136,16 @@ class MainActivity : BaseActivity() {
      */
     private fun initAppbar() {
         // Set up app bar
-        setSupportActionBar(binding.appbar)
+        val appbar = binding.appbar
+        setSupportActionBar(appbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
+
+        searchMenu = appbar.findViewById(R.id.appbar_search_menu)
+        searchMenu!!.setOnMenuItemClickListener(object : ActionMenuView.OnMenuItemClickListener {
+            override fun onMenuItemClick(menuItem: MenuItem): Boolean {
+                return onOptionsItemSelected(menuItem)
+            }
+        })
 
         // Set up ViewPager and adapter
         viewPager = binding.pager
@@ -224,8 +235,10 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-
         updateMenuOptions(menu)
+
+        // Secondary menu with search
+        menuInflater.inflate(R.menu.menu_search, searchMenu!!.menu)
 
         return true
     }
