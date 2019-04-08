@@ -23,15 +23,8 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
         <item name="materialButtonStyle">@style/ButtonTheme</item>
         <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
-        <item name="tabStyle">@style/TabTheme</item>
         <item name="dialogTheme">@style/DialogTheme</item>
         <item name="alertDialogTheme">@style/DialogTheme</item>
-    </style>
-
-    <!-- TabHost -->
-    <style name="TabTheme" parent="@style/Widget.MaterialComponents.TabLayout">
-        <item name="android:background">@null</item>
-        <item name="tabIconTint">@color/white</item>
     </style>
 
     <!-- Dialogs -->

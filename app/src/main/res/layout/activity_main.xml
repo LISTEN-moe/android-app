@@ -64,20 +64,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:theme="@style/ThemeOverlay.AppCompat.Dark"
-                        app:contentInsetStart="0dp">
+                        app:contentInsetStart="8dp">
 
                         <androidx.appcompat.widget.ActionMenuView
                             android:id="@+id/appbar_search_menu"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent" />
-
-                        <com.google.android.material.tabs.TabLayout
-                            android:id="@+id/tabs"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            app:tabGravity="fill"
-                            app:tabMode="fixed"
-                            android:visibility="@{vm.isAuthed}" />
 
                     </androidx.appcompat.widget.Toolbar>
 

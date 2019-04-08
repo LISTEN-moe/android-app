@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.tabs.TabLayout
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
@@ -123,9 +122,6 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    /**
-     * Initializes everything for the tabs: the adapter, icons, and title handler
-     */
     private fun initAppbar() {
         // Set up app bar
         val appbar = binding.appbar
@@ -143,15 +139,6 @@ class MainActivity : BaseActivity() {
         viewPager = binding.pager
         val mViewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
         viewPager!!.adapter = mViewPagerAdapter
-
-        // Set up tabs
-        val tabLayout = binding.tabs
-        tabLayout.setupWithViewPager(viewPager)
-        viewPager!!.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-
-        for (i in 0 until tabLayout.tabCount) {
-            tabLayout.getTabAt(i)!!.setIcon(mViewPagerAdapter.getIcon(i))
-        }
     }
 
     private fun initNowPlaying() {

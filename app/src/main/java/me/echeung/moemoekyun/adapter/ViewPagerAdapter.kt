@@ -6,8 +6,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.ui.fragment.SongsFragment
 import me.echeung.moemoekyun.ui.fragment.UserFragment
 import java.lang.ref.WeakReference
 import java.util.ArrayList
@@ -18,9 +16,7 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
     private val holders = ArrayList<TabHolder>()
 
     init {
-        // Tabs
-        add<UserFragment>(R.drawable.ic_person_24dp)
-//        add<SongsFragment>(R.drawable.ic_audiotrack_24dp)
+        add<UserFragment>()
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -49,17 +45,12 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
         return ""
     }
 
-    fun getIcon(position: Int): Int {
-        return holders[position].drawableId
-    }
-
-    private inline fun <reified T : Fragment> add(drawableId: Int) {
-        holders.add(TabHolder(T::class.java.name, drawableId))
+    private inline fun <reified T : Fragment> add() {
+        holders.add(TabHolder(T::class.java.name))
         notifyDataSetChanged()
     }
 
     private data class TabHolder(
-        val className: String,
-        val drawableId: Int
+        val className: String
     )
 }
