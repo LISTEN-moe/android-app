@@ -70,10 +70,8 @@ class MainActivity : BaseActivity() {
         // Sets audio type to media (volume button control)
         volumeControlStream = AudioManager.STREAM_MUSIC
 
-        // Init app/tab bar
         initAppbar()
-
-        // Init now playing sheet
+        initMenu()
         initNowPlaying()
 
         // Invalidate token if needed
@@ -159,8 +157,6 @@ class MainActivity : BaseActivity() {
     private fun initNowPlaying() {
         nowPlayingSheet = BottomSheetBehavior.from(binding.nowPlaying.nowPlayingSheet)
 
-        initNowPlayingMenu()
-
         // Restore previous expanded state
         if (App.preferenceUtil!!.isNowPlayingExpanded) {
             nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED)
@@ -218,21 +214,21 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initNowPlayingMenu() {
+    private fun initMenu() {
         val toolbar = binding.nowPlaying.toolbar
         toolbar.inflateMenu(R.menu.menu_main)
         toolbar.setOnMenuItemClickListener { this.onOptionsItemSelected(it) }
 
         nowPlayingSheetMenu = toolbar.menu
         updateMenuOptions(nowPlayingSheetMenu!!)
+
+        // Secondary menu with search
+        menuInflater.inflate(R.menu.menu_search, searchMenu!!.menu)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
         updateMenuOptions(menu)
-
-        // Secondary menu with search
-        menuInflater.inflate(R.menu.menu_search, searchMenu!!.menu)
 
         return true
     }
