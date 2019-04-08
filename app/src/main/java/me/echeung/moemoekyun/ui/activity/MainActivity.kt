@@ -122,13 +122,12 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initAppbar() {
-        // Set up app bar
-        val appbar = binding.appbar
-        setSupportActionBar(appbar)
+    override fun initAppbar() {
+        super.initAppbar()
+        supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
-        searchMenu = appbar.findViewById(R.id.appbar_search_menu)
+        searchMenu = appbar?.findViewById(R.id.appbar_search_menu)
         searchMenu!!.setOnMenuItemClickListener(object : ActionMenuView.OnMenuItemClickListener {
             override fun onMenuItemClick(menuItem: MenuItem): Boolean {
                 return onOptionsItemSelected(menuItem)

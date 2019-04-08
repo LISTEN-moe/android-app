@@ -17,8 +17,7 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
-        setSupportActionBar(findViewById(R.id.appbar))
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        initAppbar()
 
         setupInfo()
         setupClickListeners()

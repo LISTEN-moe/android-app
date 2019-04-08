@@ -17,10 +17,6 @@ abstract class BaseDataBindingActivity<T : ViewDataBinding> : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, layout)
-
-        setSupportActionBar(findViewById(R.id.appbar))
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
     }
 
     override fun onDestroy() {

@@ -18,8 +18,7 @@ class SettingsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        setSupportActionBar(findViewById(R.id.appbar))
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        initAppbar()
 
         supportFragmentManager.beginTransaction()
                 .replace(R.id.content_frame, SettingsFragment())
