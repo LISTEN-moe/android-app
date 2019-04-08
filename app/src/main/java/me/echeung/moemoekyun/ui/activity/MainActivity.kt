@@ -111,12 +111,6 @@ class MainActivity : BaseActivity() {
             return
         }
 
-        // Go back to first tab
-        if (viewPager?.currentItem != 0) {
-            viewPager!!.setCurrentItem(0, true)
-            return
-        }
-
         super.onBackPressed()
     }
 
