@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.api.v4
 
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
@@ -29,7 +30,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 
-class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
+class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : APIClient {
 
     private val authService: AuthService
     private val favoritesService: FavoritesService
@@ -62,7 +63,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param password User's password.
      * @param callback Listener to handle the response.
      */
-    fun authenticate(username: String, password: String, callback: LoginCallback) {
+    override fun authenticate(username: String, password: String, callback: LoginCallback) {
         authService.login(AuthService.LoginBody(username, password))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
                     override fun success(response: AuthResponse?) {
@@ -86,7 +87,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param otpToken User's one-time password token.
      * @param callback Listener to handle the response.
      */
-    fun authenticateMfa(otpToken: String, callback: LoginCallback) {
+    override fun authenticateMfa(otpToken: String, callback: LoginCallback) {
         authService.mfa(authUtil.mfaAuthTokenWithPrefix, AuthService.LoginMfaBody(otpToken))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
                     override fun success(response: AuthResponse?) {
@@ -103,7 +104,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun register(email: String, username: String, password: String, callback: RegisterCallback) {
+    override fun register(email: String, username: String, password: String, callback: RegisterCallback) {
         authService.register(AuthService.RegisterBody(email, username, password))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
@@ -117,7 +118,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun getUserInfo(callback: UserInfoCallback) {
+    override fun getUserInfo(callback: UserInfoCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
@@ -136,7 +137,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun getUserFavorites(callback: UserFavoritesCallback) {
+    override fun getUserFavorites(callback: UserFavoritesCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
@@ -159,7 +160,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param isFavorite Whether the song is currently favorited.
      * @param callback Listener to handle the response.
      */
-    fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
+    override fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
         if (isFavorite) {
             unfavoriteSong(songId, callback)
         } else {
@@ -173,7 +174,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param songId Song to favorite.
      * @param callback Listener to handle the response.
      */
-    fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
+    override fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
@@ -193,7 +194,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param songId Song to unfavorite.
      * @param callback Listener to handle the response.
      */
-    fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
+    override fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
@@ -213,7 +214,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param songId Song to request.
      * @param callback Listener to handle the response.
      */
-    fun requestSong(songId: String, callback: RequestSongCallback) {
+    override fun requestSong(songId: String, callback: RequestSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
@@ -232,7 +233,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun getSongs(callback: SongsCallback) {
+    override fun getSongs(callback: SongsCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
@@ -252,7 +253,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param query Search query string.
      * @param callback Listener to handle the response.
      */
-    fun search(query: String?, callback: SearchCallback) {
+    override fun search(query: String?, callback: SearchCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return

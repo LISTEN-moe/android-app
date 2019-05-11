@@ -2,14 +2,14 @@ package me.echeung.moemoekyun.client.api.v4.cache
 
 import android.util.Log
 import me.echeung.moemoekyun.client.api.callback.SongsCallback
-import me.echeung.moemoekyun.client.api.v4.APIClient
+import me.echeung.moemoekyun.client.api.v4.APIClient4
 import me.echeung.moemoekyun.client.model.SongListItem
 import java.util.GregorianCalendar
 
 /**
  * A naive cache of the songs data from the API for faster loading/searching.
  */
-class SongsCache(private val apiClient: APIClient) {
+class SongsCache(private val apiClient: APIClient4) {
 
     private var cachedSongs: List<SongListItem>? = null
     private var lastUpdated = 0L

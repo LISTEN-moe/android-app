@@ -2,7 +2,8 @@ package me.echeung.moemoekyun.client
 
 import android.content.Context
 import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.client.api.v4.APIClient
+import me.echeung.moemoekyun.client.api.APIClient
+import me.echeung.moemoekyun.client.api.BridgeAPIClient
 import me.echeung.moemoekyun.client.api.v4.library.Jpop
 import me.echeung.moemoekyun.client.api.v4.library.Kpop
 import me.echeung.moemoekyun.client.api.v4.library.Library
@@ -10,12 +11,10 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
-import me.echeung.moemoekyun.client.api.v5.APIClient as GraphQLAPIClient
 
 class RadioClient(context: Context) {
 
     val api: APIClient
-    val graphQlApi: GraphQLAPIClient
     val socket: Socket
     val stream: Stream
     val authUtil: AuthUtil
@@ -27,8 +26,7 @@ class RadioClient(context: Context) {
 
         this.authUtil = AuthUtil(context)
 
-        this.api = APIClient(okHttpClient, authUtil)
-        this.graphQlApi = GraphQLAPIClient(okHttpClient, authUtil)
+        this.api = BridgeAPIClient(okHttpClient, authUtil)
 
         this.socket = Socket(okHttpClient, authUtil)
         this.stream = Stream(context)
@@ -46,7 +44,7 @@ class RadioClient(context: Context) {
     }
 
     private fun setLibrary(libraryName: String) {
-        RadioClient.library = if (libraryName == Kpop.NAME) Kpop.INSTANCE else Jpop.INSTANCE
+        library = if (libraryName == Kpop.NAME) Kpop.INSTANCE else Jpop.INSTANCE
     }
 
     companion object {

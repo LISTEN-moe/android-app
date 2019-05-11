@@ -74,7 +74,7 @@ object ErrorHandlingAdapter {
                         }
 
                         // Parse response body for errors
-                        val errorConverter = APIClient.retrofit.responseBodyConverter<BaseResponse>(BaseResponse::class.java, arrayOfNulls(0))
+                        val errorConverter = APIClient4.retrofit.responseBodyConverter<BaseResponse>(BaseResponse::class.java, arrayOfNulls(0))
                         try {
                             val error = errorConverter.convert(response.errorBody()!!)
                             error(callback, error?.message)

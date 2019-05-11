@@ -14,6 +14,7 @@ import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SearchQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
@@ -26,7 +27,7 @@ import me.echeung.moemoekyun.client.api.v5.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import okhttp3.OkHttpClient
 
-class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
+class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : APIClient {
 
     private val client: ApolloClient
 
@@ -56,7 +57,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param password User's password.
      * @param callback Listener to handle the response.
      */
-    fun authenticate(username: String, password: String, callback: LoginCallback) {
+    override fun authenticate(username: String, password: String, callback: LoginCallback) {
         client.mutate(LoginMutation
                 .builder()
                 .username(username)
@@ -79,7 +80,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param otpToken User's one-time password token.
      * @param callback Listener to handle the response.
      */
-    fun authenticateMfa(otpToken: String, callback: LoginCallback) {
+    override fun authenticateMfa(otpToken: String, callback: LoginCallback) {
         client.mutate(LoginMfaMutation
                 .builder()
                 .otpToken(otpToken)
@@ -100,7 +101,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun register(email: String, username: String, password: String, callback: RegisterCallback) {
+    override fun register(email: String, username: String, password: String, callback: RegisterCallback) {
         client.mutate(RegisterMutation
                 .builder()
                 .email(email)
@@ -124,7 +125,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun getUserInfo(callback: UserInfoCallback) {
+    override fun getUserInfo(callback: UserInfoCallback) {
         client.query(UserQuery
                 .builder()
                 .username("@me")
@@ -146,7 +147,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun getUserFavorites(callback: UserFavoritesCallback) {
+    override fun getUserFavorites(callback: UserFavoritesCallback) {
         client.query(FavoritesQuery
                 .builder()
                 .username("@me")
@@ -170,7 +171,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param isFavorite Whether the song is currently favorited.
      * @param callback Listener to handle the response.
      */
-    fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
+    override fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
         client.mutate(FavoriteMutation
                 .builder()
                 .id(songId.toInt())
@@ -186,13 +187,21 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 })
     }
 
+    override fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     /**
      * Sends a song request to the queue.
      *
      * @param songId Song to request.
      * @param callback Listener to handle the response.
      */
-    fun requestSong(songId: String, callback: RequestSongCallback) {
+    override fun requestSong(songId: String, callback: RequestSongCallback) {
         client.mutate(RequestSongMutation
                 .builder()
                 .id(songId.toInt())
@@ -215,7 +224,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      *
      * @param callback Listener to handle the response.
      */
-    fun getSongs(callback: SongsCallback) {
+    override fun getSongs(callback: SongsCallback) {
         client.query(SongsQuery
                 .builder()
                 // TODO: do actual pagination
@@ -241,7 +250,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param query Search query string.
      * @param callback Listener to handle the response.
      */
-    fun search(query: String?, callback: SearchCallback) {
+    override fun search(query: String?, callback: SearchCallback) {
         client.query(SearchQuery
                 .builder()
                 .query(query!!)
