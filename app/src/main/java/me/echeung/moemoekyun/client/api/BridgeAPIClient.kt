@@ -45,14 +45,6 @@ class BridgeAPIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil
         api4.toggleFavorite(songId, isFavorite, callback)
     }
 
-    override fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
-        api4.favoriteSong(songId, callback)
-    }
-
-    override fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
-        api4.unfavoriteSong(songId, callback)
-    }
-
     override fun requestSong(songId: String, callback: RequestSongCallback) {
         api4.requestSong(songId, callback)
     }

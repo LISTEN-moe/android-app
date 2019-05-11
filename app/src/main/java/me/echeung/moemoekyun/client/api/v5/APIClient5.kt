@@ -187,14 +187,6 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                 })
     }
 
-    override fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
     /**
      * Sends a song request to the queue.
      *

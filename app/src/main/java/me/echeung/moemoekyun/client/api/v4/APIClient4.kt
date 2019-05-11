@@ -174,7 +174,7 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param songId Song to favorite.
      * @param callback Listener to handle the response.
      */
-    override fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
+    private fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
@@ -194,7 +194,7 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param songId Song to unfavorite.
      * @param callback Listener to handle the response.
      */
-    override fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
+    private  fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
