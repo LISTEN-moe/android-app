@@ -1,5 +1,6 @@
 mutation LoginMutation($username: String!, $password: String!) {
     login(username: $username, password: $password) {
+        mfa
         token
     }
 }

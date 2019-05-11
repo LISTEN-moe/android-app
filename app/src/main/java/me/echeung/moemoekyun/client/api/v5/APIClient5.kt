@@ -69,7 +69,16 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<LoginMutation.Data>) {
-                        Log.d("GraphQL response", response.data()?.login()?.token())
+                        val userToken = response.data()?.login()?.token()!!
+
+                        if (response.data()?.login()?.mfa()!!) {
+                            authUtil.mfaToken = userToken
+                            callback.onMfaRequired(userToken)
+                            return
+                        }
+
+                        authUtil.authToken = userToken
+                        callback.onSuccess(userToken)
                     }
                 })
     }
@@ -91,7 +100,10 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<LoginMfaMutation.Data>) {
-                        Log.d("GraphQL response", response.data()?.loginMFA()?.token())
+                        val userToken = response.data()?.loginMFA()?.token()!!
+                        authUtil.authToken = userToken
+                        authUtil.clearMfaAuthToken()
+                        callback.onSuccess(userToken)
                     }
                 })
     }
