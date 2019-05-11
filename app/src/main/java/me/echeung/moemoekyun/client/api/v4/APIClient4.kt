@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.client.api.v4
 
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.APIClient
+import me.echeung.moemoekyun.client.api.cache.SongsCache
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
@@ -10,7 +11,6 @@ import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
-import me.echeung.moemoekyun.client.api.v4.cache.SongsCache
 import me.echeung.moemoekyun.client.api.v4.library.Library
 import me.echeung.moemoekyun.client.api.v4.response.AuthResponse
 import me.echeung.moemoekyun.client.api.v4.response.BaseResponse

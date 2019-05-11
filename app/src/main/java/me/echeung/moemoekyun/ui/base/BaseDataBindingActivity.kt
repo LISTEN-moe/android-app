@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import me.echeung.moemoekyun.R
 
 abstract class BaseDataBindingActivity<T : ViewDataBinding> : BaseActivity() {
 

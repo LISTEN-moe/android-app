@@ -1,63 +1,37 @@
+fragment songFields on Song {
+    title
+    titleRomaji
+    artists {
+        name
+        nameRomaji
+    }
+    albums {
+        name
+        nameRomaji
+    }
+    sources {
+        name
+        nameRomaji
+    }
+    duration
+}
+
 query SongQuery($id: Int!) {
     song(id: $id) {
-        title
-        titleRomaji
-        artists {
-            name
-            nameRomaji
-        }
-        albums {
-            name
-            nameRomaji
-        }
-        sources {
-            name
-            nameRomaji
-        }
-        duration
+        ...songFields
     }
 }
 
 query SongsQuery($offset: Int!, $count: Int!, $kpop: Boolean) {
     songs(offset: $offset, count: $count, kpop: $kpop) {
         songs {
-            title
-            titleRomaji
-            artists {
-                name
-                nameRomaji
-            }
-            albums {
-                name
-                nameRomaji
-            }
-            sources {
-                name
-                nameRomaji
-            }
-            duration
+            ...songFields
         }
     }
 }
 
 query SearchQuery($query: ID!) {
     search(query: $query) {
-        ... on Song {
-            title
-            titleRomaji
-            artists {
-                name
-                nameRomaji
-            }
-            albums {
-                name
-                nameRomaji
-            }
-            sources {
-                name
-                nameRomaji
-            }
-            duration
-        }
+        ...songFields
     }
 }
