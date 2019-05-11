@@ -7,6 +7,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
+import me.echeung.moemoekyun.LoginMfaMutation
 import me.echeung.moemoekyun.LoginMutation
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
@@ -62,7 +63,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .build())
                 .enqueue(object : ApolloCall.Callback<LoginMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL failure", e.message.toString())
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<LoginMutation.Data>) {
@@ -78,7 +79,19 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun authenticateMfa(otpToken: String, callback: LoginCallback) {
-        throw RuntimeException("Not implemented yet")
+        client.mutate(LoginMfaMutation
+                .builder()
+                .otpToken(otpToken)
+                .build())
+                .enqueue(object : ApolloCall.Callback<LoginMfaMutation.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        callback.onFailure(e.message)
+                    }
+
+                    override fun onResponse(response: Response<LoginMfaMutation.Data>) {
+                        Log.d("GraphQL response", response.data()?.loginMFA()?.token())
+                    }
+                })
     }
 
     /**
@@ -95,11 +108,12 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .build())
                 .enqueue(object : ApolloCall.Callback<RegisterMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL failure", e.message.toString())
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<RegisterMutation.Data>) {
                         Log.d("GraphQL response", response.data()?.register()?.uuid())
+//                        callback.onSuccess(response.data()?.register()?)
                     }
                 })
     }
@@ -116,11 +130,12 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .build())
                 .enqueue(object : ApolloCall.Callback<UserQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL failure", e.message.toString())
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<UserQuery.Data>) {
                         Log.d("GraphQL response", response.data()?.user()?.username())
+//                        callback.onSuccess(response.data()?.user()!!)
                     }
                 })
     }
@@ -137,11 +152,12 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .build())
                 .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL failure", e.message.toString())
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
                         Log.d("GraphQL response", response.data()?.user()?.favorites()?.favorites()?.toString())
+//                        callback.onSuccess(response.data()?.user()?.favorites()?.favorites()!!)
                     }
                 })
     }
@@ -160,11 +176,11 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .build())
                 .enqueue(object : ApolloCall.Callback<FavoriteMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL failure", e.message.toString())
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<FavoriteMutation.Data>) {
-                        Log.d("GraphQL response", response.data()?.favoriteSong()?.id()?.toString())
+                        callback.onSuccess()
                     }
                 })
     }
@@ -183,11 +199,11 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .build())
                 .enqueue(object : ApolloCall.Callback<RequestSongMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL failure", e.message.toString())
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<RequestSongMutation.Data>) {
-                        Log.d("GraphQL response", response.data()?.requestSong()?.id()?.toString())
+                        callback.onSuccess()
                     }
                 })
     }
@@ -204,7 +220,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 //                .build())
 //                .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
 //                    override fun onFailure(e: ApolloException) {
-//                        Log.d("GraphQL failure", e.message.toString())
+//                        Log.d("GraphQL failure", e.message)
 //                    }
 //
 //                    override fun onResponse(response: Response<FavoritesQuery.Data>) {
@@ -227,11 +243,12 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
                 .build())
                 .enqueue(object : ApolloCall.Callback<SearchQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
-                        Log.d("GraphQL failure", e.message.toString())
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<SearchQuery.Data>) {
                         Log.d("GraphQL response", response.data()?.search()?.toString())
+//                        callback.onSuccess(response.data()?.search()!!)
                     }
                 })
     }
