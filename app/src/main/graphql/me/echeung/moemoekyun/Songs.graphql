@@ -18,24 +18,46 @@ query SongQuery($id: Int!) {
     }
 }
 
-query SearchQuery($query: ID!) {
-  search(query: $query) {
-    ... on Song {
-        title
-        titleRomaji
-        artists {
-            name
-            nameRomaji
+query SongsQuery($offset: Int!, $count: Int!, $kpop: Boolean) {
+    songs(offset: $offset, count: $count, kpop: $kpop) {
+        songs {
+            title
+            titleRomaji
+            artists {
+                name
+                nameRomaji
+            }
+            albums {
+                name
+                nameRomaji
+            }
+            sources {
+                name
+                nameRomaji
+            }
+            duration
         }
-        albums {
-            name
-            nameRomaji
-        }
-        sources {
-            name
-            nameRomaji
-        }
-        duration
     }
-  }
+}
+
+query SearchQuery($query: ID!) {
+    search(query: $query) {
+        ... on Song {
+            title
+            titleRomaji
+            artists {
+                name
+                nameRomaji
+            }
+            albums {
+                name
+                nameRomaji
+            }
+            sources {
+                name
+                nameRomaji
+            }
+            duration
+        }
+    }
 }

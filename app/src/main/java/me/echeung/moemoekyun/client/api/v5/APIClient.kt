@@ -12,6 +12,7 @@ import me.echeung.moemoekyun.LoginMutation
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SearchQuery
+import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
@@ -195,7 +196,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
         client.mutate(RequestSongMutation
                 .builder()
                 .id(songId.toInt())
-//                .kpop()
+                // TODO: handle kpop
+                .kpop(false)
                 .build())
                 .enqueue(object : ApolloCall.Callback<RequestSongMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
@@ -214,20 +216,23 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
      * @param callback Listener to handle the response.
      */
     fun getSongs(callback: SongsCallback) {
-//        client.query(FavoritesQuery
-//                .builder()
-//                .username("@me")
-//                .build())
-//                .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
-//                    override fun onFailure(e: ApolloException) {
-//                        Log.d("GraphQL failure", e.message)
-//                    }
-//
-//                    override fun onResponse(response: Response<FavoritesQuery.Data>) {
-//                        Log.d("GraphQL response", response.data()?.user()?.favorites()?.favorites()?.toString())
-//                    }
-//                })
-        throw RuntimeException("Not implemented yet")
+        client.query(SongsQuery
+                .builder()
+                // TODO: do actual pagination
+                .offset(0)
+                .count(50000)
+                // TODO: handle kpop
+                .kpop(false)
+                .build())
+                .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        callback.onFailure(e.message)
+                    }
+
+                    override fun onResponse(response: Response<SongsQuery.Data>) {
+                        Log.d("GraphQL response", response.data()?.songs()?.songs()?.toString())
+                    }
+                })
     }
 
     /**
