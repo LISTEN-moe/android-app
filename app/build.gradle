@@ -116,9 +116,13 @@ dependencies {
     compileOnly group: "org.jetbrains", name: "annotations", version: "13.0"
 }
 
+apollo {
+    generateKotlinModels = true
+}
+
 buildscript {
     ext.kotlin_version = '1.3.31'
-    ext.apollo_version = '1.0.0-alpha5'
+    ext.apollo_version = '1.0.0'
     repositories {
         mavenCentral()
         jcenter()

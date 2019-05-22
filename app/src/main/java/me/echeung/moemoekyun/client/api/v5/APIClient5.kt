@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.client.api.v5
 import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import me.echeung.moemoekyun.FavoriteMutation
@@ -58,20 +59,16 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun authenticate(username: String, password: String, callback: LoginCallback) {
-        client.mutate(LoginMutation
-                .builder()
-                .username(username)
-                .password(password)
-                .build())
+        client.mutate(LoginMutation(username, password))
                 .enqueue(object : ApolloCall.Callback<LoginMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<LoginMutation.Data>) {
-                        val userToken = response.data()?.login()?.token()!!
+                        val userToken = response.data()?.login?.token!!
 
-                        if (response.data()?.login()?.mfa()!!) {
+                        if (response.data()?.login?.mfa!!) {
                             authUtil.mfaToken = userToken
                             callback.onMfaRequired(userToken)
                             return
@@ -90,17 +87,14 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun authenticateMfa(otpToken: String, callback: LoginCallback) {
-        client.mutate(LoginMfaMutation
-                .builder()
-                .otpToken(otpToken)
-                .build())
+        client.mutate(LoginMfaMutation(otpToken))
                 .enqueue(object : ApolloCall.Callback<LoginMfaMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<LoginMfaMutation.Data>) {
-                        val userToken = response.data()?.loginMFA()?.token()!!
+                        val userToken = response.data()?.loginMFA?.token!!
                         authUtil.authToken = userToken
                         authUtil.clearMfaAuthToken()
                         callback.onSuccess(userToken)
@@ -114,20 +108,15 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun register(email: String, username: String, password: String, callback: RegisterCallback) {
-        client.mutate(RegisterMutation
-                .builder()
-                .email(email)
-                .username(username)
-                .password(password)
-                .build())
+        client.mutate(RegisterMutation(email, username, password))
                 .enqueue(object : ApolloCall.Callback<RegisterMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<RegisterMutation.Data>) {
-                        Log.d("GraphQL response", response.data()?.register()?.uuid())
-//                        callback.onSuccess(response.data()?.register()?)
+                        Log.d("GraphQL response", response.data()?.register?.uuid)
+//                        callback.onSuccess(response.data()?.register?)
                     }
                 })
     }
@@ -138,18 +127,15 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun getUserInfo(callback: UserInfoCallback) {
-        client.query(UserQuery
-                .builder()
-                .username("@me")
-                .build())
+        client.query(UserQuery("@me"))
                 .enqueue(object : ApolloCall.Callback<UserQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<UserQuery.Data>) {
-                        Log.d("GraphQL response", response.data()?.user()?.username())
-//                        callback.onSuccess(response.data()?.user()!!)
+                        Log.d("GraphQL response", response.data()?.user?.username)
+//                        callback.onSuccess(response.data()?.user!!)
                     }
                 })
     }
@@ -160,18 +146,15 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun getUserFavorites(callback: UserFavoritesCallback) {
-        client.query(FavoritesQuery
-                .builder()
-                .username("@me")
-                .build())
+        client.query(FavoritesQuery("@me"))
                 .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
-                        Log.d("GraphQL response", response.data()?.user()?.favorites()?.favorites()?.toString())
-//                        callback.onSuccess(response.data()?.user()?.favorites()?.favorites()!!)
+                        Log.d("GraphQL response", response.data()?.user?.favorites?.favorites?.toString())
+//                        callback.onSuccess(response.data()?.user?.favorites?.favorites!!)
                     }
                 })
     }
@@ -184,10 +167,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
-        client.mutate(FavoriteMutation
-                .builder()
-                .id(songId.toInt())
-                .build())
+        client.mutate(FavoriteMutation(songId.toInt()))
                 .enqueue(object : ApolloCall.Callback<FavoriteMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
@@ -206,12 +186,8 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun requestSong(songId: String, callback: RequestSongCallback) {
-        client.mutate(RequestSongMutation
-                .builder()
-                .id(songId.toInt())
-                // TODO: handle kpop
-                .kpop(false)
-                .build())
+        // TODO: handle kpop
+        client.mutate(RequestSongMutation(songId.toInt(), Input.optional(false)))
                 .enqueue(object : ApolloCall.Callback<RequestSongMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
@@ -229,21 +205,15 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun getSongs(callback: SongsCallback) {
-        client.query(SongsQuery
-                .builder()
-                // TODO: do actual pagination
-                .offset(0)
-                .count(50000)
-                // TODO: handle kpop
-                .kpop(false)
-                .build())
+        // TODO: do actual pagination, and handle kpop
+        client.query(SongsQuery(0, 50000, Input.optional(false)))
                 .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<SongsQuery.Data>) {
-                        Log.d("GraphQL response", response.data()?.songs()?.songs()?.toString())
+                        Log.d("GraphQL response", response.data()?.songs?.songs?.toString())
                     }
                 })
     }
@@ -255,18 +225,15 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun search(query: String?, callback: SearchCallback) {
-        client.query(SearchQuery
-                .builder()
-                .query(query!!)
-                .build())
+        client.query(SearchQuery(query!!))
                 .enqueue(object : ApolloCall.Callback<SearchQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<SearchQuery.Data>) {
-                        Log.d("GraphQL response", response.data()?.search()?.toString())
-//                        callback.onSuccess(response.data()?.search()!!)
+                        Log.d("GraphQL response", response.data()?.search?.toString())
+//                        callback.onSuccess(response.data()?.search!!)
                     }
                 })
     }
