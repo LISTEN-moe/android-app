@@ -16,9 +16,9 @@ import okhttp3.OkHttpClient
 /**
  * Ghetto API client for selectively using the v4 or v5 APIs.
  */
-class BridgeAPIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : APIClient {
+class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthUtil) : APIClient {
 
-    private var api4: APIClient4 = APIClient4(okHttpClient, authUtil)
+    private val api4: APIClient4 = APIClient4(okHttpClient, authUtil)
     private val api5: APIClient5 = APIClient5(okHttpClient, authUtil)
 
     override fun authenticate(username: String, password: String, callback: LoginCallback) {

@@ -370,7 +370,7 @@ class MainActivity : BaseActivity() {
 
     private fun favorite() {
         if (!App.authUtil.isAuthenticated) {
-            showLoginActivity(MainActivity.LOGIN_FAVORITE_REQUEST)
+            showLoginActivity(LOGIN_FAVORITE_REQUEST)
             return
         }
 

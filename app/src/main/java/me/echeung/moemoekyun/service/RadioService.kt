@@ -122,7 +122,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     override fun onStartCommand(intent: Intent, flags: Int, startID: Int): Int {
         handleIntent(intent)
 
-        return Service.START_NOT_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onTaskRemoved(rootIntent: Intent) {
@@ -261,15 +261,15 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         val action = intent.action
         if (action != null) {
             when (action) {
-                RadioService.PLAY_PAUSE -> togglePlayPause()
+                PLAY_PAUSE -> togglePlayPause()
 
-                RadioService.STOP -> stop()
+                STOP -> stop()
 
-                RadioService.TOGGLE_FAVORITE -> favoriteCurrentSong()
+                TOGGLE_FAVORITE -> favoriteCurrentSong()
 
-                RadioService.UPDATE, SongActionsUtil.REQUEST_EVENT -> socket!!.update()
+                UPDATE, SongActionsUtil.REQUEST_EVENT -> socket!!.update()
 
-                RadioService.TIMER_STOP -> timerStop()
+                TIMER_STOP -> timerStop()
 
                 // Pause when headphones unplugged
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY -> if (App.preferenceUtil!!.shouldPauseOnNoisy()) {
@@ -280,7 +280,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 Intent.ACTION_MEDIA_BUTTON -> {
                     val extras = intent.extras ?: return false
 
-                    val keyEvent = extras.get(Intent.EXTRA_KEY_EVENT) as KeyEvent
+                    val keyEvent = extras.get(Intent.EXTRA_KEY_EVENT) as KeyEvent?
                     if (keyEvent == null || keyEvent.action != KeyEvent.ACTION_DOWN) {
                         return false
                     }
@@ -402,10 +402,10 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         }
 
         val intentFilter = IntentFilter()
-        intentFilter.addAction(RadioService.PLAY_PAUSE)
-        intentFilter.addAction(RadioService.STOP)
-        intentFilter.addAction(RadioService.TOGGLE_FAVORITE)
-        intentFilter.addAction(RadioService.UPDATE)
+        intentFilter.addAction(PLAY_PAUSE)
+        intentFilter.addAction(STOP)
+        intentFilter.addAction(TOGGLE_FAVORITE)
+        intentFilter.addAction(UPDATE)
         intentFilter.addAction(SongActionsUtil.REQUEST_EVENT)
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
         intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON)
