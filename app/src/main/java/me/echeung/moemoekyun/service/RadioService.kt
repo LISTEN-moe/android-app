@@ -362,9 +362,16 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 }
 
                 override fun onPlayFromSearch(query: String?, extras: Bundle?) {
-                    // We don't support searching for specific things since it's just a radio stream
-                    // so just toggle playback
-                    togglePlayPause()
+                    if (!query.isNullOrEmpty()) {
+                        when (query.toLowerCase()) {
+                            "jpop", "j-pop" -> onPlayFromMediaId(LIBRARY_JPOP, extras)
+                            "kpop", "k-pop" -> onPlayFromMediaId(LIBRARY_KPOP, extras)
+                        }
+                    }
+
+                    if (!isPlaying) {
+                        play()
+                    }
                 }
 
                 override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
