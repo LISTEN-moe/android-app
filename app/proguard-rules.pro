@@ -1,5 +1,7 @@
 -dontobfuscate
 
+-keep public class me.echeung.moemoekyun.client.socket.response.**
+
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.AppGlideModule
@@ -30,6 +32,5 @@
     @retrofit2.http.* <methods>;
 }
 -dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
--dontwarn javax.annotation.**
 -dontwarn kotlin.Unit
 -dontwarn retrofit2.-KotlinExtensions
