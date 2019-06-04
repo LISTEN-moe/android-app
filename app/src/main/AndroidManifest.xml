@@ -18,6 +18,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
+        <!-- TODO: add splash screen -->
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:configChanges="screenSize"

@@ -26,6 +26,8 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
+        <!-- TODO: integrate search into appbar -->
+
         <fragment
             android:id="@+id/songs_fragment"
             android:layout_width="match_parent"
