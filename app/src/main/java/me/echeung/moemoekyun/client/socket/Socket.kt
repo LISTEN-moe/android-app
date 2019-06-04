@@ -4,6 +4,8 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import com.squareup.moshi.Moshi
+import me.echeung.moemoekyun.App
+import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.socket.response.BaseResponse
@@ -11,6 +13,7 @@ import me.echeung.moemoekyun.client.socket.response.ConnectResponse
 import me.echeung.moemoekyun.client.socket.response.EventNotificationResponse
 import me.echeung.moemoekyun.client.socket.response.NotificationResponse
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
+import me.echeung.moemoekyun.util.system.toast
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -107,7 +110,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
     override fun onMessage(webSocket: WebSocket?, text: String?) {
         Log.d(TAG, "Received message from socket: $text")
 
-        parseWebSocketResponse(text)
+        parseResponse(text)
     }
 
     override fun onFailure(webSocket: WebSocket?, t: Throwable?, response: Response?) {
@@ -149,7 +152,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
         }
     }
 
-    private fun parseWebSocketResponse(jsonString: String?) {
+    private fun parseResponse(jsonString: String?) {
         if (listener == null) {
             Log.d(TAG, "Listener is null")
             return
@@ -198,8 +201,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
             when (notificationResponse!!.t) {
                 EventNotificationResponse.TYPE -> {
                     val eventResponse = getResponse<EventNotificationResponse>(jsonString)
-                    // TODO: do something with eventResponse
-                    Log.i(TAG, "Got event: " + eventResponse!!.d!!.event!!.name)
+                    App.context.toast(App.context.getString(R.string.event_start, eventResponse!!.d!!.event!!.name))
                 }
             }
         } catch (e: IOException) {
@@ -219,7 +221,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
     }
 
     @Throws(IOException::class)
-    private inline fun <reified T> getResponse(jsonString: String): T? {
+    private inline fun <reified T : BaseResponse> getResponse(jsonString: String): T? {
         return MOSHI.adapter(T::class.java).fromJson(jsonString)
     }
 
