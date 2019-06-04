@@ -13,7 +13,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
-import me.echeung.moemoekyun.client.api.v4.library.Library
+import me.echeung.moemoekyun.client.api.library.Library
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.databinding.FragmentUserBinding

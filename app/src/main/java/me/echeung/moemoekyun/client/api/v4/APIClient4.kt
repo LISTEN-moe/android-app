@@ -11,7 +11,7 @@ import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
-import me.echeung.moemoekyun.client.api.v4.library.Library
+import me.echeung.moemoekyun.client.api.library.Library
 import me.echeung.moemoekyun.client.api.v4.response.AuthResponse
 import me.echeung.moemoekyun.client.api.v4.response.BaseResponse
 import me.echeung.moemoekyun.client.api.v4.response.FavoritesResponse

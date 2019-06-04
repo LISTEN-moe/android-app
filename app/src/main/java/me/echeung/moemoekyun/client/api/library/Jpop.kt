@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.api.v4.library
+package me.echeung.moemoekyun.client.api.library
 
 class Jpop private constructor() : Library(
         NAME,

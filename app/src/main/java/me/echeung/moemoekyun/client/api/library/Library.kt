@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.api.v4.library
+package me.echeung.moemoekyun.client.api.library
 
 abstract class Library(val name: String, val socketUrl: String, val streamUrl: String) {
     companion object {

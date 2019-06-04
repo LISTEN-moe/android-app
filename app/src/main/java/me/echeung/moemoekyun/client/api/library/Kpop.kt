@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.api.v5.library
+package me.echeung.moemoekyun.client.api.library
 
 class Kpop private constructor() : Library(
         NAME,

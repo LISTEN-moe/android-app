@@ -19,8 +19,8 @@ import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.ViewPagerAdapter
-import me.echeung.moemoekyun.client.api.v4.library.Jpop
-import me.echeung.moemoekyun.client.api.v4.library.Kpop
+import me.echeung.moemoekyun.client.api.library.Jpop
+import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.databinding.ActivityMainBinding
 import me.echeung.moemoekyun.databinding.RadioControlsBinding
 import me.echeung.moemoekyun.service.RadioService
