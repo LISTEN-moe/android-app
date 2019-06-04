@@ -53,8 +53,10 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:minHeight">@dimen/md_listitem_height</item>
         <item name="android:orientation">horizontal</item>
+        <item name="android:paddingBottom">4dp</item>
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">4dp</item>
         <item name="android:theme">@style/Base.ThemeOverlay.AppCompat.Dark</item>
     </style>
 
