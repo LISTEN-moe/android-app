@@ -4,8 +4,6 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import com.squareup.moshi.Moshi
-import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.socket.response.BaseResponse
@@ -13,7 +11,7 @@ import me.echeung.moemoekyun.client.socket.response.ConnectResponse
 import me.echeung.moemoekyun.client.socket.response.EventNotificationResponse
 import me.echeung.moemoekyun.client.socket.response.NotificationResponse
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
-import me.echeung.moemoekyun.util.system.toast
+import me.echeung.moemoekyun.service.EventNotification
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -201,7 +199,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
             when (notificationResponse!!.t) {
                 EventNotificationResponse.TYPE -> {
                     val eventResponse = getResponse<EventNotificationResponse>(jsonString)
-                    App.context.toast(App.context.getString(R.string.event_start, eventResponse!!.d!!.event!!.name))
+                    EventNotification.notify(eventResponse!!.d!!.event!!.name)
                 }
             }
         } catch (e: IOException) {

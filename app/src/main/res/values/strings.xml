@@ -78,7 +78,7 @@
     <string name="favorite">Add to favorites</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Requested by: %s</string>
-    <string name="event_start">The event "%s" is starting!</string>
+    <string name="event_start_title">An event is starting!</string>
 
 
     <!-- == User tab == -->

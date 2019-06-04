@@ -76,7 +76,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     override fun onCreate() {
         AlbumArtUtil.registerListener(this)
 
-        initNotificationChannel()
+        initNotificationChannels()
 
         initBroadcastReceiver()
         initMediaSession()
@@ -521,14 +521,21 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         applicationContext.toast(R.string.login_required)
     }
 
-    private fun initNotificationChannel() {
+    private fun initNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notifChannel = NotificationChannel(
+            val playingChannel = NotificationChannel(
                     AppNotification.NOTIFICATION_CHANNEL_ID,
                     AppNotification.NOTIFICATION_CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_LOW)
 
-            notificationManager.createNotificationChannel(notifChannel)
+            notificationManager.createNotificationChannel(playingChannel)
+
+            val eventChannel = NotificationChannel(
+                    EventNotification.NOTIFICATION_CHANNEL_ID,
+                    EventNotification.NOTIFICATION_CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT)
+
+            notificationManager.createNotificationChannel(eventChannel)
         }
     }
 
