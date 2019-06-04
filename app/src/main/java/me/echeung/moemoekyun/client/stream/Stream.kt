@@ -12,7 +12,7 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import me.echeung.moemoekyun.client.RadioClient
@@ -147,8 +147,7 @@ class Stream(private val context: Context) {
         val streamUrl = RadioClient.library!!.streamUrl
         if (streamUrl != currentStreamUrl) {
             val dataSourceFactory = DefaultDataSourceFactory(context, NetworkUtil.userAgent)
-            val streamSource = ExtractorMediaSource.Factory(dataSourceFactory)
-                    .setExtractorsFactory(DefaultExtractorsFactory())
+            val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
                     .createMediaSource(Uri.parse(streamUrl))
 
             player!!.prepare(streamSource)
