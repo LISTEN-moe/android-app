@@ -4,15 +4,15 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.android'
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
+    compileSdkVersion 29
+    buildToolsVersion '29.0.0'
 
     flavorDimensions 'variant'
 
     defaultConfig {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 77
         versionName '5.0.0-alpha.7'
 
