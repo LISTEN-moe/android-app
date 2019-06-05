@@ -16,7 +16,7 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
     private val holders = ArrayList<TabHolder>()
 
     init {
-        add<UserFragment>()
+        add(UserFragment::class.java)
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -45,8 +45,8 @@ class ViewPagerAdapter(private val context: Context, fragmentManager: FragmentMa
         return ""
     }
 
-    private inline fun <reified T : Fragment> add() {
-        holders.add(TabHolder(T::class.java.name))
+    private fun add(className: Class<out Fragment>) {
+        holders.add(TabHolder(className.name))
         notifyDataSetChanged()
     }
 
