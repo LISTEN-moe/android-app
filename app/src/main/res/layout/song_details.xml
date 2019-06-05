@@ -108,7 +108,8 @@
             android:visibility="@{isAuthenticated}"
             android:weightSum="1">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/OutlinedButton"
                 android:id="@+id/request_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -117,10 +118,10 @@
                 android:enabled="@{canRequest}"
                 android:scaleType="fitCenter"
                 android:text="@string/action_request"
-                android:drawableStart="@{@drawable/ic_play_arrow_24dp}"
-                style="@style/OutlinedButton" />
+                app:icon="@{@drawable/ic_play_arrow_24dp}" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                style="@style/OutlinedButton"
                 android:id="@+id/favorite_btn"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -128,8 +129,7 @@
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
                 android:text="@{isFavorite ? @string/action_unfavorite : @string/action_favorite}"
-                android:drawableStart="@{isFavorite ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}"
-                style="@style/OutlinedButton" />
+                app:icon="@{isFavorite ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}" />
 
         </LinearLayout>
 

@@ -42,6 +42,7 @@
     <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
         <item name="android:textColor">@color/color_button_states</item>
         <item name="strokeColor">@color/color_button_states</item>
+        <item name="iconTint">@color/color_button_states</item>
     </style>
 
     <!-- About card item -->
