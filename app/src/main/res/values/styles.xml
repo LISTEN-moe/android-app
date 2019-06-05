@@ -40,12 +40,8 @@
         <item name="android:textColor">@color/white</item>
     </style>
     <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="android:textColor">@color/white</item>
-        <item name="strokeColor">@color/light_grey</item>
-
-        <!-- TODO: fix this -->
-        <!-- Disabled colour -->
-        <!--<item name="colorButtonNormal">@color/dark_grey</item>-->
+        <item name="android:textColor">@color/color_button_states</item>
+        <item name="strokeColor">@color/color_button_states</item>
     </style>
 
     <!-- About card item -->
