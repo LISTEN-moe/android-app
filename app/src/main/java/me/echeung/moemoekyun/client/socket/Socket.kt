@@ -5,7 +5,6 @@ import android.os.SystemClock
 import android.util.Log
 import com.squareup.moshi.Moshi
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.socket.response.BaseResponse
 import me.echeung.moemoekyun.client.socket.response.ConnectResponse
 import me.echeung.moemoekyun.client.socket.response.EventNotificationResponse
@@ -19,7 +18,7 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import java.io.IOException
 
-class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) : WebSocketListener() {
+class Socket(private val client: OkHttpClient) : WebSocketListener() {
 
     private var retryTime = RETRY_TIME_MIN
     private var attemptingReconnect = false
@@ -99,10 +98,6 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
 
         retryTime = RETRY_TIME_MIN
         attemptingReconnect = false
-
-        // Handshake with socket
-        val authToken = if (authUtil.isAuthenticated) authUtil.authTokenWithPrefix else ""
-        socket!!.send("{ \"op\": 0, \"d\": { \"auth\": \"$authToken\" } }")
     }
 
     override fun onMessage(webSocket: WebSocket?, text: String?) {
@@ -180,6 +175,9 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
                         parseNotification(jsonString)
                         return
                     }
+
+                    // TODO: check if songs are favorited
+
                     listener!!.onSocketReceive(updateResponse.d)
                 }
 
