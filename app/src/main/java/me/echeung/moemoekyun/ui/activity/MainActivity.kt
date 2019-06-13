@@ -13,12 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.ActionMenuView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.adapter.ViewPagerAdapter
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.databinding.ActivityMainBinding
@@ -34,13 +32,11 @@ import me.echeung.moemoekyun.util.system.startActivity
 import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
-
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: RadioViewModel
 
-    private var viewPager: ViewPager? = null
     private var searchMenu: ActionMenuView? = null
     private var nowPlayingSheet: BottomSheetBehavior<*>? = null
     private var nowPlayingSheetMenu: Menu? = null
@@ -88,10 +84,6 @@ class MainActivity : BaseActivity() {
             sendBroadcast(Intent(RadioService.STOP))
         }
 
-        if (viewPager != null) {
-            viewPager!!.adapter = null
-        }
-
         binding.unbind()
 
         if (playPauseCallback != null) {
@@ -133,11 +125,6 @@ class MainActivity : BaseActivity() {
                 return onOptionsItemSelected(menuItem)
             }
         })
-
-        // Set up ViewPager and adapter
-        viewPager = binding.pager
-        val mViewPagerAdapter = ViewPagerAdapter(this, supportFragmentManager)
-        viewPager!!.adapter = mViewPagerAdapter
     }
 
     private fun initNowPlaying() {
