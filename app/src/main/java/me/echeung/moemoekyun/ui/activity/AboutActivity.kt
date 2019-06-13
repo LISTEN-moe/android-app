@@ -28,7 +28,7 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
             val packageInfo = packageManager.getPackageInfo(packageName, 0)
             var versionText = getString(R.string.version, packageInfo.versionName)
             if (BuildConfig.DEBUG) {
-                versionText += String.format(" (%s)", packageInfo.packageName)
+                versionText += " (${packageInfo.packageName})"
             }
 
             val txtVersion = findViewById<TextView>(R.id.app_version)

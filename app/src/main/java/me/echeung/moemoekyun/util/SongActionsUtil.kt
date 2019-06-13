@@ -129,6 +129,6 @@ object SongActionsUtil {
         val clip = ClipData.newPlainText("song", songInfo)
         context.clipboardManager.setPrimaryClip(clip)
 
-        context.toast(String.format("%s: %s", context.getString(R.string.copied_to_clipboard), songInfo))
+        context.toast("${context.getString(R.string.copied_to_clipboard)}: $songInfo")
     }
 }
