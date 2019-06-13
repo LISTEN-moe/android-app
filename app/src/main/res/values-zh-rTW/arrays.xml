@@ -4,7 +4,7 @@
     <!-- Setting for downloading stuff -->
     <string-array name="pref_download_names">
         <item>總是</item>
-        <item>僅在 wi-fi</item>
-        <item>決不</item>
+        <item>有 Wi-Fi 時</item>
+        <item>永不</item>
     </string-array>
 </resources>

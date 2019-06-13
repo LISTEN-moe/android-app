@@ -56,6 +56,7 @@
     <string name="favorite">Добавить в избранное</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Запрошено %s</string>
+    <string name="event_start_title">Событие начинается!</string>
     <!-- == User tab == -->
     <string name="no_favorites">У вас нет ничего в избранном</string>
     <string name="filter_favorites">Поиск по избранному</string>

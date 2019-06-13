@@ -56,13 +56,16 @@
     <string name="favorite">Toevoegen aan Favorieten</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Aangevraagd door: %s</string>
+    <string name="event_start_title">Er begint een event!</string>
     <!-- == User tab == -->
     <string name="no_favorites">Nog geen favorieten</string>
     <string name="filter_favorites">Favorieten sorteren</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">Verwijder %s als favoriet </string>
     <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d wachtend</string>
     <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d wachtend, %d voor jou</string>
     <string name="random_request">Willekeurig nummer aanvragen</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
@@ -105,5 +108,17 @@
     <string name="pref_header_music">Muziek</string>
     <string name="pref_title_general_romaji">Voorkeur voor romaji</string>
     <string name="pref_title_general_romaji_summary">\"Nanahira\" I.P.V. \"ななひら\"</string>
+    <string name="pref_title_general_random_request_title">Willekeurige titel aanvragen</string>
+    <string name="pref_title_general_random_request_summary">Toon de titel van het opgevraagde nummer</string>
+    <string name="pref_title_lockscreen_albumart_title">Albumhoes</string>
+    <string name="pref_title_lockscreen_albumart_summary">Geeft albumillustraties weer op het vergrendelscherm</string>
+    <string name="pref_title_color_now_playing_title">Kleur het afspeelscherm</string>
+    <string name="pref_title_color_now_playing_summary">Gebruik de hoofdkleur van het album</string>
     <string name="pref_header_audio">Geluid</string>
+    <string name="pref_title_pause_on_noisy_title">Pauzeer voor koptelefoon</string>
+    <string name="pref_title_pause_on_noisy_summary">Pauzeer wanneer de koptelefoon is ontkoppeld</string>
+    <string name="pref_title_audio_pause_on_loss_title">Pauzeer voor media</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Pauzeer muziek wanneer andere media wordt afgespeeld, zoals video\'s of andere muziek</string>
+    <string name="pref_title_audio_duck_title">Volumeducking</string>
+    <string name="pref_title_audio_duck_summary">Verlaag volume voor meldingen, navigatie, etc.</string>
 </resources>

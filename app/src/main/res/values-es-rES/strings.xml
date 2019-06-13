@@ -56,6 +56,7 @@
     <string name="favorite">Agregar a favoritos</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Pedido por: %s</string>
+    <string name="event_start_title">El evento está por comenzar!</string>
     <!-- == User tab == -->
     <string name="no_favorites">Todavía no tienes favoritos</string>
     <string name="filter_favorites">Filtrar favoritos</string>
@@ -107,10 +108,15 @@
     <string name="pref_header_music">Música</string>
     <string name="pref_title_general_romaji">Preferir romaji</string>
     <string name="pref_title_general_romaji_summary">\"Nanahira\" en lugar de \"ななひら\"</string>
+    <string name="pref_title_general_random_request_title">Pedir canción aleatoria</string>
+    <string name="pref_title_general_random_request_summary">Mostrar el titulo de la canción pedida</string>
     <string name="pref_title_lockscreen_albumart_title">Cubierta del Álbum</string>
     <string name="pref_title_lockscreen_albumart_summary">Mostrar la cubierta del álbum en la pantalla bloqueada</string>
     <string name="pref_title_color_now_playing_title">Colorear pantalla \"Reproduciendo ahora\"</string>
     <string name="pref_title_color_now_playing_summary">Usar el color principal de la cubierta del álbum</string>
     <string name="pref_header_audio">Audio</string>
+    <string name="pref_title_pause_on_noisy_title">Pausar para auriculares</string>
     <string name="pref_title_pause_on_noisy_summary">La música se pausará cuando los audífonos sean desconectados</string>
+    <string name="pref_title_audio_pause_on_loss_title">Pausar para media</string>
+    <string name="pref_title_audio_pause_on_loss_summary">La musica frenará cuando otros sonidos se reproduzcan, como videos o música</string>
 </resources>

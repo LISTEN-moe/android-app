@@ -56,6 +56,7 @@
     <string name="favorite">お気に入りに追加</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">%s さんからのリクエスト</string>
+    <string name="event_start_title">イベントが始まりました！</string>
     <!-- == User tab == -->
     <string name="no_favorites">お気に入りはいません</string>
     <string name="filter_favorites">お気に入りをフィルター</string>

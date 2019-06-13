@@ -56,6 +56,7 @@
     <string name="favorite">收藏</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">请求者：%s</string>
+    <string name="event_start_title">有活动即将开始啦!</string>
     <!-- == User tab == -->
     <string name="no_favorites">还没有喜爱的歌曲</string>
     <string name="filter_favorites">过滤喜爱的歌曲</string>

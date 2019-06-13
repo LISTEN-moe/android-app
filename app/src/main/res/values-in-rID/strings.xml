@@ -56,6 +56,7 @@
     <string name="favorite">Tambahkan ke favorit</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Diminta oleh: %s</string>
+    <string name="event_start_title">Sebuah acara dimulai!</string>
     <!-- == User tab == -->
     <string name="no_favorites">Belum ada favorit</string>
     <string name="filter_favorites">Saring favorit</string>

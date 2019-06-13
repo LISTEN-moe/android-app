@@ -56,12 +56,14 @@
     <string name="favorite">Įtraukti į mėgstamus</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Užsakovas: %s</string>
+    <string name="event_start_title">Renginys prasideda!</string>
     <!-- == User tab == -->
     <string name="no_favorites">Dar nėra mėgstamų</string>
     <string name="filter_favorites">Filtruoti mėgstamas</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">%s pašalinta iš mėgstamų</string>
     <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d eilėje</string>
     <!-- e.g. 2 queued, 1 before yours -->
     <string name="random_request">Užsakyti atsitiktinę dainą</string>
     <!-- == Song item actions == -->
