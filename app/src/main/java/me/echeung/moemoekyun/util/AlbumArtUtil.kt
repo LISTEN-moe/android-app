@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
+import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -138,7 +139,14 @@ object AlbumArtUtil {
                 swatch = Palette.from(resource).generate().mutedSwatch
             }
             if (swatch != null) {
-                currentAccentColor = swatch.rgb
+                var color = swatch.rgb
+
+                // Darken if needed
+                if (ColorUtils.calculateLuminance(color) >= 0.5) {
+                    color = ColorUtils.blendARGB(color, Color.BLACK, 0.2f)
+                }
+
+                currentAccentColor = color
             }
         } catch (e: Exception) {
             // Ignore things like OutOfMemoryExceptions
