@@ -13,8 +13,8 @@ android {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 77
-        versionName '5.0.0-alpha.7'
+        versionCode 78
+        versionName '5.0.0-beta.1'
 
         vectorDrawables.useSupportLibrary = true
     }
