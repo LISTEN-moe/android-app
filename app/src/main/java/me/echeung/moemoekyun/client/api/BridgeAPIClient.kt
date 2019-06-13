@@ -46,11 +46,11 @@ class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthUtil) : APIClien
         api4.isFavorite(songIds, callback)
     }
 
-    override fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
+    override fun toggleFavorite(songId: Int, isFavorite: Boolean, callback: FavoriteSongCallback) {
         api4.toggleFavorite(songId, isFavorite, callback)
     }
 
-    override fun requestSong(songId: String, callback: RequestSongCallback) {
+    override fun requestSong(songId: Int, callback: RequestSongCallback) {
         api4.requestSong(songId, callback)
     }
 

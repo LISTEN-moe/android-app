@@ -165,7 +165,7 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param isFavorite Whether the song is currently favorited.
      * @param callback Listener to handle the response.
      */
-    override fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
+    override fun toggleFavorite(songId: Int, isFavorite: Boolean, callback: FavoriteSongCallback) {
         if (isFavorite) {
             unfavoriteSong(songId, callback)
         } else {
@@ -179,13 +179,13 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param songId Song to favorite.
      * @param callback Listener to handle the response.
      */
-    private fun favoriteSong(songId: String, callback: FavoriteSongCallback) {
+    private fun favoriteSong(songId: Int, callback: FavoriteSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        favoritesService.favorite(authUtil.authTokenWithPrefix, songId)
+        favoritesService.favorite(authUtil.authTokenWithPrefix, songId.toString())
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
                         callback.onSuccess()
@@ -199,13 +199,13 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param songId Song to unfavorite.
      * @param callback Listener to handle the response.
      */
-    private fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
+    private fun unfavoriteSong(songId: Int, callback: FavoriteSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        favoritesService.removeFavorite(authUtil.authTokenWithPrefix, songId)
+        favoritesService.removeFavorite(authUtil.authTokenWithPrefix, songId.toString())
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
                         callback.onSuccess()
@@ -219,13 +219,13 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param songId Song to request.
      * @param callback Listener to handle the response.
      */
-    override fun requestSong(songId: String, callback: RequestSongCallback) {
+    override fun requestSong(songId: Int, callback: RequestSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        requestsService.request(authUtil.authTokenWithPrefix, RadioClient.library!!.name, songId)
+        requestsService.request(authUtil.authTokenWithPrefix, RadioClient.library!!.name, songId.toString())
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
                         callback.onSuccess()

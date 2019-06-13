@@ -79,7 +79,7 @@ object SongActionsUtil {
             }
         }
 
-        App.radioClient!!.api.toggleFavorite(songId.toString(), isCurrentlyFavorite, callback)
+        App.radioClient!!.api.toggleFavorite(songId, isCurrentlyFavorite, callback)
     }
 
     /**
@@ -90,7 +90,7 @@ object SongActionsUtil {
     fun request(activity: Activity?, song: Song) {
         val user = App.userViewModel!!.user ?: return
 
-        App.radioClient!!.api.requestSong(song.id.toString(), object : RequestSongCallback {
+        App.radioClient!!.api.requestSong(song.id, object : RequestSongCallback {
             override fun onSuccess() {
                 if (activity == null) return
 

@@ -514,7 +514,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             }
         }
 
-        App.radioClient!!.api.toggleFavorite(songId.toString(), isCurrentlyFavorite, callback)
+        App.radioClient!!.api.toggleFavorite(songId, isCurrentlyFavorite, callback)
     }
 
     private fun showLoginRequiredToast() {

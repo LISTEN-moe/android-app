@@ -180,8 +180,8 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param isFavorite Whether the song is currently favorited.
      * @param callback Listener to handle the response.
      */
-    override fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {
-        client.mutate(FavoriteMutation(songId.toInt()))
+    override fun toggleFavorite(songId: Int, isFavorite: Boolean, callback: FavoriteSongCallback) {
+        client.mutate(FavoriteMutation(songId))
                 .enqueue(object : ApolloCall.Callback<FavoriteMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
@@ -199,9 +199,9 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param songId Song to request.
      * @param callback Listener to handle the response.
      */
-    override fun requestSong(songId: String, callback: RequestSongCallback) {
+    override fun requestSong(songId: Int, callback: RequestSongCallback) {
         // TODO: handle kpop
-        client.mutate(RequestSongMutation(songId.toInt(), Input.optional(false)))
+        client.mutate(RequestSongMutation(songId, Input.optional(false)))
                 .enqueue(object : ApolloCall.Callback<RequestSongMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
