@@ -50,5 +50,9 @@ class RadioClient(context: Context) {
     companion object {
         var library: Library? = null
             private set
+
+        fun isKpop(): Boolean {
+            return library!!.name == Kpop.NAME
+        }
     }
 }

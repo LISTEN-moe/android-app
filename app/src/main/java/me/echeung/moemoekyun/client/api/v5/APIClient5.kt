@@ -16,6 +16,7 @@ import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SearchQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
@@ -200,8 +201,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun requestSong(songId: Int, callback: RequestSongCallback) {
-        // TODO: handle kpop
-        client.mutate(RequestSongMutation(songId, Input.optional(false)))
+        client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop())))
                 .enqueue(object : ApolloCall.Callback<RequestSongMutation.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
@@ -219,8 +219,8 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun getSongs(callback: SongsCallback) {
-        // TODO: do actual pagination, and handle kpop
-        client.query(SongsQuery(0, 50000, Input.optional(false)))
+        // TODO: do actual pagination
+        client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
                 .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
@@ -251,4 +251,5 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
                 })
     }
+
 }
