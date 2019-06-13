@@ -153,6 +153,10 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                 })
     }
 
+    override fun isFavorite() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     /**
      * Toggles a song's favorite status
      *
@@ -194,7 +198,7 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param songId Song to unfavorite.
      * @param callback Listener to handle the response.
      */
-    private  fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
+    private fun unfavoriteSong(songId: String, callback: FavoriteSongCallback) {
         if (!authUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return

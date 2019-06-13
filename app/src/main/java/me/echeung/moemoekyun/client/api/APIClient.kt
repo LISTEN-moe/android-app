@@ -21,6 +21,8 @@ interface APIClient {
 
     fun getUserFavorites(callback: UserFavoritesCallback)
 
+    fun isFavorite()
+
     fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback)
 
     fun requestSong(songId: String, callback: RequestSongCallback)

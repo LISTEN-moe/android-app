@@ -6,6 +6,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
+import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LoginMfaMutation
@@ -154,6 +155,19 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
                         Log.d("GraphQL response", response.data()?.user?.favorites?.favorites?.toString())
 //                        callback.onSuccess(response.data()?.user?.favorites?.favorites!!)
+                    }
+                })
+    }
+
+    override fun isFavorite() {
+        client.query(CheckFavoriteQuery(listOf(1, 2, 3)))
+                .enqueue(object : ApolloCall.Callback<CheckFavoriteQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+//                        callback.onFailure(e.message)
+                    }
+
+                    override fun onResponse(response: Response<CheckFavoriteQuery.Data>) {
+//                        callback.onSuccess(response.data()?)
                     }
                 })
     }

@@ -17,6 +17,10 @@ query FavoritesQuery($username: String!) {
     }
 }
 
+query CheckFavoriteQuery($songs: [Int!]!) {
+    checkFavorite(songs: $songs)
+}
+
 mutation FavoriteMutation($id: Int!) {
     favoriteSong(id: $id) {
         id
