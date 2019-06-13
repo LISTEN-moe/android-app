@@ -46,6 +46,9 @@ class MainActivity : BaseActivity() {
     private var miniPlayPauseView: PlayPauseView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Replace splash screen theme
+        setTheme(R.style.AppTheme)
+
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)

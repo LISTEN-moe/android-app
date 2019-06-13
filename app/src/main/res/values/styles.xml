@@ -27,6 +27,11 @@
         <item name="alertDialogTheme">@style/DialogTheme</item>
     </style>
 
+    <!-- Splash screen -->
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     <!-- Dialogs -->
     <style name="DialogTheme" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:background">@color/dark_grey</item>
