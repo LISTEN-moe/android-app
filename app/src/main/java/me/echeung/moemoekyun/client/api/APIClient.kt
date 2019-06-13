@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.api
 
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
@@ -21,7 +22,7 @@ interface APIClient {
 
     fun getUserFavorites(callback: UserFavoritesCallback)
 
-    fun isFavorite()
+    fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback)
 
     fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback)
 

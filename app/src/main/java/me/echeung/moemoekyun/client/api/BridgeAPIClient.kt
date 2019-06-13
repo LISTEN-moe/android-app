@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.api
 
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
@@ -41,8 +42,8 @@ class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthUtil) : APIClien
         api4.getUserFavorites(callback)
     }
 
-    override fun isFavorite() {
-        api4.isFavorite()
+    override fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
+        api4.isFavorite(songIds, callback)
     }
 
     override fun toggleFavorite(songId: String, isFavorite: Boolean, callback: FavoriteSongCallback) {

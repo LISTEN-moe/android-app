@@ -18,6 +18,7 @@ import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
@@ -159,7 +160,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                 })
     }
 
-    override fun isFavorite() {
+    override fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
         client.query(CheckFavoriteQuery(listOf(1, 2, 3)))
                 .enqueue(object : ApolloCall.Callback<CheckFavoriteQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
@@ -167,7 +168,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<CheckFavoriteQuery.Data>) {
-//                        callback.onSuccess(response.data()?)
+//                        callback.onSuccess(response.data()?.checkFavorite)
                     }
                 })
     }

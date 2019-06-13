@@ -4,6 +4,7 @@ import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.cache.SongsCache
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
@@ -153,7 +154,7 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                 })
     }
 
-    override fun isFavorite() {
+    override fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
