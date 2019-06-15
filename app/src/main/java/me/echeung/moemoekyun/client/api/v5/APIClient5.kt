@@ -135,8 +135,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<UserQuery.Data>) {
-                        Log.d("GraphQL response", response.data()?.user?.username)
-//                        callback.onSuccess(response.data()?.user!!)
+                        callback.onSuccess(response.data()?.user!!.transform())
                     }
                 })
     }
@@ -154,8 +153,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
-                        Log.d("GraphQL response", response.data()?.user?.favorites?.favorites?.toString())
-//                        callback.onSuccess(response.data()?.user?.favorites?.favorites!!)
+                        callback.onSuccess(response.data()?.user?.favorites!!.transform())
                     }
                 })
     }
@@ -164,10 +162,11 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
         client.query(CheckFavoriteQuery(listOf(1, 2, 3)))
                 .enqueue(object : ApolloCall.Callback<CheckFavoriteQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
-//                        callback.onFailure(e.message)
+                        callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<CheckFavoriteQuery.Data>) {
+                        // TODO
 //                        callback.onSuccess(response.data()?.checkFavorite)
                     }
                 })
@@ -226,6 +225,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<SongsQuery.Data>) {
+                        // TODO
                         Log.d("GraphQL response", response.data()?.songs?.songs?.toString())
                     }
                 })
@@ -245,6 +245,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<SearchQuery.Data>) {
+                        // TODO
                         Log.d("GraphQL response", response.data()?.search?.toString())
 //                        callback.onSuccess(response.data()?.search!!)
                     }
