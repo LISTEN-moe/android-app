@@ -1,19 +1,24 @@
 fragment songFields on Song {
+    id
     title
     titleRomaji
+    titleSearchRomaji
     artists {
         name
         nameRomaji
+        nameSearchRomaji
     }
     albums {
         name
         nameRomaji
+        nameSearchRomaji
     }
     sources {
         name
         nameRomaji
     }
     duration
+    enabled
 }
 
 query SongQuery($id: Int!) {

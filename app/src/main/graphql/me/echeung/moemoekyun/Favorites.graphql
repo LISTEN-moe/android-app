@@ -3,13 +3,7 @@ query FavoritesQuery($username: String!) {
         favorites {
             favorites {
                 song {
-                    id
-                    title
-                    titleRomaji
-                    artists {
-                        name
-                        nameRomaji
-                    }
+                    ...songFields
                 }
                 createdAt
             }
