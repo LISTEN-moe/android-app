@@ -117,8 +117,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                     }
 
                     override fun onResponse(response: Response<RegisterMutation.Data>) {
-                        Log.d("GraphQL response", response.data()?.register?.uuid)
-//                        callback.onSuccess(response.data()?.register?)
+                        callback.onSuccess()
                     }
                 })
     }

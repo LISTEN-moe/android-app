@@ -109,7 +109,7 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
         authService.register(AuthService.RegisterBody(email, username, password))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
-                        callback.onSuccess(response!!.message)
+                        callback.onSuccess()
                     }
                 })
     }

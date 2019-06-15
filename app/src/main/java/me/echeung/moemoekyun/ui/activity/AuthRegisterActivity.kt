@@ -52,8 +52,9 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
         }
 
         App.radioClient!!.api.register(email, username, password, object : RegisterCallback {
-            override fun onSuccess(message: String) {
-                runOnUiThread { applicationContext.toast(message) }
+            override fun onSuccess() {
+                // TODO: redirect to login
+                finish()
             }
 
             override fun onFailure(message: String?) {
