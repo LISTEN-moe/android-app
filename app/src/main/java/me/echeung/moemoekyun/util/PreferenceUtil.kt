@@ -2,7 +2,7 @@ package me.echeung.moemoekyun.util
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.util.system.LocaleUtil
