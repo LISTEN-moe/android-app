@@ -133,7 +133,7 @@ class Socket(private val client: OkHttpClient) : WebSocketListener() {
             }
         }
 
-        heartbeatHandler.postDelayed(heartbeatTask, milliseconds.toLong())
+        heartbeatHandler.postDelayed(heartbeatTask!!, milliseconds.toLong())
         Log.d(TAG, "Created heartbeat task for $milliseconds ms")
     }
 

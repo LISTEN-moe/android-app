@@ -23,7 +23,6 @@ object LocaleUtil {
     }
 
     fun setLocale(context: Context, language: String): Context {
-        var context = context
         val res = context.resources
         val config = Configuration(res.configuration)
 
@@ -39,8 +38,7 @@ object LocaleUtil {
             config.setLocale(locale)
         }
 
-        context = context.createConfigurationContext(config)
-        return context
+        return context.createConfigurationContext(config)
     }
 
     fun setTitle(activity: Activity) {

@@ -4,6 +4,7 @@ import android.content.Context
 import android.preference.PreferenceManager
 
 import java.lang.ref.WeakReference
+import kotlin.math.roundToInt
 
 /**
  * Helper for handling authorization-related tasks. Helps with the storage of the auth token and
@@ -90,7 +91,7 @@ class AuthUtil(context: Context) {
 
         // Check token is valid (max 28 days)
         val lastAuth = tokenAge
-        if (Math.round((System.currentTimeMillis() / 1000 - lastAuth) / 86400.0) >= 28) {
+        if (((System.currentTimeMillis() / 1000 - lastAuth) / 86400.0).roundToInt() >= 28) {
             clearAuthToken()
             return false
         }

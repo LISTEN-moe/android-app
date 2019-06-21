@@ -16,8 +16,9 @@ object TimeUtil {
         val calendar = GregorianCalendar.getInstance()
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US)
         simpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
-        val date = simpleDateFormat.parse(iso8601string)
+        val date = simpleDateFormat.parse(iso8601string)!!
         calendar.time = date
         return calendar
     }
+
 }

@@ -225,7 +225,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
 
                     override fun onResponse(response: Response<SongsQuery.Data>) {
                         // TODO
-                        Log.d("GraphQL response", response.data()?.songs?.songs?.toString())
+                        Log.d("GraphQL response", response.data()?.songs?.songs.toString())
                     }
                 })
     }
