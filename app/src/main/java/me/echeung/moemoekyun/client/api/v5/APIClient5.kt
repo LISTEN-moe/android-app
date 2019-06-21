@@ -159,15 +159,14 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
     }
 
     override fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
-        client.query(CheckFavoriteQuery(listOf(1, 2, 3)))
+        client.query(CheckFavoriteQuery(songIds))
                 .enqueue(object : ApolloCall.Callback<CheckFavoriteQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<CheckFavoriteQuery.Data>) {
-                        // TODO
-//                        callback.onSuccess(response.data()?.checkFavorite)
+                        callback.onSuccess(response.data()?.checkFavorite!!.filterNotNull())
                     }
                 })
     }
