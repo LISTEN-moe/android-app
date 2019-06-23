@@ -65,7 +65,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 activity?.runOnUiThread {
                     songList.showLoading(false)
                     adapter.songs = favorites
-                    viewModel.hasFavorites = !favorites.isEmpty()
+                    viewModel.hasFavorites = favorites.isNotEmpty()
                 }
             }
 

@@ -45,7 +45,7 @@ data class Song(
 
     val albumArtUrl: String?
         get() {
-            if (!albums!!.isEmpty()) {
+            if (albums!!.isNotEmpty()) {
                 for (album in albums!!) {
                     if (album.image != null) {
                         return Library.CDN_ALBUM_ART_URL + album.image
