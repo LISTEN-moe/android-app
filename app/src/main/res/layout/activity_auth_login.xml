@@ -36,7 +36,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:cardBackgroundColor="@color/dark_grey"
+                    app:cardBackgroundColor="@color/darker_grey"
                     app:cardCornerRadius="@dimen/card_radius"
                     app:cardElevation="3dp"
                     app:cardPreventCornerOverlap="true">

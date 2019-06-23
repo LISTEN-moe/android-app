@@ -99,7 +99,7 @@
                     <com.google.android.material.card.MaterialCardView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardBackgroundColor="@color/dark_grey"
+                        app:cardBackgroundColor="@color/darker_grey"
                         app:cardCornerRadius="@dimen/card_radius"
                         app:cardElevation="3dp"
                         app:cardPreventCornerOverlap="true">

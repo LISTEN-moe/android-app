@@ -6,12 +6,16 @@
     android:orientation="vertical"
     tools:context=".ui.activity.AboutActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/appbar"
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/dark_grey"
-        android:elevation="4dp" />
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,19 +36,19 @@
                 layout="@layout/about_card_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="16dp" />
 
             <include
                 layout="@layout/about_card_listenmoe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="16dp" />
 
             <include
                 layout="@layout/about_card_translations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="16dp" />
 
             <Button
                 android:id="@+id/about_privacy_policy"
