@@ -12,10 +12,12 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.viewmodel.SongListViewModel
 
 abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
     protected lateinit var songList: SongList
+    protected val songListVm = SongListViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)

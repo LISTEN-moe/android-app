@@ -21,6 +21,7 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -56,7 +57,17 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     }
 
     override fun initSongList(binding: FragmentUserBinding): SongList {
-        return SongList(requireActivity(), binding.favorites.favoritesList, "USER_FAVORITES_LIST", this)
+        binding.favorites.favoritesList.vm = songListVm
+
+        return SongList(
+                requireActivity(),
+                songListVm,
+                binding.favorites.favoritesList.list,
+                binding.favorites.favoritesList.refreshLayout,
+                binding.favorites.favoritesList.query,
+                binding.favorites.favoritesList.overflowBtn,
+                "USER_FAVORITES_LIST",
+                this)
     }
 
     override fun loadSongs(adapter: SongsAdapter) {
