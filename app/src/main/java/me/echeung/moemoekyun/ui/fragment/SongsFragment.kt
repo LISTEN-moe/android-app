@@ -10,7 +10,6 @@ import me.echeung.moemoekyun.adapter.SongsAdapter
 import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding
-import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
@@ -26,7 +25,6 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 val action = intent.action
                 if (action != null) {
                     when (action) {
-                        MainActivity.AUTH_EVENT -> songList.loadSongs()
                         SongActionsUtil.FAVORITE_EVENT -> songList.notifyDataSetChanged()
                     }
                 }
