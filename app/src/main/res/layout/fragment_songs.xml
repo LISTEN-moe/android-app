@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:binding="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.fragments.SongsFragment">
 
     <data />
@@ -14,8 +13,7 @@
 
         <include
             layout="@layout/songs_list"
-            android:id="@+id/songs_list"
-            binding:searchHint="@{@string/search}" />
+            android:id="@+id/songs_list" />
 
     </FrameLayout>
 

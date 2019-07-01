@@ -3,7 +3,6 @@
 
     <data>
         <variable name="vm" type="me.echeung.moemoekyun.viewmodel.SongListViewModel" />
-        <variable name="searchHint" type="java.lang.String" />
     </data>
 
     <RelativeLayout
@@ -17,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:backgroundTint="@color/light_grey"
-            android:hint="@{searchHint}"
+            android:hint="@string/filter_favorites"
             android:importantForAutofill="no"
             android:inputType="text"
             android:paddingEnd="80dp"
