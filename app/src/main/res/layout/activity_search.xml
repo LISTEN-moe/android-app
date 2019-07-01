@@ -19,11 +19,20 @@
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize" />
+                android:layout_height="?attr/actionBarSize"
+                app:contentInsetStartWithNavigation="0dp">
+
+                <androidx.appcompat.widget.SearchView
+                    android:id="@+id/search_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:queryHint="@string/search"
+                    app:iconifiedByDefault="false"
+                    app:searchIcon="@null" />
+
+            </androidx.appcompat.widget.Toolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
-
-        <!-- TODO: integrate search into appbar -->
 
         <fragment
             android:id="@+id/songs_fragment"
