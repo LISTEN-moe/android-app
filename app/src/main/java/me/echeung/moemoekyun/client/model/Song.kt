@@ -5,16 +5,17 @@ import me.echeung.moemoekyun.client.api.library.Library
 import java.util.Locale
 
 data class Song(
-        var id: Int = 0,
-        var title: String? = null,
-        var titleRomaji: String? = null,
-        var titleSearchRomaji: String? = null,
-        var artists: List<SongDescriptor>? = null,
-        var sources: List<SongDescriptor>? = null,
-        var albums: List<SongDescriptor>? = null,
-        var duration: Int = 0,
-        var enabled: Boolean = false,
-        var favorite: Boolean = false) {
+    var id: Int = 0,
+    var title: String? = null,
+    var titleRomaji: String? = null,
+    var titleSearchRomaji: String? = null,
+    var artists: List<SongDescriptor>? = null,
+    var sources: List<SongDescriptor>? = null,
+    var albums: List<SongDescriptor>? = null,
+    var duration: Int = 0,
+    var enabled: Boolean = false,
+    var favorite: Boolean = false
+) {
 
     val titleString: String?
         get() = if (App.preferenceUtil!!.shouldPreferRomaji() && !titleRomaji.isNullOrBlank()) {
@@ -65,11 +66,11 @@ data class Song(
             return true
         }
 
-        return title.orEmpty().contains(query, ignoreCase = true)
-                || titleRomaji.orEmpty().contains(query, ignoreCase = true)
-                || titleSearchRomaji.orEmpty().contains(query, ignoreCase = true)
-                || artists.orEmpty().any { it.contains(query) }
-                || albums.orEmpty().any { it.contains(query) }
-                || sources.orEmpty().any { it.contains(query) }
+        return title.orEmpty().contains(query, ignoreCase = true) ||
+                titleRomaji.orEmpty().contains(query, ignoreCase = true) ||
+                titleSearchRomaji.orEmpty().contains(query, ignoreCase = true) ||
+                artists.orEmpty().any { it.contains(query) } ||
+                albums.orEmpty().any { it.contains(query) } ||
+                sources.orEmpty().any { it.contains(query) }
     }
 }

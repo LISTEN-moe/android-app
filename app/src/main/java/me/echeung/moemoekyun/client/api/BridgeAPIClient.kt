@@ -61,5 +61,4 @@ class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthUtil) : APIClien
     override fun search(query: String?, callback: SearchCallback) {
         api4.search(query, callback)
     }
-
 }

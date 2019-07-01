@@ -33,5 +33,4 @@ object EventNotification {
 
         context.notificationManager.notify(NOTIFICATION_ID, notification)
     }
-
 }

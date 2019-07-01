@@ -248,10 +248,8 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
 
                     override fun onResponse(response: Response<SearchQuery.Data>) {
                         // TODO
-                        Log.d("GraphQL response", response.data()?.search?.toString())
-//                        callback.onSuccess(response.data()?.search!!)
+//                        callback.onSuccess(response.data()?.search?.transform())
                     }
                 })
     }
-
 }

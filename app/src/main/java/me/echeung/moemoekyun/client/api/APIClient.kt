@@ -31,5 +31,4 @@ interface APIClient {
     fun getSongs(callback: SongsCallback)
 
     fun search(query: String?, callback: SearchCallback)
-
 }

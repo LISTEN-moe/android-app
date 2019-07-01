@@ -20,5 +20,4 @@ object TimeUtil {
         calendar.time = date
         return calendar
     }
-
 }

@@ -12,5 +12,4 @@ class SearchActivity : BaseActivity() {
 
         initAppbar()
     }
-
 }

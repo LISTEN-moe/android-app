@@ -3,14 +3,15 @@ package me.echeung.moemoekyun.client.model
 import me.echeung.moemoekyun.App
 
 data class SongDescriptor(
-        val id: Int = 0,
-        val name: String? = null,
-        val nameRomaji: String? = null,
-        val image: String? = null) {
+    val id: Int = 0,
+    val name: String? = null,
+    val nameRomaji: String? = null,
+    val image: String? = null
+) {
 
     fun contains(query: String): Boolean {
-        return name.orEmpty().contains(query, ignoreCase = true)
-                || nameRomaji.orEmpty().contains(query, ignoreCase = true)
+        return name.orEmpty().contains(query, ignoreCase = true) ||
+                nameRomaji.orEmpty().contains(query, ignoreCase = true)
     }
 
     companion object {
