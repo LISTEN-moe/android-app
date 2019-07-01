@@ -63,8 +63,8 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 songListVm,
                 binding.favorites.favoritesList.list,
                 binding.favorites.favoritesList.refreshLayout,
-                binding.favorites.favoritesList.query,
-                binding.favorites.favoritesList.overflowBtn,
+                binding.favorites.favoritesList.filter.query,
+                binding.favorites.favoritesList.filter.overflowBtn,
                 "USER_FAVORITES_LIST",
                 this)
     }

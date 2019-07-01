@@ -40,8 +40,8 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 songListVm,
                 binding.songsList.list,
                 binding.songsList.refreshLayout,
-                binding.songsList.query,
-                binding.songsList.overflowBtn,
+                binding.songsList.filter.query,
+                binding.songsList.filter.overflowBtn,
                 "SONGS_LIST",
                 this)
     }
