@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <include
-            layout="@layout/songs_list_filter"
+            layout="@layout/user_favorites_filter"
             android:id="@+id/filter"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
