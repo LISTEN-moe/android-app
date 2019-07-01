@@ -25,6 +25,7 @@ import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.auth.AuthUtil
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 
 class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : APIClient {
@@ -34,14 +35,16 @@ class APIClient5(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
     init {
         // Automatically add auth token to requests
         val authClient = okHttpClient.newBuilder()
-                .addInterceptor { chain ->
-                    val original = chain.request()
-                    val builder = original.newBuilder().method(original.method(), original.body())
-                    if (authUtil.isAuthenticated) {
-                        builder.header("Authorization", authUtil.authTokenWithPrefix)
+                .addNetworkInterceptor(object : Interceptor {
+                    override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+                        val original = chain.request()
+                        val builder = original.newBuilder().method(original.method, original.body)
+                        if (authUtil.isAuthenticated) {
+                            builder.header("Authorization", authUtil.authTokenWithPrefix)
+                        }
+                        return chain.proceed(builder.build())
                     }
-                    chain.proceed(builder.build())
-                }
+                })
                 .build()
 
         client = ApolloClient.builder()

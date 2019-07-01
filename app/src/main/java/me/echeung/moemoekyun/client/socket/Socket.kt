@@ -94,7 +94,7 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
         }
     }
 
-    override fun onOpen(socket: WebSocket?, response: Response?) {
+    override fun onOpen(webSocket: WebSocket, response: Response) {
         Log.d(TAG, "Socket connection opened")
 
         retryTime = RETRY_TIME_MIN
@@ -105,19 +105,21 @@ class Socket(private val client: OkHttpClient, private val authUtil: AuthUtil) :
         socket!!.send("{ \"op\": 0, \"d\": { \"auth\": \"$authToken\" } }")
     }
 
-    override fun onMessage(webSocket: WebSocket?, text: String?) {
+    override fun onMessage(webSocket: WebSocket, text: String) {
         Log.d(TAG, "Received message from socket: $text")
 
         parseResponse(text)
     }
 
-    override fun onFailure(webSocket: WebSocket?, t: Throwable?, response: Response?) {
-        Log.e(TAG, "Socket failure: " + t?.message, t)
+    override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+        Log.d(TAG, "Socket connection closed: $reason")
+
         reconnect()
     }
 
-    override fun onClosed(webSocket: WebSocket?, code: Int, reason: String?) {
-        Log.d(TAG, "Socket connection closed: $reason")
+    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+        Log.e(TAG, "Socket failure: ${t.message}", t)
+
         reconnect()
     }
 
