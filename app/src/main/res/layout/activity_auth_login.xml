@@ -75,7 +75,11 @@
                                     android:hint="@string/username_or_email"
                                     android:inputType="textNoSuggestions|textEmailAddress"
                                     android:singleLine="true"
-                                    tools:ignore="LabelFor" />
+                                    tools:ignore="LabelFor">
+
+                                    <requestFocus />
+
+                                </com.google.android.material.textfield.TextInputEditText>
 
                             </com.google.android.material.textfield.TextInputLayout>
 
