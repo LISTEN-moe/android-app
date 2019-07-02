@@ -66,8 +66,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 songListVm,
                 binding.songs.list,
                 binding.songs.refreshLayout,
-//                binding.songs.filter.query,
-                null,
+//                requireActivity().findViewById(R.id.search_view),
                 null,
                 LIST_ID,
                 this)

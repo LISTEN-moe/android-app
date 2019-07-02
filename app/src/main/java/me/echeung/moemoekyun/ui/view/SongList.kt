@@ -5,8 +5,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
 import android.widget.EditText
-import android.widget.ImageButton
-import androidx.appcompat.widget.PopupMenu
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,7 +21,6 @@ class SongList(
     songsList: RecyclerView,
     private val swipeRefreshLayout: SwipeRefreshLayout?,
     filterEditText: EditText?,
-    overflowBtn: ImageButton?,
     listId: String,
     private val loader: SongListLoader
 ) {
@@ -70,18 +67,6 @@ class SongList(
                     songsList.scrollToPosition(0)
                 }
             }
-        })
-
-        // Menu
-        overflowBtn?.setOnClickListener(fun(_) {
-            val activityRef = this.activity.get() ?: return
-
-            val popupMenu = PopupMenu(activityRef, overflowBtn)
-            popupMenu.inflate(R.menu.menu_sort)
-
-            SongSortUtil.initSortMenu(activityRef, listId, popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener { this.handleMenuItemClick(it) }
-            popupMenu.show()
         })
     }
 

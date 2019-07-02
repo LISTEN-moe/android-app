@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.PopupMenu
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
@@ -21,6 +22,7 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -55,15 +57,29 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     }
 
     override fun initSongList(binding: FragmentUserBinding): SongList {
+        initFilterMenu()
+
         return SongList(
                 requireActivity(),
                 songListVm,
                 binding.favorites.favoritesList.list,
                 binding.favorites.favoritesList.refreshLayout,
                 binding.favorites.filter.query,
-                binding.favorites.filter.overflowBtn,
                 LIST_ID,
                 this)
+    }
+
+    private fun initFilterMenu() {
+        val overflowBtn = binding.favorites.filter.overflowBtn
+
+        overflowBtn.setOnClickListener(fun(_) {
+            val popupMenu = PopupMenu(requireContext(), overflowBtn)
+            popupMenu.inflate(R.menu.menu_sort)
+
+            SongSortUtil.initSortMenu(requireContext(), LIST_ID, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { songList.handleMenuItemClick(it) }
+            popupMenu.show()
+        })
     }
 
     override fun loadSongs(adapter: SongsAdapter) {
