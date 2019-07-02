@@ -97,7 +97,7 @@ class SongList(
         adapter.notifyDataSetChanged()
     }
 
-    private fun handleMenuItemClick(item: MenuItem): Boolean {
+    fun handleMenuItemClick(item: MenuItem): Boolean {
         val activityRef = activity.get() ?: return false
 
         if (SongSortUtil.handleSortMenuItem(item, adapter)) {

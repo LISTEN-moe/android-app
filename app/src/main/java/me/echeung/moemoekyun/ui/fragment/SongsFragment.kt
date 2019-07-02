@@ -6,6 +6,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import me.echeung.moemoekyun.App
@@ -17,6 +20,7 @@ import me.echeung.moemoekyun.databinding.FragmentSongsBinding
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.system.toast
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -38,10 +42,22 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
+        setHasOptionsMenu(true)
 
         binding.songListVm = songListVm
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_sort, menu)
+        SongSortUtil.initSortMenu(requireContext(), LIST_ID, menu)
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return songList.handleMenuItemClick(item)
     }
 
     override fun initSongList(binding: FragmentSongsBinding): SongList {
@@ -50,11 +66,10 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 songListVm,
                 binding.songs.list,
                 binding.songs.refreshLayout,
-                null,
-                null,
 //                binding.songs.filter.query,
-//                binding.songs.filter.overflowBtn,
-                "SONGS_LIST",
+                null,
+                null,
+                LIST_ID,
                 this)
     }
 
@@ -76,5 +91,9 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 }
             }
         })
+    }
+
+    companion object {
+        private const val LIST_ID = "SONGS_LIST"
     }
 }

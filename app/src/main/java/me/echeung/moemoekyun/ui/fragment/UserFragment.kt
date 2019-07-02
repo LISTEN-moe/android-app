@@ -62,7 +62,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 binding.favorites.favoritesList.refreshLayout,
                 binding.favorites.filter.query,
                 binding.favorites.filter.overflowBtn,
-                "USER_FAVORITES_LIST",
+                LIST_ID,
                 this)
     }
 
@@ -107,5 +107,9 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
 
             override fun onFailure(message: String?) {}
         })
+    }
+
+    companion object {
+        private const val LIST_ID = "FAVORITES_LIST"
     }
 }
