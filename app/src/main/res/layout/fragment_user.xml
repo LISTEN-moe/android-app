@@ -7,6 +7,7 @@
     <data>
         <variable name="radioVm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
         <variable name="userVm" type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
+        <variable name="songListVm" type="me.echeung.moemoekyun.viewmodel.SongListViewModel" />
     </data>
 
     <LinearLayout
@@ -33,7 +34,8 @@
         <include
             android:id="@+id/favorites"
             layout="@layout/user_favorites"
-            binding:userVm="@{userVm}" />
+            binding:userVm="@{userVm}"
+            binding:songListVm="@{songListVm}" />
 
     </LinearLayout>
 

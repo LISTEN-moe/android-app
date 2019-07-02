@@ -17,7 +17,6 @@ import me.echeung.moemoekyun.viewmodel.SongListViewModel
 abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
     protected lateinit var songList: SongList
-    protected val songListVm = SongListViewModel()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)

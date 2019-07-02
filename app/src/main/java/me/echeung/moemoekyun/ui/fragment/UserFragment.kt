@@ -21,11 +21,13 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var viewModel: UserViewModel
+    private val songListVm = SongListViewModel()
 
     init {
         layout = R.layout.fragment_user
@@ -49,6 +51,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
 
         binding.radioVm = App.radioViewModel
         binding.userVm = viewModel
+        binding.songListVm = songListVm
 
         initUserContent()
 
@@ -63,8 +66,8 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 songListVm,
                 binding.favorites.favoritesList.list,
                 binding.favorites.favoritesList.refreshLayout,
-                binding.favorites.favoritesList.filter.query,
-                binding.favorites.favoritesList.filter.overflowBtn,
+                binding.favorites.filter.query,
+                binding.favorites.filter.overflowBtn,
                 "USER_FAVORITES_LIST",
                 this)
     }

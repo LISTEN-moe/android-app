@@ -14,8 +14,11 @@ import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.toast
+import me.echeung.moemoekyun.viewmodel.SongListViewModel
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private val songListVm = SongListViewModel()
 
     init {
         layout = R.layout.fragment_songs
@@ -40,8 +43,10 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 songListVm,
                 binding.songsList.list,
                 binding.songsList.refreshLayout,
-                binding.songsList.filter.query,
-                binding.songsList.filter.overflowBtn,
+                null,
+                null,
+//                binding.songsList.filter.query,
+//                binding.songsList.filter.overflowBtn,
                 "SONGS_LIST",
                 this)
     }

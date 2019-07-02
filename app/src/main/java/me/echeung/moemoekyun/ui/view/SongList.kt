@@ -22,7 +22,7 @@ class SongList(
     private val songListViewModel: SongListViewModel,
     songsList: RecyclerView,
     private val swipeRefreshLayout: SwipeRefreshLayout?,
-    filterEditText: EditText,
+    filterEditText: EditText?,
     overflowBtn: ImageButton?,
     listId: String,
     private val loader: SongListLoader
@@ -55,7 +55,7 @@ class SongList(
         }
 
         // Filter
-        filterEditText.addTextChangedListener(object : TextWatcher {
+        filterEditText?.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
