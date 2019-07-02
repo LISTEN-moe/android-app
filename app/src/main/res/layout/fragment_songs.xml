@@ -15,8 +15,8 @@
         android:paddingRight="@dimen/activity_horizontal_margin">
 
         <include
+            android:id="@+id/songs"
             layout="@layout/songs_list"
-            android:id="@+id/songs_list"
             binding:vm="@{songListVm}" />
 
     </FrameLayout>

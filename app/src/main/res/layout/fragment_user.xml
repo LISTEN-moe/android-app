@@ -11,7 +11,6 @@
     </data>
 
     <LinearLayout
-        android:id="@+id/user_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -24,7 +23,6 @@
             android:layout_marginTop="16dp">
 
             <include
-                android:id="@+id/user_card"
                 layout="@layout/user_card"
                 binding:radioVm="@{radioVm}"
                 binding:userVm="@{userVm}" />

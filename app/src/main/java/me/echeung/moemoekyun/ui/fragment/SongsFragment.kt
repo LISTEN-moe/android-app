@@ -48,12 +48,12 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
         return SongList(
                 requireActivity(),
                 songListVm,
-                binding.songsList.list,
-                binding.songsList.refreshLayout,
+                binding.songs.list,
+                binding.songs.refreshLayout,
                 null,
                 null,
-//                binding.songsList.filter.query,
-//                binding.songsList.filter.overflowBtn,
+//                binding.songs.filter.query,
+//                binding.songs.filter.overflowBtn,
                 "SONGS_LIST",
                 this)
     }
