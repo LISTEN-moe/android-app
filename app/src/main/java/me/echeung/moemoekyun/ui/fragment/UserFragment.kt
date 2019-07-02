@@ -21,13 +21,11 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
-import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private lateinit var viewModel: UserViewModel
-    private val songListVm = SongListViewModel()
+    private val userVm: UserViewModel = App.userViewModel!!
 
     init {
         layout = R.layout.fragment_user
@@ -47,10 +45,8 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        viewModel = App.userViewModel!!
-
         binding.radioVm = App.radioViewModel
-        binding.userVm = viewModel
+        binding.userVm = userVm
         binding.songListVm = songListVm
 
         initUserContent()
@@ -59,8 +55,6 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     }
 
     override fun initSongList(binding: FragmentUserBinding): SongList {
-        binding.favorites.favoritesList.vm = songListVm
-
         return SongList(
                 requireActivity(),
                 songListVm,
@@ -78,7 +72,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 activity?.runOnUiThread {
                     songList.showLoading(false)
                     adapter.songs = favorites
-                    viewModel.hasFavorites = favorites.isNotEmpty()
+                    userVm.hasFavorites = favorites.isNotEmpty()
                 }
             }
 
@@ -100,14 +94,14 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     private fun getUserInfo() {
         App.radioClient!!.api.getUserInfo(object : UserInfoCallback {
             override fun onSuccess(user: User) {
-                viewModel.user = user
+                userVm.user = user
 
                 if (user.avatarImage != null) {
-                    viewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
+                    userVm.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
                 }
 
                 if (user.bannerImage != null) {
-                    viewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
+                    userVm.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
                 }
             }
 

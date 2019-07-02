@@ -4,6 +4,10 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
@@ -14,11 +18,8 @@ import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.toast
-import me.echeung.moemoekyun.viewmodel.SongListViewModel
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
-
-    private val songListVm = SongListViewModel()
 
     init {
         layout = R.layout.fragment_songs
@@ -35,9 +36,15 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
         }
     }
 
-    override fun initSongList(binding: FragmentSongsBinding): SongList {
-        binding.songsList.vm = songListVm
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = super.onCreateView(inflater, container, savedInstanceState)
 
+        binding.songListVm = songListVm
+
+        return view
+    }
+
+    override fun initSongList(binding: FragmentSongsBinding): SongList {
         return SongList(
                 requireActivity(),
                 songListVm,
