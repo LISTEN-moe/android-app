@@ -28,7 +28,7 @@ class RadioClient(context: Context) {
 
         this.api = BridgeAPIClient(okHttpClient, authUtil)
 
-        this.socket = Socket(okHttpClient)
+        this.socket = Socket(okHttpClient, authUtil)
         this.stream = Stream(context)
     }
 
