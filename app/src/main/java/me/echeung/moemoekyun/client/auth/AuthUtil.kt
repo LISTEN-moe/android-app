@@ -1,7 +1,7 @@
 package me.echeung.moemoekyun.client.auth
 
 import android.content.Context
-import android.preference.PreferenceManager
+import androidx.preference.PreferenceManager
 
 import java.lang.ref.WeakReference
 

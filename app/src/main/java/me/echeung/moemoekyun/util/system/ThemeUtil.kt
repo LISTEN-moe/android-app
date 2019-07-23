@@ -9,6 +9,6 @@ object ThemeUtil {
 
     @ColorInt
     fun getBackgroundColor(context: Context): Int {
-        return ContextCompat.getColor(context, R.color.dark_grey)
+        return ContextCompat.getColor(context, R.color.darker_grey)
     }
 }

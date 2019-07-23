@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/now_playing_peek_height"
             android:alpha="@{vm.miniPlayerAlpha}"
-            android:background="@color/dark_grey"
+            android:background="@color/darker_grey"
             android:visibility="@{vm.miniPlayerAlpha != 0}">
 
             <include
