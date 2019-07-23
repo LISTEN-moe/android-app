@@ -4,7 +4,9 @@ import android.app.Activity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,13 +18,13 @@ import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import java.lang.ref.WeakReference
 
 class SongList(
-    activity: Activity,
-    private val songListViewModel: SongListViewModel,
-    songsList: RecyclerView,
-    private val swipeRefreshLayout: SwipeRefreshLayout?,
-    filterEditText: EditText?,
-    listId: String,
-    private val loader: SongListLoader
+        activity: Activity,
+        private val songListViewModel: SongListViewModel,
+        private val songsList: RecyclerView,
+        private val swipeRefreshLayout: SwipeRefreshLayout?,
+        filterView: View,
+        listId: String,
+        private val loader: SongListLoader
 ) {
 
     private val activity: WeakReference<Activity> = WeakReference(activity)
@@ -52,22 +54,48 @@ class SongList(
         }
 
         // Filter
-        filterEditText?.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+        if (filterView is EditText) {
+            filterView.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-            override fun afterTextChanged(editable: Editable) {
-                val query = editable.toString().trim { it <= ' ' }.toLowerCase()
-                adapter.filter(query)
-
-                val hasResults = adapter.itemCount != 0
-                songListViewModel.hasResults = hasResults
-                if (hasResults) {
-                    songsList.scrollToPosition(0)
+                override fun afterTextChanged(editable: Editable) {
+                    handleQuery(editable.toString())
                 }
+            })
+        }
+
+        if (filterView is SearchView) {
+            filterView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    handleQuery(query!!)
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    handleQuery(newText!!)
+                    return true
+                }
+            })
+
+            filterView.setOnCloseListener {
+                handleQuery("")
+                true
             }
-        })
+        }
+    }
+
+    private fun handleQuery(query: String) {
+        val trimmedQuery = query.trim { it <= ' ' }.toLowerCase()
+
+        adapter.filter(trimmedQuery)
+
+        val hasResults = adapter.itemCount != 0
+        songListViewModel.hasResults = hasResults
+        if (hasResults) {
+            songsList.scrollToPosition(0)
+        }
     }
 
     fun loadSongs() {
