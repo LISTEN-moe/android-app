@@ -115,6 +115,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
                 android:enabled="@{isAuthenticated &amp;&amp; canRequest}"
+                android:maxLines="1"
                 android:scaleType="fitCenter"
                 android:text="@string/action_request"
                 app:icon="@{@drawable/ic_play_arrow_24dp}" />
@@ -127,6 +128,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_weight="0.5"
                 android:enabled="@{isAuthenticated}"
+                android:maxLines="1"
                 android:scaleType="fitCenter"
                 android:text="@{isFavorite ? @string/action_unfavorite : @string/action_favorite}"
                 app:icon="@{isFavorite ? @drawable/ic_star_24dp : @drawable/ic_star_border_24dp}" />
