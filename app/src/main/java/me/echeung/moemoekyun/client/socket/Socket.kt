@@ -179,6 +179,7 @@ class Socket(private val client: OkHttpClient) : WebSocketListener() {
                     }
 
                     // TODO: check if songs are favorited
+                    // TODO: get queue info
 
                     listener!!.onSocketReceive(updateResponse.d)
                 }
