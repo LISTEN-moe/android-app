@@ -11,6 +11,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
+import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.finish
 import me.echeung.moemoekyun.util.system.getTrimmedText
@@ -56,6 +57,14 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         })
 
         binding.forgotPassword.setOnClickListener { openUrl(FORGOT_PASSWORD_URL) }
+
+        // Set fields from registration
+        if (intent?.getStringExtra(AuthActivityUtil.LOGIN_NAME) != null) {
+            binding.authLogin.setText(intent.getStringExtra(AuthActivityUtil.LOGIN_NAME))
+        }
+        if (intent?.getStringExtra(AuthActivityUtil.LOGIN_PASS) != null) {
+            binding.authPassword.setText(intent.getStringExtra(AuthActivityUtil.LOGIN_PASS))
+        }
     }
 
     public override fun onResume() {

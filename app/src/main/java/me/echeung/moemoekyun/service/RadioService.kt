@@ -31,7 +31,7 @@ import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.AlbumArtUtil
-import me.echeung.moemoekyun.util.AuthUtil
+import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.TimeUtil
@@ -295,7 +295,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                     } // Do nothing
                 }
 
-                AuthUtil.AUTH_EVENT -> {
+                AuthActivityUtil.AUTH_EVENT -> {
                     socket!!.reconnect()
                     if (!App.authTokenUtil.isAuthenticated) {
                         App.radioViewModel!!.isFavorited = false
@@ -416,7 +416,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         intentFilter.addAction(SongActionsUtil.REQUEST_EVENT)
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
         intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON)
-        intentFilter.addAction(AuthUtil.AUTH_EVENT)
+        intentFilter.addAction(AuthActivityUtil.AUTH_EVENT)
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
 
         registerReceiver(intentReceiver, intentFilter)

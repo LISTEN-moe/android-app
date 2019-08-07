@@ -20,7 +20,7 @@ import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.databinding.FragmentUserBinding
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
-import me.echeung.moemoekyun.util.AuthUtil
+import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.viewmodel.UserViewModel
@@ -37,7 +37,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 val action = intent.action
                 if (action != null) {
                     when (action) {
-                        AuthUtil.AUTH_EVENT, SongActionsUtil.FAVORITE_EVENT -> initUserContent()
+                        AuthActivityUtil.AUTH_EVENT, SongActionsUtil.FAVORITE_EVENT -> initUserContent()
                     }
                 }
             }

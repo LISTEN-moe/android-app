@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.ui.activity
 
-import android.app.Activity
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
@@ -23,11 +22,12 @@ import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.ui.dialog.SleepTimerDialog
 import me.echeung.moemoekyun.ui.view.PlayPauseView
-import me.echeung.moemoekyun.util.AuthUtil
-import me.echeung.moemoekyun.util.AuthUtil.broadcastAuthEvent
-import me.echeung.moemoekyun.util.AuthUtil.showLoginActivity
-import me.echeung.moemoekyun.util.AuthUtil.showLogoutDialog
-import me.echeung.moemoekyun.util.AuthUtil.showRegisterActivity
+import me.echeung.moemoekyun.util.AuthActivityUtil
+import me.echeung.moemoekyun.util.AuthActivityUtil.broadcastAuthEvent
+import me.echeung.moemoekyun.util.AuthActivityUtil.handleAuthActivityResult
+import me.echeung.moemoekyun.util.AuthActivityUtil.showLoginActivity
+import me.echeung.moemoekyun.util.AuthActivityUtil.showLogoutDialog
+import me.echeung.moemoekyun.util.AuthActivityUtil.showRegisterActivity
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import me.echeung.moemoekyun.util.system.openUrl
@@ -275,16 +275,7 @@ class MainActivity : BaseActivity() {
     // =============================================================================================
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode != Activity.RESULT_OK) {
-            return
-        }
-
-        invalidateOptionsMenu()
-        broadcastAuthEvent()
-
-        when (requestCode) {
-            AuthUtil.LOGIN_FAVORITE_REQUEST -> sendBroadcast(Intent(RadioService.TOGGLE_FAVORITE))
-        }
+        handleAuthActivityResult(requestCode, resultCode, data)
     }
 
     // Now playing stuff
@@ -323,7 +314,7 @@ class MainActivity : BaseActivity() {
 
     private fun favorite() {
         if (!App.authTokenUtil.isAuthenticated) {
-            showLoginActivity(AuthUtil.LOGIN_FAVORITE_REQUEST)
+            showLoginActivity(AuthActivityUtil.LOGIN_FAVORITE_REQUEST)
             return
         }
 

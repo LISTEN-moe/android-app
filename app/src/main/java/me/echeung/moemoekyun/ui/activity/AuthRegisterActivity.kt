@@ -1,5 +1,7 @@
 package me.echeung.moemoekyun.ui.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -9,6 +11,8 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
+import me.echeung.moemoekyun.util.AuthActivityUtil
+import me.echeung.moemoekyun.util.system.finish
 import me.echeung.moemoekyun.util.system.toast
 
 class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding>() {
@@ -53,8 +57,13 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
 
         App.radioClient!!.api.register(email, username, password, object : RegisterCallback {
             override fun onSuccess() {
-                // TODO: redirect to login
-                finish()
+                runOnUiThread {
+                    val returnIntent = Intent()
+                    returnIntent.putExtra(AuthActivityUtil.LOGIN_NAME, username)
+                    returnIntent.putExtra(AuthActivityUtil.LOGIN_PASS, password)
+                    setResult(Activity.RESULT_OK, returnIntent)
+                    finish()
+                }
             }
 
             override fun onFailure(message: String?) {
