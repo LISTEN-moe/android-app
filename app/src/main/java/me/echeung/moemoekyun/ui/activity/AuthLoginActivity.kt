@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.ui.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -13,6 +12,8 @@ import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.system.clipboardManager
+import me.echeung.moemoekyun.util.system.finish
+import me.echeung.moemoekyun.util.system.getTrimmedText
 import me.echeung.moemoekyun.util.system.openUrl
 import me.echeung.moemoekyun.util.system.toast
 
@@ -31,9 +32,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         loginCallback = object : LoginCallback {
             override fun onSuccess(token: String) {
                 runOnUiThread {
-                    val returnIntent = Intent()
-                    setResult(Activity.RESULT_OK, returnIntent)
-                    finish()
+                    finish(Activity.RESULT_OK)
                 }
             }
 
@@ -66,8 +65,8 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
     }
 
     private fun login() {
-        val userLogin = getText(binding.authLogin)
-        val password = getText(binding.authPassword)
+        val userLogin = binding.authLogin.getTrimmedText()
+        val password = binding.authPassword.getTrimmedText()
 
         setError(binding.authLogin, userLogin.isEmpty(), getString(R.string.required))
         setError(binding.authPassword, password.isEmpty(), getString(R.string.required))
@@ -121,10 +120,6 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
 
     private fun setError(editText: TextInputEditText, isError: Boolean, errorMessage: String) {
         editText.error = if (isError) errorMessage else null
-    }
-
-    private fun getText(editText: TextInputEditText): String {
-        return editText.text.toString().trim()
     }
 
     companion object {

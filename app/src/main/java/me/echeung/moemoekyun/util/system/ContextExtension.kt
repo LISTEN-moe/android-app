@@ -24,6 +24,17 @@ inline fun <reified T : Activity> Activity.startActivity(context: Context) {
 }
 
 /**
+ * Finish an activity with a result code.
+ *
+ * @param resultCode Result code passed back to the activity that started this activity.
+ */
+inline fun Activity.finish(resultCode: Int) {
+    val returnIntent = Intent()
+    setResult(resultCode, returnIntent)
+    finish()
+}
+
+/**
  * Gets a plural string resource using the given quantity value.
  *
  * @param resource the text resource.
