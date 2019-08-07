@@ -2,7 +2,7 @@
 <notices>
     <notice>
         <name>Android ConstraintLayout</name>
-        <url>https://developer.android.com/reference/android/support/constraint/ConstraintLayout</url>
+        <url>https://developer.android.com/reference/androidx/constraintlayout/widget/ConstraintLayout.html</url>
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
@@ -11,9 +11,14 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
-        <name>Android Support Libraries</name>
-        <url>http://developer.android.com/tools/support-library/</url>
+        <name>AndroidX</name>
+        <url>https://developer.android.com/jetpack/androidx</url>
         <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Apollo</name>
+        <url>https://github.com/apollographql/apollo-android</url>
+        <license>MIT License</license>
     </notice>
     <notice>
         <name>ExoPlayer</name>
@@ -24,6 +29,11 @@
         <name>Glide</name>
         <url>https://bumptech.github.io/glide/</url>
         <license>BSD 3-Clause License</license>
+    </notice>
+    <notice>
+        <name>Material Components</name>
+        <url>https://material.io/develop/android/docs/getting-started/</url>
+        <license>Apache Software License 2.0</license>
     </notice>
     <notice>
         <name>Moshi</name>
