@@ -63,35 +63,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/about_app_github"
-            style="@style/AboutItem">
-
-            <ImageView
-                android:layout_width="@dimen/md_listitem_height"
-                android:layout_height="@dimen/md_listitem_height"
-                android:src="@drawable/ic_code_24dp"
-                android:tint="@color/light_grey"
-                tools:ignore="ContentDescription" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:orientation="vertical"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/github"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
             android:id="@+id/about_app_translate"
             style="@style/AboutItem">
 
@@ -114,6 +85,35 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/translate"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/about_app_github"
+            style="@style/AboutItem">
+
+            <ImageView
+                android:layout_width="@dimen/md_listitem_height"
+                android:layout_height="@dimen/md_listitem_height"
+                android:src="@drawable/ic_code_24dp"
+                android:tint="@color/light_grey"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:orientation="vertical"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/github"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
             </LinearLayout>
