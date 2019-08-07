@@ -119,5 +119,6 @@
     <string name="pref_title_pause_on_noisy_summary">La música se pausará cuando los audífonos sean desconectados</string>
     <string name="pref_title_audio_pause_on_loss_title">Pausar para media</string>
     <string name="pref_title_audio_pause_on_loss_summary">La musica frenará cuando otros sonidos se reproduzcan, como videos o música</string>
+    <string name="pref_title_audio_duck_title">Reducción de volumen</string>
     <string name="pref_title_audio_duck_summary">Bajar volumen cuando haya notificaciones, navegación, etc.</string>
 </resources>

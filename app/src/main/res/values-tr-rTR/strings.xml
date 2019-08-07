@@ -56,14 +56,16 @@
     <string name="favorite">Favorilere ekle</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">%s tarafından istendi</string>
+    <string name="event_start_title">Bir etkinlik başlıyor!</string>
     <!-- == User tab == -->
     <string name="no_favorites">Hiç favori yok</string>
     <string name="filter_favorites">Favorileri filtrele</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">%s favorilerden çıkarıldı</string>
     <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d sırada bekleyen</string>
     <!-- e.g. 2 queued, 1 before yours -->
-    <string name="queue_info">%d seninkinden önce %d sıradaydı</string>
+    <string name="queue_info">%d sırada, seninkinden önce %d sırada</string>
     <string name="random_request">Rastgele bir şarkı iste</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
@@ -106,7 +108,7 @@
     <string name="pref_header_music">Müzik</string>
     <string name="pref_title_general_romaji">Romanji kullan</string>
     <string name="pref_title_general_romaji_summary">\"ななひら\" yerine \"Nanahira\"</string>
-    <string name="pref_title_general_random_request_title">Rastegele istek başlığı</string>
+    <string name="pref_title_general_random_request_title">Rastgele istenilmiş şarkının adını göster</string>
     <string name="pref_title_general_random_request_summary">İstenilen şarkının adını görüntüle</string>
     <string name="pref_title_lockscreen_albumart_title">Albüm kapağı</string>
     <string name="pref_title_lockscreen_albumart_summary">Kilit ekranında ve Andoid Auto\'da albüm kapağını gösterir</string>

@@ -3,8 +3,8 @@
 <resources>
     <!-- e.g. 10 requests remaining -->
     <plurals name="user_requests">
-        <item quantity="one">1 request kvar</item>
-        <item quantity="other">%d requests kvar</item>
+        <item quantity="one">1 önskning kvar</item>
+        <item quantity="other">%d önskningar kvar</item>
     </plurals>
     <!-- Timer -->
     <plurals name="minutes">
