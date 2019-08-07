@@ -28,8 +28,10 @@
     -->
     <string name="translators_list" translatable="false">
         3316482
+        \nAnany Meza
         \narkon94
         \nAtFr
+        \nCliptons
         \nCrawl
         \nDiavolo69
         \nDicky Aditya
@@ -49,6 +51,7 @@
         \nIdesmi
         \nIgor Pissolati
         \njlhertel
+        \nkairuu
         \nKana
         \nKathya Teran
         \nkoppe-pan
@@ -59,6 +62,7 @@
         \nMayra Ignacia Celedon Vidal
         \nMelisa Wijaya
         \nMiinc
+        \nMuhammed Gültekin
         \nNartis
         \nNick
         \nnicoro
@@ -66,6 +70,7 @@
         \nOnachi- San
         \nPaul Chang
         \nPoussinou
+        \nPraxic
         \nPytey
         \nRap Management
         \nReza Rangga Dirza
@@ -89,6 +94,7 @@
         \nYassir Lagrich
         \nYayaka
         \n노스스
+        \n尤鈺欽
     </string>
 
     <string-array name="pref_language_names" translatable="false">
