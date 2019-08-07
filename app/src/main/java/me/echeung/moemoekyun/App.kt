@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
@@ -72,8 +72,8 @@ class App : Application(), ServiceConnection {
         val context: Context
             get() = INSTANCE
 
-        val authUtil: AuthUtil
-            get() = radioClient!!.authUtil
+        val authTokenUtil: AuthTokenUtil
+            get() = radioClient!!.authTokenUtil
 
         fun clearService() {
             isServiceBound = false

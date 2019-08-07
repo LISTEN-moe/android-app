@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.NonNull
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.ActionMenuView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
@@ -25,11 +23,15 @@ import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.ui.dialog.SleepTimerDialog
 import me.echeung.moemoekyun.ui.view.PlayPauseView
+import me.echeung.moemoekyun.util.AuthUtil
+import me.echeung.moemoekyun.util.AuthUtil.broadcastAuthEvent
+import me.echeung.moemoekyun.util.AuthUtil.showLoginActivity
+import me.echeung.moemoekyun.util.AuthUtil.showLogoutDialog
+import me.echeung.moemoekyun.util.AuthUtil.showRegisterActivity
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import me.echeung.moemoekyun.util.system.openUrl
 import me.echeung.moemoekyun.util.system.startActivity
-import me.echeung.moemoekyun.util.system.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class MainActivity : BaseActivity() {
@@ -73,7 +75,7 @@ class MainActivity : BaseActivity() {
         initNowPlaying()
 
         // Invalidate token if needed
-        val isAuthed = App.authUtil.checkAuthTokenValidity()
+        val isAuthed = App.authTokenUtil.checkAuthTokenValidity()
         viewModel.isAuthed = isAuthed
         if (!isAuthed) {
             App.userViewModel!!.reset()
@@ -216,7 +218,7 @@ class MainActivity : BaseActivity() {
 
     private fun updateMenuOptions(menu: Menu) {
         // Toggle visibility of logout option based on authentication status
-        menu.findItem(R.id.action_logout).isVisible = App.authUtil.isAuthenticated
+        menu.findItem(R.id.action_logout).isVisible = App.authTokenUtil.isAuthenticated
 
         // Pre-check the library mode
         when (App.preferenceUtil!!.libraryMode) {
@@ -281,47 +283,8 @@ class MainActivity : BaseActivity() {
         broadcastAuthEvent()
 
         when (requestCode) {
-            LOGIN_FAVORITE_REQUEST -> sendBroadcast(Intent(RadioService.TOGGLE_FAVORITE))
+            AuthUtil.LOGIN_FAVORITE_REQUEST -> sendBroadcast(Intent(RadioService.TOGGLE_FAVORITE))
         }
-    }
-
-    @JvmOverloads
-    fun showLoginActivity(requestCode: Int = LOGIN_REQUEST) {
-        startActivityForResult(Intent(this, AuthLoginActivity::class.java), requestCode)
-    }
-
-    private fun broadcastAuthEvent() {
-        sendBroadcast(Intent(MainActivity.AUTH_EVENT))
-
-        viewModel.isAuthed = App.authUtil.isAuthenticated
-    }
-
-    private fun showRegisterActivity() {
-        startActivity<AuthRegisterActivity>(this)
-    }
-
-    private fun showLogoutDialog() {
-        AlertDialog.Builder(this, R.style.DialogTheme)
-                .setTitle(R.string.logout)
-                .setMessage(getString(R.string.logout_confirmation))
-                .setPositiveButton(R.string.logout) { _, _ -> logout() }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
-                .show()
-    }
-
-    private fun logout() {
-        if (!App.authUtil.isAuthenticated) {
-            return
-        }
-
-        App.authUtil.clearAuthToken()
-        App.userViewModel!!.reset()
-
-        applicationContext.toast(getString(R.string.logged_out), Toast.LENGTH_LONG)
-        invalidateOptionsMenu()
-
-        broadcastAuthEvent()
     }
 
     // Now playing stuff
@@ -359,8 +322,8 @@ class MainActivity : BaseActivity() {
     }
 
     private fun favorite() {
-        if (!App.authUtil.isAuthenticated) {
-            showLoginActivity(LOGIN_FAVORITE_REQUEST)
+        if (!App.authTokenUtil.isAuthenticated) {
+            showLoginActivity(AuthUtil.LOGIN_FAVORITE_REQUEST)
             return
         }
 
@@ -375,12 +338,5 @@ class MainActivity : BaseActivity() {
         App.preferenceUtil!!.libraryMode = libraryMode
         broadcastAuthEvent()
         invalidateOptionsMenu()
-    }
-
-    companion object {
-        private const val LOGIN_REQUEST = 0
-        private const val LOGIN_FAVORITE_REQUEST = 1
-
-        const val AUTH_EVENT = "auth_event"
     }
 }

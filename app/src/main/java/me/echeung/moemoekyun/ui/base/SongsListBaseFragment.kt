@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.ui.view.SongList
+import me.echeung.moemoekyun.util.AuthUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.viewmodel.SongListViewModel
@@ -40,7 +40,7 @@ abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), S
 
     public override fun getIntentFilter(): IntentFilter? {
         val intentFilter = IntentFilter()
-        intentFilter.addAction(MainActivity.AUTH_EVENT)
+        intentFilter.addAction(AuthUtil.AUTH_EVENT)
         intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT)
 
         return intentFilter

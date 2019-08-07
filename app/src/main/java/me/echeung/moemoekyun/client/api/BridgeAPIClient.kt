@@ -11,13 +11,13 @@ import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.v4.APIClient4
 import me.echeung.moemoekyun.client.api.v5.APIClient5
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import okhttp3.OkHttpClient
 
 /**
  * Ghetto API client for selectively using the v4 or v5 APIs.
  */
-class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthUtil) : APIClient {
+class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthTokenUtil) : APIClient {
 
     private val api4: APIClient4 = APIClient4(okHttpClient, authUtil)
     private val api5: APIClient5 = APIClient5(okHttpClient, authUtil)

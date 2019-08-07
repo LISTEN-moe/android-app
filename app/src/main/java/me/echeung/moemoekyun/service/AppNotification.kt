@@ -68,7 +68,7 @@ class AppNotification internal constructor(private val service: RadioService) {
             builder.setSubText(song.albumsString)
 
             // Add favorite action if logged in
-            if (App.authUtil.isAuthenticated) {
+            if (App.authTokenUtil.isAuthenticated) {
                 builder.addAction(NotificationCompat.Action(
                         if (song.favorite) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp,
                         if (song.favorite) service.getString(R.string.action_unfavorite) else service.getString(R.string.action_favorite),

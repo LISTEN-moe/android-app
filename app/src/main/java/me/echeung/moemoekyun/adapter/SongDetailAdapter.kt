@@ -30,7 +30,7 @@ class SongDetailAdapter(private val activity: Activity, songs: List<Song>) : Arr
         val song = getItem(position) ?: return binding.root
 
         binding.song = song
-        binding.isAuthenticated = App.authUtil.isAuthenticated
+        binding.isAuthenticated = App.authTokenUtil.isAuthenticated
         binding.canRequest = App.userViewModel!!.requestsRemaining != 0
         binding.isFavorite = song.favorite
 

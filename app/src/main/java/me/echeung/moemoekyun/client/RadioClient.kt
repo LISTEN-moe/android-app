@@ -7,7 +7,7 @@ import me.echeung.moemoekyun.client.api.BridgeAPIClient
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.api.library.Library
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
@@ -17,16 +17,16 @@ class RadioClient(context: Context) {
     val api: APIClient
     val socket: Socket
     val stream: Stream
-    val authUtil: AuthUtil
+    val authTokenUtil: AuthTokenUtil
 
     init {
         setLibrary(App.preferenceUtil!!.libraryMode)
 
         val okHttpClient = NetworkClient.client
 
-        this.authUtil = AuthUtil(context)
+        this.authTokenUtil = AuthTokenUtil(context)
 
-        this.api = BridgeAPIClient(okHttpClient, authUtil)
+        this.api = BridgeAPIClient(okHttpClient, authTokenUtil)
 
         this.socket = Socket(okHttpClient)
         this.stream = Stream(context)

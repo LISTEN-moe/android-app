@@ -23,7 +23,7 @@ import me.echeung.moemoekyun.client.api.v4.service.FavoritesService
 import me.echeung.moemoekyun.client.api.v4.service.RequestsService
 import me.echeung.moemoekyun.client.api.v4.service.SongsService
 import me.echeung.moemoekyun.client.api.v4.service.UsersService
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.SongListItem
 import okhttp3.OkHttpClient
@@ -31,7 +31,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
 
-class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : APIClient {
+class APIClient4(okHttpClient: OkHttpClient, private val authTokenUtil: AuthTokenUtil) : APIClient {
 
     private val authService: AuthService
     private val favoritesService: FavoritesService
@@ -71,12 +71,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
                         val userToken = response!!.token
 
                         if (response.mfa) {
-                            authUtil.mfaToken = userToken
+                            authTokenUtil.mfaToken = userToken
                             callback.onMfaRequired(userToken)
                             return
                         }
 
-                        authUtil.authToken = userToken
+                        authTokenUtil.authToken = userToken
                         callback.onSuccess(userToken)
                     }
                 })
@@ -89,12 +89,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun authenticateMfa(otpToken: String, callback: LoginCallback) {
-        authService.mfa(authUtil.mfaAuthTokenWithPrefix, AuthService.LoginMfaBody(otpToken))
+        authService.mfa(authTokenUtil.mfaAuthTokenWithPrefix, AuthService.LoginMfaBody(otpToken))
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<AuthResponse>(callback) {
                     override fun success(response: AuthResponse?) {
                         val userToken = response!!.token
-                        authUtil.authToken = userToken
-                        authUtil.clearMfaAuthToken()
+                        authTokenUtil.authToken = userToken
+                        authTokenUtil.clearMfaAuthToken()
                         callback.onSuccess(userToken)
                     }
                 })
@@ -120,12 +120,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun getUserInfo(callback: UserInfoCallback) {
-        if (!authUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        usersService.getUserInfo(authUtil.authTokenWithPrefix, "@me")
+        usersService.getUserInfo(authTokenUtil.authTokenWithPrefix, "@me")
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<UserResponse>(callback) {
                     override fun success(response: UserResponse?) {
                         callback.onSuccess(response!!.user)
@@ -139,12 +139,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun getUserFavorites(callback: UserFavoritesCallback) {
-        if (!authUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        favoritesService.getFavorites(authUtil.authTokenWithPrefix, RadioClient.library!!.name, "@me")
+        favoritesService.getFavorites(authTokenUtil.authTokenWithPrefix, RadioClient.library!!.name, "@me")
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<FavoritesResponse>(callback) {
                     override fun success(response: FavoritesResponse?) {
                         val favorites = response!!.favorites
@@ -180,12 +180,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     private fun favoriteSong(songId: Int, callback: FavoriteSongCallback) {
-        if (!authUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        favoritesService.favorite(authUtil.authTokenWithPrefix, songId.toString())
+        favoritesService.favorite(authTokenUtil.authTokenWithPrefix, songId.toString())
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
                         callback.onSuccess()
@@ -200,12 +200,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     private fun unfavoriteSong(songId: Int, callback: FavoriteSongCallback) {
-        if (!authUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        favoritesService.removeFavorite(authUtil.authTokenWithPrefix, songId.toString())
+        favoritesService.removeFavorite(authTokenUtil.authTokenWithPrefix, songId.toString())
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
                         callback.onSuccess()
@@ -220,12 +220,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun requestSong(songId: Int, callback: RequestSongCallback) {
-        if (!authUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        requestsService.request(authUtil.authTokenWithPrefix, RadioClient.library!!.name, songId.toString())
+        requestsService.request(authTokenUtil.authTokenWithPrefix, RadioClient.library!!.name, songId.toString())
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<BaseResponse>(callback) {
                     override fun success(response: BaseResponse?) {
                         callback.onSuccess()
@@ -239,12 +239,12 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun getSongs(callback: SongsCallback) {
-        if (!authUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }
 
-        songsService.getSongs(authUtil.authTokenWithPrefix, RadioClient.library!!.name)
+        songsService.getSongs(authTokenUtil.authTokenWithPrefix, RadioClient.library!!.name)
                 .enqueue(object : ErrorHandlingAdapter.WrappedCallback<SongsResponse>(callback) {
                     override fun success(response: SongsResponse?) {
                         callback.onSuccess(response!!.songs)
@@ -259,7 +259,7 @@ class APIClient4(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) : A
      * @param callback Listener to handle the response.
      */
     override fun search(query: String?, callback: SearchCallback) {
-        if (!authUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             callback.onFailure(AUTH_ERROR)
             return
         }

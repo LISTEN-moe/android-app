@@ -30,8 +30,8 @@ import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
-import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
+import me.echeung.moemoekyun.util.AuthUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.TimeUtil
@@ -222,7 +222,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                         App.radioViewModel!!.currentSongProgress, 1f)
 
         // Favorite action
-        if (App.authUtil.isAuthenticated) {
+        if (App.authTokenUtil.isAuthenticated) {
             val currentSong = App.radioViewModel!!.currentSong
             val favoriteIcon = if (currentSong == null || !currentSong.favorite)
                 R.drawable.ic_star_border_24dp
@@ -295,9 +295,9 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                     } // Do nothing
                 }
 
-                MainActivity.AUTH_EVENT -> {
+                AuthUtil.AUTH_EVENT -> {
                     socket!!.reconnect()
-                    if (!App.authUtil.isAuthenticated) {
+                    if (!App.authTokenUtil.isAuthenticated) {
                         App.radioViewModel!!.isFavorited = false
                         updateNotification()
                     }
@@ -416,7 +416,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         intentFilter.addAction(SongActionsUtil.REQUEST_EVENT)
         intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
         intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON)
-        intentFilter.addAction(MainActivity.AUTH_EVENT)
+        intentFilter.addAction(AuthUtil.AUTH_EVENT)
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
 
         registerReceiver(intentReceiver, intentFilter)
@@ -488,7 +488,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         val songId = currentSong.id
         if (songId == -1) return
 
-        if (!App.authUtil.isAuthenticated) {
+        if (!App.authTokenUtil.isAuthenticated) {
             showLoginRequiredToast()
             return
         }
