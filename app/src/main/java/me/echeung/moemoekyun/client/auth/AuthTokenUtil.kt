@@ -2,8 +2,7 @@ package me.echeung.moemoekyun.client.auth
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import me.echeung.moemoekyun.client.api.BridgeAPIClient
-
+import me.echeung.moemoekyun.BuildConfig
 import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 
@@ -55,7 +54,7 @@ class AuthTokenUtil(context: Context) {
 
             // TODO: temporarily tracking whether we've logged in using the new API or not to force
             // users authenticated with the v4 API to log out
-            if (BridgeAPIClient.useApi5) {
+            if (BuildConfig.USE_V5_API) {
                 PreferenceManager.getDefaultSharedPreferences(context)
                         .edit()
                         .putBoolean(IS_V5_AUTHED, true)
@@ -107,7 +106,7 @@ class AuthTokenUtil(context: Context) {
         }
 
         // TODO: force log out v4 users if switched to v5 API
-        if (BridgeAPIClient.useApi5) {
+        if (BuildConfig.USE_V5_API) {
             val context = contextRef.get()
             if (context == null || !PreferenceManager.getDefaultSharedPreferences(context).getBoolean(IS_V5_AUTHED, false)) {
                 clearAuthToken()

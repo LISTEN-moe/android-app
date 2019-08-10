@@ -16,6 +16,8 @@ android {
         versionCode 83
         versionName '5.0.0-rc.2'
 
+        buildConfigField "boolean", "USE_V5_API", "false"
+
         vectorDrawables.useSupportLibrary = true
     }
 
