@@ -42,9 +42,17 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
                     override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
                         val original = chain.request()
                         val builder = original.newBuilder().method(original.method, original.body)
+
+                        // MFA login
+                        if (authTokenUtil.mfaToken != null) {
+                            builder.header("Authorization", authTokenUtil.mfaAuthTokenWithPrefix)
+                        }
+
+                        // Authorized calls
                         if (authTokenUtil.isAuthenticated) {
                             builder.header("Authorization", authTokenUtil.authTokenWithPrefix)
                         }
+
                         return chain.proceed(builder.build())
                     }
                 })
