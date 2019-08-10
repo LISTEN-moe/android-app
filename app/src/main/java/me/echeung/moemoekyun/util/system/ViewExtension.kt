@@ -11,7 +11,6 @@ import androidx.annotation.ColorInt
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.App
 
 private const val TRANSITION_DURATION = 250

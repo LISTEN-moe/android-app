@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.client
 import android.content.Context
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.APIClient
-import me.echeung.moemoekyun.client.api.BridgeAPIClient
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.api.library.Library
@@ -26,7 +25,7 @@ class RadioClient(context: Context) {
 
         this.authTokenUtil = AuthTokenUtil(context)
 
-        this.api = BridgeAPIClient(okHttpClient, authTokenUtil)
+        this.api = APIClient(okHttpClient, authTokenUtil)
 
         this.socket = Socket(okHttpClient)
         this.stream = Stream(context)

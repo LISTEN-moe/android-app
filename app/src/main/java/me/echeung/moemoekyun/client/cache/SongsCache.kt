@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.api.cache
+package me.echeung.moemoekyun.client.cache
 
 import android.util.Log
 import me.echeung.moemoekyun.client.api.APIClient

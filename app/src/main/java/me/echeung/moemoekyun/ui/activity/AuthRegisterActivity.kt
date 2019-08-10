@@ -12,7 +12,6 @@ import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.AuthActivityUtil
-import me.echeung.moemoekyun.util.system.finish
 import me.echeung.moemoekyun.util.system.toast
 
 class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding>() {

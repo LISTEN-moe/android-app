@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.api.v5
+package me.echeung.moemoekyun.client.api.data
 
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.SearchQuery
