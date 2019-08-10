@@ -4,18 +4,22 @@ fragment songFields on Song {
     titleRomaji
     titleSearchRomaji
     artists {
+        id
         name
         nameRomaji
-        nameSearchRomaji
+        image
     }
     albums {
+        id
         name
         nameRomaji
-        nameSearchRomaji
+        image
     }
     sources {
+        id
         name
         nameRomaji
+        image
     }
     duration
     enabled

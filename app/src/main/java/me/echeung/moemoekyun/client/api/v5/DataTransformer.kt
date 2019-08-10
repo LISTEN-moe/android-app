@@ -4,7 +4,9 @@ import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.SearchQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.client.model.User
+import me.echeung.moemoekyun.fragment.SongFields
 
 fun UserQuery.User.transform(): User {
     return User(
@@ -15,46 +17,50 @@ fun UserQuery.User.transform(): User {
     )
 }
 
-fun FavoritesQuery.Favorite.transform(): List<Song> {
-    if (this.favorites.isNullOrEmpty()) {
-        return emptyList()
-    }
-
-    return this.favorites
-            .mapNotNull { it?.song }
-            .map { it.transform() }
-}
-
 fun FavoritesQuery.Song.transform(): Song {
-    return Song(
-            this.fragments.songFields.id,
-            this.fragments.songFields.title,
-            this.fragments.songFields.titleRomaji,
-            this.fragments.songFields.titleSearchRomaji,
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            // TODO
-//            this.fragments.songFields.artists,
-//            this.fragments.songFields.sources,
-//            this.fragments.songFields.albums,
-            this.fragments.songFields.duration
-    )
+    return this.fragments.songFields.transform()
 }
 
 fun SearchQuery.Search.transform(): Song {
+    return this.fragments.songFields!!.transform()
+}
+
+private fun SongFields.transform(): Song {
     return Song(
-            this.fragments.songFields!!.id,
-            this.fragments.songFields.title,
-            this.fragments.songFields.titleRomaji,
-            this.fragments.songFields.titleSearchRomaji,
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            // TODO
-//            this.fragments.songFields.artists,
-//            this.fragments.songFields.sources,
-//            this.fragments.songFields.albums,
-            this.fragments.songFields.duration
+            this.id,
+            this.title,
+            this.titleRomaji,
+            this.titleSearchRomaji,
+            this.artists.mapNotNull { it?.transform() },
+            this.sources.mapNotNull { it?.transform() },
+            this.albums.mapNotNull { it?.transform() },
+            this.duration
+    )
+}
+
+private fun SongFields.Artist.transform(): SongDescriptor {
+    return SongDescriptor(
+            this.id,
+            this.name,
+            this.nameRomaji,
+            this.image
+    )
+}
+
+private fun SongFields.Source.transform(): SongDescriptor {
+    return SongDescriptor(
+            this.id,
+            this.name,
+            this.nameRomaji,
+            this.image
+    )
+}
+
+private fun SongFields.Album.transform(): SongDescriptor {
+    return SongDescriptor(
+            this.id,
+            this.name,
+            this.nameRomaji,
+            this.image
     )
 }

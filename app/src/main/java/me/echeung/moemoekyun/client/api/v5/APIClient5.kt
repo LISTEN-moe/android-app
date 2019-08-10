@@ -165,7 +165,11 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
                     }
 
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
-                        callback.onSuccess(response.data()?.user?.favorites?.transform() ?: emptyList())
+                        callback.onSuccess(
+                                response.data()?.user?.favorites?.favorites
+                                        ?.mapNotNull { it?.song }
+                                        ?.map { it.transform() }
+                                        ?: emptyList())
                     }
                 })
     }
@@ -178,7 +182,9 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
                     }
 
                     override fun onResponse(response: Response<CheckFavoriteQuery.Data>) {
-                        callback.onSuccess(response.data()?.checkFavorite!!.filterNotNull())
+                        callback.onSuccess(
+                                response.data()?.checkFavorite?.filterNotNull()
+                                        ?: emptyList())
                     }
                 })
     }
