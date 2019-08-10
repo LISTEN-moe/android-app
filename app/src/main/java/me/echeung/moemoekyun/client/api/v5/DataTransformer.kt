@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.client.api.v5
 
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.SearchQuery
+import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.SongDescriptor
@@ -23,6 +24,10 @@ fun FavoritesQuery.Song.transform(): Song {
 
 fun SearchQuery.Search.transform(): Song {
     return this.fragments.songFields!!.transform()
+}
+
+fun SongsQuery.Song1.transform(): Song {
+    return this.fragments.songFields.transform()
 }
 
 private fun SongFields.transform(): Song {

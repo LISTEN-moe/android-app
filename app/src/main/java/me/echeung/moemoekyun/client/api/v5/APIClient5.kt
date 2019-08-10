@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.client.api.v5
 
-import android.util.Log
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
@@ -13,11 +12,11 @@ import me.echeung.moemoekyun.LoginMfaMutation
 import me.echeung.moemoekyun.LoginMutation
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
-import me.echeung.moemoekyun.SearchQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.APIClient
+import me.echeung.moemoekyun.client.api.cache.SongsCache
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
@@ -29,12 +28,15 @@ import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.model.SongListItem
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthTokenUtil) : APIClient {
 
     private val client: ApolloClient
+    private val songsCache: SongsCache
 
     init {
         // Automatically add auth token to requests
@@ -57,12 +59,15 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
                         return chain.proceed(builder.build())
                     }
                 })
+                .callTimeout(1, TimeUnit.MINUTES)
                 .build()
 
         client = ApolloClient.builder()
             .serverUrl(Library.API_BASE)
             .okHttpClient(authClient)
             .build()
+
+        songsCache = SongsCache(this)
     }
 
     /**
@@ -235,15 +240,17 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
      */
     override fun getSongs(callback: SongsCallback) {
         // TODO: do actual pagination
-        client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
+        client.query(SongsQuery(0, 25000, Input.optional(RadioClient.isKpop())))
                 .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
                     }
 
                     override fun onResponse(response: Response<SongsQuery.Data>) {
+                        callback.onSuccess(emptyList())
                         // TODO
-                        Log.d("GraphQL response", response.data()?.songs?.songs.toString())
+//                        callback.onSuccess(
+//                                response.data()?.songs?.songs.map { it.transform() } ?: emptyList())
                     }
                 })
     }
@@ -255,15 +262,33 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
      * @param callback Listener to handle the response.
      */
     override fun search(query: String?, callback: SearchCallback) {
-        client.query(SearchQuery(query!!))
-                .enqueue(object : ApolloCall.Callback<SearchQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+        songsCache.getSongs(object : SongsCache.Callback {
+            override fun onRetrieve(songs: List<SongListItem>?) {
+                val filteredSongs = filterSongs(songs!!, query)
+                callback.onSuccess(filteredSongs)
+            }
 
-                    override fun onResponse(response: Response<SearchQuery.Data>) {
-                        callback.onSuccess(response.data()?.search?.map { it!!.transform() } ?: emptyList())
-                    }
-                })
+            override fun onFailure(message: String?) {
+                callback.onFailure(message)
+            }
+        })
+
+//        client.query(SearchQuery(query!!))
+//                .enqueue(object : ApolloCall.Callback<SearchQuery.Data>() {
+//                    override fun onFailure(e: ApolloException) {
+//                        callback.onFailure(e.message)
+//                    }
+//
+//                    override fun onResponse(response: Response<SearchQuery.Data>) {
+//                        callback.onSuccess(response.data()?.search?.map { it!!.transform() } ?: emptyList())
+//                    }
+//                })
+    }
+
+    private fun filterSongs(songs: List<SongListItem>, query: String?): List<Song> {
+        return songs.asSequence()
+                .filter { song -> song.search(query) }
+                .map { song -> SongListItem.toSong(song) }
+                .toList()
     }
 }
