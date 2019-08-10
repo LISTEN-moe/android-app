@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.api.v5
 
 import me.echeung.moemoekyun.FavoritesQuery
+import me.echeung.moemoekyun.SearchQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
@@ -25,18 +26,35 @@ fun FavoritesQuery.Favorite.transform(): List<Song> {
 }
 
 fun FavoritesQuery.Song.transform(): Song {
-    // TODO
-    return Song()
-//    return Song(
-//            this.fragments.songFields.id,
-//            this.fragments.songFields.title,
-//            this.fragments.songFields.titleRomaji,
-//            this.fragments.songFields.titleSearchRomaji,
+    return Song(
+            this.fragments.songFields.id,
+            this.fragments.songFields.title,
+            this.fragments.songFields.titleRomaji,
+            this.fragments.songFields.titleSearchRomaji,
+            emptyList(),
+            emptyList(),
+            emptyList(),
+            // TODO
 //            this.fragments.songFields.artists,
 //            this.fragments.songFields.sources,
 //            this.fragments.songFields.albums,
-//            this.fragments.songFields.duration,
-//            this.fragments.songFields.enabled,
-//            this.fragments.songFields.favorite
-//    )
+            this.fragments.songFields.duration
+    )
+}
+
+fun SearchQuery.Search.transform(): Song {
+    return Song(
+            this.fragments.songFields!!.id,
+            this.fragments.songFields.title,
+            this.fragments.songFields.titleRomaji,
+            this.fragments.songFields.titleSearchRomaji,
+            emptyList(),
+            emptyList(),
+            emptyList(),
+            // TODO
+//            this.fragments.songFields.artists,
+//            this.fragments.songFields.sources,
+//            this.fragments.songFields.albums,
+            this.fragments.songFields.duration
+    )
 }

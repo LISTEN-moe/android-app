@@ -67,6 +67,6 @@ class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthTokenUtil) : API
     }
 
     companion object {
-        const val useApi5: Boolean = true
+        const val useApi5: Boolean = false
     }
 }

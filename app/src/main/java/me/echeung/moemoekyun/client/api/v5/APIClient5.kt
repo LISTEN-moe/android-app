@@ -28,6 +28,7 @@ import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.model.Song
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 
@@ -164,7 +165,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
                     }
 
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
-                        callback.onSuccess(response.data()?.user?.favorites!!.transform())
+                        callback.onSuccess(response.data()?.user?.favorites?.transform() ?: emptyList())
                     }
                 })
     }
@@ -255,8 +256,7 @@ class APIClient5(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToke
                     }
 
                     override fun onResponse(response: Response<SearchQuery.Data>) {
-                        // TODO
-//                        callback.onSuccess(response.data()?.search?.transform())
+                        callback.onSuccess(response.data()?.search?.map { it!!.transform() } ?: emptyList())
                     }
                 })
     }
