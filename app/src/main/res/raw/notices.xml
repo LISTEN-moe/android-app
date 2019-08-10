@@ -45,9 +45,4 @@
         <url>http://square.github.io/okhttp/</url>
         <license>Apache Software License 2.0</license>
     </notice>
-    <notice>
-        <name>Retrofit</name>
-        <url>http://square.github.io/retrofit/</url>
-        <license>Apache Software License 2.0</license>
-    </notice>
 </notices>
