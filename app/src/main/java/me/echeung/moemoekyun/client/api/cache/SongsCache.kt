@@ -3,7 +3,7 @@ package me.echeung.moemoekyun.client.api.cache
 import android.util.Log
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.callback.SongsCallback
-import me.echeung.moemoekyun.client.model.SongListItem
+import me.echeung.moemoekyun.client.model.Song
 import java.util.GregorianCalendar
 
 /**
@@ -11,7 +11,7 @@ import java.util.GregorianCalendar
  */
 class SongsCache(private val apiClient: APIClient) {
 
-    private var cachedSongs: List<SongListItem>? = null
+    private var cachedSongs: List<Song>? = null
     private var lastUpdated = 0L
 
     private val isCacheValid: Boolean
@@ -28,7 +28,7 @@ class SongsCache(private val apiClient: APIClient) {
         }
 
         apiClient.getSongs(object : SongsCallback {
-            override fun onSuccess(songs: List<SongListItem>) {
+            override fun onSuccess(songs: List<Song>) {
                 lastUpdated = GregorianCalendar().timeInMillis
                 cachedSongs = songs
 
@@ -43,7 +43,7 @@ class SongsCache(private val apiClient: APIClient) {
     }
 
     interface Callback {
-        fun onRetrieve(songs: List<SongListItem>?)
+        fun onRetrieve(songs: List<Song>?)
 
         fun onFailure(message: String?)
     }

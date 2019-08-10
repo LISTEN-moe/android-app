@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.client.api
 
-import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
@@ -10,7 +9,6 @@ import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
-import me.echeung.moemoekyun.client.api.v4.APIClient4
 import me.echeung.moemoekyun.client.api.v5.APIClient5
 import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import okhttp3.OkHttpClient
@@ -20,13 +18,7 @@ import okhttp3.OkHttpClient
  */
 class BridgeAPIClient(okHttpClient: OkHttpClient, authUtil: AuthTokenUtil) : APIClient {
 
-    private val api4: APIClient4 = APIClient4(okHttpClient, authUtil)
-    private val api5: APIClient5 = APIClient5(okHttpClient, authUtil)
-
-    private val api: APIClient
-        get() {
-            return if (BuildConfig.USE_V5_API) api5 else api4
-        }
+    private val api: APIClient5 = APIClient5(okHttpClient, authUtil)
 
     override fun authenticate(username: String, password: String, callback: LoginCallback) {
         api.authenticate(username, password, callback)

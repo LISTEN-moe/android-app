@@ -16,8 +16,6 @@ android {
         versionCode 83
         versionName '5.0.0-rc.2'
 
-        buildConfigField "boolean", "USE_V5_API", "false"
-
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -96,10 +94,6 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.10.3'
-
-    final retrofit_version = '2.5.0'
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
 
     implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
 }

@@ -7,12 +7,14 @@ fragment songFields on Song {
         id
         name
         nameRomaji
+        nameSearchRomaji
         image
     }
     albums {
         id
         name
         nameRomaji
+        nameSearchRomaji
         image
     }
     sources {
