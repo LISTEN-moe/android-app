@@ -25,12 +25,3 @@
     @com.squareup.moshi.* <methods>;
 }
 -keep @com.squareup.moshi.JsonQualifier interface *
-
-# Retrofit
--keepattributes Signature, InnerClasses, EnclosingMethod
--keepclassmembers,allowshrinking,allowobfuscation interface * {
-    @retrofit2.http.* <methods>;
-}
--dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
--dontwarn kotlin.Unit
--dontwarn retrofit2.-KotlinExtensions
