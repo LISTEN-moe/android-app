@@ -1,5 +1,6 @@
 query UserQuery($username: String!) {
     user(username: $username) {
+        uuid
         username
         displayName
         avatarImage

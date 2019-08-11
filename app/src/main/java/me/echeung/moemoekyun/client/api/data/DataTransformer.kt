@@ -10,6 +10,7 @@ import me.echeung.moemoekyun.fragment.SongFields
 
 fun UserQuery.User.transform(): User {
     return User(
+            this.uuid,
             this.displayName!!,
             this.avatarImage,
             this.bannerImage,
