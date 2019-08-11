@@ -1,6 +1,6 @@
-query FavoritesQuery($username: String!) {
+query FavoritesQuery($username: String!, $kpop: Boolean) {
     user(username: $username) {
-        favorites {
+        favorites(kpop: $kpop) {
             favorites {
                 song {
                     ...songFields

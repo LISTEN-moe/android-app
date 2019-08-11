@@ -163,7 +163,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
      * @param callback Listener to handle the response.
      */
     fun getUserFavorites(callback: UserFavoritesCallback) {
-        client.query(FavoritesQuery("@me"))
+        client.query(FavoritesQuery("@me", Input.optional(RadioClient.isKpop())))
                 .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
