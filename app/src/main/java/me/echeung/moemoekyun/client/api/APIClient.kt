@@ -250,17 +250,6 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                 callback.onFailure(message)
             }
         })
-
-//        client.query(SearchQuery(query!!))
-//                .enqueue(object : ApolloCall.Callback<SearchQuery.Data>() {
-//                    fun onFailure(e: ApolloException) {
-//                        callback.onFailure(e.message)
-//                    }
-//
-//                    fun onResponse(response: Response<SearchQuery.Data>) {
-//                        callback.onSuccess(response.data()?.search?.map { it!!.transform() } ?: emptyList())
-//                    }
-//                })
     }
 
     /**
@@ -268,7 +257,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
      *
      * @param callback Listener to handle the response.
      */
-    fun getSongs(callback: SongsCallback) {
+    fun getAllSongs(callback: SongsCallback) {
         // TODO: do actual pagination
         client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
                 .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {

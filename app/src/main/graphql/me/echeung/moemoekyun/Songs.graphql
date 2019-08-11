@@ -27,22 +27,10 @@ fragment songFields on Song {
     enabled
 }
 
-query SongQuery($id: Int!) {
-    song(id: $id) {
-        ...songFields
-    }
-}
-
 query SongsQuery($offset: Int!, $count: Int!, $kpop: Boolean) {
     songs(offset: $offset, count: $count, kpop: $kpop) {
         songs {
             ...songFields
         }
-    }
-}
-
-query SearchQuery($query: ID!) {
-    search(query: $query) {
-        ...songFields
     }
 }

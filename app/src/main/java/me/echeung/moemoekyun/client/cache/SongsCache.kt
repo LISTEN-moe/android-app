@@ -27,7 +27,7 @@ class SongsCache(private val apiClient: APIClient) {
             callback.onRetrieve(cachedSongs)
         }
 
-        apiClient.getSongs(object : SongsCallback {
+        apiClient.getAllSongs(object : SongsCallback {
             override fun onSuccess(songs: List<Song>) {
                 lastUpdated = GregorianCalendar().timeInMillis
                 cachedSongs = songs
