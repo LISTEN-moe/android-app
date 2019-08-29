@@ -11,53 +11,30 @@
         android:background="?android:attr/selectableItemBackground"
         android:baselineAligned="false"
         android:gravity="fill_horizontal"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingBottom="8dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:paddingTop="8dp">
 
-        <LinearLayout
-            android:layout_width="0dp"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@{song.titleString}"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:text="@{song.titleString}"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-light"
-                android:singleLine="true"
-                android:text="@{song.artistsString}"
-                android:textColor="@color/light_grey"
-                android:textSize="14sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical"
-            android:visibility="@{song.favorite}">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_star_24dp"
-                android:tint="?attr/colorAccent" />
-
-        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:singleLine="true"
+            android:text="@{song.artistsString}"
+            android:textColor="@color/light_grey"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
