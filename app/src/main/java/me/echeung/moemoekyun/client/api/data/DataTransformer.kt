@@ -18,7 +18,12 @@ fun UserQuery.User.transform(): User {
 }
 
 fun FavoritesQuery.Song.transform(): Song {
-    return this.fragments.songFields.transform()
+    val song = this.fragments.songFields.transform()
+
+    // Manually mark a user's favorite as favorited
+    song.favorite = true
+
+    return song
 }
 
 fun SongsQuery.Song1.transform(): Song {

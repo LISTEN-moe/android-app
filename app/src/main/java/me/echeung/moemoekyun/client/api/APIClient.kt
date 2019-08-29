@@ -178,11 +178,6 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                                 response.data()?.user?.favorites?.favorites
                                         ?.mapNotNull { it?.song }
                                         ?.map { it.transform() }
-                                        ?.map {
-                                            // Manually mark all favorites as favorited
-                                            it.favorite = true
-                                            it
-                                        }
                                         ?: emptyList())
                     }
                 })
