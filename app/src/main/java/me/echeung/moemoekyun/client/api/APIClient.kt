@@ -59,7 +59,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                         return chain.proceed(builder.build())
                     }
                 })
-                .callTimeout(1, TimeUnit.MINUTES)
+                .connectTimeout(1, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
                 .build()
 
         client = ApolloClient.builder()
