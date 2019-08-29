@@ -483,9 +483,9 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     }
 
     private fun favoriteCurrentSong() {
-        val currentSong = App.radioViewModel!!.currentSong ?: return
+        val song = App.radioViewModel!!.currentSong ?: return
 
-        val songId = currentSong.id
+        val songId = song.id
         if (songId == -1) return
 
         if (!App.authTokenUtil.isAuthenticated) {
@@ -493,14 +493,15 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             return
         }
 
-        val isCurrentlyFavorite = currentSong.favorite
+        val isCurrentlyFavorite = song.favorite
 
-        val callback = object : FavoriteSongCallback {
+        App.radioClient!!.api.toggleFavorite(songId, object : FavoriteSongCallback {
             override fun onSuccess() {
                 val currentSong = App.radioViewModel!!.currentSong
                 if (currentSong!!.id == songId) {
                     App.radioViewModel!!.isFavorited = !isCurrentlyFavorite
                 }
+                song.favorite = !isCurrentlyFavorite
 
                 val favIntent = Intent(SongActionsUtil.FAVORITE_EVENT)
                 sendBroadcast(favIntent)
@@ -512,9 +513,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             override fun onFailure(message: String?) {
                 applicationContext.toast(message)
             }
-        }
-
-        App.radioClient!!.api.toggleFavorite(songId, isCurrentlyFavorite, callback)
+        })
     }
 
     private fun showLoginRequiredToast() {

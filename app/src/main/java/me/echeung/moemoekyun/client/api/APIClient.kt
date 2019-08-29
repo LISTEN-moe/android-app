@@ -200,10 +200,9 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
      * Toggles a song's favorite status
      *
      * @param songId Song to update favorite status of.
-     * @param isFavorite Whether the song is currently favorited.
      * @param callback Listener to handle the response.
      */
-    fun toggleFavorite(songId: Int, isFavorite: Boolean, callback: FavoriteSongCallback) {
+    fun toggleFavorite(songId: Int, callback: FavoriteSongCallback) {
         client.mutate(FavoriteMutation(songId))
                 .enqueue(object : ApolloCall.Callback<FavoriteMutation.Data>() {
                     override fun onFailure(e: ApolloException) {

@@ -45,7 +45,7 @@ object SongActionsUtil {
         val songId = song.id
         val isCurrentlyFavorite = song.favorite
 
-        val callback = object : FavoriteSongCallback {
+        App.radioClient!!.api.toggleFavorite(songId, object : FavoriteSongCallback {
             override fun onSuccess() {
                 if (App.radioViewModel!!.currentSong!!.id == songId) {
                     App.radioViewModel!!.isFavorited = !isCurrentlyFavorite
@@ -77,9 +77,7 @@ object SongActionsUtil {
 
                 activity.runOnUiThread { activity.applicationContext.toast(message) }
             }
-        }
-
-        App.radioClient!!.api.toggleFavorite(songId, isCurrentlyFavorite, callback)
+        })
     }
 
     /**
