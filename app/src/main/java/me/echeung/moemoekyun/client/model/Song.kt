@@ -8,7 +8,6 @@ data class Song(
     var id: Int = 0,
     var title: String? = null,
     var titleRomaji: String? = null,
-    var titleSearchRomaji: String? = null,
     var artists: List<SongDescriptor>? = null,
     var sources: List<SongDescriptor>? = null,
     var albums: List<SongDescriptor>? = null,
@@ -68,7 +67,6 @@ data class Song(
 
         return title.orEmpty().contains(query, ignoreCase = true) ||
                 titleRomaji.orEmpty().contains(query, ignoreCase = true) ||
-                titleSearchRomaji.orEmpty().contains(query, ignoreCase = true) ||
                 artists.orEmpty().any { it.contains(query) } ||
                 albums.orEmpty().any { it.contains(query) } ||
                 sources.orEmpty().any { it.contains(query) }

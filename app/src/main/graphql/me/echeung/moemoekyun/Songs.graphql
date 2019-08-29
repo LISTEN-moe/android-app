@@ -2,19 +2,16 @@ fragment songFields on Song {
     id
     title
     titleRomaji
-    titleSearchRomaji
     artists {
         id
         name
         nameRomaji
-        nameSearchRomaji
         image
     }
     albums {
         id
         name
         nameRomaji
-        nameSearchRomaji
         image
     }
     sources {

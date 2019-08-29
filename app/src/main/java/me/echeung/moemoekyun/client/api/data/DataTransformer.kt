@@ -30,7 +30,6 @@ private fun SongFields.transform(): Song {
             this.id,
             this.title,
             this.titleRomaji,
-            this.titleSearchRomaji,
             this.artists.mapNotNull { it?.transform() },
             this.sources.mapNotNull { it?.transform() },
             this.albums.mapNotNull { it?.transform() },
