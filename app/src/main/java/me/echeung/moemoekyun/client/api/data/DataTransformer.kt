@@ -13,8 +13,7 @@ fun UserQuery.User.transform(): User {
             this.uuid,
             this.displayName!!,
             this.avatarImage,
-            this.bannerImage,
-            this.additionalSongRequests
+            this.bannerImage
     )
 }
 

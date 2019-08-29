@@ -6,7 +6,6 @@
     <data>
         <variable name="song" type="me.echeung.moemoekyun.client.model.Song" />
         <variable name="isAuthenticated" type="boolean" />
-        <variable name="canRequest" type="boolean" />
         <variable name="isFavorite" type="boolean" />
     </data>
 
@@ -114,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
-                android:enabled="@{isAuthenticated &amp;&amp; canRequest}"
+                android:enabled="@{isAuthenticated}"
                 android:maxLines="1"
                 android:scaleType="fitCenter"
                 android:text="@string/action_request"

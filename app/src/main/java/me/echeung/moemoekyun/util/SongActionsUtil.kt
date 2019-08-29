@@ -56,7 +56,7 @@ object SongActionsUtil {
 
                 activity.runOnUiThread {
                     // Broadcast event
-                    activity.sendBroadcast(Intent(SongActionsUtil.FAVORITE_EVENT))
+                    activity.sendBroadcast(Intent(FAVORITE_EVENT))
 
                     if (isCurrentlyFavorite) {
                         // Undo action
@@ -88,19 +88,13 @@ object SongActionsUtil {
      * @param song The song to request.
      */
     fun request(activity: Activity?, song: Song) {
-        val user = App.userViewModel!!.user ?: return
-
         App.radioClient!!.api.requestSong(song.id, object : RequestSongCallback {
             override fun onSuccess() {
                 if (activity == null) return
 
                 activity.runOnUiThread {
                     // Broadcast event
-                    activity.sendBroadcast(Intent(SongActionsUtil.REQUEST_EVENT))
-
-                    // Instantly update remaining requests number to appear responsive
-                    val remainingRequests = user.requestsRemaining - 1
-                    App.userViewModel!!.requestsRemaining = remainingRequests
+                    activity.sendBroadcast(Intent(REQUEST_EVENT))
 
                     val toastMsg = if (App.preferenceUtil!!.shouldShowRandomRequestTitle())
                         activity.getString(R.string.requested_song, song.toString())

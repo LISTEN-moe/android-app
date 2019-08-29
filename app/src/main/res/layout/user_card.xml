@@ -88,15 +88,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-light"
-                        android:text="@{@plurals/user_requests(userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining, userVm.requestsRemaining)}"
-                        android:textColor="@color/white"
-                        android:textSize="14sp" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:fontFamily="sans-serif-light"
                         android:text="@{radioVm.queueSize == radioVm.queuePosition ? @string/queue_info_none_queued(radioVm.queueSize) : @string/queue_info(radioVm.queueSize, radioVm.queuePosition)}"
                         android:textColor="@color/white"
                         android:textSize="14sp"

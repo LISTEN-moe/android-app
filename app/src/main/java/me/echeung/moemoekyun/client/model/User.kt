@@ -4,8 +4,5 @@ data class User(
     val uuid: String,
     val displayName: String,
     val avatarImage: String?,
-    val bannerImage: String?,
-
-        // Mutable field, to handle quickly updating in UI
-    var requestsRemaining: Int
+    val bannerImage: String?
 )

@@ -31,7 +31,6 @@ class SongDetailAdapter(private val activity: Activity, songs: List<Song>) : Arr
 
         binding.song = song
         binding.isAuthenticated = App.authTokenUtil.isAuthenticated
-        binding.canRequest = App.userViewModel!!.requestsRemaining != 0
         binding.isFavorite = song.favorite
 
         binding.requestBtn.setOnClickListener { SongActionsUtil.request(activity, song) }

@@ -10,7 +10,6 @@ class UserViewModel : BaseViewModel() {
     var user: User? = null
         set(user) {
             field = user
-            requestsRemaining = user?.requestsRemaining ?: 0
             notifyPropertyChanged(BR.user)
         }
 
@@ -35,24 +34,11 @@ class UserViewModel : BaseViewModel() {
             notifyPropertyChanged(BR.hasFavorites)
         }
 
-    var requestsRemaining: Int
-        @Bindable
-        get() = if (this.user == null) {
-            0
-        } else this.user!!.requestsRemaining
-        set(requestsRemaining) {
-            if (this.user != null) {
-                this.user!!.requestsRemaining = requestsRemaining
-            }
-            notifyPropertyChanged(BR.requestsRemaining)
-        }
-
     fun reset() {
         user = null
         avatarUrl = null
         bannerUrl = null
 
-        requestsRemaining = 0
         hasFavorites = false
     }
 }
