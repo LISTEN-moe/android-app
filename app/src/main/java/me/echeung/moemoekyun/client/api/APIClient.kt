@@ -171,16 +171,29 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                         callback.onFailure(e.message)
                     }
 
+                    // TODO: get less info for this and search, and get more on detail opening
+
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
                         callback.onSuccess(
                                 response.data()?.user?.favorites?.favorites
                                         ?.mapNotNull { it?.song }
                                         ?.map { it.transform() }
+                                        ?.map {
+                                            // Manually mark all favorites as favorited
+                                            it.favorite = true
+                                            it
+                                        }
                                         ?: emptyList())
                     }
                 })
     }
 
+    /**
+     * Gets the favorited status of a list of songs.
+     *
+     * @param songIds IDs of songs to check status of.
+     * @param callback Listener to handle the response.
+     */
     fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
         client.query(CheckFavoriteQuery(songIds))
                 .enqueue(object : ApolloCall.Callback<CheckFavoriteQuery.Data>() {
