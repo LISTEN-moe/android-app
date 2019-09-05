@@ -12,15 +12,8 @@ class UpdateResponse : BaseResponse() {
         val song: Song? = null
         val startTime: String? = null
         val lastPlayed: List<Song>? = null
-        val queue: Queue? = null
         val listeners: Int = 0
         val requester: User? = null
         val event: Event? = null
-    }
-
-    class Queue {
-        val inQueue: Int = 0
-        val inQueueByUser: Int = 0
-        val inQueueBeforeUser: Int = 0
     }
 }

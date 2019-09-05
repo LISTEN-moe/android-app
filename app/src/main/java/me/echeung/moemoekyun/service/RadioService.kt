@@ -157,11 +157,10 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         viewModel.setRequester(info.requester)
         viewModel.event = info.event
 
-        if (info.queue != null) {
-            viewModel.queueSize = info.queue.inQueue
-            viewModel.inQueueByUser = info.queue.inQueueByUser
-            viewModel.queuePosition = info.queue.inQueueBeforeUser
-        }
+        // TODO: get queue info
+//        viewModel.queueSize = info.queue.inQueue
+//        viewModel.inQueueByUser = info.queue.inQueueByUser
+//        viewModel.queuePosition = info.queue.inQueueBeforeUser
 
         var startTime: Calendar? = null
         try {

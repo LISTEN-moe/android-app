@@ -1,0 +1,6 @@
+subscription UserQueueSubscription($service: String!, $userUuid: String!) {
+    userQueue(service: $service, uuid: $userUuid) {
+        amount
+        before
+    }
+}
