@@ -24,6 +24,16 @@ fragment songFields on Song {
     enabled
 }
 
+fragment songListFields on Song {
+    id
+    title
+    titleRomaji
+    artists {
+        name
+        nameRomaji
+    }
+}
+
 query SongsQuery($offset: Int!, $count: Int!, $kpop: Boolean) {
     songs(offset: $offset, count: $count, kpop: $kpop) {
         songs {
