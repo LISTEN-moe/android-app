@@ -96,6 +96,9 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer-core:2.10.4'
 
     implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
+
+    // For detecting memory leaks; see https://square.github.io/leakcanary/
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
 }
 
 apollo {
