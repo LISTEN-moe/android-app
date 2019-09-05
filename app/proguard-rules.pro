@@ -1,6 +1,7 @@
 -dontobfuscate
 
 -keep public class me.echeung.moemoekyun.client.socket.response.**
+-keep public class me.echeung.moemoekyun.client.model.Event
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
