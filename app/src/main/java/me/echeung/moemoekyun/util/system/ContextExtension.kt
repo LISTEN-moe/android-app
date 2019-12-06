@@ -28,7 +28,7 @@ inline fun <reified T : Activity> Activity.startActivity(context: Context) {
  *
  * @param resultCode Result code passed back to the activity that started this activity.
  */
-inline fun Activity.finish(resultCode: Int) {
+fun Activity.finish(resultCode: Int) {
     val returnIntent = Intent()
     setResult(resultCode, returnIntent)
     finish()
