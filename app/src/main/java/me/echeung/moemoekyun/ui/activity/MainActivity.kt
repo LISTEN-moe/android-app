@@ -25,6 +25,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.databinding.ActivityMainBinding
@@ -95,30 +96,7 @@ class MainActivity : BaseActivity() {
         }
 
         // Google Cast
-        // TODO: clean this all up
-        val castContext = CastContext.getSharedInstance(this)
-
-        // TODO: proper metadata and update it
-        val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
-        movieMetadata.putString(MediaMetadata.KEY_TITLE, "Test Stream")
-        movieMetadata.putString(MediaMetadata.KEY_ALBUM_ARTIST, "Test Artist")
-        movieMetadata.addImage(WebImage(Uri.parse("https://github.com/mkaflowski/HybridMediaPlayer/blob/master/images/cover.jpg?raw=true")))
-        val mediaInfo = MediaInfo.Builder(Jpop.INSTANCE.streamUrl)
-                .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
-                .setContentType(MimeTypes.AUDIO_UNKNOWN)
-                .setMetadata(movieMetadata).build()
-
-        val mediaItems = arrayOf(MediaQueueItem.Builder(mediaInfo).build())
-
-        castPlayer = CastPlayer(castContext)
-        castPlayer?.setSessionAvailabilityListener(object : SessionAvailabilityListener {
-            override fun onCastSessionAvailable() {
-                // TODO: pause on device, hook up controls
-                castPlayer?.loadItems(mediaItems, 0, 0, Player.REPEAT_MODE_OFF)
-            }
-
-            override fun onCastSessionUnavailable() {}
-        })
+        CastDelegate().init(this)
     }
 
     override fun onDestroy() {
@@ -236,9 +214,15 @@ class MainActivity : BaseActivity() {
     private fun initMenu() {
         val toolbar = binding.nowPlaying.toolbar
         toolbar.inflateMenu(R.menu.menu_main)
+        nowPlayingSheetMenu = toolbar.menu
+
+        CastButtonFactory.setUpMediaRouteButton(
+                applicationContext,
+                nowPlayingSheetMenu,
+                R.id.media_route_menu_item)
+
         toolbar.setOnMenuItemClickListener { this.onOptionsItemSelected(it) }
 
-        nowPlayingSheetMenu = toolbar.menu
         updateMenuOptions(nowPlayingSheetMenu!!)
 
         // Secondary menu with search
@@ -247,7 +231,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-
         CastButtonFactory.setUpMediaRouteButton(
                 applicationContext,
                 menu,
