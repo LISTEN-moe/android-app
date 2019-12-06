@@ -39,7 +39,7 @@ class SettingsActivity : BaseActivity() {
         }
 
         private fun invalidateSettings() {
-            val languageSetting = findPreference(PreferenceUtil.PREF_GENERAL_LANGUAGE)
+            val languageSetting = findPreference<ListPreference>(PreferenceUtil.PREF_GENERAL_LANGUAGE)!!
             setSummary(languageSetting)
             languageSetting.setOnPreferenceChangeListener { _, o ->
                 setSummary(languageSetting, o)
@@ -47,7 +47,7 @@ class SettingsActivity : BaseActivity() {
                 true
             }
 
-            val downloadSetting = findPreference(PreferenceUtil.PREF_GENERAL_DOWNLOAD)
+            val downloadSetting = findPreference<ListPreference>(PreferenceUtil.PREF_GENERAL_DOWNLOAD)!!
             setSummary(downloadSetting)
             downloadSetting.setOnPreferenceChangeListener { _, o ->
                 setSummary(downloadSetting, o)
