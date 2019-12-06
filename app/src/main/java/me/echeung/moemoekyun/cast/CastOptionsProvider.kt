@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.service.cast
+package me.echeung.moemoekyun.cast
 
 import android.content.Context
 import com.google.android.gms.cast.framework.CastOptions
