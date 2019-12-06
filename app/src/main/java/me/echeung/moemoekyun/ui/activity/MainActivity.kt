@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.ui.activity
 
 import android.content.Intent
 import android.media.AudioManager
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -10,6 +11,16 @@ import androidx.annotation.NonNull
 import androidx.appcompat.widget.ActionMenuView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.ext.cast.CastPlayer
+import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
+import com.google.android.exoplayer2.util.MimeTypes
+import com.google.android.gms.cast.MediaInfo
+import com.google.android.gms.cast.MediaMetadata
+import com.google.android.gms.cast.MediaQueueItem
+import com.google.android.gms.cast.framework.CastButtonFactory
+import com.google.android.gms.cast.framework.CastContext
+import com.google.android.gms.common.images.WebImage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
@@ -47,6 +58,8 @@ class MainActivity : BaseActivity() {
     private var playPauseView: PlayPauseView? = null
     private var miniPlayPauseView: PlayPauseView? = null
 
+    private var castPlayer: CastPlayer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         // Replace splash screen theme
         setTheme(R.style.AppTheme)
@@ -80,6 +93,32 @@ class MainActivity : BaseActivity() {
         if (!isAuthed) {
             App.userViewModel!!.reset()
         }
+
+        // Google Cast
+        // TODO: clean this all up
+        val castContext = CastContext.getSharedInstance(this)
+
+        // TODO: proper metadata and update it
+        val movieMetadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
+        movieMetadata.putString(MediaMetadata.KEY_TITLE, "Test Stream")
+        movieMetadata.putString(MediaMetadata.KEY_ALBUM_ARTIST, "Test Artist")
+        movieMetadata.addImage(WebImage(Uri.parse("https://github.com/mkaflowski/HybridMediaPlayer/blob/master/images/cover.jpg?raw=true")))
+        val mediaInfo = MediaInfo.Builder(Jpop.INSTANCE.streamUrl)
+                .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
+                .setContentType(MimeTypes.AUDIO_UNKNOWN)
+                .setMetadata(movieMetadata).build()
+
+        val mediaItems = arrayOf(MediaQueueItem.Builder(mediaInfo).build())
+
+        castPlayer = CastPlayer(castContext)
+        castPlayer?.setSessionAvailabilityListener(object : SessionAvailabilityListener {
+            override fun onCastSessionAvailable() {
+                // TODO: pause on device, hook up controls
+                castPlayer?.loadItems(mediaItems, 0, 0, Player.REPEAT_MODE_OFF)
+            }
+
+            override fun onCastSessionUnavailable() {}
+        })
     }
 
     override fun onDestroy() {
@@ -94,6 +133,8 @@ class MainActivity : BaseActivity() {
         if (playPauseCallback != null) {
             viewModel.removeOnPropertyChangedCallback(playPauseCallback!!)
         }
+
+        castPlayer?.release()
 
         super.onDestroy()
     }
@@ -206,6 +247,12 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        CastButtonFactory.setUpMediaRouteButton(
+                applicationContext,
+                menu,
+                R.id.media_route_menu_item)
+
         updateMenuOptions(menu)
 
         return true

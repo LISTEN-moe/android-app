@@ -3,6 +3,11 @@
 -keep public class me.echeung.moemoekyun.client.socket.response.**
 -keep public class me.echeung.moemoekyun.client.model.Event
 
+# Google Cast
+-keep androidx.mediarouter.app.MediaRouteActionProvider {
+    *;
+}
+
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep public class * extends com.bumptech.glide.AppGlideModule

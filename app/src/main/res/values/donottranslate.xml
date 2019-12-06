@@ -2,6 +2,7 @@
 <resources>
 
     <string name="app_name" translatable="false">LISTEN.moe</string>
+    <string name="cast_app_id" translatable="false">6E4C737C</string>
     <string name="asset_statements" translatable="false">
     [{
         \"include\": \"https://listen.moe/.well-known/assetlinks.json\"

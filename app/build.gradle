@@ -95,6 +95,10 @@ dependencies {
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.10.4'
 
+    // Google Cast support
+    // TODO: remove from F-Droid version
+    implementation 'com.google.android.gms:play-services-cast-framework:18.0.0'
+
     implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
