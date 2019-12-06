@@ -18,13 +18,13 @@ import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import java.lang.ref.WeakReference
 
 class SongList(
-        activity: Activity,
-        private val songListViewModel: SongListViewModel,
-        private val songsList: RecyclerView,
-        private val swipeRefreshLayout: SwipeRefreshLayout?,
-        filterView: View,
-        listId: String,
-        private val loader: SongListLoader
+    activity: Activity,
+    private val songListViewModel: SongListViewModel,
+    private val songsList: RecyclerView,
+    private val swipeRefreshLayout: SwipeRefreshLayout?,
+    filterView: View,
+    listId: String,
+    private val loader: SongListLoader
 ) {
 
     private val activity: WeakReference<Activity> = WeakReference(activity)
