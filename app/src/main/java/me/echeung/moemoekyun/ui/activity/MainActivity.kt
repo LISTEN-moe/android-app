@@ -206,10 +206,7 @@ class MainActivity : BaseActivity() {
         toolbar.inflateMenu(R.menu.menu_main)
         nowPlayingSheetMenu = toolbar.menu
 
-        CastButtonFactory.setUpMediaRouteButton(
-                applicationContext,
-                nowPlayingSheetMenu,
-                R.id.media_route_menu_item)
+        cast?.initCastButton(nowPlayingSheetMenu)
 
         toolbar.setOnMenuItemClickListener { this.onOptionsItemSelected(it) }
 
@@ -221,10 +218,8 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        CastButtonFactory.setUpMediaRouteButton(
-                applicationContext,
-                menu,
-                R.id.media_route_menu_item)
+
+        cast?.initCastButton(menu)
 
         updateMenuOptions(menu)
 

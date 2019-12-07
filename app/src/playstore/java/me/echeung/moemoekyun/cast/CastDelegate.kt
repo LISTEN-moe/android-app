@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.cast
 
 import android.content.Context
 import android.net.Uri
+import android.view.Menu
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.cast.CastPlayer
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
@@ -9,14 +10,16 @@ import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.gms.cast.MediaInfo
 import com.google.android.gms.cast.MediaMetadata
 import com.google.android.gms.cast.MediaQueueItem
+import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.common.images.WebImage
 import me.echeung.moemoekyun.App
+import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 
-class CastDelegate(context: Context) : SessionAvailabilityListener, Socket.Listener {
+class CastDelegate(private val context: Context) : SessionAvailabilityListener, Socket.Listener {
 
     private val castPlayer: CastPlayer? = try {
         CastPlayer(CastContext.getSharedInstance(context))
@@ -32,6 +35,13 @@ class CastDelegate(context: Context) : SessionAvailabilityListener, Socket.Liste
 
     fun onDestroy() {
         castPlayer?.release()
+    }
+
+    fun initCastButton(menu: Menu?) {
+        CastButtonFactory.setUpMediaRouteButton(
+                context,
+                menu,
+                R.id.media_route_menu_item)
     }
 
     override fun onCastSessionAvailable() {
