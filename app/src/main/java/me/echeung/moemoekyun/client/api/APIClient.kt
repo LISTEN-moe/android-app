@@ -4,7 +4,11 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
+import com.apollographql.apollo.api.cache.http.HttpCachePolicy
+import com.apollographql.apollo.cache.http.ApolloHttpCache
+import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
 import com.apollographql.apollo.exception.ApolloException
+import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -33,6 +37,7 @@ import me.echeung.moemoekyun.client.cache.SongsCache
 import me.echeung.moemoekyun.client.model.Song
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthTokenUtil) {
@@ -65,8 +70,14 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                 .readTimeout(1, TimeUnit.MINUTES)
                 .build()
 
+        val cacheFile = File(App.context.filesDir, "apolloCache")
+        val cacheSize = 1024 * 1024.toLong()
+        val cacheStore = DiskLruHttpCacheStore(cacheFile, cacheSize)
+
         client = ApolloClient.builder()
             .serverUrl(Library.API_BASE)
+            .httpCache(ApolloHttpCache(cacheStore))
+            .defaultHttpCachePolicy(DEFAULT_CACHE_POLICY)
             .okHttpClient(authClient)
             .build()
 
@@ -271,6 +282,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
      */
     fun getSongDetails(songId: Int, callback: SongCallback) {
         client.query(SongQuery(songId))
+                .httpCachePolicy(SONG_CACHE_POLICY)
                 .enqueue(object : ApolloCall.Callback<SongQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
@@ -291,6 +303,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
     fun getAllSongs(callback: SongsCallback) {
         // TODO: do actual pagination
         client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
+                .httpCachePolicy(SONG_CACHE_POLICY)
                 .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {
                     override fun onFailure(e: ApolloException) {
                         callback.onFailure(e.message)
@@ -307,5 +320,10 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
         return songs.asSequence()
                 .filter { song -> song.search(query) }
                 .toList()
+    }
+
+    companion object {
+        private val DEFAULT_CACHE_POLICY = HttpCachePolicy.NETWORK_FIRST
+        private val SONG_CACHE_POLICY = HttpCachePolicy.CACHE_FIRST.expireAfter(1, TimeUnit.DAYS)
     }
 }
