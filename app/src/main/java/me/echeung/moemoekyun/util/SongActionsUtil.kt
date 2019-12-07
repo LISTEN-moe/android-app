@@ -30,30 +30,31 @@ object SongActionsUtil {
     fun showSongsDialog(activity: Activity?, title: String?, songs: List<Song>) {
         if (activity == null) return
 
-        // TODO: improve this
         val detailedSongs = songs.toMutableList()
-        songs.forEachIndexed { index, song ->
+        val adapter = SongDetailAdapter(activity, detailedSongs)
+
+        // Asynchronously update songs with more details
+        detailedSongs.forEachIndexed { index, song ->
             App.radioClient!!.api.getSongDetails(song.id, object : SongCallback {
                 override fun onSuccess(detailedSong: Song) {
                     detailedSongs[index] = detailedSong
 
-                    if (detailedSongs.size == songs.size) {
-                        activity.runOnUiThread {
-                            AlertDialog.Builder(activity, R.style.DialogTheme)
-                                    .setTitle(title)
-                                    .setAdapter(SongDetailAdapter(activity, detailedSongs), null)
-                                    .create()
-                                    .show()
-                        }
+                    activity.runOnUiThread {
+                        adapter.notifyDataSetInvalidated()
                     }
                 }
 
                 override fun onFailure(message: String?) {
-                    // nothing
+                    // Do nothing
                 }
             })
         }
 
+        AlertDialog.Builder(activity, R.style.DialogTheme)
+                .setTitle(title)
+                .setAdapter(adapter, null)
+                .create()
+                .show()
     }
 
     /**

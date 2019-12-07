@@ -301,6 +301,7 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
      */
     fun getAllSongs(callback: SongsCallback) {
         // TODO: do actual pagination
+        // TODO: maintain an actual DB of song info so we don't need to query as much stuff
         client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
                 .httpCachePolicy(SONG_CACHE_POLICY)
                 .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {
