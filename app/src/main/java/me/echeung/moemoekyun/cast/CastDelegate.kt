@@ -12,9 +12,11 @@ import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.common.images.WebImage
 import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.client.api.library.Jpop
+import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.socket.Socket
+import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 
-class CastDelegate(context: Context) : SessionAvailabilityListener {
+class CastDelegate(context: Context) : SessionAvailabilityListener, Socket.Listener {
 
     private val castPlayer: CastPlayer? = try {
         CastPlayer(CastContext.getSharedInstance(context))
@@ -24,6 +26,8 @@ class CastDelegate(context: Context) : SessionAvailabilityListener {
 
     init {
         castPlayer?.setSessionAvailabilityListener(this)
+
+        App.radioClient?.socket?.addListener(this)
     }
 
     fun onDestroy() {
@@ -33,13 +37,21 @@ class CastDelegate(context: Context) : SessionAvailabilityListener {
     override fun onCastSessionAvailable() {
         App.radioClient?.stream?.pause()
 
-        // TODO: proper metadata and update it
-        val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
-        metadata.putString(MediaMetadata.KEY_TITLE, "Test Stream")
-        metadata.putString(MediaMetadata.KEY_ARTIST, "Test Artist")
-        metadata.addImage(WebImage(Uri.parse("https://github.com/mkaflowski/HybridMediaPlayer/blob/master/images/cover.jpg?raw=true")))
+        playMedia()
+    }
 
-        val mediaInfo = MediaInfo.Builder(Jpop.INSTANCE.streamUrl)
+    private fun playMedia() {
+        val song = App.radioViewModel?.currentSong
+
+        val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
+        metadata.putString(MediaMetadata.KEY_TITLE, song?.titleString)
+        metadata.putString(MediaMetadata.KEY_ARTIST, song?.artistsString)
+        if (song?.albumArtUrl != null) {
+            metadata.addImage(WebImage(Uri.parse(song.albumArtUrl)))
+        }
+
+        // TODO: react to switching between jpop/kpop
+        val mediaInfo = MediaInfo.Builder(RadioClient.library?.streamUrl)
                 .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
                 .setContentType(MimeTypes.AUDIO_UNKNOWN)
                 .setMetadata(metadata).build()
@@ -54,6 +66,15 @@ class CastDelegate(context: Context) : SessionAvailabilityListener {
         // TODO: double check if it was playing before
 
         App.radioClient?.stream?.play()
+    }
+
+    // TODO: I don't think this works
+    override fun onSocketReceive(info: UpdateResponse.Details?) {
+        playMedia()
+    }
+
+    override fun onSocketFailure() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }

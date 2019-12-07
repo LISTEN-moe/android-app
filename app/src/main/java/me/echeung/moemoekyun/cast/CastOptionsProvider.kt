@@ -13,7 +13,6 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 class CastOptionsProvider : OptionsProvider {
 
     override fun getCastOptions(context: Context): CastOptions {
-
         val buttonActions: List<String> = listOf(
                 MediaIntentReceiver.ACTION_TOGGLE_PLAYBACK,
                 MediaIntentReceiver.ACTION_STOP_CASTING)
