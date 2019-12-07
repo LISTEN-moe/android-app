@@ -113,7 +113,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             }
         })
 
-        socket!!.setListener(this)
+        socket!!.addListener(this)
         socket!!.connect()
 
         App.preferenceUtil!!.registerListener(this)
@@ -135,8 +135,9 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         AlbumArtUtil.unregisterListener(this)
 
         stop()
-        socket!!.disconnect()
-        stream!!.removeListener()
+        socket?.removeListener(this)
+        socket?.disconnect()
+        stream?.removeListener()
 
         if (receiverRegistered) {
             unregisterReceiver(intentReceiver)

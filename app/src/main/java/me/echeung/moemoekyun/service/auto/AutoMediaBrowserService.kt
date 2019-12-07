@@ -18,7 +18,7 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
     override fun onCreate() {
         super.onCreate()
 
-        if (App.isServiceBound) {
+        if (App.service != null) {
             setSessionToken()
         } else {
             val intent = Intent(applicationContext, RadioService::class.java)
@@ -47,7 +47,6 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
     }
 
     override fun onServiceDisconnected(arg0: ComponentName) {
-        App.clearService()
     }
 
     private fun setSessionToken() {

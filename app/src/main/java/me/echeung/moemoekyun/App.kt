@@ -42,21 +42,12 @@ class App : Application(), ServiceConnection {
     }
 
     override fun onServiceDisconnected(arg0: ComponentName) {
-        clearService()
     }
 
     companion object {
         private lateinit var INSTANCE: App
 
         var service: RadioService? = null
-            set(radioService) {
-                if (!isServiceBound) {
-                    field = radioService
-                    isServiceBound = true
-                }
-            }
-        var isServiceBound = false
-            private set
 
         var radioClient: RadioClient? = null
             private set
@@ -74,10 +65,5 @@ class App : Application(), ServiceConnection {
 
         val authTokenUtil: AuthTokenUtil
             get() = radioClient!!.authTokenUtil
-
-        fun clearService() {
-            isServiceBound = false
-            radioClient!!.socket.setListener(null)
-        }
     }
 }

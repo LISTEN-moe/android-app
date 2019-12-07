@@ -27,13 +27,17 @@ class Socket(private val client: OkHttpClient) : WebSocketListener() {
     private var socket: WebSocket? = null
     private val socketLock = Any()
 
-    private var listener: Listener? = null
+    private val listeners: MutableList<Listener> = ArrayList()
 
     private val heartbeatHandler = Handler()
     private var heartbeatTask: Runnable? = null
 
-    fun setListener(listener: Listener?) {
-        this.listener = listener
+    fun addListener(listener: Listener) {
+        this.listeners.add(listener)
+    }
+
+    fun removeListener(listener: Listener) {
+        this.listeners.remove(listener)
     }
 
     fun connect() {
@@ -148,13 +152,13 @@ class Socket(private val client: OkHttpClient) : WebSocketListener() {
     }
 
     private fun parseResponse(jsonString: String?) {
-        if (listener == null) {
-            Log.d(TAG, "Listener is null")
+        if (listeners.isEmpty()) {
+            Log.d(TAG, "No listeners")
             return
         }
 
         if (jsonString == null) {
-            listener!!.onSocketFailure()
+            listeners.forEach { it.onSocketFailure() }
             return
         }
 
@@ -181,7 +185,7 @@ class Socket(private val client: OkHttpClient) : WebSocketListener() {
                     // TODO: check if songs are favorited
                     // TODO: get queue info
 
-                    listener!!.onSocketReceive(updateResponse.d)
+                    listeners.forEach { it.onSocketReceive(updateResponse.d) }
                 }
 
                 // Heartbeat ACK
