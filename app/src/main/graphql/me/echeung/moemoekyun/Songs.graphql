@@ -3,19 +3,16 @@ fragment songFields on Song {
     title
     titleRomaji
     artists {
-        id
         name
         nameRomaji
         image
     }
     albums {
-        id
         name
         nameRomaji
         image
     }
     sources {
-        id
         name
         nameRomaji
         image
@@ -43,7 +40,7 @@ query SongQuery($id: Int!) {
 query SongsQuery($offset: Int!, $count: Int!, $kpop: Boolean) {
     songs(offset: $offset, count: $count, kpop: $kpop) {
         songs {
-            ...songFields
+            ...songListFields
         }
     }
 }

@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.client.model
 import me.echeung.moemoekyun.App
 
 data class SongDescriptor(
-    val id: Int = 0,
     val name: String? = null,
     val nameRomaji: String? = null,
     val image: String? = null

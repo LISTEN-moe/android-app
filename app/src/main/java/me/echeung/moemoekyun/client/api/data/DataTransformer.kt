@@ -8,6 +8,8 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.fragment.SongFields
+import me.echeung.moemoekyun.fragment.SongListFields
+import me.echeung.moemoekyun.ui.view.SongList
 
 fun UserQuery.User.transform(): User {
     return User(
@@ -19,7 +21,7 @@ fun UserQuery.User.transform(): User {
 }
 
 fun FavoritesQuery.Song.transform(): Song {
-    val song = this.fragments.songFields.transform()
+    val song = this.fragments.songListFields.transform()
 
     // Manually mark a user's favorite as favorited
     song.favorite = true
@@ -32,7 +34,7 @@ fun SongQuery.Song.transform(): Song {
 }
 
 fun SongsQuery.Song1.transform(): Song {
-    return this.fragments.songFields.transform()
+    return this.fragments.songListFields.transform()
 }
 
 private fun SongFields.transform(): Song {
@@ -49,7 +51,6 @@ private fun SongFields.transform(): Song {
 
 private fun SongFields.Artist.transform(): SongDescriptor {
     return SongDescriptor(
-            this.id,
             this.name,
             this.nameRomaji,
             this.image
@@ -58,7 +59,6 @@ private fun SongFields.Artist.transform(): SongDescriptor {
 
 private fun SongFields.Source.transform(): SongDescriptor {
     return SongDescriptor(
-            this.id,
             this.name,
             this.nameRomaji,
             this.image
@@ -67,9 +67,24 @@ private fun SongFields.Source.transform(): SongDescriptor {
 
 private fun SongFields.Album.transform(): SongDescriptor {
     return SongDescriptor(
-            this.id,
             this.name,
             this.nameRomaji,
             this.image
+    )
+}
+
+private fun SongListFields.transform(): Song {
+    return Song(
+            this.id,
+            this.title,
+            this.titleRomaji,
+            this.artists.mapNotNull { it?.transform() }
+    )
+}
+
+private fun SongListFields.Artist.transform(): SongDescriptor {
+    return SongDescriptor(
+            this.name,
+            this.nameRomaji
     )
 }
