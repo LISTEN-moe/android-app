@@ -291,7 +291,6 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                     override fun onResponse(response: Response<SongQuery.Data>) {
                         callback.onSuccess(response.data()?.song!!.transform())
                     }
-
                 })
     }
 

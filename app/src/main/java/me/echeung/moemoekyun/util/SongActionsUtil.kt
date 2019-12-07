@@ -13,6 +13,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
+import me.echeung.moemoekyun.client.api.callback.SongCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.system.clipboardManager
 import me.echeung.moemoekyun.util.system.toast
@@ -29,11 +30,30 @@ object SongActionsUtil {
     fun showSongsDialog(activity: Activity?, title: String?, songs: List<Song>) {
         if (activity == null) return
 
-        AlertDialog.Builder(activity, R.style.DialogTheme)
-                .setTitle(title)
-                .setAdapter(SongDetailAdapter(activity, songs), null)
-                .create()
-                .show()
+        // TODO: improve this
+        val detailedSongs = songs.toMutableList()
+        songs.forEachIndexed { index, song ->
+            App.radioClient!!.api.getSongDetails(song.id, object : SongCallback {
+                override fun onSuccess(detailedSong: Song) {
+                    detailedSongs[index] = detailedSong
+
+                    if (detailedSongs.size == songs.size) {
+                        activity.runOnUiThread {
+                            AlertDialog.Builder(activity, R.style.DialogTheme)
+                                    .setTitle(title)
+                                    .setAdapter(SongDetailAdapter(activity, detailedSongs), null)
+                                    .create()
+                                    .show()
+                        }
+                    }
+                }
+
+                override fun onFailure(message: String?) {
+                    // nothing
+                }
+            })
+        }
+
     }
 
     /**
