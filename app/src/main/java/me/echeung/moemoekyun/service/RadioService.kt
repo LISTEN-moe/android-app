@@ -135,8 +135,10 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         AlbumArtUtil.unregisterListener(this)
 
         stop()
+
         socket?.removeListener(this)
         socket?.disconnect()
+
         stream?.removeListener()
 
         if (receiverRegistered) {

@@ -12,6 +12,7 @@ import me.echeung.moemoekyun.LoginMfaMutation
 import me.echeung.moemoekyun.LoginMutation
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
+import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.RadioClient
@@ -21,6 +22,7 @@ import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.api.callback.SearchCallback
+import me.echeung.moemoekyun.client.api.callback.SongCallback
 import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
@@ -259,6 +261,26 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                 callback.onFailure(message)
             }
         })
+    }
+
+    /**
+     * Gets details for a song.
+     *
+     * @param songId Song to get details for.
+     * @param callback Listener to handle the response.
+     */
+    fun getSongDetails(songId: Int, callback: SongCallback) {
+        client.query(SongQuery(songId))
+                .enqueue(object : ApolloCall.Callback<SongQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+                        callback.onFailure(e.message)
+                    }
+
+                    override fun onResponse(response: Response<SongQuery.Data>) {
+                        callback.onSuccess(response.data()?.song!!.transform())
+                    }
+
+                })
     }
 
     /**
