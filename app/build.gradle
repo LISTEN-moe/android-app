@@ -84,17 +84,17 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.0.0'
 
-    implementation 'com.squareup.okhttp3:okhttp:4.1.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
     implementation 'com.squareup.moshi:moshi:1.8.0'
 
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     implementation "com.apollographql.apollo:apollo-http-cache:$apollo_version"
 
-    final glide_version = '4.9.0'
+    final glide_version = '4.10.0'
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
 
-    final exoplayer_version = '2.10.4'
+    final exoplayer_version = '2.10.8'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
     implementation "com.google.android.exoplayer:extension-cast:$exoplayer_version"
 
@@ -105,7 +105,7 @@ dependencies {
     implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0-beta-3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 }
 
 apollo {
