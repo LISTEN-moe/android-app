@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.ui.activity
 
 import android.content.Intent
 import android.media.AudioManager
-import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -11,16 +10,7 @@ import androidx.annotation.NonNull
 import androidx.appcompat.widget.ActionMenuView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.ext.cast.CastPlayer
-import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
-import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.gms.cast.MediaInfo
-import com.google.android.gms.cast.MediaMetadata
-import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastButtonFactory
-import com.google.android.gms.cast.framework.CastContext
-import com.google.android.gms.common.images.WebImage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
@@ -59,7 +49,7 @@ class MainActivity : BaseActivity() {
     private var playPauseView: PlayPauseView? = null
     private var miniPlayPauseView: PlayPauseView? = null
 
-    private var castPlayer: CastPlayer? = null
+    private var cast: CastDelegate? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Replace splash screen theme
@@ -96,7 +86,7 @@ class MainActivity : BaseActivity() {
         }
 
         // Google Cast
-        CastDelegate().init(this)
+        cast = CastDelegate(this)
     }
 
     override fun onDestroy() {
@@ -112,7 +102,7 @@ class MainActivity : BaseActivity() {
             viewModel.removeOnPropertyChangedCallback(playPauseCallback!!)
         }
 
-        castPlayer?.release()
+        cast?.onDestroy()
 
         super.onDestroy()
     }
