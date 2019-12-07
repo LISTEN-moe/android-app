@@ -1,5 +1,15 @@
-subscription UserQueueSubscription($service: String!, $userUuid: String!) {
-    userQueue(service: $service, uuid: $userUuid) {
+query QueueQuery {
+    queue
+}
+
+subscription QueueSubscription($service: String!) {
+    queue(service: $service) {
+        amount
+    }
+}
+
+subscription UserQueueSubscription($service: String!, $uuid: String!) {
+    userQueue(service: $service, uuid: $uuid) {
         amount
         before
     }

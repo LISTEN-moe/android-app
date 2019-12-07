@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.client.api
 
 import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.ApolloSubscriptionCall
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
@@ -14,11 +15,14 @@ import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LoginMfaMutation
 import me.echeung.moemoekyun.LoginMutation
+import me.echeung.moemoekyun.QueueQuery
+import me.echeung.moemoekyun.QueueSubscription
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
+import me.echeung.moemoekyun.UserQueueSubscription
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
@@ -184,8 +188,6 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                         callback.onFailure(e.message)
                     }
 
-                    // TODO: get less info for this and search, and get more on detail opening
-
                     override fun onResponse(response: Response<FavoritesQuery.Data>) {
                         callback.onSuccess(
                                 response.data()?.user?.favorites?.favorites
@@ -312,6 +314,70 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                     override fun onResponse(response: Response<SongsQuery.Data>) {
                         callback.onSuccess(
                                 response.data()?.songs?.songs?.map { it.transform() } ?: emptyList())
+                    }
+                })
+    }
+
+    // TODO
+    fun getQueue() {
+        client.query(QueueQuery())
+                .enqueue(object : ApolloCall.Callback<QueueQuery.Data>() {
+                    override fun onFailure(e: ApolloException) {
+
+                    }
+
+                    override fun onResponse(response: Response<QueueQuery.Data>) {
+                        // response.data()?.queue
+                    }
+                })
+
+        client.subscribe(QueueSubscription(RadioClient.library!!.name))
+                .execute(object : ApolloSubscriptionCall.Callback<QueueSubscription.Data> {
+                    override fun onFailure(e: ApolloException) {
+
+                    }
+
+                    override fun onResponse(response: Response<QueueSubscription.Data>) {
+                        // response.data()?.queue
+                    }
+
+                    override fun onConnected() {
+
+                    }
+
+                    override fun onTerminated() {
+
+                    }
+
+                    override fun onCompleted() {
+
+                    }
+                })
+    }
+
+    // TODO
+    fun getUserQueue() {
+        client.subscribe(UserQueueSubscription(RadioClient.library!!.name, "user-uuid"))
+                .execute(object : ApolloSubscriptionCall.Callback<UserQueueSubscription.Data> {
+                    override fun onFailure(e: ApolloException) {
+
+                    }
+
+                    override fun onResponse(response: Response<UserQueueSubscription.Data>) {
+                        // response.data()?.userQueue?.amount
+                        // response.data()?.userQueue?.before
+                    }
+
+                    override fun onConnected() {
+
+                    }
+
+                    override fun onTerminated() {
+
+                    }
+
+                    override fun onCompleted() {
+
                     }
                 })
     }
