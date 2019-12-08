@@ -27,7 +27,7 @@ class RadioClient(context: Context) {
 
         this.api = APIClient(okHttpClient, authTokenUtil)
 
-        this.socket = Socket(okHttpClient)
+        this.socket = Socket(context, okHttpClient)
         this.stream = Stream(context)
     }
 

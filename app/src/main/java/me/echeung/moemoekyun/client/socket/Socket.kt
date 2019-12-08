@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.client.socket
 
+import android.content.Context
 import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
@@ -18,7 +19,10 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import java.io.IOException
 
-class Socket(private val client: OkHttpClient) : WebSocketListener() {
+class Socket(
+        private val context: Context,
+        private val client: OkHttpClient
+) : WebSocketListener() {
 
     private var retryTime = RETRY_TIME_MIN
     private var attemptingReconnect = false
@@ -204,7 +208,7 @@ class Socket(private val client: OkHttpClient) : WebSocketListener() {
             when (notificationResponse!!.t) {
                 EventNotificationResponse.TYPE -> {
                     val eventResponse = getResponse(EventNotificationResponse::class.java, jsonString)
-                    EventNotification.notify(eventResponse!!.d!!.event!!.name)
+                    EventNotification.notify(context, eventResponse!!.d!!.event!!.name)
                 }
             }
         } catch (e: IOException) {
