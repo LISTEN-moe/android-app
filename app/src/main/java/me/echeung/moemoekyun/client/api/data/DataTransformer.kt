@@ -9,7 +9,6 @@ import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.fragment.SongFields
 import me.echeung.moemoekyun.fragment.SongListFields
-import me.echeung.moemoekyun.ui.view.SongList
 
 fun UserQuery.User.transform(): User {
     return User(

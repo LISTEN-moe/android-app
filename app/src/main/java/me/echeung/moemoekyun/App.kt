@@ -11,6 +11,8 @@ import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
+import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.koin.androidContext
@@ -34,6 +36,9 @@ class App : Application(), ServiceConnection {
         val appModule = module {
             single { albumArtUtil }
             single { preferenceUtil }
+            single { SongActionsUtil(get(), get()) }
+            single { SongSortUtil(get()) }
+
             single { radioClient }
             single { radioClient!!.authTokenUtil }
 

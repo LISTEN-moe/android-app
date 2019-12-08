@@ -12,7 +12,11 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongDetailsBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 
-class SongDetailAdapter(private val activity: Activity, songs: List<Song>) : ArrayAdapter<Song>(activity, 0, songs) {
+class SongDetailAdapter(
+        private val activity: Activity,
+        songs: List<Song>,
+        private val songActionsUtil: SongActionsUtil
+) : ArrayAdapter<Song>(activity, 0, songs) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = LayoutInflater.from(context)
@@ -33,17 +37,17 @@ class SongDetailAdapter(private val activity: Activity, songs: List<Song>) : Arr
         binding.isAuthenticated = App.authTokenUtil.isAuthenticated
         binding.isFavorite = song.favorite
 
-        binding.requestBtn.setOnClickListener { SongActionsUtil.request(activity, song) }
+        binding.requestBtn.setOnClickListener { songActionsUtil.request(activity, song) }
 
         binding.favoriteBtn.setOnClickListener {
-            SongActionsUtil.toggleFavorite(activity, song)
+            songActionsUtil.toggleFavorite(activity, song)
 
             song.favorite = !song.favorite
             binding.isFavorite = song.favorite
         }
 
         binding.root.setOnLongClickListener { v ->
-            SongActionsUtil.copyToClipboard(v.context, song)
+            songActionsUtil.copyToClipboard(v.context, song)
             true
         }
 

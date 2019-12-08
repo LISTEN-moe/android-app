@@ -9,31 +9,27 @@ import me.echeung.moemoekyun.adapter.SongsAdapter
 import me.echeung.moemoekyun.client.model.Song
 import java.util.Comparator
 
-object SongSortUtil {
+class SongSortUtil(
+        private val context: Context
+) {
 
-    private const val PREF_LIST_PREFIX_TYPE = "song_sort_list_type_"
-    private const val PREF_LIST_PREFIX_DESC = "song_sort_list_desc_"
-
-    private const val SORT_TITLE = "song_sort_title"
-    private const val SORT_ARTIST = "song_sort_artist"
-
-    fun setListSortType(context: Context, listId: String, sortType: String) {
+    fun setListSortType(listId: String, sortType: String) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
                 .putString(PREF_LIST_PREFIX_TYPE + listId, sortType)
                 .apply()
     }
 
-    fun setListSortDescending(context: Context, listId: String, descending: Boolean) {
+    fun setListSortDescending(listId: String, descending: Boolean) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
                 .putBoolean(PREF_LIST_PREFIX_DESC + listId, descending)
                 .apply()
     }
 
-    fun getComparator(context: Context, listId: String): Comparator<Song> {
-        val sortType = getSortTypeByListId(context, listId)
-        val sortDescending = getSortDescendingByListId(context, listId)
+    fun getComparator(listId: String): Comparator<Song> {
+        val sortType = getSortTypeByListId(listId)
+        val sortDescending = getSortDescendingByListId(listId)
 
         return when (sortType) {
             SORT_ARTIST -> if (sortDescending)
@@ -49,15 +45,15 @@ object SongSortUtil {
         }
     }
 
-    fun initSortMenu(context: Context, listId: String, menu: Menu) {
-        val sortTypeId = when (getSortTypeByListId(context, listId)) {
+    fun initSortMenu(listId: String, menu: Menu) {
+        val sortTypeId = when (getSortTypeByListId(listId)) {
             SORT_ARTIST -> R.id.action_sort_type_artist
             // Default is SORT_TITLE
             else -> R.id.action_sort_type_title
         }
         menu.findItem(sortTypeId).isChecked = true
 
-        val sortDescending = getSortDescendingByListId(context, listId)
+        val sortDescending = getSortDescendingByListId(listId)
         menu.findItem(R.id.action_sort_desc).isChecked = sortDescending
     }
 
@@ -85,13 +81,21 @@ object SongSortUtil {
         return false
     }
 
-    private fun getSortTypeByListId(context: Context, listKey: String): String {
+    private fun getSortTypeByListId(listKey: String): String {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getString(PREF_LIST_PREFIX_TYPE + listKey, SORT_TITLE)!!
     }
 
-    private fun getSortDescendingByListId(context: Context, listKey: String): Boolean {
+    private fun getSortDescendingByListId(listKey: String): Boolean {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getBoolean(PREF_LIST_PREFIX_DESC + listKey, false)
+    }
+
+    companion object {
+        private const val PREF_LIST_PREFIX_TYPE = "song_sort_list_type_"
+        private const val PREF_LIST_PREFIX_DESC = "song_sort_list_desc_"
+
+        private const val SORT_TITLE = "song_sort_title"
+        private const val SORT_ARTIST = "song_sort_artist"
     }
 }

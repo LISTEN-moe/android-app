@@ -46,6 +46,7 @@ class MainActivity : BaseActivity() {
 
     private val authTokenUtil: AuthTokenUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
+    private val songActionsUtil: SongActionsUtil by inject()
 
     private lateinit var binding: ActivityMainBinding
 
@@ -193,7 +194,7 @@ class MainActivity : BaseActivity() {
 
         // Long press song info to copy to clipboard
         vCurrentSong.setOnLongClickListener {
-            SongActionsUtil.copyToClipboard(this, radioViewModel.currentSong)
+            songActionsUtil.copyToClipboard(this, radioViewModel.currentSong)
             true
         }
 
@@ -298,6 +299,8 @@ class MainActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         handleAuthActivityResult(requestCode, resultCode, data)
+
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     // Now playing stuff
@@ -344,7 +347,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showHistory() {
-        SongActionsUtil.showSongsDialog(this, getString(R.string.last_played), radioViewModel.history)
+        songActionsUtil.showSongsDialog(this, getString(R.string.last_played), radioViewModel.history)
     }
 
     private fun setLibraryMode(libraryMode: String) {

@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.api.callback.SongCallback
@@ -18,10 +19,10 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.toast
 
-object SongActionsUtil {
-
-    const val REQUEST_EVENT = "req_event"
-    const val FAVORITE_EVENT = "fav_event"
+class SongActionsUtil(
+        private val radioClient: RadioClient,
+        private val preferenceUtil: PreferenceUtil
+) {
 
     fun showSongsDialog(activity: Activity, title: String?, song: Song) {
         showSongsDialog(activity, title, listOf(song))
@@ -31,7 +32,7 @@ object SongActionsUtil {
         if (activity == null) return
 
         val detailedSongs = songs.toMutableList()
-        val adapter = SongDetailAdapter(activity, detailedSongs)
+        val adapter = SongDetailAdapter(activity, detailedSongs, this)
 
         // Asynchronously update songs with more details
         detailedSongs.forEachIndexed { index, song ->
@@ -108,7 +109,7 @@ object SongActionsUtil {
      * @param song The song to request.
      */
     fun request(activity: Activity?, song: Song) {
-        App.radioClient!!.api.requestSong(song.id, object : RequestSongCallback {
+        radioClient.api.requestSong(song.id, object : RequestSongCallback {
             override fun onSuccess() {
                 if (activity == null) return
 
@@ -116,7 +117,7 @@ object SongActionsUtil {
                     // Broadcast event
                     activity.sendBroadcast(Intent(REQUEST_EVENT))
 
-                    val toastMsg = if (App.preferenceUtil!!.shouldShowRandomRequestTitle())
+                    val toastMsg = if (preferenceUtil.shouldShowRandomRequestTitle())
                         activity.getString(R.string.requested_song, song.toString())
                     else
                         activity.getString(R.string.requested_random_song)
@@ -144,5 +145,10 @@ object SongActionsUtil {
         context.clipboardManager.setPrimaryClip(clip)
 
         context.toast("${context.getString(R.string.copied_to_clipboard)}: $songInfo")
+    }
+
+    companion object {
+        const val REQUEST_EVENT = "req_event"
+        const val FAVORITE_EVENT = "fav_event"
     }
 }

@@ -15,6 +15,8 @@ import me.echeung.moemoekyun.adapter.SongsAdapter
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.viewmodel.SongListViewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.lang.ref.WeakReference
 
 class SongList(
@@ -25,7 +27,10 @@ class SongList(
     filterView: View,
     listId: String,
     private val loader: SongListLoader
-) {
+) : KoinComponent {
+
+    private val songActionsUtil: SongActionsUtil by inject()
+    private val songSortUtil: SongSortUtil by inject()
 
     private val activity: WeakReference<Activity> = WeakReference(activity)
     private val adapter: SongsAdapter = SongsAdapter(activity, listId)
@@ -113,14 +118,14 @@ class SongList(
     fun handleMenuItemClick(item: MenuItem): Boolean {
         val activityRef = activity.get() ?: return false
 
-        if (SongSortUtil.handleSortMenuItem(item, adapter)) {
+        if (songSortUtil.handleSortMenuItem(item, adapter)) {
             return true
         }
 
         if (item.itemId == R.id.action_random_request) {
             val randomSong = adapter.randomRequestSong
             if (randomSong != null) {
-                SongActionsUtil.request(activityRef, randomSong)
+                songActionsUtil.request(activityRef, randomSong)
             }
             return true
         }

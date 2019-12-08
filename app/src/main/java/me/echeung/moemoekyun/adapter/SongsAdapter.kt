@@ -12,10 +12,18 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongItemBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.lang.ref.WeakReference
 import java.util.Random
 
-class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter<Song, RecyclerView.ViewHolder>(DIFF_CALLBACK) {
+class SongsAdapter(
+        activity: Activity,
+        private val listId: String
+) : ListAdapter<Song, RecyclerView.ViewHolder>(DIFF_CALLBACK), KoinComponent {
+
+    private val songActionsUtil: SongActionsUtil by inject()
+    private val songSortUtil: SongSortUtil by inject()
 
     private val activity: WeakReference<Activity> = WeakReference(activity)
 
@@ -50,7 +58,7 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = DataBindingUtil.inflate<SongItemBinding>(layoutInflater, R.layout.song_item, parent, false)
-        return SongViewHolder(binding, this)
+        return SongViewHolder(binding, this, songActionsUtil)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -73,27 +81,21 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
     }
 
     fun sortType(sortType: String) {
-        val activityRef = activity.get() ?: return
-
-        SongSortUtil.setListSortType(activityRef, listId, sortType)
+        songSortUtil.setListSortType(listId, sortType)
         updateSongs()
     }
 
     fun sortDescending(descending: Boolean) {
-        val activityRef = activity.get() ?: return
-
-        SongSortUtil.setListSortDescending(activityRef, listId, descending)
+        songSortUtil.setListSortDescending(listId, descending)
         updateSongs()
     }
 
     private fun updateSongs() {
-        val activityRef = activity.get() ?: return
-
         if (allSongs == null || allSongs!!.isEmpty()) return
 
         visibleSongs = allSongs!!.asSequence()
                 .filter { song -> song.search(filterQuery) }
-                .sortedWith(SongSortUtil.getComparator(activityRef, listId))
+                .sortedWith(songSortUtil.getComparator(listId))
                 .toList()
 
         notifyDataSetChanged()
@@ -103,18 +105,22 @@ class SongsAdapter(activity: Activity, private val listId: String) : ListAdapter
         return activity.get()!!
     }
 
-    private class SongViewHolder internal constructor(private val binding: SongItemBinding, adapter: SongsAdapter) : RecyclerView.ViewHolder(binding.root) {
+    private class SongViewHolder internal constructor(
+            private val binding: SongItemBinding,
+            adapter: SongsAdapter,
+            songActionsUtil: SongActionsUtil
+    ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
                     val song = adapter.songs!![layoutPosition]
-                    SongActionsUtil.showSongsDialog(adapter.getActivity(), null, song)
+                    songActionsUtil.showSongsDialog(adapter.getActivity(), null, song)
                 }
             }
 
             binding.root.setOnLongClickListener {
                 val song = adapter.songs!![layoutPosition]
-                SongActionsUtil.copyToClipboard(adapter.getActivity(), song)
+                songActionsUtil.copyToClipboard(adapter.getActivity(), song)
                 true
             }
         }

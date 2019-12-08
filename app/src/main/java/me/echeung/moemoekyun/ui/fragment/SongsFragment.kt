@@ -27,6 +27,7 @@ import org.koin.android.ext.android.inject
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
+    private val songSortUtil: SongSortUtil by inject()
 
     init {
         layout = R.layout.fragment_songs
@@ -54,7 +55,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_sort, menu)
-        SongSortUtil.initSortMenu(requireContext(), LIST_ID, menu)
+        songSortUtil.initSortMenu(LIST_ID, menu)
 
         super.onCreateOptionsMenu(menu, inflater)
     }

@@ -32,6 +32,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
 
     private val radioClient: RadioClient by inject()
     private val authTokenUtil: AuthTokenUtil by inject()
+    private val songSortUtil: SongSortUtil by inject()
 
     private val radioViewModel: RadioViewModel by inject()
     private val userViewModel: UserViewModel by inject()
@@ -83,7 +84,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
             val popupMenu = PopupMenu(requireContext(), overflowBtn)
             popupMenu.inflate(R.menu.menu_sort)
 
-            SongSortUtil.initSortMenu(requireContext(), LIST_ID, popupMenu.menu)
+            songSortUtil.initSortMenu(LIST_ID, popupMenu.menu)
             popupMenu.setOnMenuItemClickListener { songList.handleMenuItemClick(it) }
             popupMenu.show()
         })

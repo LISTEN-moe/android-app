@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.ext.notificationManager

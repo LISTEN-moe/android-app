@@ -16,8 +16,8 @@ import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.util.system.NetworkUtil
 import me.echeung.moemoekyun.util.ext.wifiManager
+import me.echeung.moemoekyun.util.system.NetworkUtil
 
 class Stream(private val context: Context) {
 
