@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.SystemClock
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
@@ -18,7 +17,7 @@ import me.echeung.moemoekyun.util.ext.toast
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class SleepTimerDialog(@param:NonNull private val activity: Activity) : KoinComponent {
+class SleepTimerDialog(private val activity: Activity) : KoinComponent {
 
     private val preferenceUtil: PreferenceUtil by inject()
 
