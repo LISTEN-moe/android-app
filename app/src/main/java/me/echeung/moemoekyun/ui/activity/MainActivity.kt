@@ -10,7 +10,6 @@ import androidx.annotation.NonNull
 import androidx.appcompat.widget.ActionMenuView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.Observable
-import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
@@ -32,8 +31,8 @@ import me.echeung.moemoekyun.util.AuthActivityUtil.showLogoutDialog
 import me.echeung.moemoekyun.util.AuthActivityUtil.showRegisterActivity
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
-import me.echeung.moemoekyun.util.system.openUrl
-import me.echeung.moemoekyun.util.system.startActivity
+import me.echeung.moemoekyun.util.ext.openUrl
+import me.echeung.moemoekyun.util.ext.startActivity
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class MainActivity : BaseActivity() {

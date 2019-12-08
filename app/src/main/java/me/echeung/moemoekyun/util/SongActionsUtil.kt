@@ -15,8 +15,8 @@ import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.api.callback.SongCallback
 import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.util.system.clipboardManager
-import me.echeung.moemoekyun.util.system.toast
+import me.echeung.moemoekyun.util.ext.clipboardManager
+import me.echeung.moemoekyun.util.ext.toast
 
 object SongActionsUtil {
 

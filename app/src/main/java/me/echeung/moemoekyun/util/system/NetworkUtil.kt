@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.os.Build
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BuildConfig
+import me.echeung.moemoekyun.util.ext.connectivityManager
 
 object NetworkUtil {
 

@@ -12,11 +12,11 @@ import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.AuthActivityUtil
-import me.echeung.moemoekyun.util.system.clipboardManager
-import me.echeung.moemoekyun.util.system.finish
-import me.echeung.moemoekyun.util.system.getTrimmedText
-import me.echeung.moemoekyun.util.system.openUrl
-import me.echeung.moemoekyun.util.system.toast
+import me.echeung.moemoekyun.util.ext.clipboardManager
+import me.echeung.moemoekyun.util.ext.finish
+import me.echeung.moemoekyun.util.ext.getTrimmedText
+import me.echeung.moemoekyun.util.ext.openUrl
+import me.echeung.moemoekyun.util.ext.toast
 
 class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
 

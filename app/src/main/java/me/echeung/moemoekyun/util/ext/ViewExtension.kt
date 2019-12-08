@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util.system
+package me.echeung.moemoekyun.util.ext
 
 import android.animation.ValueAnimator
 import android.graphics.Bitmap

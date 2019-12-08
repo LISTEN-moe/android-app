@@ -10,7 +10,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
-import me.echeung.moemoekyun.util.system.notificationManager
+import me.echeung.moemoekyun.util.ext.notificationManager
 
 class AppNotification internal constructor(private val service: RadioService) {
 

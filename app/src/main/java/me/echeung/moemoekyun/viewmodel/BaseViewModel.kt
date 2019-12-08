@@ -11,9 +11,9 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.BindingAdapter
 import me.echeung.moemoekyun.BR
-import me.echeung.moemoekyun.util.system.loadImage
-import me.echeung.moemoekyun.util.system.toggleVisibility
-import me.echeung.moemoekyun.util.system.transitionBackgroundColor
+import me.echeung.moemoekyun.util.ext.loadImage
+import me.echeung.moemoekyun.util.ext.toggleVisibility
+import me.echeung.moemoekyun.util.ext.transitionBackgroundColor
 
 abstract class BaseViewModel : BaseObservable() {
 

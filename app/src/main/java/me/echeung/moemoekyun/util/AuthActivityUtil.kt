@@ -10,7 +10,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.ui.activity.AuthLoginActivity
 import me.echeung.moemoekyun.ui.activity.AuthRegisterActivity
-import me.echeung.moemoekyun.util.system.toast
+import me.echeung.moemoekyun.util.ext.toast
 
 object AuthActivityUtil {
     // Intent codes

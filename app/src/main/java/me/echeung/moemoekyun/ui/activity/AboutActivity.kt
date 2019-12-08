@@ -9,7 +9,7 @@ import de.psdev.licensesdialog.LicensesDialog
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.base.BaseActivity
-import me.echeung.moemoekyun.util.system.openUrl
+import me.echeung.moemoekyun.util.ext.openUrl
 
 class AboutActivity : BaseActivity(), View.OnClickListener {
 

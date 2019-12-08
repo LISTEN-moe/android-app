@@ -12,9 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
-import me.echeung.moemoekyun.util.system.alarmManager
-import me.echeung.moemoekyun.util.system.getPluralString
-import me.echeung.moemoekyun.util.system.toast
+import me.echeung.moemoekyun.util.ext.alarmManager
+import me.echeung.moemoekyun.util.ext.getPluralString
+import me.echeung.moemoekyun.util.ext.toast
 
 class SleepTimerDialog(@param:NonNull private val activity: Activity) {
 

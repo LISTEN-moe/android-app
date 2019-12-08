@@ -35,9 +35,9 @@ import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.system.TimeUtil
-import me.echeung.moemoekyun.util.system.isCarUiMode
-import me.echeung.moemoekyun.util.system.notificationManager
-import me.echeung.moemoekyun.util.system.toast
+import me.echeung.moemoekyun.util.ext.isCarUiMode
+import me.echeung.moemoekyun.util.ext.notificationManager
+import me.echeung.moemoekyun.util.ext.toast
 import java.text.ParseException
 import java.util.Calendar
 
