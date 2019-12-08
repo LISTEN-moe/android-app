@@ -19,6 +19,7 @@ import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import java.util.ArrayList
+import kotlin.math.max
 
 object AlbumArtUtil {
 
@@ -38,7 +39,7 @@ object AlbumArtUtil {
     private val maxScreenLength: Int
         get() {
             val displayMetrics = Resources.getSystem().displayMetrics
-            return Math.max(displayMetrics.widthPixels, displayMetrics.heightPixels)
+            return max(displayMetrics.widthPixels, displayMetrics.heightPixels)
         }
 
     fun registerListener(callback: Callback) {

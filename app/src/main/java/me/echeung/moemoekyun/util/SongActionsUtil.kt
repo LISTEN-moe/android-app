@@ -37,6 +37,7 @@ object SongActionsUtil {
         detailedSongs.forEachIndexed { index, song ->
             App.radioClient!!.api.getSongDetails(song.id, object : SongCallback {
                 override fun onSuccess(detailedSong: Song) {
+                    detailedSong.favorite = song.favorite
                     detailedSongs[index] = detailedSong
 
                     activity.runOnUiThread {

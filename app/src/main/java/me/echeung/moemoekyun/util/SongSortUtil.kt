@@ -50,8 +50,7 @@ object SongSortUtil {
     }
 
     fun initSortMenu(context: Context, listId: String, menu: Menu) {
-        val sortType = getSortTypeByListId(context, listId)
-        val sortTypeId = when (sortType) {
+        val sortTypeId = when (getSortTypeByListId(context, listId)) {
             SORT_ARTIST -> R.id.action_sort_type_artist
             // Default is SORT_TITLE
             else -> R.id.action_sort_type_title
@@ -72,13 +71,13 @@ object SongSortUtil {
 
             R.id.action_sort_type_title -> {
                 item.isChecked = true
-                adapter.sortType(SongSortUtil.SORT_TITLE)
+                adapter.sortType(SORT_TITLE)
                 return true
             }
 
             R.id.action_sort_type_artist -> {
                 item.isChecked = true
-                adapter.sortType(SongSortUtil.SORT_ARTIST)
+                adapter.sortType(SORT_ARTIST)
                 return true
             }
         }
