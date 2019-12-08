@@ -9,6 +9,7 @@ import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.service.RadioService
+import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
@@ -24,11 +25,14 @@ class App : Application(), ServiceConnection {
         INSTANCE = this
 
         // TODO: instantiate/access all of these via Koin
+        val albumArtUtil = AlbumArtUtil(this)
         preferenceUtil = PreferenceUtil(this)
+
         radioClient = RadioClient(this)
-        radioViewModel = RadioViewModel()
+        radioViewModel = RadioViewModel(albumArtUtil, preferenceUtil!!)
 
         val appModule = module {
+            single { albumArtUtil }
             single { preferenceUtil }
             single { radioClient }
             single { radioClient!!.authTokenUtil }

@@ -21,7 +21,7 @@ import me.echeung.moemoekyun.client.model.Song
 import java.util.ArrayList
 import kotlin.math.max
 
-object AlbumArtUtil {
+class AlbumArtUtil(private val context: Context) {
 
     private val MAX_SCREEN_SIZE = maxScreenLength
 
@@ -66,7 +66,7 @@ object AlbumArtUtil {
         }
     }
 
-    fun updateAlbumArt(context: Context, song: Song?) {
+    fun updateAlbumArt(song: Song?) {
         if (App.preferenceUtil!!.shouldDownloadImage(context) && song != null) {
             val albumArtUrl = song.albumArtUrl
 
@@ -74,18 +74,18 @@ object AlbumArtUtil {
             if (albumArtUrl == null && App.radioViewModel!!.event != null) {
                 val eventImageUrl = App.radioViewModel!!.event!!.image
                 if (eventImageUrl != null) {
-                    downloadAlbumArtBitmap(context, eventImageUrl)
+                    downloadAlbumArtBitmap(eventImageUrl)
                     return
                 }
             }
 
             if (albumArtUrl != null) {
-                downloadAlbumArtBitmap(context, albumArtUrl)
+                downloadAlbumArtBitmap(albumArtUrl)
                 return
             }
         }
 
-        updateListeners(getDefaultAlbumArt(context))
+        updateListeners(getDefaultAlbumArt())
     }
 
     private fun updateListeners(bitmap: Bitmap) {
@@ -93,12 +93,8 @@ object AlbumArtUtil {
         listeners.forEach { it.onAlbumArtReady(bitmap) }
     }
 
-    private fun downloadAlbumArtBitmap(context: Context?, url: String) {
+    private fun downloadAlbumArtBitmap(url: String) {
         Handler(Looper.getMainLooper()).post(fun() {
-            if (context == null) {
-                return
-            }
-
             Glide.with(context.applicationContext)
                     .asBitmap()
                     .load(url)
@@ -122,7 +118,7 @@ object AlbumArtUtil {
         })
     }
 
-    private fun getDefaultAlbumArt(context: Context): Bitmap {
+    private fun getDefaultAlbumArt(): Bitmap {
         if (defaultAlbumArt == null) {
             defaultAlbumArt = BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
         }

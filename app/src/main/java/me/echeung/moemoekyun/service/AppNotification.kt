@@ -12,7 +12,10 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.ext.notificationManager
 
-class AppNotification internal constructor(private val service: RadioService) {
+class AppNotification internal constructor(
+        private val service: RadioService,
+        private val albumArtUtil: AlbumArtUtil
+) {
 
     private val currentSong: Song?
         get() = App.radioViewModel!!.currentSong
@@ -23,7 +26,7 @@ class AppNotification internal constructor(private val service: RadioService) {
         }
 
         val song = currentSong
-        val albumArt = AlbumArtUtil.getCurrentAlbumArt(250)
+        val albumArt = albumArtUtil.getCurrentAlbumArt(250)
 
         val isPlaying = service.isPlaying
 
@@ -55,8 +58,8 @@ class AppNotification internal constructor(private val service: RadioService) {
                 .setOnlyAlertOnce(true)
 
         // Pre-Oreo (Android 8.x) colored notifications
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !AlbumArtUtil.isDefaultAlbumArt) {
-            builder.color = AlbumArtUtil.currentAccentColor
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !albumArtUtil.isDefaultAlbumArt) {
+            builder.color = albumArtUtil.currentAccentColor
         }
 
         // Needs to be set after setting the color

@@ -47,6 +47,7 @@ import java.util.Calendar
 class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
+    private val albumArtUtil: AlbumArtUtil by inject()
     private val authTokenUtil: AuthTokenUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
 
@@ -83,7 +84,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     }
 
     override fun onCreate() {
-        AlbumArtUtil.registerListener(this)
+        albumArtUtil.registerListener(this)
 
         initNotificationChannels()
 
@@ -141,7 +142,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     }
 
     override fun onDestroy() {
-        AlbumArtUtil.unregisterListener(this)
+        albumArtUtil.unregisterListener(this)
 
         stop()
 
@@ -207,8 +208,8 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, (currentSong.duration * MILLISECONDS_IN_SECOND).toLong())
 
         if (preferenceUtil.shouldShowLockscreenAlbumArt()) {
-            val albumArt = AlbumArtUtil.currentAlbumArt
-            if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt) {
+            val albumArt = albumArtUtil.currentAlbumArt
+            if (albumArt != null && !albumArtUtil.isDefaultAlbumArt) {
                 metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt)
                 updateNotification()
             }
@@ -255,7 +256,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     private fun updateNotification() {
         if (isStreamStarted) {
             if (notification == null) {
-                notification = AppNotification(this)
+                notification = AppNotification(this, albumArtUtil)
             }
 
             notification!!.update()

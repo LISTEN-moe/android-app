@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import androidx.annotation.ColorInt
 import androidx.databinding.Bindable
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.client.model.Song
@@ -15,7 +14,10 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.system.ThemeUtil
 import java.util.Calendar
 
-class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
+class RadioViewModel(
+        private val albumArtUtil: AlbumArtUtil,
+        private val preferenceUtil: PreferenceUtil
+) : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // Play state
     // ========================================================================
@@ -32,7 +34,7 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
 
         isFavorited = currentSong != null && currentSong.favorite
 
-        AlbumArtUtil.updateAlbumArt(App.context, currentSong)
+        albumArtUtil.updateAlbumArt(currentSong)
 
         notifyPropertyChanged(BR.currentSong)
         notifyPropertyChanged(BR.currentSongProgress)
@@ -129,13 +131,13 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
 
     val albumArt: Bitmap?
         @Bindable
-        get() = AlbumArtUtil.currentAlbumArt
+        get() = albumArtUtil.currentAlbumArt
 
     // Indirectly bind to albumArt: https://stackoverflow.com/a/39087434
     @ColorInt
     fun getBackgroundColor(context: Context, albumArt: Bitmap?): Int {
-        if (App.preferenceUtil!!.shouldColorNowPlaying() && !AlbumArtUtil.isDefaultAlbumArt) {
-            val accentColor = AlbumArtUtil.currentAccentColor
+        if (preferenceUtil.shouldColorNowPlaying() && !albumArtUtil.isDefaultAlbumArt) {
+            val accentColor = albumArtUtil.currentAccentColor
             if (accentColor != 0) {
                 return accentColor
             }
@@ -167,8 +169,8 @@ class RadioViewModel : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences
         }
 
     init {
-        AlbumArtUtil.registerListener(this)
-        App.preferenceUtil!!.registerListener(this)
+        albumArtUtil.registerListener(this)
+        preferenceUtil.registerListener(this)
     }
 
     fun reset() {
