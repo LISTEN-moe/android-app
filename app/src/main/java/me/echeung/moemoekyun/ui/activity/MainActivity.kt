@@ -15,6 +15,7 @@ import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.cast.CastDelegate
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.auth.AuthTokenUtil
@@ -43,6 +44,8 @@ class MainActivity : BaseActivity() {
 
     private val radioViewModel: RadioViewModel by inject()
     private val userViewModel: UserViewModel by inject()
+
+    private val radioClient: RadioClient by inject()
 
     private val authTokenUtil: AuthTokenUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
@@ -351,7 +354,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setLibraryMode(libraryMode: String) {
-        preferenceUtil.libraryMode = libraryMode
+        radioClient.changeLibrary(libraryMode)
         broadcastAuthEvent()
         invalidateOptionsMenu()
     }

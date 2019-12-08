@@ -10,10 +10,12 @@ import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
+import me.echeung.moemoekyun.util.PreferenceUtil
 
 class RadioClient(
         context: Context,
-        private val authTokenUtil: AuthTokenUtil
+        authTokenUtil: AuthTokenUtil,
+        private val preferenceUtil: PreferenceUtil
 ) {
 
     val api: APIClient
@@ -33,6 +35,8 @@ class RadioClient(
 
     fun changeLibrary(newMode: String) {
         setLibrary(newMode)
+
+        preferenceUtil.libraryMode = newMode
 
         socket.reconnect()
 

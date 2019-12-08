@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.snackbar.Snackbar
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.RadioClient
@@ -18,10 +17,12 @@ import me.echeung.moemoekyun.client.api.callback.SongCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class SongActionsUtil(
         private val radioClient: RadioClient,
-        private val preferenceUtil: PreferenceUtil
+        private val preferenceUtil: PreferenceUtil,
+        private val radioViewModel: RadioViewModel
 ) {
 
     fun showSongsDialog(activity: Activity, title: String?, song: Song) {
@@ -36,7 +37,7 @@ class SongActionsUtil(
 
         // Asynchronously update songs with more details
         detailedSongs.forEachIndexed { index, song ->
-            App.radioClient!!.api.getSongDetails(song.id, object : SongCallback {
+            radioClient.api.getSongDetails(song.id, object : SongCallback {
                 override fun onSuccess(detailedSong: Song) {
                     detailedSong.favorite = song.favorite
                     detailedSongs[index] = detailedSong
@@ -68,10 +69,10 @@ class SongActionsUtil(
         val songId = song.id
         val isCurrentlyFavorite = song.favorite
 
-        App.radioClient!!.api.toggleFavorite(songId, object : FavoriteSongCallback {
+        radioClient.api.toggleFavorite(songId, object : FavoriteSongCallback {
             override fun onSuccess() {
-                if (App.radioViewModel!!.currentSong!!.id == songId) {
-                    App.radioViewModel!!.isFavorited = !isCurrentlyFavorite
+                if (radioViewModel.currentSong!!.id == songId) {
+                    radioViewModel.isFavorited = !isCurrentlyFavorite
                 }
                 song.favorite = !isCurrentlyFavorite
 

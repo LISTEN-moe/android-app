@@ -13,13 +13,20 @@ import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.common.images.WebImage
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
+import me.echeung.moemoekyun.viewmodel.RadioViewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class CastDelegate(private val context: Context) : SessionAvailabilityListener, Socket.Listener {
+class CastDelegate(
+        private val context: Context
+) : SessionAvailabilityListener, Socket.Listener, KoinComponent {
+
+    private val radioViewModel: RadioViewModel by inject()
+    private val radioClient: RadioClient by inject()
 
     private val castPlayer: CastPlayer? = try {
         CastPlayer(CastContext.getSharedInstance(context))
@@ -30,7 +37,7 @@ class CastDelegate(private val context: Context) : SessionAvailabilityListener, 
     init {
         castPlayer?.setSessionAvailabilityListener(this)
 
-        App.radioClient?.socket?.addListener(this)
+        radioClient.socket.addListener(this)
     }
 
     fun onDestroy() {
@@ -45,13 +52,13 @@ class CastDelegate(private val context: Context) : SessionAvailabilityListener, 
     }
 
     override fun onCastSessionAvailable() {
-        App.radioClient?.stream?.pause()
+        radioClient.stream.pause()
 
         playMedia()
     }
 
     private fun playMedia() {
-        val song = App.radioViewModel?.currentSong
+        val song = radioViewModel.currentSong
 
         val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
         metadata.putString(MediaMetadata.KEY_TITLE, song?.titleString)
@@ -75,7 +82,7 @@ class CastDelegate(private val context: Context) : SessionAvailabilityListener, 
     override fun onCastSessionUnavailable() {
         // TODO: double check if it was playing before
 
-        App.radioClient?.stream?.play()
+        radioClient.stream.play()
     }
 
     // TODO: I don't think this works

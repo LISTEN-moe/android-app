@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.util
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.util.system.LocaleUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
@@ -21,8 +20,6 @@ class PreferenceUtil(context: Context) {
             preferences.edit()
                     .putString(LIBRARY_MODE, mode)
                     .apply()
-
-            App.radioClient!!.changeLibrary(mode)
         }
 
     var isNowPlayingExpanded: Boolean
