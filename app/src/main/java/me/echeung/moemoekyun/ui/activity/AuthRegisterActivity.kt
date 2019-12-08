@@ -6,15 +6,18 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.ext.toast
+import org.koin.android.ext.android.inject
 
 class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding>() {
+
+    private val radioClient: RadioClient by inject()
 
     init {
         layout = R.layout.activity_auth_register
@@ -54,7 +57,7 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
             return
         }
 
-        App.radioClient!!.api.register(email, username, password, object : RegisterCallback {
+        radioClient.api.register(email, username, password, object : RegisterCallback {
             override fun onSuccess() {
                 runOnUiThread {
                     val returnIntent = Intent()

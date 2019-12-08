@@ -17,6 +17,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.databinding.ActivityMainBinding
 import me.echeung.moemoekyun.databinding.RadioControlsBinding
 import me.echeung.moemoekyun.service.RadioService
@@ -29,20 +30,24 @@ import me.echeung.moemoekyun.util.AuthActivityUtil.handleAuthActivityResult
 import me.echeung.moemoekyun.util.AuthActivityUtil.showLoginActivity
 import me.echeung.moemoekyun.util.AuthActivityUtil.showLogoutDialog
 import me.echeung.moemoekyun.util.AuthActivityUtil.showRegisterActivity
+import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
-import me.echeung.moemoekyun.util.system.NetworkUtil
 import me.echeung.moemoekyun.util.ext.openUrl
 import me.echeung.moemoekyun.util.ext.startActivity
+import me.echeung.moemoekyun.util.system.NetworkUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: RadioViewModel
-
+    private val radioViewModel: RadioViewModel by inject()
     private val userViewModel: UserViewModel by inject()
+
+    private val authTokenUtil: AuthTokenUtil by inject()
+    private val preferenceUtil: PreferenceUtil by inject()
+
+    private lateinit var binding: ActivityMainBinding
 
     private var searchMenu: ActionMenuView? = null
     private var nowPlayingSheet: BottomSheetBehavior<*>? = null
@@ -62,8 +67,7 @@ class MainActivity : BaseActivity() {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        viewModel = App.radioViewModel!!
-        binding.vm = viewModel
+        binding.vm = radioViewModel
 
         binding.btnRetry.setOnClickListener { retry() }
         binding.btnLogin.setOnClickListener { showLoginActivity() }
@@ -82,8 +86,8 @@ class MainActivity : BaseActivity() {
         initNowPlaying()
 
         // Invalidate token if needed
-        val isAuthed = App.authTokenUtil.checkAuthTokenValidity()
-        viewModel.isAuthed = isAuthed
+        val isAuthed = authTokenUtil.checkAuthTokenValidity()
+        radioViewModel.isAuthed = isAuthed
         if (!isAuthed) {
             userViewModel.reset()
         }
@@ -102,7 +106,7 @@ class MainActivity : BaseActivity() {
         binding.unbind()
 
         if (playPauseCallback != null) {
-            viewModel.removeOnPropertyChangedCallback(playPauseCallback!!)
+            radioViewModel.removeOnPropertyChangedCallback(playPauseCallback!!)
         }
 
         cast?.onDestroy()
@@ -148,20 +152,20 @@ class MainActivity : BaseActivity() {
         nowPlayingSheet = BottomSheetBehavior.from(binding.nowPlaying.nowPlayingSheet)
 
         // Restore previous expanded state
-        if (App.preferenceUtil!!.isNowPlayingExpanded) {
+        if (preferenceUtil.isNowPlayingExpanded) {
             nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED)
         } else {
-            viewModel.miniPlayerAlpha = 1f
+            radioViewModel.miniPlayerAlpha = 1f
         }
 
         nowPlayingSheet!!.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
-                App.preferenceUtil!!.isNowPlayingExpanded = newState == BottomSheetBehavior.STATE_EXPANDED
+                preferenceUtil.isNowPlayingExpanded = newState == BottomSheetBehavior.STATE_EXPANDED
             }
 
             override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
                 // Shows/hides mini player
-                viewModel.miniPlayerAlpha = 1f - slideOffset
+                this@MainActivity.radioViewModel.miniPlayerAlpha = 1f - slideOffset
             }
         })
 
@@ -182,20 +186,20 @@ class MainActivity : BaseActivity() {
         // Press song info to show history
         val vCurrentSong = binding.nowPlaying.radioSongs.currentSong
         vCurrentSong.setOnClickListener {
-            if (viewModel.currentSong != null) {
+            if (radioViewModel.currentSong != null) {
                 showHistory()
             }
         }
 
         // Long press song info to copy to clipboard
         vCurrentSong.setOnLongClickListener {
-            SongActionsUtil.copyToClipboard(this, viewModel.currentSong)
+            SongActionsUtil.copyToClipboard(this, radioViewModel.currentSong)
             true
         }
 
         // Long press album art to open in browser
         binding.nowPlaying.radioAlbumArt.root.setOnLongClickListener {
-            val currentSong = viewModel.currentSong ?: return@setOnLongClickListener false
+            val currentSong = radioViewModel.currentSong ?: return@setOnLongClickListener false
 
             val albumArtUrl = currentSong.albumArtUrl ?: return@setOnLongClickListener false
 
@@ -236,10 +240,10 @@ class MainActivity : BaseActivity() {
 
     private fun updateMenuOptions(menu: Menu) {
         // Toggle visibility of logout option based on authentication status
-        menu.findItem(R.id.action_logout).isVisible = App.authTokenUtil.isAuthenticated
+        menu.findItem(R.id.action_logout).isVisible = authTokenUtil.isAuthenticated
 
         // Pre-check the library mode
-        when (App.preferenceUtil!!.libraryMode) {
+        when (preferenceUtil.libraryMode) {
             Jpop.NAME -> menu.findItem(R.id.action_library_jpop).isChecked = true
 
             Kpop.NAME -> menu.findItem(R.id.action_library_kpop).isChecked = true
@@ -317,11 +321,11 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        viewModel.addOnPropertyChangedCallback(playPauseCallback!!)
+        radioViewModel.addOnPropertyChangedCallback(playPauseCallback!!)
     }
 
     private fun setPlayPauseDrawable() {
-        val isPlaying = viewModel.isPlaying
+        val isPlaying = radioViewModel.isPlaying
         playPauseView!!.toggle(isPlaying)
         miniPlayPauseView!!.toggle(isPlaying)
     }
@@ -331,7 +335,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun favorite() {
-        if (!App.authTokenUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             showLoginActivity(AuthActivityUtil.LOGIN_FAVORITE_REQUEST)
             return
         }
@@ -340,11 +344,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun showHistory() {
-        SongActionsUtil.showSongsDialog(this, getString(R.string.last_played), viewModel.history)
+        SongActionsUtil.showSongsDialog(this, getString(R.string.last_played), radioViewModel.history)
     }
 
     private fun setLibraryMode(libraryMode: String) {
-        App.preferenceUtil!!.libraryMode = libraryMode
+        preferenceUtil.libraryMode = libraryMode
         broadcastAuthEvent()
         invalidateOptionsMenu()
     }

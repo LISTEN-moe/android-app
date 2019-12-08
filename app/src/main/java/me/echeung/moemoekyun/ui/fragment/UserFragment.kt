@@ -23,11 +23,13 @@ import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
+import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
+    private val radioViewModel: RadioViewModel by inject()
     private val userViewModel: UserViewModel by inject()
 
     init {
@@ -48,7 +50,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        binding.radioVm = App.radioViewModel
+        binding.radioVm = radioViewModel
         binding.userVm = userViewModel
         binding.songListVm = songListVm
 

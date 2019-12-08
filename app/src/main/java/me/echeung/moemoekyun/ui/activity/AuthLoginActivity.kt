@@ -6,8 +6,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.textfield.TextInputEditText
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
@@ -17,8 +17,11 @@ import me.echeung.moemoekyun.util.ext.finish
 import me.echeung.moemoekyun.util.ext.getTrimmedText
 import me.echeung.moemoekyun.util.ext.openUrl
 import me.echeung.moemoekyun.util.ext.toast
+import org.koin.android.ext.android.inject
 
 class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
+
+    private val radioClient: RadioClient by inject()
 
     private lateinit var loginCallback: LoginCallback
     private var mfaDialog: AlertDialog? = null
@@ -83,7 +86,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             return
         }
 
-        App.radioClient!!.api.authenticate(userLogin, password, loginCallback)
+        radioClient.api.authenticate(userLogin, password, loginCallback)
     }
 
     private fun showMfaDialog() {
@@ -100,7 +103,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
                             return
                         }
 
-                        App.radioClient!!.api.authenticateMfa(otpToken, loginCallback)
+                        radioClient.api.authenticateMfa(otpToken, loginCallback)
                     })
                     .create()
 

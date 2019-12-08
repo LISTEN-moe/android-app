@@ -23,8 +23,18 @@ class App : Application(), ServiceConnection {
         super.onCreate()
         INSTANCE = this
 
+        // TODO: instantiate/access all of these via Koin
+        preferenceUtil = PreferenceUtil(this)
+        radioClient = RadioClient(this)
+        radioViewModel = RadioViewModel()
+
         val appModule = module {
+            single { preferenceUtil }
+            single { radioClient }
+            single { radioClient!!.authTokenUtil }
+
             single { UserViewModel() }
+            single { radioViewModel }
         }
 
         startKoin {
@@ -33,13 +43,6 @@ class App : Application(), ServiceConnection {
 
             modules(appModule)
         }
-
-        preferenceUtil = PreferenceUtil(this)
-
-        radioClient = RadioClient(this)
-
-        // UI view models
-        radioViewModel = RadioViewModel()
 
         // Music player service
         initService()
