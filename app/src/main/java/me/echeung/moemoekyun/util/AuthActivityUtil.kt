@@ -5,16 +5,19 @@ import android.content.Intent
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.ui.activity.AuthLoginActivity
 import me.echeung.moemoekyun.ui.activity.AuthRegisterActivity
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.get
+import org.koin.core.KoinComponent
 
-object AuthActivityUtil {
+object AuthActivityUtil : KoinComponent {
+
     // Intent codes
     const val LOGIN_REQUEST = 0
     const val LOGIN_FAVORITE_REQUEST = 1
@@ -42,7 +45,10 @@ object AuthActivityUtil {
     fun FragmentActivity.broadcastAuthEvent() {
         sendBroadcast(Intent(AUTH_EVENT))
 
-        App.radioViewModel?.isAuthed = App.authTokenUtil.isAuthenticated
+        val radioViewModel: RadioViewModel = get()
+        val authTokenUtil: AuthTokenUtil = get()
+
+        radioViewModel.isAuthed = authTokenUtil.isAuthenticated
     }
 
     fun FragmentActivity.showLogoutDialog() {
@@ -73,11 +79,13 @@ object AuthActivityUtil {
     }
 
     private fun FragmentActivity.logout() {
-        if (!App.authTokenUtil.isAuthenticated) {
+        val authTokenUtil: AuthTokenUtil = get()
+
+        if (!authTokenUtil.isAuthenticated) {
             return
         }
 
-        App.authTokenUtil.clearAuthToken()
+        authTokenUtil.clearAuthToken()
 
         val userViewModel: UserViewModel = get()
         userViewModel.reset()

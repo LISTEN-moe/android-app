@@ -11,19 +11,19 @@ import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
 
-class RadioClient(context: Context) {
+class RadioClient(
+        context: Context,
+        private val authTokenUtil: AuthTokenUtil
+) {
 
     val api: APIClient
     val socket: Socket
     val stream: Stream
-    val authTokenUtil: AuthTokenUtil
 
     init {
         setLibrary(App.preferenceUtil!!.libraryMode)
 
         val okHttpClient = NetworkClient.client
-
-        this.authTokenUtil = AuthTokenUtil(context)
 
         this.api = APIClient(okHttpClient, authTokenUtil)
 

@@ -34,8 +34,6 @@ class RadioViewModel(
 
         isFavorited = currentSong != null && currentSong.favorite
 
-        albumArtUtil.updateAlbumArt(currentSong)
-
         notifyPropertyChanged(BR.currentSong)
         notifyPropertyChanged(BR.currentSongProgress)
     }

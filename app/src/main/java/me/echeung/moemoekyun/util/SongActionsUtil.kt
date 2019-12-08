@@ -32,7 +32,7 @@ class SongActionsUtil(
         if (activity == null) return
 
         val detailedSongs = songs.toMutableList()
-        val adapter = SongDetailAdapter(activity, detailedSongs, this)
+        val adapter = SongDetailAdapter(activity, detailedSongs)
 
         // Asynchronously update songs with more details
         detailedSongs.forEachIndexed { index, song ->

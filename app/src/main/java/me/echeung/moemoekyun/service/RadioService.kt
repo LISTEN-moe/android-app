@@ -184,6 +184,8 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         radioViewModel.lastSong = info.lastPlayed!![0]
         radioViewModel.secondLastSong = info.lastPlayed[1]
 
+        albumArtUtil.updateAlbumArt(info.song)
+
         updateMediaSession()
         updateNotification()
     }

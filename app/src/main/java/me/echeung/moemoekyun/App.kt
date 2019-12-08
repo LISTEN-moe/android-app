@@ -30,7 +30,8 @@ class App : Application(), ServiceConnection {
         val albumArtUtil = AlbumArtUtil(this)
         preferenceUtil = PreferenceUtil(this)
 
-        radioClient = RadioClient(this)
+        val authTokenUtil = AuthTokenUtil(this)
+        radioClient = RadioClient(this, authTokenUtil)
         radioViewModel = RadioViewModel(albumArtUtil, preferenceUtil!!)
 
         val appModule = module {
@@ -40,7 +41,7 @@ class App : Application(), ServiceConnection {
             single { SongSortUtil(get()) }
 
             single { radioClient }
-            single { radioClient!!.authTokenUtil }
+            single { authTokenUtil }
 
             single { UserViewModel() }
             single { radioViewModel }
@@ -86,8 +87,5 @@ class App : Application(), ServiceConnection {
 
         val context: Context
             get() = INSTANCE
-
-        val authTokenUtil: AuthTokenUtil
-            get() = radioClient!!.authTokenUtil
     }
 }
