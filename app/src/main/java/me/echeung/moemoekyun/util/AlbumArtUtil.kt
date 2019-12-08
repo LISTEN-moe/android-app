@@ -21,7 +21,10 @@ import me.echeung.moemoekyun.client.model.Song
 import java.util.ArrayList
 import kotlin.math.max
 
-class AlbumArtUtil(private val context: Context) {
+class AlbumArtUtil(
+        private val context: Context,
+        private val preferenceUtil: PreferenceUtil
+) {
 
     private val MAX_SCREEN_SIZE = maxScreenLength
 
@@ -67,7 +70,7 @@ class AlbumArtUtil(private val context: Context) {
     }
 
     fun updateAlbumArt(song: Song?) {
-        if (App.preferenceUtil!!.shouldDownloadImage(context) && song != null) {
+        if (preferenceUtil.shouldDownloadImage(context) && song != null) {
             val albumArtUrl = song.albumArtUrl
 
             // Get event image if available when there's no regular album art

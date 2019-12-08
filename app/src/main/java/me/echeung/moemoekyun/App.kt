@@ -13,6 +13,7 @@ import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
+import me.echeung.moemoekyun.util.system.LocaleUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.koin.androidContext
@@ -27,13 +28,14 @@ class App : Application(), ServiceConnection {
         INSTANCE = this
 
         // TODO: instantiate/access all of these via Koin
-        val albumArtUtil = AlbumArtUtil(this)
         preferenceUtil = PreferenceUtil(this)
+        val albumArtUtil = AlbumArtUtil(this, preferenceUtil!!)
         radioViewModel = RadioViewModel(albumArtUtil, preferenceUtil!!)
 
         val appModule = module {
             single { albumArtUtil }
             single { preferenceUtil }
+            single { LocaleUtil(get()) }
             single { SongActionsUtil(get(), get(), get()) }
             single { SongSortUtil(get()) }
 

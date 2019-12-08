@@ -5,20 +5,16 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.util.Log
-import me.echeung.moemoekyun.App
+import me.echeung.moemoekyun.util.PreferenceUtil
 import java.util.Locale
 
 // Based on https://proandroiddev.com/change-language-programmatically-at-runtime-on-android-5e6bc15c758
-object LocaleUtil {
-
-    const val DEFAULT = "default"
+class LocaleUtil(
+        private val preferenceUtil: PreferenceUtil
+) {
 
     fun setLocale(context: Context): Context {
-        if (App.preferenceUtil == null) {
-            return context
-        }
-
-        val language = App.preferenceUtil!!.language
+        val language = preferenceUtil.language
         return setLocale(context, language)
     }
 
@@ -53,5 +49,9 @@ object LocaleUtil {
         } catch (e: PackageManager.NameNotFoundException) {
             Log.e(activity.localClassName, e.message, e)
         }
+    }
+
+    companion object {
+        const val DEFAULT = "default"
     }
 }

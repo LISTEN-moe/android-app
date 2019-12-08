@@ -9,14 +9,18 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
+import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.alarmManager
 import me.echeung.moemoekyun.util.ext.getPluralString
 import me.echeung.moemoekyun.util.ext.toast
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class SleepTimerDialog(@param:NonNull private val activity: Activity) {
+class SleepTimerDialog(@param:NonNull private val activity: Activity) : KoinComponent {
+
+    private val preferenceUtil: PreferenceUtil by inject()
 
     init {
         initDialog()
@@ -28,7 +32,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
         val sleepTimerSeekBar = layout.findViewById<SeekBar>(R.id.sleep_timer_seekbar)
 
         // Init seekbar + text
-        val prevSleepTimer = App.preferenceUtil!!.sleepTimer
+        val prevSleepTimer = preferenceUtil.sleepTimer
         if (prevSleepTimer != 0) {
             sleepTimerSeekBar.progress = prevSleepTimer
         }
@@ -70,7 +74,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
 
         val pi = makeTimerPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT)
 
-        App.preferenceUtil!!.sleepTimer = minutes
+        preferenceUtil.sleepTimer = minutes
 
         val timerTime = SystemClock.elapsedRealtime() + minutes * 60 * 1000
         activity.alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi)
@@ -84,7 +88,7 @@ class SleepTimerDialog(@param:NonNull private val activity: Activity) {
             activity.alarmManager.cancel(previous)
             previous.cancel()
 
-            App.preferenceUtil!!.clearSleepTimer()
+            preferenceUtil.clearSleepTimer()
 
             activity.toast(activity.getString(R.string.sleep_timer_canceled))
         }

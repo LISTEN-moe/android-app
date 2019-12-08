@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.client
 
 import android.content.Context
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
@@ -23,7 +22,7 @@ class RadioClient(
     val stream: Stream
 
     init {
-        setLibrary(App.preferenceUtil!!.libraryMode)
+        setLibrary(preferenceUtil.libraryMode)
 
         val okHttpClient = NetworkClient.client
 
