@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.media.app.NotificationCompat.MediaStyle
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.ui.activity.MainActivity
@@ -17,15 +16,11 @@ class AppNotification internal constructor(
         private val albumArtUtil: AlbumArtUtil
 ) {
 
-    private val currentSong: Song?
-        get() = App.radioViewModel!!.currentSong
-
-    fun update() {
+    fun update(song: Song?, isAuthenticated: Boolean) {
         if (!service.isStreamStarted) {
             return
         }
 
-        val song = currentSong
         val albumArt = albumArtUtil.getCurrentAlbumArt(250)
 
         val isPlaying = service.isPlaying
@@ -71,7 +66,7 @@ class AppNotification internal constructor(
             builder.setSubText(song.albumsString)
 
             // Add favorite action if logged in
-            if (App.authTokenUtil.isAuthenticated) {
+            if (isAuthenticated) {
                 builder.addAction(NotificationCompat.Action(
                         if (song.favorite) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp,
                         if (song.favorite) service.getString(R.string.action_unfavorite) else service.getString(R.string.action_favorite),

@@ -259,7 +259,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 notification = AppNotification(this, albumArtUtil)
             }
 
-            notification!!.update()
+            notification!!.update(radioViewModel.currentSong, authTokenUtil.isAuthenticated)
         } else {
             stopForeground(true)
         }
