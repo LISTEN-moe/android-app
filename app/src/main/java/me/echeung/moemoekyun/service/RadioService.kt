@@ -21,12 +21,13 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.KeyEvent
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
@@ -34,14 +35,22 @@ import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
-import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.ext.notificationManager
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.system.TimeUtil
+import me.echeung.moemoekyun.viewmodel.RadioViewModel
+import org.koin.android.ext.android.inject
 import java.text.ParseException
 import java.util.Calendar
 
 class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private val radioClient: RadioClient by inject()
+    private val authTokenUtil: AuthTokenUtil by inject()
+    private val preferenceUtil: PreferenceUtil by inject()
+
+    private val radioViewModel: RadioViewModel by inject()
 
     private val binder = ServiceBinder()
 
@@ -82,19 +91,19 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         initMediaSession()
         initAudioManager()
 
-        stream = App.radioClient!!.stream
-        socket = App.radioClient!!.socket
+        stream = radioClient.stream
+        socket = radioClient.socket
 
         stream!!.setListener(object : Stream.Listener {
             override fun onStreamPlay() {
-                App.radioViewModel!!.isPlaying = true
+                radioViewModel.isPlaying = true
 
                 updateNotification()
                 updateMediaSessionPlaybackState()
             }
 
             override fun onStreamPause() {
-                App.radioViewModel!!.isPlaying = false
+                radioViewModel.isPlaying = false
 
                 updateNotification()
                 updateMediaSessionPlaybackState()
@@ -106,8 +115,8 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 stopForeground(true)
                 stopSelf()
 
-                App.preferenceUtil!!.clearSleepTimer()
-                App.radioViewModel!!.isPlaying = false
+                preferenceUtil.clearSleepTimer()
+                radioViewModel.isPlaying = false
 
                 updateMediaSessionPlaybackState()
             }
@@ -116,7 +125,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         socket!!.addListener(this)
         socket!!.connect()
 
-        App.preferenceUtil!!.registerListener(this)
+        preferenceUtil.registerListener(this)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startID: Int): Int {
@@ -148,22 +157,20 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
         destroyMediaSession()
 
-        App.preferenceUtil!!.unregisterListener(this)
+        preferenceUtil.unregisterListener(this)
 
         super.onDestroy()
     }
 
     override fun onSocketReceive(info: UpdateResponse.Details?) {
-        val viewModel = App.radioViewModel
-
-        viewModel!!.listeners = info!!.listeners
-        viewModel.setRequester(info.requester)
-        viewModel.event = info.event
+        radioViewModel.listeners = info!!.listeners
+        radioViewModel.setRequester(info.requester)
+        radioViewModel.event = info.event
 
         // TODO: get queue info
-//        viewModel.queueSize = info.queue.inQueue
-//        viewModel.inQueueByUser = info.queue.inQueueByUser
-//        viewModel.queuePosition = info.queue.inQueueBeforeUser
+//        radioViewModel.queueSize = info.queue.inQueue
+//        radioViewModel.inQueueByUser = info.queue.inQueueByUser
+//        radioViewModel.queuePosition = info.queue.inQueueBeforeUser
 
         var startTime: Calendar? = null
         try {
@@ -172,21 +179,21 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             e.printStackTrace()
         }
 
-        viewModel.setCurrentSong(info.song, startTime)
-        viewModel.lastSong = info.lastPlayed!![0]
-        viewModel.secondLastSong = info.lastPlayed[1]
+        radioViewModel.setCurrentSong(info.song, startTime)
+        radioViewModel.lastSong = info.lastPlayed!![0]
+        radioViewModel.secondLastSong = info.lastPlayed[1]
 
         updateMediaSession()
         updateNotification()
     }
 
     override fun onSocketFailure() {
-        App.radioViewModel!!.reset()
+        radioViewModel.reset()
         updateNotification()
     }
 
     private fun updateMediaSession() {
-        val currentSong = App.radioViewModel!!.currentSong
+        val currentSong = radioViewModel.currentSong
 
         if (currentSong == null) {
             mediaSession!!.setMetadata(null)
@@ -199,7 +206,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.albumsString)
                 .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, (currentSong.duration * MILLISECONDS_IN_SECOND).toLong())
 
-        if (App.preferenceUtil!!.shouldShowLockscreenAlbumArt()) {
+        if (preferenceUtil.shouldShowLockscreenAlbumArt()) {
             val albumArt = AlbumArtUtil.currentAlbumArt
             if (albumArt != null && !AlbumArtUtil.isDefaultAlbumArt) {
                 metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt)
@@ -221,11 +228,11 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                     if (isPlaying) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
                 else
                     PlaybackStateCompat.STATE_STOPPED,
-                        App.radioViewModel!!.currentSongProgress, 1f)
+                        radioViewModel.currentSongProgress, 1f)
 
         // Favorite action
-        if (App.authTokenUtil.isAuthenticated) {
-            val currentSong = App.radioViewModel!!.currentSong
+        if (authTokenUtil.isAuthenticated) {
+            val currentSong = radioViewModel.currentSong
             val favoriteIcon = if (currentSong == null || !currentSong.favorite)
                 R.drawable.ic_star_border_24dp
             else
@@ -274,7 +281,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 TIMER_STOP -> timerStop()
 
                 // Pause when headphones unplugged
-                AudioManager.ACTION_AUDIO_BECOMING_NOISY -> if (App.preferenceUtil!!.shouldPauseOnNoisy()) {
+                AudioManager.ACTION_AUDIO_BECOMING_NOISY -> if (preferenceUtil.shouldPauseOnNoisy()) {
                     pause()
                 }
 
@@ -299,8 +306,8 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
                 AuthActivityUtil.AUTH_EVENT -> {
                     socket!!.reconnect()
-                    if (!App.authTokenUtil.isAuthenticated) {
-                        App.radioViewModel!!.isFavorited = false
+                    if (!authTokenUtil.isAuthenticated) {
+                        radioViewModel.isFavorited = false
                         updateNotification()
                     }
                 }
@@ -381,9 +388,9 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
                     // Handles changing library mode via Android Auto
                     when (mediaId) {
-                        LIBRARY_JPOP -> App.radioClient!!.changeLibrary(Jpop.NAME)
+                        LIBRARY_JPOP -> radioClient.changeLibrary(Jpop.NAME)
 
-                        LIBRARY_KPOP -> App.radioClient!!.changeLibrary(Kpop.NAME)
+                        LIBRARY_KPOP -> radioClient.changeLibrary(Kpop.NAME)
                     }
                 }
             })
@@ -438,14 +445,14 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
                 AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                     wasPlayingBeforeLoss = isPlaying
-                    if (wasPlayingBeforeLoss && (App.preferenceUtil!!.shouldPauseAudioOnLoss() || isCarUiMode())) {
+                    if (wasPlayingBeforeLoss && (preferenceUtil.shouldPauseAudioOnLoss() || isCarUiMode())) {
                         pause()
                     }
                 }
 
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                     wasPlayingBeforeLoss = isPlaying
-                    if (App.preferenceUtil!!.shouldDuckAudio()) {
+                    if (preferenceUtil.shouldDuckAudio()) {
                         stream!!.duck()
                     }
                 }
@@ -485,23 +492,23 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
     }
 
     private fun favoriteCurrentSong() {
-        val song = App.radioViewModel!!.currentSong ?: return
+        val song = radioViewModel.currentSong ?: return
 
         val songId = song.id
         if (songId == -1) return
 
-        if (!App.authTokenUtil.isAuthenticated) {
+        if (!authTokenUtil.isAuthenticated) {
             showLoginRequiredToast()
             return
         }
 
         val isCurrentlyFavorite = song.favorite
 
-        App.radioClient!!.api.toggleFavorite(songId, object : FavoriteSongCallback {
+        radioClient.api.toggleFavorite(songId, object : FavoriteSongCallback {
             override fun onSuccess() {
-                val currentSong = App.radioViewModel!!.currentSong
+                val currentSong = radioViewModel.currentSong
                 if (currentSong!!.id == songId) {
-                    App.radioViewModel!!.isFavorited = !isCurrentlyFavorite
+                    radioViewModel.isFavorited = !isCurrentlyFavorite
                 }
                 song.favorite = !isCurrentlyFavorite
 

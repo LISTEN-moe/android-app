@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import kotlin.math.min
 
 @SuppressLint("AppCompatCustomView")
 class SquareLayout : FrameLayout {
@@ -17,7 +18,7 @@ class SquareLayout : FrameLayout {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
-        val dimen = Math.min(measuredWidth, measuredHeight)
+        val dimen = min(measuredWidth, measuredHeight)
         setMeasuredDimension(dimen, dimen)
     }
 }
