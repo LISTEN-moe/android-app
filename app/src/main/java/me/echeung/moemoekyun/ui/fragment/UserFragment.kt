@@ -9,12 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.library.Library
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.databinding.FragmentUserBinding
@@ -28,6 +29,9 @@ import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private val radioClient: RadioClient by inject()
+    private val authTokenUtil: AuthTokenUtil by inject()
 
     private val radioViewModel: RadioViewModel by inject()
     private val userViewModel: UserViewModel by inject()
@@ -86,7 +90,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     }
 
     override fun loadSongs(adapter: SongsAdapter) {
-        App.radioClient!!.api.getUserFavorites(object : UserFavoritesCallback {
+        radioClient.api.getUserFavorites(object : UserFavoritesCallback {
             override fun onSuccess(favorites: List<Song>) {
                 activity?.runOnUiThread {
                     songList.showLoading(false)
@@ -104,14 +108,14 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     private fun initUserContent() {
         songList.showLoading(true)
 
-        if (App.authTokenUtil.isAuthenticated) {
+        if (authTokenUtil.isAuthenticated) {
             getUserInfo()
             songList.loadSongs()
         }
     }
 
     private fun getUserInfo() {
-        App.radioClient!!.api.getUserInfo(object : UserInfoCallback {
+        radioClient.api.getUserInfo(object : UserInfoCallback {
             override fun onSuccess(user: User) {
                 userViewModel.user = user
 

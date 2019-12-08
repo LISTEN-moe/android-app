@@ -11,9 +11,9 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsAdapter
+import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding
@@ -22,8 +22,11 @@ import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.ext.toast
+import org.koin.android.ext.android.inject
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private val radioClient: RadioClient by inject()
 
     init {
         layout = R.layout.fragment_songs
@@ -74,7 +77,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
     override fun loadSongs(adapter: SongsAdapter) {
         songList.showLoading(true)
 
-        App.radioClient!!.api.search(null, object : SearchCallback {
+        radioClient.api.search(null, object : SearchCallback {
             override fun onSuccess(favorites: List<Song>) {
                 activity?.runOnUiThread {
                     songList.showLoading(false)

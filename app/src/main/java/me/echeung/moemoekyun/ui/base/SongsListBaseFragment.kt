@@ -7,14 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.viewmodel.SongListViewModel
+import org.koin.android.ext.android.inject
 
 abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
+
+    private val preferenceUtil: PreferenceUtil by inject()
 
     protected lateinit var songList: SongList
     protected val songListVm = SongListViewModel()
@@ -25,7 +27,7 @@ abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), S
         songList = initSongList(binding)
         songList.loadSongs()
 
-        App.preferenceUtil!!.registerListener(this)
+        preferenceUtil.registerListener(this)
 
         return view
     }
@@ -33,7 +35,7 @@ abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>(), S
     abstract fun initSongList(binding: T): SongList
 
     override fun onDestroy() {
-        App.preferenceUtil!!.unregisterListener(this)
+        preferenceUtil.unregisterListener(this)
 
         super.onDestroy()
     }
