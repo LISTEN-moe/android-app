@@ -11,6 +11,8 @@ import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.ui.activity.AuthLoginActivity
 import me.echeung.moemoekyun.ui.activity.AuthRegisterActivity
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.viewmodel.UserViewModel
+import org.koin.android.ext.android.get
 
 object AuthActivityUtil {
     // Intent codes
@@ -76,7 +78,9 @@ object AuthActivityUtil {
         }
 
         App.authTokenUtil.clearAuthToken()
-        App.userViewModel!!.reset()
+
+        val userViewModel: UserViewModel = get()
+        userViewModel.reset()
 
         applicationContext.toast(getString(R.string.logged_out), Toast.LENGTH_LONG)
         invalidateOptionsMenu()

@@ -24,10 +24,11 @@ import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.viewmodel.UserViewModel
+import org.koin.android.ext.android.inject
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
-    private val userVm: UserViewModel = App.userViewModel!!
+    private val userViewModel: UserViewModel by inject()
 
     init {
         layout = R.layout.fragment_user
@@ -48,7 +49,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         binding.radioVm = App.radioViewModel
-        binding.userVm = userVm
+        binding.userVm = userViewModel
         binding.songListVm = songListVm
 
         initUserContent()
@@ -88,7 +89,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 activity?.runOnUiThread {
                     songList.showLoading(false)
                     adapter.songs = favorites
-                    userVm.hasFavorites = favorites.isNotEmpty()
+                    userViewModel.hasFavorites = favorites.isNotEmpty()
                 }
             }
 
@@ -110,14 +111,14 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     private fun getUserInfo() {
         App.radioClient!!.api.getUserInfo(object : UserInfoCallback {
             override fun onSuccess(user: User) {
-                userVm.user = user
+                userViewModel.user = user
 
                 if (user.avatarImage != null) {
-                    userVm.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
+                    userViewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
                 }
 
                 if (user.bannerImage != null) {
-                    userVm.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
+                    userViewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
                 }
             }
 

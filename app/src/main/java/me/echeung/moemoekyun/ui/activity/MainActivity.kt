@@ -34,11 +34,15 @@ import me.echeung.moemoekyun.util.system.NetworkUtil
 import me.echeung.moemoekyun.util.ext.openUrl
 import me.echeung.moemoekyun.util.ext.startActivity
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
+import me.echeung.moemoekyun.viewmodel.UserViewModel
+import org.koin.android.ext.android.inject
 
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: RadioViewModel
+
+    private val userViewModel: UserViewModel by inject()
 
     private var searchMenu: ActionMenuView? = null
     private var nowPlayingSheet: BottomSheetBehavior<*>? = null
@@ -81,7 +85,7 @@ class MainActivity : BaseActivity() {
         val isAuthed = App.authTokenUtil.checkAuthTokenValidity()
         viewModel.isAuthed = isAuthed
         if (!isAuthed) {
-            App.userViewModel!!.reset()
+            userViewModel.reset()
         }
 
         // Google Cast

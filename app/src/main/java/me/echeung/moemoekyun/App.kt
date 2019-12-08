@@ -12,6 +12,10 @@ import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
 
 class App : Application(), ServiceConnection {
 
@@ -19,13 +23,23 @@ class App : Application(), ServiceConnection {
         super.onCreate()
         INSTANCE = this
 
+        val appModule = module {
+            single { UserViewModel() }
+        }
+
+        startKoin {
+            androidLogger()
+            androidContext(this@App)
+
+            modules(appModule)
+        }
+
         preferenceUtil = PreferenceUtil(this)
 
         radioClient = RadioClient(this)
 
         // UI view models
         radioViewModel = RadioViewModel()
-        userViewModel = UserViewModel()
 
         // Music player service
         initService()
@@ -53,8 +67,6 @@ class App : Application(), ServiceConnection {
             private set
 
         var radioViewModel: RadioViewModel? = null
-            private set
-        var userViewModel: UserViewModel? = null
             private set
 
         var preferenceUtil: PreferenceUtil? = null
