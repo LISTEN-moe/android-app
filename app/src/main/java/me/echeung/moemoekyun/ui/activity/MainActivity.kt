@@ -87,6 +87,7 @@ class MainActivity : BaseActivity() {
 
         initAppbar()
         initNowPlaying()
+        initSecondaryMenus()
 
         // Invalidate token if needed
         val isAuthed = authTokenUtil.checkAuthTokenValidity()
@@ -215,8 +216,6 @@ class MainActivity : BaseActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         cast?.initCastButton(menu)
         updateMenuOptions(menu)
-
-        initSecondaryMenus()
 
         return true
     }

@@ -15,16 +15,20 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.viewmodel.RadioViewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import java.util.ArrayList
 import kotlin.math.max
 
 class AlbumArtUtil(
-        private val context: Context,
-        private val preferenceUtil: PreferenceUtil
-) {
+        private val context: Context
+) : KoinComponent {
+
+    private val preferenceUtil: PreferenceUtil by inject()
+    private val radioViewModel: RadioViewModel by inject()
 
     private val MAX_SCREEN_SIZE = maxScreenLength
 
@@ -74,8 +78,8 @@ class AlbumArtUtil(
             val albumArtUrl = song.albumArtUrl
 
             // Get event image if available when there's no regular album art
-            if (albumArtUrl == null && App.radioViewModel!!.event != null) {
-                val eventImageUrl = App.radioViewModel!!.event!!.image
+            if (albumArtUrl == null && radioViewModel.event != null) {
+                val eventImageUrl = radioViewModel.event!!.image
                 if (eventImageUrl != null) {
                     downloadAlbumArtBitmap(eventImageUrl)
                     return
@@ -98,7 +102,7 @@ class AlbumArtUtil(
 
     private fun downloadAlbumArtBitmap(url: String) {
         Handler(Looper.getMainLooper()).post(fun() {
-            Glide.with(context.applicationContext)
+            Glide.with(context)
                     .asBitmap()
                     .load(url)
                     .apply(RequestOptions()

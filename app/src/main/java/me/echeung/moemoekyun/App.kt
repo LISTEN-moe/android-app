@@ -29,11 +29,9 @@ class App : Application(), ServiceConnection {
 
         // TODO: instantiate/access all of these via Koin
         preferenceUtil = PreferenceUtil(this)
-        val albumArtUtil = AlbumArtUtil(this, preferenceUtil!!)
-        radioViewModel = RadioViewModel(albumArtUtil, preferenceUtil!!)
 
         val appModule = module {
-            single { albumArtUtil }
+            single { AlbumArtUtil(androidContext()) }
             single { preferenceUtil }
             single { LocaleUtil(get()) }
             single { SongActionsUtil(get(), get(), get()) }
@@ -41,16 +39,18 @@ class App : Application(), ServiceConnection {
 
             single { RadioClient(androidContext(), get(), get()) }
             single { AuthTokenUtil(androidContext()) }
+        }
 
+        val viewModelModule = module {
             single { UserViewModel() }
-            single { radioViewModel }
+            single { RadioViewModel(get(), get()) }
         }
 
         startKoin {
             androidLogger()
             androidContext(this@App)
 
-            modules(appModule)
+            modules(listOf(appModule, viewModelModule))
         }
 
         // Music player service
@@ -74,9 +74,6 @@ class App : Application(), ServiceConnection {
         private lateinit var INSTANCE: App
 
         var service: RadioService? = null
-
-        var radioViewModel: RadioViewModel? = null
-            private set
 
         var preferenceUtil: PreferenceUtil? = null
             private set
