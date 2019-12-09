@@ -86,7 +86,6 @@ class MainActivity : BaseActivity() {
         volumeControlStream = AudioManager.STREAM_MUSIC
 
         initAppbar()
-        initMenu()
         initNowPlaying()
 
         // Invalidate token if needed
@@ -212,7 +211,23 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    private fun initMenu() {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        cast?.initCastButton(menu)
+        updateMenuOptions(menu)
+
+        initSecondaryMenus()
+
+        return true
+    }
+
+    override fun invalidateOptionsMenu() {
+        super.invalidateOptionsMenu()
+        updateMenuOptions(nowPlayingSheetMenu!!)
+    }
+
+    private fun initSecondaryMenus() {
+        // Duplicate menu in now playing sheet
         val toolbar = binding.nowPlaying.toolbar
         toolbar.inflateMenu(R.menu.menu_main)
         nowPlayingSheetMenu = toolbar.menu
@@ -225,21 +240,6 @@ class MainActivity : BaseActivity() {
 
         // Secondary menu with search
         menuInflater.inflate(R.menu.menu_search, searchMenu!!.menu)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
-
-        cast?.initCastButton(menu)
-
-        updateMenuOptions(menu)
-
-        return true
-    }
-
-    override fun invalidateOptionsMenu() {
-        super.invalidateOptionsMenu()
-        updateMenuOptions(nowPlayingSheetMenu!!)
     }
 
     private fun updateMenuOptions(menu: Menu) {
