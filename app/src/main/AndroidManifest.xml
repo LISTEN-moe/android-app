@@ -51,12 +51,12 @@
             android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.AuthLoginActivity"
+            android:name=".ui.activity.auth.AuthLoginActivity"
             android:label="@string/login"
             android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.AuthRegisterActivity"
+            android:name=".ui.activity.auth.AuthRegisterActivity"
             android:label="@string/register"
             android:parentActivityName=".ui.activity.MainActivity"
             android:screenOrientation="portrait" />

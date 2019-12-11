@@ -33,8 +33,8 @@ import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.service.notification.AppNotification
 import me.echeung.moemoekyun.service.notification.EventNotification
+import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
 import me.echeung.moemoekyun.util.AlbumArtUtil
-import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode

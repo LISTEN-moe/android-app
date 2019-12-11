@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.ui.activity
+package me.echeung.moemoekyun.ui.activity.auth
 
 import android.app.Activity
 import android.content.Intent
@@ -11,7 +11,6 @@ import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
-import me.echeung.moemoekyun.util.AuthActivityUtil
 import me.echeung.moemoekyun.util.ext.toast
 import org.koin.android.ext.android.inject
 

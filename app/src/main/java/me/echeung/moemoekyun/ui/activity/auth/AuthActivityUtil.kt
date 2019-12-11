@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util
+package me.echeung.moemoekyun.ui.activity.auth
 
 import android.app.Activity
 import android.content.Intent
@@ -8,8 +8,6 @@ import androidx.fragment.app.FragmentActivity
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.service.RadioService
-import me.echeung.moemoekyun.ui.activity.AuthLoginActivity
-import me.echeung.moemoekyun.ui.activity.AuthRegisterActivity
 import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
