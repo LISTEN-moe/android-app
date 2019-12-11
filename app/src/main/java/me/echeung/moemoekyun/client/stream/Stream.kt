@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.client.stream
 import android.content.Context
 import android.net.Uri
 import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Handler
 import com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC
 import com.google.android.exoplayer2.C.USAGE_MEDIA
@@ -166,8 +167,12 @@ class Stream(private val context: Context) {
 
     private fun acquireWifiLock() {
         if (wifiLock == null) {
+            val lockMode =
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) WifiManager.WIFI_MODE_FULL
+                    else WifiManager.WIFI_MODE_FULL_HIGH_PERF
+
             this.wifiLock = context.wifiManager
-                    .createWifiLock(WifiManager.WIFI_MODE_FULL, WIFI_LOCK_TAG)
+                    .createWifiLock(lockMode, WIFI_LOCK_TAG)
         }
 
         if (!wifiLock!!.isHeld) {
