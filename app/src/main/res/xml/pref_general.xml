@@ -11,13 +11,6 @@
             android:entryValues="@array/pref_language_codes"
             android:defaultValue="@string/pref_value_language_default" />
 
-        <androidx.preference.ListPreference
-            android:key="@string/pref_key_general_download"
-            android:title="@string/pref_title_general_download"
-            android:entries="@array/pref_download_names"
-            android:entryValues="@array/pref_download_codes"
-            android:defaultValue="@string/pref_value_download_always" />
-
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

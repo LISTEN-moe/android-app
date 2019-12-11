@@ -42,11 +42,6 @@ class PreferenceUtil(context: Context) {
         preferences.unregisterOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
     }
 
-    fun shouldDownloadImage(context: Context): Boolean {
-        val pref = preferences.getString(PREF_GENERAL_DOWNLOAD, DOWNLOAD_ALWAYS)
-        return pref == DOWNLOAD_ALWAYS || pref == DOWNLOAD_WIFI && NetworkUtil.isWifi(context)
-    }
-
     fun shouldPreferRomaji(): Boolean {
         return preferences.getBoolean(PREF_GENERAL_ROMAJI, false)
     }
@@ -87,7 +82,6 @@ class PreferenceUtil(context: Context) {
         private const val SLEEP_TIMER_MINS = "pref_sleep_timer"
 
         const val PREF_GENERAL_LANGUAGE = "pref_general_language"
-        const val PREF_GENERAL_DOWNLOAD = "pref_general_download"
         const val PREF_GENERAL_ROMAJI = "pref_general_romaji"
 
         const val PREF_MUSIC_RANDOM_REQUEST_TITLE = "pref_general_random_request_title"
@@ -97,9 +91,5 @@ class PreferenceUtil(context: Context) {
         const val PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy"
         const val PREF_AUDIO_DUCK = "pref_audio_duck"
         const val PREF_AUDIO_PAUSE_ON_LOSS = "pref_audio_pause_on_loss"
-
-        const val DOWNLOAD_ALWAYS = "always"
-        const val DOWNLOAD_WIFI = "wifi"
-        const val DOWNLOAD_NEVER = "never"
     }
 }

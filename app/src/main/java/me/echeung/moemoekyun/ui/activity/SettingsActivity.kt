@@ -46,13 +46,6 @@ class SettingsActivity : BaseActivity() {
                 recreateBackStack()
                 true
             }
-
-            val downloadSetting = findPreference<ListPreference>(PreferenceUtil.PREF_GENERAL_DOWNLOAD)!!
-            setSummary(downloadSetting)
-            downloadSetting.setOnPreferenceChangeListener { _, o ->
-                setSummary(downloadSetting, o)
-                true
-            }
         }
 
         private fun setSummary(preference: Preference, value: Any = getPreferenceValue(preference)) {

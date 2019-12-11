@@ -142,10 +142,4 @@
         <item>zh-rTW</item>
     </string-array>
 
-    <string-array name="pref_download_codes" translatable="false">
-        <item>@string/pref_value_download_always</item>
-        <item>@string/pref_value_download_wifi</item>
-        <item>@string/pref_value_download_never</item>
-    </string-array>
-
 </resources>

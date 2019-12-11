@@ -11,14 +11,13 @@ import androidx.annotation.ColorInt
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import me.echeung.moemoekyun.App
 
 private const val TRANSITION_DURATION = 250
 
 fun ImageView.loadImage(bitmap: Bitmap?) {
     this.clear()
 
-    if (!App.preferenceUtil!!.shouldDownloadImage(context) || bitmap == null) {
+    if (bitmap == null) {
         return
     }
 
@@ -36,7 +35,7 @@ fun ImageView.loadImage(bitmap: Bitmap?) {
 fun ImageView.loadImage(url: String?) {
     this.clear()
 
-    if (!App.preferenceUtil!!.shouldDownloadImage(context) || url == null) {
+    if (url == null) {
         return
     }
 

@@ -27,7 +27,6 @@ class AlbumArtUtil(
         private val context: Context
 ) : KoinComponent {
 
-    private val preferenceUtil: PreferenceUtil by inject()
     private val radioViewModel: RadioViewModel by inject()
 
     private val MAX_SCREEN_SIZE = maxScreenLength
@@ -74,7 +73,7 @@ class AlbumArtUtil(
     }
 
     fun updateAlbumArt(song: Song?) {
-        if (preferenceUtil.shouldDownloadImage(context) && song != null) {
+        if (song != null) {
             val albumArtUrl = song.albumArtUrl
 
             // Get event image if available when there's no regular album art

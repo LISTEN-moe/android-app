@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.util.system
 
 import android.content.Context
-import android.net.ConnectivityManager
 import android.os.Build
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.util.ext.connectivityManager
@@ -34,15 +33,4 @@ object NetworkUtil : KoinComponent {
         return false
     }
 
-    fun isWifi(context: Context?): Boolean {
-        if (context == null || !isNetworkAvailable(context)) {
-            return false
-        }
-
-        val activeNetworkInfo = context.connectivityManager.activeNetworkInfo
-
-        return (activeNetworkInfo != null &&
-                activeNetworkInfo.type == ConnectivityManager.TYPE_WIFI &&
-                activeNetworkInfo.isConnectedOrConnecting)
-    }
 }
