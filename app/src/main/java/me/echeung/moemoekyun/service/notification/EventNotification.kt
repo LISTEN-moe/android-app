@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.service
+package me.echeung.moemoekyun.service.notification
 
 import android.app.PendingIntent
 import android.content.Context

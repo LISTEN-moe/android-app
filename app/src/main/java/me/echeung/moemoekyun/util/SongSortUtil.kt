@@ -5,7 +5,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.preference.PreferenceManager
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.adapter.SongsAdapter
+import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.model.Song
 import java.util.Comparator
 
@@ -57,7 +57,7 @@ class SongSortUtil(
         menu.findItem(R.id.action_sort_desc).isChecked = sortDescending
     }
 
-    fun handleSortMenuItem(item: MenuItem, adapter: SongsAdapter): Boolean {
+    fun handleSortMenuItem(item: MenuItem, adapter: SongsListAdapter): Boolean {
         when (item.itemId) {
             R.id.action_sort_desc -> {
                 item.isChecked = !item.isChecked

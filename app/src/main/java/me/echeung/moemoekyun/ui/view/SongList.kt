@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.adapter.SongsAdapter
+import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.viewmodel.SongListViewModel
@@ -33,7 +33,7 @@ class SongList(
     private val songSortUtil: SongSortUtil by inject()
 
     private val activity: WeakReference<Activity> = WeakReference(activity)
-    private val adapter: SongsAdapter = SongsAdapter(activity, listId)
+    private val adapter: SongsListAdapter = SongsListAdapter(activity, listId)
 
     init {
         // List adapter
@@ -134,6 +134,6 @@ class SongList(
     }
 
     interface SongListLoader {
-        fun loadSongs(adapter: SongsAdapter)
+        fun loadSongs(adapter: SongsListAdapter)
     }
 }

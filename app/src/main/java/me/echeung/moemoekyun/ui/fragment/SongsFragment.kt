@@ -12,7 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.adapter.SongsAdapter
+import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.model.Song
@@ -75,7 +75,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
                 this)
     }
 
-    override fun loadSongs(adapter: SongsAdapter) {
+    override fun loadSongs(adapter: SongsListAdapter) {
         songList.showLoading(true)
 
         radioClient.api.search(null, object : SearchCallback {

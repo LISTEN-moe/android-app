@@ -1,7 +1,5 @@
 package me.echeung.moemoekyun.client.model
 
-import me.echeung.moemoekyun.App
-
 data class SongDescriptor(
     val name: String? = null,
     val nameRomaji: String? = null,
@@ -14,12 +12,10 @@ data class SongDescriptor(
     }
 
     companion object {
-        fun getDisplayString(songDescriptors: List<SongDescriptor>?): String? {
+        fun getDisplayString(songDescriptors: List<SongDescriptor>?, preferRomaji: Boolean): String? {
             if (songDescriptors == null) {
                 return null
             }
-
-            val preferRomaji = App.preferenceUtil!!.shouldPreferRomaji()
 
             val displayString = songDescriptors
                     .mapNotNull {

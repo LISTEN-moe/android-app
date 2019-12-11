@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.PopupMenu
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.adapter.SongsAdapter
+import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
@@ -90,7 +90,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
         })
     }
 
-    override fun loadSongs(adapter: SongsAdapter) {
+    override fun loadSongs(adapter: SongsListAdapter) {
         radioClient.api.getUserFavorites(object : UserFavoritesCallback {
             override fun onSuccess(favorites: List<Song>) {
                 activity?.runOnUiThread {

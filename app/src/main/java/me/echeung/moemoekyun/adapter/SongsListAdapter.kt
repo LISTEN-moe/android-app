@@ -17,7 +17,7 @@ import org.koin.core.inject
 import java.lang.ref.WeakReference
 import java.util.Random
 
-class SongsAdapter(
+class SongsListAdapter(
         activity: Activity,
         private val listId: String
 ) : ListAdapter<Song, RecyclerView.ViewHolder>(DIFF_CALLBACK), KoinComponent {
@@ -107,7 +107,7 @@ class SongsAdapter(
 
     private class SongViewHolder internal constructor(
             private val binding: SongItemBinding,
-            adapter: SongsAdapter,
+            adapter: SongsListAdapter,
             songActionsUtil: SongActionsUtil
     ) : RecyclerView.ViewHolder(binding.root) {
         init {

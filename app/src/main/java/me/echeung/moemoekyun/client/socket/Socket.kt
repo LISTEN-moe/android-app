@@ -11,7 +11,7 @@ import me.echeung.moemoekyun.client.socket.response.ConnectResponse
 import me.echeung.moemoekyun.client.socket.response.EventNotificationResponse
 import me.echeung.moemoekyun.client.socket.response.NotificationResponse
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
-import me.echeung.moemoekyun.service.EventNotification
+import me.echeung.moemoekyun.service.notification.EventNotification
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response

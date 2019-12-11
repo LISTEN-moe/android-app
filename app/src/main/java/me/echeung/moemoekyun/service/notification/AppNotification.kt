@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.service
+package me.echeung.moemoekyun.service.notification
 
 import android.app.PendingIntent
 import android.content.Intent
@@ -7,6 +7,7 @@ import androidx.core.app.NotificationCompat
 import androidx.media.app.NotificationCompat.MediaStyle
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.ext.notificationManager
