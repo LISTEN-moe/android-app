@@ -400,8 +400,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 }
             })
 
-            mediaSession!!.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS or MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
-
             mediaSession!!.isActive = true
         }
     }
