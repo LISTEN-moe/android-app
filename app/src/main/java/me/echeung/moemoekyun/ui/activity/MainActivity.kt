@@ -182,13 +182,13 @@ class MainActivity : BaseActivity() {
 
         initPlayPause()
 
-        val radioControls: RadioControlsBinding = binding.nowPlaying.radioControls
+        val radioControls: RadioControlsBinding = binding.nowPlaying.fullPlayer.radioControls
 
         radioControls.historyBtn.setOnClickListener { showHistory() }
         radioControls.favoriteBtn.setOnClickListener { favorite() }
 
         // Press song info to show history
-        val vCurrentSong = binding.nowPlaying.radioSongs.currentSong
+        val vCurrentSong = binding.nowPlaying.fullPlayer.radioSongs.currentSong
         vCurrentSong.setOnClickListener {
             if (radioViewModel.currentSong != null) {
                 showHistory()
@@ -202,7 +202,7 @@ class MainActivity : BaseActivity() {
         }
 
         // Long press album art to open in browser
-        binding.nowPlaying.radioAlbumArt.root.setOnLongClickListener {
+        binding.nowPlaying.fullPlayer.radioAlbumArt.root.setOnLongClickListener {
             val currentSong = radioViewModel.currentSong ?: return@setOnLongClickListener false
 
             val albumArtUrl = currentSong.albumArtUrl ?: return@setOnLongClickListener false
@@ -309,7 +309,7 @@ class MainActivity : BaseActivity() {
     // =============================================================================================
 
     private fun initPlayPause() {
-        val playPauseBtn = binding.nowPlaying.radioControls.playPauseBtn
+        val playPauseBtn = binding.nowPlaying.fullPlayer.radioControls.playPauseBtn
         playPauseBtn.setOnClickListener { togglePlayPause() }
         playPauseView = PlayPauseView(this, playPauseBtn)
 
