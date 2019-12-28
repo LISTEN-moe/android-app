@@ -186,9 +186,6 @@ class Socket(
                         return
                     }
 
-                    // TODO: check if songs are favorited
-                    // TODO: get queue info
-
                     listeners.forEach { it.onSocketReceive(updateResponse.d) }
                 }
 
