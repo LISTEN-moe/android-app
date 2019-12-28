@@ -252,6 +252,11 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                     }
 
                     override fun onResponse(response: Response<RequestSongMutation.Data>) {
+                        if (response.hasErrors()) {
+                            callback.onFailure(response.errors()[0]?.message())
+                            return
+                        }
+
                         callback.onSuccess()
                     }
                 })
