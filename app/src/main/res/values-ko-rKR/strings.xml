@@ -56,13 +56,16 @@
     <string name="favorite">즐겨 찾기에 추가</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">요청한 사람: %s</string>
+    <string name="event_start_title">이벤트가 시작하고 있습니다!</string>
     <!-- == User tab == -->
     <string name="no_favorites">즐겨찾기가 아직없습니다</string>
     <string name="filter_favorites">즐겨찾기 필터링</string>
     <!-- e.g. Unfavorited <Song Title> -->
     <string name="unfavorited">%s 즐겨찾기가 취소되었습니다.</string>
     <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d 대기 중</string>
     <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d 대기 중, 앞에 %d 대기 중</string>
     <string name="random_request">노래 무작위로 요청하기</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
@@ -102,7 +105,20 @@
     <string name="pref_header_general">일반</string>
     <string name="pref_title_language">언어</string>
     <string name="pref_title_general_download">이미지 자동 다운로드</string>
+    <string name="pref_header_music">음악</string>
     <string name="pref_title_general_romaji">영어식 일본어 선호</string>
     <string name="pref_title_general_romaji_summary">\"ななひら\" 대신 \"Nanahira\"</string>
+    <string name="pref_title_general_random_request_title">랜덤 제목 요청</string>
+    <string name="pref_title_general_random_request_summary">신청된 곡의 제목 보이기</string>
+    <string name="pref_title_lockscreen_albumart_title">앨범 아트</string>
+    <string name="pref_title_lockscreen_albumart_summary">앨범 아트를 잠금 화면이랑 안드로이드 오토에 보이기</string>
+    <string name="pref_title_color_now_playing_title">지금 재생 중인 색</string>
+    <string name="pref_title_color_now_playing_summary">앨범 아트의 메인 컬러를 사용하기</string>
     <string name="pref_header_audio">오디오</string>
+    <string name="pref_title_pause_on_noisy_title">헤드폰을 위해 멈춤</string>
+    <string name="pref_title_pause_on_noisy_summary">헤드폰 제거시 음악이 일시정지 됩니다</string>
+    <string name="pref_title_audio_pause_on_loss_title">미디어를 위해 멈춤</string>
+    <string name="pref_title_audio_pause_on_loss_summary">영상과 다른 음악과 같은 미디어가 재생될 시 음악이 일시정지 됩니다</string>
+    <string name="pref_title_audio_duck_title">음량 숙임</string>
+    <string name="pref_title_audio_duck_summary">알림, 내비게이션 등을 위해 음악 음량이 줄어듭니다</string>
 </resources>

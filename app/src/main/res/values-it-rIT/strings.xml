@@ -56,6 +56,7 @@
     <string name="favorite">Aggiungi ai preferiti</string>
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Richiesta da: %s</string>
+    <string name="event_start_title">Un evento sta per iniziare!</string>
     <!-- == User tab == -->
     <string name="no_favorites">Non hai preferiti</string>
     <string name="filter_favorites">Filtra preferiti</string>
