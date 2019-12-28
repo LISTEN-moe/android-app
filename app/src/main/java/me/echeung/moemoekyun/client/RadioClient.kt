@@ -14,6 +14,7 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 class RadioClient(
         context: Context,
         authUtil: AuthUtil,
+        networkClient: NetworkClient,
         private val preferenceUtil: PreferenceUtil
 ) {
 
@@ -24,11 +25,9 @@ class RadioClient(
     init {
         setLibrary(preferenceUtil.libraryMode)
 
-        val okHttpClient = NetworkClient.client
+        this.api = APIClient(networkClient.client, authUtil)
 
-        this.api = APIClient(okHttpClient, authUtil)
-
-        this.socket = Socket(context, okHttpClient)
+        this.socket = Socket(context, networkClient.client)
         this.stream = Stream(context)
     }
 

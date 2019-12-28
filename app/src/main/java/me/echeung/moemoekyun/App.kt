@@ -8,6 +8,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -37,7 +38,9 @@ class App : Application(), ServiceConnection {
             single { SongActionsUtil(get(), get(), get(), get()) }
             single { SongSortUtil(get()) }
 
-            single { RadioClient(androidContext(), get(), get()) }
+            single { NetworkClient(get()) }
+
+            single { RadioClient(androidContext(), get(), get(), get()) }
             single { AuthUtil(androidContext()) }
         }
 

@@ -41,7 +41,6 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.cache.SongsCache
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -52,39 +51,18 @@ class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
     private val songsCache: SongsCache
 
     init {
-        // Automatically add auth token to requests
-        val authClient = okHttpClient.newBuilder()
-                .addNetworkInterceptor(object : Interceptor {
-                    override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-                        val original = chain.request()
-                        val builder = original.newBuilder().method(original.method, original.body)
-
-                        // MFA login
-                        if (authUtil.mfaToken != null) {
-                            builder.header("Authorization", authUtil.mfaAuthTokenWithPrefix)
-                        }
-
-                        // Authorized calls
-                        if (authUtil.isAuthenticated) {
-                            builder.header("Authorization", authUtil.authTokenWithPrefix)
-                        }
-
-                        return chain.proceed(builder.build())
-                    }
-                })
-                .connectTimeout(1, TimeUnit.MINUTES)
-                .readTimeout(1, TimeUnit.MINUTES)
-                .build()
-
         val cacheFile = File(App.context.filesDir, "apolloCache")
         val cacheSize = 1024 * 1024.toLong()
         val cacheStore = DiskLruHttpCacheStore(cacheFile, cacheSize)
+
+//        val transportFactory = WebSocketSubscriptionTransport.Factory(webSocketUrl, okHttpClient)
 
         client = ApolloClient.builder()
             .serverUrl(Library.API_BASE)
             .httpCache(ApolloHttpCache(cacheStore))
             .defaultHttpCachePolicy(DEFAULT_CACHE_POLICY)
-            .okHttpClient(authClient)
+            .okHttpClient(okHttpClient)
+//            .subscriptionTransportFactory(transportFactory)
             .build()
 
         songsCache = SongsCache(this)
