@@ -11,23 +11,36 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/radio_album_art"
+            layout="@layout/album_art_card"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/guideline"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            binding:vm="@{vm}" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <LinearLayout
             android:id="@+id/radio_song_info_wrapper"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/radio_controls"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toTopOf="parent">
-
-            <include
-                android:id="@+id/radio_album_art"
-                layout="@layout/album_art_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                binding:vm="@{vm}" />
 
             <include
                 android:id="@+id/radio_songs"
@@ -36,18 +49,14 @@
                 android:layout_height="wrap_content"
                 binding:vm="@{vm}" />
 
-        </LinearLayout>
+            <include
+                android:id="@+id/radio_controls"
+                layout="@layout/radio_controls"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                binding:vm="@{vm}" />
 
-        <include
-            android:id="@+id/radio_controls"
-            layout="@layout/radio_controls"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radio_song_info_wrapper"
-            binding:vm="@{vm}" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
