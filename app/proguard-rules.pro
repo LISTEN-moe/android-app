@@ -4,9 +4,7 @@
 -keep public class me.echeung.moemoekyun.client.model.Event
 
 # Google Cast
--keep androidx.mediarouter.app.MediaRouteActionProvider {
-    *;
-}
+-keep class androidx.mediarouter.app.MediaRouteActionProvider { public <init>(...); }
 
 # Glide
 -keep public class * implements com.bumptech.glide.module.GlideModule
