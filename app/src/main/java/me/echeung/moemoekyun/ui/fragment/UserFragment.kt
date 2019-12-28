@@ -15,7 +15,7 @@ import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.library.Library
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.databinding.FragmentUserBinding
@@ -31,7 +31,7 @@ import org.koin.android.ext.android.inject
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
-    private val authTokenUtil: AuthTokenUtil by inject()
+    private val authUtil: AuthUtil by inject()
     private val songSortUtil: SongSortUtil by inject()
 
     private val radioViewModel: RadioViewModel by inject()
@@ -109,7 +109,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     private fun initUserContent() {
         songList.showLoading(true)
 
-        if (authTokenUtil.isAuthenticated) {
+        if (authUtil.isAuthenticated) {
             getUserInfo()
             songList.loadSongs()
         }

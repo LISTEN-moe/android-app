@@ -36,7 +36,7 @@ import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.data.transform
 import me.echeung.moemoekyun.client.api.library.Library
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.cache.SongsCache
 import me.echeung.moemoekyun.client.model.Song
 import okhttp3.Interceptor
@@ -44,7 +44,7 @@ import okhttp3.OkHttpClient
 import java.io.File
 import java.util.concurrent.TimeUnit
 
-class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthTokenUtil) {
+class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
 
     private val client: ApolloClient
     private val songsCache: SongsCache
@@ -58,13 +58,13 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                         val builder = original.newBuilder().method(original.method, original.body)
 
                         // MFA login
-                        if (authTokenUtil.mfaToken != null) {
-                            builder.header("Authorization", authTokenUtil.mfaAuthTokenWithPrefix)
+                        if (authUtil.mfaToken != null) {
+                            builder.header("Authorization", authUtil.mfaAuthTokenWithPrefix)
                         }
 
                         // Authorized calls
-                        if (authTokenUtil.isAuthenticated) {
-                            builder.header("Authorization", authTokenUtil.authTokenWithPrefix)
+                        if (authUtil.isAuthenticated) {
+                            builder.header("Authorization", authUtil.authTokenWithPrefix)
                         }
 
                         return chain.proceed(builder.build())
@@ -106,12 +106,12 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
                         val userToken = response.data()?.login?.token!!
 
                         if (response.data()?.login?.mfa!!) {
-                            authTokenUtil.mfaToken = userToken
+                            authUtil.mfaToken = userToken
                             callback.onMfaRequired(userToken)
                             return
                         }
 
-                        authTokenUtil.authToken = userToken
+                        authUtil.authToken = userToken
                         callback.onSuccess(userToken)
                     }
                 })
@@ -132,8 +132,8 @@ class APIClient(okHttpClient: OkHttpClient, private val authTokenUtil: AuthToken
 
                     override fun onResponse(response: Response<LoginMfaMutation.Data>) {
                         val userToken = response.data()?.loginMFA?.token!!
-                        authTokenUtil.authToken = userToken
-                        authTokenUtil.clearMfaAuthToken()
+                        authUtil.authToken = userToken
+                        authUtil.clearMfaAuthToken()
                         callback.onSuccess(userToken)
                     }
                 })

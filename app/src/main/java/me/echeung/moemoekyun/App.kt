@@ -7,7 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -38,7 +38,7 @@ class App : Application(), ServiceConnection {
             single { SongSortUtil(get()) }
 
             single { RadioClient(androidContext(), get(), get()) }
-            single { AuthTokenUtil(androidContext()) }
+            single { AuthUtil(androidContext()) }
         }
 
         val viewModelModule = module {

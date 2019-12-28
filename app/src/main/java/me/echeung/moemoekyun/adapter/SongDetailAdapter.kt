@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongDetailsBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
@@ -19,7 +19,7 @@ class SongDetailAdapter(
         songs: List<Song>
 ) : ArrayAdapter<Song>(activity, 0, songs), KoinComponent {
 
-    private val authTokenUtil: AuthTokenUtil by inject()
+    private val authUtil: AuthUtil by inject()
     private val songActionsUtil: SongActionsUtil by inject()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
@@ -38,7 +38,7 @@ class SongDetailAdapter(
         val song = getItem(position) ?: return binding.root
 
         binding.song = song
-        binding.isAuthenticated = authTokenUtil.isAuthenticated
+        binding.isAuthenticated = authUtil.isAuthenticated
         binding.isFavorite = song.favorite
 
         binding.requestBtn.setOnClickListener { songActionsUtil.request(activity, song) }

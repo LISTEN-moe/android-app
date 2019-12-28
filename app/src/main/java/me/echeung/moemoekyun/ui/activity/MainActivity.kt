@@ -18,7 +18,7 @@ import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.databinding.ActivityMainBinding
 import me.echeung.moemoekyun.databinding.RadioControlsBinding
 import me.echeung.moemoekyun.service.RadioService
@@ -47,7 +47,7 @@ class MainActivity : BaseActivity() {
 
     private val radioClient: RadioClient by inject()
 
-    private val authTokenUtil: AuthTokenUtil by inject()
+    private val authUtil: AuthUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
     private val songActionsUtil: SongActionsUtil by inject()
 
@@ -90,7 +90,7 @@ class MainActivity : BaseActivity() {
         initSecondaryMenus()
 
         // Invalidate token if needed
-        val isAuthed = authTokenUtil.checkAuthTokenValidity()
+        val isAuthed = authUtil.checkAuthTokenValidity()
         radioViewModel.isAuthed = isAuthed
         if (!isAuthed) {
             userViewModel.reset()
@@ -243,7 +243,7 @@ class MainActivity : BaseActivity() {
 
     private fun updateMenuOptions(menu: Menu) {
         // Toggle visibility of logout option based on authentication status
-        menu.findItem(R.id.action_logout).isVisible = authTokenUtil.isAuthenticated
+        menu.findItem(R.id.action_logout).isVisible = authUtil.isAuthenticated
 
         // Pre-check the library mode
         when (preferenceUtil.libraryMode) {
@@ -340,7 +340,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun favorite() {
-        if (!authTokenUtil.isAuthenticated) {
+        if (!authUtil.isAuthenticated) {
             showLoginActivity(AuthActivityUtil.LOGIN_FAVORITE_REQUEST)
             return
         }

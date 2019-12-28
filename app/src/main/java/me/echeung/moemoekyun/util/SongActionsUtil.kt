@@ -15,7 +15,7 @@ import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.api.callback.SongCallback
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.toast
@@ -24,7 +24,7 @@ import me.echeung.moemoekyun.viewmodel.RadioViewModel
 class SongActionsUtil(
         private val radioClient: RadioClient,
         private val preferenceUtil: PreferenceUtil,
-        private val authTokenUtil: AuthTokenUtil,
+        private val authUtil: AuthUtil,
         private val radioViewModel: RadioViewModel
 ) {
 
@@ -53,7 +53,7 @@ class SongActionsUtil(
         }
 
         // Get favorited status if logged in
-        if (authTokenUtil.isAuthenticated) {
+        if (authUtil.isAuthenticated) {
             val songIds = songs.map { it.id }
             radioClient.api.isFavorite(songIds, object : IsFavoriteCallback {
                 override fun onSuccess(favoritedSongIds: List<Int>) {

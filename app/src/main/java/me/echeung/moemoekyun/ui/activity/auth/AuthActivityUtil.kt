@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
@@ -44,9 +44,9 @@ object AuthActivityUtil : KoinComponent {
         sendBroadcast(Intent(AUTH_EVENT))
 
         val radioViewModel: RadioViewModel = get()
-        val authTokenUtil: AuthTokenUtil = get()
+        val authUtil: AuthUtil = get()
 
-        radioViewModel.isAuthed = authTokenUtil.isAuthenticated
+        radioViewModel.isAuthed = authUtil.isAuthenticated
     }
 
     fun FragmentActivity.showLogoutDialog() {
@@ -77,13 +77,13 @@ object AuthActivityUtil : KoinComponent {
     }
 
     private fun FragmentActivity.logout() {
-        val authTokenUtil: AuthTokenUtil = get()
+        val authUtil: AuthUtil = get()
 
-        if (!authTokenUtil.isAuthenticated) {
+        if (!authUtil.isAuthenticated) {
             return
         }
 
-        authTokenUtil.clearAuthToken()
+        authUtil.clearAuthToken()
 
         val userViewModel: UserViewModel = get()
         userViewModel.reset()

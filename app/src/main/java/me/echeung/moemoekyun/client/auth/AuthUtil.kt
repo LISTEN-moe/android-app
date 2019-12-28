@@ -9,7 +9,7 @@ import kotlin.math.roundToInt
  * Helper for handling authorization-related tasks. Helps with the storage of the auth token and
  * actions requiring it.
  */
-class AuthTokenUtil(context: Context) {
+class AuthUtil(context: Context) {
 
     private val contextRef: WeakReference<Context> = WeakReference(context)
 

@@ -5,7 +5,7 @@ import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.api.library.Library
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
@@ -13,7 +13,7 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 
 class RadioClient(
         context: Context,
-        authTokenUtil: AuthTokenUtil,
+        authUtil: AuthUtil,
         private val preferenceUtil: PreferenceUtil
 ) {
 
@@ -26,7 +26,7 @@ class RadioClient(
 
         val okHttpClient = NetworkClient.client
 
-        this.api = APIClient(okHttpClient, authTokenUtil)
+        this.api = APIClient(okHttpClient, authUtil)
 
         this.socket = Socket(context, okHttpClient)
         this.stream = Stream(context)

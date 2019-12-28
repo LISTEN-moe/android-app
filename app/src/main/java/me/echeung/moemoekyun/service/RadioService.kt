@@ -28,7 +28,7 @@ import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
-import me.echeung.moemoekyun.client.auth.AuthTokenUtil
+import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
@@ -51,7 +51,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
     private val radioClient: RadioClient by inject()
     private val albumArtUtil: AlbumArtUtil by inject()
-    private val authTokenUtil: AuthTokenUtil by inject()
+    private val authUtil: AuthUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
 
     private val radioViewModel: RadioViewModel by inject()
@@ -184,7 +184,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         }
 
         // Check if current song is favorited
-        if (info.song != null && authTokenUtil.isAuthenticated) {
+        if (info.song != null && authUtil.isAuthenticated) {
             radioClient.api.isFavorite(listOf(info.song.id), object : IsFavoriteCallback {
                 override fun onSuccess(favoritedSongIds: List<Int>) {
                     if (info.song.id in favoritedSongIds && radioViewModel.currentSong?.id == info.song.id) {
@@ -248,7 +248,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                         radioViewModel.currentSongProgress, 1f)
 
         // Favorite action
-        if (authTokenUtil.isAuthenticated) {
+        if (authUtil.isAuthenticated) {
             val currentSong = radioViewModel.currentSong
             val favoriteIcon = if (currentSong == null || !currentSong.favorite)
                 R.drawable.ic_star_border_24dp
@@ -275,7 +275,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
                 notification = AppNotification(this, albumArtUtil)
             }
 
-            notification!!.update(radioViewModel.currentSong, authTokenUtil.isAuthenticated)
+            notification!!.update(radioViewModel.currentSong, authUtil.isAuthenticated)
         } else {
             stopForeground(true)
         }
@@ -323,7 +323,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
 
                 AuthActivityUtil.AUTH_EVENT -> {
                     socket!!.reconnect()
-                    if (!authTokenUtil.isAuthenticated) {
+                    if (!authUtil.isAuthenticated) {
                         radioViewModel.isFavorited = false
                         updateNotification()
                     }
@@ -512,7 +512,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         val songId = song.id
         if (songId == -1) return
 
-        if (!authTokenUtil.isAuthenticated) {
+        if (!authUtil.isAuthenticated) {
             showLoginRequiredToast()
             return
         }
