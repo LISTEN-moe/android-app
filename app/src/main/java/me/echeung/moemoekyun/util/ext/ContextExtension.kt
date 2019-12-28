@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.ConnectivityManager
 import android.net.Uri
-import android.net.wifi.WifiManager
 import android.widget.Toast
 import androidx.annotation.StringRes
 
@@ -94,12 +93,6 @@ val Context.notificationManager: NotificationManager
  */
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-
-/**
- * Property to get the wifi manager from the context.
- */
-val Context.wifiManager: WifiManager
-    get() = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
 /**
  * Property to get the alarm manager from the context.

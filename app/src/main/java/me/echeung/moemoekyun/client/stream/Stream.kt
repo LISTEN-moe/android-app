@@ -2,28 +2,23 @@ package me.echeung.moemoekyun.client.stream
 
 import android.content.Context
 import android.net.Uri
-import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.Handler
 import com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC
 import com.google.android.exoplayer2.C.USAGE_MEDIA
 import com.google.android.exoplayer2.ExoPlaybackException
-import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.util.ext.wifiManager
 import me.echeung.moemoekyun.util.system.NetworkUtil
 
 class Stream(private val context: Context) {
 
     private val eventListener = object : Player.EventListener {
-        override fun onPlayerError(error: ExoPlaybackException?) {
+        override fun onPlayerError(error: ExoPlaybackException) {
             // Try to reconnect to the stream
             val wasPlaying = isPlaying
 
@@ -35,7 +30,6 @@ class Stream(private val context: Context) {
         }
     }
 
-    private var wifiLock: WifiManager.WifiLock? = null
     private var player: SimpleExoPlayer? = null
 
     private var currentStreamUrl: String? = null
@@ -60,8 +54,6 @@ class Stream(private val context: Context) {
         init()
 
         if (!isPlaying) {
-            acquireWifiLock()
-
             player!!.playWhenReady = true
             player!!.seekToDefaultPosition()
         }
@@ -72,8 +64,6 @@ class Stream(private val context: Context) {
     fun pause() {
         if (player != null) {
             player!!.playWhenReady = false
-
-            releaseWifiLock()
         }
 
         listener?.onStreamPause()
@@ -84,7 +74,6 @@ class Stream(private val context: Context) {
             player!!.stop(true)
 
             releasePlayer()
-            releaseWifiLock()
         }
 
         listener?.onStreamStop()
@@ -132,7 +121,9 @@ class Stream(private val context: Context) {
     private fun init() {
         // Create ExoPlayer instance
         if (player == null) {
-            player = ExoPlayerFactory.newSimpleInstance(context, DefaultTrackSelector())
+            player = SimpleExoPlayer.Builder(context).build()
+
+            player!!.setHandleWakeLock(true)
 
             player!!.addListener(eventListener)
             player!!.volume = 1f
@@ -165,34 +156,9 @@ class Stream(private val context: Context) {
         }
     }
 
-    private fun acquireWifiLock() {
-        if (wifiLock == null) {
-            val lockMode =
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) WifiManager.WIFI_MODE_FULL
-                    else WifiManager.WIFI_MODE_FULL_HIGH_PERF
-
-            this.wifiLock = context.wifiManager
-                    .createWifiLock(lockMode, WIFI_LOCK_TAG)
-        }
-
-        if (!wifiLock!!.isHeld) {
-            wifiLock!!.acquire()
-        }
-    }
-
-    private fun releaseWifiLock() {
-        if (wifiLock != null && wifiLock!!.isHeld) {
-            wifiLock!!.release()
-        }
-    }
-
     interface Listener {
         fun onStreamPlay()
         fun onStreamPause()
         fun onStreamStop()
-    }
-
-    companion object {
-        private const val WIFI_LOCK_TAG = "listenmoe_wifi_lock"
     }
 }
