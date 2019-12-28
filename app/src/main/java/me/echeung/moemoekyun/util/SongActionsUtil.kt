@@ -12,8 +12,10 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.api.callback.SongCallback
+import me.echeung.moemoekyun.client.auth.AuthTokenUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.toast
@@ -22,6 +24,7 @@ import me.echeung.moemoekyun.viewmodel.RadioViewModel
 class SongActionsUtil(
         private val radioClient: RadioClient,
         private val preferenceUtil: PreferenceUtil,
+        private val authTokenUtil: AuthTokenUtil,
         private val radioViewModel: RadioViewModel
 ) {
 
@@ -41,6 +44,28 @@ class SongActionsUtil(
                 override fun onSuccess(detailedSong: Song) {
                     detailedSong.favorite = song.favorite
                     detailedSongs[index] = detailedSong
+
+                    activity.runOnUiThread {
+                        adapter.notifyDataSetInvalidated()
+                    }
+                }
+
+                override fun onFailure(message: String?) {
+                    // Do nothing
+                }
+            })
+        }
+
+        // Get favorited status if logged in
+        if (authTokenUtil.isAuthenticated) {
+            val songIds = songs.map { it.id }
+            radioClient.api.isFavorite(songIds, object : IsFavoriteCallback {
+                override fun onSuccess(favoritedSongIds: List<Int>) {
+                    detailedSongs.forEach {
+                        if (it.id in favoritedSongIds) {
+                            it.favorite = true
+                        }
+                    }
 
                     activity.runOnUiThread {
                         adapter.notifyDataSetInvalidated()

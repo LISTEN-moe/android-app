@@ -34,7 +34,7 @@ class App : Application(), ServiceConnection {
             single { AlbumArtUtil(androidContext()) }
             single { preferenceUtil }
             single { LocaleUtil(get()) }
-            single { SongActionsUtil(get(), get(), get()) }
+            single { SongActionsUtil(get(), get(), get(), get()) }
             single { SongSortUtil(get()) }
 
             single { RadioClient(androidContext(), get(), get()) }
