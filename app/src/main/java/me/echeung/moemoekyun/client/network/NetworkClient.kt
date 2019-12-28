@@ -41,8 +41,8 @@ class NetworkClient(
                     return chain.proceed(builder.build())
                 }
             })
-            .connectTimeout(1, TimeUnit.MINUTES)
-            .readTimeout(1, TimeUnit.MINUTES)
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
             .build()
 
     companion object {
