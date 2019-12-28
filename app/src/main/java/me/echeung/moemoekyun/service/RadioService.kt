@@ -25,6 +25,7 @@ import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
+import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.auth.AuthTokenUtil
@@ -180,6 +181,17 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
             startTime = TimeUtil.toCalendar(info.startTime!!)
         } catch (e: ParseException) {
             e.printStackTrace()
+        }
+
+        // Check if current song is favorited
+        if (info.song != null && authTokenUtil.isAuthenticated) {
+            radioClient.api.isFavorite(listOf(info.song.id), object : IsFavoriteCallback {
+                override fun onSuccess(favoritedSongIds: List<Int>) {
+                    if (info.song.id in favoritedSongIds && radioViewModel.currentSong?.id == info.song.id) {
+                        radioViewModel.isFavorited = true
+                    }
+                }
+            })
         }
 
         radioViewModel.setCurrentSong(info.song, startTime)
