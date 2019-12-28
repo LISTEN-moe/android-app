@@ -6,6 +6,7 @@ import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.api.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.cache.ApolloCache
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
@@ -15,6 +16,7 @@ class RadioClient(
         context: Context,
         authUtil: AuthUtil,
         networkClient: NetworkClient,
+        apolloCache: ApolloCache,
         private val preferenceUtil: PreferenceUtil
 ) {
 
@@ -25,7 +27,7 @@ class RadioClient(
     init {
         setLibrary(preferenceUtil.libraryMode)
 
-        this.api = APIClient(networkClient.client, authUtil)
+        this.api = APIClient(networkClient.client, apolloCache.cache, authUtil)
 
         this.socket = Socket(context, networkClient.client)
         this.stream = Stream(context)

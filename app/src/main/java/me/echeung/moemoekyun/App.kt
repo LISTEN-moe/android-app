@@ -8,6 +8,7 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.cache.ApolloCache
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.AlbumArtUtil
@@ -26,7 +27,6 @@ class App : Application(), ServiceConnection {
 
     override fun onCreate() {
         super.onCreate()
-        INSTANCE = this
 
         // TODO: instantiate/access all of these via Koin
         preferenceUtil = PreferenceUtil(this)
@@ -38,9 +38,10 @@ class App : Application(), ServiceConnection {
             single { SongActionsUtil(get(), get(), get(), get()) }
             single { SongSortUtil(get()) }
 
+            single { ApolloCache(androidContext()) }
             single { NetworkClient(get()) }
 
-            single { RadioClient(androidContext(), get(), get(), get()) }
+            single { RadioClient(androidContext(), get(), get(), get(), get()) }
             single { AuthUtil(androidContext()) }
         }
 
@@ -74,14 +75,9 @@ class App : Application(), ServiceConnection {
     }
 
     companion object {
-        private lateinit var INSTANCE: App
-
         var service: RadioService? = null
 
         var preferenceUtil: PreferenceUtil? = null
             private set
-
-        val context: Context
-            get() = INSTANCE
     }
 }

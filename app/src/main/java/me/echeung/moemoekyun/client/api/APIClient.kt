@@ -7,9 +7,7 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
-import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
 import com.apollographql.apollo.exception.ApolloException
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -42,24 +40,23 @@ import me.echeung.moemoekyun.client.cache.SongsCache
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import okhttp3.OkHttpClient
-import java.io.File
 import java.util.concurrent.TimeUnit
 
-class APIClient(okHttpClient: OkHttpClient, private val authUtil: AuthUtil) {
+class APIClient(
+        okHttpClient: OkHttpClient,
+        apolloCache: ApolloHttpCache,
+        private val authUtil: AuthUtil
+) {
 
     private val client: ApolloClient
     private val songsCache: SongsCache
 
     init {
-        val cacheFile = File(App.context.filesDir, "apolloCache")
-        val cacheSize = 1024 * 1024.toLong()
-        val cacheStore = DiskLruHttpCacheStore(cacheFile, cacheSize)
-
 //        val transportFactory = WebSocketSubscriptionTransport.Factory(webSocketUrl, okHttpClient)
 
         client = ApolloClient.builder()
             .serverUrl(Library.API_BASE)
-            .httpCache(ApolloHttpCache(cacheStore))
+            .httpCache(apolloCache)
             .defaultHttpCachePolicy(DEFAULT_CACHE_POLICY)
             .okHttpClient(okHttpClient)
 //            .subscriptionTransportFactory(transportFactory)
