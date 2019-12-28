@@ -174,7 +174,7 @@ class MainActivity : BaseActivity() {
         })
 
         // Expand when tap mini player
-        binding.nowPlaying.miniPlayer.setOnClickListener { nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED) }
+        binding.nowPlaying.miniPlayer.root.setOnClickListener { nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED) }
 
         // Collapse button / when toolbar is tapped
         binding.nowPlaying.collapseBtn.setOnClickListener { nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_COLLAPSED) }
@@ -313,7 +313,7 @@ class MainActivity : BaseActivity() {
         playPauseBtn.setOnClickListener { togglePlayPause() }
         playPauseView = PlayPauseView(this, playPauseBtn)
 
-        val miniPlayPauseBtn = binding.nowPlaying.miniPlayPause
+        val miniPlayPauseBtn = binding.nowPlaying.miniPlayer.miniPlayPause
         miniPlayPauseBtn.setOnClickListener { togglePlayPause() }
         miniPlayPauseView = PlayPauseView(this, miniPlayPauseBtn)
 
