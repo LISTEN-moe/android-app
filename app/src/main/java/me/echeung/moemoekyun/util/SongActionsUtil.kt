@@ -49,10 +49,6 @@ class SongActionsUtil(
                         adapter.notifyDataSetInvalidated()
                     }
                 }
-
-                override fun onFailure(message: String?) {
-                    // Do nothing
-                }
             })
         }
 
@@ -70,10 +66,6 @@ class SongActionsUtil(
                     activity.runOnUiThread {
                         adapter.notifyDataSetInvalidated()
                     }
-                }
-
-                override fun onFailure(message: String?) {
-                    // Do nothing
                 }
             })
         }
