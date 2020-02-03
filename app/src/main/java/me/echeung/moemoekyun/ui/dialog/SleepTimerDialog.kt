@@ -7,7 +7,7 @@ import android.content.Intent
 import android.os.SystemClock
 import android.widget.SeekBar
 import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -48,7 +48,7 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
         })
 
         // Build dialog
-        val sleepTimerDialog = AlertDialog.Builder(activity, R.style.DialogTheme)
+        val sleepTimerDialog = MaterialAlertDialogBuilder(activity, R.style.DialogTheme)
                 .setTitle(R.string.sleep_timer)
                 .setView(layout)
                 .setPositiveButton(R.string.set) { _, _ ->

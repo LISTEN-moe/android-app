@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
@@ -70,7 +70,7 @@ class SongActionsUtil(
             })
         }
 
-        AlertDialog.Builder(activity, R.style.DialogTheme)
+        MaterialAlertDialogBuilder(activity, R.style.DialogTheme)
                 .setTitle(title)
                 .setAdapter(adapter, null)
                 .create()

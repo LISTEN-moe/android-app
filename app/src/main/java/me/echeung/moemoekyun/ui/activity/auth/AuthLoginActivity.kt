@@ -5,17 +5,14 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
-import me.echeung.moemoekyun.util.ext.clipboardManager
-import me.echeung.moemoekyun.util.ext.finish
-import me.echeung.moemoekyun.util.ext.getTrimmedText
-import me.echeung.moemoekyun.util.ext.openUrl
-import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.ext.*
 import org.koin.android.ext.android.inject
 
 class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
@@ -93,7 +90,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         val otpText = layout.findViewById<TextInputEditText>(R.id.mfa_otp)
 
         runOnUiThread {
-            mfaDialog = AlertDialog.Builder(this, R.style.DialogTheme)
+            mfaDialog = MaterialAlertDialogBuilder(this, R.style.DialogTheme)
                     .setTitle(R.string.mfa_prompt)
                     .setView(layout)
                     .setPositiveButton(R.string.submit, fun(_, _) {

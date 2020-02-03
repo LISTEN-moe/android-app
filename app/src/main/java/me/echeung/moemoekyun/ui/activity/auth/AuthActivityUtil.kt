@@ -3,8 +3,8 @@ package me.echeung.moemoekyun.ui.activity.auth
 import android.app.Activity
 import android.content.Intent
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.service.RadioService
@@ -50,7 +50,7 @@ object AuthActivityUtil : KoinComponent {
     }
 
     fun FragmentActivity.showLogoutDialog() {
-        AlertDialog.Builder(this, R.style.DialogTheme)
+        MaterialAlertDialogBuilder(this, R.style.DialogTheme)
                 .setTitle(R.string.logout)
                 .setMessage(getString(R.string.logout_confirmation))
                 .setPositiveButton(R.string.logout) { _, _ -> logout() }
