@@ -50,13 +50,6 @@ class AuthUtil(context: Context) {
                     .putString(USER_TOKEN, token)
                     .putLong(LAST_AUTH, System.currentTimeMillis() / 1000)
                     .apply()
-
-            // TODO: temporarily tracking whether we've logged in using the new API or not to force
-            // users authenticated with the v4 API to log out
-            PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit()
-                    .putBoolean(IS_V5_AUTHED, true)
-                    .apply()
         }
 
     /**
@@ -102,13 +95,6 @@ class AuthUtil(context: Context) {
             return false
         }
 
-        // TODO: force log out v4 users if switched to v5 API
-        val context = contextRef.get()
-        if (context == null || !PreferenceManager.getDefaultSharedPreferences(context).getBoolean(IS_V5_AUTHED, false)) {
-            clearAuthToken()
-            return false
-        }
-
         return true
     }
 
@@ -139,7 +125,5 @@ class AuthUtil(context: Context) {
     companion object {
         private const val USER_TOKEN = "user_token"
         private const val LAST_AUTH = "last_auth"
-
-        private const val IS_V5_AUTHED = "v5_authed"
     }
 }
