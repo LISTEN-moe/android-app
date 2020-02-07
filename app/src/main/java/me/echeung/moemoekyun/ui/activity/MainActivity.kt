@@ -61,7 +61,7 @@ class MainActivity : BaseActivity() {
     private var playPauseView: PlayPauseView? = null
     private var miniPlayPauseView: PlayPauseView? = null
 
-    private var cast: CastDelegate? = null
+    private var cast: CastDelegate = CastDelegate(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Replace splash screen theme
@@ -95,9 +95,6 @@ class MainActivity : BaseActivity() {
         if (!isAuthed) {
             userViewModel.reset()
         }
-
-        // Google Cast
-        cast = CastDelegate(this)
     }
 
     override fun onDestroy() {

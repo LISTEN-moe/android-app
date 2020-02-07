@@ -45,10 +45,10 @@ class CastDelegate(
     }
 
     fun initCastButton(menu: Menu?) {
-//        CastButtonFactory.setUpMediaRouteButton(
-//                context,
-//                menu,
-//                R.id.media_route_menu_item)
+        CastButtonFactory.setUpMediaRouteButton(
+                context,
+                menu,
+                R.id.media_route_menu_item)
     }
 
     override fun onCastSessionAvailable() {
