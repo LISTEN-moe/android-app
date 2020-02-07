@@ -35,20 +35,25 @@
     <!-- Dialogs -->
     <style name="DialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:background">@color/darker_grey</item>
-        <!-- TODO: not sure why buttons aren't white anymore -->
         <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AccentButtonTheme</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AccentButtonTheme</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AccentButtonTheme</item>
     </style>
 
     <!-- Buttons -->
     <style name="ButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/color_button_states</item>
+        <item name="android:textColor">@color/white_button_states</item>
+    </style>
+    <style name="AccentButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/accent_button_states</item>
     </style>
     <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="android:textColor">@color/color_button_states</item>
-        <item name="strokeColor">@color/color_button_states</item>
-        <item name="iconTint">@color/color_button_states</item>
+        <item name="android:textColor">@color/white_button_states</item>
+        <item name="strokeColor">@color/white_button_states</item>
+        <item name="iconTint">@color/white_button_states</item>
     </style>
 
     <!-- About card item -->
