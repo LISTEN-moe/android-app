@@ -111,7 +111,7 @@ dependencies {
     implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
+//    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.0'
 }
 
 apollo {
