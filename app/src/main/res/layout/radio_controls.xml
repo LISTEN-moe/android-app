@@ -87,9 +87,7 @@
                 android:layout_margin="16dp"
                 android:contentDescription="@string/play_pause"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_play_arrow_24dp"
-                app:backgroundTint="@color/colorPrimary"
-                app:tint="@color/white" />
+                android:src="@drawable/ic_play_arrow_24dp" />
 
             <ImageButton
                 android:id="@+id/favorite_btn"
