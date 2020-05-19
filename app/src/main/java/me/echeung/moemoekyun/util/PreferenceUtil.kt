@@ -66,10 +66,6 @@ class PreferenceUtil(context: Context) {
         return preferences.getBoolean(PREF_MUSIC_LOCKSCREEN_ALBUMART, true)
     }
 
-    fun shouldColorNowPlaying(): Boolean {
-        return preferences.getBoolean(PREF_MUSIC_COLOR_NOW_PLAYING, true)
-    }
-
     fun clearSleepTimer() {
         preferences.edit()
                 .remove(SLEEP_TIMER_MINS)
@@ -86,7 +82,6 @@ class PreferenceUtil(context: Context) {
 
         const val PREF_MUSIC_RANDOM_REQUEST_TITLE = "pref_general_random_request_title"
         const val PREF_MUSIC_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart"
-        const val PREF_MUSIC_COLOR_NOW_PLAYING = "pref_color_now_playing"
 
         const val PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy"
         const val PREF_AUDIO_DUCK = "pref_audio_duck"

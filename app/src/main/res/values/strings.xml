@@ -155,8 +155,6 @@
     <string name="pref_title_general_random_request_summary">Show the requested song\'s title</string>
     <string name="pref_title_lockscreen_albumart_title">Album art</string>
     <string name="pref_title_lockscreen_albumart_summary">Show album art on lockscreen and Android Auto</string>
-    <string name="pref_title_color_now_playing_title">Color now playing screen</string>
-    <string name="pref_title_color_now_playing_summary">Use the album art\'s main color</string>
 
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy_title">Pause for headphones</string>

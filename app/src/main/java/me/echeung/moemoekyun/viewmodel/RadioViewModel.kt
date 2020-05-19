@@ -16,7 +16,7 @@ import java.util.Calendar
 
 class RadioViewModel(
         private val albumArtUtil: AlbumArtUtil,
-        private val preferenceUtil: PreferenceUtil
+        preferenceUtil: PreferenceUtil
 ) : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // Play state
@@ -134,7 +134,7 @@ class RadioViewModel(
     // Indirectly bind to albumArt: https://stackoverflow.com/a/39087434
     @ColorInt
     fun getBackgroundColor(context: Context, albumArt: Bitmap?): Int {
-        if (preferenceUtil.shouldColorNowPlaying() && !albumArtUtil.isDefaultAlbumArt) {
+        if (!albumArtUtil.isDefaultAlbumArt) {
             val accentColor = albumArtUtil.currentAccentColor
             if (accentColor != 0) {
                 return accentColor
@@ -192,8 +192,6 @@ class RadioViewModel(
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
         when (key) {
             PreferenceUtil.PREF_GENERAL_ROMAJI -> notifyPropertyChanged(BR.currentSong)
-
-            PreferenceUtil.PREF_MUSIC_COLOR_NOW_PLAYING -> notifyPropertyChanged(BR.albumArt)
         }
     }
 

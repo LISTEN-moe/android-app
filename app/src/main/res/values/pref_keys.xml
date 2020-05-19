@@ -11,8 +11,6 @@
 
     <string name="pref_key_lockscreen_albumart">pref_lockscreen_albumart</string>
 
-    <string name="pref_key_color_now_playing">pref_color_now_playing</string>
-
     <string name="pref_value_language_default">default</string>
 
     <string name="setting_library_mode">library_mode</string>

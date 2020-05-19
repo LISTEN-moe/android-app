@@ -22,12 +22,6 @@
             android:summary="@string/pref_title_lockscreen_albumart_summary"
             android:defaultValue="true" />
 
-        <androidx.preference.SwitchPreferenceCompat
-            android:key="@string/pref_key_color_now_playing"
-            android:title="@string/pref_title_color_now_playing_title"
-            android:summary="@string/pref_title_color_now_playing_summary"
-            android:defaultValue="true" />
-
     </androidx.preference.PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
