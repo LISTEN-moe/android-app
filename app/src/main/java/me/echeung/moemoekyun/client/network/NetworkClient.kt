@@ -4,6 +4,7 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.Response
 import java.util.concurrent.TimeUnit
 
 class NetworkClient(
@@ -12,7 +13,7 @@ class NetworkClient(
 
     val client: OkHttpClient = OkHttpClient.Builder()
             .addNetworkInterceptor(object : Interceptor {
-                override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+                override fun intercept(chain: Interceptor.Chain): Response {
                     val request = chain.request()
 
                     val newRequest = request.newBuilder()
@@ -24,18 +25,18 @@ class NetworkClient(
                 }
             })
             .addNetworkInterceptor(object : Interceptor {
-                override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+                override fun intercept(chain: Interceptor.Chain): Response {
                     val original = chain.request()
                     val builder = original.newBuilder().method(original.method, original.body)
 
                     // MFA login
                     if (authUtil.mfaToken != null) {
-                        builder.header("Authorization", authUtil.mfaAuthTokenWithPrefix)
+                        builder.header(HEADER_AUTHZ, authUtil.mfaAuthTokenWithPrefix)
                     }
 
                     // Authorized calls
                     if (authUtil.isAuthenticated) {
-                        builder.header("Authorization", authUtil.authTokenWithPrefix)
+                        builder.header(HEADER_AUTHZ, authUtil.authTokenWithPrefix)
                     }
 
                     return chain.proceed(builder.build())
@@ -50,5 +51,7 @@ class NetworkClient(
         private const val CONTENT_TYPE = "application/json"
 
         private const val HEADER_USER_AGENT = "User-Agent"
+
+        private const val HEADER_AUTHZ = "Authorization"
     }
 }
