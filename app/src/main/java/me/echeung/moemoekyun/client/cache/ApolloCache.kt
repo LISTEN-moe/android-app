@@ -12,7 +12,7 @@ class ApolloCache(
     val cache: ApolloHttpCache
 
     init {
-        val cacheFile = File(context.filesDir, "apolloCache")
+        val cacheFile = File(context.externalCacheDir, "apolloCache")
         val cacheSize = 1024 * 1024.toLong()
         val cacheStore = DiskLruHttpCacheStore(cacheFile, cacheSize)
 
