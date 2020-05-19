@@ -14,8 +14,6 @@ import android.view.ViewGroup
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.callback.SearchCallback
-import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
@@ -26,7 +24,10 @@ import me.echeung.moemoekyun.util.system.launchIO
 import me.echeung.moemoekyun.util.system.launchUI
 import org.koin.android.ext.android.inject
 
-class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
+class SongsFragment :
+        SongsListBaseFragment<FragmentSongsBinding>(),
+        SongList.SongListLoader,
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
     private val songSortUtil: SongSortUtil by inject()
@@ -81,21 +82,14 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
         songList.showLoading(true)
 
         launchIO {
-            radioClient.api.search(null, object : SearchCallback {
-                override fun onSuccess(favorites: List<Song>) {
-                    launchUI {
-                        songList.showLoading(false)
-                        adapter.songs = favorites
-                    }
-                }
-
-                override fun onFailure(message: String?) {
-                    launchUI {
-                        songList.showLoading(false)
-                        activity?.toast(message)
-                    }
-                }
-            })
+            try {
+                val favorites = radioClient.api.search(null)
+                launchUI { adapter.songs = favorites }
+            } catch (e: Exception) {
+                launchUI { activity?.toast(e.message) }
+            } finally {
+                launchUI { songList.showLoading(false) }
+            }
         }
     }
 

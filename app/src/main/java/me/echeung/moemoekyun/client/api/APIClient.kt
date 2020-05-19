@@ -28,9 +28,6 @@ import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.client.api.callback.QueueCallback
 import me.echeung.moemoekyun.client.api.callback.RegisterCallback
-import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
-import me.echeung.moemoekyun.client.api.callback.SearchCallback
-import me.echeung.moemoekyun.client.api.callback.SongCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.data.transform
@@ -210,22 +207,14 @@ class APIClient(
      * Sends a song request to the queue.
      *
      * @param songId Song to request.
-     * @param callback Listener to handle the response.
      */
-    suspend fun requestSong(songId: Int, callback: RequestSongCallback) {
-        try {
-            val response = client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop())))
-                    .toDeferred()
-                    .await()
+    suspend fun requestSong(songId: Int) {
+        val response = client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop())))
+                .toDeferred()
+                .await()
 
-            if (response.hasErrors()) {
-                callback.onFailure(response.errors()[0]?.message())
-                return
-            }
-
-            callback.onSuccess()
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
+        if (response.hasErrors()) {
+            throw Exception(response.errors()[0]?.message())
         }
     }
 
@@ -233,35 +222,25 @@ class APIClient(
      * Searches for songs.
      *
      * @param query Search query string.
-     * @param callback Listener to handle the response.
      */
-    suspend fun search(query: String?, callback: SearchCallback) {
-        try {
-            val songs = songsCache.getSongs()
-            val filteredSongs = filterSongs(songs!!, query)
-            callback.onSuccess(filteredSongs)
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+    suspend fun search(query: String?): List<Song> {
+        val songs = songsCache.getSongs()
+
+        return filterSongs(songs!!, query)
     }
 
     /**
      * Gets details for a song.
      *
      * @param songId Song to get details for.
-     * @param callback Listener to handle the response.
      */
-    suspend fun getSongDetails(songId: Int, callback: SongCallback) {
-        try {
-            val response = client.query(SongQuery(songId))
-                    .httpCachePolicy(SONG_CACHE_POLICY)
-                    .toDeferred()
-                    .await()
+    suspend fun getSongDetails(songId: Int): Song {
+        val response = client.query(SongQuery(songId))
+                .httpCachePolicy(SONG_CACHE_POLICY)
+                .toDeferred()
+                .await()
 
-            callback.onSuccess(response.data()?.song!!.transform())
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+        return response.data()?.song!!.transform()
     }
 
     /**

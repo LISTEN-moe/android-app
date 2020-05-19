@@ -13,8 +13,6 @@ import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
 import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
-import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
-import me.echeung.moemoekyun.client.api.callback.SongCallback
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
@@ -43,16 +41,13 @@ class SongActionsUtil(
         // Asynchronously update songs with more details
         launchIO {
             detailedSongs.forEachIndexed { index, song ->
-                radioClient.api.getSongDetails(song.id, object : SongCallback {
-                    override fun onSuccess(detailedSong: Song) {
-                        detailedSong.favorite = song.favorite
-                        detailedSongs[index] = detailedSong
+                val detailedSong = radioClient.api.getSongDetails(song.id)
+                detailedSong.favorite = song.favorite
+                detailedSongs[index] = detailedSong
 
-                        launchUI {
-                            adapter.notifyDataSetInvalidated()
-                        }
-                    }
-                })
+                launchUI {
+                    adapter.notifyDataSetInvalidated()
+                }
             }
         }
 
@@ -134,27 +129,25 @@ class SongActionsUtil(
      */
     fun request(activity: Activity?, song: Song) {
         launchIO {
-            radioClient.api.requestSong(song.id, object : RequestSongCallback {
-                override fun onSuccess() {
-                    launchUI {
-                        activity ?: return@launchUI
+            try {
+                radioClient.api.requestSong(song.id)
 
-                        // Broadcast event
-                        activity.sendBroadcast(Intent(REQUEST_EVENT))
+                launchUI {
+                    activity ?: return@launchUI
 
-                        val toastMsg = if (preferenceUtil.shouldShowRandomRequestTitle())
-                            activity.getString(R.string.requested_song, song.toString())
-                        else
-                            activity.getString(R.string.requested_random_song)
+                    // Broadcast event
+                    activity.sendBroadcast(Intent(REQUEST_EVENT))
 
-                        activity.toast(toastMsg, Toast.LENGTH_LONG)
-                    }
+                    val toastMsg = if (preferenceUtil.shouldShowRandomRequestTitle())
+                        activity.getString(R.string.requested_song, song.toString())
+                    else
+                        activity.getString(R.string.requested_random_song)
+
+                    activity.toast(toastMsg, Toast.LENGTH_LONG)
                 }
-
-                override fun onFailure(message: String?) {
-                    launchUI { activity?.toast(message) }
-                }
-            })
+            } catch (e: Exception) {
+                launchUI { activity?.toast(e.message) }
+            }
         }
     }
 
