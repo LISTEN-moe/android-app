@@ -65,7 +65,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Replace splash screen theme
-        setTheme(R.style.AppTheme)
+        setTheme(R.style.Theme_App)
 
         super.onCreate(savedInstanceState)
 

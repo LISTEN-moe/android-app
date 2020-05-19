@@ -146,4 +146,21 @@
         <item>zh-rTW</item>
     </string-array>
 
+    <!-- Licenses dialog -->
+    <string name="licenses_css" translatable="false">
+        body {
+            background: #1D1F2B;
+            color: #FFF;
+            overflow-wrap: break-word;
+        }
+        a {
+            color: #EC1A55;
+        }
+        pre {
+            background-color: #2B2E41;
+            padding: 1em;
+            white-space: pre-wrap;
+        }
+    </string>
+
 </resources>

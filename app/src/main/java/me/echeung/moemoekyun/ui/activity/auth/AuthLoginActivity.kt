@@ -90,7 +90,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         val otpText = layout.findViewById<TextInputEditText>(R.id.mfa_otp)
 
         runOnUiThread {
-            mfaDialog = MaterialAlertDialogBuilder(this, R.style.DialogTheme)
+            mfaDialog = MaterialAlertDialogBuilder(this, R.style.Theme_Widget_Dialog)
                     .setTitle(R.string.mfa_prompt)
                     .setView(layout)
                     .setPositiveButton(R.string.submit, fun(_, _) {

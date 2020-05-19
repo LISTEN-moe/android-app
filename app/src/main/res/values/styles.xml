@@ -1,58 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Accent color -->
-        <item name="colorPrimary">@color/grey</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <!-- App bar -->
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-
-        <!-- Nav bar -->
-        <item name="android:navigationBarColor">@color/darker_grey</item>
-
-        <!-- Base background/text colors -->
-        <item name="android:windowBackground">@color/darker_grey</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/light_grey</item>
-
-        <!-- UI widget theming -->
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="buttonStyle">@style/ButtonTheme</item>
-        <item name="dialogTheme">@style/DialogTheme</item>
-        <item name="alertDialogTheme">@style/DialogTheme</item>
-    </style>
-
-    <!-- Splash screen -->
-    <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/splash</item>
-    </style>
-
     <!-- Dialogs -->
-    <style name="DialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <style name="Theme.Widget.Dialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:background">@color/darker_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColor">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="buttonBarPositiveButtonStyle">@style/AccentButtonTheme</item>
-        <item name="buttonBarNegativeButtonStyle">@style/AccentButtonTheme</item>
-        <item name="buttonBarNeutralButtonStyle">@style/AccentButtonTheme</item>
+
+        <item name="buttonBarPositiveButtonStyle">@style/Theme.Widget.Button.Accent</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Theme.Widget.Button.Accent</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Theme.Widget.Button.Accent</item>
     </style>
 
     <!-- Buttons -->
-    <style name="ButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Theme.Widget.Button" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/white_button_states</item>
     </style>
-    <style name="AccentButtonTheme" parent="Widget.MaterialComponents.Button.TextButton">
+    <style name="Theme.Widget.Button.Accent" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/accent_button_states</item>
     </style>
-    <style name="OutlinedButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+    <style name="Theme.Widget.Button.Outline" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
         <item name="android:textColor">@color/white_button_states</item>
         <item name="strokeColor">@color/white_button_states</item>
         <item name="iconTint">@color/white_button_states</item>
@@ -73,22 +41,5 @@
         <item name="android:paddingTop">4dp</item>
         <item name="android:theme">@style/Base.ThemeOverlay.AppCompat.Dark</item>
     </style>
-
-    <!-- Licenses dialog -->
-    <string name="licenses_css" translatable="false">
-        body {
-            background: #1D1F2B;
-            color: #FFF;
-            overflow-wrap: break-word;
-        }
-        a {
-            color: #EC1A55;
-        }
-        pre {
-            background-color: #2B2E41;
-            padding: 1em;
-            white-space: pre-wrap;
-        }
-    </string>
 
 </resources>

@@ -48,7 +48,7 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
         })
 
         // Build dialog
-        val sleepTimerDialog = MaterialAlertDialogBuilder(activity, R.style.DialogTheme)
+        val sleepTimerDialog = MaterialAlertDialogBuilder(activity, R.style.Theme_Widget_Dialog)
                 .setTitle(R.string.sleep_timer)
                 .setView(layout)
                 .setPositiveButton(R.string.set) { _, _ ->

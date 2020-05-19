@@ -86,7 +86,7 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
                 .setTitle(R.string.licenses)
                 .setNotices(R.raw.notices)
                 .setIncludeOwnLicense(true)
-                .setThemeResourceId(R.style.DialogTheme)
+                .setThemeResourceId(R.style.Theme_Widget_Dialog)
                 .setNoticesCssStyle(R.string.licenses_css)
                 .build()
                 .show()
