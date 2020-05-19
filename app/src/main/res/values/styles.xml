@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Accent color -->
         <item name="colorPrimary">@color/grey</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -24,8 +24,7 @@
 
         <!-- UI widget theming -->
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="materialButtonStyle">@style/ButtonTheme</item>
-        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
+        <item name="buttonStyle">@style/ButtonTheme</item>
         <item name="dialogTheme">@style/DialogTheme</item>
         <item name="alertDialogTheme">@style/DialogTheme</item>
     </style>
