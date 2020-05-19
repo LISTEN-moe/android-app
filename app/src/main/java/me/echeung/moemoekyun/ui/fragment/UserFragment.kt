@@ -24,6 +24,8 @@ import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
+import me.echeung.moemoekyun.util.system.launchIO
+import me.echeung.moemoekyun.util.system.launchUI
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
@@ -91,19 +93,21 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     }
 
     override fun loadSongs(adapter: SongsListAdapter) {
-        radioClient.api.getUserFavorites(object : UserFavoritesCallback {
-            override fun onSuccess(favorites: List<Song>) {
-                activity?.runOnUiThread {
-                    songList.showLoading(false)
-                    adapter.songs = favorites
-                    userViewModel.hasFavorites = favorites.isNotEmpty()
+        launchIO {
+            radioClient.api.getUserFavorites(object : UserFavoritesCallback {
+                override fun onSuccess(favorites: List<Song>) {
+                    launchUI {
+                        songList.showLoading(false)
+                        adapter.songs = favorites
+                        userViewModel.hasFavorites = favorites.isNotEmpty()
+                    }
                 }
-            }
 
-            override fun onFailure(message: String?) {
-                activity?.runOnUiThread { songList.showLoading(false) }
-            }
-        })
+                override fun onFailure(message: String?) {
+                    launchUI { songList.showLoading(false) }
+                }
+            })
+        }
     }
 
     private fun initUserContent() {
@@ -116,21 +120,23 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
     }
 
     private fun getUserInfo() {
-        radioClient.api.getUserInfo(object : UserInfoCallback {
-            override fun onSuccess(user: User) {
-                userViewModel.user = user
+        launchIO {
+            radioClient.api.getUserInfo(object : UserInfoCallback {
+                override fun onSuccess(user: User) {
+                    userViewModel.user = user
 
-                if (user.avatarImage != null) {
-                    userViewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
+                    if (user.avatarImage != null) {
+                        userViewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
+                    }
+
+                    if (user.bannerImage != null) {
+                        userViewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
+                    }
                 }
 
-                if (user.bannerImage != null) {
-                    userViewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
-                }
-            }
-
-            override fun onFailure(message: String?) {}
-        })
+                override fun onFailure(message: String?) {}
+            })
+        }
     }
 
     companion object {

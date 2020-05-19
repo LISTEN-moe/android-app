@@ -13,6 +13,8 @@ import me.echeung.moemoekyun.client.api.callback.LoginCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.ext.*
+import me.echeung.moemoekyun.util.system.launchIO
+import me.echeung.moemoekyun.util.system.launchUI
 import org.koin.android.ext.android.inject
 
 class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
@@ -31,7 +33,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
 
         loginCallback = object : LoginCallback {
             override fun onSuccess(token: String) {
-                runOnUiThread {
+                launchUI {
                     finish(Activity.RESULT_OK)
                 }
             }
@@ -41,7 +43,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             }
 
             override fun onFailure(message: String?) {
-                runOnUiThread { applicationContext.toast(message) }
+                launchUI { applicationContext.toast(message) }
             }
         }
 
@@ -82,7 +84,9 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             return
         }
 
-        radioClient.api.authenticate(userLogin, password, loginCallback)
+        launchIO {
+            radioClient.api.authenticate(userLogin, password, loginCallback)
+        }
     }
 
     private fun showMfaDialog() {
@@ -99,7 +103,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
                             return
                         }
 
-                        radioClient.api.authenticateMfa(otpToken, loginCallback)
+                        launchIO { radioClient.api.authenticateMfa(otpToken, loginCallback) }
                     })
                     .create()
 

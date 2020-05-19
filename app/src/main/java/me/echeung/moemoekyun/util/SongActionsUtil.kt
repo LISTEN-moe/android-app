@@ -19,6 +19,8 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.system.launchIO
+import me.echeung.moemoekyun.util.system.launchUI
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class SongActionsUtil(
@@ -39,35 +41,39 @@ class SongActionsUtil(
         val adapter = SongDetailAdapter(activity, detailedSongs)
 
         // Asynchronously update songs with more details
-        detailedSongs.forEachIndexed { index, song ->
-            radioClient.api.getSongDetails(song.id, object : SongCallback {
-                override fun onSuccess(detailedSong: Song) {
-                    detailedSong.favorite = song.favorite
-                    detailedSongs[index] = detailedSong
+        launchIO {
+            detailedSongs.forEachIndexed { index, song ->
+                radioClient.api.getSongDetails(song.id, object : SongCallback {
+                    override fun onSuccess(detailedSong: Song) {
+                        detailedSong.favorite = song.favorite
+                        detailedSongs[index] = detailedSong
 
-                    activity.runOnUiThread {
-                        adapter.notifyDataSetInvalidated()
+                        launchUI {
+                            adapter.notifyDataSetInvalidated()
+                        }
                     }
-                }
-            })
+                })
+            }
         }
 
         // Get favorited status if logged in
         if (authUtil.isAuthenticated) {
             val songIds = songs.map { it.id }
-            radioClient.api.isFavorite(songIds, object : IsFavoriteCallback {
-                override fun onSuccess(favoritedSongIds: List<Int>) {
-                    detailedSongs.forEach {
-                        if (it.id in favoritedSongIds) {
-                            it.favorite = true
+            launchIO {
+                radioClient.api.isFavorite(songIds, object : IsFavoriteCallback {
+                    override fun onSuccess(favoritedSongIds: List<Int>) {
+                        detailedSongs.forEach {
+                            if (it.id in favoritedSongIds) {
+                                it.favorite = true
+                            }
+                        }
+
+                        launchUI {
+                            adapter.notifyDataSetInvalidated()
                         }
                     }
-
-                    activity.runOnUiThread {
-                        adapter.notifyDataSetInvalidated()
-                    }
-                }
-            })
+                })
+            }
         }
 
         MaterialAlertDialogBuilder(activity, R.style.Theme_Widget_Dialog)
@@ -86,39 +92,39 @@ class SongActionsUtil(
         val songId = song.id
         val isCurrentlyFavorite = song.favorite
 
-        radioClient.api.toggleFavorite(songId, object : FavoriteSongCallback {
-            override fun onSuccess() {
-                if (radioViewModel.currentSong!!.id == songId) {
-                    radioViewModel.isFavorited = !isCurrentlyFavorite
-                }
-                song.favorite = !isCurrentlyFavorite
+        launchIO {
+            radioClient.api.toggleFavorite(songId, object : FavoriteSongCallback {
+                override fun onSuccess() {
+                    if (radioViewModel.currentSong!!.id == songId) {
+                        radioViewModel.isFavorited = !isCurrentlyFavorite
+                    }
+                    song.favorite = !isCurrentlyFavorite
 
-                if (activity == null) return
+                    launchUI {
+                        activity ?: return@launchUI
 
-                activity.runOnUiThread {
-                    // Broadcast event
-                    activity.sendBroadcast(Intent(FAVORITE_EVENT))
+                        // Broadcast event
+                        activity.sendBroadcast(Intent(FAVORITE_EVENT))
 
-                    if (isCurrentlyFavorite) {
-                        // Undo action
-                        val coordinatorLayout = activity.findViewById<View>(R.id.coordinator_layout)
-                        if (coordinatorLayout != null) {
-                            val undoBar = Snackbar.make(coordinatorLayout,
-                                    String.format(activity.getString(R.string.unfavorited), song.toString()),
-                                    Snackbar.LENGTH_LONG)
-                            undoBar.setAction(R.string.action_undo) { toggleFavorite(activity, song) }
-                            undoBar.show()
+                        if (isCurrentlyFavorite) {
+                            // Undo action
+                            val coordinatorLayout = activity.findViewById<View>(R.id.coordinator_layout)
+                            if (coordinatorLayout != null) {
+                                val undoBar = Snackbar.make(coordinatorLayout,
+                                        String.format(activity.getString(R.string.unfavorited), song.toString()),
+                                        Snackbar.LENGTH_LONG)
+                                undoBar.setAction(R.string.action_undo) { toggleFavorite(activity, song) }
+                                undoBar.show()
+                            }
                         }
                     }
                 }
-            }
 
-            override fun onFailure(message: String?) {
-                if (activity == null) return
-
-                activity.runOnUiThread { activity.applicationContext.toast(message) }
-            }
-        })
+                override fun onFailure(message: String?) {
+                    launchUI { activity?.toast(message) }
+                }
+            })
+        }
     }
 
     /**
@@ -127,29 +133,29 @@ class SongActionsUtil(
      * @param song The song to request.
      */
     fun request(activity: Activity?, song: Song) {
-        radioClient.api.requestSong(song.id, object : RequestSongCallback {
-            override fun onSuccess() {
-                if (activity == null) return
+        launchIO {
+            radioClient.api.requestSong(song.id, object : RequestSongCallback {
+                override fun onSuccess() {
+                    launchUI {
+                        activity ?: return@launchUI
 
-                activity.runOnUiThread {
-                    // Broadcast event
-                    activity.sendBroadcast(Intent(REQUEST_EVENT))
+                        // Broadcast event
+                        activity.sendBroadcast(Intent(REQUEST_EVENT))
 
-                    val toastMsg = if (preferenceUtil.shouldShowRandomRequestTitle())
-                        activity.getString(R.string.requested_song, song.toString())
-                    else
-                        activity.getString(R.string.requested_random_song)
+                        val toastMsg = if (preferenceUtil.shouldShowRandomRequestTitle())
+                            activity.getString(R.string.requested_song, song.toString())
+                        else
+                            activity.getString(R.string.requested_random_song)
 
-                    activity.applicationContext.toast(toastMsg, Toast.LENGTH_LONG)
+                        activity.toast(toastMsg, Toast.LENGTH_LONG)
+                    }
                 }
-            }
 
-            override fun onFailure(message: String?) {
-                if (activity == null) return
-
-                activity.runOnUiThread { activity.applicationContext.toast(message) }
-            }
-        })
+                override fun onFailure(message: String?) {
+                    launchUI { activity?.toast(message) }
+                }
+            })
+        }
     }
 
     fun copyToClipboard(context: Context?, song: Song?) {

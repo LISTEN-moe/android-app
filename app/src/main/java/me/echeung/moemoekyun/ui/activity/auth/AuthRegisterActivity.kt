@@ -12,6 +12,8 @@ import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.system.launchIO
+import me.echeung.moemoekyun.util.system.launchUI
 import org.koin.android.ext.android.inject
 
 class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding>() {
@@ -56,21 +58,23 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
             return
         }
 
-        radioClient.api.register(email, username, password, object : RegisterCallback {
-            override fun onSuccess() {
-                runOnUiThread {
-                    val returnIntent = Intent()
-                    returnIntent.putExtra(AuthActivityUtil.LOGIN_NAME, username)
-                    returnIntent.putExtra(AuthActivityUtil.LOGIN_PASS, password)
-                    setResult(Activity.RESULT_OK, returnIntent)
-                    finish()
+        launchIO {
+            radioClient.api.register(email, username, password, object : RegisterCallback {
+                override fun onSuccess() {
+                    launchUI {
+                        val returnIntent = Intent()
+                        returnIntent.putExtra(AuthActivityUtil.LOGIN_NAME, username)
+                        returnIntent.putExtra(AuthActivityUtil.LOGIN_PASS, password)
+                        setResult(Activity.RESULT_OK, returnIntent)
+                        finish()
+                    }
                 }
-            }
 
-            override fun onFailure(message: String?) {
-                runOnUiThread { applicationContext.toast(message) }
-            }
-        })
+                override fun onFailure(message: String?) {
+                    launchUI { applicationContext.toast(message) }
+                }
+            })
+        }
     }
 
     private fun setError(editText: TextInputEditText, isError: Boolean, errorMessage: String) {

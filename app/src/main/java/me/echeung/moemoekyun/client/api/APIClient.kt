@@ -7,7 +7,11 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
+import com.apollographql.apollo.coroutines.toDeferred
 import com.apollographql.apollo.exception.ApolloException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -48,6 +52,8 @@ class APIClient(
         private val authUtil: AuthUtil
 ) {
 
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+
     private val client: ApolloClient
     private val songsCache: SongsCache
 
@@ -55,12 +61,12 @@ class APIClient(
 //        val transportFactory = WebSocketSubscriptionTransport.Factory(webSocketUrl, okHttpClient)
 
         client = ApolloClient.builder()
-            .serverUrl(Library.API_BASE)
-            .httpCache(apolloCache)
-            .defaultHttpCachePolicy(DEFAULT_CACHE_POLICY)
-            .okHttpClient(okHttpClient)
+                .serverUrl(Library.API_BASE)
+                .httpCache(apolloCache)
+                .defaultHttpCachePolicy(DEFAULT_CACHE_POLICY)
+                .okHttpClient(okHttpClient)
 //            .subscriptionTransportFactory(transportFactory)
-            .build()
+                .build()
 
         songsCache = SongsCache(this)
     }
@@ -72,26 +78,25 @@ class APIClient(
      * @param password User's password.
      * @param callback Listener to handle the response.
      */
-    fun authenticate(username: String, password: String, callback: LoginCallback) {
-        client.mutate(LoginMutation(username, password))
-                .enqueue(object : ApolloCall.Callback<LoginMutation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun authenticate(username: String, password: String, callback: LoginCallback) {
+        try {
+            val response =  client.mutate(LoginMutation(username, password))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<LoginMutation.Data>) {
-                        val userToken = response.data()?.login?.token!!
+            val userToken = response.data()?.login?.token!!
 
-                        if (response.data()?.login?.mfa!!) {
-                            authUtil.mfaToken = userToken
-                            callback.onMfaRequired(userToken)
-                            return
-                        }
+            if (response.data()?.login?.mfa!!) {
+                authUtil.mfaToken = userToken
+                callback.onMfaRequired(userToken)
+                return
+            }
 
-                        authUtil.authToken = userToken
-                        callback.onSuccess(userToken)
-                    }
-                })
+            authUtil.authToken = userToken
+            callback.onSuccess(userToken)
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -100,20 +105,19 @@ class APIClient(
      * @param otpToken User's one-time password token.
      * @param callback Listener to handle the response.
      */
-    fun authenticateMfa(otpToken: String, callback: LoginCallback) {
-        client.mutate(LoginMfaMutation(otpToken))
-                .enqueue(object : ApolloCall.Callback<LoginMfaMutation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun authenticateMfa(otpToken: String, callback: LoginCallback) {
+        try {
+            val response = client.mutate(LoginMfaMutation(otpToken))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<LoginMfaMutation.Data>) {
-                        val userToken = response.data()?.loginMFA?.token!!
-                        authUtil.authToken = userToken
-                        authUtil.clearMfaAuthToken()
-                        callback.onSuccess(userToken)
-                    }
-                })
+            val userToken = response.data()?.loginMFA?.token!!
+            authUtil.authToken = userToken
+            authUtil.clearMfaAuthToken()
+            callback.onSuccess(userToken)
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -121,17 +125,16 @@ class APIClient(
      *
      * @param callback Listener to handle the response.
      */
-    fun register(email: String, username: String, password: String, callback: RegisterCallback) {
-        client.mutate(RegisterMutation(email, username, password))
-                .enqueue(object : ApolloCall.Callback<RegisterMutation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun register(email: String, username: String, password: String, callback: RegisterCallback) {
+        try {
+            client.mutate(RegisterMutation(email, username, password))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<RegisterMutation.Data>) {
-                        callback.onSuccess()
-                    }
-                })
+            callback.onSuccess()
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -139,17 +142,16 @@ class APIClient(
      *
      * @param callback Listener to handle the response.
      */
-    fun getUserInfo(callback: UserInfoCallback) {
-        client.query(UserQuery("@me"))
-                .enqueue(object : ApolloCall.Callback<UserQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun getUserInfo(callback: UserInfoCallback) {
+        try {
+            val response = client.query(UserQuery("@me"))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<UserQuery.Data>) {
-                        callback.onSuccess(response.data()?.user!!.transform())
-                    }
-                })
+            callback.onSuccess(response.data()?.user!!.transform())
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -157,22 +159,21 @@ class APIClient(
      *
      * @param callback Listener to handle the response.
      */
-    fun getUserFavorites(callback: UserFavoritesCallback) {
-        // TODO: do actual pagination
-        client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop())))
-                .enqueue(object : ApolloCall.Callback<FavoritesQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun getUserFavorites(callback: UserFavoritesCallback) {
+        try {
+            // TODO: do actual pagination
+            val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop())))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<FavoritesQuery.Data>) {
-                        callback.onSuccess(
-                                response.data()?.user?.favorites?.favorites
-                                        ?.mapNotNull { it?.song }
-                                        ?.map { it.transform() }
-                                        ?: emptyList())
-                    }
-                })
+            callback.onSuccess(
+                    response.data()?.user?.favorites?.favorites
+                            ?.mapNotNull { it?.song }
+                            ?.map { it.transform() }
+                            ?: emptyList())
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -181,19 +182,16 @@ class APIClient(
      * @param songIds IDs of songs to check status of.
      * @param callback Listener to handle the response.
      */
-    fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
-        client.query(CheckFavoriteQuery(songIds))
-                .enqueue(object : ApolloCall.Callback<CheckFavoriteQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
+        try {
+            val response = client.query(CheckFavoriteQuery(songIds))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<CheckFavoriteQuery.Data>) {
-                        callback.onSuccess(
-                                response.data()?.checkFavorite?.filterNotNull()
-                                        ?: emptyList())
-                    }
-                })
+            callback.onSuccess(response.data()?.checkFavorite?.filterNotNull() ?: emptyList())
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -202,17 +200,16 @@ class APIClient(
      * @param songId Song to update favorite status of.
      * @param callback Listener to handle the response.
      */
-    fun toggleFavorite(songId: Int, callback: FavoriteSongCallback) {
-        client.mutate(FavoriteMutation(songId))
-                .enqueue(object : ApolloCall.Callback<FavoriteMutation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun toggleFavorite(songId: Int, callback: FavoriteSongCallback) {
+        try {
+            client.mutate(FavoriteMutation(songId))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<FavoriteMutation.Data>) {
-                        callback.onSuccess()
-                    }
-                })
+            callback.onSuccess()
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -221,22 +218,21 @@ class APIClient(
      * @param songId Song to request.
      * @param callback Listener to handle the response.
      */
-    fun requestSong(songId: Int, callback: RequestSongCallback) {
-        client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop())))
-                .enqueue(object : ApolloCall.Callback<RequestSongMutation.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun requestSong(songId: Int, callback: RequestSongCallback) {
+        try {
+            val response = client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop())))
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<RequestSongMutation.Data>) {
-                        if (response.hasErrors()) {
-                            callback.onFailure(response.errors()[0]?.message())
-                            return
-                        }
+            if (response.hasErrors()) {
+                callback.onFailure(response.errors()[0]?.message())
+                return
+            }
 
-                        callback.onSuccess()
-                    }
-                })
+            callback.onSuccess()
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -264,18 +260,17 @@ class APIClient(
      * @param songId Song to get details for.
      * @param callback Listener to handle the response.
      */
-    fun getSongDetails(songId: Int, callback: SongCallback) {
-        client.query(SongQuery(songId))
-                .httpCachePolicy(SONG_CACHE_POLICY)
-                .enqueue(object : ApolloCall.Callback<SongQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun getSongDetails(songId: Int, callback: SongCallback) {
+        try {
+            val response = client.query(SongQuery(songId))
+                    .httpCachePolicy(SONG_CACHE_POLICY)
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<SongQuery.Data>) {
-                        callback.onSuccess(response.data()?.song!!.transform())
-                    }
-                })
+            callback.onSuccess(response.data()?.song!!.transform())
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -283,21 +278,19 @@ class APIClient(
      *
      * @param callback Listener to handle the response.
      */
-    fun getAllSongs(callback: SongsCallback) {
-        // TODO: do actual pagination
-        // TODO: maintain an actual DB of song info so we don't need to query as much stuff
-        client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
-                .httpCachePolicy(SONG_CACHE_POLICY)
-                .enqueue(object : ApolloCall.Callback<SongsQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun getAllSongs(callback: SongsCallback) {
+        try {
+            // TODO: do actual pagination
+            // TODO: maintain an actual DB of song info so we don't need to query as much stuff
+            val response = client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
+                    .httpCachePolicy(SONG_CACHE_POLICY)
+                    .toDeferred()
+                    .await()
 
-                    override fun onResponse(response: Response<SongsQuery.Data>) {
-                        callback.onSuccess(
-                                response.data()?.songs?.songs?.map { it.transform() } ?: emptyList())
-                    }
-                })
+            callback.onSuccess(response.data()?.songs?.songs?.map { it.transform() } ?: emptyList())
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
