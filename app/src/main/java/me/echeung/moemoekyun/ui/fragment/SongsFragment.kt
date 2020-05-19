@@ -22,6 +22,8 @@ import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.system.launchIO
+import me.echeung.moemoekyun.util.system.launchUI
 import org.koin.android.ext.android.inject
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
@@ -78,21 +80,23 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>(), SongList.So
     override fun loadSongs(adapter: SongsListAdapter) {
         songList.showLoading(true)
 
-        radioClient.api.search(null, object : SearchCallback {
-            override fun onSuccess(favorites: List<Song>) {
-                activity?.runOnUiThread {
-                    songList.showLoading(false)
-                    adapter.songs = favorites
+        launchIO {
+            radioClient.api.search(null, object : SearchCallback {
+                override fun onSuccess(favorites: List<Song>) {
+                    launchUI {
+                        songList.showLoading(false)
+                        adapter.songs = favorites
+                    }
                 }
-            }
 
-            override fun onFailure(message: String?) {
-                activity?.runOnUiThread {
-                    songList.showLoading(false)
-                    activity?.toast(message)
+                override fun onFailure(message: String?) {
+                    launchUI {
+                        songList.showLoading(false)
+                        activity?.toast(message)
+                    }
                 }
-            }
-        })
+            })
+        }
     }
 
     companion object {

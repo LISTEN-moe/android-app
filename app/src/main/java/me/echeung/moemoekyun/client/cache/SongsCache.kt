@@ -1,8 +1,6 @@
 package me.echeung.moemoekyun.client.cache
 
-import android.util.Log
 import me.echeung.moemoekyun.client.api.APIClient
-import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.system.launchIO
 import java.util.GregorianCalendar
@@ -20,40 +18,22 @@ class SongsCache(private val apiClient: APIClient) {
 
     init {
         // Prime the cache
-        getSongs(null)
+        launchIO { getSongs() }
     }
 
-    fun getSongs(callback: Callback?) {
-        if (lastUpdated != 0L && isCacheValid && cachedSongs != null && callback != null) {
-            callback.onRetrieve(cachedSongs)
+    suspend fun getSongs(): List<Song>? {
+        if (lastUpdated != 0L && isCacheValid && cachedSongs != null) {
+            return cachedSongs
         }
 
-        launchIO {
-            apiClient.getAllSongs(object : SongsCallback {
-                override fun onSuccess(songs: List<Song>) {
-                    lastUpdated = GregorianCalendar().timeInMillis
-                    cachedSongs = songs
+        val songs = apiClient.getAllSongs()
+        lastUpdated = GregorianCalendar().timeInMillis
+        cachedSongs = songs
 
-                    callback?.onRetrieve(cachedSongs)
-                }
-
-                override fun onFailure(message: String?) {
-                    Log.e(TAG, message)
-                    callback?.onFailure(message)
-                }
-            })
-        }
-    }
-
-    interface Callback {
-        fun onRetrieve(songs: List<Song>?)
-
-        fun onFailure(message: String?)
+        return cachedSongs
     }
 
     companion object {
-        private val TAG = SongsCache::class.java.simpleName
-
         private const val MAX_AGE = 1000 * 60 * 60 * 24 // 24 hours
     }
 }

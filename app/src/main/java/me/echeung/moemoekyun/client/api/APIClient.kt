@@ -9,9 +9,6 @@ import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.coroutines.toDeferred
 import com.apollographql.apollo.exception.ApolloException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -34,7 +31,6 @@ import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.client.api.callback.RequestSongCallback
 import me.echeung.moemoekyun.client.api.callback.SearchCallback
 import me.echeung.moemoekyun.client.api.callback.SongCallback
-import me.echeung.moemoekyun.client.api.callback.SongsCallback
 import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
 import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.data.transform
@@ -51,8 +47,6 @@ class APIClient(
         apolloCache: ApolloHttpCache,
         private val authUtil: AuthUtil
 ) {
-
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val client: ApolloClient
     private val songsCache: SongsCache
@@ -241,17 +235,14 @@ class APIClient(
      * @param query Search query string.
      * @param callback Listener to handle the response.
      */
-    fun search(query: String?, callback: SearchCallback) {
-        songsCache.getSongs(object : SongsCache.Callback {
-            override fun onRetrieve(songs: List<Song>?) {
-                val filteredSongs = filterSongs(songs!!, query)
-                callback.onSuccess(filteredSongs)
-            }
-
-            override fun onFailure(message: String?) {
-                callback.onFailure(message)
-            }
-        })
+    suspend fun search(query: String?, callback: SearchCallback) {
+        try {
+            val songs = songsCache.getSongs()
+            val filteredSongs = filterSongs(songs!!, query)
+            callback.onSuccess(filteredSongs)
+        } catch (e: Exception) {
+            callback.onFailure(e.message)
+        }
     }
 
     /**
@@ -278,19 +269,15 @@ class APIClient(
      *
      * @param callback Listener to handle the response.
      */
-    suspend fun getAllSongs(callback: SongsCallback) {
-        try {
-            // TODO: do actual pagination
-            // TODO: maintain an actual DB of song info so we don't need to query as much stuff
-            val response = client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
-                    .httpCachePolicy(SONG_CACHE_POLICY)
-                    .toDeferred()
-                    .await()
+    suspend fun getAllSongs(): List<Song> {
+        // TODO: do actual pagination
+        // TODO: maintain an actual DB of song info so we don't need to query as much stuff
+        val response = client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
+                .httpCachePolicy(SONG_CACHE_POLICY)
+                .toDeferred()
+                .await()
 
-            callback.onSuccess(response.data()?.songs?.songs?.map { it.transform() } ?: emptyList())
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+        return response.data()?.songs?.songs?.map { it.transform() } ?: emptyList()
     }
 
     /**
