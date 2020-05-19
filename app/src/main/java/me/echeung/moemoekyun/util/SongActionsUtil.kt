@@ -11,8 +11,6 @@ import com.google.android.material.snackbar.Snackbar
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
-import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
@@ -55,19 +53,17 @@ class SongActionsUtil(
         if (authUtil.isAuthenticated) {
             val songIds = songs.map { it.id }
             launchIO {
-                radioClient.api.isFavorite(songIds, object : IsFavoriteCallback {
-                    override fun onSuccess(favoritedSongIds: List<Int>) {
-                        detailedSongs.forEach {
-                            if (it.id in favoritedSongIds) {
-                                it.favorite = true
-                            }
-                        }
+                val favoritedSongIds = radioClient.api.isFavorite(songIds)
 
-                        launchUI {
-                            adapter.notifyDataSetInvalidated()
-                        }
+                detailedSongs.forEach {
+                    if (it.id in favoritedSongIds) {
+                        it.favorite = true
                     }
-                })
+                }
+
+                launchUI {
+                    adapter.notifyDataSetInvalidated()
+                }
             }
         }
 
@@ -88,37 +84,35 @@ class SongActionsUtil(
         val isCurrentlyFavorite = song.favorite
 
         launchIO {
-            radioClient.api.toggleFavorite(songId, object : FavoriteSongCallback {
-                override fun onSuccess() {
-                    if (radioViewModel.currentSong!!.id == songId) {
-                        radioViewModel.isFavorited = !isCurrentlyFavorite
-                    }
-                    song.favorite = !isCurrentlyFavorite
+            try {
+                radioClient.api.toggleFavorite(songId)
 
-                    launchUI {
-                        activity ?: return@launchUI
+                if (radioViewModel.currentSong!!.id == songId) {
+                    radioViewModel.isFavorited = !isCurrentlyFavorite
+                }
+                song.favorite = !isCurrentlyFavorite
 
-                        // Broadcast event
-                        activity.sendBroadcast(Intent(FAVORITE_EVENT))
+                launchUI {
+                    activity ?: return@launchUI
 
-                        if (isCurrentlyFavorite) {
-                            // Undo action
-                            val coordinatorLayout = activity.findViewById<View>(R.id.coordinator_layout)
-                            if (coordinatorLayout != null) {
-                                val undoBar = Snackbar.make(coordinatorLayout,
-                                        String.format(activity.getString(R.string.unfavorited), song.toString()),
-                                        Snackbar.LENGTH_LONG)
-                                undoBar.setAction(R.string.action_undo) { toggleFavorite(activity, song) }
-                                undoBar.show()
-                            }
+                    // Broadcast event
+                    activity.sendBroadcast(Intent(FAVORITE_EVENT))
+
+                    if (isCurrentlyFavorite) {
+                        // Undo action
+                        val coordinatorLayout = activity.findViewById<View>(R.id.coordinator_layout)
+                        if (coordinatorLayout != null) {
+                            val undoBar = Snackbar.make(coordinatorLayout,
+                                    String.format(activity.getString(R.string.unfavorited), song.toString()),
+                                    Snackbar.LENGTH_LONG)
+                            undoBar.setAction(R.string.action_undo) { toggleFavorite(activity, song) }
+                            undoBar.show()
                         }
                     }
                 }
-
-                override fun onFailure(message: String?) {
-                    launchUI { activity?.toast(message) }
-                }
-            })
+            } catch (e: Exception) {
+                launchUI { activity?.toast(e.message) }
+            }
         }
     }
 

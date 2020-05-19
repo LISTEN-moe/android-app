@@ -88,7 +88,7 @@ object AuthActivityUtil : KoinComponent {
         val userViewModel: UserViewModel = get()
         userViewModel.reset()
 
-        applicationContext.toast(getString(R.string.logged_out), Toast.LENGTH_LONG)
+        toast(getString(R.string.logged_out), Toast.LENGTH_LONG)
         invalidateOptionsMenu()
 
         broadcastAuthEvent()

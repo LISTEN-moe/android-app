@@ -21,12 +21,9 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.KeyEvent
-import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
-import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.auth.AuthUtil
@@ -189,13 +186,10 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         // Check if current song is favorited
         if (info.song != null && authUtil.isAuthenticated) {
             launchIO {
-                radioClient.api.isFavorite(listOf(info.song.id), object : IsFavoriteCallback {
-                    override fun onSuccess(favoritedSongIds: List<Int>) {
-                        if (info.song.id in favoritedSongIds && radioViewModel.currentSong?.id == info.song.id) {
-                            radioViewModel.isFavorited = true
-                        }
-                    }
-                })
+                val favoritedSongIds = radioClient.api.isFavorite(listOf(info.song.id))
+                if (info.song.id in favoritedSongIds && radioViewModel.currentSong?.id == info.song.id) {
+                    radioViewModel.isFavorited = true
+                }
             }
         }
 
@@ -525,32 +519,30 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPr
         val isCurrentlyFavorite = song.favorite
 
         launchIO {
-            radioClient.api.toggleFavorite(songId, object : FavoriteSongCallback {
-                override fun onSuccess() {
-                    val currentSong = radioViewModel.currentSong
-                    if (currentSong!!.id == songId) {
-                        radioViewModel.isFavorited = !isCurrentlyFavorite
-                    }
-                    song.favorite = !isCurrentlyFavorite
+            try {
+                radioClient.api.toggleFavorite(songId)
 
-                    launchUI {
-                        val favIntent = Intent(SongActionsUtil.FAVORITE_EVENT)
-                        sendBroadcast(favIntent)
-
-                        updateNotification()
-                        updateMediaSessionPlaybackState()
-                    }
+                val currentSong = radioViewModel.currentSong
+                if (currentSong!!.id == songId) {
+                    radioViewModel.isFavorited = !isCurrentlyFavorite
                 }
+                song.favorite = !isCurrentlyFavorite
 
-                override fun onFailure(message: String?) {
-                    launchUI { applicationContext.toast(message) }
+                launchUI {
+                    val favIntent = Intent(SongActionsUtil.FAVORITE_EVENT)
+                    sendBroadcast(favIntent)
+
+                    updateNotification()
+                    updateMediaSessionPlaybackState()
                 }
-            })
+            } catch (e: Exception) {
+                launchUI { toast(e.message) }
+            }
         }
     }
 
     private fun showLoginRequiredToast() {
-        applicationContext.toast(R.string.login_required)
+        toast(R.string.login_required)
     }
 
     private fun initNotificationChannels() {

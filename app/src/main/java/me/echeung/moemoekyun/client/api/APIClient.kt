@@ -7,8 +7,10 @@ import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
+import com.apollographql.apollo.coroutines.toChannel
 import com.apollographql.apollo.coroutines.toDeferred
 import com.apollographql.apollo.exception.ApolloException
+import kotlinx.coroutines.channels.consumeEach
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -23,13 +25,6 @@ import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.UserQueueSubscription
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.callback.FavoriteSongCallback
-import me.echeung.moemoekyun.client.api.callback.IsFavoriteCallback
-import me.echeung.moemoekyun.client.api.callback.LoginCallback
-import me.echeung.moemoekyun.client.api.callback.QueueCallback
-import me.echeung.moemoekyun.client.api.callback.RegisterCallback
-import me.echeung.moemoekyun.client.api.callback.UserFavoritesCallback
-import me.echeung.moemoekyun.client.api.callback.UserInfoCallback
 import me.echeung.moemoekyun.client.api.data.transform
 import me.echeung.moemoekyun.client.api.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
@@ -67,140 +62,98 @@ class APIClient(
      *
      * @param username User's username.
      * @param password User's password.
-     * @param callback Listener to handle the response.
      */
-    suspend fun authenticate(username: String, password: String, callback: LoginCallback) {
-        try {
-            val response =  client.mutate(LoginMutation(username, password))
-                    .toDeferred()
-                    .await()
+    suspend fun authenticate(username: String, password: String): Pair<LoginState, String> {
+        val response =  client.mutate(LoginMutation(username, password))
+                .toDeferred()
+                .await()
 
-            val userToken = response.data()?.login?.token!!
+        val userToken = response.data()?.login?.token!!
 
-            if (response.data()?.login?.mfa!!) {
-                authUtil.mfaToken = userToken
-                callback.onMfaRequired(userToken)
-                return
-            }
-
-            authUtil.authToken = userToken
-            callback.onSuccess(userToken)
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
+        if (response.data()?.login?.mfa!!) {
+            authUtil.mfaToken = userToken
+            return Pair(LoginState.REQUIRE_OTP, userToken)
         }
+
+        authUtil.authToken = userToken
+
+        return Pair(LoginState.COMPLETE, userToken)
     }
 
     /**
      * Second step for MFA authentication.
      *
      * @param otpToken User's one-time password token.
-     * @param callback Listener to handle the response.
      */
-    suspend fun authenticateMfa(otpToken: String, callback: LoginCallback) {
-        try {
-            val response = client.mutate(LoginMfaMutation(otpToken))
-                    .toDeferred()
-                    .await()
+    suspend fun authenticateMfa(otpToken: String): String {
+        val response = client.mutate(LoginMfaMutation(otpToken))
+                .toDeferred()
+                .await()
 
-            val userToken = response.data()?.loginMFA?.token!!
-            authUtil.authToken = userToken
-            authUtil.clearMfaAuthToken()
-            callback.onSuccess(userToken)
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+        val userToken = response.data()?.loginMFA?.token!!
+        authUtil.authToken = userToken
+        authUtil.clearMfaAuthToken()
+
+        return userToken
     }
 
     /**
      * Register a new user.
-     *
-     * @param callback Listener to handle the response.
      */
-    suspend fun register(email: String, username: String, password: String, callback: RegisterCallback) {
-        try {
-            client.mutate(RegisterMutation(email, username, password))
-                    .toDeferred()
-                    .await()
-
-            callback.onSuccess()
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+    suspend fun register(email: String, username: String, password: String) {
+        client.mutate(RegisterMutation(email, username, password))
+                .toDeferred()
+                .await()
     }
 
     /**
      * Gets the user information (id and username).
-     *
-     * @param callback Listener to handle the response.
      */
-    suspend fun getUserInfo(callback: UserInfoCallback) {
-        try {
-            val response = client.query(UserQuery("@me"))
-                    .toDeferred()
-                    .await()
+    suspend fun getUserInfo(): User {
+        val response = client.query(UserQuery("@me"))
+                .toDeferred()
+                .await()
 
-            callback.onSuccess(response.data()?.user!!.transform())
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+        return response.data()?.user!!.transform()
     }
 
     /**
      * Gets a list of all the user's favorited songs.
-     *
-     * @param callback Listener to handle the response.
      */
-    suspend fun getUserFavorites(callback: UserFavoritesCallback) {
-        try {
-            // TODO: do actual pagination
-            val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop())))
-                    .toDeferred()
-                    .await()
+    suspend fun getUserFavorites(): List<Song> {
+        // TODO: do actual pagination
+        val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop())))
+                .toDeferred()
+                .await()
 
-            callback.onSuccess(
-                    response.data()?.user?.favorites?.favorites
-                            ?.mapNotNull { it?.song }
-                            ?.map { it.transform() }
-                            ?: emptyList())
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+        return response.data()?.user?.favorites?.favorites
+                ?.mapNotNull { it?.song }
+                ?.map { it.transform() }
+                ?: emptyList()
     }
 
     /**
      * Gets the favorited status of a list of songs.
      *
      * @param songIds IDs of songs to check status of.
-     * @param callback Listener to handle the response.
      */
-    suspend fun isFavorite(songIds: List<Int>, callback: IsFavoriteCallback) {
-        try {
-            val response = client.query(CheckFavoriteQuery(songIds))
-                    .toDeferred()
-                    .await()
+    suspend fun isFavorite(songIds: List<Int>): List<Int> {
+        val response = client.query(CheckFavoriteQuery(songIds))
+                .toDeferred()
+                .await()
 
-            callback.onSuccess(response.data()?.checkFavorite?.filterNotNull() ?: emptyList())
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+        return response.data()?.checkFavorite?.filterNotNull() ?: emptyList()
     }
 
     /**
      * Toggles a song's favorite status
      *
      * @param songId Song to update favorite status of.
-     * @param callback Listener to handle the response.
      */
-    suspend fun toggleFavorite(songId: Int, callback: FavoriteSongCallback) {
-        try {
-            client.mutate(FavoriteMutation(songId))
-                    .toDeferred()
-                    .await()
-
-            callback.onSuccess()
-        } catch (e: Exception) {
-            callback.onFailure(e.message)
-        }
+    suspend fun toggleFavorite(songId: Int) {
+        client.mutate(FavoriteMutation(songId))
+                .toDeferred()
+                .await()
     }
 
     /**
@@ -261,73 +214,40 @@ class APIClient(
 
     /**
      * Gets and subscribes to song queue info.
-     *
-     * @param callback Listener to handle the response.
      */
-    fun getQueue(user: User, callback: QueueCallback) {
-        client.query(QueueQuery())
-                .enqueue(object : ApolloCall.Callback<QueueQuery.Data>() {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
+    suspend fun getQueue(user: User) {
+        val queue = client.query(QueueQuery())
+                .toDeferred()
+                .await()
 
-                    override fun onResponse(response: Response<QueueQuery.Data>) {
-                        callback.onQueueSuccess(response.data()?.queue ?: 0)
-                    }
-                })
+//           callback.onQueueSuccess(response.data()?.queue ?: 0)
 
         client.subscribe(QueueSubscription(RadioClient.library!!.name))
-                .execute(object : ApolloSubscriptionCall.Callback<QueueSubscription.Data> {
-                    override fun onFailure(e: ApolloException) {
-                        callback.onFailure(e.message)
-                    }
-
-                    override fun onResponse(response: Response<QueueSubscription.Data>) {
-                        callback.onQueueSuccess(response.data()?.queue?.amount ?: 0)
-                    }
-
-                    override fun onConnected() {
-                    }
-
-                    override fun onTerminated() {
-                    }
-
-                    override fun onCompleted() {
-                    }
-                })
+                .toChannel()
+                .consumeEach {
+//                    callback.onQueueSuccess(response.data()?.queue?.amount ?: 0)
+                }
 
         // TODO: handle user change
         client.subscribe(UserQueueSubscription(RadioClient.library!!.name, user.uuid))
-                .execute(object : ApolloSubscriptionCall.Callback<UserQueueSubscription.Data> {
-                    override fun onFailure(e: ApolloException) {
-
-                    }
-
-                    override fun onResponse(response: Response<UserQueueSubscription.Data>) {
-                        callback.onUserQueueSuccess(
-                                response.data()?.userQueue?.amount ?: 0,
-                                response.data()?.userQueue?.before ?: 0
-                        )
-                    }
-
-                    override fun onConnected() {
-
-                    }
-
-                    override fun onTerminated() {
-
-                    }
-
-                    override fun onCompleted() {
-
-                    }
-                })
+                .toChannel()
+                .consumeEach {
+//                    callback.onUserQueueSuccess(
+//                            response.data()?.userQueue?.amount ?: 0,
+//                            response.data()?.userQueue?.before ?: 0
+//                    )
+                }
     }
 
     private fun filterSongs(songs: List<Song>, query: String?): List<Song> {
         return songs.asSequence()
                 .filter { song -> song.search(query) }
                 .toList()
+    }
+
+    enum class LoginState {
+        REQUIRE_OTP,
+        COMPLETE,
     }
 
     companion object {

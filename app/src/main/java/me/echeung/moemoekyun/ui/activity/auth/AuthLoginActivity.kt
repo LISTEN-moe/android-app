@@ -9,10 +9,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.callback.LoginCallback
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
-import me.echeung.moemoekyun.util.ext.*
+import me.echeung.moemoekyun.util.ext.clipboardManager
+import me.echeung.moemoekyun.util.ext.finish
+import me.echeung.moemoekyun.util.ext.getTrimmedText
+import me.echeung.moemoekyun.util.ext.openUrl
+import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.util.system.launchIO
 import me.echeung.moemoekyun.util.system.launchUI
 import org.koin.android.ext.android.inject
@@ -21,7 +25,6 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
 
     private val radioClient: RadioClient by inject()
 
-    private lateinit var loginCallback: LoginCallback
     private var mfaDialog: AlertDialog? = null
 
     init {
@@ -30,22 +33,6 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        loginCallback = object : LoginCallback {
-            override fun onSuccess(token: String) {
-                launchUI {
-                    finish(Activity.RESULT_OK)
-                }
-            }
-
-            override fun onMfaRequired(token: String) {
-                showMfaDialog()
-            }
-
-            override fun onFailure(message: String?) {
-                launchUI { applicationContext.toast(message) }
-            }
-        }
 
         binding.authBtn.setOnClickListener { login() }
 
@@ -85,7 +72,19 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         }
 
         launchIO {
-            radioClient.api.authenticate(userLogin, password, loginCallback)
+            try {
+                val result = radioClient.api.authenticate(userLogin, password)
+                when (result.first) {
+                    APIClient.LoginState.REQUIRE_OTP -> {
+                        launchUI { showMfaDialog() }
+                    }
+                    APIClient.LoginState.COMPLETE -> {
+                        launchUI { finish(Activity.RESULT_OK) }
+                    }
+                }
+            } catch (e: Exception) {
+                launchUI { toast(e.message) }
+            }
         }
     }
 
@@ -93,22 +92,27 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         val layout = layoutInflater.inflate(R.layout.dialog_auth_mfa, findViewById(R.id.layout_root_mfa))
         val otpText = layout.findViewById<TextInputEditText>(R.id.mfa_otp)
 
-        runOnUiThread {
-            mfaDialog = MaterialAlertDialogBuilder(this, R.style.Theme_Widget_Dialog)
-                    .setTitle(R.string.mfa_prompt)
-                    .setView(layout)
-                    .setPositiveButton(R.string.submit, fun(_, _) {
-                        val otpToken = otpText.text.toString().trim { it <= ' ' }
-                        if (otpToken.length != OTP_LENGTH) {
-                            return
+        mfaDialog = MaterialAlertDialogBuilder(this, R.style.Theme_Widget_Dialog)
+                .setTitle(R.string.mfa_prompt)
+                .setView(layout)
+                .setPositiveButton(R.string.submit, fun(_, _) {
+                    val otpToken = otpText.text.toString().trim { it <= ' ' }
+                    if (otpToken.length != OTP_LENGTH) {
+                        return
+                    }
+
+                    launchIO {
+                        try {
+                            radioClient.api.authenticateMfa(otpToken)
+                            launchUI { finish(Activity.RESULT_OK) }
+                        } catch (e: Exception) {
+                            launchUI { toast(e.message) }
                         }
+                    }
+                })
+                .create()
 
-                        launchIO { radioClient.api.authenticateMfa(otpToken, loginCallback) }
-                    })
-                    .create()
-
-            mfaDialog!!.show()
-        }
+        mfaDialog!!.show()
     }
 
     private fun autoPasteMfaToken() {

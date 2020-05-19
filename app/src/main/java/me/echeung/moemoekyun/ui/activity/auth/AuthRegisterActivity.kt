@@ -8,7 +8,6 @@ import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.callback.RegisterCallback
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.ext.toast
@@ -59,21 +58,19 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
         }
 
         launchIO {
-            radioClient.api.register(email, username, password, object : RegisterCallback {
-                override fun onSuccess() {
-                    launchUI {
-                        val returnIntent = Intent()
-                        returnIntent.putExtra(AuthActivityUtil.LOGIN_NAME, username)
-                        returnIntent.putExtra(AuthActivityUtil.LOGIN_PASS, password)
-                        setResult(Activity.RESULT_OK, returnIntent)
-                        finish()
-                    }
-                }
+            try {
+                radioClient.api.register(email, username, password)
 
-                override fun onFailure(message: String?) {
-                    launchUI { applicationContext.toast(message) }
+                launchUI {
+                    val returnIntent = Intent()
+                    returnIntent.putExtra(AuthActivityUtil.LOGIN_NAME, username)
+                    returnIntent.putExtra(AuthActivityUtil.LOGIN_PASS, password)
+                    setResult(Activity.RESULT_OK, returnIntent)
+                    finish()
                 }
-            })
+            } catch (e: Exception) {
+                launchUI { toast(e.message) }
+            }
         }
     }
 
