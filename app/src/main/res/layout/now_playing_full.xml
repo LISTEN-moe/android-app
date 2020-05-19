@@ -4,20 +4,21 @@
     xmlns:binding="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
+
+        <variable
+            name="vm"
+            type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <FrameLayout
             android:id="@+id/radio_song_info_wrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_height="0dp"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/radio_controls"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -29,24 +30,35 @@
                 android:layout_height="wrap_content"
                 binding:vm="@{vm}" />
 
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/radio_controls"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radio_song_info_wrapper">
+
             <include
                 android:id="@+id/radio_songs"
                 layout="@layout/radio_songs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 binding:vm="@{vm}" />
 
-        </LinearLayout>
+        </FrameLayout>
 
         <include
             android:id="@+id/radio_controls"
             layout="@layout/radio_controls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radio_song_info_wrapper"
             binding:vm="@{vm}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
