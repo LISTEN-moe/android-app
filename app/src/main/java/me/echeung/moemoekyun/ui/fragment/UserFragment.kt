@@ -26,7 +26,9 @@ import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
 
-class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.SongListLoader, SharedPreferences.OnSharedPreferenceChangeListener {
+class UserFragment :
+        SongsListBaseFragment<FragmentUserBinding>(),
+        SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
     private val authUtil: AuthUtil by inject()
@@ -72,7 +74,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
                 binding.favorites.favoritesList.refreshLayout,
                 binding.favorites.filter.query,
                 LIST_ID,
-                this)
+                this::loadSongs)
     }
 
     private fun initFilterMenu() {
@@ -88,7 +90,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>(), SongList.Song
         })
     }
 
-    override fun loadSongs(adapter: SongsListAdapter) {
+    private fun loadSongs(adapter: SongsListAdapter) {
         launchIO {
             try {
                 val favorites = radioClient.api.getUserFavorites()

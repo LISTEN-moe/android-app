@@ -26,7 +26,6 @@ import org.koin.android.ext.android.inject
 
 class SongsFragment :
         SongsListBaseFragment<FragmentSongsBinding>(),
-        SongList.SongListLoader,
         SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
@@ -75,10 +74,10 @@ class SongsFragment :
                 binding.songs.refreshLayout,
                 binding.searchView,
                 LIST_ID,
-                this)
+                this::loadSongs)
     }
 
-    override fun loadSongs(adapter: SongsListAdapter) {
+    private fun loadSongs(adapter: SongsListAdapter) {
         songList.showLoading(true)
 
         launchIO {

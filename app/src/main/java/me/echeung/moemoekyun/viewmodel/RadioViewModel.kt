@@ -17,7 +17,7 @@ import java.util.Calendar
 class RadioViewModel(
         private val albumArtUtil: AlbumArtUtil,
         preferenceUtil: PreferenceUtil
-) : BaseViewModel(), AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
+) : BaseViewModel(), AlbumArtUtil.Listener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // Play state
     // ========================================================================

@@ -31,7 +31,7 @@ class AlbumArtUtil(
 
     private val MAX_SCREEN_SIZE = maxScreenLength
 
-    private val listeners = ArrayList<Callback>()
+    private val listeners = ArrayList<Listener>()
 
     private var defaultAlbumArt: Bitmap? = null
 
@@ -48,13 +48,13 @@ class AlbumArtUtil(
             return max(displayMetrics.widthPixels, displayMetrics.heightPixels)
         }
 
-    fun registerListener(callback: Callback) {
-        listeners.add(callback)
+    fun registerListener(listener: Listener) {
+        listeners.add(listener)
     }
 
-    fun unregisterListener(callback: Callback) {
-        if (listeners.contains(callback)) {
-            listeners.remove(callback)
+    fun unregisterListener(listener: Listener) {
+        if (listeners.contains(listener)) {
+            listeners.remove(listener)
         }
     }
 
@@ -163,7 +163,7 @@ class AlbumArtUtil(
         currentAccentColor = Color.BLACK
     }
 
-    interface Callback {
+    interface Listener {
         fun onAlbumArtReady(bitmap: Bitmap)
     }
 }

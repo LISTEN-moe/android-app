@@ -26,7 +26,7 @@ class SongList(
     private val swipeRefreshLayout: SwipeRefreshLayout?,
     filterView: View,
     listId: String,
-    private val loader: SongListLoader
+    private val loadSongs: (adapter: SongsListAdapter) -> Unit
 ) : KoinComponent {
 
     private val songActionsUtil: SongActionsUtil by inject()
@@ -104,7 +104,7 @@ class SongList(
     }
 
     fun loadSongs() {
-        loader.loadSongs(adapter)
+        loadSongs(adapter)
     }
 
     fun showLoading(loading: Boolean) {
@@ -131,9 +131,5 @@ class SongList(
         }
 
         return false
-    }
-
-    interface SongListLoader {
-        fun loadSongs(adapter: SongsListAdapter)
     }
 }

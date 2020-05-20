@@ -47,7 +47,7 @@ import org.koin.android.ext.android.inject
 import java.text.ParseException
 import java.util.Calendar
 
-class RadioService : Service(), Socket.Listener, AlbumArtUtil.Callback, SharedPreferences.OnSharedPreferenceChangeListener {
+class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
     private val albumArtUtil: AlbumArtUtil by inject()
