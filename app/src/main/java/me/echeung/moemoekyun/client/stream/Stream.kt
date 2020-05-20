@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Handler
 import com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC
 import com.google.android.exoplayer2.C.USAGE_MEDIA
+import com.google.android.exoplayer2.C.WAKE_MODE_NETWORK
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
@@ -123,7 +124,7 @@ class Stream(private val context: Context) {
         if (player == null) {
             player = SimpleExoPlayer.Builder(context).build()
 
-            player!!.setHandleWakeLock(true)
+            player!!.setWakeMode(WAKE_MODE_NETWORK)
 
             player!!.addListener(eventListener)
             player!!.volume = 1f

@@ -7,6 +7,7 @@ import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.coroutines.toChannel
 import com.apollographql.apollo.coroutines.toDeferred
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.consumeEach
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
@@ -198,6 +199,7 @@ class APIClient(
      *
      * @param callback Listener to handle the response.
      */
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getAllSongs(): List<Song> {
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff

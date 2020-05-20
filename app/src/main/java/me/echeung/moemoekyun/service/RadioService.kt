@@ -41,6 +41,9 @@ import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.ext.notificationManager
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.system.AudioManagerUtil
+import me.echeung.moemoekyun.util.system.AudioManagerUtilApiOImpl
+import me.echeung.moemoekyun.util.system.AudioManagerUtilLegacyApiImpl
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.util.system.launchIO
 import me.echeung.moemoekyun.util.system.launchUI
@@ -65,9 +68,11 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
     @Volatile
     var mediaSession: MediaSessionCompat? = null
         private set
-    private val mediaSessionLock = Any()
 
-    private var audioManager: AudioManager? = null
+    private val mediaSessionLock = Any()
+    private val focusLock = Any()
+
+    private var audioManagerUtil: AudioManagerUtil? = null
     private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener? = null
     private var wasPlayingBeforeLoss: Boolean = false
 
@@ -114,7 +119,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
             }
 
             override fun onStreamStop() {
-                audioManager!!.abandonAudioFocus(audioFocusChangeListener)
+                audioManagerUtil?.abandonAudioFocus()
 
                 stopForeground(true)
                 stopSelf()
@@ -459,7 +464,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
     }
 
     private fun initAudioManager() {
-        audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
             when (focusChange) {
                 AudioManager.AUDIOFOCUS_GAIN -> {
@@ -484,6 +488,12 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
                 }
             }
         }
+
+        audioManagerUtil = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            AudioManagerUtilApiOImpl(this, audioFocusChangeListener!!)
+        } else {
+            AudioManagerUtilLegacyApiImpl(this, audioFocusChangeListener!!)
+        }
     }
 
     private fun togglePlayPause() {
@@ -496,14 +506,12 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
 
     private fun play() {
         // Request audio focus for playback
-        val result = audioManager!!.requestAudioFocus(
-            audioFocusChangeListener,
-            AudioManager.STREAM_MUSIC,
-            AudioManager.AUDIOFOCUS_GAIN
-        )
+        val result = audioManagerUtil?.requestAudioFocus()
 
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            stream!!.play()
+        synchronized(focusLock) {
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                stream!!.play()
+            }
         }
     }
 
