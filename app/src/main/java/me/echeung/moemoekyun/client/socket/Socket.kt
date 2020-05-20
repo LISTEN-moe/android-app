@@ -31,7 +31,7 @@ class Socket(
     private var socket: WebSocket? = null
     private val socketLock = Any()
 
-    private val listeners: MutableList<Listener> = ArrayList()
+    private val listeners = mutableListOf<Listener>()
 
     private val heartbeatHandler = Handler()
     private var heartbeatTask: Runnable? = null

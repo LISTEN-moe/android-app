@@ -20,7 +20,6 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.util.ArrayList
 import kotlin.math.max
 
 class AlbumArtUtil(
@@ -29,9 +28,7 @@ class AlbumArtUtil(
 
     private val radioViewModel: RadioViewModel by inject()
 
-    private val MAX_SCREEN_SIZE = maxScreenLength
-
-    private val listeners = ArrayList<Listener>()
+    private val listeners = mutableListOf<Listener>()
 
     private var defaultAlbumArt: Bitmap? = null
 
@@ -42,11 +39,10 @@ class AlbumArtUtil(
     var currentAccentColor: Int = 0
         private set
 
-    private val maxScreenLength: Int
-        get() {
-            val displayMetrics = Resources.getSystem().displayMetrics
-            return max(displayMetrics.widthPixels, displayMetrics.heightPixels)
-        }
+    private val maxScreenLength: Int by lazy {
+        val displayMetrics = Resources.getSystem().displayMetrics
+        max(displayMetrics.widthPixels, displayMetrics.heightPixels)
+    }
 
     fun registerListener(listener: Listener) {
         listeners.add(listener)
@@ -105,7 +101,7 @@ class AlbumArtUtil(
                     .asBitmap()
                     .load(url)
                     .apply(RequestOptions()
-                            .override(MAX_SCREEN_SIZE, MAX_SCREEN_SIZE)
+                            .override(maxScreenLength, maxScreenLength)
                             .centerCrop()
                             .dontAnimate())
                     .listener(object : RequestListener<Bitmap> {
