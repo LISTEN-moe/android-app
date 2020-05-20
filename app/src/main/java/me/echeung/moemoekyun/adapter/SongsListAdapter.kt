@@ -14,6 +14,8 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongItemBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
+import me.echeung.moemoekyun.util.ext.launchIO
+import me.echeung.moemoekyun.util.ext.launchUI
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -94,12 +96,16 @@ class SongsListAdapter(
     private fun updateSongs() {
         if (allSongs == null || allSongs!!.isEmpty()) return
 
-        visibleSongs = allSongs!!.asSequence()
-            .filter { song -> song.search(filterQuery) }
-            .sortedWith(songSortUtil.getComparator(listId))
-            .toList()
+        launchIO {
+            visibleSongs = allSongs!!.asSequence()
+                .filter { song -> song.search(filterQuery) }
+                .sortedWith(songSortUtil.getComparator(listId))
+                .toList()
 
-        notifyDataSetChanged()
+            launchUI {
+                notifyDataSetChanged()
+            }
+        }
     }
 
     private fun getActivity(): Activity {
