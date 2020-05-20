@@ -11,7 +11,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.util.ext.openUrl
 
-class AboutActivity : BaseActivity(), View.OnClickListener {
+class AboutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,36 +49,16 @@ class AboutActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setupClickListeners() {
-        findViewById<View>(R.id.about_app_rate).setOnClickListener(this)
-        findViewById<View>(R.id.about_app_github).setOnClickListener(this)
-        findViewById<View>(R.id.about_app_translate).setOnClickListener(this)
-        findViewById<View>(R.id.about_app_licenses).setOnClickListener(this)
+        findViewById<View>(R.id.about_app_rate).setOnClickListener { openUrl(getString(R.string.url_store)) }
+        findViewById<View>(R.id.about_app_github).setOnClickListener { openUrl(getString(R.string.url_github)) }
+        findViewById<View>(R.id.about_app_translate).setOnClickListener { openUrl(getString(R.string.url_translate)) }
+        findViewById<View>(R.id.about_app_licenses).setOnClickListener { showLicensesDialog() }
 
-        findViewById<View>(R.id.about_listenmoe_website).setOnClickListener(this)
-        findViewById<View>(R.id.about_listenmoe_discord).setOnClickListener(this)
-        findViewById<View>(R.id.about_listenmoe_patreon).setOnClickListener(this)
+        findViewById<View>(R.id.about_listenmoe_website).setOnClickListener { openUrl(getString(R.string.url_listenmoe)) }
+        findViewById<View>(R.id.about_listenmoe_discord).setOnClickListener { openUrl(getString(R.string.url_discord)) }
+        findViewById<View>(R.id.about_listenmoe_patreon).setOnClickListener { openUrl(getString(R.string.url_patreon)) }
 
-        findViewById<View>(R.id.about_privacy_policy).setOnClickListener(this)
-    }
-
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.about_app_rate -> openUrl(getString(R.string.url_store))
-
-            R.id.about_app_github -> openUrl(getString(R.string.url_github))
-
-            R.id.about_app_translate -> openUrl(getString(R.string.url_translate))
-
-            R.id.about_app_licenses -> showLicensesDialog()
-
-            R.id.about_listenmoe_website -> openUrl(getString(R.string.url_listenmoe))
-
-            R.id.about_listenmoe_discord -> openUrl(getString(R.string.url_discord))
-
-            R.id.about_listenmoe_patreon -> openUrl(getString(R.string.url_patreon))
-
-            R.id.about_privacy_policy -> openUrl(getString(R.string.url_privacy_policy))
-        }
+        findViewById<View>(R.id.about_privacy_policy).setOnClickListener { openUrl(getString(R.string.url_privacy_policy)) }
     }
 
     private fun showLicensesDialog() {

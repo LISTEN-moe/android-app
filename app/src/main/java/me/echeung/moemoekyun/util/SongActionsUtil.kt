@@ -55,11 +55,9 @@ class SongActionsUtil(
             launchIO {
                 val favoritedSongIds = radioClient.api.isFavorite(songIds)
 
-                detailedSongs.forEach {
-                    if (it.id in favoritedSongIds) {
-                        it.favorite = true
-                    }
-                }
+                detailedSongs
+                        .filter { it.id in favoritedSongIds }
+                        .forEach { it.favorite = true }
 
                 launchUI {
                     adapter.notifyDataSetInvalidated()

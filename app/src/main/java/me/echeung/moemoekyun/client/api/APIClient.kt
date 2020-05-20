@@ -31,6 +31,7 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.cache.SongsCache
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
+import me.echeung.moemoekyun.client.model.search
 import okhttp3.OkHttpClient
 import java.util.concurrent.TimeUnit
 
@@ -179,7 +180,7 @@ class APIClient(
     suspend fun search(query: String?): List<Song> {
         val songs = songsCache.getSongs()
 
-        return filterSongs(songs!!, query)
+        return songs!!.search(query)
     }
 
     /**
@@ -237,12 +238,6 @@ class APIClient(
 //                            response.data()?.userQueue?.before ?: 0
 //                    )
                 }
-    }
-
-    private fun filterSongs(songs: List<Song>, query: String?): List<Song> {
-        return songs.asSequence()
-                .filter { song -> song.search(query) }
-                .toList()
     }
 
     enum class LoginState {

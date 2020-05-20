@@ -45,12 +45,9 @@ data class Song(
 
     val albumArtUrl: String?
         get() {
-            if (!albums.isNullOrEmpty()) {
-                for (album in albums!!) {
-                    if (album.image != null) {
-                        return Library.CDN_ALBUM_ART_URL + album.image
-                    }
-                }
+            val album = albums?.firstOrNull { it.image != null }
+            if (album != null) {
+                return Library.CDN_ALBUM_ART_URL + album.image
             }
 
             return null
@@ -65,10 +62,16 @@ data class Song(
             return true
         }
 
-        return title.orEmpty().contains(query, ignoreCase = true) ||
-                titleRomaji.orEmpty().contains(query, ignoreCase = true) ||
-                artists.orEmpty().any { it.contains(query) } ||
-                albums.orEmpty().any { it.contains(query) } ||
-                sources.orEmpty().any { it.contains(query) }
+        return title?.contains(query, ignoreCase = true) ?: false ||
+                titleRomaji?.contains(query, ignoreCase = true) ?: false ||
+                artists?.any { it.contains(query) } ?: false ||
+                albums?.any { it.contains(query) } ?: false ||
+                sources?.any { it.contains(query) } ?: false
     }
+}
+
+fun List<Song>.search(query: String?): List<Song> {
+    return asSequence()
+            .filter { it.search(query) }
+            .toList()
 }
