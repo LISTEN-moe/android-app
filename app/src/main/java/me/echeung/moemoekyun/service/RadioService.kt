@@ -1,7 +1,5 @@
 package me.echeung.moemoekyun.service
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -33,7 +31,6 @@ import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.service.notification.AppNotification
-import me.echeung.moemoekyun.service.notification.EventNotification
 import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -41,7 +38,6 @@ import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
-import me.echeung.moemoekyun.util.ext.notificationManager
 import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.util.system.AudioManagerUtil
 import me.echeung.moemoekyun.util.system.AudioManagerUtilApiOImpl
@@ -93,8 +89,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
 
     override fun onCreate() {
         albumArtUtil.registerListener(this)
-
-        initNotificationChannels()
 
         initBroadcastReceiver()
         initMediaSession()
@@ -565,26 +559,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
 
     private fun showLoginRequiredToast() {
         toast(R.string.login_required)
-    }
-
-    private fun initNotificationChannels() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val playingChannel = NotificationChannel(
-                AppNotification.NOTIFICATION_CHANNEL_ID,
-                AppNotification.NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
-            )
-
-            notificationManager.createNotificationChannel(playingChannel)
-
-            val eventChannel = NotificationChannel(
-                EventNotification.NOTIFICATION_CHANNEL_ID,
-                EventNotification.NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-
-            notificationManager.createNotificationChannel(eventChannel)
-        }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {

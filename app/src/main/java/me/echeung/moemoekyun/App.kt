@@ -1,20 +1,26 @@
 package me.echeung.moemoekyun
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.cache.ApolloCache
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.service.RadioService
+import me.echeung.moemoekyun.service.notification.AppNotification
+import me.echeung.moemoekyun.service.notification.EventNotification
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
+import me.echeung.moemoekyun.util.ext.notificationManager
 import me.echeung.moemoekyun.util.system.LocaleUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
@@ -54,14 +60,14 @@ class App : Application(), ServiceConnection {
             androidLogger()
             androidContext(this@App)
 
-            modules(listOf(appModule, viewModelModule))
+            modules(appModule, viewModelModule)
         }
 
-        // Music player service
-        initService()
+        initNotificationChannels()
+        initRadioService()
     }
 
-    private fun initService() {
+    private fun initRadioService() {
         val intent = Intent(applicationContext, RadioService::class.java)
         applicationContext.bindService(intent, this, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)
     }
@@ -71,7 +77,27 @@ class App : Application(), ServiceConnection {
         App.service = binder.service
     }
 
-    override fun onServiceDisconnected(arg0: ComponentName) {
+    override fun onServiceDisconnected(className: ComponentName) {
+    }
+
+    private fun initNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val playingChannel = NotificationChannel(
+                AppNotification.NOTIFICATION_CHANNEL_ID,
+                AppNotification.NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_LOW
+            )
+
+            notificationManager.createNotificationChannel(playingChannel)
+
+            val eventChannel = NotificationChannel(
+                EventNotification.NOTIFICATION_CHANNEL_ID,
+                EventNotification.NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+
+            notificationManager.createNotificationChannel(eventChannel)
+        }
     }
 
     companion object {
