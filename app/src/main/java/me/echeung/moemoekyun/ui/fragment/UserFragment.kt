@@ -27,8 +27,8 @@ import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
 
 class UserFragment :
-        SongsListBaseFragment<FragmentUserBinding>(),
-        SharedPreferences.OnSharedPreferenceChangeListener {
+    SongsListBaseFragment<FragmentUserBinding>(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
     private val authUtil: AuthUtil by inject()
@@ -68,26 +68,29 @@ class UserFragment :
         initFilterMenu()
 
         return SongList(
-                requireActivity(),
-                songListVm,
-                binding.favorites.favoritesList.list,
-                binding.favorites.favoritesList.refreshLayout,
-                binding.favorites.filter.query,
-                LIST_ID,
-                this::loadSongs)
+            requireActivity(),
+            songListVm,
+            binding.favorites.favoritesList.list,
+            binding.favorites.favoritesList.refreshLayout,
+            binding.favorites.filter.query,
+            LIST_ID,
+            this::loadSongs
+        )
     }
 
     private fun initFilterMenu() {
         val overflowBtn = binding.favorites.filter.overflowBtn
 
-        overflowBtn.setOnClickListener(fun(_) {
-            val popupMenu = PopupMenu(requireContext(), overflowBtn)
-            popupMenu.inflate(R.menu.menu_sort)
+        overflowBtn.setOnClickListener(
+            fun(_) {
+                val popupMenu = PopupMenu(requireContext(), overflowBtn)
+                popupMenu.inflate(R.menu.menu_sort)
 
-            songSortUtil.initSortMenu(LIST_ID, popupMenu.menu)
-            popupMenu.setOnMenuItemClickListener { songList.handleMenuItemClick(it) }
-            popupMenu.show()
-        })
+                songSortUtil.initSortMenu(LIST_ID, popupMenu.menu)
+                popupMenu.setOnMenuItemClickListener { songList.handleMenuItemClick(it) }
+                popupMenu.show()
+            }
+        )
     }
 
     private fun loadSongs(adapter: SongsListAdapter) {

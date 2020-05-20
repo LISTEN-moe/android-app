@@ -11,12 +11,14 @@ import org.koin.core.get
 object NetworkUtil : KoinComponent {
 
     val userAgent: String
-        get() = String.format("%s/%s (%s; %s; Android %s)",
-                BuildConfig.APPLICATION_ID,
-                BuildConfig.VERSION_NAME,
-                Build.DEVICE,
-                Build.BRAND,
-                Build.VERSION.SDK_INT)
+        get() = String.format(
+            "%s/%s (%s; %s; Android %s)",
+            BuildConfig.APPLICATION_ID,
+            BuildConfig.VERSION_NAME,
+            Build.DEVICE,
+            Build.BRAND,
+            Build.VERSION.SDK_INT
+        )
 
     fun isNetworkAvailable(context: Context?): Boolean {
         if (context != null) {
@@ -32,5 +34,4 @@ object NetworkUtil : KoinComponent {
 
         return false
     }
-
 }

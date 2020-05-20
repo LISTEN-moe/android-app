@@ -36,13 +36,15 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
 
         binding.authBtn.setOnClickListener { login() }
 
-        binding.authPassword.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                login()
-                return@OnEditorActionListener true
+        binding.authPassword.setOnEditorActionListener(
+            TextView.OnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    login()
+                    return@OnEditorActionListener true
+                }
+                false
             }
-            false
-        })
+        )
 
         binding.forgotPassword.setOnClickListener { openUrl(FORGOT_PASSWORD_URL) }
 
@@ -93,9 +95,11 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         val otpText = layout.findViewById<TextInputEditText>(R.id.mfa_otp)
 
         mfaDialog = MaterialAlertDialogBuilder(this, R.style.Theme_Widget_Dialog)
-                .setTitle(R.string.mfa_prompt)
-                .setView(layout)
-                .setPositiveButton(R.string.submit, fun(_, _) {
+            .setTitle(R.string.mfa_prompt)
+            .setView(layout)
+            .setPositiveButton(
+                R.string.submit,
+                fun(_, _) {
                     val otpToken = otpText.text.toString().trim { it <= ' ' }
                     if (otpToken.length != OTP_LENGTH) {
                         return
@@ -109,8 +113,9 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
                             launchUI { toast(e.message) }
                         }
                     }
-                })
-                .create()
+                }
+            )
+            .create()
 
         mfaDialog!!.show()
     }

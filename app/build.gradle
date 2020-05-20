@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -62,6 +64,14 @@ android {
 
             applicationIdSuffix '.fdroid'
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE'
     }
 
     lintOptions {
@@ -139,3 +149,10 @@ buildscript {
         classpath "com.apollographql.apollo:apollo-gradle-plugin:$apollo_version"
     }
 }
+
+// See https://kotlinlang.org/docs/reference/experimental.html#experimental-status-of-experimental-api-markers
+tasks.withType(AbstractKotlinCompile).all {
+    kotlinOptions.freeCompilerArgs += ["-Xopt-in=kotlin.Experimental"]
+}
+
+preBuild.dependsOn(ktlintFormat)

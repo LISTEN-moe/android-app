@@ -8,7 +8,7 @@ data class SongDescriptor(
 
     fun contains(query: String): Boolean {
         return name.orEmpty().contains(query, ignoreCase = true) ||
-                nameRomaji.orEmpty().contains(query, ignoreCase = true)
+            nameRomaji.orEmpty().contains(query, ignoreCase = true)
     }
 
     companion object {
@@ -18,14 +18,14 @@ data class SongDescriptor(
             }
 
             val displayString = songDescriptors
-                    .mapNotNull {
-                        if (preferRomaji && !it.nameRomaji.isNullOrBlank()) {
-                            it.nameRomaji
-                        } else {
-                            it.name
-                        }
+                .mapNotNull {
+                    if (preferRomaji && !it.nameRomaji.isNullOrBlank()) {
+                        it.nameRomaji
+                    } else {
+                        it.name
                     }
-                    .joinToString(", ")
+                }
+                .joinToString(", ")
 
             return if (displayString.isNotEmpty()) displayString else null
         }

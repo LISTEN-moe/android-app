@@ -13,5 +13,4 @@ class CastDelegate(context: Context) {
 
     fun initCastButton(menu: Menu?) {
     }
-
 }

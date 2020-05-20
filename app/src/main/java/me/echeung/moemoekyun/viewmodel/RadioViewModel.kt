@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.graphics.Bitmap
 import androidx.annotation.ColorInt
 import androidx.databinding.Bindable
+import java.util.Calendar
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.client.model.Song
@@ -12,11 +13,10 @@ import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.system.ThemeUtil
-import java.util.Calendar
 
 class RadioViewModel(
-        private val albumArtUtil: AlbumArtUtil,
-        preferenceUtil: PreferenceUtil
+    private val albumArtUtil: AlbumArtUtil,
+    preferenceUtil: PreferenceUtil
 ) : BaseViewModel(), AlbumArtUtil.Listener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     // Play state

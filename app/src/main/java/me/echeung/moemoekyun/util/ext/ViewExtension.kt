@@ -22,14 +22,16 @@ fun ImageView.loadImage(bitmap: Bitmap?) {
     }
 
     Glide.with(context)
-            .load(bitmap)
-            .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
-            .apply(RequestOptions()
-                    .placeholder(drawable)
-                    .override(width, height)
-                    .centerCrop()
-                    .dontAnimate())
-            .into(this)
+        .load(bitmap)
+        .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
+        .apply(
+            RequestOptions()
+                .placeholder(drawable)
+                .override(width, height)
+                .centerCrop()
+                .dontAnimate()
+        )
+        .into(this)
 }
 
 fun ImageView.loadImage(url: String?) {
@@ -40,14 +42,16 @@ fun ImageView.loadImage(url: String?) {
     }
 
     Glide.with(context)
-            .load(url)
-            .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
-            .apply(RequestOptions()
-                    .placeholder(drawable)
-                    .override(width, height)
-                    .centerCrop()
-                    .dontAnimate())
-            .into(this)
+        .load(url)
+        .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
+        .apply(
+            RequestOptions()
+                .placeholder(drawable)
+                .override(width, height)
+                .centerCrop()
+                .dontAnimate()
+        )
+        .into(this)
 }
 
 fun EditText.getTrimmedText(): String {

@@ -49,13 +49,13 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
 
         // Build dialog
         val sleepTimerDialog = MaterialAlertDialogBuilder(activity, R.style.Theme_Widget_Dialog)
-                .setTitle(R.string.sleep_timer)
-                .setView(layout)
-                .setPositiveButton(R.string.set) { _, _ ->
-                    val minutes = sleepTimerSeekBar.progress
-                    setAlarm(minutes)
-                }
-                .setNegativeButton(R.string.close, null)
+            .setTitle(R.string.sleep_timer)
+            .setView(layout)
+            .setPositiveButton(R.string.set) { _, _ ->
+                val minutes = sleepTimerSeekBar.progress
+                setAlarm(minutes)
+            }
+            .setNegativeButton(R.string.close, null)
 
         // Show cancel button if a timer is currently set
         if (prevSleepTimer != 0) {
@@ -99,6 +99,6 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
 
     private fun makeTimerIntent(): Intent {
         return Intent(activity, RadioService::class.java)
-                .setAction(RadioService.TIMER_STOP)
+            .setAction(RadioService.TIMER_STOP)
     }
 }

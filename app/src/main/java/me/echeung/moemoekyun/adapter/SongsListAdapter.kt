@@ -7,6 +7,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import java.lang.ref.WeakReference
+import java.util.Random
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongItemBinding
@@ -14,12 +16,10 @@ import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.lang.ref.WeakReference
-import java.util.Random
 
 class SongsListAdapter(
-        activity: Activity,
-        private val listId: String
+    activity: Activity,
+    private val listId: String
 ) : ListAdapter<Song, RecyclerView.ViewHolder>(DIFF_CALLBACK), KoinComponent {
 
     private val songActionsUtil: SongActionsUtil by inject()
@@ -38,10 +38,11 @@ class SongsListAdapter(
     val randomRequestSong: Song?
         get() {
             val songs = songs
-            return if (songs == null || songs.isEmpty())
+            return if (songs == null || songs.isEmpty()) {
                 null
-            else
+            } else {
                 songs[Random().nextInt(songs.size)]
+            }
         }
 
     var songs: List<Song>?
@@ -94,9 +95,9 @@ class SongsListAdapter(
         if (allSongs == null || allSongs!!.isEmpty()) return
 
         visibleSongs = allSongs!!.asSequence()
-                .filter { song -> song.search(filterQuery) }
-                .sortedWith(songSortUtil.getComparator(listId))
-                .toList()
+            .filter { song -> song.search(filterQuery) }
+            .sortedWith(songSortUtil.getComparator(listId))
+            .toList()
 
         notifyDataSetChanged()
     }
@@ -106,9 +107,9 @@ class SongsListAdapter(
     }
 
     private class SongViewHolder internal constructor(
-            private val binding: SongItemBinding,
-            adapter: SongsListAdapter,
-            songActionsUtil: SongActionsUtil
+        private val binding: SongItemBinding,
+        adapter: SongsListAdapter,
+        songActionsUtil: SongActionsUtil
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {

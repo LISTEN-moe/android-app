@@ -13,11 +13,11 @@ import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.PreferenceUtil
 
 class RadioClient(
-        context: Context,
-        authUtil: AuthUtil,
-        networkClient: NetworkClient,
-        apolloCache: ApolloCache,
-        private val preferenceUtil: PreferenceUtil
+    context: Context,
+    authUtil: AuthUtil,
+    networkClient: NetworkClient,
+    apolloCache: ApolloCache,
+    private val preferenceUtil: PreferenceUtil
 ) {
 
     val api: APIClient

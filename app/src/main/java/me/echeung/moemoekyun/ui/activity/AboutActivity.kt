@@ -44,8 +44,8 @@ class AboutActivity : BaseActivity() {
 
         // Kanna GIF
         Glide.with(this)
-                .load(R.drawable.kanna_dancing)
-                .into(findViewById(R.id.kanna_image))
+            .load(R.drawable.kanna_dancing)
+            .into(findViewById(R.id.kanna_image))
     }
 
     private fun setupClickListeners() {
@@ -63,12 +63,12 @@ class AboutActivity : BaseActivity() {
 
     private fun showLicensesDialog() {
         LicensesDialog.Builder(this)
-                .setTitle(R.string.licenses)
-                .setNotices(R.raw.notices)
-                .setIncludeOwnLicense(true)
-                .setThemeResourceId(R.style.Theme_Widget_Dialog)
-                .setNoticesCssStyle(R.string.licenses_css)
-                .build()
-                .show()
+            .setTitle(R.string.licenses)
+            .setNotices(R.raw.notices)
+            .setIncludeOwnLicense(true)
+            .setThemeResourceId(R.style.Theme_Widget_Dialog)
+            .setNoticesCssStyle(R.string.licenses_css)
+            .build()
+            .show()
     }
 }

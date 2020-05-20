@@ -22,7 +22,7 @@ import org.koin.core.KoinComponent
 import org.koin.core.inject
 
 class CastDelegate(
-        private val context: Context
+    private val context: Context
 ) : SessionAvailabilityListener, Socket.Listener, KoinComponent {
 
     private val radioViewModel: RadioViewModel by inject()
@@ -46,9 +46,10 @@ class CastDelegate(
 
     fun initCastButton(menu: Menu?) {
         CastButtonFactory.setUpMediaRouteButton(
-                context,
-                menu,
-                R.id.media_route_menu_item)
+            context,
+            menu,
+            R.id.media_route_menu_item
+        )
     }
 
     override fun onCastSessionAvailable() {
@@ -69,9 +70,9 @@ class CastDelegate(
 
         // TODO: react to switching between jpop/kpop
         val mediaInfo = MediaInfo.Builder(RadioClient.library?.streamUrl)
-                .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
-                .setContentType(MimeTypes.AUDIO_UNKNOWN)
-                .setMetadata(metadata).build()
+            .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
+            .setContentType(MimeTypes.AUDIO_UNKNOWN)
+            .setMetadata(metadata).build()
 
         val mediaItems = arrayOf(MediaQueueItem.Builder(mediaInfo).build())
 
@@ -91,7 +92,6 @@ class CastDelegate(
     }
 
     override fun onSocketFailure() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
-
 }

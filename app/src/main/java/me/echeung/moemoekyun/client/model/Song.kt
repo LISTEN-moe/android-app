@@ -1,8 +1,8 @@
 package me.echeung.moemoekyun.client.model
 
+import java.util.Locale
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.library.Library
-import java.util.Locale
 
 data class Song(
     var id: Int = 0,
@@ -63,15 +63,15 @@ data class Song(
         }
 
         return title?.contains(query, ignoreCase = true) ?: false ||
-                titleRomaji?.contains(query, ignoreCase = true) ?: false ||
-                artists?.any { it.contains(query) } ?: false ||
-                albums?.any { it.contains(query) } ?: false ||
-                sources?.any { it.contains(query) } ?: false
+            titleRomaji?.contains(query, ignoreCase = true) ?: false ||
+            artists?.any { it.contains(query) } ?: false ||
+            albums?.any { it.contains(query) } ?: false ||
+            sources?.any { it.contains(query) } ?: false
     }
 }
 
 fun List<Song>.search(query: String?): List<Song> {
     return asSequence()
-            .filter { it.search(query) }
-            .toList()
+        .filter { it.search(query) }
+        .toList()
 }

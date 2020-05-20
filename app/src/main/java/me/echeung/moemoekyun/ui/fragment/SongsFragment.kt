@@ -25,8 +25,8 @@ import me.echeung.moemoekyun.util.system.launchUI
 import org.koin.android.ext.android.inject
 
 class SongsFragment :
-        SongsListBaseFragment<FragmentSongsBinding>(),
-        SharedPreferences.OnSharedPreferenceChangeListener {
+    SongsListBaseFragment<FragmentSongsBinding>(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val radioClient: RadioClient by inject()
     private val songSortUtil: SongSortUtil by inject()
@@ -68,13 +68,14 @@ class SongsFragment :
 
     override fun initSongList(binding: FragmentSongsBinding): SongList {
         return SongList(
-                requireActivity(),
-                songListVm,
-                binding.songs.list,
-                binding.songs.refreshLayout,
-                binding.searchView,
-                LIST_ID,
-                this::loadSongs)
+            requireActivity(),
+            songListVm,
+            binding.songs.list,
+            binding.songs.refreshLayout,
+            binding.searchView,
+            LIST_ID,
+            this::loadSongs
+        )
     }
 
     private fun loadSongs(adapter: SongsListAdapter) {

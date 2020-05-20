@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import com.squareup.moshi.Moshi
+import java.io.IOException
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.socket.response.BaseResponse
 import me.echeung.moemoekyun.client.socket.response.ConnectResponse
@@ -17,11 +18,10 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import java.io.IOException
 
 class Socket(
-        private val context: Context,
-        private val client: OkHttpClient
+    private val context: Context,
+    private val client: OkHttpClient
 ) : WebSocketListener() {
 
     private var retryTime = RETRY_TIME_MIN
@@ -214,10 +214,12 @@ class Socket(
     }
 
     private fun isValidUpdate(updateResponse: UpdateResponse): Boolean {
-        return (updateResponse.t == TRACK_UPDATE ||
+        return (
+            updateResponse.t == TRACK_UPDATE ||
                 updateResponse.t == TRACK_UPDATE_REQUEST ||
                 updateResponse.t == QUEUE_UPDATE ||
-                isNotification(updateResponse))
+                isNotification(updateResponse)
+            )
     }
 
     private fun isNotification(updateResponse: UpdateResponse): Boolean {

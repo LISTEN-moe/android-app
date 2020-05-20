@@ -51,12 +51,12 @@ object AuthActivityUtil : KoinComponent {
 
     fun FragmentActivity.showLogoutDialog() {
         MaterialAlertDialogBuilder(this, R.style.Theme_Widget_Dialog)
-                .setTitle(R.string.logout)
-                .setMessage(getString(R.string.logout_confirmation))
-                .setPositiveButton(R.string.logout) { _, _ -> logout() }
-                .setNegativeButton(android.R.string.cancel, null)
-                .create()
-                .show()
+            .setTitle(R.string.logout)
+            .setMessage(getString(R.string.logout_confirmation))
+            .setPositiveButton(R.string.logout) { _, _ -> logout() }
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+            .show()
     }
 
     fun FragmentActivity.handleAuthActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

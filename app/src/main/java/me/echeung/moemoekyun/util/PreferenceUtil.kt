@@ -5,7 +5,6 @@ import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.util.system.LocaleUtil
-import me.echeung.moemoekyun.util.system.NetworkUtil
 
 class PreferenceUtil(context: Context) {
 
@@ -18,21 +17,21 @@ class PreferenceUtil(context: Context) {
         get() = preferences.getString(LIBRARY_MODE, Jpop.NAME)!!
         set(mode) {
             preferences.edit()
-                    .putString(LIBRARY_MODE, mode)
-                    .apply()
+                .putString(LIBRARY_MODE, mode)
+                .apply()
         }
 
     var isNowPlayingExpanded: Boolean
         get() = preferences.getBoolean(NOW_PLAYING_EXPANDED, true)
         set(expanded) = preferences.edit()
-                .putBoolean(NOW_PLAYING_EXPANDED, expanded)
-                .apply()
+            .putBoolean(NOW_PLAYING_EXPANDED, expanded)
+            .apply()
 
     var sleepTimer: Int
         get() = preferences.getInt(SLEEP_TIMER_MINS, 0)
         set(minutes) = preferences.edit()
-                .putInt(SLEEP_TIMER_MINS, minutes)
-                .apply()
+            .putInt(SLEEP_TIMER_MINS, minutes)
+            .apply()
 
     fun registerListener(sharedPreferenceChangeListener: SharedPreferences.OnSharedPreferenceChangeListener) {
         preferences.registerOnSharedPreferenceChangeListener(sharedPreferenceChangeListener)
@@ -68,8 +67,8 @@ class PreferenceUtil(context: Context) {
 
     fun clearSleepTimer() {
         preferences.edit()
-                .remove(SLEEP_TIMER_MINS)
-                .apply()
+            .remove(SLEEP_TIMER_MINS)
+            .apply()
     }
 
     companion object {

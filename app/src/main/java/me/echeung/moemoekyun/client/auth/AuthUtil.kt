@@ -40,16 +40,16 @@ class AuthUtil(context: Context) {
             val context = contextRef.get() ?: return null
 
             return PreferenceManager.getDefaultSharedPreferences(context)
-                    .getString(USER_TOKEN, null)
+                .getString(USER_TOKEN, null)
         }
         set(token) {
             val context = contextRef.get() ?: return
 
             PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit()
-                    .putString(USER_TOKEN, token)
-                    .putLong(LAST_AUTH, System.currentTimeMillis() / 1000)
-                    .apply()
+                .edit()
+                .putString(USER_TOKEN, token)
+                .putLong(LAST_AUTH, System.currentTimeMillis() / 1000)
+                .apply()
         }
 
     /**
@@ -75,7 +75,7 @@ class AuthUtil(context: Context) {
             val context = contextRef.get() ?: return 0L
 
             return PreferenceManager.getDefaultSharedPreferences(context)
-                    .getLong(LAST_AUTH, 0L)
+                .getLong(LAST_AUTH, 0L)
         }
 
     /**
@@ -105,10 +105,10 @@ class AuthUtil(context: Context) {
         val context = contextRef.get() ?: return
 
         PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putString(USER_TOKEN, null)
-                .putLong(LAST_AUTH, 0)
-                .apply()
+            .edit()
+            .putString(USER_TOKEN, null)
+            .putLong(LAST_AUTH, 0)
+            .apply()
     }
 
     /**

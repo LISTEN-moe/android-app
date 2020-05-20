@@ -15,15 +15,15 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import kotlin.math.max
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import kotlin.math.max
 
 class AlbumArtUtil(
-        private val context: Context
+    private val context: Context
 ) : KoinComponent {
 
     private val radioViewModel: RadioViewModel by inject()
@@ -49,9 +49,7 @@ class AlbumArtUtil(
     }
 
     fun unregisterListener(listener: Listener) {
-        if (listeners.contains(listener)) {
-            listeners.remove(listener)
-        }
+        listeners.remove(listener)
     }
 
     fun getCurrentAlbumArt(maxSize: Int): Bitmap? {
@@ -96,14 +94,17 @@ class AlbumArtUtil(
     }
 
     private fun downloadAlbumArtBitmap(url: String) {
-        Handler(Looper.getMainLooper()).post(fun() {
-            Glide.with(context)
+        Handler(Looper.getMainLooper()).post(
+            fun() {
+                Glide.with(context)
                     .asBitmap()
                     .load(url)
-                    .apply(RequestOptions()
+                    .apply(
+                        RequestOptions()
                             .override(maxScreenLength, maxScreenLength)
                             .centerCrop()
-                            .dontAnimate())
+                            .dontAnimate()
+                    )
                     .listener(object : RequestListener<Bitmap> {
                         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
                             return false
@@ -117,7 +118,8 @@ class AlbumArtUtil(
                         }
                     })
                     .submit()
-        })
+            }
+        )
     }
 
     private fun getDefaultAlbumArt(): Bitmap {

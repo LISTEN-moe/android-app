@@ -6,7 +6,7 @@ import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
 import java.io.File
 
 class ApolloCache(
-        context: Context
+    context: Context
 ) {
 
     val cache: ApolloHttpCache
@@ -18,5 +18,4 @@ class ApolloCache(
 
         cache = ApolloHttpCache(cacheStore)
     }
-
 }

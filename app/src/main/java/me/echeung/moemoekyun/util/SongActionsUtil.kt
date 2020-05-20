@@ -20,10 +20,10 @@ import me.echeung.moemoekyun.util.system.launchUI
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class SongActionsUtil(
-        private val radioClient: RadioClient,
-        private val preferenceUtil: PreferenceUtil,
-        private val authUtil: AuthUtil,
-        private val radioViewModel: RadioViewModel
+    private val radioClient: RadioClient,
+    private val preferenceUtil: PreferenceUtil,
+    private val authUtil: AuthUtil,
+    private val radioViewModel: RadioViewModel
 ) {
 
     fun showSongsDialog(activity: Activity, title: String?, song: Song) {
@@ -56,8 +56,8 @@ class SongActionsUtil(
                 val favoritedSongIds = radioClient.api.isFavorite(songIds)
 
                 detailedSongs
-                        .filter { it.id in favoritedSongIds }
-                        .forEach { it.favorite = true }
+                    .filter { it.id in favoritedSongIds }
+                    .forEach { it.favorite = true }
 
                 launchUI {
                     adapter.notifyDataSetInvalidated()
@@ -66,10 +66,10 @@ class SongActionsUtil(
         }
 
         MaterialAlertDialogBuilder(activity, R.style.Theme_Widget_Dialog)
-                .setTitle(title)
-                .setAdapter(adapter, null)
-                .create()
-                .show()
+            .setTitle(title)
+            .setAdapter(adapter, null)
+            .create()
+            .show()
     }
 
     /**
@@ -100,9 +100,11 @@ class SongActionsUtil(
                         // Undo action
                         val coordinatorLayout = activity.findViewById<View>(R.id.coordinator_layout)
                         if (coordinatorLayout != null) {
-                            val undoBar = Snackbar.make(coordinatorLayout,
-                                    String.format(activity.getString(R.string.unfavorited), song.toString()),
-                                    Snackbar.LENGTH_LONG)
+                            val undoBar = Snackbar.make(
+                                coordinatorLayout,
+                                String.format(activity.getString(R.string.unfavorited), song.toString()),
+                                Snackbar.LENGTH_LONG
+                            )
                             undoBar.setAction(R.string.action_undo) { toggleFavorite(activity, song) }
                             undoBar.show()
                         }
@@ -130,10 +132,11 @@ class SongActionsUtil(
                     // Broadcast event
                     activity.sendBroadcast(Intent(REQUEST_EVENT))
 
-                    val toastMsg = if (preferenceUtil.shouldShowRandomRequestTitle())
+                    val toastMsg = if (preferenceUtil.shouldShowRandomRequestTitle()) {
                         activity.getString(R.string.requested_song, song.toString())
-                    else
+                    } else {
                         activity.getString(R.string.requested_random_song)
+                    }
 
                     activity.toast(toastMsg, Toast.LENGTH_LONG)
                 }

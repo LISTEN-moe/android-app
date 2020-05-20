@@ -129,9 +129,9 @@ class Stream(private val context: Context) {
             player!!.volume = 1f
 
             val audioAttributes = AudioAttributes.Builder()
-                    .setContentType(CONTENT_TYPE_MUSIC)
-                    .setUsage(USAGE_MEDIA)
-                    .build()
+                .setContentType(CONTENT_TYPE_MUSIC)
+                .setUsage(USAGE_MEDIA)
+                .build()
             player!!.audioAttributes = audioAttributes
         }
 
@@ -140,7 +140,7 @@ class Stream(private val context: Context) {
         if (streamUrl != currentStreamUrl) {
             val dataSourceFactory = DefaultDataSourceFactory(context, NetworkUtil.userAgent)
             val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
-                    .createMediaSource(Uri.parse(streamUrl))
+                .createMediaSource(Uri.parse(streamUrl))
 
             player!!.prepare(streamSource)
             currentStreamUrl = streamUrl

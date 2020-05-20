@@ -28,13 +28,15 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
 
         binding.authBtn.setOnClickListener { register() }
 
-        binding.authPasswordConfirm.setOnEditorActionListener(TextView.OnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                register()
-                return@OnEditorActionListener true
+        binding.authPasswordConfirm.setOnEditorActionListener(
+            TextView.OnEditorActionListener { _, actionId, _ ->
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    register()
+                    return@OnEditorActionListener true
+                }
+                false
             }
-            false
-        })
+        )
     }
 
     private fun register() {

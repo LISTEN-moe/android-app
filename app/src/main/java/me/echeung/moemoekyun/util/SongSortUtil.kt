@@ -4,27 +4,27 @@ import android.content.Context
 import android.view.Menu
 import android.view.MenuItem
 import androidx.preference.PreferenceManager
+import java.util.Comparator
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.model.Song
-import java.util.Comparator
 
 class SongSortUtil(
-        private val context: Context
+    private val context: Context
 ) {
 
     fun setListSortType(listId: String, sortType: String) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
-                .putString(PREF_LIST_PREFIX_TYPE + listId, sortType)
-                .apply()
+            .putString(PREF_LIST_PREFIX_TYPE + listId, sortType)
+            .apply()
     }
 
     fun setListSortDescending(listId: String, descending: Boolean) {
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
-                .putBoolean(PREF_LIST_PREFIX_DESC + listId, descending)
-                .apply()
+            .putBoolean(PREF_LIST_PREFIX_DESC + listId, descending)
+            .apply()
     }
 
     fun getComparator(listId: String): Comparator<Song> {
@@ -32,16 +32,20 @@ class SongSortUtil(
         val sortDescending = getSortDescendingByListId(listId)
 
         return when (sortType) {
-            SORT_ARTIST -> if (sortDescending)
-                compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.artistsString ?: "" }
-            else
-                compareBy(String.CASE_INSENSITIVE_ORDER) { it.artistsString ?: "" }
+            SORT_ARTIST ->
+                if (sortDescending) {
+                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.artistsString ?: "" }
+                } else {
+                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.artistsString ?: "" }
+                }
 
             // Default is SORT_TITLE
-            else -> if (sortDescending)
-                compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.titleString ?: "" }
-            else
-                compareBy(String.CASE_INSENSITIVE_ORDER) { it.titleString ?: "" }
+            else ->
+                if (sortDescending) {
+                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.titleString ?: "" }
+                } else {
+                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.titleString ?: "" }
+                }
         }
     }
 

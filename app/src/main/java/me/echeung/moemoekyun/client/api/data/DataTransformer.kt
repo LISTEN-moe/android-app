@@ -12,10 +12,10 @@ import me.echeung.moemoekyun.fragment.SongListFields
 
 fun UserQuery.User.transform(): User {
     return User(
-            this.uuid,
-            this.displayName!!,
-            this.avatarImage,
-            this.bannerImage
+        this.uuid,
+        this.displayName!!,
+        this.avatarImage,
+        this.bannerImage
     )
 }
 
@@ -38,52 +38,52 @@ fun SongsQuery.Song1.transform(): Song {
 
 private fun SongFields.transform(): Song {
     return Song(
-            this.id,
-            this.title,
-            this.titleRomaji,
-            this.artists.mapNotNull { it?.transform() },
-            this.sources.mapNotNull { it?.transform() },
-            this.albums.mapNotNull { it?.transform() },
-            this.duration
+        this.id,
+        this.title,
+        this.titleRomaji,
+        this.artists.mapNotNull { it?.transform() },
+        this.sources.mapNotNull { it?.transform() },
+        this.albums.mapNotNull { it?.transform() },
+        this.duration
     )
 }
 
 private fun SongFields.Artist.transform(): SongDescriptor {
     return SongDescriptor(
-            this.name,
-            this.nameRomaji,
-            this.image
+        this.name,
+        this.nameRomaji,
+        this.image
     )
 }
 
 private fun SongFields.Source.transform(): SongDescriptor {
     return SongDescriptor(
-            this.name,
-            this.nameRomaji,
-            this.image
+        this.name,
+        this.nameRomaji,
+        this.image
     )
 }
 
 private fun SongFields.Album.transform(): SongDescriptor {
     return SongDescriptor(
-            this.name,
-            this.nameRomaji,
-            this.image
+        this.name,
+        this.nameRomaji,
+        this.image
     )
 }
 
 private fun SongListFields.transform(): Song {
     return Song(
-            this.id,
-            this.title,
-            this.titleRomaji,
-            this.artists.mapNotNull { it?.transform() }
+        this.id,
+        this.title,
+        this.titleRomaji,
+        this.artists.mapNotNull { it?.transform() }
     )
 }
 
 private fun SongListFields.Artist.transform(): SongDescriptor {
     return SongDescriptor(
-            this.name,
-            this.nameRomaji
+        this.name,
+        this.nameRomaji
     )
 }

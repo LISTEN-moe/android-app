@@ -10,6 +10,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import java.lang.ref.WeakReference
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.util.SongActionsUtil
@@ -17,7 +18,6 @@ import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import java.lang.ref.WeakReference
 
 class SongList(
     activity: Activity,
@@ -49,10 +49,11 @@ class SongList(
             // Only allow pull to refresh when user is at the top of the list
             songsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val topRowVerticalPosition = if (songsList.childCount != 0)
+                    val topRowVerticalPosition = if (songsList.childCount != 0) {
                         songsList.getChildAt(0).top
-                    else
+                    } else {
                         0
+                    }
                     swipeRefreshLayout.isEnabled = topRowVerticalPosition >= 0
                 }
             })

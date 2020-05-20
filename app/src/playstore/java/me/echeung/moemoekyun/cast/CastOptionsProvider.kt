@@ -14,23 +14,24 @@ class CastOptionsProvider : OptionsProvider {
 
     override fun getCastOptions(context: Context): CastOptions {
         val buttonActions: List<String> = listOf(
-                MediaIntentReceiver.ACTION_TOGGLE_PLAYBACK,
-                MediaIntentReceiver.ACTION_STOP_CASTING)
+            MediaIntentReceiver.ACTION_TOGGLE_PLAYBACK,
+            MediaIntentReceiver.ACTION_STOP_CASTING
+        )
         val compatButtonActionsIndices = intArrayOf(0, 1)
 
         val notificationOptions = NotificationOptions.Builder()
-                .setActions(buttonActions, compatButtonActionsIndices)
-                .setTargetActivityClassName(MainActivity::class.java.name)
-                .build()
+            .setActions(buttonActions, compatButtonActionsIndices)
+            .setTargetActivityClassName(MainActivity::class.java.name)
+            .build()
 
         val mediaOptions = CastMediaOptions.Builder()
-                .setNotificationOptions(notificationOptions)
-                .build()
+            .setNotificationOptions(notificationOptions)
+            .build()
 
         return CastOptions.Builder()
-                .setReceiverApplicationId(context.getString(R.string.cast_app_id))
-                .setCastMediaOptions(mediaOptions)
-                .build()
+            .setReceiverApplicationId(context.getString(R.string.cast_app_id))
+            .setCastMediaOptions(mediaOptions)
+            .build()
     }
 
     override fun getAdditionalSessionProviders(context: Context?): List<SessionProvider>? {

@@ -32,8 +32,9 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
 
     override fun onLoadChildren(parentId: String, result: Result<List<MediaBrowserCompat.MediaItem>>) {
         val mediaItems = listOf(
-                createPlayableMediaItem(RadioService.LIBRARY_JPOP, resources.getString(R.string.jpop)),
-                createPlayableMediaItem(RadioService.LIBRARY_KPOP, resources.getString(R.string.kpop)))
+            createPlayableMediaItem(RadioService.LIBRARY_JPOP, resources.getString(R.string.jpop)),
+            createPlayableMediaItem(RadioService.LIBRARY_KPOP, resources.getString(R.string.kpop))
+        )
 
         result.sendResult(mediaItems)
     }
@@ -56,8 +57,8 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
 
     private fun createPlayableMediaItem(mediaId: String, title: String): MediaBrowserCompat.MediaItem {
         val builder = MediaDescriptionCompat.Builder()
-                .setMediaId(mediaId)
-                .setTitle(title)
+            .setMediaId(mediaId)
+            .setTitle(title)
 
         return MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
     }

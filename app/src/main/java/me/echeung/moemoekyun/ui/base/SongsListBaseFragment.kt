@@ -15,8 +15,8 @@ import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import org.koin.android.ext.android.inject
 
 abstract class SongsListBaseFragment<T : ViewDataBinding> :
-        BaseFragment<T>(),
-        SharedPreferences.OnSharedPreferenceChangeListener {
+    BaseFragment<T>(),
+    SharedPreferences.OnSharedPreferenceChangeListener {
 
     private val preferenceUtil: PreferenceUtil by inject()
 

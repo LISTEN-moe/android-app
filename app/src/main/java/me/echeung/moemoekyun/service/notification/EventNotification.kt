@@ -22,10 +22,10 @@ object EventNotification {
         val clickIntent = PendingIntent.getActivity(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_icon)
-                .setContentIntent(clickIntent)
-                .setContentTitle(context.getString(R.string.event_start_title))
-                .setContentText(eventName)
+            .setSmallIcon(R.drawable.ic_icon)
+            .setContentIntent(clickIntent)
+            .setContentTitle(context.getString(R.string.event_start_title))
+            .setContentText(eventName)
 
         val notification = builder.build()
 

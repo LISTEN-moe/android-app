@@ -13,8 +13,8 @@ import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.ext.notificationManager
 
 class AppNotification internal constructor(
-        private val service: RadioService,
-        private val albumArtUtil: AlbumArtUtil
+    private val service: RadioService,
+    private val albumArtUtil: AlbumArtUtil
 ) {
 
     fun update(song: Song?, isAuthenticated: Boolean) {
@@ -28,9 +28,10 @@ class AppNotification internal constructor(
 
         // Play/pause action
         val playPauseAction = NotificationCompat.Action(
-                if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp,
-                if (isPlaying) service.getString(R.string.action_pause) else service.getString(R.string.action_play),
-                getPlaybackActionService(RadioService.PLAY_PAUSE))
+            if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp,
+            if (isPlaying) service.getString(R.string.action_pause) else service.getString(R.string.action_play),
+            getPlaybackActionService(RadioService.PLAY_PAUSE)
+        )
 
         // Build the notification
         val action = Intent(service, MainActivity::class.java)
@@ -42,16 +43,16 @@ class AppNotification internal constructor(
         val style = MediaStyle().setMediaSession(service.mediaSession!!.sessionToken)
 
         val builder = NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_icon)
-                .setLargeIcon(albumArt)
-                .setContentIntent(clickIntent)
-                .setDeleteIntent(deleteIntent)
-                .addAction(playPauseAction)
-                .setContentTitle(service.getString(R.string.app_name))
-                .setOngoing(isPlaying)
-                .setShowWhen(false)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setOnlyAlertOnce(true)
+            .setSmallIcon(R.drawable.ic_icon)
+            .setLargeIcon(albumArt)
+            .setContentIntent(clickIntent)
+            .setDeleteIntent(deleteIntent)
+            .addAction(playPauseAction)
+            .setContentTitle(service.getString(R.string.app_name))
+            .setOngoing(isPlaying)
+            .setShowWhen(false)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setOnlyAlertOnce(true)
 
         // Pre-Oreo (Android 8.x) colored notifications
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O && !albumArtUtil.isDefaultAlbumArt) {
@@ -68,10 +69,13 @@ class AppNotification internal constructor(
 
             // Add favorite action if logged in
             if (isAuthenticated) {
-                builder.addAction(NotificationCompat.Action(
+                builder.addAction(
+                    NotificationCompat.Action(
                         if (song.favorite) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp,
                         if (song.favorite) service.getString(R.string.action_unfavorite) else service.getString(R.string.action_favorite),
-                        getPlaybackActionService(RadioService.TOGGLE_FAVORITE)))
+                        getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
+                    )
+                )
 
                 builder.setStyle(style.setShowActionsInCompactView(0, 1))
             }

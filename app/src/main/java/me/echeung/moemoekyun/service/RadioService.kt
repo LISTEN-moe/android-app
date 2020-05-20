@@ -21,6 +21,8 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.KeyEvent
+import java.text.ParseException
+import java.util.Calendar
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
@@ -44,8 +46,6 @@ import me.echeung.moemoekyun.util.system.launchIO
 import me.echeung.moemoekyun.util.system.launchUI
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
-import java.text.ParseException
-import java.util.Calendar
 
 class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -217,10 +217,10 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
         }
 
         val metaData = MediaMetadataCompat.Builder()
-                .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.titleString)
-                .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.artistsString)
-                .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.albumsString)
-                .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, (currentSong.duration * MILLISECONDS_IN_SECOND).toLong())
+            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.titleString)
+            .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.artistsString)
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.albumsString)
+            .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, (currentSong.duration * MILLISECONDS_IN_SECOND).toLong())
 
         if (preferenceUtil.shouldShowLockscreenAlbumArt()) {
             val albumArt = albumArtUtil.currentAlbumArt
@@ -239,24 +239,36 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
     private fun updateMediaSessionPlaybackState() {
         // Play/pause state
         val stateBuilder = PlaybackStateCompat.Builder()
-                .setActions(MEDIA_SESSION_ACTIONS)
-                .setState(if (isStreamStarted)
-                    if (isPlaying) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
-                else
-                    PlaybackStateCompat.STATE_STOPPED,
-                        radioViewModel.currentSongProgress, 1f)
+            .setActions(MEDIA_SESSION_ACTIONS)
+            .setState(
+                if (isStreamStarted) {
+                    if (isPlaying) {
+                        PlaybackStateCompat.STATE_PLAYING
+                    } else {
+                        PlaybackStateCompat.STATE_PAUSED
+                    }
+                } else {
+                    PlaybackStateCompat.STATE_STOPPED
+                },
+                radioViewModel.currentSongProgress,
+                1f
+            )
 
         // Favorite action
         if (authUtil.isAuthenticated) {
             val currentSong = radioViewModel.currentSong
-            val favoriteIcon = if (currentSong == null || !currentSong.favorite)
+            val favoriteIcon = if (currentSong == null || !currentSong.favorite) {
                 R.drawable.ic_star_border_24dp
-            else
+            } else {
                 R.drawable.ic_star_24dp
+            }
 
-            stateBuilder.addCustomAction(PlaybackStateCompat.CustomAction.Builder(
-                    TOGGLE_FAVORITE, getString(R.string.favorite), favoriteIcon)
-                    .build())
+            stateBuilder.addCustomAction(
+                PlaybackStateCompat.CustomAction.Builder(
+                    TOGGLE_FAVORITE, getString(R.string.favorite), favoriteIcon
+                )
+                    .build()
+            )
         }
 
         if (mediaSession!!.isActive) {
@@ -484,9 +496,11 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
 
     private fun play() {
         // Request audio focus for playback
-        val result = audioManager!!.requestAudioFocus(audioFocusChangeListener,
-                AudioManager.STREAM_MUSIC,
-                AudioManager.AUDIOFOCUS_GAIN)
+        val result = audioManager!!.requestAudioFocus(
+            audioFocusChangeListener,
+            AudioManager.STREAM_MUSIC,
+            AudioManager.AUDIOFOCUS_GAIN
+        )
 
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
             stream!!.play()
@@ -548,16 +562,18 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
     private fun initNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val playingChannel = NotificationChannel(
-                    AppNotification.NOTIFICATION_CHANNEL_ID,
-                    AppNotification.NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_LOW)
+                AppNotification.NOTIFICATION_CHANNEL_ID,
+                AppNotification.NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_LOW
+            )
 
             notificationManager.createNotificationChannel(playingChannel)
 
             val eventChannel = NotificationChannel(
-                    EventNotification.NOTIFICATION_CHANNEL_ID,
-                    EventNotification.NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT)
+                EventNotification.NOTIFICATION_CHANNEL_ID,
+                EventNotification.NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
 
             notificationManager.createNotificationChannel(eventChannel)
         }
@@ -588,10 +604,12 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
         const val UPDATE = "$APP_PACKAGE_NAME.update"
         const val TIMER_STOP = "$APP_PACKAGE_NAME.timer_stop"
 
-        private const val MEDIA_SESSION_ACTIONS = (PlaybackStateCompat.ACTION_PLAY
+        private const val MEDIA_SESSION_ACTIONS = (
+            PlaybackStateCompat.ACTION_PLAY
                 or PlaybackStateCompat.ACTION_PAUSE
                 or PlaybackStateCompat.ACTION_PLAY_PAUSE
                 or PlaybackStateCompat.ACTION_STOP
-                or PlaybackStateCompat.ACTION_SET_RATING)
+                or PlaybackStateCompat.ACTION_SET_RATING
+            )
     }
 }

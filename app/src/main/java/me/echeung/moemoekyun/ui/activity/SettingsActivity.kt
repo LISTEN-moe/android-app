@@ -21,8 +21,8 @@ class SettingsActivity : BaseActivity() {
         initAppbar()
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.content_frame, SettingsFragment())
-                .commit()
+            .replace(R.id.content_frame, SettingsFragment())
+            .commit()
     }
 
     class SettingsFragment : PreferenceFragmentCompat() {
@@ -53,10 +53,12 @@ class SettingsActivity : BaseActivity() {
             if (preference is ListPreference) {
                 val index = preference.findIndexOfValue(stringValue)
                 preference.setSummary(
-                        if (index >= 0)
-                            preference.entries[index]
-                        else
-                            null)
+                    if (index >= 0) {
+                        preference.entries[index]
+                    } else {
+                        null
+                    }
+                )
             } else {
                 preference.summary = stringValue
             }
@@ -64,17 +66,17 @@ class SettingsActivity : BaseActivity() {
 
         private fun getPreferenceValue(preference: Preference): String {
             return PreferenceManager
-                    .getDefaultSharedPreferences(preference.context)
-                    .getString(preference.key, "")!!
+                .getDefaultSharedPreferences(preference.context)
+                .getString(preference.key, "")!!
         }
 
         private fun recreateBackStack() {
             val activity = requireActivity()
 
             TaskStackBuilder.create(activity)
-                    .addNextIntent(Intent(activity, MainActivity::class.java))
-                    .addNextIntent(activity.intent)
-                    .startActivities()
+                .addNextIntent(Intent(activity, MainActivity::class.java))
+                .addNextIntent(activity.intent)
+                .startActivities()
         }
     }
 }
