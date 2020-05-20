@@ -15,10 +15,10 @@ import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.finish
 import me.echeung.moemoekyun.util.ext.getTrimmedText
+import me.echeung.moemoekyun.util.ext.launchIO
+import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.openUrl
 import me.echeung.moemoekyun.util.ext.toast
-import me.echeung.moemoekyun.util.system.launchIO
-import me.echeung.moemoekyun.util.system.launchUI
 import org.koin.android.ext.android.inject
 
 class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {

@@ -3,7 +3,7 @@ package me.echeung.moemoekyun.client.cache
 import java.util.GregorianCalendar
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.util.system.launchIO
+import me.echeung.moemoekyun.util.ext.launchIO
 
 /**
  * A naive cache of the songs data from the API for faster loading/searching.

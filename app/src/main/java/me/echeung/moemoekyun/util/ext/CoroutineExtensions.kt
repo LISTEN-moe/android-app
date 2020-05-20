@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.util.system
+package me.echeung.moemoekyun.util.ext
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
