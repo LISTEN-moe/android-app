@@ -153,7 +153,7 @@ class MainActivity : BaseActivity() {
         nowPlayingSheet = BottomSheetBehavior.from(binding.nowPlaying.nowPlayingSheet)
 
         // Restore previous expanded state
-        if (preferenceUtil.isNowPlayingExpanded) {
+        if (preferenceUtil.isNowPlayingExpanded().get()) {
             nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED)
         } else {
             radioViewModel.miniPlayerAlpha = 1f
@@ -161,7 +161,7 @@ class MainActivity : BaseActivity() {
 
         nowPlayingSheet!!.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
-                preferenceUtil.isNowPlayingExpanded = newState == BottomSheetBehavior.STATE_EXPANDED
+                preferenceUtil.isNowPlayingExpanded().set(newState == BottomSheetBehavior.STATE_EXPANDED)
             }
 
             override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
@@ -243,7 +243,7 @@ class MainActivity : BaseActivity() {
         menu.findItem(R.id.action_logout).isVisible = authUtil.isAuthenticated
 
         // Pre-check the library mode
-        when (preferenceUtil.libraryMode) {
+        when (preferenceUtil.libraryMode().get()) {
             Jpop.NAME -> menu.findItem(R.id.action_library_jpop).isChecked = true
 
             Kpop.NAME -> menu.findItem(R.id.action_library_kpop).isChecked = true

@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.media.AudioManager
 import android.net.ConnectivityManager
@@ -21,6 +20,12 @@ import android.util.Log
 import android.view.KeyEvent
 import java.text.ParseException
 import java.util.Calendar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
@@ -45,8 +50,11 @@ import me.echeung.moemoekyun.util.system.AudioManagerUtilLegacyApiImpl
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
+import org.koin.ext.scope
 
-class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPreferences.OnSharedPreferenceChangeListener {
+class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener {
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val radioClient: RadioClient by inject()
     private val albumArtUtil: AlbumArtUtil by inject()
@@ -118,7 +126,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
                 stopForeground(true)
                 stopSelf()
 
-                preferenceUtil.clearSleepTimer()
+                preferenceUtil.sleepTimer().delete()
                 radioViewModel.isPlaying = false
 
                 updateMediaSessionPlaybackState()
@@ -128,7 +136,9 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
         socket!!.addListener(this)
         socket!!.connect()
 
-        preferenceUtil.registerListener(this)
+        merge(preferenceUtil.shouldPreferRomaji().asFlow(), preferenceUtil.shouldShowLockscreenAlbumArt().asFlow())
+            .onEach { updateMediaSession() }
+            .launchIn(scope)
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startID: Int): Int {
@@ -159,8 +169,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
         }
 
         destroyMediaSession()
-
-        preferenceUtil.unregisterListener(this)
 
         super.onDestroy()
     }
@@ -221,7 +229,7 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
             .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.albumsString)
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, (currentSong.duration * MILLISECONDS_IN_SECOND).toLong())
 
-        if (preferenceUtil.shouldShowLockscreenAlbumArt()) {
+        if (preferenceUtil.shouldShowLockscreenAlbumArt().get()) {
             val albumArt = albumArtUtil.currentAlbumArt
             if (albumArt != null && !albumArtUtil.isDefaultAlbumArt) {
                 metaData.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArt)
@@ -559,12 +567,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener, SharedPr
 
     private fun showLoginRequiredToast() {
         toast(R.string.login_required)
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        when (key) {
-            PreferenceUtil.PREF_MUSIC_LOCKSCREEN_ALBUMART, PreferenceUtil.PREF_GENERAL_ROMAJI -> updateMediaSession()
-        }
     }
 
     inner class ServiceBinder : Binder() {

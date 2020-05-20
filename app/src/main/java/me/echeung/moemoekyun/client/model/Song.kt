@@ -17,18 +17,18 @@ data class Song(
 ) {
 
     val titleString: String?
-        get() = if (App.preferenceUtil!!.shouldPreferRomaji() && !titleRomaji.isNullOrBlank()) {
+        get() = if (App.preferenceUtil!!.shouldPreferRomaji().get() && !titleRomaji.isNullOrBlank()) {
             titleRomaji
         } else title
 
     val artistsString: String?
-        get() = SongDescriptor.getDisplayString(artists, App.preferenceUtil!!.shouldPreferRomaji())
+        get() = SongDescriptor.getDisplayString(artists, App.preferenceUtil!!.shouldPreferRomaji().get())
 
     val albumsString: String?
-        get() = SongDescriptor.getDisplayString(albums, App.preferenceUtil!!.shouldPreferRomaji())
+        get() = SongDescriptor.getDisplayString(albums, App.preferenceUtil!!.shouldPreferRomaji().get())
 
     val sourcesString: String?
-        get() = SongDescriptor.getDisplayString(sources, App.preferenceUtil!!.shouldPreferRomaji())
+        get() = SongDescriptor.getDisplayString(sources, App.preferenceUtil!!.shouldPreferRomaji().get())
 
     val durationString: String
         get() {

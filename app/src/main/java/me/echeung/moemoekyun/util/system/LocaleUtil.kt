@@ -14,8 +14,7 @@ class LocaleUtil(
 ) {
 
     fun setLocale(context: Context): Context {
-        val language = preferenceUtil.language
-        return setLocale(context, language)
+        return setLocale(context, preferenceUtil.language())
     }
 
     private fun setLocale(context: Context, language: String): Context {

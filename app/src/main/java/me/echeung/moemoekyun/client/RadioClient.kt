@@ -25,7 +25,7 @@ class RadioClient(
     val stream: Stream
 
     init {
-        setLibrary(preferenceUtil.libraryMode)
+        setLibrary(preferenceUtil.libraryMode().get())
 
         this.api = APIClient(networkClient.client, apolloCache.cache, authUtil)
 
@@ -36,7 +36,7 @@ class RadioClient(
     fun changeLibrary(newMode: String) {
         setLibrary(newMode)
 
-        preferenceUtil.libraryMode = newMode
+        preferenceUtil.libraryMode().set(newMode)
 
         socket.reconnect()
 

@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.ui.fragment
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -24,9 +23,7 @@ import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
 import org.koin.android.ext.android.inject
 
-class SongsFragment :
-    SongsListBaseFragment<FragmentSongsBinding>(),
-    SharedPreferences.OnSharedPreferenceChangeListener {
+class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>() {
 
     private val radioClient: RadioClient by inject()
     private val songSortUtil: SongSortUtil by inject()

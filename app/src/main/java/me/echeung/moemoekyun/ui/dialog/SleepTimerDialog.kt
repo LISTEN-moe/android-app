@@ -31,7 +31,7 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
         val sleepTimerSeekBar = layout.findViewById<SeekBar>(R.id.sleep_timer_seekbar)
 
         // Init seekbar + text
-        val prevSleepTimer = preferenceUtil.sleepTimer
+        val prevSleepTimer = preferenceUtil.sleepTimer().get()
         if (prevSleepTimer != 0) {
             sleepTimerSeekBar.progress = prevSleepTimer
         }
@@ -73,7 +73,7 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
 
         val pi = makeTimerPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT)
 
-        preferenceUtil.sleepTimer = minutes
+        preferenceUtil.sleepTimer().set(minutes)
 
         val timerTime = SystemClock.elapsedRealtime() + minutes * 60 * 1000
         activity.alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi)
@@ -87,7 +87,7 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
             activity.alarmManager.cancel(previous)
             previous.cancel()
 
-            preferenceUtil.clearSleepTimer()
+            preferenceUtil.sleepTimer().delete()
 
             activity.toast(activity.getString(R.string.sleep_timer_canceled))
         }

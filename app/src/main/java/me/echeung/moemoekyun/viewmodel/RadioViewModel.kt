@@ -1,11 +1,15 @@
 package me.echeung.moemoekyun.viewmodel
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import androidx.annotation.ColorInt
 import androidx.databinding.Bindable
 import java.util.Calendar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.client.model.Song
@@ -17,7 +21,9 @@ import me.echeung.moemoekyun.util.system.ThemeUtil
 class RadioViewModel(
     private val albumArtUtil: AlbumArtUtil,
     preferenceUtil: PreferenceUtil
-) : BaseViewModel(), AlbumArtUtil.Listener, SharedPreferences.OnSharedPreferenceChangeListener {
+) : BaseViewModel(), AlbumArtUtil.Listener {
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     // Play state
     // ========================================================================
@@ -168,7 +174,10 @@ class RadioViewModel(
 
     init {
         albumArtUtil.registerListener(this)
-        preferenceUtil.registerListener(this)
+
+        preferenceUtil.shouldPreferRomaji().asFlow()
+            .onEach { notifyPropertyChanged(BR.currentSong) }
+            .launchIn(scope)
     }
 
     fun reset() {
@@ -188,12 +197,6 @@ class RadioViewModel(
 
     // Misc.
     // ========================================================================
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-        when (key) {
-            PreferenceUtil.PREF_GENERAL_ROMAJI -> notifyPropertyChanged(BR.currentSong)
-        }
-    }
 
     override fun onAlbumArtReady(bitmap: Bitmap) {
         notifyPropertyChanged(BR.albumArt)
