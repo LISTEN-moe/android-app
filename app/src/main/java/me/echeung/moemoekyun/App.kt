@@ -14,8 +14,8 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.cache.ApolloCache
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.service.RadioService
-import me.echeung.moemoekyun.service.notification.AppNotification
 import me.echeung.moemoekyun.service.notification.EventNotification
+import me.echeung.moemoekyun.service.notification.MusicNotifier
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
@@ -83,8 +83,8 @@ class App : Application(), ServiceConnection {
     private fun initNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val playingChannel = NotificationChannel(
-                AppNotification.NOTIFICATION_CHANNEL_ID,
-                AppNotification.NOTIFICATION_CHANNEL_NAME,
+                MusicNotifier.NOTIFICATION_CHANNEL_ID,
+                MusicNotifier.NOTIFICATION_CHANNEL_NAME,
                 NotificationManager.IMPORTANCE_LOW
             )
 

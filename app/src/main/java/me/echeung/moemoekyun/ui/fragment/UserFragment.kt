@@ -39,11 +39,8 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
 
         broadcastReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
-                val action = intent.action
-                if (action != null) {
-                    when (action) {
-                        AuthActivityUtil.AUTH_EVENT, SongActionsUtil.FAVORITE_EVENT -> initUserContent()
-                    }
+                when (intent.action) {
+                    AuthActivityUtil.AUTH_EVENT, SongActionsUtil.FAVORITE_EVENT -> initUserContent()
                 }
             }
         }
@@ -121,12 +118,12 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
 
             userViewModel.user = user
 
-            if (user.avatarImage != null) {
-                userViewModel.avatarUrl = Library.CDN_AVATAR_URL + user.avatarImage
+            user.avatarImage?.let {
+                userViewModel.avatarUrl = Library.CDN_AVATAR_URL + it
             }
 
-            if (user.bannerImage != null) {
-                userViewModel.bannerUrl = Library.CDN_BANNER_URL + user.bannerImage
+            user.bannerImage?.let {
+                userViewModel.bannerUrl = Library.CDN_BANNER_URL + it
             }
         }
     }

@@ -124,9 +124,8 @@ class SongList(
         }
 
         if (item.itemId == R.id.action_random_request) {
-            val randomSong = adapter.randomRequestSong
-            if (randomSong != null) {
-                songActionsUtil.request(activityRef, randomSong)
+            adapter.randomRequestSong?.let {
+                songActionsUtil.request(activityRef, it)
             }
             return true
         }

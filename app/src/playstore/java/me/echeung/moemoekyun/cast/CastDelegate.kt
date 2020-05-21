@@ -64,8 +64,8 @@ class CastDelegate(
         val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
         metadata.putString(MediaMetadata.KEY_TITLE, song?.titleString)
         metadata.putString(MediaMetadata.KEY_ARTIST, song?.artistsString)
-        if (song?.albumArtUrl != null) {
-            metadata.addImage(WebImage(Uri.parse(song.albumArtUrl)))
+        song?.albumArtUrl?.let {
+            metadata.addImage(WebImage(Uri.parse(it)))
         }
 
         // TODO: react to switching between jpop/kpop

@@ -12,7 +12,7 @@ import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.ext.notificationManager
 
-class AppNotification internal constructor(
+class MusicNotifier internal constructor(
     private val service: RadioService,
     private val albumArtUtil: AlbumArtUtil
 ) {
@@ -23,7 +23,6 @@ class AppNotification internal constructor(
         }
 
         val albumArt = albumArtUtil.getCurrentAlbumArt(250)
-
         val isPlaying = service.isPlaying
 
         // Play/pause action
@@ -85,16 +84,15 @@ class AppNotification internal constructor(
 
         if (isPlaying) {
             service.startForeground(NOTIFICATION_ID, notification)
-        } else {
-            service.stopForeground(false)
         }
 
         service.notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
-    private fun getPlaybackActionService(action: String): PendingIntent {
-        val intent = Intent(service, RadioService::class.java)
-        intent.action = action
+    private fun getPlaybackActionService(intentAction: String): PendingIntent {
+        val intent = Intent(service, RadioService::class.java).apply {
+            action = intentAction
+        }
 
         return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     }

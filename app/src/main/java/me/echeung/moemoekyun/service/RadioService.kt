@@ -21,6 +21,7 @@ import java.text.ParseException
 import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.launchIn
@@ -35,7 +36,7 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
-import me.echeung.moemoekyun.service.notification.AppNotification
+import me.echeung.moemoekyun.service.notification.MusicNotifier
 import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -50,8 +51,8 @@ import me.echeung.moemoekyun.util.system.AudioManagerUtilLegacyApiImpl
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
-import org.koin.ext.scope
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class RadioService : Service(), Socket.Listener {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
@@ -65,7 +66,7 @@ class RadioService : Service(), Socket.Listener {
 
     private val binder = ServiceBinder()
 
-    private var notification: AppNotification? = null
+    private var notifier = MusicNotifier(this, albumArtUtil)
     private var stream: Stream? = null
     private var socket: Socket? = null
 
@@ -287,11 +288,7 @@ class RadioService : Service(), Socket.Listener {
 
     private fun updateNotification() {
         if (isStreamStarted) {
-            if (notification == null) {
-                notification = AppNotification(this, albumArtUtil)
-            }
-
-            notification!!.update(radioViewModel.currentSong, authUtil.isAuthenticated)
+            notifier.update(radioViewModel.currentSong, authUtil.isAuthenticated)
         } else {
             stopForeground(true)
         }
@@ -300,60 +297,57 @@ class RadioService : Service(), Socket.Listener {
     private fun handleIntent(intent: Intent?): Boolean {
         if (intent == null) return true
 
-        val action = intent.action
-        if (action != null) {
-            when (action) {
-                PLAY_PAUSE -> togglePlayPause()
+        when (intent.action) {
+            PLAY_PAUSE -> togglePlayPause()
 
-                STOP -> stop()
+            STOP -> stop()
 
-                TOGGLE_FAVORITE -> favoriteCurrentSong()
+            TOGGLE_FAVORITE -> favoriteCurrentSong()
 
-                UPDATE, SongActionsUtil.REQUEST_EVENT -> socket!!.update()
+            UPDATE, SongActionsUtil.REQUEST_EVENT -> socket!!.update()
 
-                TIMER_STOP -> timerStop()
+            TIMER_STOP -> timerStop()
 
-                // Pause when headphones unplugged
-                AudioManager.ACTION_AUDIO_BECOMING_NOISY -> if (preferenceUtil.shouldPauseOnNoisy()) {
-                    pause()
+            // Pause when headphones unplugged
+            AudioManager.ACTION_AUDIO_BECOMING_NOISY -> if (preferenceUtil.shouldPauseOnNoisy()) {
+                pause()
+            }
+
+            // Headphone media button action
+            Intent.ACTION_MEDIA_BUTTON -> {
+                val extras = intent.extras ?: return false
+
+                val keyEvent = extras.get(Intent.EXTRA_KEY_EVENT) as KeyEvent?
+                if (keyEvent == null || keyEvent.action != KeyEvent.ACTION_DOWN) {
+                    return false
                 }
 
-                // Headphone media button action
-                Intent.ACTION_MEDIA_BUTTON -> {
-                    val extras = intent.extras ?: return false
-
-                    val keyEvent = extras.get(Intent.EXTRA_KEY_EVENT) as KeyEvent?
-                    if (keyEvent == null || keyEvent.action != KeyEvent.ACTION_DOWN) {
-                        return false
+                when (keyEvent.keyCode) {
+                    KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> togglePlayPause()
+                    KeyEvent.KEYCODE_MEDIA_PLAY -> play()
+                    KeyEvent.KEYCODE_MEDIA_PAUSE -> pause()
+                    KeyEvent.KEYCODE_MEDIA_STOP -> stop()
+                    KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
                     }
+                } // Do nothing
+            }
 
-                    when (keyEvent.keyCode) {
-                        KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> togglePlayPause()
-                        KeyEvent.KEYCODE_MEDIA_PLAY -> play()
-                        KeyEvent.KEYCODE_MEDIA_PAUSE -> pause()
-                        KeyEvent.KEYCODE_MEDIA_STOP -> stop()
-                        KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                        }
-                    } // Do nothing
+            AuthActivityUtil.AUTH_EVENT -> {
+                socket!!.reconnect()
+                if (!authUtil.isAuthenticated) {
+                    radioViewModel.isFavorited = false
+                    updateNotification()
+                }
+            }
+
+            ConnectivityManager.CONNECTIVITY_ACTION -> {
+                // Ignore the initial sticky broadcast on app start
+                if (isFirstConnectivityChange) {
+                    isFirstConnectivityChange = false
+                    return false
                 }
 
-                AuthActivityUtil.AUTH_EVENT -> {
-                    socket!!.reconnect()
-                    if (!authUtil.isAuthenticated) {
-                        radioViewModel.isFavorited = false
-                        updateNotification()
-                    }
-                }
-
-                ConnectivityManager.CONNECTIVITY_ACTION -> {
-                    // Ignore the initial sticky broadcast on app start
-                    if (isFirstConnectivityChange) {
-                        isFirstConnectivityChange = false
-                        return false
-                    }
-
-                    socket!!.reconnect()
-                }
+                socket!!.reconnect()
             }
         }
 
@@ -434,10 +428,8 @@ class RadioService : Service(), Socket.Listener {
 
     private fun destroyMediaSession() {
         synchronized(mediaSessionLock) {
-            if (mediaSession != null) {
-                mediaSession!!.isActive = false
-                mediaSession!!.release()
-            }
+            mediaSession?.isActive = false
+            mediaSession?.release()
         }
     }
 

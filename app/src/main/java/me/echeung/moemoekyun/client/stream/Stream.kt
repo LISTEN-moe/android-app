@@ -63,19 +63,15 @@ class Stream(private val context: Context) {
     }
 
     fun pause() {
-        if (player != null) {
-            player!!.playWhenReady = false
-        }
+        player?.playWhenReady = false
 
         listener?.onStreamPause()
     }
 
     fun stop() {
-        if (player != null) {
-            player!!.stop(true)
+        player?.stop(true)
 
-            releasePlayer()
-        }
+        releasePlayer()
 
         listener?.onStreamStop()
     }
@@ -149,12 +145,10 @@ class Stream(private val context: Context) {
     }
 
     private fun releasePlayer() {
-        if (player != null) {
-            player!!.removeListener(eventListener)
-            player!!.release()
-            player = null
-            currentStreamUrl = null
-        }
+        player?.removeListener(eventListener)
+        player?.release()
+        player = null
+        currentStreamUrl = null
     }
 
     interface Listener {

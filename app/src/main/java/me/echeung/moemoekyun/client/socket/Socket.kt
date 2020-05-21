@@ -61,10 +61,8 @@ class Socket(
         synchronized(socketLock) {
             clearHeartbeat()
 
-            if (socket != null) {
-                socket!!.cancel()
-                socket = null
-            }
+            socket?.cancel()
+            socket = null
 
             Log.d(TAG, "Disconnected from socket")
         }

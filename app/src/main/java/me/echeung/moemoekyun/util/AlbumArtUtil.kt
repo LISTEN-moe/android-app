@@ -5,8 +5,6 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.os.Handler
-import android.os.Looper
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
@@ -20,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchNow
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.KoinComponent
@@ -32,7 +31,9 @@ class AlbumArtUtil(
 
     private val radioViewModel: RadioViewModel by inject()
 
-    private var defaultAlbumArt: Bitmap? = null
+    private val defaultAlbumArt: Bitmap by lazy {
+        BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
+    }
 
     val channel = ConflatedBroadcastChannel<Bitmap>()
 
@@ -43,9 +44,14 @@ class AlbumArtUtil(
     var currentAccentColor: Int = 0
         private set
 
-    private val maxScreenLength: Int by lazy {
+    private val requestOptions: RequestOptions by lazy {
         val displayMetrics = Resources.getSystem().displayMetrics
-        max(displayMetrics.widthPixels, displayMetrics.heightPixels)
+        val maxScreenLength = max(displayMetrics.widthPixels, displayMetrics.heightPixels)
+
+        RequestOptions()
+            .override(maxScreenLength, maxScreenLength)
+            .centerCrop()
+            .dontAnimate()
     }
 
     fun getCurrentAlbumArt(maxSize: Int): Bitmap? {
@@ -81,7 +87,9 @@ class AlbumArtUtil(
             }
         }
 
-        updateListeners(getDefaultAlbumArt())
+        isDefaultAlbumArt = true
+        setDefaultColors()
+        updateListeners(defaultAlbumArt)
     }
 
     private fun updateListeners(bitmap: Bitmap) {
@@ -92,51 +100,33 @@ class AlbumArtUtil(
     }
 
     private fun downloadAlbumArtBitmap(url: String) {
-        Handler(Looper.getMainLooper()).post(
-            fun() {
-                Glide.with(context)
-                    .asBitmap()
-                    .load(url)
-                    .apply(
-                        RequestOptions()
-                            .override(maxScreenLength, maxScreenLength)
-                            .centerCrop()
-                            .dontAnimate()
-                    )
-                    .listener(object : RequestListener<Bitmap> {
-                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-                            return false
-                        }
+        launchIO {
+            Glide.with(context)
+                .asBitmap()
+                .load(url)
+                .apply(requestOptions)
+                .listener(object : RequestListener<Bitmap> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                        return false
+                    }
 
-                        override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                            isDefaultAlbumArt = false
-                            extractAccentColor(resource)
-                            updateListeners(resource)
-                            return true
-                        }
-                    })
-                    .submit()
-            }
-        )
-    }
-
-    private fun getDefaultAlbumArt(): Bitmap {
-        if (defaultAlbumArt == null) {
-            defaultAlbumArt = BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
+                    override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                        isDefaultAlbumArt = false
+                        extractAccentColor(resource)
+                        updateListeners(resource)
+                        return true
+                    }
+                })
+                .submit()
         }
-
-        isDefaultAlbumArt = true
-        setDefaultColors()
-
-        return defaultAlbumArt!!
     }
 
     private fun extractAccentColor(resource: Bitmap) {
         try {
-            var swatch: Palette.Swatch? = Palette.from(resource).generate().vibrantSwatch
-            if (swatch == null) {
-                swatch = Palette.from(resource).generate().mutedSwatch
-            }
+            val swatch: Palette.Swatch? =
+                Palette.from(resource).generate().vibrantSwatch
+                    ?: Palette.from(resource).generate().mutedSwatch
+
             if (swatch != null) {
                 var color = swatch.rgb
 
@@ -148,9 +138,6 @@ class AlbumArtUtil(
                 currentAccentColor = color
             }
         } catch (e: Exception) {
-            // Ignore things like OutOfMemoryExceptions
-            e.printStackTrace()
-
             setDefaultColors()
         }
     }
