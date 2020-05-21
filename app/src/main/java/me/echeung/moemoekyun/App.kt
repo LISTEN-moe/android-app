@@ -11,8 +11,9 @@ import android.os.Build
 import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.cache.ApolloCache
 import me.echeung.moemoekyun.client.network.NetworkClient
+import me.echeung.moemoekyun.client.socket.Socket
+import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.service.notification.EventNotification
 import me.echeung.moemoekyun.service.notification.MusicNotifier
@@ -39,16 +40,18 @@ class App : Application(), ServiceConnection {
 
         val appModule = module {
             single { AlbumArtUtil(androidContext()) }
-            single { preferenceUtil }
+            single { AuthUtil(androidContext()) }
             single { LocaleUtil(get()) }
+            single { NetworkClient(androidContext(), get()) }
+            single { preferenceUtil }
             single { SongActionsUtil(get(), get(), get(), get()) }
             single { SongSortUtil(get()) }
+        }
 
-            single { ApolloCache(androidContext()) }
-            single { NetworkClient(get()) }
-
-            single { RadioClient(androidContext(), get(), get(), get(), get()) }
-            single { AuthUtil(androidContext()) }
+        val radioModule = module {
+            single { Stream(androidContext()) }
+            single { Socket(androidContext(), get()) }
+            single { RadioClient(get(), get(), get(), get(), get()) }
         }
 
         val viewModelModule = module {
@@ -60,7 +63,7 @@ class App : Application(), ServiceConnection {
             androidLogger()
             androidContext(this@App)
 
-            modules(appModule, viewModelModule)
+            modules(appModule, radioModule, viewModelModule)
         }
 
         initNotificationChannels()

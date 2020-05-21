@@ -58,6 +58,9 @@ class RadioService : Service(), Socket.Listener {
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val radioClient: RadioClient by inject()
+    private val stream: Stream by inject()
+    private val socket: Socket by inject()
+
     private val albumArtUtil: AlbumArtUtil by inject()
     private val authUtil: AuthUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
@@ -67,8 +70,6 @@ class RadioService : Service(), Socket.Listener {
     private val binder = ServiceBinder()
 
     private var notifier = MusicNotifier(this, albumArtUtil)
-    private var stream: Stream? = null
-    private var socket: Socket? = null
 
     @Volatile
     var mediaSession: MediaSessionCompat? = null
@@ -87,10 +88,10 @@ class RadioService : Service(), Socket.Listener {
     private var isFirstConnectivityChange = true
 
     val isStreamStarted: Boolean
-        get() = stream!!.isStarted
+        get() = stream.isStarted
 
     val isPlaying: Boolean
-        get() = stream!!.isPlaying
+        get() = stream.isPlaying
 
     override fun onBind(intent: Intent): IBinder? {
         return binder
@@ -107,10 +108,7 @@ class RadioService : Service(), Socket.Listener {
         initMediaSession()
         initAudioManager()
 
-        stream = radioClient.stream
-        socket = radioClient.socket
-
-        stream!!.setListener(object : Stream.Listener {
+        stream.setListener(object : Stream.Listener {
             override fun onStreamPlay() {
                 radioViewModel.isPlaying = true
 
@@ -138,8 +136,8 @@ class RadioService : Service(), Socket.Listener {
             }
         })
 
-        socket!!.addListener(this)
-        socket!!.connect()
+        socket.addListener(this)
+        socket.connect()
 
         merge(preferenceUtil.shouldPreferRomaji().asFlow(), preferenceUtil.shouldShowLockscreenAlbumArt().asFlow())
             .onEach { updateMediaSession() }
@@ -304,7 +302,7 @@ class RadioService : Service(), Socket.Listener {
 
             TOGGLE_FAVORITE -> favoriteCurrentSong()
 
-            UPDATE, SongActionsUtil.REQUEST_EVENT -> socket!!.update()
+            UPDATE, SongActionsUtil.REQUEST_EVENT -> socket.update()
 
             TIMER_STOP -> timerStop()
 
@@ -333,7 +331,7 @@ class RadioService : Service(), Socket.Listener {
             }
 
             AuthActivityUtil.AUTH_EVENT -> {
-                socket!!.reconnect()
+                socket.reconnect()
                 if (!authUtil.isAuthenticated) {
                     radioViewModel.isFavorited = false
                     updateNotification()
@@ -347,7 +345,7 @@ class RadioService : Service(), Socket.Listener {
                     return false
                 }
 
-                socket!!.reconnect()
+                socket.reconnect()
             }
         }
 
@@ -459,7 +457,7 @@ class RadioService : Service(), Socket.Listener {
         audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
             when (focusChange) {
                 AudioManager.AUDIOFOCUS_GAIN -> {
-                    stream!!.unduck()
+                    stream.unduck()
                     if (wasPlayingBeforeLoss) {
                         play()
                     }
@@ -475,7 +473,7 @@ class RadioService : Service(), Socket.Listener {
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                     wasPlayingBeforeLoss = isPlaying
                     if (preferenceUtil.shouldDuckAudio()) {
-                        stream!!.duck()
+                        stream.duck()
                     }
                 }
             }
@@ -502,21 +500,21 @@ class RadioService : Service(), Socket.Listener {
 
         synchronized(focusLock) {
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                stream!!.play()
+                stream.play()
             }
         }
     }
 
     private fun pause() {
-        stream!!.pause()
+        stream.pause()
     }
 
     private fun stop() {
-        stream!!.stop()
+        stream.stop()
     }
 
     private fun timerStop() {
-        stream!!.fadeOut()
+        stream.fadeOut()
     }
 
     private fun favoriteCurrentSong() {

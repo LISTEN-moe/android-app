@@ -1,36 +1,29 @@
 package me.echeung.moemoekyun.client
 
-import android.content.Context
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.client.api.library.Kpop
 import me.echeung.moemoekyun.client.api.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.cache.ApolloCache
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.PreferenceUtil
 
 class RadioClient(
-    context: Context,
     authUtil: AuthUtil,
     networkClient: NetworkClient,
-    apolloCache: ApolloCache,
-    private val preferenceUtil: PreferenceUtil
+    private val preferenceUtil: PreferenceUtil,
+    private val stream: Stream,
+    private val socket: Socket
 ) {
 
     val api: APIClient
-    val socket: Socket
-    val stream: Stream
 
     init {
         setLibrary(preferenceUtil.libraryMode().get())
 
-        this.api = APIClient(networkClient.client, apolloCache.cache, authUtil)
-
-        this.socket = Socket(context, networkClient.client)
-        this.stream = Stream(context)
+        this.api = APIClient(networkClient.client, networkClient.apolloCache, authUtil)
     }
 
     fun changeLibrary(newMode: String) {

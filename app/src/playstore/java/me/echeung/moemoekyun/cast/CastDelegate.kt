@@ -17,6 +17,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
+import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -26,7 +27,9 @@ class CastDelegate(
 ) : SessionAvailabilityListener, Socket.Listener, KoinComponent {
 
     private val radioViewModel: RadioViewModel by inject()
-    private val radioClient: RadioClient by inject()
+
+    private val stream: Stream by inject()
+    private val socket: Socket by inject()
 
     private val castPlayer: CastPlayer? = try {
         CastPlayer(CastContext.getSharedInstance(context))
@@ -37,7 +40,7 @@ class CastDelegate(
     init {
         castPlayer?.setSessionAvailabilityListener(this)
 
-        radioClient.socket.addListener(this)
+        socket.addListener(this)
     }
 
     fun onDestroy() {
@@ -53,7 +56,7 @@ class CastDelegate(
     }
 
     override fun onCastSessionAvailable() {
-        radioClient.stream.pause()
+        stream.pause()
 
         playMedia()
     }
@@ -83,7 +86,7 @@ class CastDelegate(
     override fun onCastSessionUnavailable() {
         // TODO: double check if it was playing before
 
-        radioClient.stream.play()
+        stream.play()
     }
 
     // TODO: I don't think this works

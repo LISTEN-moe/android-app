@@ -11,13 +11,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.socket.response.BaseResponse
 import me.echeung.moemoekyun.client.socket.response.ConnectResponse
 import me.echeung.moemoekyun.client.socket.response.EventNotificationResponse
 import me.echeung.moemoekyun.client.socket.response.NotificationResponse
 import me.echeung.moemoekyun.client.socket.response.UpdateResponse
 import me.echeung.moemoekyun.service.notification.EventNotification
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -25,7 +25,7 @@ import okhttp3.WebSocketListener
 
 class Socket(
     private val context: Context,
-    private val client: OkHttpClient
+    private val networkClient: NetworkClient
 ) : WebSocketListener() {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
@@ -58,7 +58,7 @@ class Socket(
             }
 
             val request = Request.Builder().url(RadioClient.library!!.socketUrl).build()
-            socket = client.newWebSocket(request, this)
+            socket = networkClient.client.newWebSocket(request, this)
         }
     }
 
