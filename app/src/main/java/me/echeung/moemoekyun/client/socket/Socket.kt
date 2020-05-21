@@ -1,11 +1,15 @@
 package me.echeung.moemoekyun.client.socket
 
 import android.content.Context
-import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import com.squareup.moshi.Moshi
 import java.io.IOException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.socket.response.BaseResponse
 import me.echeung.moemoekyun.client.socket.response.ConnectResponse
@@ -24,6 +28,8 @@ class Socket(
     private val client: OkHttpClient
 ) : WebSocketListener() {
 
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+
     private var retryTime = RETRY_TIME_MIN
     private var attemptingReconnect = false
 
@@ -33,8 +39,7 @@ class Socket(
 
     private val listeners = mutableListOf<Listener>()
 
-    private val heartbeatHandler = Handler()
-    private var heartbeatTask: Runnable? = null
+    private var heartbeatJob: Job? = null
 
     fun addListener(listener: Listener) {
         this.listeners.add(listener)
@@ -124,33 +129,31 @@ class Socket(
         reconnect()
     }
 
-    private fun heartbeat(milliseconds: Int) {
+    private fun initHeartbeat(delayMillis: Long) {
         clearHeartbeat()
+        heartbeatJob = scope.launch {
+            Log.d(TAG, "Created heartbeat job for $delayMillis ms")
+            sendHeartbeat(delayMillis)
+        }
+    }
 
-        heartbeatTask = object : Runnable {
-            override fun run() {
-                synchronized(socketLock) {
-                    if (socket == null) return
+    private suspend fun sendHeartbeat(delayMillis: Long) {
+        delay(delayMillis)
 
-                    Log.d(TAG, "Sending heartbeat to socket")
-                    socket!!.send("{ \"op\": 9 }")
-
-                    // Repeat
-                    heartbeatHandler.postDelayed(this, milliseconds.toLong())
-                }
-            }
+        if (heartbeatJob?.isActive != true || socket == null) {
+            return
         }
 
-        heartbeatHandler.postDelayed(heartbeatTask!!, milliseconds.toLong())
-        Log.d(TAG, "Created heartbeat task for $milliseconds ms")
+        Log.d(TAG, "Sending heartbeat to socket")
+        socket!!.send("{ \"op\": 9 }")
+
+        // Repeat
+        sendHeartbeat(delayMillis)
     }
 
     private fun clearHeartbeat() {
-        if (heartbeatTask != null) {
-            Log.d(TAG, "Removing heartbeat task")
-            heartbeatHandler.removeCallbacksAndMessages(null)
-            heartbeatTask = null
-        }
+        Log.d(TAG, "Cancelling heartbeat job")
+        heartbeatJob?.cancel()
     }
 
     private fun parseResponse(jsonString: String?) {
@@ -170,7 +173,7 @@ class Socket(
                 // Heartbeat init
                 0 -> {
                     val connectResponse = getResponse(ConnectResponse::class.java, jsonString)
-                    heartbeat(connectResponse!!.d!!.heartbeat)
+                    initHeartbeat(connectResponse!!.d!!.heartbeat.toLong())
                 }
 
                 // Update
