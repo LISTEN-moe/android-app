@@ -32,7 +32,7 @@ fun SongQuery.Song.transform(): Song {
     return this.fragments.songFields.transform()
 }
 
-fun SongsQuery.Song1.transform(): Song {
+fun SongsQuery.Song.transform(): Song {
     return this.fragments.songListFields.transform()
 }
 

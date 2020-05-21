@@ -4,11 +4,15 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
-import com.apollographql.apollo.coroutines.toChannel
 import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.coroutines.toFlow
 import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -37,6 +41,8 @@ class APIClient(
     apolloCache: ApolloHttpCache,
     private val authUtil: AuthUtil
 ) {
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val client: ApolloClient
     private val songsCache: SongsCache
@@ -214,6 +220,7 @@ class APIClient(
     /**
      * Gets and subscribes to song queue info.
      */
+    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getQueue(user: User) {
         val queue = client.query(QueueQuery())
             .toDeferred()
@@ -222,20 +229,22 @@ class APIClient(
 //           callback.onQueueSuccess(response.data()?.queue ?: 0)
 
         client.subscribe(QueueSubscription(RadioClient.library!!.name))
-            .toChannel()
-            .consumeEach {
+            .toFlow()
+            .onEach {
 //                    callback.onQueueSuccess(response.data()?.queue?.amount ?: 0)
             }
+            .launchIn(scope)
 
         // TODO: handle user change
         client.subscribe(UserQueueSubscription(RadioClient.library!!.name, user.uuid))
-            .toChannel()
-            .consumeEach {
+            .toFlow()
+            .onEach {
 //                    callback.onUserQueueSuccess(
 //                            response.data()?.userQueue?.amount ?: 0,
 //                            response.data()?.userQueue?.before ?: 0
 //                    )
             }
+            .launchIn(scope)
     }
 
     enum class LoginState {
