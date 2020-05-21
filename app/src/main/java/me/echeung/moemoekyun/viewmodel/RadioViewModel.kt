@@ -7,7 +7,9 @@ import androidx.databinding.Bindable
 import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.BR
@@ -16,12 +18,14 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
+import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.ThemeUtil
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class RadioViewModel(
     private val albumArtUtil: AlbumArtUtil,
     preferenceUtil: PreferenceUtil
-) : BaseViewModel(), AlbumArtUtil.Listener {
+) : BaseViewModel() {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
@@ -173,7 +177,11 @@ class RadioViewModel(
         }
 
     init {
-        albumArtUtil.registerListener(this)
+        launchIO {
+            albumArtUtil.channel.consumeEach {
+                notifyPropertyChanged(BR.albumArt)
+            }
+        }
 
         preferenceUtil.shouldPreferRomaji().asFlow()
             .onEach { notifyPropertyChanged(BR.currentSong) }
@@ -193,12 +201,5 @@ class RadioViewModel(
         queueSize = 0
         inQueueByUser = 0
         queuePosition = 0
-    }
-
-    // Misc.
-    // ========================================================================
-
-    override fun onAlbumArtReady(bitmap: Bitmap) {
-        notifyPropertyChanged(BR.albumArt)
     }
 }

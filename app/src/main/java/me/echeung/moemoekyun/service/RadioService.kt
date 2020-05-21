@@ -5,7 +5,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Bitmap
 import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.os.Binder
@@ -23,6 +22,7 @@ import java.util.Calendar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -52,7 +52,7 @@ import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
 import org.koin.ext.scope
 
-class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener {
+class RadioService : Service(), Socket.Listener {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
@@ -96,7 +96,11 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener {
     }
 
     override fun onCreate() {
-        albumArtUtil.registerListener(this)
+        launchIO {
+            albumArtUtil.channel.consumeEach {
+                updateMediaSession()
+            }
+        }
 
         initBroadcastReceiver()
         initMediaSession()
@@ -154,8 +158,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener {
     }
 
     override fun onDestroy() {
-        albumArtUtil.unregisterListener(this)
-
         stop()
 
         socket?.removeListener(this)
@@ -281,10 +283,6 @@ class RadioService : Service(), Socket.Listener, AlbumArtUtil.Listener {
         if (mediaSession!!.isActive) {
             mediaSession!!.setPlaybackState(stateBuilder.build())
         }
-    }
-
-    override fun onAlbumArtReady(bitmap: Bitmap) {
-        updateMediaSession()
     }
 
     private fun updateNotification() {

@@ -16,21 +16,25 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import kotlin.math.max
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.util.ext.launchNow
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class AlbumArtUtil(
     private val context: Context
 ) : KoinComponent {
 
     private val radioViewModel: RadioViewModel by inject()
 
-    private val listeners = mutableListOf<Listener>()
-
     private var defaultAlbumArt: Bitmap? = null
+
+    val channel = ConflatedBroadcastChannel<Bitmap>()
 
     var isDefaultAlbumArt = true
         private set
@@ -42,14 +46,6 @@ class AlbumArtUtil(
     private val maxScreenLength: Int by lazy {
         val displayMetrics = Resources.getSystem().displayMetrics
         max(displayMetrics.widthPixels, displayMetrics.heightPixels)
-    }
-
-    fun registerListener(listener: Listener) {
-        listeners.add(listener)
-    }
-
-    fun unregisterListener(listener: Listener) {
-        listeners.remove(listener)
     }
 
     fun getCurrentAlbumArt(maxSize: Int): Bitmap? {
@@ -90,7 +86,9 @@ class AlbumArtUtil(
 
     private fun updateListeners(bitmap: Bitmap) {
         currentAlbumArt = bitmap
-        listeners.forEach { it.onAlbumArtReady(bitmap) }
+        launchNow {
+            channel.send(bitmap)
+        }
     }
 
     private fun downloadAlbumArtBitmap(url: String) {
@@ -159,9 +157,5 @@ class AlbumArtUtil(
 
     private fun setDefaultColors() {
         currentAccentColor = Color.BLACK
-    }
-
-    interface Listener {
-        fun onAlbumArtReady(bitmap: Bitmap)
     }
 }
