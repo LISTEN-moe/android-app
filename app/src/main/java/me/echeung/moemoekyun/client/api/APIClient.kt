@@ -72,9 +72,9 @@ class APIClient(
             .toDeferred()
             .await()
 
-        val userToken = response.data()?.login?.token!!
+        val userToken = response.data?.login?.token!!
 
-        if (response.data()?.login?.mfa!!) {
+        if (response.data?.login?.mfa!!) {
             authUtil.mfaToken = userToken
             return Pair(LoginState.REQUIRE_OTP, userToken)
         }
@@ -94,7 +94,7 @@ class APIClient(
             .toDeferred()
             .await()
 
-        val userToken = response.data()?.loginMFA?.token!!
+        val userToken = response.data?.loginMFA?.token!!
         authUtil.authToken = userToken
         authUtil.clearMfaAuthToken()
 
@@ -118,7 +118,7 @@ class APIClient(
             .toDeferred()
             .await()
 
-        return response.data()?.user!!.transform()
+        return response.data?.user!!.transform()
     }
 
     /**
@@ -130,7 +130,7 @@ class APIClient(
             .toDeferred()
             .await()
 
-        return response.data()?.user?.favorites?.favorites
+        return response.data?.user?.favorites?.favorites
             ?.mapNotNull { it?.song }
             ?.map { it.transform() }
             ?: emptyList()
@@ -146,7 +146,7 @@ class APIClient(
             .toDeferred()
             .await()
 
-        return response.data()?.checkFavorite?.filterNotNull() ?: emptyList()
+        return response.data?.checkFavorite?.filterNotNull() ?: emptyList()
     }
 
     /**
@@ -171,7 +171,7 @@ class APIClient(
             .await()
 
         if (response.hasErrors()) {
-            throw Exception(response.errors()[0]?.message())
+            throw Exception(response.errors?.get(0)?.message)
         }
     }
 
@@ -197,7 +197,7 @@ class APIClient(
             .toDeferred()
             .await()
 
-        return response.data()?.song!!.transform()
+        return response.data?.song!!.transform()
     }
 
     /**
@@ -214,7 +214,7 @@ class APIClient(
             .toDeferred()
             .await()
 
-        return response.data()?.songs?.songs?.map { it.transform() } ?: emptyList()
+        return response.data?.songs?.songs?.map { it.transform() } ?: emptyList()
     }
 
     /**
@@ -226,12 +226,12 @@ class APIClient(
             .toDeferred()
             .await()
 
-//           callback.onQueueSuccess(response.data()?.queue ?: 0)
+//           callback.onQueueSuccess(response.data?.queue ?: 0)
 
         client.subscribe(QueueSubscription(RadioClient.library!!.name))
             .toFlow()
             .onEach {
-//                    callback.onQueueSuccess(response.data()?.queue?.amount ?: 0)
+//                    callback.onQueueSuccess(response.data?.queue?.amount ?: 0)
             }
             .launchIn(scope)
 
@@ -240,8 +240,8 @@ class APIClient(
             .toFlow()
             .onEach {
 //                    callback.onUserQueueSuccess(
-//                            response.data()?.userQueue?.amount ?: 0,
-//                            response.data()?.userQueue?.before ?: 0
+//                            response.data?.userQueue?.amount ?: 0,
+//                            response.data?.userQueue?.before ?: 0
 //                    )
             }
             .launchIn(scope)
