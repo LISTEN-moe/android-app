@@ -84,6 +84,8 @@ class MusicNotifier internal constructor(
 
         if (isPlaying) {
             service.startForeground(NOTIFICATION_ID, notification)
+        } else {
+            service.stopForeground(false)
         }
 
         service.notificationManager.notify(NOTIFICATION_ID, notification)
