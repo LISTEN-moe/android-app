@@ -26,17 +26,13 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <FrameLayout
+        <include
+            layout="@layout/user_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <include
-                layout="@layout/user_card"
-                binding:radioVm="@{radioVm}"
-                binding:userVm="@{userVm}" />
-
-        </FrameLayout>
+            android:layout_marginTop="16dp"
+            binding:radioVm="@{radioVm}"
+            binding:userVm="@{userVm}" />
 
         <include
             android:id="@+id/favorites"

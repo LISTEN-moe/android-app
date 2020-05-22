@@ -6,8 +6,7 @@
         android:title="@string/sort"
         app:showAsAction="never">
         <menu>
-            <group
-                android:checkableBehavior="single">
+            <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/action_sort_type_title"
                     android:title="@string/sort_title" />
@@ -26,6 +25,6 @@
     <item
         android:id="@+id/action_random_request"
         android:title="@string/random_request"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>

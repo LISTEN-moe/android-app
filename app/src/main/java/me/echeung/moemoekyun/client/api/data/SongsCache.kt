@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.api.data
 
-import java.util.GregorianCalendar
+import java.util.Date
+import java.util.concurrent.TimeUnit
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -14,7 +15,7 @@ class SongsCache(private val apiClient: APIClient) {
     private var lastUpdated = 0L
 
     private val isCacheValid: Boolean
-        get() = GregorianCalendar().timeInMillis - lastUpdated < MAX_AGE
+        get() = Date().time - lastUpdated < MAX_AGE
 
     init {
         // Prime the cache
@@ -27,13 +28,13 @@ class SongsCache(private val apiClient: APIClient) {
         }
 
         val songs = apiClient.getAllSongs()
-        lastUpdated = GregorianCalendar().timeInMillis
+        lastUpdated = Date().time
         cachedSongs = songs
 
         return cachedSongs
     }
 
     companion object {
-        private const val MAX_AGE = 1000 * 60 * 60 * 24 // 24 hours
+        private val MAX_AGE = TimeUnit.DAYS.toMillis(1)
     }
 }

@@ -71,12 +71,11 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
             return
         }
 
-        val pi = makeTimerPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT)
-
         preferenceUtil.sleepTimer().set(minutes)
 
         val timerTime = SystemClock.elapsedRealtime() + minutes * 60 * 1000
-        activity.alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pi)
+        val pendingIntent = makeTimerPendingIntent(PendingIntent.FLAG_CANCEL_CURRENT)
+        activity.alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, timerTime, pendingIntent)
 
         activity.toast(activity.getPluralString(R.plurals.sleep_timer_set, minutes))
     }

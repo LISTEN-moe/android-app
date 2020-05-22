@@ -188,7 +188,7 @@ class RadioService : Service(), Socket.Listener {
         try {
             startTime = TimeUtil.toCalendar(info.startTime!!)
         } catch (e: ParseException) {
-            e.printStackTrace()
+            Log.e(TAG, e.message)
         }
 
         // Check if current song is favorited
