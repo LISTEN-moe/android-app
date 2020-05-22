@@ -13,12 +13,18 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
 import kotlin.math.max
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.delay
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.util.ext.launchIO
+import me.echeung.moemoekyun.util.ext.launchNow
 import me.echeung.moemoekyun.util.system.NetworkUtil
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class Stream(private val context: Context) {
+
+    val channel = ConflatedBroadcastChannel<State>()
 
     private val eventListener = object : Player.EventListener {
         override fun onPlayerError(error: ExoPlaybackException) {
@@ -37,21 +43,11 @@ class Stream(private val context: Context) {
 
     private var currentStreamUrl: String? = null
 
-    private var listener: Listener? = null
-
     val isStarted: Boolean
         get() = player != null
 
     val isPlaying: Boolean
         get() = player?.playWhenReady ?: false
-
-    fun setListener(listener: Listener) {
-        this.listener = listener
-    }
-
-    fun removeListener() {
-        this.listener = null
-    }
 
     fun play() {
         init()
@@ -61,13 +57,17 @@ class Stream(private val context: Context) {
             player!!.seekToDefaultPosition()
         }
 
-        listener?.onStreamPlay()
+        launchNow {
+            channel.send(State.PLAY)
+        }
     }
 
     fun pause() {
         player?.playWhenReady = false
 
-        listener?.onStreamPause()
+        launchNow {
+            channel.send(State.PAUSE)
+        }
     }
 
     fun stop() {
@@ -75,7 +75,9 @@ class Stream(private val context: Context) {
 
         releasePlayer()
 
-        listener?.onStreamStop()
+        launchNow {
+            channel.send(State.STOP)
+        }
     }
 
     fun fadeOut() {
@@ -94,7 +96,7 @@ class Stream(private val context: Context) {
             }
 
             stop()
-            listener?.onStreamStop()
+            channel.send(State.STOP)
         }
     }
 
@@ -142,9 +144,9 @@ class Stream(private val context: Context) {
         currentStreamUrl = null
     }
 
-    interface Listener {
-        fun onStreamPlay()
-        fun onStreamPause()
-        fun onStreamStop()
+    enum class State {
+        PLAY,
+        PAUSE,
+        STOP,
     }
 }

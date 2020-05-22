@@ -108,33 +108,35 @@ class RadioService : Service(), Socket.Listener {
         initMediaSession()
         initAudioManager()
 
-        stream.setListener(object : Stream.Listener {
-            override fun onStreamPlay() {
-                radioViewModel.isPlaying = true
+        launchIO {
+            stream.channel.consumeEach {
+                when (it) {
+                    Stream.State.PLAY -> {
+                        radioViewModel.isPlaying = true
 
-                updateNotification()
-                updateMediaSessionPlaybackState()
+                        updateNotification()
+                        updateMediaSessionPlaybackState()
+                    }
+                    Stream.State.PAUSE -> {
+                        radioViewModel.isPlaying = false
+
+                        updateNotification()
+                        updateMediaSessionPlaybackState()
+                    }
+                    Stream.State.STOP -> {
+                        audioManagerUtil?.abandonAudioFocus()
+
+                        stopForeground(true)
+                        stopSelf()
+
+                        preferenceUtil.sleepTimer().delete()
+                        radioViewModel.isPlaying = false
+
+                        updateMediaSessionPlaybackState()
+                    }
+                }
             }
-
-            override fun onStreamPause() {
-                radioViewModel.isPlaying = false
-
-                updateNotification()
-                updateMediaSessionPlaybackState()
-            }
-
-            override fun onStreamStop() {
-                audioManagerUtil?.abandonAudioFocus()
-
-                stopForeground(true)
-                stopSelf()
-
-                preferenceUtil.sleepTimer().delete()
-                radioViewModel.isPlaying = false
-
-                updateMediaSessionPlaybackState()
-            }
-        })
+        }
 
         socket.addListener(this)
         socket.connect()
@@ -161,8 +163,6 @@ class RadioService : Service(), Socket.Listener {
 
         socket.removeListener(this)
         socket.disconnect()
-
-        stream.removeListener()
 
         if (receiverRegistered) {
             unregisterReceiver(intentReceiver)
