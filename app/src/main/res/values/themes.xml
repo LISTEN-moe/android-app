@@ -16,6 +16,7 @@
 
         <!-- Nav bar -->
         <item name="android:navigationBarColor">@color/darker_grey</item>
+        <item name="android:statusBarColor">@color/colorAccent</item>
 
         <!-- Base background/text colors -->
         <item name="android:windowBackground">@color/darker_grey</item>
@@ -32,6 +33,8 @@
     <!-- Splash screen -->
     <style name="Theme.Splash" parent="Theme.App">
         <item name="android:windowBackground">@drawable/splash</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
     </style>
 
 </resources>
