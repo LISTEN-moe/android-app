@@ -16,19 +16,20 @@ object EventNotification {
     const val NOTIFICATION_CHANNEL_ID = "events"
 
     fun notify(context: Context, eventName: String) {
-        val action = Intent(context, MainActivity::class.java)
-        action.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-
-        val clickIntent = PendingIntent.getActivity(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT)
-
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_icon)
-            .setContentIntent(clickIntent)
+            .setContentIntent(getOpenAppIntent(context))
             .setContentTitle(context.getString(R.string.event_start_title))
             .setContentText(eventName)
 
-        val notification = builder.build()
+        context.notificationManager.notify(NOTIFICATION_ID, builder.build())
+    }
 
-        context.notificationManager.notify(NOTIFICATION_ID, notification)
+    private fun getOpenAppIntent(context: Context): PendingIntent {
+        val action = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+
+        return PendingIntent.getActivity(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT)
     }
 }

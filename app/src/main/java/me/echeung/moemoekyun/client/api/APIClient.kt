@@ -27,10 +27,10 @@ import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.UserQueueSubscription
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.data.SongsCache
 import me.echeung.moemoekyun.client.api.data.transform
 import me.echeung.moemoekyun.client.api.library.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.cache.SongsCache
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.client.model.search
@@ -202,8 +202,6 @@ class APIClient(
 
     /**
      * Gets all songs.
-     *
-     * @param callback Listener to handle the response.
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getAllSongs(): List<Song> {

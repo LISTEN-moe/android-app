@@ -159,10 +159,10 @@ class RadioService : Service(), Socket.Listener {
     override fun onDestroy() {
         stop()
 
-        socket?.removeListener(this)
-        socket?.disconnect()
+        socket.removeListener(this)
+        socket.disconnect()
 
-        stream?.removeListener()
+        stream.removeListener()
 
         if (receiverRegistered) {
             unregisterReceiver(intentReceiver)
@@ -326,8 +326,9 @@ class RadioService : Service(), Socket.Listener {
                     KeyEvent.KEYCODE_MEDIA_PAUSE -> pause()
                     KeyEvent.KEYCODE_MEDIA_STOP -> stop()
                     KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
+                        // Do nothing
                     }
-                } // Do nothing
+                }
             }
 
             AuthActivityUtil.AUTH_EVENT -> {
@@ -438,16 +439,17 @@ class RadioService : Service(), Socket.Listener {
             }
         }
 
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(PLAY_PAUSE)
-        intentFilter.addAction(STOP)
-        intentFilter.addAction(TOGGLE_FAVORITE)
-        intentFilter.addAction(UPDATE)
-        intentFilter.addAction(SongActionsUtil.REQUEST_EVENT)
-        intentFilter.addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
-        intentFilter.addAction(Intent.ACTION_MEDIA_BUTTON)
-        intentFilter.addAction(AuthActivityUtil.AUTH_EVENT)
-        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+        val intentFilter = IntentFilter().apply {
+            addAction(PLAY_PAUSE)
+            addAction(STOP)
+            addAction(TOGGLE_FAVORITE)
+            addAction(UPDATE)
+            addAction(SongActionsUtil.REQUEST_EVENT)
+            addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
+            addAction(Intent.ACTION_MEDIA_BUTTON)
+            addAction(AuthActivityUtil.AUTH_EVENT)
+            addAction(ConnectivityManager.CONNECTIVITY_ACTION)
+        }
 
         registerReceiver(intentReceiver, intentFilter)
         receiverRegistered = true
@@ -524,7 +526,7 @@ class RadioService : Service(), Socket.Listener {
         if (songId == -1) return
 
         if (!authUtil.isAuthenticated) {
-            showLoginRequiredToast()
+            toast(R.string.login_required)
             return
         }
 
@@ -551,10 +553,6 @@ class RadioService : Service(), Socket.Listener {
                 launchUI { toast(e.message) }
             }
         }
-    }
-
-    private fun showLoginRequiredToast() {
-        toast(R.string.login_required)
     }
 
     inner class ServiceBinder : Binder() {

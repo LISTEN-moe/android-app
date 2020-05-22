@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.cache
+package me.echeung.moemoekyun.client.api.data
 
 import java.util.GregorianCalendar
 import me.echeung.moemoekyun.client.api.APIClient
