@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
+import androidx.palette.graphics.Target.MUTED
+import androidx.palette.graphics.Target.VIBRANT
+import androidx.palette.graphics.get
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -123,9 +126,8 @@ class AlbumArtUtil(
 
     private fun extractAccentColor(resource: Bitmap) {
         try {
-            val swatch: Palette.Swatch? =
-                Palette.from(resource).generate().vibrantSwatch
-                    ?: Palette.from(resource).generate().mutedSwatch
+            val palette = Palette.from(resource).generate()
+            val swatch: Palette.Swatch? = palette[VIBRANT] ?: palette[MUTED]
 
             if (swatch != null) {
                 var color = swatch.rgb

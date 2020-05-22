@@ -100,6 +100,7 @@ dependencies {
     implementation 'androidx.fragment:fragment:1.2.4'
     implementation 'androidx.media:media:1.1.0'
     implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
