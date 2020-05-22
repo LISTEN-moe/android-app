@@ -9,25 +9,12 @@ android {
     compileSdkVersion 29
     buildToolsVersion '29.0.3'
 
-    flavorDimensions 'variant'
-
     defaultConfig {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 87
         versionName '5.1.0'
-
-        vectorDrawables.useSupportLibrary = true
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     dataBinding {
@@ -55,6 +42,8 @@ android {
         }
     }
 
+    flavorDimensions 'variant'
+
     productFlavors {
         playstore {
             dimension 'variant'
@@ -66,6 +55,15 @@ android {
         }
     }
 
+    lintOptions {
+        disable 'MissingTranslation'
+        disable 'ExtraTranslation'
+
+        enable 'ObsoleteSdkInt'
+
+        abortOnError true
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'LICENSE.txt'
@@ -74,13 +72,13 @@ android {
         exclude 'META-INF/NOTICE'
     }
 
-    lintOptions {
-        disable 'MissingTranslation'
-        disable 'ExtraTranslation'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
-        enable 'ObsoleteSdkInt'
-
-        abortOnError true
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
 
