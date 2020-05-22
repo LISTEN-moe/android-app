@@ -28,6 +28,7 @@ import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
+import org.koin.core.logger.Level
 import org.koin.dsl.module
 
 class App : Application(), ServiceConnection {
@@ -60,7 +61,7 @@ class App : Application(), ServiceConnection {
         }
 
         startKoin {
-            androidLogger()
+            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.INFO)
             androidContext(this@App)
 
             modules(appModule, radioModule, viewModelModule)
@@ -85,21 +86,20 @@ class App : Application(), ServiceConnection {
 
     private fun initNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val playingChannel = NotificationChannel(
-                MusicNotifier.NOTIFICATION_CHANNEL_ID,
-                MusicNotifier.NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
-            )
-
-            notificationManager.createNotificationChannel(playingChannel)
-
-            val eventChannel = NotificationChannel(
-                EventNotification.NOTIFICATION_CHANNEL_ID,
-                EventNotification.NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-
-            notificationManager.createNotificationChannel(eventChannel)
+            listOf(
+                // Playing
+                NotificationChannel(
+                    MusicNotifier.NOTIFICATION_CHANNEL_ID,
+                    MusicNotifier.NOTIFICATION_CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_LOW
+                ),
+                // Events
+                NotificationChannel(
+                    EventNotification.NOTIFICATION_CHANNEL_ID,
+                    EventNotification.NOTIFICATION_CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT
+                )
+            ).forEach(notificationManager::createNotificationChannel)
         }
     }
 
