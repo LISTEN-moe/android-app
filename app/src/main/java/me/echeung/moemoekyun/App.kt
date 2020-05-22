@@ -10,9 +10,9 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
-import me.echeung.moemoekyun.client.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.service.notification.EventNotification

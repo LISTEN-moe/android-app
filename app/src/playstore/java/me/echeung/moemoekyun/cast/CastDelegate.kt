@@ -15,8 +15,8 @@ import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.common.images.WebImage
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.socket.Socket
-import me.echeung.moemoekyun.client.socket.response.UpdateResponse
+import me.echeung.moemoekyun.client.api.socket.Socket
+import me.echeung.moemoekyun.client.api.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.KoinComponent

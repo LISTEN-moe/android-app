@@ -1,6 +1,6 @@
 -dontobfuscate
 
--keep public class me.echeung.moemoekyun.client.socket.response.**
+-keep public class me.echeung.moemoekyun.client.api.socket.response.**
 -keep public class me.echeung.moemoekyun.client.model.Event
 
 # Google Cast
