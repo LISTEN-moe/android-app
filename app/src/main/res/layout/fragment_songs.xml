@@ -31,9 +31,9 @@
                     android:id="@+id/search_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:queryHint="@string/search"
                     app:iconifiedByDefault="false"
-                    app:searchIcon="@null" />
+                    app:searchIcon="@null"
+                    app:queryHint="@string/search" />
 
             </androidx.appcompat.widget.Toolbar>
 
