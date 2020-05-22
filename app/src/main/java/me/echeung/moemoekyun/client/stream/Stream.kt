@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.client.stream
 
 import android.content.Context
 import android.net.Uri
-import android.os.Handler
 import com.google.android.exoplayer2.C.CONTENT_TYPE_MUSIC
 import com.google.android.exoplayer2.C.USAGE_MEDIA
 import com.google.android.exoplayer2.C.WAKE_MODE_NETWORK
@@ -13,7 +12,10 @@ import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import kotlin.math.max
+import kotlinx.coroutines.delay
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.NetworkUtil
 
 class Stream(private val context: Context) {
@@ -41,7 +43,7 @@ class Stream(private val context: Context) {
         get() = player != null
 
     val isPlaying: Boolean
-        get() = player != null && player!!.playWhenReady
+        get() = player?.playWhenReady ?: false
 
     fun setListener(listener: Listener) {
         this.listener = listener
@@ -77,34 +79,23 @@ class Stream(private val context: Context) {
     }
 
     fun fadeOut() {
-        val handler = Handler()
-        val runnable = object : Runnable {
-            override fun run() {
-                if (player == null) {
-                    stop()
-                    if (listener != null) {
-                        listener!!.onStreamStop()
-                    }
-                    return
-                }
-
+        launchIO {
+            while (player != null) {
                 val vol = player!!.volume
-                val newVol = vol - 0.05f
+                val newVol = max(0f, vol - 0.05f)
+
                 if (newVol <= 0) {
-                    stop()
-                    if (listener != null) {
-                        listener!!.onStreamStop()
-                    }
-                    return
+                    break
                 }
 
                 player!!.volume = newVol
 
-                handler.postDelayed(this, 200)
+                delay(200)
             }
-        }
 
-        handler.post(runnable)
+            stop()
+            listener?.onStreamStop()
+        }
     }
 
     fun duck() {
