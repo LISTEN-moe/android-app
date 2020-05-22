@@ -28,6 +28,16 @@
         <item name="strokeColor">@color/white_button_states</item>
     </style>
 
+    <!-- Textboxes -->
+    <style name="Theme.Widget.TextInputLayout.OutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.Widget.TextInputEditText.OutlinedBox</item>
+        <item name="hintTextColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="ThemeOverlay.Widget.TextInputEditText.OutlinedBox" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">?attr/colorSecondary</item>
+    </style>
+
     <!-- About card item -->
     <style name="AboutItem">
         <item name="android:layout_width">match_parent</item>
