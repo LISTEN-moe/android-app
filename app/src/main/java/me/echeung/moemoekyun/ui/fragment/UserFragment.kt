@@ -64,16 +64,16 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
         return SongList(
             requireActivity(),
             songListVm,
-            binding.favorites.favoritesList.list,
-            binding.favorites.favoritesList.refreshLayout,
-            binding.favorites.filter.query,
+            binding.favoritesList.list,
+            binding.favoritesList.refreshLayout,
+            binding.query,
             LIST_ID,
             this::loadSongs
         )
     }
 
     private fun initFilterMenu() {
-        val overflowBtn = binding.favorites.filter.overflowBtn
+        val overflowBtn = binding.overflowBtn
 
         overflowBtn.setOnClickListener(
             fun(_) {

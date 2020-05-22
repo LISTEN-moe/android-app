@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:binding="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.fragment.UserFragment">
@@ -26,19 +27,187 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin">
 
-        <include
-            layout="@layout/user_card"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            binding:radioVm="@{radioVm}"
-            binding:userVm="@{userVm}" />
+            app:cardBackgroundColor="@color/dark_grey"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:cardElevation="3dp"
+            app:cardPreventCornerOverlap="true">
 
-        <include
-            android:id="@+id/favorites"
-            layout="@layout/user_favorites"
-            binding:songListVm="@{songListVm}"
-            binding:userVm="@{userVm}" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <!-- Banner image -->
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:imageUrl="@{userVm.bannerUrl}"
+                    android:scaleType="centerCrop"
+                    android:visibility="@{userVm.bannerUrl != null}"
+                    tools:ignore="ContentDescription" />
+
+                <!-- Backdrop -->
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:alpha="0.5"
+                    android:background="@android:color/black"
+                    android:visibility="@{userVm.bannerUrl != null}" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="8dp">
+
+                    <!-- Avatar -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="@dimen/avatar_size"
+                        android:layout_height="@dimen/avatar_size"
+                        android:layout_gravity="center"
+                        app:cardBackgroundColor="?attr/colorAccent"
+                        app:cardCornerRadius="@dimen/card_radius"
+                        app:cardElevation="3dp"
+                        app:cardPreventCornerOverlap="true">
+
+                        <ImageView
+                            android:id="@+id/user_avatar"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:imageUrl="@{userVm.avatarUrl}"
+                            android:src="@drawable/default_avatar"
+                            tools:ignore="ContentDescription" />
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- User info -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-black"
+                            android:text="@{userVm.user.displayName}"
+                            android:textAllCaps="true"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@{radioVm.queueSize == radioVm.queuePosition ? @string/queue_info_none_queued(radioVm.queueSize) : @string/queue_info(radioVm.queueSize, radioVm.queuePosition)}"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"
+                            android:visibility="@{radioVm.queueSize != 0}" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="@{!userVm.hasFavorites}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/no_favorites"
+                    android:textColor="@color/white" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="@{userVm.hasFavorites}">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/query"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:backgroundTint="@color/light_grey"
+                        android:hint="@string/filter_favorites"
+                        android:importantForAutofill="no"
+                        android:inputType="text"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="80dp"
+                        android:singleLine="true"
+                        android:text="@={songListVm.query}"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/light_grey"
+                        android:textSize="16sp" />
+
+                    <ImageButton
+                        android:id="@+id/btn_clear_search"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/overflow_btn"
+                        android:alpha="0.5"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/clear_query"
+                        android:onClick="@{() -> songListVm.clearQuery()}"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_cancel_24dp"
+                        android:visibility="@{songListVm.query != null &amp;&amp; !songListVm.query.isEmpty()}" />
+
+                    <ImageButton
+                        android:id="@+id/overflow_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:background="?android:attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/sort"
+                        android:padding="8dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_more_vert_24dp"
+                        android:tint="@color/light_grey" />
+
+                </RelativeLayout>
+
+                <include
+                    android:id="@+id/favorites_list"
+                    layout="@layout/songs_list"
+                    binding:vm="@{songListVm}" />
+
+            </LinearLayout>
+
+        </FrameLayout>
 
     </LinearLayout>
 
