@@ -34,6 +34,8 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        initAppbar()
+
         binding.authBtn.setOnClickListener { login() }
 
         binding.authPassword.setOnEditorActionListener(
