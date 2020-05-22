@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
+
+        <variable
+            name="vm"
+            type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
     </data>
 
     <me.echeung.moemoekyun.ui.view.SquareLayout

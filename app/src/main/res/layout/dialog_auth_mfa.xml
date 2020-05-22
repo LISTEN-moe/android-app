@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingLeft="20dp"
-    android:paddingRight="20dp"
-    android:paddingTop="8dp">
+    android:paddingTop="8dp"
+    android:paddingRight="20dp">
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

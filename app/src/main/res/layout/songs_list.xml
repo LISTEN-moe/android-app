@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodel.SongListViewModel" />
+
+        <variable
+            name="vm"
+            type="me.echeung.moemoekyun.viewmodel.SongListViewModel" />
     </data>
 
     <LinearLayout
@@ -39,8 +41,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
                 android:layout_gravity="center"
+                android:fontFamily="sans-serif-light"
                 android:text="@{@string/no_results(vm.query)}"
                 android:textColor="@color/white" />
 

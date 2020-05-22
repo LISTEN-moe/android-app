@@ -4,8 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="radioVm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
-        <variable name="userVm" type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
+
+        <variable
+            name="radioVm"
+            type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
+
+        <variable
+            name="userVm"
+            type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

@@ -3,8 +3,14 @@
     xmlns:binding="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="userVm" type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
-        <variable name="songListVm" type="me.echeung.moemoekyun.viewmodel.SongListViewModel" />
+
+        <variable
+            name="userVm"
+            type="me.echeung.moemoekyun.viewmodel.UserViewModel" />
+
+        <variable
+            name="songListVm"
+            type="me.echeung.moemoekyun.viewmodel.SongListViewModel" />
     </data>
 
     <FrameLayout
@@ -35,15 +41,15 @@
             android:visibility="@{userVm.hasFavorites}">
 
             <include
-                layout="@layout/user_favorites_filter"
                 android:id="@+id/filter"
+                layout="@layout/user_favorites_filter"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 binding:vm="@{songListVm}" />
 
             <include
-                layout="@layout/songs_list"
                 android:id="@+id/favorites_list"
+                layout="@layout/songs_list"
                 binding:vm="@{songListVm}" />
 
         </LinearLayout>

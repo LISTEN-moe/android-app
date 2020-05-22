@@ -4,19 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable name="song" type="me.echeung.moemoekyun.client.model.Song" />
-        <variable name="isAuthenticated" type="boolean" />
-        <variable name="isFavorite" type="boolean" />
+
+        <variable
+            name="song"
+            type="me.echeung.moemoekyun.client.model.Song" />
+
+        <variable
+            name="isAuthenticated"
+            type="boolean" />
+
+        <variable
+            name="isFavorite"
+            type="boolean" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="8dp"
         android:paddingLeft="16dp"
+        android:paddingTop="8dp"
         android:paddingRight="16dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="8dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -68,9 +77,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/song_album"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/light_grey"
-                android:text="@string/song_album" />
+                android:textColor="@color/light_grey" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -88,9 +97,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/song_source"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textColor="@color/light_grey"
-                android:text="@string/song_source" />
+                android:textColor="@color/light_grey" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -107,8 +116,8 @@
             android:weightSum="1">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Theme.Widget.Button.Outline"
                 android:id="@+id/request_btn"
+                style="@style/Theme.Widget.Button.Outline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
@@ -120,8 +129,8 @@
                 app:icon="@{@drawable/ic_play_arrow_24dp}" />
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Theme.Widget.Button.Outline"
                 android:id="@+id/favorite_btn"
+                style="@style/Theme.Widget.Button.Outline"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

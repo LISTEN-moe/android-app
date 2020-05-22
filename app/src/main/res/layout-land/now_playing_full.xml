@@ -4,7 +4,10 @@
     xmlns:binding="http://schemas.android.com/tools">
 
     <data>
-        <variable name="vm" type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
+
+        <variable
+            name="vm"
+            type="me.echeung.moemoekyun.viewmodel.RadioViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,8 +30,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintGuide_percent="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
