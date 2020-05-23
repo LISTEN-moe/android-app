@@ -11,6 +11,7 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongDetailsBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.util.ext.openUrl
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -50,8 +51,14 @@ class SongDetailAdapter(
             binding.isFavorite = song.favorite
         }
 
-        binding.root.setOnLongClickListener { v ->
-            songActionsUtil.copyToClipboard(v.context, song)
+        binding.albumArt.setOnLongClickListener {
+            val albumArtUrl = song.albumArtUrl ?: return@setOnLongClickListener false
+            context.openUrl(albumArtUrl)
+            true
+        }
+
+        binding.root.setOnLongClickListener {
+            songActionsUtil.copyToClipboard(context, song)
             true
         }
 
