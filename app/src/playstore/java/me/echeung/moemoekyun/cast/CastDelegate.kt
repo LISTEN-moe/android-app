@@ -13,18 +13,23 @@ import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.common.images.WebImage
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.Socket
-import me.echeung.moemoekyun.client.api.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class CastDelegate(
-    private val context: Context
-) : SessionAvailabilityListener, Socket.Listener, KoinComponent {
+class CastDelegate(private val context: Context) : KoinComponent {
+
+    private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     private val radioViewModel: RadioViewModel by inject()
 
@@ -38,9 +43,27 @@ class CastDelegate(
     }
 
     init {
-        castPlayer?.setSessionAvailabilityListener(this)
+        castPlayer?.setSessionAvailabilityListener(object : SessionAvailabilityListener {
+            override fun onCastSessionAvailable() {
+                stream.pause()
 
-        socket.addListener(this)
+                updateSong()
+            }
+
+            override fun onCastSessionUnavailable() {
+                // TODO: double check if it was playing before
+
+                stream.play()
+            }
+        })
+
+        socket.channel.asFlow()
+            .onEach {
+                when (it) {
+                    is Socket.SocketResponse -> updateSong()
+                }
+            }
+            .launchIn(scope)
     }
 
     fun onDestroy() {
@@ -55,18 +78,14 @@ class CastDelegate(
         )
     }
 
-    override fun onCastSessionAvailable() {
-        stream.pause()
-
-        playMedia()
-    }
-
-    private fun playMedia() {
+    private fun updateSong() {
         val song = radioViewModel.currentSong
 
-        val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK)
-        metadata.putString(MediaMetadata.KEY_TITLE, song?.titleString)
-        metadata.putString(MediaMetadata.KEY_ARTIST, song?.artistsString)
+        val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK).apply {
+            putString(MediaMetadata.KEY_TITLE, song?.titleString)
+            putString(MediaMetadata.KEY_ARTIST, song?.artistsString)
+        }
+
         song?.albumArtUrl?.let {
             metadata.addImage(WebImage(Uri.parse(it)))
         }
@@ -75,26 +94,12 @@ class CastDelegate(
         val mediaInfo = MediaInfo.Builder(RadioClient.library?.streamUrl)
             .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
             .setContentType(MimeTypes.AUDIO_UNKNOWN)
-            .setMetadata(metadata).build()
+            .setMetadata(metadata)
+            .build()
 
         val mediaItems = arrayOf(MediaQueueItem.Builder(mediaInfo).build())
 
         // TODO: hook up app UI controls to control cast player
         castPlayer?.loadItems(mediaItems, 0, 0, Player.REPEAT_MODE_OFF)
-    }
-
-    override fun onCastSessionUnavailable() {
-        // TODO: double check if it was playing before
-
-        stream.play()
-    }
-
-    // TODO: I don't think this works
-    override fun onSocketReceive(info: UpdateResponse.Details?) {
-        playMedia()
-    }
-
-    override fun onSocketFailure() {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 }

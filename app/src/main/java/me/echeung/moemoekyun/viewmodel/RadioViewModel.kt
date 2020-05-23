@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.BR
@@ -18,7 +18,6 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
-import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.ThemeUtil
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -177,11 +176,9 @@ class RadioViewModel(
         }
 
     init {
-        launchIO {
-            albumArtUtil.channel.consumeEach {
-                notifyPropertyChanged(BR.albumArt)
-            }
-        }
+        albumArtUtil.channel.asFlow()
+            .onEach { notifyPropertyChanged(BR.albumArt) }
+            .launchIn(scope)
 
         preferenceUtil.shouldPreferRomaji().asFlow()
             .onEach { notifyPropertyChanged(BR.currentSong) }

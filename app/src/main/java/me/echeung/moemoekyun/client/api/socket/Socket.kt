@@ -1,13 +1,14 @@
 package me.echeung.moemoekyun.client.api.socket
 
 import android.content.Context
-import android.os.SystemClock
 import android.util.Log
 import com.squareup.moshi.Moshi
 import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.client.RadioClient
@@ -18,15 +19,20 @@ import me.echeung.moemoekyun.client.api.socket.response.NotificationResponse
 import me.echeung.moemoekyun.client.api.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.service.notification.EventNotification
+import me.echeung.moemoekyun.util.ext.launchIO
+import me.echeung.moemoekyun.util.ext.launchNow
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class Socket(
     private val context: Context,
     private val networkClient: NetworkClient
 ) : WebSocketListener() {
+
+    val channel = ConflatedBroadcastChannel<SocketResult>()
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
@@ -37,17 +43,7 @@ class Socket(
     private var socket: WebSocket? = null
     private val socketLock = Any()
 
-    private val listeners = mutableListOf<Listener>()
-
     private var heartbeatJob: Job? = null
-
-    fun addListener(listener: Listener) {
-        this.listeners.add(listener)
-    }
-
-    fun removeListener(listener: Listener) {
-        this.listeners.remove(listener)
-    }
 
     fun connect() {
         synchronized(socketLock) {
@@ -82,13 +78,16 @@ class Socket(
 
         attemptingReconnect = true
 
-        // Exponential backoff
-        SystemClock.sleep(retryTime.toLong())
-        if (retryTime < RETRY_TIME_MAX) {
-            retryTime *= 2
-        }
+        launchNow {
+            delay(retryTime.toLong())
 
-        connect()
+            // Exponential backoff
+            if (retryTime < RETRY_TIME_MAX) {
+                retryTime *= 2
+            }
+
+            connect()
+        }
     }
 
     fun update() {
@@ -157,13 +156,10 @@ class Socket(
     }
 
     private fun parseResponse(jsonString: String?) {
-        if (listeners.isEmpty()) {
-            Log.d(TAG, "No listeners")
-            return
-        }
-
         if (jsonString == null) {
-            listeners.forEach { it.onSocketFailure() }
+            launchIO {
+                channel.send(SocketError())
+            }
             return
         }
 
@@ -187,7 +183,9 @@ class Socket(
                         return
                     }
 
-                    listeners.forEach { it.onSocketReceive(updateResponse.d) }
+                    launchIO {
+                        channel.send(SocketResponse(updateResponse.d))
+                    }
                 }
 
                 // Heartbeat ACK
@@ -232,11 +230,9 @@ class Socket(
         return MOSHI.adapter(responseClass).fromJson(jsonString)
     }
 
-    interface Listener {
-        fun onSocketReceive(info: UpdateResponse.Details?)
-
-        fun onSocketFailure()
-    }
+    interface SocketResult
+    class SocketResponse(val info: UpdateResponse.Details?) : SocketResult
+    class SocketError : SocketResult
 
     companion object {
         private val TAG = Socket::class.java.simpleName

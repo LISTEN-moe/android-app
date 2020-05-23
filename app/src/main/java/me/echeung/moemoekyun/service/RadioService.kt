@@ -23,7 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -53,7 +53,7 @@ import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class RadioService : Service(), Socket.Listener {
+class RadioService : Service() {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
@@ -98,30 +98,30 @@ class RadioService : Service(), Socket.Listener {
     }
 
     override fun onCreate() {
-        launchIO {
-            albumArtUtil.channel.consumeEach {
-                updateMediaSession()
-            }
-        }
-
         initBroadcastReceiver()
         initMediaSession()
         initAudioManager()
 
-        launchIO {
-            stream.channel.consumeEach {
+        merge(preferenceUtil.shouldPreferRomaji().asFlow(), preferenceUtil.shouldShowLockscreenAlbumArt().asFlow())
+            .onEach { updateMediaSession() }
+            .launchIn(scope)
+
+        albumArtUtil.channel.asFlow()
+            .onEach { updateMediaSession() }
+            .launchIn(scope)
+
+        stream.channel.asFlow()
+            .onEach {
                 when (it) {
                     Stream.State.PLAY -> {
                         radioViewModel.isPlaying = true
 
                         updateNotification()
-                        updateMediaSessionPlaybackState()
                     }
                     Stream.State.PAUSE -> {
                         radioViewModel.isPlaying = false
 
                         updateNotification()
-                        updateMediaSessionPlaybackState()
                     }
                     Stream.State.STOP -> {
                         audioManagerUtil?.abandonAudioFocus()
@@ -131,19 +131,23 @@ class RadioService : Service(), Socket.Listener {
 
                         preferenceUtil.sleepTimer().delete()
                         radioViewModel.isPlaying = false
-
-                        updateMediaSessionPlaybackState()
                     }
                 }
+
+                updateMediaSessionPlaybackState()
             }
-        }
-
-        socket.addListener(this)
-        socket.connect()
-
-        merge(preferenceUtil.shouldPreferRomaji().asFlow(), preferenceUtil.shouldShowLockscreenAlbumArt().asFlow())
-            .onEach { updateMediaSession() }
             .launchIn(scope)
+
+        socket.channel.asFlow()
+            .onEach {
+                when (it) {
+                    is Socket.SocketResponse -> it.info?.let { data -> onSocketReceive(data) }
+                    is Socket.SocketError -> onSocketFailure()
+                }
+            }
+            .launchIn(scope)
+
+        socket.connect()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startID: Int): Int {
@@ -161,7 +165,6 @@ class RadioService : Service(), Socket.Listener {
     override fun onDestroy() {
         stop()
 
-        socket.removeListener(this)
         socket.disconnect()
 
         if (receiverRegistered) {
@@ -174,7 +177,7 @@ class RadioService : Service(), Socket.Listener {
         super.onDestroy()
     }
 
-    override fun onSocketReceive(info: UpdateResponse.Details?) {
+    private fun onSocketReceive(info: UpdateResponse.Details?) {
         radioViewModel.listeners = info!!.listeners
         radioViewModel.setRequester(info.requester)
         radioViewModel.event = info.event
@@ -211,7 +214,7 @@ class RadioService : Service(), Socket.Listener {
         updateNotification()
     }
 
-    override fun onSocketFailure() {
+    private fun onSocketFailure() {
         radioViewModel.reset()
         updateNotification()
     }
