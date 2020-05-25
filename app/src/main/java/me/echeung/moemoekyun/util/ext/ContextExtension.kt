@@ -8,6 +8,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.widget.Toast
@@ -18,8 +19,8 @@ import androidx.annotation.StringRes
  *
  * @param context Package context.
  */
-inline fun <reified T : Activity> Activity.startActivity(context: Context) {
-    startActivity(Intent(context, T::class.java))
+inline fun <reified T : Activity> Activity.startActivity() {
+    startActivity(Intent(this, T::class.java))
 }
 
 /**
@@ -82,26 +83,17 @@ fun Context.isCarUiMode(): Boolean {
     return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
 }
 
-/**
- * Property to get the notification manager from the context.
- */
 val Context.notificationManager: NotificationManager
     get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-/**
- * Property to get the connectivity manager from the context.
- */
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-/**
- * Property to get the alarm manager from the context.
- */
 val Context.alarmManager: AlarmManager
     get() = getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-/**
- * Property to get the clipboard manager from the context.
- */
 val Context.clipboardManager: ClipboardManager
     get() = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+val Context.audioManager: AudioManager
+    get() = getSystemService(Context.AUDIO_SERVICE) as AudioManager

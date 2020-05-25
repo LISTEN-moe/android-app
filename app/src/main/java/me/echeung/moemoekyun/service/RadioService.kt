@@ -8,7 +8,6 @@ import android.content.IntentFilter
 import android.media.AudioManager
 import android.net.ConnectivityManager
 import android.os.Binder
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
@@ -46,8 +45,6 @@ import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.util.system.AudioManagerUtil
-import me.echeung.moemoekyun.util.system.AudioManagerUtilApiOImpl
-import me.echeung.moemoekyun.util.system.AudioManagerUtilLegacyApiImpl
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
@@ -484,11 +481,7 @@ class RadioService : Service() {
             }
         }
 
-        audioManagerUtil = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            AudioManagerUtilApiOImpl(this, audioFocusChangeListener!!)
-        } else {
-            AudioManagerUtilLegacyApiImpl(this, audioFocusChangeListener!!)
-        }
+        audioManagerUtil = AudioManagerUtil(this, audioFocusChangeListener!!)
     }
 
     private fun togglePlayPause() {

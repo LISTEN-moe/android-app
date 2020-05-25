@@ -270,17 +270,17 @@ class MainActivity : BaseActivity() {
             }
 
             R.id.action_search -> {
-                startActivity<SearchActivity>(this)
+                startActivity<SearchActivity>()
                 return true
             }
 
             R.id.action_settings -> {
-                startActivity<SettingsActivity>(this)
+                startActivity<SettingsActivity>()
                 return true
             }
 
             R.id.action_about -> {
-                startActivity<AboutActivity>(this)
+                startActivity<AboutActivity>()
                 return true
             }
 
