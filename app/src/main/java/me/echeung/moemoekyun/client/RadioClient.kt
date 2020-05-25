@@ -27,9 +27,12 @@ class RadioClient(
     }
 
     fun changeLibrary(newMode: String) {
-        setLibrary(newMode)
+        // Avoid unnecessary changes
+        if (preferenceUtil.libraryMode().get() == newMode) {
+            return
+        }
 
-        preferenceUtil.libraryMode().set(newMode)
+        setLibrary(newMode)
 
         socket.reconnect()
 
@@ -40,6 +43,7 @@ class RadioClient(
     }
 
     private fun setLibrary(libraryName: String) {
+        preferenceUtil.libraryMode().set(libraryName)
         library = if (libraryName == Kpop.NAME) Kpop.INSTANCE else Jpop.INSTANCE
     }
 
