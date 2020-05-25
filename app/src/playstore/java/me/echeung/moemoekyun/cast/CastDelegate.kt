@@ -16,11 +16,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.Socket
+import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
@@ -40,6 +43,8 @@ class CastDelegate(
     }
     private var castStreamPlayer: CastStreamPlayer? = null
 
+    private var song: Song? = null
+
     init {
         castPlayer?.let { player ->
             castStreamPlayer = CastStreamPlayer(player)
@@ -55,12 +60,9 @@ class CastDelegate(
                 }
             })
 
-            socket.channel.asFlow()
-                .onEach {
-                    when (it) {
-                        is Socket.SocketResponse -> updateSong()
-                    }
-                }
+            merge(socket.channel.asFlow(), stream.channel.asFlow())
+                .distinctUntilChanged()
+                .onEach { updateSong() }
                 .launchIn(scope)
         }
     }
@@ -83,6 +85,10 @@ class CastDelegate(
     }
 
     private fun updateSong() {
+        if (song == radioViewModel.currentSong) {
+            return
+        }
+
         val song = radioViewModel.currentSong
 
         val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK).apply {
@@ -94,7 +100,6 @@ class CastDelegate(
             metadata.addImage(WebImage(Uri.parse(it)))
         }
 
-        // TODO: react to switching between jpop/kpop
         val mediaInfo = MediaInfo.Builder(RadioClient.library?.streamUrl)
             .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
             .setContentType(MimeTypes.AUDIO_UNKNOWN)
