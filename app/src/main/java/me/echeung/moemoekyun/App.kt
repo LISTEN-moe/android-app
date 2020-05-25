@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
+import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.auth.AuthUtil
@@ -53,6 +54,7 @@ class App : Application(), ServiceConnection {
             single { Stream(androidContext()) }
             single { Socket(androidContext(), get()) }
             single { RadioClient(get(), get(), get(), get(), get()) }
+            single { CastDelegate(androidContext(), get(), get(), get()) }
         }
 
         val viewModelModule = module {

@@ -5,7 +5,7 @@ import com.google.android.exoplayer2.Player
 import kotlin.math.max
 import kotlinx.coroutines.delay
 
-abstract class MusicPlayer<T : Player> {
+abstract class StreamPlayer<T : Player> {
 
     protected val eventListener = object : Player.EventListener {
         override fun onPlayerError(error: ExoPlaybackException) {
@@ -66,14 +66,6 @@ abstract class MusicPlayer<T : Player> {
         }
 
         stop()
-    }
-
-    fun duck() {
-        player?.audioComponent?.volume = 0.5f
-    }
-
-    fun unduck() {
-        player?.audioComponent?.volume = 1f
     }
 
     private fun releasePlayer() {

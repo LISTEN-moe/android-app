@@ -17,7 +17,7 @@ import me.echeung.moemoekyun.util.system.NetworkUtil
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
-class LocalPlayer(private val context: Context) : MusicPlayer<SimpleExoPlayer>(), KoinComponent {
+class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPlayer>(), KoinComponent {
 
     private val preferenceUtil: PreferenceUtil by inject()
 
@@ -99,5 +99,13 @@ class LocalPlayer(private val context: Context) : MusicPlayer<SimpleExoPlayer>()
         audioManagerUtil.abandonAudioFocus()
 
         super.stop()
+    }
+
+    private fun duck() {
+        player?.audioComponent?.volume = 0.5f
+    }
+
+    private fun unduck() {
+        player?.audioComponent?.volume = 1f
     }
 }

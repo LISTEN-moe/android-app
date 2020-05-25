@@ -24,58 +24,63 @@ import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
-import org.koin.core.KoinComponent
-import org.koin.core.inject
 
-class CastDelegate(private val context: Context) : KoinComponent {
+class CastDelegate(
+    private val context: Context,
+    private val radioViewModel: RadioViewModel,
+    private val stream: Stream,
+    private val socket: Socket
+) {
 
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
-
-    private val radioViewModel: RadioViewModel by inject()
-
-    private val stream: Stream by inject()
-    private val socket: Socket by inject()
 
     private val castPlayer: CastPlayer? = try {
         CastPlayer(CastContext.getSharedInstance(context))
     } catch (e: Exception) {
         null
     }
+    private var castStreamPlayer: CastStreamPlayer? = null
 
     init {
-        castPlayer?.setSessionAvailabilityListener(object : SessionAvailabilityListener {
-            override fun onCastSessionAvailable() {
-                stream.pause()
+        castPlayer?.let { player ->
+            castStreamPlayer = CastStreamPlayer(player)
 
-                updateSong()
-            }
-
-            override fun onCastSessionUnavailable() {
-                // TODO: double check if it was playing before
-
-                stream.play()
-            }
-        })
-
-        socket.channel.asFlow()
-            .onEach {
-                when (it) {
-                    is Socket.SocketResponse -> updateSong()
+            player.setSessionAvailabilityListener(object : SessionAvailabilityListener {
+                override fun onCastSessionAvailable() {
+                    stream.useAltPlayer(castStreamPlayer)
+                    updateSong()
                 }
-            }
-            .launchIn(scope)
+
+                override fun onCastSessionUnavailable() {
+                    stream.useAltPlayer(null)
+                }
+            })
+
+            socket.channel.asFlow()
+                .onEach {
+                    when (it) {
+                        is Socket.SocketResponse -> updateSong()
+                    }
+                }
+                .launchIn(scope)
+        }
     }
 
     fun onDestroy() {
-        castPlayer?.release()
+        castPlayer?.let {
+            stream.useAltPlayer(null)
+            it.release()
+        }
     }
 
     fun initCastButton(menu: Menu?) {
-        CastButtonFactory.setUpMediaRouteButton(
-            context,
-            menu,
-            R.id.media_route_menu_item
-        )
+        castPlayer?.let {
+            CastButtonFactory.setUpMediaRouteButton(
+                context,
+                menu,
+                R.id.media_route_menu_item
+            )
+        }
     }
 
     private fun updateSong() {
@@ -97,9 +102,7 @@ class CastDelegate(private val context: Context) : KoinComponent {
             .setMetadata(metadata)
             .build()
 
-        val mediaItems = arrayOf(MediaQueueItem.Builder(mediaInfo).build())
-
         // TODO: hook up app UI controls to control cast player
-        castPlayer?.loadItems(mediaItems, 0, 0, Player.REPEAT_MODE_OFF)
+        castPlayer?.loadItem(MediaQueueItem.Builder(mediaInfo).build(), 0)
     }
 }

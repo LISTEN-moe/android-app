@@ -46,6 +46,7 @@ class MainActivity : BaseActivity() {
     private val userViewModel: UserViewModel by inject()
 
     private val radioClient: RadioClient by inject()
+    private val castDelegate: CastDelegate by inject()
 
     private val authUtil: AuthUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
@@ -60,8 +61,6 @@ class MainActivity : BaseActivity() {
     private var playPauseCallback: Observable.OnPropertyChangedCallback? = null
     private var playPauseView: PlayPauseView? = null
     private var miniPlayPauseView: PlayPauseView? = null
-
-    private var cast: CastDelegate = CastDelegate(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Replace splash screen theme
@@ -110,7 +109,7 @@ class MainActivity : BaseActivity() {
             radioViewModel.removeOnPropertyChangedCallback(playPauseCallback!!)
         }
 
-        cast?.onDestroy()
+        castDelegate.onDestroy()
 
         super.onDestroy()
     }
@@ -211,7 +210,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        cast?.initCastButton(menu)
+        castDelegate.initCastButton(menu)
         updateMenuOptions(menu)
 
         return true
@@ -228,7 +227,7 @@ class MainActivity : BaseActivity() {
         toolbar.inflateMenu(R.menu.menu_main)
         nowPlayingSheetMenu = toolbar.menu
 
-        cast?.initCastButton(nowPlayingSheetMenu)
+        castDelegate.initCastButton(nowPlayingSheetMenu)
 
         toolbar.setOnMenuItemClickListener { this.onOptionsItemSelected(it) }
 

@@ -3,8 +3,8 @@ package me.echeung.moemoekyun.client.stream
 import android.content.Context
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
-import me.echeung.moemoekyun.client.stream.player.LocalPlayer
-import me.echeung.moemoekyun.client.stream.player.MusicPlayer
+import me.echeung.moemoekyun.client.stream.player.LocalStreamPlayer
+import me.echeung.moemoekyun.client.stream.player.StreamPlayer
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchNow
 
@@ -13,13 +13,33 @@ class Stream(context: Context) {
 
     val channel = ConflatedBroadcastChannel<State>()
 
-    private var player: MusicPlayer<*> = LocalPlayer(context)
+    private var localPlayer: StreamPlayer<*> = LocalStreamPlayer(context)
+    private var altPlayer: StreamPlayer<*>? = null
 
     val isStarted: Boolean
-        get() = player.isStarted
+        get() = getCurrentPlayer().isStarted
 
     val isPlaying: Boolean
-        get() = player.isPlaying
+        get() = getCurrentPlayer().isPlaying
+
+    fun useAltPlayer(player: StreamPlayer<*>?) {
+        val wasPlaying = isPlaying
+        getCurrentPlayer().stop()
+
+        altPlayer = player
+
+        if (wasPlaying || altPlayer != null) {
+            getCurrentPlayer().play()
+        }
+    }
+
+    private fun getCurrentPlayer(): StreamPlayer<*> {
+        return if (altPlayer == null) {
+            localPlayer
+        } else {
+            altPlayer!!
+        }
+    }
 
     fun toggle() {
         if (isPlaying) {
@@ -30,7 +50,7 @@ class Stream(context: Context) {
     }
 
     fun play() {
-        player.play()
+        getCurrentPlayer().play()
 
         launchNow {
             channel.send(State.PLAY)
@@ -38,7 +58,7 @@ class Stream(context: Context) {
     }
 
     fun pause() {
-        player.pause()
+        getCurrentPlayer().pause()
 
         launchNow {
             channel.send(State.PAUSE)
@@ -46,7 +66,7 @@ class Stream(context: Context) {
     }
 
     fun stop() {
-        player.stop()
+        getCurrentPlayer().stop()
 
         launchNow {
             channel.send(State.STOP)
@@ -55,18 +75,10 @@ class Stream(context: Context) {
 
     fun fadeOut() {
         launchIO {
-            player.fadeOut()
+            getCurrentPlayer().fadeOut()
 
             channel.send(State.STOP)
         }
-    }
-
-    fun duck() {
-        player.duck()
-    }
-
-    fun unduck() {
-        player.unduck()
     }
 
     enum class State {
