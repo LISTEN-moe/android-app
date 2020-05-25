@@ -32,7 +32,7 @@ abstract class MusicPlayer<T : Player> {
 
     abstract fun initPlayer()
 
-    fun play() {
+    open fun play() {
         initPlayer()
 
         if (!isPlaying) {
@@ -45,7 +45,7 @@ abstract class MusicPlayer<T : Player> {
         player?.playWhenReady = false
     }
 
-    fun stop() {
+    open fun stop() {
         player?.stop(true)
 
         releasePlayer()

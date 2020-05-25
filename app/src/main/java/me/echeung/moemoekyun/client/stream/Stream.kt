@@ -21,6 +21,14 @@ class Stream(context: Context) {
     val isPlaying: Boolean
         get() = player.isPlaying
 
+    fun toggle() {
+        if (isPlaying) {
+            pause()
+        } else {
+            play()
+        }
+    }
+
     fun play() {
         player.play()
 

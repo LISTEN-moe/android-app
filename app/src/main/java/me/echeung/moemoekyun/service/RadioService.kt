@@ -40,11 +40,9 @@ import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
-import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
-import me.echeung.moemoekyun.util.system.AudioManagerUtil
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
@@ -71,13 +69,7 @@ class RadioService : Service() {
     @Volatile
     var mediaSession: MediaSessionCompat? = null
         private set
-
     private val mediaSessionLock = Any()
-    private val focusLock = Any()
-
-    private var audioManagerUtil: AudioManagerUtil? = null
-    private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener? = null
-    private var wasPlayingBeforeLoss: Boolean = false
 
     private var intentReceiver: BroadcastReceiver? = null
     private var receiverRegistered = false
@@ -90,14 +82,11 @@ class RadioService : Service() {
     val isPlaying: Boolean
         get() = stream.isPlaying
 
-    override fun onBind(intent: Intent): IBinder? {
-        return binder
-    }
+    override fun onBind(intent: Intent): IBinder? = binder
 
     override fun onCreate() {
         initBroadcastReceiver()
         initMediaSession()
-        initAudioManager()
 
         merge(preferenceUtil.shouldPreferRomaji().asFlow(), preferenceUtil.shouldShowLockscreenAlbumArt().asFlow())
             .onEach { updateMediaSession() }
@@ -121,8 +110,6 @@ class RadioService : Service() {
                         updateNotification()
                     }
                     Stream.State.STOP -> {
-                        audioManagerUtil?.abandonAudioFocus()
-
                         stopForeground(true)
                         stopSelf()
 
@@ -160,7 +147,7 @@ class RadioService : Service() {
     }
 
     override fun onDestroy() {
-        stop()
+        stream.stop()
 
         socket.disconnect()
 
@@ -296,19 +283,19 @@ class RadioService : Service() {
         if (intent == null) return true
 
         when (intent.action) {
-            PLAY_PAUSE -> togglePlayPause()
+            PLAY_PAUSE -> stream.toggle()
 
-            STOP -> stop()
+            STOP -> stream.stop()
 
             TOGGLE_FAVORITE -> favoriteCurrentSong()
 
             UPDATE, SongActionsUtil.REQUEST_EVENT -> socket.update()
 
-            TIMER_STOP -> timerStop()
+            TIMER_STOP -> stream.fadeOut()
 
             // Pause when headphones unplugged
             AudioManager.ACTION_AUDIO_BECOMING_NOISY -> if (preferenceUtil.shouldPauseOnNoisy()) {
-                pause()
+                stream.pause()
             }
 
             // Headphone media button action
@@ -321,10 +308,10 @@ class RadioService : Service() {
                 }
 
                 when (keyEvent.keyCode) {
-                    KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> togglePlayPause()
-                    KeyEvent.KEYCODE_MEDIA_PLAY -> play()
-                    KeyEvent.KEYCODE_MEDIA_PAUSE -> pause()
-                    KeyEvent.KEYCODE_MEDIA_STOP -> stop()
+                    KeyEvent.KEYCODE_HEADSETHOOK, KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> stream.toggle()
+                    KeyEvent.KEYCODE_MEDIA_PLAY -> stream.play()
+                    KeyEvent.KEYCODE_MEDIA_PAUSE -> stream.pause()
+                    KeyEvent.KEYCODE_MEDIA_STOP -> stream.stop()
                     KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
                         // Do nothing
                     }
@@ -360,15 +347,15 @@ class RadioService : Service() {
             mediaSession!!.setRatingType(RatingCompat.RATING_HEART)
             mediaSession!!.setCallback(object : MediaSessionCompat.Callback() {
                 override fun onPlay() {
-                    play()
+                    stream.play()
                 }
 
                 override fun onPause() {
-                    pause()
+                    stream.pause()
                 }
 
                 override fun onStop() {
-                    stop()
+                    stream.stop()
                 }
 
                 override fun onSkipToNext() {}
@@ -405,7 +392,7 @@ class RadioService : Service() {
                     }
 
                     if (!isPlaying) {
-                        play()
+                        stream.play()
                     }
                 }
 
@@ -453,66 +440,6 @@ class RadioService : Service() {
 
         registerReceiver(intentReceiver, intentFilter)
         receiverRegistered = true
-    }
-
-    private fun initAudioManager() {
-        audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
-            when (focusChange) {
-                AudioManager.AUDIOFOCUS_GAIN -> {
-                    stream.unduck()
-                    if (wasPlayingBeforeLoss) {
-                        play()
-                    }
-                }
-
-                AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                    wasPlayingBeforeLoss = isPlaying
-                    if (wasPlayingBeforeLoss && (preferenceUtil.shouldPauseAudioOnLoss() || isCarUiMode())) {
-                        pause()
-                    }
-                }
-
-                AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                    wasPlayingBeforeLoss = isPlaying
-                    if (preferenceUtil.shouldDuckAudio()) {
-                        stream.duck()
-                    }
-                }
-            }
-        }
-
-        audioManagerUtil = AudioManagerUtil(this, audioFocusChangeListener!!)
-    }
-
-    private fun togglePlayPause() {
-        if (isPlaying) {
-            pause()
-        } else {
-            play()
-        }
-    }
-
-    private fun play() {
-        // Request audio focus for playback
-        val result = audioManagerUtil?.requestAudioFocus()
-
-        synchronized(focusLock) {
-            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                stream.play()
-            }
-        }
-    }
-
-    private fun pause() {
-        stream.pause()
-    }
-
-    private fun stop() {
-        stream.stop()
-    }
-
-    private fun timerStop() {
-        stream.fadeOut()
     }
 
     private fun favoriteCurrentSong() {
