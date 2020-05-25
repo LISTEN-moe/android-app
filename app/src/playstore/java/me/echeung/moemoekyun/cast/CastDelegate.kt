@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.cast
 import android.content.Context
 import android.net.Uri
 import android.view.Menu
-import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ext.cast.CastPlayer
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.util.MimeTypes
@@ -47,12 +46,12 @@ class CastDelegate(
 
             player.setSessionAvailabilityListener(object : SessionAvailabilityListener {
                 override fun onCastSessionAvailable() {
-                    stream.useAltPlayer(castStreamPlayer)
+                    stream.setAltPlayer(castStreamPlayer)
                     updateSong()
                 }
 
                 override fun onCastSessionUnavailable() {
-                    stream.useAltPlayer(null)
+                    stream.setAltPlayer(null)
                 }
             })
 
@@ -68,7 +67,7 @@ class CastDelegate(
 
     fun onDestroy() {
         castPlayer?.let {
-            stream.useAltPlayer(null)
+            stream.setAltPlayer(null)
             it.release()
         }
     }
@@ -102,7 +101,6 @@ class CastDelegate(
             .setMetadata(metadata)
             .build()
 
-        // TODO: hook up app UI controls to control cast player
         castPlayer?.loadItem(MediaQueueItem.Builder(mediaInfo).build(), 0)
     }
 }

@@ -22,9 +22,12 @@ class Stream(context: Context) {
     val isPlaying: Boolean
         get() = getCurrentPlayer().isPlaying
 
-    fun useAltPlayer(player: StreamPlayer<*>?) {
+    /**
+     * Used to "replace" the local player with a Cast player.
+     */
+    fun setAltPlayer(player: StreamPlayer<*>?) {
         val wasPlaying = isPlaying
-        getCurrentPlayer().stop()
+        getCurrentPlayer().pause()
 
         altPlayer = player
 
@@ -34,11 +37,7 @@ class Stream(context: Context) {
     }
 
     private fun getCurrentPlayer(): StreamPlayer<*> {
-        return if (altPlayer == null) {
-            localPlayer
-        } else {
-            altPlayer!!
-        }
+        return altPlayer ?: localPlayer
     }
 
     fun toggle() {
