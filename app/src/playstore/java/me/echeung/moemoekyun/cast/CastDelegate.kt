@@ -89,18 +89,18 @@ class CastDelegate(
             return
         }
 
-        val song = radioViewModel.currentSong
+        val song = radioViewModel.currentSong!!
 
         val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK).apply {
-            putString(MediaMetadata.KEY_TITLE, song?.titleString)
-            putString(MediaMetadata.KEY_ARTIST, song?.artistsString)
+            putString(MediaMetadata.KEY_TITLE, song.titleString)
+            putString(MediaMetadata.KEY_ARTIST, song.artistsString)
         }
 
-        song?.albumArtUrl?.let {
+        song.albumArtUrl?.let {
             metadata.addImage(WebImage(Uri.parse(it)))
         }
 
-        val mediaInfo = MediaInfo.Builder(RadioClient.library?.streamUrl)
+        val mediaInfo = MediaInfo.Builder(RadioClient.library!!.streamUrl)
             .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
             .setContentType(MimeTypes.AUDIO_UNKNOWN)
             .setMetadata(metadata)

@@ -17,8 +17,8 @@ android {
         versionName '5.1.0'
     }
 
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 
     buildTypes {
@@ -70,6 +70,10 @@ android {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/LICENSE.txt'
         exclude 'META-INF/NOTICE'
+    }
+
+    dependenciesInfo {
+        includeInApk = false
     }
 
     compileOptions {
