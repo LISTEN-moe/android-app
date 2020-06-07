@@ -227,7 +227,8 @@ class MainActivity : BaseActivity() {
         toolbar.inflateMenu(R.menu.menu_main)
         nowPlayingSheetMenu = toolbar.menu
 
-        castDelegate.initCastButton(nowPlayingSheetMenu)
+        // TODO: enable casting when it's not as janky
+//        castDelegate.initCastButton(nowPlayingSheetMenu)
 
         toolbar.setOnMenuItemClickListener { this.onOptionsItemSelected(it) }
 
