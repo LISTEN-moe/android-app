@@ -7,6 +7,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
 import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import android.net.NetworkRequest
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
@@ -40,6 +43,7 @@ import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
@@ -74,8 +78,6 @@ class RadioService : Service() {
     private var intentReceiver: BroadcastReceiver? = null
     private var receiverRegistered = false
 
-    private var isFirstConnectivityChange = true
-
     val isStreamStarted: Boolean
         get() = stream.isStarted
 
@@ -86,6 +88,7 @@ class RadioService : Service() {
 
     override fun onCreate() {
         initBroadcastReceiver()
+        initNetworkStateCallback()
         initMediaSession()
 
         merge(preferenceUtil.shouldPreferRomaji().asFlow(), preferenceUtil.shouldShowLockscreenAlbumArt().asFlow())
@@ -325,16 +328,6 @@ class RadioService : Service() {
                     updateNotification()
                 }
             }
-
-            ConnectivityManager.CONNECTIVITY_ACTION -> {
-                // Ignore the initial sticky broadcast on app start
-                if (isFirstConnectivityChange) {
-                    isFirstConnectivityChange = false
-                    return false
-                }
-
-                socket.reconnect()
-            }
         }
 
         updateNotification()
@@ -435,11 +428,32 @@ class RadioService : Service() {
             addAction(AudioManager.ACTION_AUDIO_BECOMING_NOISY)
             addAction(Intent.ACTION_MEDIA_BUTTON)
             addAction(AuthActivityUtil.AUTH_EVENT)
-            addAction(ConnectivityManager.CONNECTIVITY_ACTION)
         }
 
         registerReceiver(intentReceiver, intentFilter)
         receiverRegistered = true
+    }
+
+    private fun initNetworkStateCallback() {
+        val builder = NetworkRequest.Builder()
+            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+            .addTransportType(NetworkCapabilities.TRANSPORT_VPN)
+
+        val callback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                socket.reconnect()
+            }
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                socket.disconnect()
+            }
+        }
+
+        connectivityManager.registerNetworkCallback(builder.build(), callback)
     }
 
     private fun favoriteCurrentSong() {
