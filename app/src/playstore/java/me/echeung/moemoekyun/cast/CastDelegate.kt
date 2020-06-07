@@ -106,6 +106,9 @@ class CastDelegate(
             .setMetadata(metadata)
             .build()
 
-        castPlayer?.loadItem(MediaQueueItem.Builder(mediaInfo).build(), 0)
+        val item = MediaQueueItem.Builder(mediaInfo)
+            .build()
+
+        castPlayer?.loadItem(item, 0)
     }
 }
