@@ -210,7 +210,8 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        castDelegate.initCastButton(menu)
+        // TODO: enable casting when it's not as janky
+//        castDelegate.initCastButton(menu)
         updateMenuOptions(menu)
 
         return true
