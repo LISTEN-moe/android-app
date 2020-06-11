@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.ui.activity.auth
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -17,7 +18,6 @@ import me.echeung.moemoekyun.util.ext.finish
 import me.echeung.moemoekyun.util.ext.getTrimmedText
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
-import me.echeung.moemoekyun.util.ext.openUrl
 import me.echeung.moemoekyun.util.ext.toast
 import org.koin.android.ext.android.inject
 
@@ -48,7 +48,9 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
             }
         )
 
-        binding.forgotPassword.setOnClickListener { openUrl(FORGOT_PASSWORD_URL) }
+        // TODO: forgot password page doesn't exist at the moment
+        binding.forgotPassword.visibility = View.GONE
+//        binding.forgotPassword.setOnClickListener { openUrl(FORGOT_PASSWORD_URL) }
 
         // Set fields from registration
         if (intent?.getStringExtra(AuthActivityUtil.LOGIN_NAME) != null) {
