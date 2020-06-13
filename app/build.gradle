@@ -125,7 +125,7 @@ dependencies {
 
     final exoplayer_version = '2.11.5'
     implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
-    implementation "com.google.android.exoplayer:extension-cast:$exoplayer_version"
+    playstoreImplementation "com.google.android.exoplayer:extension-cast:$exoplayer_version"
 
     // Google Cast support (not available in fdroid flavour)
     playstoreImplementation 'com.google.android.gms:play-services-cast-framework:18.1.0'
