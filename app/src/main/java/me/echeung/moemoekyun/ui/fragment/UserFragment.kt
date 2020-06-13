@@ -58,6 +58,11 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
         return view
     }
 
+    override fun onPause() {
+        super.onPause()
+        binding.query.clearFocus()
+    }
+
     override fun initSongList(binding: FragmentUserBinding): SongList {
         initFilterMenu()
 
