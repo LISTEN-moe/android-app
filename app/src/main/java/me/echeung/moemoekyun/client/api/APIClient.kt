@@ -226,7 +226,7 @@ class APIClient(
 
 //           callback.onQueueSuccess(response.data?.queue ?: 0)
 
-        client.subscribe(QueueSubscription(RadioClient.library!!.name))
+        client.subscribe(QueueSubscription(RadioClient.library.name))
             .toFlow()
             .onEach {
 //                    callback.onQueueSuccess(response.data?.queue?.amount ?: 0)
@@ -234,7 +234,7 @@ class APIClient(
             .launchIn(scope)
 
         // TODO: handle user change
-        client.subscribe(UserQueueSubscription(RadioClient.library!!.name, user.uuid))
+        client.subscribe(UserQueueSubscription(RadioClient.library.name, user.uuid))
             .toFlow()
             .onEach {
 //                    callback.onUserQueueSuccess(

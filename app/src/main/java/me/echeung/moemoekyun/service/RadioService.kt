@@ -178,7 +178,7 @@ class RadioService : Service() {
         try {
             startTime = TimeUtil.toCalendar(info.startTime!!)
         } catch (e: ParseException) {
-            Log.e(TAG, e.message)
+            Log.e(TAG, e.message ?: "Error parsing time")
         }
 
         // Check if current song is favorited

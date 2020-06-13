@@ -48,11 +48,11 @@ class RadioClient(
     }
 
     companion object {
-        var library: Library? = null
+        var library: Library = Jpop.INSTANCE
             private set
 
         fun isKpop(): Boolean {
-            return library!!.name == Kpop.NAME
+            return library.name == Kpop.NAME
         }
     }
 }

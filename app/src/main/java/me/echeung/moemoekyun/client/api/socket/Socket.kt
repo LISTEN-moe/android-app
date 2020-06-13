@@ -53,7 +53,7 @@ class Socket(
                 disconnect()
             }
 
-            val request = Request.Builder().url(RadioClient.library!!.socketUrl).build()
+            val request = Request.Builder().url(RadioClient.library.socketUrl).build()
             socket = networkClient.client.newWebSocket(request, this)
         }
     }

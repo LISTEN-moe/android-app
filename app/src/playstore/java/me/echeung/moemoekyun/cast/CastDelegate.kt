@@ -102,7 +102,7 @@ class CastDelegate(
             metadata.addImage(WebImage(Uri.parse(it)))
         }
 
-        val mediaInfo = MediaInfo.Builder(RadioClient.library!!.streamUrl)
+        val mediaInfo = MediaInfo.Builder(RadioClient.library.streamUrl)
             .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
             .setContentType(MimeTypes.AUDIO_UNKNOWN)
             .setMetadata(metadata)

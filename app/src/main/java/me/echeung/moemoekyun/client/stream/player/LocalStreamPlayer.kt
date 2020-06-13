@@ -73,7 +73,7 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPl
         }
 
         // Set stream
-        val streamUrl = RadioClient.library!!.streamUrl
+        val streamUrl = RadioClient.library.streamUrl
         if (streamUrl != currentStreamUrl) {
             val dataSourceFactory = DefaultDataSourceFactory(context, NetworkUtil.userAgent)
             val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
