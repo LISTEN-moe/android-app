@@ -210,8 +210,7 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        // TODO: enable casting when it's not as janky
-//        castDelegate.initCastButton(menu)
+        castDelegate.initCastButton(menu)
         updateMenuOptions(menu)
 
         return true
@@ -228,8 +227,7 @@ class MainActivity : BaseActivity() {
         toolbar.inflateMenu(R.menu.menu_main)
         nowPlayingSheetMenu = toolbar.menu
 
-        // TODO: enable casting when it's not as janky
-//        castDelegate.initCastButton(nowPlayingSheetMenu)
+        castDelegate.initCastButton(nowPlayingSheetMenu)
 
         toolbar.setOnMenuItemClickListener { this.onOptionsItemSelected(it) }
 

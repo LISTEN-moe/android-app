@@ -9,7 +9,6 @@ import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.gms.cast.MediaInfo
 import com.google.android.gms.cast.MediaMetadata
 import com.google.android.gms.cast.MediaQueueItem
-import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 import com.google.android.gms.common.images.WebImage
 import kotlinx.coroutines.CoroutineScope
@@ -75,13 +74,16 @@ class CastDelegate(
     }
 
     fun initCastButton(menu: Menu?) {
-        castPlayer?.let {
-            CastButtonFactory.setUpMediaRouteButton(
-                context,
-                menu,
-                R.id.media_route_menu_item
-            )
-        }
+        // TODO: enable this when the implementation isn't super janky
+        menu?.findItem(R.id.media_route_menu_item)?.isVisible = false
+
+//        castPlayer?.let {
+//            CastButtonFactory.setUpMediaRouteButton(
+//                context,
+//                menu,
+//                R.id.media_route_menu_item
+//            )
+//        }
     }
 
     private fun updateSong() {
