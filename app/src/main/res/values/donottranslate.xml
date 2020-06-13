@@ -29,9 +29,12 @@
     -->
     <string name="translators_list" translatable="false">
         3316482
+        \nacrylicpaintboy
         \nAnany Meza
         \narkon94
         \nAtFr
+        \nbhj
+        \nChuen Li
         \nCliptons
         \nCrawl
         \nDiavolo69
@@ -43,6 +46,7 @@
         \nEmachii 🦋
         \nemre özdemir
         \nErinç Esen
+        \nFelipe Garcia
         \nFlutterCZ
         \nFoorack
         \nForbidden
@@ -51,6 +55,7 @@
         \nGuo Yunhe
         \nIdesmi
         \nIgor Pissolati
+        \nIsabel Vianna Montovani
         \njlhertel
         \nkairuu
         \nkamal-kun
@@ -69,7 +74,6 @@
         \nNick
         \nnicoro
         \nniseee
-        \nOğuz Ersen
         \nOnachi- San
         \nPaul Chang
         \nPoussinou
@@ -79,6 +83,7 @@
         \nReza Rangga Dirza
         \nrobflop
         \nŠarūnas
+        \nSatsuki Yanagi
         \nSDTR
         \nspoonm
         \nsT
@@ -96,10 +101,13 @@
         \nxTheEc0
         \nyami
         \nYassir Lagrich
+        \nYassir Lagrich
         \nYayaka
         \n노스스
         \n사람
+        \n한병규
         \n尤鈺欽
+        \n离芯_sc
     </string>
 
     <string-array name="pref_language_names" translatable="false">
