@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.PopupMenu
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.RadioClient
@@ -21,6 +20,7 @@ import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
+import me.echeung.moemoekyun.util.ext.popupMenu
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
@@ -78,18 +78,15 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
     }
 
     private fun initFilterMenu() {
-        val overflowBtn = binding.overflowBtn
-
-        overflowBtn.setOnClickListener(
-            fun(_) {
-                val popupMenu = PopupMenu(requireContext(), overflowBtn)
-                popupMenu.inflate(R.menu.menu_sort)
-
-                songSortUtil.initSortMenu(LIST_ID, popupMenu.menu)
-                popupMenu.setOnMenuItemClickListener { songList.handleMenuItemClick(it) }
-                popupMenu.show()
-            }
-        )
+        binding.overflowBtn.setOnClickListener { view ->
+            view.popupMenu(
+                R.menu.menu_sort,
+                {
+                    songSortUtil.initSortMenu(LIST_ID, this)
+                },
+                songList::handleMenuItemClick
+            )
+        }
     }
 
     private fun loadSongs(adapter: SongsListAdapter) {
