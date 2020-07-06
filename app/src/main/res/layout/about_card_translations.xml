@@ -27,7 +27,8 @@
             android:layout_height="wrap_content"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:text="@string/translators_list" />
+            android:text="@string/translators_list"
+            android:textColor="@color/light_grey" />
 
         <ImageView
             android:id="@+id/kanna_image"

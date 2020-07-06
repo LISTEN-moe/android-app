@@ -6,6 +6,7 @@
         <item name="android:background">@color/darker_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColor">@color/white</item>
+        <item name="colorOnSurface">@color/white</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="buttonBarPositiveButtonStyle">@style/Theme.Widget.Button.Accent</item>
@@ -26,6 +27,10 @@
         <item name="iconTint">@color/white_button_states</item>
         <item name="rippleColor">?attr/colorAccent</item>
         <item name="strokeColor">@color/white_button_states</item>
+    </style>
+    <style name="Theme.Widget.PopupMenu" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:popupBackground">@drawable/popup_menu_background</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 
     <!-- Textboxes -->
