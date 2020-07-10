@@ -28,7 +28,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:text="@string/translators_list"
-            android:textColor="@color/light_grey" />
+            android:color="?attr/colorOnSurface" />
 
         <ImageView
             android:id="@+id/kanna_image"
