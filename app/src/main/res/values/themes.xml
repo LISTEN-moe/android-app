@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.App" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.App" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Accent color -->
         <item name="colorPrimary">@color/grey</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -25,6 +25,7 @@
 
         <!-- UI widget theming -->
         <item name="elevationOverlayEnabled">false</item>
+        <item name="actionOverflowMenuStyle">@style/Theme.Widget.PopupMenu</item>
         <item name="alertDialogTheme">@style/Theme.Widget.Dialog</item>
         <item name="dialogTheme">@style/Theme.Widget.Dialog</item>
         <item name="materialButtonStyle">@style/Theme.Widget.Button</item>
