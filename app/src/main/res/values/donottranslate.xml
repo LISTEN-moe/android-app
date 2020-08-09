@@ -112,6 +112,7 @@
 
     <string-array name="pref_language_names" translatable="false">
         <item>@string/system_default</item>
+        <item>Catalan</item>
         <item>Deutsch</item>
         <item>English (UK)</item>
         <item>English (US)</item>
@@ -134,6 +135,7 @@
 
     <string-array name="pref_language_codes" translatable="false">
         <item>default</item>
+        <item>ca</item>
         <item>de</item>
         <item>en-rGB</item>
         <item>en-rUS</item>

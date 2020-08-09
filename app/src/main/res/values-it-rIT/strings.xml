@@ -111,6 +111,12 @@
     <string name="pref_title_general_random_request_summary">Visualizza il titolo delle canzoni casuali richieste</string>
     <string name="pref_title_lockscreen_albumart_title">Copertina album</string>
     <string name="pref_title_lockscreen_albumart_summary">Visualizza copertina dell\'album sulla schermata di blocco e su Android Auto</string>
+    <string name="pref_title_color_now_playing_title">Colore nuovo schermo di riproduzione</string>
+    <string name="pref_title_color_now_playing_summary">Usa il colore principale dell\'album di copertina</string>
     <string name="pref_header_audio">Audio</string>
+    <string name="pref_title_pause_on_noisy_title">Pausa per cuffie</string>
     <string name="pref_title_pause_on_noisy_summary">Metti in pausa quando le cuffie vengono rimosse</string>
+    <string name="pref_title_audio_pause_on_loss_title">Pausa per media</string>
+    <string name="pref_title_audio_pause_on_loss_summary">La musica si interromperà quando sono riprodotti altri media, quali video o altra musica</string>
+    <string name="pref_title_audio_duck_summary">Il volume musicale sarà abbassato per notifiche, la navigazione, etc.</string>
 </resources>

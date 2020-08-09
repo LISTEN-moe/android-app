@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="submit">Enviar</string>
+    <string name="error">S\'ha produït un error</string>
+    <string name="copied_to_clipboard">S\'ha copiat al porta-retalls</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_play">Reprodueix</string>
+    <string name="action_pause">Pausar</string>
+    <string name="action_stop">Aturar</string>
+    <string name="action_favorite">Favorit</string>
+    <string name="action_unfavorite">Eliminar de favorits</string>
+    <string name="action_request">Petició</string>
+    <string name="action_undo">Desfés</string>
+    <!-- == Radio stations == -->
+    <string name="action_library">Emissora</string>
+    <string name="jpop">J-pop</string>
+    <string name="kpop">K-pop</string>
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Temporitzador d\'aturada</string>
+    <string name="set">Establir</string>
+    <string name="close">Tancar</string>
+    <string name="cancel_timer">Cancel·la el temporitzador</string>
+    <string name="sleep_timer_canceled">Temporitzador cancel·lat</string>
+    <!-- == Search == -->
+    <string name="search">Cerca...</string>
+    <string name="clear_query">Netejar consulta</string>
+    <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">No hi han resultats per a: %s</string>
+    <!-- == Sort == -->
+    <string name="sort">Ordenar</string>
+    <string name="sort_title">Títol</string>
+    <string name="sort_artist">Artista</string>
+    <string name="sort_desc">Descendent</string>
+    <!-- == Auth == -->
+    <string name="register">Registrar-se</string>
+    <string name="login">Iniciar sessió</string>
+    <string name="logout">Tancar sessió</string>
+    <string name="username_or_email">Nom d\'usuari / adreça de correu electrònic</string>
+    <string name="username">Nom d\'usuari</string>
+    <string name="email">Correu electrònic</string>
+    <string name="password">Contrasenya</string>
+    <string name="password_confirm">Confirmar contrasenya</string>
+    <string name="mfa_prompt">Escriu el codi de seguretat generat per l\'aplicació d\'autenticació.</string>
+    <string name="mfa_hint">Codi de seguretat de 6 dígits</string>
+    <string name="logout_confirmation">Estàs segur que vols tancar la sessió?</string>
+    <string name="logged_out">Desconnectat</string>
+    <string name="login_required">Actualitzar per utilitzar aquesta funcionalitat.</string>
+    <string name="required">Necessari</string>
+    <string name="password_mismatch">Les contrasenyes no coincideixen</string>
+    <string name="forgot_password">Has oblidat la contrasenya?</string>
+    <!-- == Radio tab == -->
+    <string name="play_pause">Reprodueix/pausa</string>
+    <string name="last_played">Últim reproduït</string>
+    <string name="favorite">Afegir a favorits</string>
+    <!-- e.g. Requested by: username -->
+    <string name="requested_by">Sol·licitada per: %s</string>
+    <string name="event_start_title">Un esdeveniment està començant!</string>
+    <!-- == User tab == -->
+    <string name="no_favorites">Encara no hi ha favorits</string>
+    <string name="filter_favorites">Filtrar favorits</string>
+    <!-- e.g. Unfavorited <Song Title> -->
+    <string name="unfavorited">Eliminat %s de favorits</string>
+    <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d s\'ha afegit a la cua</string>
+    <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d afegit a la cua, %d abans de tu</string>
+    <string name="random_request">Sol·licitar una cançó aleatòria</string>
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <!-- e.g. Requested <Song Title> -->
+    <string name="requested_song">S\'ha sol·licitat %s</string>
+    <string name="requested_random_song">S\'ha sol·licitat una cançó aleatòria</string>
+    <!-- == Song details == -->
+    <string name="song_title">Títol</string>
+    <string name="song_album">Àlbum</string>
+    <string name="song_artist">Artista</string>
+    <string name="song_source">Font</string>
+    <string name="song_duration">Duració</string>
+    <string name="song_release_date">Data de publicació</string>
+    <string name="song_uploader">Ho ha penjat</string>
+    <string name="song_last_played">Últim reproduït</string>
+    <string name="song_tags">Etiquetes</string>
+    <!-- == No Internet view == -->
+    <string name="no_internet">No s\'ha pogut connectar a LISTEN.moe\n\nRevisa la teva connexió d\'internet</string>
+    <string name="retry">Reintentar</string>
+    <!-- == About == -->
+    <string name="about">Quant a</string>
+    <!-- e.g. Version 1.0 -->
+    <string name="version">Versió %s</string>
+    <string name="rate">Valora\'ns a Google Play</string>
+    <string name="github">Dona\'ns una estrella a GitHub</string>
+    <string name="translate">Ajuda\'ns a traduir</string>
+    <string name="translators">Traductors</string>
+    <string name="licenses">Llicències</string>
+    <string name="listenmoe">Ràdio LISTEN.moe</string>
+    <string name="open_in_browser">Obre al navegador</string>
+    <string name="discord">Acompanya\'ns a Discord</string>
+    <string name="patreon">Sol·licita cançons / Dona\'ns suport</string>
+    <string name="privacy_policy">Política de privadesa</string>
+    <!-- == Settings == -->
+    <string name="settings">Configuració</string>
+    <string name="system_default">Per defecte del sistema</string>
+    <string name="pref_header_general">General</string>
+    <string name="pref_title_language">Idioma</string>
+    <string name="pref_title_general_download">Baixar automàticament les imatges</string>
+    <string name="pref_header_music">Música</string>
+    <string name="pref_title_general_romaji">Preferir romaji</string>
+    <string name="pref_title_general_romaji_summary">\"Nanahira\" en comptes de \"ななひら\"</string>
+    <string name="pref_title_general_random_request_title">Sol·licitar un títol aleatori</string>
+    <string name="pref_title_general_random_request_summary">Mostrar el títol de la cançó sol·licitada</string>
+    <string name="pref_title_lockscreen_albumart_title">Coberta de l\'àlbum</string>
+    <string name="pref_title_lockscreen_albumart_summary">Mostrar coberta de l\'àlbum a la pantalla de bloqueig</string>
+    <string name="pref_title_color_now_playing_title">Color de la pantalla de reproducció</string>
+    <string name="pref_title_color_now_playing_summary">Utilitzar el color principal de la coberta de l\'àlbum</string>
+    <string name="pref_header_audio">So</string>
+    <string name="pref_title_pause_on_noisy_title">Pausa per als auriculars</string>
+    <string name="pref_title_pause_on_noisy_summary">La música pararà quan desendollis els auriculars</string>
+    <string name="pref_title_audio_pause_on_loss_title">Pausar per a altra multimédia</string>
+    <string name="pref_title_audio_pause_on_loss_summary">La música es pausarà quan altres fitxers multimèdia s\'engeguin, com vídeos o altra música</string>
+    <string name="pref_title_audio_duck_title">Canvis de volum</string>
+    <string name="pref_title_audio_duck_summary">El volum de la música baixarà quan rebis una notificació, etc.</string>
+</resources>
