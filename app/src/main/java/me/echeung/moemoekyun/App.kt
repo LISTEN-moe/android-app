@@ -63,7 +63,9 @@ class App : Application(), ServiceConnection {
         }
 
         startKoin {
-            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.INFO)
+            // Pending Koin update: https://github.com/InsertKoinIO/koin/issues/847
+            // androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.INFO)
+            androidLogger(Level.ERROR)
             androidContext(this@App)
 
             modules(appModule, radioModule, viewModelModule)
