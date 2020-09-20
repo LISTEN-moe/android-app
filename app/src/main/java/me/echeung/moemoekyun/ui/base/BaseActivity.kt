@@ -35,10 +35,10 @@ abstract class BaseActivity : AppCompatActivity() {
 
     open fun initAppbar() {
         appbar = findViewById(R.id.appbar)
-        if (appbar != null) {
-            setSupportActionBar(appbar)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowTitleEnabled(true)
+        appbar?.let {
+            setSupportActionBar(it)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.setDisplayShowTitleEnabled(true)
         }
     }
 }
