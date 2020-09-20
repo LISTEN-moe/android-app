@@ -39,7 +39,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     override fun onDestroy() {
         unregisterReceiver()
 
-        binding.unbind()
+        binding?.unbind()
 
         super.onDestroy()
     }
