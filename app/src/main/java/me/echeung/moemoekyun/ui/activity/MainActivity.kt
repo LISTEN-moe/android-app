@@ -117,7 +117,7 @@ class MainActivity : BaseActivity() {
     override fun onBackPressed() {
         // Collapse now playing
         if (nowPlayingSheet?.state == BottomSheetBehavior.STATE_EXPANDED) {
-            nowPlayingSheet!!.state = BottomSheetBehavior.STATE_COLLAPSED
+            nowPlayingSheet?.state = BottomSheetBehavior.STATE_COLLAPSED
             return
         }
 
@@ -137,11 +137,13 @@ class MainActivity : BaseActivity() {
 
     override fun initAppbar() {
         super.initAppbar()
-        supportActionBar!!.setDisplayHomeAsUpEnabled(false)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(false)
+            setDisplayShowTitleEnabled(false)
+        }
 
         searchMenu = appbar?.findViewById(R.id.appbar_search_menu)
-        searchMenu!!.setOnMenuItemClickListener(object : ActionMenuView.OnMenuItemClickListener {
+        searchMenu?.setOnMenuItemClickListener(object : ActionMenuView.OnMenuItemClickListener {
             override fun onMenuItemClick(menuItem: MenuItem): Boolean {
                 return onOptionsItemSelected(menuItem)
             }
@@ -153,12 +155,12 @@ class MainActivity : BaseActivity() {
 
         // Restore previous expanded state
         if (preferenceUtil.isNowPlayingExpanded().get()) {
-            nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED)
+            nowPlayingSheet?.setState(BottomSheetBehavior.STATE_EXPANDED)
         } else {
             radioViewModel.miniPlayerAlpha = 1f
         }
 
-        nowPlayingSheet!!.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        nowPlayingSheet?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
                 preferenceUtil.isNowPlayingExpanded().set(newState == BottomSheetBehavior.STATE_EXPANDED)
             }
@@ -234,7 +236,7 @@ class MainActivity : BaseActivity() {
         updateMenuOptions(nowPlayingSheetMenu!!)
 
         // Secondary menu with search
-        menuInflater.inflate(R.menu.menu_search, searchMenu!!.menu)
+        menuInflater.inflate(R.menu.menu_search, searchMenu?.menu)
     }
 
     private fun updateMenuOptions(menu: Menu) {
@@ -327,8 +329,8 @@ class MainActivity : BaseActivity() {
 
     private fun setPlayPauseDrawable() {
         val isPlaying = radioViewModel.isPlaying
-        playPauseView!!.toggle(isPlaying)
-        miniPlayPauseView!!.toggle(isPlaying)
+        playPauseView?.toggle(isPlaying)
+        miniPlayPauseView?.toggle(isPlaying)
     }
 
     private fun togglePlayPause() {

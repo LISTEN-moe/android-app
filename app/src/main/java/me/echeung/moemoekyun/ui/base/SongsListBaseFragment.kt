@@ -42,11 +42,8 @@ abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>() {
 
     abstract fun initSongList(binding: T): SongList
 
-    public override fun getIntentFilter(): IntentFilter? {
-        val intentFilter = IntentFilter()
-        intentFilter.addAction(AuthActivityUtil.AUTH_EVENT)
-        intentFilter.addAction(SongActionsUtil.FAVORITE_EVENT)
-
-        return intentFilter
+    public override fun getIntentFilter() = IntentFilter().apply {
+        addAction(AuthActivityUtil.AUTH_EVENT)
+        addAction(SongActionsUtil.FAVORITE_EVENT)
     }
 }
