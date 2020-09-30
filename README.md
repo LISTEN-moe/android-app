@@ -12,7 +12,7 @@
 
 <a href="https://f-droid.org/app/me.echeung.moemoekyun.fdroid">
   <img height="50" alt="Get it on F-Droid"
-       src="https://i.imgur.com/um29KX1.png">
+       src="https://www.google.com/search?q=nice+images&rlz=1C1CHBD_enIN910IN911&sxsrf=ALeKk01SMI4Sr8hDjTUN27Rdyz7vno9FGg:1601489795989&tbm=isch&source=iu&ictx=1&fir=ylfKJkw26f2kuM%252COSsekeNpgZhESM%252C_&vet=1&usg=AI4_-kT-oPkc1NPtVvR-13Drm5bSDzDGfA&sa=X&ved=2ahUKEwizxJqzvpHsAhW0guYKHf0PAQAQ9QF6BAgKEFw&biw=1536&bih=731#imgrc=ylfKJkw26f2kuM">
 </a>
 
 
