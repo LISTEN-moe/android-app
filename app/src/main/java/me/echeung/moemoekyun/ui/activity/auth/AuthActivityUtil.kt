@@ -12,7 +12,7 @@ import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.get
-import org.koin.core.KoinComponent
+import org.koin.core.component.KoinComponent
 
 object AuthActivityUtil : KoinComponent {
 

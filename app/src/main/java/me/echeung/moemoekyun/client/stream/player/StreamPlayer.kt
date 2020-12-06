@@ -28,7 +28,7 @@ abstract class StreamPlayer<T : Player> {
         get() = player != null
 
     val isPlaying: Boolean
-        get() = player?.playWhenReady ?: false
+        get() = player?.isPlaying ?: false
 
     abstract fun initPlayer()
 
@@ -36,13 +36,13 @@ abstract class StreamPlayer<T : Player> {
         initPlayer()
 
         if (!isPlaying) {
-            player!!.playWhenReady = true
+            player!!.play()
             player!!.seekToDefaultPosition()
         }
     }
 
     fun pause() {
-        player?.playWhenReady = false
+        player?.pause()
     }
 
     open fun stop() {

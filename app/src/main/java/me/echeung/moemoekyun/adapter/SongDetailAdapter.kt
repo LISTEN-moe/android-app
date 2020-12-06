@@ -12,8 +12,8 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongDetailsBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.ext.openUrl
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class SongDetailAdapter(
     private val activity: Activity,

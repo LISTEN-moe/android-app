@@ -14,8 +14,8 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.alarmManager
 import me.echeung.moemoekyun.util.ext.getPluralString
 import me.echeung.moemoekyun.util.ext.toast
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 class SleepTimerDialog(private val activity: Activity) : KoinComponent {
 

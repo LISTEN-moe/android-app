@@ -5,8 +5,8 @@ import android.os.Build
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
-import org.koin.core.KoinComponent
-import org.koin.core.get
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 
 object NetworkUtil : KoinComponent {
 

@@ -4,7 +4,7 @@ import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Input
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
-import com.apollographql.apollo.coroutines.toDeferred
+import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.coroutines.toFlow
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CoroutineScope
@@ -68,9 +68,7 @@ class APIClient(
      * @param password User's password.
      */
     suspend fun authenticate(username: String, password: String): Pair<LoginState, String> {
-        val response = client.mutate(LoginMutation(username, password))
-            .toDeferred()
-            .await()
+        val response = client.mutate(LoginMutation(username, password)).await()
 
         val userToken = response.data?.login?.token!!
 
@@ -90,9 +88,7 @@ class APIClient(
      * @param otpToken User's one-time password token.
      */
     suspend fun authenticateMfa(otpToken: String): String {
-        val response = client.mutate(LoginMfaMutation(otpToken))
-            .toDeferred()
-            .await()
+        val response = client.mutate(LoginMfaMutation(otpToken)).await()
 
         val userToken = response.data?.loginMFA?.token!!
         authUtil.authToken = userToken
@@ -105,18 +101,14 @@ class APIClient(
      * Register a new user.
      */
     suspend fun register(email: String, username: String, password: String) {
-        client.mutate(RegisterMutation(email, username, password))
-            .toDeferred()
-            .await()
+        client.mutate(RegisterMutation(email, username, password)).await()
     }
 
     /**
      * Gets the user information (id and username).
      */
     suspend fun getUserInfo(): User {
-        val response = client.query(UserQuery("@me"))
-            .toDeferred()
-            .await()
+        val response = client.query(UserQuery("@me")).await()
 
         return response.data?.user!!.transform()
     }
@@ -126,9 +118,7 @@ class APIClient(
      */
     suspend fun getUserFavorites(): List<Song> {
         // TODO: do actual pagination
-        val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop())))
-            .toDeferred()
-            .await()
+        val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop()))).await()
 
         return response.data?.user?.favorites?.favorites
             ?.mapNotNull { it?.song }
@@ -142,9 +132,7 @@ class APIClient(
      * @param songIds IDs of songs to check status of.
      */
     suspend fun isFavorite(songIds: List<Int>): List<Int> {
-        val response = client.query(CheckFavoriteQuery(songIds))
-            .toDeferred()
-            .await()
+        val response = client.query(CheckFavoriteQuery(songIds)).await()
 
         return response.data?.checkFavorite?.filterNotNull() ?: emptyList()
     }
@@ -155,9 +143,7 @@ class APIClient(
      * @param songId Song to update favorite status of.
      */
     suspend fun toggleFavorite(songId: Int) {
-        client.mutate(FavoriteMutation(songId))
-            .toDeferred()
-            .await()
+        client.mutate(FavoriteMutation(songId)).await()
     }
 
     /**
@@ -166,9 +152,7 @@ class APIClient(
      * @param songId Song to request.
      */
     suspend fun requestSong(songId: Int) {
-        val response = client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop())))
-            .toDeferred()
-            .await()
+        val response = client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop()))).await()
 
         if (response.hasErrors()) {
             throw Exception(response.errors?.get(0)?.message)
@@ -193,9 +177,7 @@ class APIClient(
      */
     suspend fun getSongDetails(songId: Int): Song {
         val response = client.query(SongQuery(songId))
-            .httpCachePolicy(SONG_CACHE_POLICY)
-            .toDeferred()
-            .await()
+            .httpCachePolicy(SONG_CACHE_POLICY).await()
 
         return response.data?.song!!.transform()
     }
@@ -208,9 +190,7 @@ class APIClient(
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
         val response = client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
-            .httpCachePolicy(SONG_CACHE_POLICY)
-            .toDeferred()
-            .await()
+            .httpCachePolicy(SONG_CACHE_POLICY).await()
 
         return response.data?.songs?.songs?.map { it.transform() } ?: emptyList()
     }
@@ -220,9 +200,7 @@ class APIClient(
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getQueue(user: User) {
-        val queue = client.query(QueueQuery())
-            .toDeferred()
-            .await()
+        val queue = client.query(QueueQuery()).await()
 
 //           callback.onQueueSuccess(response.data?.queue ?: 0)
 
