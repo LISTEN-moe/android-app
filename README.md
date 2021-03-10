@@ -25,6 +25,8 @@ This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/stor
 
 ## Developing
 
+![CI](https://github.com/LISTEN-moe/android-app/workflows/CI/badge.svg?event=push)
+
 ### Prerequisites
 
 - [Android Studio](https://developer.android.com/studio/index.html)
