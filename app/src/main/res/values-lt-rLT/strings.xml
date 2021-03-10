@@ -64,6 +64,7 @@
     <!-- e.g. 2 queued -->
     <string name="queue_info_none_queued">%d eilėje</string>
     <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d eilėje, %d prieš jūsų</string>
     <string name="random_request">Užsakyti atsitiktinę dainą</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- e.g. 10 requests remaining -->
+    <!-- Timer -->
+    <plurals name="minutes">
+        <item quantity="other">%d minit</item>
+    </plurals>
+    <!-- Confirmation of timer being set -->
+    <plurals name="sleep_timer_set">
+        <item quantity="other">Tetapkan pemasa selama %d minit</item>
+    </plurals>
+</resources>

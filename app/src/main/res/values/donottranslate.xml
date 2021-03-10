@@ -31,6 +31,7 @@
         3316482
         \nAnany Meza
         \narkon94
+        \nArthur Um
         \nAtFr
         \nbhj
         \nChuen Li
@@ -45,10 +46,8 @@
         \nEmachii 🦋
         \nemre özdemir
         \nErinç Esen
-        \nFelipe Garcia
         \nFlutterCZ
         \nFoorack
-        \nForbidden
         \nGabriel Henrique da Cunha Gonçalves
         \nGiorgioHerbie
         \nGuai
@@ -56,13 +55,12 @@
         \nIdesmi
         \nIgor Pissolati
         \nIsabel Vianna Montovani
-        \njlhertel
+        \nKaede
         \nkairuu
         \nkamal-kun
         \nKana
         \nKathya Teran
         \nKhaing Yin Mon Aung
-        \nkoppe-pan
         \nLeozard
         \nlinguist
         \nLuke Produkcje
@@ -76,10 +74,12 @@
         \nnicoro
         \nniseee
         \nOnachi- San
+        \nOrigami
         \nPaul Chang
         \nPoussinou
         \nPraxic
         \nPytey
+        \nQWERT
         \nRap Management
         \nReza Rangga Dirza
         \nrobflop
@@ -89,21 +89,19 @@
         \nSilvanaFP
         \nspoonm
         \nsT
+        \nStore
         \nsunmoon
-        \nTacoTheDank
         \nTAKAHASHI Shuuji
         \nTatsuya Ishikawa
         \nTill Kottmann
         \nTũn A. R. M. Y
         \ntzium
-        \nUmaigenomu
+        \nvoltrare
         \nWachid Adi Nugroho
         \nWarrock3280
         \nWoWnik
         \nxTheEc0
-        \nXu Eric
         \nyami
-        \nYassir Lagrich
         \nYassir Lagrich
         \nYayaka
         \n노스스
@@ -122,10 +120,12 @@
         <item>Español</item>
         <item>Esperanto</item>
         <item>Français</item>
-        <item>Indonesia</item>
+        <item>Bahasa Indonesia</item>
         <item>Italiano</item>
         <item>Lietuvių</item>
+        <item>Bahasa Melayu</item>
         <item>Nederlands</item>
+        <item>සිංහල</item>
         <item>Svenska</item>
         <item>Português</item>
         <item>Русский</item>
@@ -148,7 +148,9 @@
         <item>in</item>
         <item>it</item>
         <item>lt</item>
+        <item>ms</item>
         <item>nl</item>
+        <item>si</item>
         <item>sv</item>
         <item>pt</item>
         <item>ru</item>

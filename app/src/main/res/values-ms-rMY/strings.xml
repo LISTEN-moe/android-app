@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="submit">Hantar</string>
+    <string name="error">Kesilapan berlaku</string>
+    <string name="copied_to_clipboard">Disalin ke papan klip</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_play">Main</string>
+    <string name="action_pause">Henti seketika</string>
+    <string name="action_stop">Henti</string>
+    <string name="action_favorite">Kegemaran</string>
+    <string name="action_unfavorite">Buang dari kegemaran</string>
+    <!-- == Radio stations == -->
+    <!-- == Sleep timer == -->
+    <!-- == Search == -->
+    <!-- e.g. No results for "user's search query" -->
+    <!-- == Sort == -->
+    <!-- == Auth == -->
+    <!-- == Radio tab == -->
+    <!-- e.g. Requested by: username -->
+    <!-- == User tab == -->
+    <!-- e.g. Unfavorited <Song Title> -->
+    <!-- e.g. 2 queued -->
+    <!-- e.g. 2 queued, 1 before yours -->
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <!-- e.g. Requested <Song Title> -->
+    <!-- == Song details == -->
+    <!-- == No Internet view == -->
+    <!-- == About == -->
+    <!-- e.g. Version 1.0 -->
+    <!-- == Settings == -->
+</resources>

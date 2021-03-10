@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <!-- == Actions (notification, dialogs) == -->
+    <!-- == Radio stations == -->
+    <!-- == Sleep timer == -->
+    <string name="close">වසන්න</string>
+    <!-- == Search == -->
+    <!-- e.g. No results for "user's search query" -->
+    <!-- == Sort == -->
+    <!-- == Auth == -->
+    <string name="register">ලියාපදිංචි වන්න</string>
+    <string name="username">පරිශීලක නාමය</string>
+    <!-- == Radio tab == -->
+    <!-- e.g. Requested by: username -->
+    <!-- == User tab == -->
+    <!-- e.g. Unfavorited <Song Title> -->
+    <!-- e.g. 2 queued -->
+    <!-- e.g. 2 queued, 1 before yours -->
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <!-- e.g. Requested <Song Title> -->
+    <!-- == Song details == -->
+    <!-- == No Internet view == -->
+    <string name="retry">නැවත උත්සාහ කරන්න</string>
+    <!-- == About == -->
+    <string name="about">මේ ගැන</string>
+    <!-- e.g. Version 1.0 -->
+    <string name="licenses">බලපත්‍ර</string>
+    <!-- == Settings == -->
+    <string name="settings">සැකසුම්</string>
+    <string name="pref_title_language">භාෂාව</string>
+    <string name="pref_header_audio">ශ්‍රව්‍ය</string>
+</resources>
