@@ -138,6 +138,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="0.5"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="12sp"
+                app:autoSizeMaxTextSize="100sp"
+                app:autoSizeStepGranularity="2sp"
                 android:enabled="@{isAuthenticated}"
                 android:maxLines="1"
                 android:scaleType="fitCenter"
@@ -149,3 +153,4 @@
     </LinearLayout>
 
 </layout>
+
