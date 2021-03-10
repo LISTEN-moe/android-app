@@ -9,63 +9,29 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
-import me.echeung.moemoekyun.cast.CastDelegate
-import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.socket.Socket
-import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.network.NetworkClient
-import me.echeung.moemoekyun.client.stream.Stream
+import me.echeung.moemoekyun.di.appModule
+import me.echeung.moemoekyun.di.radioModule
+import me.echeung.moemoekyun.di.viewModelModule
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.service.notification.EventNotification
 import me.echeung.moemoekyun.service.notification.MusicNotifier
-import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
-import me.echeung.moemoekyun.util.SongActionsUtil
-import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.ext.notificationManager
-import me.echeung.moemoekyun.util.system.LocaleUtil
-import me.echeung.moemoekyun.viewmodel.RadioViewModel
-import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
-import org.koin.dsl.module
 
 class App : Application(), ServiceConnection {
 
     override fun onCreate() {
         super.onCreate()
 
-        // TODO: instantiate/access all of these via Koin
+        // TODO: instantiate/access this with Koin
         preferenceUtil = PreferenceUtil(this)
 
-        val appModule = module {
-            single { AlbumArtUtil(androidContext()) }
-            single { AuthUtil(androidContext()) }
-            single { LocaleUtil(get()) }
-            single { NetworkClient(androidContext(), get()) }
-            single { preferenceUtil }
-            single { SongActionsUtil(get(), get(), get(), get()) }
-            single { SongSortUtil(get()) }
-        }
-
-        val radioModule = module {
-            single { Stream(androidContext()) }
-            single { Socket(androidContext(), get()) }
-            single { RadioClient(get(), get(), get(), get(), get()) }
-            single { CastDelegate(androidContext(), get(), get(), get()) }
-        }
-
-        val viewModelModule = module {
-            single { UserViewModel() }
-            single { RadioViewModel(get(), get()) }
-        }
-
         startKoin {
-            // Pending Koin update: https://github.com/InsertKoinIO/koin/issues/847
-            // androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.INFO)
-            androidLogger(Level.ERROR)
+            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
             androidContext(this@App)
 
             modules(appModule, radioModule, viewModelModule)
