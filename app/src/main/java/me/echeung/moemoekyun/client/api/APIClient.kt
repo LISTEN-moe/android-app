@@ -6,6 +6,7 @@ import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.coroutines.toFlow
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -30,7 +31,6 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.client.model.search
 import okhttp3.OkHttpClient
-import java.util.concurrent.TimeUnit
 
 class APIClient(
     okHttpClient: OkHttpClient,
@@ -173,7 +173,10 @@ class APIClient(
      */
     suspend fun getSongDetails(songId: Int): Song {
         val response = client.query(SongQuery(songId))
-            .httpCachePolicy(SONG_CACHE_POLICY).await()
+            .toBuilder()
+            .httpCachePolicy(SONG_CACHE_POLICY)
+            .build()
+            .await()
 
         return response.data?.song!!.transform()
     }
@@ -185,7 +188,10 @@ class APIClient(
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
         val response = client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
-            .httpCachePolicy(SONG_CACHE_POLICY).await()
+            .toBuilder()
+            .httpCachePolicy(SONG_CACHE_POLICY)
+            .build()
+            .await()
 
         return response.data?.songs?.songs?.map { it.transform() } ?: emptyList()
     }

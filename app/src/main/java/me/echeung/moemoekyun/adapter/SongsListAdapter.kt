@@ -119,7 +119,7 @@ class SongsListAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
-                if (adapterPosition != RecyclerView.NO_POSITION) {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                     val song = adapter.songs!![layoutPosition]
                     songActionsUtil.showSongsDialog(adapter.getActivity(), null, song)
                 }
@@ -132,7 +132,7 @@ class SongsListAdapter(
             }
         }
 
-        internal fun bind(song: Song) {
+        fun bind(song: Song) {
             binding.song = song
 
             binding.executePendingBindings()

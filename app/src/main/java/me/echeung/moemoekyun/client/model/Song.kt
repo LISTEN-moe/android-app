@@ -1,8 +1,8 @@
 package me.echeung.moemoekyun.client.model
 
+import java.util.Locale
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.Library
-import java.util.Locale
 
 data class Song(
     var id: Int = 0,

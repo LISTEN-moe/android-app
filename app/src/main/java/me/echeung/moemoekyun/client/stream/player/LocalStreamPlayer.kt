@@ -4,6 +4,7 @@ import android.content.Context
 import android.media.AudioManager
 import android.net.Uri
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
@@ -77,9 +78,11 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPl
         if (streamUrl != currentStreamUrl) {
             val dataSourceFactory = DefaultDataSourceFactory(context, NetworkUtil.userAgent)
             val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
-                .createMediaSource(Uri.parse(streamUrl))
-
-            player!!.prepare(streamSource)
+                .createMediaSource(MediaItem.Builder().setUri(Uri.parse(streamUrl)).build())
+            with(player!!) {
+                setMediaSource(streamSource)
+                prepare()
+            }
             currentStreamUrl = streamUrl
         }
     }
