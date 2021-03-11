@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
@@ -20,7 +18,7 @@ import org.koin.android.ext.android.inject
 
 abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>() {
 
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private val scope = MainScope()
 
     private val preferenceUtil: PreferenceUtil by inject()
 

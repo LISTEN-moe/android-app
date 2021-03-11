@@ -3,11 +3,8 @@ package me.echeung.moemoekyun.client.api.socket
 import android.content.Context
 import android.util.Log
 import com.squareup.moshi.Moshi
-import java.io.IOException
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -25,8 +22,8 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import java.io.IOException
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class Socket(
     private val context: Context,
     private val networkClient: NetworkClient
@@ -34,7 +31,7 @@ class Socket(
 
     val channel = ConflatedBroadcastChannel<SocketResult>()
 
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private val scope = MainScope()
 
     private var retryTime = RETRY_TIME_MIN
     private var attemptingReconnect = false

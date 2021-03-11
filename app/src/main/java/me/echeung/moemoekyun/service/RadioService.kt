@@ -19,12 +19,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.KeyEvent
-import java.text.ParseException
-import java.util.Calendar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
@@ -50,11 +45,12 @@ import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
+import java.text.ParseException
+import java.util.Calendar
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class RadioService : Service() {
 
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private val scope = MainScope()
 
     private val radioClient: RadioClient by inject()
     private val stream: Stream by inject()

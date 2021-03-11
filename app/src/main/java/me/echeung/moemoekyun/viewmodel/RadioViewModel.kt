@@ -4,11 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import androidx.annotation.ColorInt
 import androidx.databinding.Bindable
-import java.util.Calendar
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -19,14 +15,14 @@ import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.system.ThemeUtil
+import java.util.Calendar
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class RadioViewModel(
     private val albumArtUtil: AlbumArtUtil,
     preferenceUtil: PreferenceUtil
 ) : BaseViewModel() {
 
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private val scope = MainScope()
 
     // Play state
     // ========================================================================

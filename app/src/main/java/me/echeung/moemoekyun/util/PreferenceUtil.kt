@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.tfcporciuncula.flow.FlowSharedPreferences
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.echeung.moemoekyun.client.api.library.Jpop
 import me.echeung.moemoekyun.util.system.LocaleUtil
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class PreferenceUtil(context: Context) {
 
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)

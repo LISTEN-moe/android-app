@@ -6,11 +6,7 @@ import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.coroutines.toFlow
-import java.util.concurrent.TimeUnit
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.CheckFavoriteQuery
@@ -35,6 +31,7 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.client.model.search
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 class APIClient(
     okHttpClient: OkHttpClient,
@@ -42,7 +39,7 @@ class APIClient(
     private val authUtil: AuthUtil
 ) {
 
-    private val scope = CoroutineScope(Job() + Dispatchers.Main)
+    private val scope = MainScope()
 
     private val client: ApolloClient
     private val songsCache: SongsCache
@@ -185,7 +182,6 @@ class APIClient(
     /**
      * Gets all songs.
      */
-    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getAllSongs(): List<Song> {
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
@@ -198,7 +194,6 @@ class APIClient(
     /**
      * Gets and subscribes to song queue info.
      */
-    @OptIn(ExperimentalCoroutinesApi::class)
     suspend fun getQueue(user: User) {
         val queue = client.query(QueueQuery()).await()
 
