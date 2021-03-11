@@ -16,8 +16,7 @@ import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.library.Jpop
-import me.echeung.moemoekyun.client.api.library.Kpop
+import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.databinding.ActivityMainBinding
 import me.echeung.moemoekyun.databinding.RadioControlsBinding
@@ -245,9 +244,8 @@ class MainActivity : BaseActivity() {
 
         // Pre-check the library mode
         when (preferenceUtil.libraryMode().get()) {
-            Jpop.NAME -> menu.findItem(R.id.action_library_jpop).isChecked = true
-
-            Kpop.NAME -> menu.findItem(R.id.action_library_kpop).isChecked = true
+            Library.Jpop.id -> menu.findItem(R.id.action_library_jpop).isChecked = true
+            Library.Kpop.id -> menu.findItem(R.id.action_library_kpop).isChecked = true
         }
     }
 
@@ -255,13 +253,13 @@ class MainActivity : BaseActivity() {
         when (item.itemId) {
             R.id.action_library_jpop -> {
                 item.isChecked = true
-                setLibraryMode(Jpop.NAME)
+                setLibraryMode(Library.Jpop)
                 return true
             }
 
             R.id.action_library_kpop -> {
                 item.isChecked = true
-                setLibraryMode(Kpop.NAME)
+                setLibraryMode(Library.Kpop)
                 return true
             }
 
@@ -350,7 +348,7 @@ class MainActivity : BaseActivity() {
         songActionsUtil.showSongsDialog(this, getString(R.string.last_played), radioViewModel.history)
     }
 
-    private fun setLibraryMode(libraryMode: String) {
+    private fun setLibraryMode(libraryMode: Library) {
         radioClient.changeLibrary(libraryMode)
         broadcastAuthEvent()
         invalidateOptionsMenu()

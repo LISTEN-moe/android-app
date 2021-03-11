@@ -27,8 +27,7 @@ import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.library.Jpop
-import me.echeung.moemoekyun.client.api.library.Kpop
+import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.api.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.auth.AuthUtil
@@ -390,9 +389,8 @@ class RadioService : Service() {
 
                     // Handles changing library mode via Android Auto
                     when (mediaId) {
-                        LIBRARY_JPOP -> radioClient.changeLibrary(Jpop.NAME)
-
-                        LIBRARY_KPOP -> radioClient.changeLibrary(Kpop.NAME)
+                        LIBRARY_JPOP -> radioClient.changeLibrary(Library.Jpop)
+                        LIBRARY_KPOP -> radioClient.changeLibrary(Library.Kpop)
                     }
                 }
             })

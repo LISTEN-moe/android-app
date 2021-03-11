@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.client.api.socket
 import android.content.Context
 import android.util.Log
 import com.squareup.moshi.Moshi
+import java.io.IOException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -22,7 +23,6 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import java.io.IOException
 
 class Socket(
     private val context: Context,

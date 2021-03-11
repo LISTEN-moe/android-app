@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.tfcporciuncula.flow.FlowSharedPreferences
-import me.echeung.moemoekyun.client.api.library.Jpop
+import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.util.system.LocaleUtil
 
 class PreferenceUtil(context: Context) {
@@ -14,7 +14,7 @@ class PreferenceUtil(context: Context) {
 
     fun language() = prefs.getString(PREF_GENERAL_LANGUAGE, LocaleUtil.DEFAULT)!!
 
-    fun libraryMode() = flowPrefs.getString(LIBRARY_MODE, Jpop.NAME)!!
+    fun libraryMode() = flowPrefs.getString(LIBRARY_MODE, Library.Jpop.id)
 
     fun isNowPlayingExpanded() = flowPrefs.getBoolean(NOW_PLAYING_EXPANDED, true)
 

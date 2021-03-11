@@ -1,9 +1,7 @@
 package me.echeung.moemoekyun.client
 
 import me.echeung.moemoekyun.client.api.APIClient
-import me.echeung.moemoekyun.client.api.library.Jpop
-import me.echeung.moemoekyun.client.api.library.Kpop
-import me.echeung.moemoekyun.client.api.library.Library
+import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
@@ -21,18 +19,18 @@ class RadioClient(
     val api: APIClient
 
     init {
-        setLibrary(preferenceUtil.libraryMode().get())
+        setLibrary(Library.fromId(preferenceUtil.libraryMode().get()))
 
         this.api = APIClient(networkClient.client, networkClient.apolloCache, authUtil)
     }
 
-    fun changeLibrary(newMode: String) {
+    fun changeLibrary(newLibrary: Library) {
         // Avoid unnecessary changes
-        if (preferenceUtil.libraryMode().get() == newMode) {
+        if (preferenceUtil.libraryMode().get() == newLibrary.id) {
             return
         }
 
-        setLibrary(newMode)
+        setLibrary(newLibrary)
 
         socket.reconnect()
 
@@ -42,17 +40,17 @@ class RadioClient(
         }
     }
 
-    private fun setLibrary(libraryName: String) {
-        preferenceUtil.libraryMode().set(libraryName)
-        library = if (libraryName == Kpop.NAME) Kpop.INSTANCE else Jpop.INSTANCE
+    private fun setLibrary(newLibrary: Library) {
+        preferenceUtil.libraryMode().set(newLibrary.id)
+        library = newLibrary
     }
 
     companion object {
-        var library: Library = Jpop.INSTANCE
+        var library: Library = Library.Jpop
             private set
 
         fun isKpop(): Boolean {
-            return library.name == Kpop.NAME
+            return library.name == Library.Kpop.id
         }
     }
 }

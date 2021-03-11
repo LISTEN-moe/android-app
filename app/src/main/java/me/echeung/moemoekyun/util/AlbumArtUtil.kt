@@ -16,6 +16,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
+import kotlin.math.max
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
@@ -24,7 +25,6 @@ import me.echeung.moemoekyun.util.ext.launchNow
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import kotlin.math.max
 
 class AlbumArtUtil(
     private val context: Context
