@@ -14,7 +14,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 93
-        versionName '5.3.0'
+        versionName '5.3.1'
     }
 
     buildFeatures {
