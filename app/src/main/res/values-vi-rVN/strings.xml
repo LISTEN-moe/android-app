@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="submit">Gửi đi</string>
+    <string name="error">Đã xảy ra lỗi</string>
+    <string name="copied_to_clipboard">Đã sao chép vào bộ nhớ tạm</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_play">Phát</string>
+    <string name="action_pause">Tạm dừng</string>
+    <string name="action_stop">Dừng lại</string>
+    <string name="action_favorite">Yêu thích</string>
+    <string name="action_unfavorite">Bỏ yêu thích</string>
+    <string name="action_request">Yêu cầu</string>
+    <string name="action_undo">Hoàn tác</string>
+    <!-- == Radio stations == -->
+    <string name="action_library">Ga</string>
+    <string name="jpop">J-pop</string>
+    <string name="kpop">K-pop</string>
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Hẹn giờ tắt</string>
+    <string name="set">Đặt</string>
+    <string name="close">Đóng</string>
+    <string name="cancel_timer">Hủy hẹn giờ</string>
+    <string name="sleep_timer_canceled">Hẹn giờ bị hủy</string>
+    <!-- == Search == -->
+    <string name="search">Tìm kiếm...</string>
+    <string name="clear_query">Xóa truy vấn</string>
+    <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">Không có kết quả cho \"%s\"</string>
+    <!-- == Sort == -->
+    <string name="sort">Sắp xếp</string>
+    <string name="sort_title">Tiêu đề</string>
+    <string name="sort_artist">Nghệ sĩ</string>
+    <string name="sort_desc">Giảm dần</string>
+    <!-- == Auth == -->
+    <string name="register">Đăng ký</string>
+    <string name="login">Đăng nhập</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="username_or_email">Tên người dùng / địa chỉ email</string>
+    <string name="username">Tên người dùng</string>
+    <string name="email">Địa chỉ email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="password_confirm">Xác nhận mật khẩu</string>
+    <string name="mfa_prompt">Nhập mã bảo mật được tạo bởi ứng dụng xác thực của bạn.</string>
+    <string name="mfa_hint">Mã bảo mật 6 chữ số</string>
+    <string name="logout_confirmation">Bạn có chắc bạn muốn đăng xuất không?</string>
+    <string name="logged_out">Đã đăng xuất</string>
+    <string name="login_required">Đăng nhập để sử dụng tính năng này.</string>
+    <string name="required">Cần có</string>
+    <string name="password_mismatch">Mật khẩu không khớp</string>
+    <string name="forgot_password">Quên mật khẩu?</string>
+    <!-- == Radio tab == -->
+    <string name="play_pause">Phát/Tạm dừng</string>
+    <string name="last_played">Phát lần cuối</string>
+    <string name="favorite">Thêm vào mục yêu thích</string>
+    <!-- e.g. Requested by: username -->
+    <string name="requested_by">Yêu cầu bởi: %s</string>
+    <string name="event_start_title">Một sự kiện sắp diễn ra!</string>
+    <!-- == User tab == -->
+    <string name="no_favorites">Chưa có mục yêu thích</string>
+    <string name="filter_favorites">Lọc mục yêu thích</string>
+    <!-- e.g. Unfavorited <Song Title> -->
+    <string name="unfavorited">Bỏ yêu thích %s</string>
+    <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d xếp hàng</string>
+    <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d xếp hàng, %d trước của bạn</string>
+    <string name="random_request">Yêu cầu bài hát ngẫu nhiên</string>
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <!-- e.g. Requested <Song Title> -->
+    <string name="requested_song">Đã yêu cầu %s</string>
+    <string name="requested_random_song">Đã yêu cầu một bài hát ngẫu nhiên</string>
+    <!-- == Song details == -->
+    <string name="song_title">Tiêu đề</string>
+    <string name="song_album">Album</string>
+    <string name="song_artist">Nghệ sĩ</string>
+    <string name="song_source">Nguồn</string>
+    <string name="song_duration">Thời lượng</string>
+    <string name="song_release_date">Ngày phát hành</string>
+    <string name="song_uploader">Người đăng</string>
+    <string name="song_last_played">Phát lần cuối</string>
+    <string name="song_tags">Nhãn</string>
+    <!-- == No Internet view == -->
+    <string name="no_internet">Không thể kết nối với LISTEN.moe\n\nKiểm tra kết nối Internet của bạn</string>
+    <string name="retry">Thử lại</string>
+    <!-- == About == -->
+    <string name="about">Giới thiệu</string>
+    <!-- e.g. Version 1.0 -->
+    <string name="version">Phiên Bản %s</string>
+    <string name="rate">Đánh giá trên Google Play</string>
+    <string name="github">Gắn dấu sao trên GitHub</string>
+    <string name="translate">Giúp chúng tôi dịch</string>
+    <string name="translators">Dịch giả</string>
+    <string name="licenses">Giấy phép</string>
+    <string name="listenmoe">LISTEN.moe radio</string>
+    <string name="open_in_browser">Mở trong trình duyệt</string>
+    <string name="discord">Tham gia với chúng tôi trên Discord</string>
+    <string name="patreon">Nhận yêu cầu / Hỗ trợ chúng tôi</string>
+    <string name="privacy_policy">Chính sách bảo mật</string>
+    <!-- == Settings == -->
+    <string name="settings">Cài đặt</string>
+    <string name="system_default">Mặc định hệ thống</string>
+    <string name="pref_header_general">Chung</string>
+    <string name="pref_title_language">Ngôn ngữ</string>
+    <string name="pref_title_general_download">Tự động tải xuống hình ảnh</string>
+    <string name="pref_header_music">Âm nhạc</string>
+    <string name="pref_title_general_romaji">Thích romaji</string>
+    <string name="pref_title_general_romaji_summary">\"Nanahira\" thay vì \"Nanahira\"</string>
+    <string name="pref_title_general_random_request_title">Tiêu đề yêu cầu ngẫu nhiên</string>
+    <string name="pref_title_general_random_request_summary">Hiển thị tên bài hát được yêu cầu</string>
+    <string name="pref_title_lockscreen_albumart_title">Album Nghệ thuật</string>
+    <string name="pref_title_lockscreen_albumart_summary">Hiển thị ảnh bìa album trên màn hình khóa và Android Tự động</string>
+    <string name="pref_title_color_now_playing_title">Màu màn hình hiện đang phát</string>
+    <string name="pref_title_color_now_playing_summary">Sử dụng màu chính của ảnh bìa album</string>
+    <string name="pref_header_audio">Âm thanh</string>
+    <string name="pref_title_pause_on_noisy_title">Tạm dừng cho tai nghe</string>
+    <string name="pref_title_pause_on_noisy_summary">Nhạc sẽ tạm dừng khi tháo tai nghe</string>
+    <string name="pref_title_audio_pause_on_loss_title">Tạm dừng cho phương tiện</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Nhạc sẽ tạm dừng khi phương tiện khác phát, chẳng hạn như video hoặc nhạc khác</string>
+    <string name="pref_title_audio_duck_title">Giảm âm lượng</string>
+    <string name="pref_title_audio_duck_summary">Âm lượng nhạc sẽ được giảm xuống cho các thông báo, điều hướng, v. v.</string>
+</resources>

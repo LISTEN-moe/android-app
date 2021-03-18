@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- e.g. 10 requests remaining -->
+    <plurals name="user_requests">
+        <item quantity="other">%d yêu cầu còn lại</item>
+    </plurals>
+    <!-- Timer -->
+    <plurals name="minutes">
+        <item quantity="other">%d phút</item>
+    </plurals>
+    <!-- Confirmation of timer being set -->
+    <plurals name="sleep_timer_set">
+        <item quantity="other">Đặt hẹn giờ trong %d phút</item>
+    </plurals>
+</resources>

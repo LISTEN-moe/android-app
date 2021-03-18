@@ -44,7 +44,7 @@
     <string name="mfa_prompt">输入您的验证应用生成的安全码</string>
     <string name="mfa_hint">6位数的安全码</string>
     <string name="logout_confirmation">您确定要登出吗？</string>
-    <string name="logged_out">以登出</string>
+    <string name="logged_out">已登出</string>
     <string name="login_required">登录来使用这个功能</string>
     <string name="required">必填</string>
     <string name="password_mismatch">密码不匹配</string>

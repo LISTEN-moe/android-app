@@ -25,16 +25,17 @@
 
     <!--
         On https://crowdin.com/project/listenmoe-android-app/settings#members
-        [...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n\\n')
+        copy([...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => '\\n' + div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'))
     -->
     <string name="translators_list" translatable="false">
-        3316482
+        \n3316482
         \nAnany Meza
         \narkon94
         \nArthur Um
         \nAtFr
         \nbhj
         \nChuen Li
+        \nClaireStanfield
         \nCliptons
         \nCrawl
         \nDiavolo69
@@ -52,13 +53,14 @@
         \nGiorgioHerbie
         \nGuai
         \nGuo Yunhe
+        \nHoa Gia Đại Thiếu
         \nIdesmi
         \nIgor Pissolati
         \nIsabel Vianna Montovani
+        \nKana
         \nKaede
         \nkairuu
         \nkamal-kun
-        \nKana
         \nKathya Teran
         \nKhaing Yin Mon Aung
         \nLeozard
@@ -69,6 +71,7 @@
         \nMelisa Wijaya
         \nMiinc
         \nMuhammed Gültekin
+        \nmwety
         \nNartis
         \nNick
         \nnicoro
@@ -113,6 +116,8 @@
 
     <string-array name="pref_language_names" translatable="false">
         <item>@string/system_default</item>
+        <item>Bahasa Indonesia</item>
+        <item>Bahasa Melayu</item>
         <item>Catalan</item>
         <item>Deutsch</item>
         <item>English (UK)</item>
@@ -120,16 +125,15 @@
         <item>Español</item>
         <item>Esperanto</item>
         <item>Français</item>
-        <item>Bahasa Indonesia</item>
         <item>Italiano</item>
         <item>Lietuvių</item>
-        <item>Bahasa Melayu</item>
         <item>Nederlands</item>
         <item>සිංහල</item>
         <item>Svenska</item>
         <item>Português</item>
         <item>Русский</item>
         <item>Türkçe</item>
+        <item>Tiếng Việt</item>
         <item>한국어</item>
         <item>日本語</item>
         <item>简体中文</item>
@@ -138,6 +142,8 @@
 
     <string-array name="pref_language_codes" translatable="false">
         <item>default</item>
+        <item>in</item>
+        <item>ms</item>
         <item>ca</item>
         <item>de</item>
         <item>en-rGB</item>
@@ -145,16 +151,15 @@
         <item>es</item>
         <item>eo</item>
         <item>fr</item>
-        <item>in</item>
         <item>it</item>
         <item>lt</item>
-        <item>ms</item>
         <item>nl</item>
         <item>si</item>
         <item>sv</item>
         <item>pt</item>
         <item>ru</item>
         <item>tr</item>
+        <item>vn</item>
         <item>ko</item>
         <item>ja</item>
         <item>zh-rCN</item>
