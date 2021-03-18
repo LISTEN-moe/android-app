@@ -7,8 +7,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import java.lang.ref.WeakReference
-import java.util.Random
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.databinding.SongItemBinding
@@ -18,6 +16,8 @@ import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import java.lang.ref.WeakReference
+import java.util.Random
 
 class SongsListAdapter(
     activity: Activity,

@@ -5,8 +5,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.util.Log
-import java.util.Locale
 import me.echeung.moemoekyun.util.PreferenceUtil
+import java.util.Locale
 
 // Based on https://proandroiddev.com/change-language-programmatically-at-runtime-on-android-5e6bc15c758
 class LocaleUtil(

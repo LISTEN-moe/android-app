@@ -2,8 +2,8 @@ package me.echeung.moemoekyun.client.stream.player
 
 import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.Player
-import kotlin.math.max
 import kotlinx.coroutines.delay
+import kotlin.math.max
 
 abstract class StreamPlayer<T : Player> {
 

@@ -27,7 +27,7 @@ subprojects {
         android.set(false)
         outputToConsole.set(true)
         ignoreFailures.set(false)
-        enableExperimentalRules.set(true)
+//        enableExperimentalRules.set(true)
         filter {
             exclude("**/generated/**")
             include("**/kotlin/**")

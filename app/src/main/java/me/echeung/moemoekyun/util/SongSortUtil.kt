@@ -4,10 +4,10 @@ import android.content.Context
 import android.view.Menu
 import android.view.MenuItem
 import androidx.preference.PreferenceManager
-import java.util.Comparator
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.model.Song
+import java.util.Comparator
 
 class SongSortUtil(
     private val context: Context

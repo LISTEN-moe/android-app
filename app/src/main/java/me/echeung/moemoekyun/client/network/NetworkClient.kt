@@ -3,13 +3,13 @@ package me.echeung.moemoekyun.client.network
 import android.content.Context
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
-import java.io.File
-import java.util.concurrent.TimeUnit
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Response
+import java.io.File
+import java.util.concurrent.TimeUnit
 
 class NetworkClient(
     context: Context,

@@ -6,7 +6,6 @@ import com.apollographql.apollo.api.cache.http.HttpCachePolicy
 import com.apollographql.apollo.cache.http.ApolloHttpCache
 import com.apollographql.apollo.coroutines.await
 import com.apollographql.apollo.coroutines.toFlow
-import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +30,7 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.client.model.search
 import okhttp3.OkHttpClient
+import java.util.concurrent.TimeUnit
 
 class APIClient(
     okHttpClient: OkHttpClient,
