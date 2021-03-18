@@ -70,7 +70,7 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPl
                 .setContentType(C.CONTENT_TYPE_MUSIC)
                 .setUsage(C.USAGE_MEDIA)
                 .build()
-            player!!.audioAttributes = audioAttributes
+            player!!.audioComponent!!.setAudioAttributes(audioAttributes, true)
         }
 
         // Set stream
