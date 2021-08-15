@@ -8,21 +8,8 @@ on:
   pull_request:
 
 jobs:
-  check_wrapper:
-    name: Validate Gradle Wrapper
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v2
-
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
-
   build:
     name: Build app
-    needs: check_wrapper
-    if: "!startsWith(github.event.head_commit.message, '[SKIP CI]')"
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +21,10 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v2
 
-      - name: Set up JDK 11
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 11
