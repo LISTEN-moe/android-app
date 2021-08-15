@@ -33,15 +33,16 @@ jobs:
         run: |
           mkdir -p ~/.gradle
           cp .github/runner-files/ci-gradle.properties ~/.gradle/gradle.properties
+
       - name: Build app
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: assemblePlaystoreRelease
+          arguments: bundlePlaystoreRelease
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
 
-      # Sign APK and create release for tags
+      # Sign app bundle and create release for tags
 
       - name: Get tag name
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
@@ -49,11 +50,12 @@ jobs:
         run: |
           set -x
           echo "VERSION_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
-      - name: Sign APK
+
+      - name: Sign app bundle
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/apk/playstore/release
+          releaseDirectory: app/build/outputs/bundle/playstoreRelease
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
@@ -61,23 +63,13 @@ jobs:
 
       - name: Create release
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.VERSION_TAG }}
-          release_name: ${{ env.VERSION_TAG }}
+          name: ${{ env.VERSION_TAG }}
+          files: |
+            ${{ env.SIGNED_RELEASE_FILE }}
           draft: true
           prerelease: false
-
-      - name: Upload APK to release
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.SIGNED_RELEASE_FILE }}
-          asset_name: listen-moe-playstore-${{ env.VERSION_TAG }}.apk
-          asset_content_type: application/vnd.android.package-archive
