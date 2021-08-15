@@ -24,7 +24,8 @@
             android:configChanges="screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Splash">
+            android:theme="@style/Theme.Splash"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.MUSIC_PLAYER" />
@@ -37,23 +38,28 @@
         </activity>
         <activity android:name=".ui.activity.SearchActivity"
             android:label="@string/search"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.SettingsActivity"
             android:label="@string/settings"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.auth.AuthLoginActivity"
             android:label="@string/login"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.auth.AuthRegisterActivity"
             android:label="@string/register"
-            android:parentActivityName=".ui.activity.MainActivity" />
+            android:parentActivityName=".ui.activity.MainActivity"
+            android:exported="false" />
 
         <service
             android:name=".service.RadioService"
