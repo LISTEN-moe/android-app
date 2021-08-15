@@ -1,14 +1,14 @@
 package me.echeung.moemoekyun.client.stream.player
 
-import com.google.android.exoplayer2.ExoPlaybackException
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
 import kotlinx.coroutines.delay
 import kotlin.math.max
 
 abstract class StreamPlayer<T : Player> {
 
-    protected val eventListener = object : Player.EventListener {
-        override fun onPlayerError(error: ExoPlaybackException) {
+    protected val eventListener = object : Player.Listener {
+        override fun onPlayerError(error: PlaybackException) {
             // Try to reconnect to the stream
             val wasPlaying = isPlaying
 
@@ -53,14 +53,14 @@ abstract class StreamPlayer<T : Player> {
 
     suspend fun fadeOut() {
         while (player != null) {
-            val vol = player!!.audioComponent!!.volume
+            val vol = player!!.volume
             val newVol = max(0f, vol - 0.05f)
 
             if (newVol <= 0) {
                 break
             }
 
-            player!!.audioComponent!!.volume = newVol
+            player!!.volume = newVol
 
             delay(200)
         }

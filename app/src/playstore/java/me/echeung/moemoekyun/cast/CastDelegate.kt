@@ -3,14 +3,12 @@ package me.echeung.moemoekyun.cast
 import android.content.Context
 import android.net.Uri
 import android.view.Menu
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.MediaMetadata
 import com.google.android.exoplayer2.ext.cast.CastPlayer
 import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.util.MimeTypes
-import com.google.android.gms.cast.MediaInfo
-import com.google.android.gms.cast.MediaMetadata
-import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastContext
-import com.google.android.gms.common.images.WebImage
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -25,7 +23,7 @@ import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class CastDelegate(
-    private val context: Context,
+    context: Context,
     private val radioViewModel: RadioViewModel,
     private val stream: Stream,
     private val socket: Socket
@@ -91,24 +89,18 @@ class CastDelegate(
 
         val song = radioViewModel.currentSong!!
 
-        val metadata = MediaMetadata(MediaMetadata.MEDIA_TYPE_MUSIC_TRACK).apply {
-            putString(MediaMetadata.KEY_TITLE, song.titleString)
-            putString(MediaMetadata.KEY_ARTIST, song.artistsString)
-        }
-
-        song.albumArtUrl?.let {
-            metadata.addImage(WebImage(Uri.parse(it)))
-        }
-
-        val mediaInfo = MediaInfo.Builder(RadioClient.library.streamUrl)
-            .setStreamType(MediaInfo.STREAM_TYPE_LIVE)
-            .setContentType(MimeTypes.AUDIO_UNKNOWN)
-            .setMetadata(metadata)
+        val metadata = MediaMetadata.Builder()
+            .setTitle(song.titleString)
+            .setArtist(song.artistsString)
+            .setArtworkUri(Uri.parse(song.albumArtUrl))
             .build()
 
-        val item = MediaQueueItem.Builder(mediaInfo)
+        val item = MediaItem.Builder()
+            .setUri(RadioClient.library.streamUrl)
+            .setMimeType(MimeTypes.AUDIO_UNKNOWN)
+            .setMediaMetadata(metadata)
             .build()
 
-        castPlayer?.loadItem(item, 0)
+        castPlayer?.addMediaItem(0, item)
     }
 }
