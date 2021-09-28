@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application") version "7.0.2" apply false
     id("com.android.library") version "7.0.2" apply false
-    kotlin("android") version "1.5.21" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
+    kotlin("android") version "1.5.31" apply false
+    id("org.jmailen.kotlinter") version "3.6.0"
     id("com.github.ben-manes.versions") version "0.33.0"
 }
 
@@ -16,22 +16,13 @@ allprojects {
 }
 
 subprojects {
-    apply {
-        plugin("org.jlleitschuh.gradle.ktlint")
-    }
+    apply(plugin = "org.jmailen.kotlinter")
 
-    ktlint {
-        debug.set(false)
-        version.set("0.42.1")
-        verbose.set(true)
-        android.set(false)
-        outputToConsole.set(true)
-        ignoreFailures.set(false)
-//        enableExperimentalRules.set(true)
-        filter {
-            exclude("**/generated/**")
-            include("**/kotlin/**")
-        }
+    kotlinter {
+        experimentalRules = true
+
+        // Doesn't play well with Android Studio
+        disabledRules = arrayOf("experimental:argument-list-wrapping")
     }
 }
 
