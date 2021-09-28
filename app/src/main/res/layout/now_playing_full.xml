@@ -14,40 +14,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/radio_song_info_wrapper"
-            android:layout_width="match_parent"
+        <include
+            android:id="@+id/radio_album_art"
+            layout="@layout/album_art_card"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:orientation="vertical"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintBottom_toTopOf="@+id/radio_songs"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            binding:vm="@{vm}" />
 
-            <include
-                android:id="@+id/radio_album_art"
-                layout="@layout/album_art_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                binding:vm="@{vm}" />
-
-        </FrameLayout>
-
-        <FrameLayout
+        <include
+            android:id="@+id/radio_songs"
+            layout="@layout/radio_songs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@+id/radio_controls"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radio_song_info_wrapper">
-
-            <include
-                android:id="@+id/radio_songs"
-                layout="@layout/radio_songs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                binding:vm="@{vm}" />
-
-        </FrameLayout>
+            app:layout_constraintTop_toBottomOf="@+id/radio_album_art"
+            binding:vm="@{vm}" />
 
         <include
             android:id="@+id/radio_controls"
