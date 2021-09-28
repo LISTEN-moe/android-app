@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- e.g. 10 requests remaining -->
+    <plurals name="user_requests">
+        <item quantity="other">Tinggal %d permintaan</item>
+    </plurals>
     <!-- Timer -->
     <plurals name="minutes">
         <item quantity="other">%d minit</item>

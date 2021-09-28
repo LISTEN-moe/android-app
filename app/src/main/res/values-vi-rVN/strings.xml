@@ -9,7 +9,7 @@
     <string name="action_pause">Tạm dừng</string>
     <string name="action_stop">Dừng lại</string>
     <string name="action_favorite">Yêu thích</string>
-    <string name="action_unfavorite">Bỏ yêu thích</string>
+    <string name="action_unfavorite">Bỏ thích</string>
     <string name="action_request">Yêu cầu</string>
     <string name="action_undo">Hoàn tác</string>
     <!-- == Radio stations == -->
@@ -60,7 +60,7 @@
     <string name="no_favorites">Chưa có mục yêu thích</string>
     <string name="filter_favorites">Lọc mục yêu thích</string>
     <!-- e.g. Unfavorited <Song Title> -->
-    <string name="unfavorited">Bỏ yêu thích %s</string>
+    <string name="unfavorited">Bỏ thích %s</string>
     <!-- e.g. 2 queued -->
     <string name="queue_info_none_queued">%d xếp hàng</string>
     <!-- e.g. 2 queued, 1 before yours -->

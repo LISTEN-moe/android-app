@@ -10,24 +10,112 @@
     <string name="action_stop">Henti</string>
     <string name="action_favorite">Kegemaran</string>
     <string name="action_unfavorite">Buang dari kegemaran</string>
+    <string name="action_request">Minta</string>
+    <string name="action_undo">Buat asal</string>
     <!-- == Radio stations == -->
+    <string name="action_library">Stesen</string>
+    <string name="jpop">J-Pop</string>
+    <string name="kpop">K-Pop</string>
     <!-- == Sleep timer == -->
+    <string name="sleep_timer">Pemasa tidur</string>
+    <string name="set">Tetapkan</string>
+    <string name="close">Tutup</string>
+    <string name="cancel_timer">Batalkan pemasa</string>
+    <string name="sleep_timer_canceled">Pemasa telah dibatalkan</string>
     <!-- == Search == -->
+    <string name="search">Cari...</string>
+    <string name="clear_query">Kosongkan pertanyaan</string>
     <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">Tidak ada hasil untuk \"%s\"</string>
     <!-- == Sort == -->
+    <string name="sort">Isih</string>
+    <string name="sort_title">Judul</string>
+    <string name="sort_artist">Artis</string>
+    <string name="sort_desc">Menurun</string>
     <!-- == Auth == -->
+    <string name="register">Daftar</string>
+    <string name="login">Log masuk</string>
+    <string name="logout">Log keluar</string>
+    <string name="username_or_email">Nama pengguna / alamat surat elektrik</string>
+    <string name="username">Nama pengguna</string>
+    <string name="email">Alamat surat elektrik</string>
+    <string name="password">Kata laluan</string>
+    <string name="password_confirm">Sahkan kata laluan</string>
+    <string name="mfa_prompt">Masukkan kod keselamatan yang dijana oleh aplikasi pengesahan anda.</string>
+    <string name="mfa_hint">Kod keselamatan berenam angka</string>
+    <string name="logout_confirmation">Adakah anda pasti ingin log keluar?</string>
+    <string name="logged_out">Anda telah mengelog keluar</string>
+    <string name="login_required">Gunakan ciri ini dengan mengelog masuk.</string>
+    <string name="required">Diperlukan</string>
+    <string name="password_mismatch">Kata laluan tidak sepadan</string>
+    <string name="forgot_password">Lupa kata laluan anda?</string>
     <!-- == Radio tab == -->
+    <string name="play_pause">Main/Henti seketika</string>
+    <string name="last_played">Lagu terakhir dimainkan</string>
+    <string name="favorite">Tambahkan ke kegemaran</string>
     <!-- e.g. Requested by: username -->
+    <string name="requested_by">Diminta oleh: %s</string>
+    <string name="event_start_title">Sebuah acara sedang bermula!</string>
     <!-- == User tab == -->
+    <string name="no_favorites">Belum ada kegemaran</string>
+    <string name="filter_favorites">Tapis kegemaran</string>
     <!-- e.g. Unfavorited <Song Title> -->
+    <string name="unfavorited">%s dikeluarkan dari kegemaran</string>
     <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d buah dalam baris gilir</string>
     <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d buah dalam baris gilir. Giliran anda selepas %d buah</string>
+    <string name="random_request">Minta lagu rawak</string>
     <!-- == Song item actions == -->
     <!-- Requested song title -->
     <!-- e.g. Requested <Song Title> -->
+    <string name="requested_song">%s telah diminta</string>
+    <string name="requested_random_song">Lagu rawak telah diminta</string>
     <!-- == Song details == -->
+    <string name="song_title">Judul</string>
+    <string name="song_album">Album</string>
+    <string name="song_artist">Artis</string>
+    <string name="song_source">Sumber</string>
+    <string name="song_duration">Tempoh</string>
+    <string name="song_release_date">Tarikh penerbitan</string>
+    <string name="song_uploader">Pemuat naik</string>
+    <string name="song_last_played">Lagu terakhir dimainkan</string>
+    <string name="song_tags">Tanda</string>
     <!-- == No Internet view == -->
+    <string name="no_internet">Pelayan tidak dapat bersambung sekarang\n\nPastikan sambungan Internet anda tidak terputus</string>
+    <string name="retry">Cuba lagi</string>
     <!-- == About == -->
+    <string name="about">Tentang</string>
     <!-- e.g. Version 1.0 -->
+    <string name="version">Versi %s</string>
+    <string name="rate">Berikan penilaian di Gedung Play</string>
+    <string name="github">Berikan bintang di GitHub</string>
+    <string name="translate">Sumbangkan terjemahan anda</string>
+    <string name="translators">Penterjemah</string>
+    <string name="licenses">Lesen</string>
+    <string name="listenmoe">Radio LISTEN.moe</string>
+    <string name="open_in_browser">Buka di penyemak imbas</string>
+    <string name="discord">Sertai kami di Discord</string>
+    <string name="patreon">Dapatkan permintaan / Sokongi kami</string>
+    <string name="privacy_policy">Dasar kerahsiaan</string>
     <!-- == Settings == -->
+    <string name="settings">Tetapan</string>
+    <string name="system_default">Lalaian sistem</string>
+    <string name="pref_header_general">Umum</string>
+    <string name="pref_title_language">Bahasa</string>
+    <string name="pref_title_general_download">Muat turun gambar secara kendiri</string>
+    <string name="pref_header_music">Muzik</string>
+    <string name="pref_title_general_romaji">Utamakan rumi Jepun</string>
+    <string name="pref_title_general_romaji_summary">Bukan \"ななひら\", sebaliknya \"Nanahira\"</string>
+    <string name="pref_title_general_random_request_summary">Tunjuk tajuk lagu yang telah diminta</string>
+    <string name="pref_title_lockscreen_albumart_title">Kulit album</string>
+    <string name="pref_title_lockscreen_albumart_summary">Tunjuk kulit album pada skrin kunci dan Android Auto</string>
+    <string name="pref_title_color_now_playing_summary">Gunakan warna asal kulit album</string>
+    <string name="pref_header_audio">Bunyi</string>
+    <string name="pref_title_pause_on_noisy_title">Henti seketika untuk fon kepala</string>
+    <string name="pref_title_pause_on_noisy_summary">Muzik akan berhenti seketika apabila fon kepala dikeluarkan</string>
+    <string name="pref_title_audio_pause_on_loss_title">Henti seketika untuk media</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Muzik akan diberhentikan seketika apabila media lain bermain seperti video dan muzik lain</string>
+    <string name="pref_title_audio_duck_title">Kelantangan merunduk</string>
+    <string name="pref_title_audio_duck_summary">Kelantangan muzik akan diturunkan untuk notifikasi, navigasi, dll.</string>
 </resources>
