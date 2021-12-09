@@ -31,7 +31,9 @@ class App : Application(), ServiceConnection {
         preferenceUtil = PreferenceUtil(this)
 
         startKoin {
-            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
+            // TODO: https://github.com/InsertKoinIO/koin/issues/1188
+            androidLogger(if (BuildConfig.DEBUG) Level.ERROR else Level.NONE)
+            // androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
             androidContext(this@App)
 
             modules(appModule, radioModule, viewModelModule)
