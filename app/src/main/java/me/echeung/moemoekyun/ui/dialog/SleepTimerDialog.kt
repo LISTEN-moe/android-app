@@ -93,7 +93,7 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
     }
 
     private fun makeTimerPendingIntent(flag: Int): PendingIntent? {
-        return PendingIntent.getService(activity, 0, makeTimerIntent(), flag)
+        return PendingIntent.getService(activity, 0, makeTimerIntent(), flag or PendingIntent.FLAG_IMMUTABLE)
     }
 
     private fun makeTimerIntent(): Intent {

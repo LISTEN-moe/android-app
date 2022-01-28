@@ -36,7 +36,7 @@ class MusicNotifier internal constructor(
         val action = Intent(service, MainActivity::class.java)
         action.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
 
-        val clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT)
+        val clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val deleteIntent = getPlaybackActionService(RadioService.STOP)
 
         val style = MediaStyle().setMediaSession(service.mediaSession!!.sessionToken)
@@ -96,7 +96,7 @@ class MusicNotifier internal constructor(
             action = intentAction
         }
 
-        return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 
     companion object {
