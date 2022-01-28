@@ -138,7 +138,7 @@ class RadioViewModel(
 
     // Indirectly bind to albumArt: https://stackoverflow.com/a/39087434
     @ColorInt
-    fun getBackgroundColor(context: Context, albumArt: Bitmap?): Int {
+    fun getBackgroundColor(context: Context, _albumArt: Bitmap?): Int {
         if (!albumArtUtil.isDefaultAlbumArt) {
             val accentColor = albumArtUtil.currentAccentColor
             if (accentColor != 0) {
@@ -172,7 +172,7 @@ class RadioViewModel(
         }
 
     init {
-        albumArtUtil.channel.asFlow()
+        albumArtUtil.flow
             .onEach { notifyPropertyChanged(BR.albumArt) }
             .launchIn(scope)
 

@@ -16,11 +16,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchNow
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -36,7 +35,7 @@ class AlbumArtUtil(
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
     }
 
-    val channel = ConflatedBroadcastChannel<Bitmap>()
+    val flow = MutableSharedFlow<Bitmap>(replay = 1)
 
     var isDefaultAlbumArt = true
         private set
@@ -95,8 +94,8 @@ class AlbumArtUtil(
 
     private fun updateListeners(bitmap: Bitmap) {
         currentAlbumArt = bitmap
-        launchNow {
-            channel.send(bitmap)
+        launchIO {
+            flow.emit(bitmap)
         }
     }
 

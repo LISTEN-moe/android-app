@@ -20,7 +20,6 @@ import android.support.v4.media.session.PlaybackStateCompat
 import android.util.Log
 import android.view.KeyEvent
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
@@ -90,11 +89,11 @@ class RadioService : Service() {
             .onEach { updateMediaSession() }
             .launchIn(scope)
 
-        albumArtUtil.channel.asFlow()
+        albumArtUtil.flow
             .onEach { updateMediaSession() }
             .launchIn(scope)
 
-        stream.channel.asFlow()
+        stream.flow
             .onEach {
                 when (it) {
                     Stream.State.PLAY -> {
@@ -120,7 +119,7 @@ class RadioService : Service() {
             }
             .launchIn(scope)
 
-        socket.channel.asFlow()
+        socket.flow
             .onEach {
                 when (it) {
                     is Socket.SocketResponse -> it.info?.let { data -> onSocketReceive(data) }
@@ -375,7 +374,7 @@ class RadioService : Service() {
 
                 override fun onPlayFromSearch(query: String?, extras: Bundle?) {
                     if (!query.isNullOrEmpty()) {
-                        when (query.toLowerCase()) {
+                        when (query.lowercase()) {
                             "jpop", "j-pop" -> onPlayFromMediaId(LIBRARY_JPOP, extras)
                             "kpop", "k-pop" -> onPlayFromMediaId(LIBRARY_KPOP, extras)
                         }

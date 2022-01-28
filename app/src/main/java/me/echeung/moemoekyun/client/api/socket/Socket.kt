@@ -5,8 +5,8 @@ import android.util.Log
 import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.response.BaseResponse
@@ -29,7 +29,7 @@ class Socket(
     private val networkClient: NetworkClient
 ) : WebSocketListener() {
 
-    val channel = ConflatedBroadcastChannel<SocketResult>()
+    val flow = MutableSharedFlow<SocketResult>(replay = 1)
 
     private val scope = MainScope()
 
@@ -155,7 +155,7 @@ class Socket(
     private fun parseResponse(jsonString: String?) {
         if (jsonString == null) {
             launchIO {
-                channel.send(SocketError())
+                flow.emit(SocketError())
             }
             return
         }
@@ -181,7 +181,7 @@ class Socket(
                     }
 
                     launchIO {
-                        channel.send(SocketResponse(updateResponse.d))
+                        flow.emit(SocketResponse(updateResponse.d))
                     }
                 }
 

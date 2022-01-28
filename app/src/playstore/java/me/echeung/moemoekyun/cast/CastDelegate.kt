@@ -10,7 +10,6 @@ import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.util.MimeTypes
 import com.google.android.gms.cast.framework.CastContext
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
@@ -55,7 +54,7 @@ class CastDelegate(
                 }
             })
 
-            merge(socket.channel.asFlow(), stream.channel.asFlow())
+            merge(socket.flow, stream.flow)
                 .distinctUntilChanged()
                 .onEach { updateSong() }
                 .launchIn(scope)

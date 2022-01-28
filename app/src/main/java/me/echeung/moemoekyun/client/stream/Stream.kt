@@ -1,15 +1,14 @@
 package me.echeung.moemoekyun.client.stream
 
 import android.content.Context
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import me.echeung.moemoekyun.client.stream.player.LocalStreamPlayer
 import me.echeung.moemoekyun.client.stream.player.StreamPlayer
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchNow
 
 class Stream(context: Context) {
 
-    val channel = ConflatedBroadcastChannel<State>()
+    val flow = MutableSharedFlow<State>(replay = 1)
 
     private var localPlayer: StreamPlayer<*> = LocalStreamPlayer(context)
     private var altPlayer: StreamPlayer<*>? = null
@@ -49,24 +48,24 @@ class Stream(context: Context) {
     fun play() {
         getCurrentPlayer().play()
 
-        launchNow {
-            channel.send(State.PLAY)
+        launchIO {
+            flow.emit(State.PLAY)
         }
     }
 
     fun pause() {
         getCurrentPlayer().pause()
 
-        launchNow {
-            channel.send(State.PAUSE)
+        launchIO {
+            flow.emit(State.PAUSE)
         }
     }
 
     fun stop() {
         getCurrentPlayer().stop()
 
-        launchNow {
-            channel.send(State.STOP)
+        launchIO {
+            flow.emit(State.STOP)
         }
     }
 
@@ -74,7 +73,7 @@ class Stream(context: Context) {
         launchIO {
             getCurrentPlayer().fadeOut()
 
-            channel.send(State.STOP)
+            flow.emit(State.STOP)
         }
     }
 
