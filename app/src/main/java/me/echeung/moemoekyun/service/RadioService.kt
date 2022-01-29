@@ -17,12 +17,14 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.RatingCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import android.view.KeyEvent
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import logcat.LogPriority
+import logcat.asLog
+import logcat.logcat
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
@@ -167,7 +169,7 @@ class RadioService : Service() {
         try {
             startTime = TimeUtil.toCalendar(info.startTime!!)
         } catch (e: ParseException) {
-            Log.e(TAG, e.message ?: "Error parsing time")
+            logcat(LogPriority.ERROR) { "Error parsing time: ${e.asLog()}" }
         }
 
         // Check if current song is favorited
@@ -363,7 +365,7 @@ class RadioService : Service() {
                             updateMediaSessionPlaybackState()
                         }
 
-                        else -> Log.d(TAG, "Unsupported action: " + action!!)
+                        else -> logcat { "Unsupported action: $action" }
                     }
                 }
 
@@ -497,8 +499,6 @@ class RadioService : Service() {
         const val TIMER_STOP = "$APP_PACKAGE_NAME.timer_stop"
     }
 }
-
-private val TAG = RadioService::class.java.simpleName
 
 private const val APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID
 private const val MILLISECONDS_IN_SECOND = 1000

@@ -9,6 +9,9 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
+import logcat.AndroidLogcatLogger
+import logcat.LogPriority
+import logcat.LogcatLogger
 import me.echeung.moemoekyun.di.appModule
 import me.echeung.moemoekyun.di.radioModule
 import me.echeung.moemoekyun.di.viewModelModule
@@ -26,6 +29,10 @@ class App : Application(), ServiceConnection {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (!LogcatLogger.isInstalled) {
+            LogcatLogger.install(AndroidLogcatLogger(if (BuildConfig.DEBUG) LogPriority.VERBOSE else LogPriority.ERROR))
+        }
 
         // TODO: instantiate/access this with Koin
         preferenceUtil = PreferenceUtil(this)

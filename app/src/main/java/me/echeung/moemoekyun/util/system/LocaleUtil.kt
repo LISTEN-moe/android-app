@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
-import android.util.Log
+import logcat.LogPriority
+import logcat.asLog
+import logcat.logcat
 import me.echeung.moemoekyun.util.PreferenceUtil
 import java.util.Locale
 
@@ -46,7 +48,7 @@ class LocaleUtil(
                 activity.setTitle(label)
             }
         } catch (e: PackageManager.NameNotFoundException) {
-            Log.e(activity.localClassName, e.message, e)
+            logcat(LogPriority.ERROR) { e.asLog() }
         }
     }
 

@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.client.api.socket
 
 import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -9,6 +8,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import logcat.LogPriority
+import logcat.asLog
+import logcat.logcat
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.response.BaseResponse
 import me.echeung.moemoekyun.client.api.socket.response.ConnectResponse
@@ -45,7 +47,7 @@ class Socket(
 
     fun connect() {
         synchronized(socketLock) {
-            Log.d(TAG, "Connecting to socket...")
+            logcat { "Connecting to socket..." }
 
             if (socket != null) {
                 disconnect()
@@ -63,14 +65,14 @@ class Socket(
             socket?.cancel()
             socket = null
 
-            Log.d(TAG, "Disconnected from socket")
+            logcat { "Disconnected from socket" }
         }
     }
 
     fun reconnect() {
         if (attemptingReconnect) return
 
-        Log.d(TAG, "Reconnecting to socket in $retryTime ms")
+        logcat { "Reconnecting to socket in $retryTime ms" }
 
         disconnect()
 
@@ -90,7 +92,7 @@ class Socket(
 
     fun update() {
         synchronized(socketLock) {
-            Log.d(TAG, "Requesting update from socket")
+            logcat { "Requesting update from socket" }
 
             if (socket == null) {
                 connect()
@@ -102,26 +104,26 @@ class Socket(
     }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        Log.d(TAG, "Socket connection opened")
+        logcat { "Socket connection opened" }
 
         retryTime = RETRY_TIME_MIN
         attemptingReconnect = false
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
-        Log.d(TAG, "Received message from socket: $text")
+        logcat { "Received message from socket: $text" }
 
         parseResponse(text)
     }
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
-        Log.d(TAG, "Socket connection closed: $reason")
+        logcat { "Socket connection closed: $reason" }
 
         reconnect()
     }
 
     override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-        Log.e(TAG, "Socket failure: ${t.message}", t)
+        logcat(LogPriority.ERROR) { "Socket failure: ${t.asLog()}" }
 
         reconnect()
     }
@@ -129,7 +131,7 @@ class Socket(
     private fun initHeartbeat(delayMillis: Long) {
         clearHeartbeat()
         heartbeatJob = scope.launch {
-            Log.d(TAG, "Created heartbeat job for $delayMillis ms")
+            logcat { "Created heartbeat job for $delayMillis ms" }
             sendHeartbeat(delayMillis)
         }
     }
@@ -141,7 +143,7 @@ class Socket(
             return
         }
 
-        Log.d(TAG, "Sending heartbeat to socket")
+        logcat { "Sending heartbeat to socket" }
         socket!!.send("{ \"op\": 9 }")
 
         // Repeat
@@ -149,7 +151,7 @@ class Socket(
     }
 
     private fun clearHeartbeat() {
-        Log.d(TAG, "Cancelling heartbeat job")
+        logcat { "Cancelling heartbeat job" }
         heartbeatJob?.cancel()
     }
 
@@ -189,10 +191,10 @@ class Socket(
                 // Heartbeat ACK
                 10 -> {}
 
-                else -> Log.d(TAG, "Received invalid socket data: $jsonString")
+                else -> logcat { "Received invalid socket data: $jsonString" }
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Failed to parse socket data: $jsonString", e)
+            logcat(LogPriority.ERROR) { "Failed to parse socket data: $jsonString ${e.asLog()}" }
         }
     }
 
@@ -206,7 +208,7 @@ class Socket(
                 }
             }
         } catch (e: IOException) {
-            Log.e(TAG, "Failed to parse notification data: $jsonString", e)
+            logcat(LogPriority.ERROR) { "Failed to parse notification data: $jsonString ${e.asLog()}" }
         }
     }
 
@@ -227,8 +229,6 @@ class Socket(
     class SocketResponse(val info: UpdateResponse.Details?) : SocketResult
     class SocketError : SocketResult
 }
-
-private val TAG = Socket::class.java.simpleName
 
 private val json = Json { ignoreUnknownKeys = true }
 
