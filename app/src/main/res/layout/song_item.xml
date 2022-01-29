@@ -15,10 +15,8 @@
         android:baselineAligned="false"
         android:gravity="fill_horizontal"
         android:orientation="vertical"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp">
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp">
 
         <TextView
             android:layout_width="match_parent"
