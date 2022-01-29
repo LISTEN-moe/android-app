@@ -1,13 +1,18 @@
 package me.echeung.moemoekyun.client.api.socket.response
 
+import kotlinx.serialization.Serializable
 import me.echeung.moemoekyun.client.model.Event
 
-class EventNotificationResponse : NotificationResponse() {
-    override val d: Details? = null
+@Serializable
+class EventNotificationResponse : BaseResponse() {
+    val t: String? = null
+    val d: Details? = null
 
-    class Details : NotificationResponse.Details() {
-        val event: Event? = null
-    }
+    @Serializable
+    data class Details(
+        val type: String,
+        val event: Event
+    )
 
     companion object {
         const val TYPE = "EVENT"

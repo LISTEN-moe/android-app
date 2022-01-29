@@ -2,12 +2,13 @@ package me.echeung.moemoekyun.client.api.socket
 
 import android.content.Context
 import android.util.Log
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.response.BaseResponse
 import me.echeung.moemoekyun.client.api.socket.response.ConnectResponse
@@ -161,18 +162,18 @@ class Socket(
         }
 
         try {
-            val baseResponse = getResponse(BaseResponse::class.java, jsonString)
-            when (baseResponse!!.op) {
+            val baseResponse = json.decodeFromString<BaseResponse>(jsonString)
+            when (baseResponse.op) {
                 // Heartbeat init
                 0 -> {
-                    val connectResponse = getResponse(ConnectResponse::class.java, jsonString)
-                    initHeartbeat(connectResponse!!.d!!.heartbeat.toLong())
+                    val connectResponse = json.decodeFromString<ConnectResponse>(jsonString)
+                    initHeartbeat(connectResponse.d!!.heartbeat.toLong())
                 }
 
                 // Update
                 1 -> {
-                    val updateResponse = getResponse(UpdateResponse::class.java, jsonString)
-                    if (!isValidUpdate(updateResponse!!)) {
+                    val updateResponse = json.decodeFromString<UpdateResponse>(jsonString)
+                    if (!isValidUpdate(updateResponse)) {
                         return
                     }
                     if (isNotification(updateResponse)) {
@@ -197,11 +198,11 @@ class Socket(
 
     private fun parseNotification(jsonString: String) {
         try {
-            val notificationResponse = getResponse(NotificationResponse::class.java, jsonString)
-            when (notificationResponse!!.t) {
+            val notificationResponse = json.decodeFromString<NotificationResponse>(jsonString)
+            when (notificationResponse.t) {
                 EventNotificationResponse.TYPE -> {
-                    val eventResponse = getResponse(EventNotificationResponse::class.java, jsonString)
-                    EventNotification.notify(context, eventResponse!!.d!!.event!!.name)
+                    val eventResponse = json.decodeFromString<EventNotificationResponse>(jsonString)
+                    EventNotification.notify(context, eventResponse.d!!.event!!.name)
                 }
             }
         } catch (e: IOException) {
@@ -222,11 +223,6 @@ class Socket(
         return updateResponse.t == NOTIFICATION
     }
 
-    @Throws(IOException::class)
-    private fun <T : BaseResponse> getResponse(responseClass: Class<T>, jsonString: String): T? {
-        return MOSHI.adapter(responseClass).fromJson(jsonString)
-    }
-
     interface SocketResult
     class SocketResponse(val info: UpdateResponse.Details?) : SocketResult
     class SocketError : SocketResult
@@ -234,7 +230,7 @@ class Socket(
 
 private val TAG = Socket::class.java.simpleName
 
-private val MOSHI = Moshi.Builder().build()
+private val json = Json { ignoreUnknownKeys = true }
 
 private const val TRACK_UPDATE = "TRACK_UPDATE"
 private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
