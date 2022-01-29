@@ -102,7 +102,7 @@ class MusicNotifier internal constructor(
     companion object {
         const val NOTIFICATION_CHANNEL_NAME = "Default"
         const val NOTIFICATION_CHANNEL_ID = "default"
-
-        private const val NOTIFICATION_ID = 1
     }
 }
+
+private const val NOTIFICATION_ID = 1

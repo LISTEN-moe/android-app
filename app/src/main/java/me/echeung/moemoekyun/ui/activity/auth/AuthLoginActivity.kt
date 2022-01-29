@@ -146,10 +146,8 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
     private fun setError(editText: TextInputEditText, isError: Boolean, errorMessage: String) {
         editText.error = if (isError) errorMessage else null
     }
-
-    companion object {
-        private const val OTP_LENGTH = 6
-        private val OTP_REGEX = "^[0-9]*$".toRegex()
-        private const val FORGOT_PASSWORD_URL = "https://listen.moe/login/forgot"
-    }
 }
+
+private const val OTP_LENGTH = 6
+private val OTP_REGEX = "^[0-9]*$".toRegex()
+private const val FORGOT_PASSWORD_URL = "https://listen.moe/login/forgot"

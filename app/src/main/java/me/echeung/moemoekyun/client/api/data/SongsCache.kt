@@ -27,8 +27,6 @@ class SongsCache(private val apiClient: APIClient) {
 
         return cachedSongs
     }
-
-    companion object {
-        private val MAX_AGE = TimeUnit.DAYS.toMillis(1)
-    }
 }
+
+private val MAX_AGE = TimeUnit.DAYS.toMillis(1)

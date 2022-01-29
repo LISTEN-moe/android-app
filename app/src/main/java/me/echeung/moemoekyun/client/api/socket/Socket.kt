@@ -230,18 +230,16 @@ class Socket(
     interface SocketResult
     class SocketResponse(val info: UpdateResponse.Details?) : SocketResult
     class SocketError : SocketResult
-
-    companion object {
-        private val TAG = Socket::class.java.simpleName
-
-        private val MOSHI = Moshi.Builder().build()
-
-        private const val TRACK_UPDATE = "TRACK_UPDATE"
-        private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
-        private const val QUEUE_UPDATE = "QUEUE_UPDATE"
-        private const val NOTIFICATION = "NOTIFICATION"
-
-        private const val RETRY_TIME_MIN = 250
-        private const val RETRY_TIME_MAX = 4000
-    }
 }
+
+private val TAG = Socket::class.java.simpleName
+
+private val MOSHI = Moshi.Builder().build()
+
+private const val TRACK_UPDATE = "TRACK_UPDATE"
+private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
+private const val QUEUE_UPDATE = "QUEUE_UPDATE"
+private const val NOTIFICATION = "NOTIFICATION"
+
+private const val RETRY_TIME_MIN = 250
+private const val RETRY_TIME_MAX = 4000

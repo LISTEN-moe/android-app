@@ -138,16 +138,14 @@ class SongsListAdapter(
             binding.executePendingBindings()
         }
     }
+}
 
-    companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Song>() {
-            override fun areItemsTheSame(oldSong: Song, newSong: Song): Boolean {
-                return oldSong.id == newSong.id
-            }
+private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Song>() {
+    override fun areItemsTheSame(oldSong: Song, newSong: Song): Boolean {
+        return oldSong.id == newSong.id
+    }
 
-            override fun areContentsTheSame(oldSong: Song, newSong: Song): Boolean {
-                return oldSong.id == newSong.id
-            }
-        }
+    override fun areContentsTheSame(oldSong: Song, newSong: Song): Boolean {
+        return oldSong.id == newSong.id
     }
 }

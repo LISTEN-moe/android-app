@@ -94,12 +94,10 @@ class SongSortUtil(
         val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getBoolean(PREF_LIST_PREFIX_DESC + listKey, false)
     }
-
-    companion object {
-        private const val PREF_LIST_PREFIX_TYPE = "song_sort_list_type_"
-        private const val PREF_LIST_PREFIX_DESC = "song_sort_list_desc_"
-
-        private const val SORT_TITLE = "song_sort_title"
-        private const val SORT_ARTIST = "song_sort_artist"
-    }
 }
+
+private const val PREF_LIST_PREFIX_TYPE = "song_sort_list_type_"
+private const val PREF_LIST_PREFIX_DESC = "song_sort_list_desc_"
+
+private const val SORT_TITLE = "song_sort_title"
+private const val SORT_ARTIST = "song_sort_artist"

@@ -493,11 +493,6 @@ class RadioService : Service() {
     }
 
     companion object {
-        private val TAG = RadioService::class.java.simpleName
-
-        private const val APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID
-        private const val MILLISECONDS_IN_SECOND = 1000
-
         const val PLAY_PAUSE = "$APP_PACKAGE_NAME.play_pause"
         const val STOP = "$APP_PACKAGE_NAME.stop"
         const val TOGGLE_FAVORITE = "$APP_PACKAGE_NAME.toggle_favorite"
@@ -505,13 +500,18 @@ class RadioService : Service() {
         const val LIBRARY_KPOP = "$APP_PACKAGE_NAME.library_kpop"
         const val UPDATE = "$APP_PACKAGE_NAME.update"
         const val TIMER_STOP = "$APP_PACKAGE_NAME.timer_stop"
-
-        private const val MEDIA_SESSION_ACTIONS = (
-            PlaybackStateCompat.ACTION_PLAY
-                or PlaybackStateCompat.ACTION_PAUSE
-                or PlaybackStateCompat.ACTION_PLAY_PAUSE
-                or PlaybackStateCompat.ACTION_STOP
-                or PlaybackStateCompat.ACTION_SET_RATING
-            )
     }
 }
+
+private val TAG = RadioService::class.java.simpleName
+
+private const val APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID
+private const val MILLISECONDS_IN_SECOND = 1000
+
+private const val MEDIA_SESSION_ACTIONS = (
+    PlaybackStateCompat.ACTION_PLAY
+        or PlaybackStateCompat.ACTION_PAUSE
+        or PlaybackStateCompat.ACTION_PLAY_PAUSE
+        or PlaybackStateCompat.ACTION_STOP
+        or PlaybackStateCompat.ACTION_SET_RATING
+    )
