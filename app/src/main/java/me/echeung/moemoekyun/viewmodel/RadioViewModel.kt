@@ -91,30 +91,6 @@ class RadioViewModel(
             notifyPropertyChanged(BR.secondLastSong)
         }
 
-    // Queue
-    // ========================================================================
-
-    @get:Bindable
-    var queueSize: Int = 0
-        set(queueSize) {
-            field = queueSize
-            notifyPropertyChanged(BR.queueSize)
-        }
-
-    @get:Bindable
-    var inQueueByUser: Int = 0
-        set(inQueueByUser) {
-            field = inQueueByUser
-            notifyPropertyChanged(BR.inQueueByUser)
-        }
-
-    @get:Bindable
-    var queuePosition: Int = 0
-        set(queuePosition) {
-            field = queuePosition
-            notifyPropertyChanged(BR.queuePosition)
-        }
-
     // Mini player
     // ========================================================================
 
@@ -189,9 +165,5 @@ class RadioViewModel(
 
         lastSong = null
         secondLastSong = null
-
-        queueSize = 0
-        inQueueByUser = 0
-        queuePosition = 0
     }
 }

@@ -163,11 +163,6 @@ class RadioService : Service() {
         radioViewModel.setRequester(info.requester)
         radioViewModel.event = info.event
 
-        // TODO: get queue info
-//        radioViewModel.queueSize = info.queue.inQueue
-//        radioViewModel.inQueueByUser = info.queue.inQueueByUser
-//        radioViewModel.queuePosition = info.queue.inQueueBeforeUser
-
         var startTime: Calendar? = null
         try {
             startTime = TimeUtil.toCalendar(info.startTime!!)

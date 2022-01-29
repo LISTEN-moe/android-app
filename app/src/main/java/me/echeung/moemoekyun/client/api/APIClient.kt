@@ -8,22 +8,16 @@ import com.apollographql.apollo3.cache.http.HttpFetchPolicy
 import com.apollographql.apollo3.cache.http.httpCache
 import com.apollographql.apollo3.cache.http.httpFetchPolicy
 import com.apollographql.apollo3.network.okHttpClient
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LoginMfaMutation
 import me.echeung.moemoekyun.LoginMutation
-import me.echeung.moemoekyun.QueueQuery
-import me.echeung.moemoekyun.QueueSubscription
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
-import me.echeung.moemoekyun.UserQueueSubscription
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.data.SongsCache
 import me.echeung.moemoekyun.client.api.data.transform
@@ -40,14 +34,10 @@ class APIClient(
     private val authUtil: AuthUtil,
 ) {
 
-    private val scope = MainScope()
-
     private val client: ApolloClient
     private val songsCache: SongsCache
 
     init {
-//        val transportFactory = WebSocketSubscriptionTransport.Factory(webSocketUrl, okHttpClient)
-
         val cacheFile = File(context.externalCacheDir, "apolloCache")
         val cacheSize = 1024 * 1024.toLong()
 
@@ -56,7 +46,6 @@ class APIClient(
             .httpCache(cacheFile, cacheSize)
             .httpFetchPolicy(DEFAULT_CACHE_POLICY)
             .okHttpClient(okHttpClient)
-//            .subscriptionTransportFactory(transportFactory)
             .build()
 
         songsCache = SongsCache(this)
@@ -210,33 +199,6 @@ class APIClient(
             .execute()
 
         return response.data?.songs?.songs?.map { it.transform() } ?: emptyList()
-    }
-
-    /**
-     * Gets and subscribes to song queue info.
-     */
-    suspend fun getQueue(user: User) {
-        val queue = client.query(QueueQuery()).execute()
-
-//           callback.onQueueSuccess(response.data?.queue ?: 0)
-
-        client.subscription(QueueSubscription(RadioClient.library.name))
-            .toFlow()
-            .onEach {
-//                    callback.onQueueSuccess(response.data?.queue?.amount ?: 0)
-            }
-            .launchIn(scope)
-
-        // TODO: handle user change
-        client.subscription(UserQueueSubscription(RadioClient.library.name, user.uuid))
-            .toFlow()
-            .onEach {
-//                    callback.onUserQueueSuccess(
-//                            response.data?.userQueue?.amount ?: 0,
-//                            response.data?.userQueue?.before ?: 0
-//                    )
-            }
-            .launchIn(scope)
     }
 
     enum class LoginState {
