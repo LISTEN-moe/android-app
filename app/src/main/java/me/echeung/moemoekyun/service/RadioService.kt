@@ -17,13 +17,15 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.RatingCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
-import android.util.Log
 import android.view.KeyEvent
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import logcat.LogPriority
+import logcat.asLog
+import logcat.logcat
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
@@ -46,6 +48,7 @@ import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
 import java.text.ParseException
 import java.util.Calendar
+import java.util.Locale
 
 class RadioService : Service() {
 
@@ -173,7 +176,7 @@ class RadioService : Service() {
         try {
             startTime = TimeUtil.toCalendar(info.startTime!!)
         } catch (e: ParseException) {
-            Log.e(TAG, e.message ?: "Error parsing time")
+            logcat(LogPriority.ERROR) { "Error parsing time: ${e.asLog()}" }
         }
 
         // Check if current song is favorited
@@ -370,13 +373,13 @@ class RadioService : Service() {
                                 updateMediaSessionPlaybackState()
                             }
 
-                            else -> Log.d(TAG, "Unsupported action: " + action!!)
+                            else -> logcat { "Unsupported action: $action" }
                         }
                     }
 
                     override fun onPlayFromSearch(query: String?, extras: Bundle?) {
                         if (!query.isNullOrEmpty()) {
-                            when (query.toLowerCase()) {
+                            when (query.lowercase(Locale.ROOT)) {
                                 "jpop", "j-pop" -> onPlayFromMediaId(LIBRARY_JPOP, extras)
                                 "kpop", "k-pop" -> onPlayFromMediaId(LIBRARY_KPOP, extras)
                             }
@@ -390,7 +393,7 @@ class RadioService : Service() {
                     override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
                         super.onPlayFromMediaId(mediaId, extras)
 
-// Handles changing library mode via Android Auto
+                        // Handles changing library mode via Android Auto
                         when (mediaId) {
                             LIBRARY_JPOP -> radioClient.changeLibrary(Library.Jpop)
                             LIBRARY_KPOP -> radioClient.changeLibrary(Library.Kpop)
@@ -496,8 +499,6 @@ class RadioService : Service() {
     }
 
     companion object {
-        private val TAG = RadioService::class.java.simpleName
-
         private const val APP_PACKAGE_NAME = BuildConfig.APPLICATION_ID
         private const val MILLISECONDS_IN_SECOND = 1000
 
