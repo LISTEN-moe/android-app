@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import androidx.annotation.ColorInt
 import androidx.databinding.Bindable
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.BR
@@ -61,7 +60,7 @@ class RadioViewModel(
 
     @Bindable
     fun getRequester(): String? {
-        return if (requester == null || requester!!.displayName.isNullOrBlank()) {
+        return if (requester == null || requester!!.displayName.isBlank()) {
             null
         } else requester!!.displayName
     }

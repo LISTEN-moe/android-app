@@ -89,8 +89,6 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>() {
             }
         }
     }
-
-    companion object {
-        private const val LIST_ID = "SONGS_LIST"
-    }
 }
+
+private const val LIST_ID = "SONGS_LIST"

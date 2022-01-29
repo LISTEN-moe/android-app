@@ -37,7 +37,7 @@ import java.io.File
 class APIClient(
     context: Context,
     okHttpClient: OkHttpClient,
-    private val authUtil: AuthUtil
+    private val authUtil: AuthUtil,
 ) {
 
     private val scope = MainScope()

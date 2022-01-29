@@ -129,8 +129,6 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
             }
         }
     }
-
-    companion object {
-        private const val LIST_ID = "FAVORITES_LIST"
-    }
 }
+
+private const val LIST_ID = "FAVORITES_LIST"

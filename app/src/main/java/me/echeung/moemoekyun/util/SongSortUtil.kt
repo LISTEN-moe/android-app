@@ -1,27 +1,27 @@
 package me.echeung.moemoekyun.util
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.view.Menu
 import android.view.MenuItem
 import androidx.preference.PreferenceManager
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.model.Song
-import java.util.Comparator
 
 class SongSortUtil(
-    private val context: Context
+    context: Context
 ) {
 
+    private val sharedPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+
     fun setListSortType(listId: String, sortType: String) {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
             .putString(PREF_LIST_PREFIX_TYPE + listId, sortType)
             .apply()
     }
 
     fun setListSortDescending(listId: String, descending: Boolean) {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit()
             .putBoolean(PREF_LIST_PREFIX_DESC + listId, descending)
             .apply()
@@ -86,12 +86,10 @@ class SongSortUtil(
     }
 
     private fun getSortTypeByListId(listKey: String): String {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getString(PREF_LIST_PREFIX_TYPE + listKey, SORT_TITLE)!!
     }
 
     private fun getSortDescendingByListId(listKey: String): Boolean {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         return sharedPrefs.getBoolean(PREF_LIST_PREFIX_DESC + listKey, false)
     }
 }

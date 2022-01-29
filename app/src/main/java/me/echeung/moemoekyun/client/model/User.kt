@@ -6,6 +6,6 @@ import kotlinx.serialization.Serializable
 data class User(
     val uuid: String,
     val displayName: String,
-    val avatarImage: String?,
-    val bannerImage: String?
+    val avatarImage: String? = null,
+    val bannerImage: String? = null,
 )

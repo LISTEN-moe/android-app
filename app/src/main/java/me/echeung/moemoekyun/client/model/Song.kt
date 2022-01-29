@@ -24,13 +24,13 @@ data class Song(
         } else title
 
     val artistsString: String?
-        get() = SongDescriptor.getDisplayString(artists, App.preferenceUtil!!.shouldPreferRomaji().get())
+        get() = getSongDisplayString(artists, App.preferenceUtil!!.shouldPreferRomaji().get())
 
     val albumsString: String?
-        get() = SongDescriptor.getDisplayString(albums, App.preferenceUtil!!.shouldPreferRomaji().get())
+        get() = getSongDisplayString(albums, App.preferenceUtil!!.shouldPreferRomaji().get())
 
     val sourcesString: String?
-        get() = SongDescriptor.getDisplayString(sources, App.preferenceUtil!!.shouldPreferRomaji().get())
+        get() = getSongDisplayString(sources, App.preferenceUtil!!.shouldPreferRomaji().get())
 
     val durationString: String
         get() {
