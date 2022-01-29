@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.client
 
+import android.content.Context
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.api.socket.Socket
@@ -9,6 +10,7 @@ import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.PreferenceUtil
 
 class RadioClient(
+    context: Context,
     authUtil: AuthUtil,
     networkClient: NetworkClient,
     private val preferenceUtil: PreferenceUtil,
@@ -21,7 +23,7 @@ class RadioClient(
     init {
         setLibrary(Library.fromId(preferenceUtil.libraryMode().get()))
 
-        this.api = APIClient(networkClient.client, networkClient.apolloCache, authUtil)
+        this.api = APIClient(context, networkClient.client, authUtil)
     }
 
     fun changeLibrary(newLibrary: Library) {

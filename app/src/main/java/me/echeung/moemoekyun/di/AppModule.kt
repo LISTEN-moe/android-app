@@ -29,7 +29,7 @@ val appModule = module {
 val radioModule = module {
     single { Stream(androidContext()) }
     single { Socket(androidContext(), get()) }
-    single { RadioClient(get(), get(), get(), get(), get()) }
+    single { RadioClient(androidContext(), get(), get(), get(), get(), get()) }
     single { CastDelegate(androidContext(), get(), get(), get()) }
 }
 
