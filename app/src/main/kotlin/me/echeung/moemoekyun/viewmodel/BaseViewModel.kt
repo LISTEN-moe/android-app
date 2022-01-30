@@ -7,12 +7,12 @@ import android.widget.Chronometer
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.core.view.isVisible
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.BindingAdapter
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.util.ext.loadImage
-import me.echeung.moemoekyun.util.ext.toggleVisibility
 import me.echeung.moemoekyun.util.ext.transitionBackgroundColor
 
 abstract class BaseViewModel : BaseObservable() {
@@ -53,7 +53,7 @@ abstract class BaseViewModel : BaseObservable() {
         @JvmStatic
         @BindingAdapter("android:visibility")
         fun setVisibility(v: View, visible: Boolean) {
-            v.toggleVisibility(visible)
+            v.isVisible = visible
         }
 
         @JvmStatic

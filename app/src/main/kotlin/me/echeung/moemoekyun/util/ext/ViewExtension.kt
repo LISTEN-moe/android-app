@@ -60,9 +60,7 @@ fun ImageView.loadImage(url: String?) {
         .into(this)
 }
 
-fun EditText.getTrimmedText(): String {
-    return this.text.toString().trim()
-}
+fun EditText.getTrimmedText() = text.toString().trim()
 
 fun View.transitionBackgroundColor(@ColorInt toColor: Int) {
     if (background == null) {
@@ -77,10 +75,6 @@ fun View.transitionBackgroundColor(@ColorInt toColor: Int) {
     valueAnimator.interpolator = LinearInterpolator()
     valueAnimator.addUpdateListener { animator -> setBackgroundColor(animator.animatedValue as Int) }
     valueAnimator.start()
-}
-
-fun View.toggleVisibility(visible: Boolean) {
-    visibility = if (visible) View.VISIBLE else View.GONE
 }
 
 /**
