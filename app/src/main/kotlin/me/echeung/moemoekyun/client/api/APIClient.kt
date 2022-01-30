@@ -1,13 +1,12 @@
 package me.echeung.moemoekyun.client.api
 
-import android.content.Context
+import com.apollographql.apollo3.ApolloCall
 import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.MutableExecutionOptions
+import com.apollographql.apollo3.api.Operation
 import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.cache.http.HttpFetchPolicy
-import com.apollographql.apollo3.cache.http.httpCache
+import com.apollographql.apollo3.cache.http.httpExpireTimeout
 import com.apollographql.apollo3.cache.http.httpFetchPolicy
-import com.apollographql.apollo3.network.okHttpClient
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -25,31 +24,14 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.client.model.search
-import okhttp3.OkHttpClient
-import java.io.File
+import java.util.concurrent.TimeUnit
 
 class APIClient(
-    context: Context,
-    okHttpClient: OkHttpClient,
+    private val client: ApolloClient,
     private val authUtil: AuthUtil,
 ) {
 
-    private val client: ApolloClient
-    private val songsCache: SongsCache
-
-    init {
-        val cacheFile = File(context.externalCacheDir, "apolloCache")
-        val cacheSize = 1024 * 1024.toLong()
-
-        client = ApolloClient.Builder()
-            .serverUrl(Library.API_BASE)
-            .httpCache(cacheFile, cacheSize)
-            .httpFetchPolicy(DEFAULT_CACHE_POLICY)
-            .okHttpClient(okHttpClient)
-            .build()
-
-        songsCache = SongsCache(this)
-    }
+    private val songsCache = SongsCache(this)
 
     /**
      * Authenticates to the radio.
@@ -207,8 +189,6 @@ class APIClient(
     }
 }
 
-private val DEFAULT_CACHE_POLICY = HttpFetchPolicy.NetworkFirst
-private fun <T> MutableExecutionOptions<T>.songCachePolicy(): T =
+private fun <D : Operation.Data> ApolloCall<D>.songCachePolicy(): ApolloCall<D> =
     httpFetchPolicy(HttpFetchPolicy.CacheFirst)
-// TODO: add expiration back
-// private val SONG_CACHE_POLICY = HttpFetchPolicy.CacheFirst expireAfter(1, TimeUnit.DAYS)
+        .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))

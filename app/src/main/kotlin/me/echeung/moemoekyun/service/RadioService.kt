@@ -387,8 +387,8 @@ class RadioService : Service() {
 
                     // Handles changing library mode via Android Auto
                     when (mediaId) {
-                        LIBRARY_JPOP -> radioClient.changeLibrary(Library.Jpop)
-                        LIBRARY_KPOP -> radioClient.changeLibrary(Library.Kpop)
+                        LIBRARY_JPOP -> radioClient.changeLibrary(Library.jpop)
+                        LIBRARY_KPOP -> radioClient.changeLibrary(Library.kpop)
                     }
                 }
             })

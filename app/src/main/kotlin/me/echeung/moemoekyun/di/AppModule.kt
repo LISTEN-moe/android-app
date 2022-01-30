@@ -19,7 +19,7 @@ val appModule = module {
     single { AlbumArtUtil(androidContext()) }
     single { AuthUtil(androidContext()) }
     single { LocaleUtil(get()) }
-    single { NetworkClient(get()) }
+    single { NetworkClient(androidContext(), get()) }
     single { App.preferenceUtil }
     single { SongActionsUtil(get(), get(), get(), get()) }
     single { SongSortUtil(get()) }
@@ -28,7 +28,7 @@ val appModule = module {
 val radioModule = module {
     single { Stream(androidContext()) }
     single { Socket(androidContext(), get()) }
-    single { RadioClient(androidContext(), get(), get(), get(), get(), get()) }
+    single { RadioClient(get(), get(), get(), get(), get()) }
 }
 
 val viewModelModule = module {
