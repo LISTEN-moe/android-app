@@ -46,7 +46,8 @@ abstract class StreamPlayer<T : Player> {
     }
 
     open fun stop() {
-        player?.stop(true)
+        player?.stop()
+        player?.clearMediaItems()
 
         releasePlayer()
     }
