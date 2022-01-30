@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
-import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
+import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.finish
 import me.echeung.moemoekyun.util.ext.getTrimmedText
@@ -21,19 +20,19 @@ import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
 import org.koin.android.ext.android.inject
 
-class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
+class AuthLoginActivity : BaseActivity() {
 
     private val radioClient: RadioClient by inject()
 
     private var mfaDialog: AlertDialog? = null
 
-    init {
-        layout = R.layout.activity_auth_login
-    }
+    private lateinit var binding: ActivityAuthLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityAuthLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initAppbar()
 
         binding.authBtn.setOnClickListener { login() }
@@ -47,10 +46,6 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
                 false
             },
         )
-
-        // TODO: forgot password page doesn't exist at the moment
-        binding.forgotPassword.isVisible = false
-//        binding.forgotPassword.setOnClickListener { openUrl(FORGOT_PASSWORD_URL) }
 
         // Set fields from registration
         if (intent?.getStringExtra(AuthActivityUtil.LOGIN_NAME) != null) {
@@ -150,6 +145,5 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
     companion object {
         private const val OTP_LENGTH = 6
         private val OTP_REGEX = "^[0-9]*$".toRegex()
-        private const val FORGOT_PASSWORD_URL = "https://listen.moe/login/forgot"
     }
 }
