@@ -1,6 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.AbstractKotlinCompile
 
 apply plugin: 'com.android.application'
+apply plugin: 'com.mikepenz.aboutlibraries.plugin'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlinx-serialization'
@@ -116,7 +117,8 @@ dependencies {
     // Google Cast support (not available in fdroid flavour)
     playstoreImplementation 'com.google.android.gms:play-services-cast-framework:21.0.1'
 
-    implementation 'de.psdev.licensesdialog:licensesdialog:2.1.0'
+    implementation "com.mikepenz:aboutlibraries-core:$aboutlibs_version"
+    implementation "com.mikepenz:aboutlibraries:$aboutlibs_version"
 
     implementation 'com.squareup.logcat:logcat:0.1'
 
@@ -129,16 +131,23 @@ apollo {
 }
 
 buildscript {
-    ext.kotlin_version = '1.6.10'
-    ext.apollo_version = '3.0.0'
+    ext {
+        kotlin_version = '1.6.10'
+        apollo_version = '3.0.0'
+        aboutlibs_version = '8.9.4'
+    }
     repositories {
         mavenCentral()
         google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath "com.apollographql.apollo3:apollo-gradle-plugin:$apollo_version"
+        classpath "com.mikepenz.aboutlibraries.plugin:aboutlibraries-plugin:$aboutlibs_version"
     }
 }
 

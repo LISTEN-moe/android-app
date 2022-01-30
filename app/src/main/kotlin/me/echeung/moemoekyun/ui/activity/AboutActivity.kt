@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import de.psdev.licensesdialog.LicensesDialog
+import com.mikepenz.aboutlibraries.LibsBuilder
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.base.BaseActivity
@@ -52,23 +52,12 @@ class AboutActivity : BaseActivity() {
         findViewById<View>(R.id.about_app_rate).setOnClickListener { openUrl(getString(R.string.url_store)) }
         findViewById<View>(R.id.about_app_github).setOnClickListener { openUrl(getString(R.string.url_github)) }
         findViewById<View>(R.id.about_app_translate).setOnClickListener { openUrl(getString(R.string.url_translate)) }
-        findViewById<View>(R.id.about_app_licenses).setOnClickListener { showLicensesDialog() }
+        findViewById<View>(R.id.about_app_licenses).setOnClickListener { LibsBuilder().start(this) }
 
         findViewById<View>(R.id.about_listenmoe_website).setOnClickListener { openUrl(getString(R.string.url_listenmoe)) }
         findViewById<View>(R.id.about_listenmoe_discord).setOnClickListener { openUrl(getString(R.string.url_discord)) }
         findViewById<View>(R.id.about_listenmoe_patreon).setOnClickListener { openUrl(getString(R.string.url_patreon)) }
 
         findViewById<View>(R.id.about_privacy_policy).setOnClickListener { openUrl(getString(R.string.url_privacy_policy)) }
-    }
-
-    private fun showLicensesDialog() {
-        LicensesDialog.Builder(this)
-            .setTitle(R.string.licenses)
-            .setNotices(R.raw.notices)
-            .setIncludeOwnLicense(true)
-            .setThemeResourceId(R.style.Theme_Widget_Dialog)
-            .setNoticesCssStyle(R.string.licenses_css)
-            .build()
-            .show()
     }
 }
