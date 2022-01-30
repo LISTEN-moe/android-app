@@ -49,8 +49,8 @@ class App : Application(), ServiceConnection {
     }
 
     private fun initRadioService() {
-        val intent = Intent(applicationContext, RadioService::class.java)
-        applicationContext.bindService(intent, this, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)
+        val intent = Intent(this, RadioService::class.java)
+        bindService(intent, this, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)
     }
 
     override fun onServiceConnected(className: ComponentName, service: IBinder) {

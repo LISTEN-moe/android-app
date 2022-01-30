@@ -142,11 +142,7 @@ class MainActivity : BaseActivity() {
         }
 
         searchMenu = appbar?.findViewById(R.id.appbar_search_menu)
-        searchMenu?.setOnMenuItemClickListener(object : ActionMenuView.OnMenuItemClickListener {
-            override fun onMenuItemClick(menuItem: MenuItem): Boolean {
-                return onOptionsItemSelected(menuItem)
-            }
-        })
+        searchMenu?.setOnMenuItemClickListener { menuItem -> onOptionsItemSelected(menuItem) }
     }
 
     private fun initNowPlaying() {

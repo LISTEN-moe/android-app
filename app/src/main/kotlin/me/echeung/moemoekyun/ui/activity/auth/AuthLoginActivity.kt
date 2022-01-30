@@ -90,20 +90,18 @@ class AuthLoginActivity : BaseActivity() {
     }
 
     private fun showMfaDialog() {
-        val layout = layoutInflater.inflate(R.layout.dialog_auth_mfa, findViewById(R.id.layout_root_mfa))
+        val layout =
+            layoutInflater.inflate(R.layout.dialog_auth_mfa, findViewById(R.id.layout_root_mfa))
         val otpText = layout.findViewById<TextInputEditText>(R.id.mfa_otp)
 
-        mfaDialog = MaterialAlertDialogBuilder(this, R.style.Theme_Widget_Dialog)
+        mfaDialog = MaterialAlertDialogBuilder(this)
             .setTitle(R.string.mfa_prompt)
             .setView(layout)
             .setPositiveButton(
-                R.string.submit,
-                fun(_, _) {
-                    val otpToken = otpText.text.toString().trim { it <= ' ' }
-                    if (otpToken.length != OTP_LENGTH) {
-                        return
-                    }
-
+                R.string.submit
+            ) { _, _ ->
+                val otpToken = otpText.text.toString().trim { it <= ' ' }
+                if (otpToken.length == OTP_LENGTH) {
                     launchIO {
                         try {
                             radioClient.api.authenticateMfa(otpToken)
@@ -113,7 +111,7 @@ class AuthLoginActivity : BaseActivity() {
                         }
                     }
                 }
-            )
+            }
             .create()
 
         mfaDialog!!.show()

@@ -65,7 +65,7 @@ class SongActionsUtil(
             }
         }
 
-        MaterialAlertDialogBuilder(activity, R.style.Theme_Widget_Dialog)
+        MaterialAlertDialogBuilder(activity)
             .setTitle(title)
             .setAdapter(adapter, null)
             .create()
