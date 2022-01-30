@@ -2,10 +2,10 @@ package me.echeung.moemoekyun.ui.activity.auth
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.view.isVisible
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
@@ -49,7 +49,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
         )
 
         // TODO: forgot password page doesn't exist at the moment
-        binding.forgotPassword.visibility = View.GONE
+        binding.forgotPassword.isVisible = false
 //        binding.forgotPassword.setOnClickListener { openUrl(FORGOT_PASSWORD_URL) }
 
         // Set fields from registration

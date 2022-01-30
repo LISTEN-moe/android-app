@@ -31,18 +31,21 @@
             android:paddingVertical="@dimen/activity_vertical_margin">
 
             <include
+                android:id="@+id/about_card_app"
                 layout="@layout/about_card_app"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
 
             <include
+                android:id="@+id/about_card_listenmoe"
                 layout="@layout/about_card_listenmoe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp" />
 
             <include
+                android:id="@+id/about_card_translations"
                 layout="@layout/about_card_translations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
