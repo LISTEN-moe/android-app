@@ -14,8 +14,8 @@ android {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 23
         targetSdkVersion 31
-        versionCode 98
-        versionName '5.5.0'
+        versionCode 99
+        versionName '5.5.1'
     }
 
     buildFeatures {
