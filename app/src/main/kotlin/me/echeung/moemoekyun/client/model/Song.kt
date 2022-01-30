@@ -1,8 +1,10 @@
 package me.echeung.moemoekyun.client.model
 
 import kotlinx.serialization.Serializable
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.Library
+import me.echeung.moemoekyun.util.SongFormatter
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.get
 import java.util.Locale
 
 @Serializable
@@ -15,22 +17,28 @@ data class Song(
     var albums: List<SongDescriptor>? = null,
     var duration: Int = 0,
     var enabled: Boolean = false,
-    var favorite: Boolean = false
-) {
+    var favorite: Boolean = false,
+) : KoinComponent {
 
-    val titleString: String?
-        get() = if (App.preferenceUtil!!.shouldPreferRomaji().get() && !titleRomaji.isNullOrBlank()) {
-            titleRomaji
-        } else title
+    fun getTitleString(): String {
+        val songFormatter: SongFormatter = get()
+        return songFormatter.getTitle(this)
+    }
 
-    val artistsString: String?
-        get() = getSongDisplayString(artists, App.preferenceUtil!!.shouldPreferRomaji().get())
+    fun getArtistsString(): String {
+        val songFormatter: SongFormatter = get()
+        return songFormatter.getArtists(this)
+    }
 
-    val albumsString: String?
-        get() = getSongDisplayString(albums, App.preferenceUtil!!.shouldPreferRomaji().get())
+    fun getAlbumsString(): String {
+        val songFormatter: SongFormatter = get()
+        return songFormatter.getAlbums(this)
+    }
 
-    val sourcesString: String?
-        get() = getSongDisplayString(sources, App.preferenceUtil!!.shouldPreferRomaji().get())
+    fun getSourcesString(): String {
+        val songFormatter: SongFormatter = get()
+        return songFormatter.getSources(this)
+    }
 
     val durationString: String
         get() {
@@ -56,7 +64,8 @@ data class Song(
         }
 
     override fun toString(): String {
-        return "$titleString - $artistsString"
+        val songFormatter: SongFormatter = get()
+        return "${songFormatter.getTitle(this)} - ${songFormatter.getArtists(this)}"
     }
 
     fun search(query: String?): Boolean {

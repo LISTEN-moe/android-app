@@ -50,7 +50,7 @@ class RadioClient(
             private set
 
         fun isKpop(): Boolean {
-            return library.name == Library.kpop.name
+            return library == Library.kpop
         }
     }
 }

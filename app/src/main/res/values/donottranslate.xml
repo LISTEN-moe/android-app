@@ -8,8 +8,6 @@
     }]
     </string>
 
-    <string name="song_info_blank" translatable="false">-</string>
-
     <!--
         On https://crowdin.com/project/listenmoe-android-app/settings#members
         copy([...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => '\\n' + div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'))

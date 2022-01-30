@@ -22,7 +22,6 @@ import me.echeung.moemoekyun.di.viewModelModule
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.service.notification.EventNotification
 import me.echeung.moemoekyun.service.notification.MusicNotifier
-import me.echeung.moemoekyun.util.PreferenceUtil
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -36,9 +35,6 @@ class App : Application(), ServiceConnection, ImageLoaderFactory {
         if (!LogcatLogger.isInstalled) {
             LogcatLogger.install(AndroidLogcatLogger(if (BuildConfig.DEBUG) LogPriority.VERBOSE else LogPriority.ERROR))
         }
-
-        // TODO: instantiate/access this with Koin
-        preferenceUtil = PreferenceUtil(this)
 
         startKoin {
             // TODO: https://github.com/InsertKoinIO/koin/issues/1188
@@ -94,8 +90,5 @@ class App : Application(), ServiceConnection, ImageLoaderFactory {
 
     companion object {
         var service: RadioService? = null
-
-        var preferenceUtil: PreferenceUtil? = null
-            private set
     }
 }

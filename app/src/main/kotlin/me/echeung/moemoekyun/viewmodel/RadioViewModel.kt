@@ -18,7 +18,7 @@ import java.util.Calendar
 
 class RadioViewModel(
     private val albumArtUtil: AlbumArtUtil,
-    preferenceUtil: PreferenceUtil
+    preferenceUtil: PreferenceUtil,
 ) : BaseViewModel() {
 
     private val scope = MainScope()

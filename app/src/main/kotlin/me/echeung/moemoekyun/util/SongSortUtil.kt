@@ -34,17 +34,17 @@ class SongSortUtil(
         return when (sortType) {
             SORT_ARTIST ->
                 if (sortDescending) {
-                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.artistsString ?: "" }
+                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.getArtistsString() }
                 } else {
-                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.artistsString ?: "" }
+                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.getArtistsString() }
                 }
 
             // Default is SORT_TITLE
             else ->
                 if (sortDescending) {
-                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.titleString ?: "" }
+                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.getTitleString() }
                 } else {
-                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.titleString ?: "" }
+                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.getTitleString() }
                 }
         }
     }

@@ -83,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{song.albumsString ?? @string/song_info_blank}"
+                android:text="@{song.albumsString}"
                 android:textColor="@color/white"/>
 
         </LinearLayout>
@@ -104,7 +104,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{song.sourcesString ?? @string/song_info_blank}"
+                android:text="@{song.sourcesString}"
                 android:textColor="@color/white"/>
 
         </LinearLayout>

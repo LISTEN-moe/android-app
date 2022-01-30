@@ -62,9 +62,9 @@ class MusicNotifier internal constructor(
         builder.setStyle(style.setShowActionsInCompactView(0))
 
         if (song != null) {
-            builder.setContentTitle(song.titleString)
-            builder.setContentText(song.artistsString)
-            builder.setSubText(song.albumsString)
+            builder.setContentTitle(song.getTitleString())
+            builder.setContentText(song.getArtistsString())
+            builder.setSubText(song.getAlbumsString())
 
             // Add favorite action if logged in
             if (isAuthenticated) {

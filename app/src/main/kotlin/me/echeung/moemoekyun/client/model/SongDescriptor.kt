@@ -15,13 +15,12 @@ data class SongDescriptor(
     }
 }
 
-fun getSongDisplayString(songDescriptors: List<SongDescriptor>?, preferRomaji: Boolean): String? {
-    if (songDescriptors == null) {
+fun List<SongDescriptor>?.getSongDisplayString(preferRomaji: Boolean): String? {
+    if (isNullOrEmpty()) {
         return null
     }
 
-    return songDescriptors
-        .mapNotNull {
+    return mapNotNull {
             if (preferRomaji && !it.nameRomaji.isNullOrBlank()) {
                 it.nameRomaji
             } else {

@@ -1,13 +1,14 @@
 package me.echeung.moemoekyun.di
 
-import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.AlbumArtUtil
+import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
+import me.echeung.moemoekyun.util.SongFormatter
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.system.LocaleUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
@@ -20,8 +21,9 @@ val appModule = module {
     single { AuthUtil(androidContext()) }
     single { LocaleUtil(get()) }
     single { NetworkClient(androidContext(), get()) }
-    single { App.preferenceUtil }
+    single { PreferenceUtil(androidContext()) }
     single { SongActionsUtil(get(), get(), get(), get()) }
+    single { SongFormatter(get()) }
     single { SongSortUtil(get()) }
 }
 

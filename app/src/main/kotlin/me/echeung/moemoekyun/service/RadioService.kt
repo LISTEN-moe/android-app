@@ -206,9 +206,9 @@ class RadioService : Service() {
         }
 
         val metaData = MediaMetadataCompat.Builder()
-            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.titleString)
-            .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.artistsString)
-            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.albumsString)
+            .putString(MediaMetadataCompat.METADATA_KEY_TITLE, currentSong.getTitleString())
+            .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, currentSong.getArtistsString())
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.getAlbumsString())
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, (currentSong.duration * MILLISECONDS_IN_SECOND).toLong())
 
         if (preferenceUtil.shouldShowLockscreenAlbumArt().get()) {
