@@ -13,7 +13,7 @@ class Stream(context: Context) {
 
     private var localPlayer: StreamPlayer<*> = LocalStreamPlayer(context)
     private var altPlayer: StreamPlayer<*>? = null
-    
+
     private val player: StreamPlayer<*>
         get() = altPlayer ?: localPlayer
 

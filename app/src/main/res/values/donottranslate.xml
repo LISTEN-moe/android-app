@@ -13,16 +13,6 @@
 
     <string name="song_info_blank" translatable="false">-</string>
 
-    <string name="url_store" translatable="false">https://play.google.com/store/apps/details?id=me.echeung.moemoekyun</string>
-    <string name="url_github" translatable="false">https://github.com/LISTEN-moe/android-app</string>
-    <string name="url_translate" translatable="false">https://crwd.in/listenmoe-android-app</string>
-
-    <string name="url_listenmoe" translatable="false">https://listen.moe</string>
-    <!-- https://listen.moe/discord -->
-    <string name="url_discord" translatable="false">https://discordapp.com/invite/4S8JYr8</string>
-    <string name="url_patreon" translatable="false">https://www.patreon.com/odysseyradio</string>
-    <string name="url_privacy_policy" translatable="false">https://listen-moe.github.io/android-app/privacy.txt</string>
-
     <!--
         On https://crowdin.com/project/listenmoe-android-app/settings#members
         copy([...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => '\\n' + div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'))

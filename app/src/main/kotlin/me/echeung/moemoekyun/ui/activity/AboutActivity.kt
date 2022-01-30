@@ -51,19 +51,19 @@ class AboutActivity : BaseActivity() {
 
     private fun setupClickListeners() {
         binding.aboutCardApp.let {
-            it.aboutAppRate.setOnClickListener { openUrl(getString(R.string.url_store)) }
-            it.aboutAppGithub.setOnClickListener { openUrl(getString(R.string.url_github)) }
-            it.aboutAppTranslate.setOnClickListener { openUrl(getString(R.string.url_translate)) }
+            it.aboutAppRate.setOnClickListener { openUrl("https://play.google.com/store/apps/details?id=me.echeung.moemoekyun") }
+            it.aboutAppGithub.setOnClickListener { openUrl("https://github.com/LISTEN-moe/android-app") }
+            it.aboutAppTranslate.setOnClickListener { openUrl("https://crwd.in/listenmoe-android-app") }
             it.aboutAppLicenses.setOnClickListener { showLicensesDialog() }
         }
 
         binding.aboutCardListenmoe.let {
-            it.aboutListenmoeWebsite.setOnClickListener { openUrl(getString(R.string.url_listenmoe)) }
-            it.aboutListenmoeDiscord.setOnClickListener { openUrl(getString(R.string.url_discord)) }
-            it.aboutListenmoePatreon.setOnClickListener { openUrl(getString(R.string.url_patreon)) }
+            it.aboutListenmoeWebsite.setOnClickListener { openUrl("https://listen.moe") }
+            it.aboutListenmoeDiscord.setOnClickListener { openUrl("https://discordapp.com/invite/4S8JYr8") }
+            it.aboutListenmoePatreon.setOnClickListener { openUrl("https://www.patreon.com/odysseyradio") }
         }
 
-        binding.aboutPrivacyPolicy.setOnClickListener { openUrl(getString(R.string.url_privacy_policy)) }
+        binding.aboutPrivacyPolicy.setOnClickListener { openUrl("https://listen-moe.github.io/android-app/privacy.txt") }
     }
 
     private fun showLicensesDialog() {
