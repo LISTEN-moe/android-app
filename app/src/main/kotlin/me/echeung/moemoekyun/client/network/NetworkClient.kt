@@ -16,29 +16,20 @@ class NetworkClient(
                 val request = chain.request()
 
                 val newRequest = request.newBuilder()
-                    .addHeader(HEADER_USER_AGENT, NetworkUtil.userAgent)
-                    .addHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE)
-                    .build()
-
-                chain.proceed(newRequest)
-            }
-        )
-        .addNetworkInterceptor(
-            Interceptor { chain ->
-                val original = chain.request()
-                val builder = original.newBuilder().method(original.method, original.body)
+                    .addHeader("User-Agent", NetworkUtil.userAgent)
+                    .addHeader("Content-Type", "application/json")
 
                 // MFA login
                 if (authUtil.mfaToken != null) {
-                    builder.header(HEADER_AUTHZ, authUtil.mfaAuthTokenWithPrefix)
+                    newRequest.header(HEADER_AUTHZ, authUtil.mfaAuthTokenWithPrefix)
                 }
 
                 // Authorized calls
                 if (authUtil.isAuthenticated) {
-                    builder.header(HEADER_AUTHZ, authUtil.authTokenWithPrefix)
+                    newRequest.header(HEADER_AUTHZ, authUtil.authTokenWithPrefix)
                 }
 
-                chain.proceed(builder.build())
+                chain.proceed(newRequest.build())
             }
         )
         .connectTimeout(30, TimeUnit.SECONDS)
@@ -46,10 +37,5 @@ class NetworkClient(
         .build()
 
 }
-
-private const val HEADER_CONTENT_TYPE = "Content-Type"
-private const val CONTENT_TYPE = "application/json"
-
-private const val HEADER_USER_AGENT = "User-Agent"
 
 private const val HEADER_AUTHZ = "Authorization"
