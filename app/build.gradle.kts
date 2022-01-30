@@ -115,10 +115,6 @@ dependencies {
     implementation("com.apollographql.apollo3:apollo-runtime:$apolloVersion")
     implementation("com.apollographql.apollo3:apollo-http-cache:$apolloVersion")
 
-    val glideVersion = "4.12.0"
-    implementation("com.github.bumptech.glide:glide:$glideVersion")
-    kapt("com.github.bumptech.glide:compiler:$glideVersion")
-
     val coilVersion = "2.1.0"
     implementation("io.coil-kt:coil:$coilVersion")
     implementation("io.coil-kt:coil-gif:$coilVersion")
