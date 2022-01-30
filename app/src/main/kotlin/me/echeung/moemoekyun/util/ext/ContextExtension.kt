@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.util.ext
 
 import android.app.Activity
 import android.app.AlarmManager
-import android.app.NotificationManager
 import android.app.UiModeManager
 import android.content.ClipboardManager
 import android.content.Context
@@ -82,9 +81,6 @@ fun Context.isCarUiMode(): Boolean {
     val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
     return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
 }
-
-val Context.notificationManager: NotificationManager
-    get() = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 val Context.connectivityManager: ConnectivityManager
     get() = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

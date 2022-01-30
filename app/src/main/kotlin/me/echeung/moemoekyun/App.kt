@@ -1,14 +1,13 @@
 package me.echeung.moemoekyun
 
 import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
-import android.os.Build
 import android.os.IBinder
+import androidx.core.app.NotificationChannelCompat
+import androidx.core.app.NotificationManagerCompat
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import logcat.LogcatLogger
@@ -19,7 +18,6 @@ import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.service.notification.EventNotification
 import me.echeung.moemoekyun.service.notification.MusicNotifier
 import me.echeung.moemoekyun.util.PreferenceUtil
-import me.echeung.moemoekyun.util.ext.notificationManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -62,22 +60,17 @@ class App : Application(), ServiceConnection {
     }
 
     private fun initNotificationChannels() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            listOf(
-                // Playing
-                NotificationChannel(
-                    MusicNotifier.NOTIFICATION_CHANNEL_ID,
-                    MusicNotifier.NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_LOW,
-                ),
-                // Events
-                NotificationChannel(
-                    EventNotification.NOTIFICATION_CHANNEL_ID,
-                    EventNotification.NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT,
-                ),
-            ).forEach(notificationManager::createNotificationChannel)
-        }
+        val notificationManager = NotificationManagerCompat.from(this)
+        listOf(
+            // Playing
+            NotificationChannelCompat.Builder(MusicNotifier.NOTIFICATION_CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_LOW)
+                .setName(MusicNotifier.NOTIFICATION_CHANNEL_NAME)
+                .build(),
+            // Events
+            NotificationChannelCompat.Builder(EventNotification.NOTIFICATION_CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_DEFAULT)
+                .setName(EventNotification.NOTIFICATION_CHANNEL_NAME)
+                .build(),
+        ).forEach(notificationManager::createNotificationChannel)
     }
 
     companion object {
