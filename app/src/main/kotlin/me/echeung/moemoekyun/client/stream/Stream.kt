@@ -10,11 +10,7 @@ class Stream(context: Context) {
 
     val flow = MutableSharedFlow<State>(replay = 1)
 
-    private var localPlayer: StreamPlayer<*> = LocalStreamPlayer(context)
-    private var altPlayer: StreamPlayer<*>? = null
-    
-    private val player: StreamPlayer<*>
-        get() = altPlayer ?: localPlayer
+    private var player: StreamPlayer<*> = LocalStreamPlayer(context)
 
     val isStarted: Boolean
         get() = player.isStarted
@@ -22,19 +18,6 @@ class Stream(context: Context) {
     val isPlaying: Boolean
         get() = player.isPlaying
 
-    /**
-     * Used to "replace" the local player with a Cast player.
-     */
-    fun setAltPlayer(newAltPlayer: StreamPlayer<*>?) {
-        val wasPlaying = isPlaying
-        newAltPlayer?.pause()
-
-        altPlayer = newAltPlayer
-
-        if (wasPlaying || altPlayer != null) {
-            newAltPlayer?.play()
-        }
-    }
 
     fun toggle() {
         if (isPlaying) {

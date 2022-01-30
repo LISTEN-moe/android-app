@@ -5,13 +5,6 @@
     tools:context=".ui.activity.MainActivity">
 
     <item
-        android:id="@+id/media_route_menu_item"
-        android:title="@string/media_route_menu_title"
-        app:actionProviderClass="androidx.mediarouter.app.MediaRouteActionProvider"
-        app:iconTint="?attr/colorOnPrimary"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/action_library"
         android:icon="@drawable/ic_library_music_24dp"
         android:title="@string/action_library"

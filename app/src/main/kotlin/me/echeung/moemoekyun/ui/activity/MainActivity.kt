@@ -14,7 +14,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
@@ -45,7 +44,6 @@ class MainActivity : BaseActivity() {
     private val userViewModel: UserViewModel by inject()
 
     private val radioClient: RadioClient by inject()
-    private val castDelegate: CastDelegate by inject()
 
     private val authUtil: AuthUtil by inject()
     private val preferenceUtil: PreferenceUtil by inject()
@@ -107,8 +105,6 @@ class MainActivity : BaseActivity() {
         if (playPauseCallback != null) {
             radioViewModel.removeOnPropertyChangedCallback(playPauseCallback!!)
         }
-
-        castDelegate.onDestroy()
 
         super.onDestroy()
     }
@@ -207,7 +203,6 @@ class MainActivity : BaseActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-        castDelegate.initCastButton(menu)
         updateMenuOptions(menu)
 
         return true
@@ -223,8 +218,6 @@ class MainActivity : BaseActivity() {
         val toolbar = binding.nowPlaying.toolbar
         toolbar.inflateMenu(R.menu.menu_main)
         nowPlayingSheetMenu = toolbar.menu
-
-        castDelegate.initCastButton(nowPlayingSheetMenu)
 
         toolbar.setOnMenuItemClickListener { this.onOptionsItemSelected(it) }
 
