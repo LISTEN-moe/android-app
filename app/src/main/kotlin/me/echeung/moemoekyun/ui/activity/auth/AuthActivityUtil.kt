@@ -41,7 +41,9 @@ object AuthActivityUtil : KoinComponent {
     }
 
     fun FragmentActivity.broadcastAuthEvent() {
-        sendBroadcast(Intent(AUTH_EVENT))
+        sendBroadcast(Intent(AUTH_EVENT).apply {
+            setPackage(applicationContext.packageName)
+        })
 
         val radioViewModel: RadioViewModel = get()
         val authUtil: AuthUtil = get()
