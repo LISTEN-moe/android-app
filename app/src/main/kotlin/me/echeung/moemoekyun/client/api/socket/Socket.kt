@@ -204,7 +204,7 @@ class Socket(
             when (notificationResponse.t) {
                 EventNotificationResponse.TYPE -> {
                     val eventResponse = json.decodeFromString<EventNotificationResponse>(jsonString)
-                    EventNotification.notify(context, eventResponse.d!!.event!!.name)
+                    EventNotification.notify(context, eventResponse.d!!.event.name)
                 }
             }
         } catch (e: IOException) {

@@ -93,7 +93,7 @@ class SongList(
     }
 
     private fun handleQuery(query: String) {
-        val trimmedQuery = query.trim { it <= ' ' }.toLowerCase()
+        val trimmedQuery = query.trim { it <= ' ' }.lowercase()
 
         adapter.filter(trimmedQuery)
 

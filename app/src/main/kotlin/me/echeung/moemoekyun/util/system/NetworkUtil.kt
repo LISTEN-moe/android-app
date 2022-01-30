@@ -23,7 +23,8 @@ object NetworkUtil : KoinComponent {
     fun isNetworkAvailable(context: Context?): Boolean {
         context ?: return false
 
-        val isAvailable = context.connectivityManager.activeNetworkInfo?.isConnected ?: false
+        val isAvailable = context.connectivityManager
+            .getNetworkCapabilities(context.connectivityManager.activeNetwork) != null
 
         val radioViewModel: RadioViewModel = get()
         radioViewModel.isConnected = isAvailable

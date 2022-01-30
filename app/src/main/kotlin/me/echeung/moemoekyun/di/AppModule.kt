@@ -19,7 +19,7 @@ val appModule = module {
     single { AlbumArtUtil(androidContext()) }
     single { AuthUtil(androidContext()) }
     single { LocaleUtil(get()) }
-    single { NetworkClient(androidContext(), get()) }
+    single { NetworkClient(get()) }
     single { App.preferenceUtil }
     single { SongActionsUtil(get(), get(), get(), get()) }
     single { SongSortUtil(get()) }
