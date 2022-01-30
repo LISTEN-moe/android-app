@@ -142,13 +142,7 @@ class MainActivity : BaseActivity() {
         }
 
         searchMenu = appbar?.findViewById(R.id.appbar_search_menu)
-        searchMenu?.setOnMenuItemClickListener(
-            object : ActionMenuView.OnMenuItemClickListener {
-                override fun onMenuItemClick(menuItem: MenuItem): Boolean {
-                    return onOptionsItemSelected(menuItem)
-                }
-            },
-        )
+        searchMenu?.setOnMenuItemClickListener { menuItem -> onOptionsItemSelected(menuItem) }
     }
 
     private fun initNowPlaying() {
@@ -168,7 +162,7 @@ class MainActivity : BaseActivity() {
                 }
 
                 override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
-// Shows/hides mini player
+                    // Shows/hides mini player
                     this@MainActivity.radioViewModel.miniPlayerAlpha = 1f - slideOffset
                 }
             },

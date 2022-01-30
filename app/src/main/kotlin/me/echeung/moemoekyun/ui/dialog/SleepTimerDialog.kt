@@ -6,9 +6,9 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.SystemClock
 import android.widget.SeekBar
-import android.widget.TextView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.databinding.DialogSleepTimerBinding
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.alarmManager
@@ -21,14 +21,12 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
 
     private val preferenceUtil: PreferenceUtil by inject()
 
-    init {
-        initDialog()
-    }
+    private var binding: DialogSleepTimerBinding =
+        DialogSleepTimerBinding.inflate(activity.layoutInflater, null, false)
 
-    private fun initDialog() {
-        val layout = activity.layoutInflater.inflate(R.layout.dialog_sleep_timer, activity.findViewById(R.id.layout_root_sleep))
-        val sleepTimerText = layout.findViewById<TextView>(R.id.sleep_timer_text)
-        val sleepTimerSeekBar = layout.findViewById<SeekBar>(R.id.sleep_timer_seekbar)
+    init {
+        val sleepTimerText = binding.sleepTimerText
+        val sleepTimerSeekBar = binding.sleepTimerSeekbar
 
         // Init seekbar + text
         val prevSleepTimer = preferenceUtil.sleepTimer().get()
@@ -50,9 +48,9 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
         )
 
         // Build dialog
-        val sleepTimerDialog = MaterialAlertDialogBuilder(activity, R.style.Theme_Widget_Dialog)
+        val sleepTimerDialog = MaterialAlertDialogBuilder(activity)
             .setTitle(R.string.sleep_timer)
-            .setView(layout)
+            .setView(binding.root)
             .setPositiveButton(R.string.set) { _, _ ->
                 val minutes = sleepTimerSeekBar.progress
                 setAlarm(minutes)

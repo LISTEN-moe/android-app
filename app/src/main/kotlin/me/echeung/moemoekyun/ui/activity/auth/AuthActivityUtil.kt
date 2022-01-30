@@ -50,7 +50,7 @@ object AuthActivityUtil : KoinComponent {
     }
 
     fun FragmentActivity.showLogoutDialog() {
-        MaterialAlertDialogBuilder(this, R.style.Theme_Widget_Dialog)
+        MaterialAlertDialogBuilder(this)
             .setTitle(R.string.logout)
             .setMessage(getString(R.string.logout_confirmation))
             .setPositiveButton(R.string.logout) { _, _ -> logout() }
