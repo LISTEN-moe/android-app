@@ -4,13 +4,13 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.media.app.NotificationCompat.MediaStyle
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.ui.activity.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
-import me.echeung.moemoekyun.util.ext.notificationManager
 
 class MusicNotifier internal constructor(
     private val service: RadioService,
@@ -88,7 +88,7 @@ class MusicNotifier internal constructor(
             service.stopForeground(false)
         }
 
-        service.notificationManager.notify(NOTIFICATION_ID, notification)
+        NotificationManagerCompat.from(service).notify(NOTIFICATION_ID, notification)
     }
 
     private fun getPlaybackActionService(intentAction: String): PendingIntent {

@@ -4,9 +4,9 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.activity.MainActivity
-import me.echeung.moemoekyun.util.ext.notificationManager
 
 object EventNotification {
 
@@ -22,7 +22,7 @@ object EventNotification {
             .setContentTitle(context.getString(R.string.event_start_title))
             .setContentText(eventName)
 
-        context.notificationManager.notify(NOTIFICATION_ID, builder.build())
+        NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())
     }
 
     private fun getOpenAppIntent(context: Context): PendingIntent {
