@@ -13,12 +13,12 @@ import android.widget.ImageView
 import androidx.annotation.ColorInt
 import androidx.annotation.MenuRes
 import androidx.appcompat.widget.PopupMenu
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.bumptech.glide.request.RequestOptions
+import coil.load
+import coil.size.Scale
 import me.echeung.moemoekyun.R
+import coil.clear as coilClear
 
-private const val TRANSITION_DURATION = 250
+const val TRANSITION_DURATION = 250
 
 fun ImageView.loadImage(bitmap: Bitmap?) {
     this.clear()
@@ -27,17 +27,11 @@ fun ImageView.loadImage(bitmap: Bitmap?) {
         return
     }
 
-    Glide.with(context)
-        .load(bitmap)
-        .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
-        .apply(
-            RequestOptions()
-                .placeholder(drawable)
-                .override(width, height)
-                .centerCrop()
-                .dontAnimate()
-        )
-        .into(this)
+    load(bitmap) {
+        crossfade(TRANSITION_DURATION)
+        placeholder(drawable)
+        scale(Scale.FILL)
+    }
 }
 
 fun ImageView.loadImage(url: String?) {
@@ -47,17 +41,11 @@ fun ImageView.loadImage(url: String?) {
         return
     }
 
-    Glide.with(context)
-        .load(url)
-        .transition(DrawableTransitionOptions.withCrossFade(TRANSITION_DURATION))
-        .apply(
-            RequestOptions()
-                .placeholder(drawable)
-                .override(width, height)
-                .centerCrop()
-                .dontAnimate()
-        )
-        .into(this)
+    load(url) {
+        crossfade(TRANSITION_DURATION)
+        placeholder(drawable)
+        scale(Scale.FILL)
+    }
 }
 
 fun EditText.getTrimmedText() = text.toString().trim()
@@ -99,5 +87,5 @@ fun View.popupMenu(@MenuRes menuRes: Int, initMenu: (Menu.() -> Unit)? = null, o
 private fun ImageView?.clear() {
     if (this == null) return
 
-    Glide.with(context).clear(this)
+    coilClear()
 }

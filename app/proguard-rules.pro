@@ -3,14 +3,6 @@
 -keep public class me.echeung.moemoekyun.client.api.socket.response.**
 -keep public class me.echeung.moemoekyun.client.model.Event
 
-# Glide
--keep public class * implements com.bumptech.glide.module.GlideModule
--keep public class * extends com.bumptech.glide.AppGlideModule
--keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
-    **[] $VALUES;
-    public *;
-}
-
 # OkHttp
 -dontwarn okhttp3.**
 -dontwarn okio.**

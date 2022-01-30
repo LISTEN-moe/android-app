@@ -5,18 +5,20 @@ import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Target.MUTED
 import androidx.palette.graphics.Target.VIBRANT
 import androidx.palette.graphics.get
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.DataSource
-import com.bumptech.glide.load.engine.GlideException
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.Target
+import coil.imageLoader
+import coil.request.ImageRequest
+import coil.request.SuccessResult
+import coil.size.Scale
 import kotlinx.coroutines.flow.MutableSharedFlow
+import logcat.LogPriority
+import logcat.asLog
+import logcat.logcat
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -44,14 +46,9 @@ class AlbumArtUtil(
     var currentAccentColor: Int = 0
         private set
 
-    private val requestOptions: RequestOptions by lazy {
+    private val maxSize: Int by lazy {
         val displayMetrics = Resources.getSystem().displayMetrics
-        val maxScreenLength = max(displayMetrics.widthPixels, displayMetrics.heightPixels)
-
-        RequestOptions()
-            .override(maxScreenLength, maxScreenLength)
-            .centerCrop()
-            .dontAnimate()
+        max(displayMetrics.widthPixels, displayMetrics.heightPixels)
     }
 
     fun getCurrentAlbumArt(maxSize: Int): Bitmap? {
@@ -99,25 +96,24 @@ class AlbumArtUtil(
         }
     }
 
-    private fun downloadAlbumArtBitmap(url: String) {
-        launchIO {
-            Glide.with(context)
-                .asBitmap()
-                .load(url)
-                .apply(requestOptions)
-                .listener(object : RequestListener<Bitmap> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-                        return false
-                    }
+    private fun downloadAlbumArtBitmap(url: String) = launchIO {
+        val request = ImageRequest.Builder(context)
+            .data(url)
+            .scale(Scale.FILL)
+            .size(maxSize, maxSize)
+            .allowHardware(false)
+            .build()
 
-                    override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                        isDefaultAlbumArt = false
-                        extractAccentColor(resource)
-                        updateListeners(resource)
-                        return true
-                    }
-                })
-                .submit()
+        val result = context.imageLoader.execute(request)
+        if (result !is SuccessResult) {
+            return@launchIO
+        }
+
+        val bitmap = (result.drawable as? BitmapDrawable)?.bitmap
+        if (bitmap != null) {
+            isDefaultAlbumArt = false
+            extractAccentColor(bitmap)
+            updateListeners(bitmap)
         }
     }
 
@@ -137,6 +133,7 @@ class AlbumArtUtil(
                 currentAccentColor = color
             }
         } catch (e: Exception) {
+            logcat(LogPriority.WARN) { e.asLog() }
             setDefaultColors()
         }
     }
