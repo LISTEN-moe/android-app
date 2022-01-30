@@ -4,12 +4,13 @@ import android.content.Context
 import android.media.AudioManager
 import android.net.Uri
 import com.google.android.exoplayer2.C
+import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.DefaultDataSource
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
@@ -18,15 +19,13 @@ import me.echeung.moemoekyun.util.system.NetworkUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPlayer>(), KoinComponent {
+class LocalStreamPlayer(private val context: Context) : StreamPlayer<ExoPlayer>(), KoinComponent {
 
     private val preferenceUtil: PreferenceUtil by inject()
 
     private var audioManagerUtil: AudioManagerUtil
     private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener
     private var wasPlayingBeforeLoss: Boolean = false
-
-    private val focusLock = Any()
 
     init {
         audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
@@ -59,7 +58,7 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPl
 
     override fun initPlayer() {
         if (player == null) {
-            player = SimpleExoPlayer.Builder(context).build()
+            player = ExoPlayer.Builder(context).build()
 
             player!!.setWakeMode(C.WAKE_MODE_NETWORK)
 
@@ -70,13 +69,13 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPl
                 .setContentType(C.CONTENT_TYPE_MUSIC)
                 .setUsage(C.USAGE_MEDIA)
                 .build()
-            player!!.audioComponent!!.setAudioAttributes(audioAttributes, true)
+            player!!.setAudioAttributes(audioAttributes, true)
         }
 
         // Set stream
         val streamUrl = RadioClient.library.streamUrl
         if (streamUrl != currentStreamUrl) {
-            val dataSourceFactory = DefaultDataSourceFactory(context, NetworkUtil.userAgent)
+            val dataSourceFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory().setUserAgent(NetworkUtil.userAgent))
             val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
                 .createMediaSource(MediaItem.Builder().setUri(Uri.parse(streamUrl)).build())
             with(player!!) {
@@ -87,14 +86,13 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPl
         }
     }
 
+    @Synchronized
     override fun play() {
         // Request audio focus for playback
         val result = audioManagerUtil.requestAudioFocus()
 
-        synchronized(focusLock) {
-            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                super.play()
-            }
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            super.play()
         }
     }
 
@@ -105,10 +103,10 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<SimpleExoPl
     }
 
     private fun duck() {
-        player?.audioComponent?.volume = 0.5f
+        player?.volume = 0.5f
     }
 
     private fun unduck() {
-        player?.audioComponent?.volume = 1f
+        player?.volume = 1f
     }
 }

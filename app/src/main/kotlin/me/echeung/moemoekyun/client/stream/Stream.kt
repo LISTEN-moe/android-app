@@ -13,29 +13,28 @@ class Stream(context: Context) {
 
     private var localPlayer: StreamPlayer<*> = LocalStreamPlayer(context)
     private var altPlayer: StreamPlayer<*>? = null
+    
+    private val player: StreamPlayer<*>
+        get() = altPlayer ?: localPlayer
 
     val isStarted: Boolean
-        get() = getCurrentPlayer().isStarted
+        get() = player.isStarted
 
     val isPlaying: Boolean
-        get() = getCurrentPlayer().isPlaying
+        get() = player.isPlaying
 
     /**
      * Used to "replace" the local player with a Cast player.
      */
-    fun setAltPlayer(player: StreamPlayer<*>?) {
+    fun setAltPlayer(newAltPlayer: StreamPlayer<*>?) {
         val wasPlaying = isPlaying
-        getCurrentPlayer().pause()
+        newAltPlayer?.pause()
 
-        altPlayer = player
+        altPlayer = newAltPlayer
 
         if (wasPlaying || altPlayer != null) {
-            getCurrentPlayer().play()
+            newAltPlayer?.play()
         }
-    }
-
-    private fun getCurrentPlayer(): StreamPlayer<*> {
-        return altPlayer ?: localPlayer
     }
 
     fun toggle() {
@@ -47,7 +46,7 @@ class Stream(context: Context) {
     }
 
     fun play() {
-        getCurrentPlayer().play()
+        player.play()
 
         launchNow {
             channel.send(State.PLAY)
@@ -55,7 +54,7 @@ class Stream(context: Context) {
     }
 
     fun pause() {
-        getCurrentPlayer().pause()
+        player.pause()
 
         launchNow {
             channel.send(State.PAUSE)
@@ -63,7 +62,7 @@ class Stream(context: Context) {
     }
 
     fun stop() {
-        getCurrentPlayer().stop()
+        player.stop()
 
         launchNow {
             channel.send(State.STOP)
@@ -72,7 +71,7 @@ class Stream(context: Context) {
 
     fun fadeOut() {
         launchIO {
-            getCurrentPlayer().fadeOut()
+            player.fadeOut()
 
             channel.send(State.STOP)
         }
