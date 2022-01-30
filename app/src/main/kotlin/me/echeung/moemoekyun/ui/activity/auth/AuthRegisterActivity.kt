@@ -9,23 +9,23 @@ import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
-import me.echeung.moemoekyun.ui.base.BaseDataBindingActivity
+import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
 import org.koin.android.ext.android.inject
 
-class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding>() {
+class AuthRegisterActivity : BaseActivity() {
 
     private val radioClient: RadioClient by inject()
 
-    init {
-        layout = R.layout.activity_auth_register
-    }
+    private lateinit var binding: ActivityAuthRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        binding = ActivityAuthRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         initAppbar()
 
         binding.authBtn.setOnClickListener { register() }
