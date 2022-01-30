@@ -108,7 +108,7 @@ dependencies {
 
     implementation("com.github.tfcporciuncula:flow-preferences:1.3.4")
 
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
 
     val apolloVersion = "3.5.0"
@@ -118,6 +118,10 @@ dependencies {
     val glideVersion = "4.12.0"
     implementation("com.github.bumptech.glide:glide:$glideVersion")
     kapt("com.github.bumptech.glide:compiler:$glideVersion")
+
+    val coilVersion = "2.1.0"
+    implementation("io.coil-kt:coil:$coilVersion")
+    implementation("io.coil-kt:coil-gif:$coilVersion")
 
     val exoplayerVersion = "2.18.1"
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")

@@ -3,7 +3,7 @@ package me.echeung.moemoekyun.ui.activity
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.core.view.isVisible
-import com.bumptech.glide.Glide
+import coil.load
 import de.psdev.licensesdialog.LicensesDialog
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
@@ -43,10 +43,7 @@ class AboutActivity : BaseActivity() {
             binding.aboutCardApp.aboutAppRate.isVisible = false
         }
 
-        // Kanna GIF
-        Glide.with(this)
-            .load(R.drawable.kanna_dancing)
-            .into(binding.aboutCardTranslations.kannaImage)
+        binding.aboutCardTranslations.kannaImage.load(R.drawable.kanna_dancing)
     }
 
     private fun setupClickListeners() {

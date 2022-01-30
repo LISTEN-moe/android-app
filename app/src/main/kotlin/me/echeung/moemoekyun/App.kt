@@ -5,9 +5,14 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
+import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+import coil.ImageLoader
+import coil.ImageLoaderFactory
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import logcat.LogcatLogger
@@ -23,7 +28,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
-class App : Application(), ServiceConnection {
+class App : Application(), ServiceConnection, ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
@@ -57,6 +62,18 @@ class App : Application(), ServiceConnection {
     }
 
     override fun onServiceDisconnected(className: ComponentName) {
+    }
+
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(this).apply {
+            components {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    add(ImageDecoderDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
+                }
+            }
+        }.build()
     }
 
     private fun initNotificationChannels() {
