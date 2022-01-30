@@ -14,9 +14,10 @@ jobs:
 
     steps:
       - name: Cancel previous runs
-        uses: styfle/cancel-workflow-action@0.5.0
+        uses: styfle/cancel-workflow-action@0.9.1
         with:
           access_token: ${{ github.token }}
+          all_but_latest: true
 
       - name: Clone repo
         uses: actions/checkout@v2
@@ -35,12 +36,9 @@ jobs:
           cp .github/runner-files/ci-gradle.properties ~/.gradle/gradle.properties
 
       - name: Build app
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-command-action@v2
         with:
           arguments: bundlePlaystoreRelease
-          distributions-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
 
       # Sign app bundle and create release for tags
 
