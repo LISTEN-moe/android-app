@@ -305,7 +305,7 @@ class MainActivity : BaseActivity() {
         setPlayPauseDrawable()
         playPauseCallback = object : Observable.OnPropertyChangedCallback() {
             override fun onPropertyChanged(sender: Observable, propertyId: Int) {
-                if (propertyId == BR.playing) {
+                if (propertyId == BR.playing || propertyId == BR.loading) {
                     setPlayPauseDrawable()
                 }
             }
@@ -316,8 +316,9 @@ class MainActivity : BaseActivity() {
 
     private fun setPlayPauseDrawable() {
         val isPlaying = radioViewModel.isPlaying
-        playPauseView?.toggle(isPlaying)
-        miniPlayPauseView?.toggle(isPlaying)
+        val isLoading = radioViewModel.isLoading
+        playPauseView?.toggle(isPlaying, isLoading)
+        miniPlayPauseView?.toggle(isPlaying, isLoading)
     }
 
     private fun togglePlayPause() {

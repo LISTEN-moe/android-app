@@ -1,15 +1,17 @@
 package me.echeung.moemoekyun.ui.view
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import me.echeung.moemoekyun.R
 
-class PlayPauseView(context: Context, private val view: ImageView) {
+class PlayPauseView(private val context: Context, private val view: ImageView) {
 
     private val playDrawable: Drawable
     private val pauseDrawable: Drawable
@@ -25,12 +27,16 @@ class PlayPauseView(context: Context, private val view: ImageView) {
         }
     }
 
-    fun toggle(isPlaying: Boolean) {
-        val drawable = if (isPlaying) pauseDrawable else playDrawable
-        view.setImageDrawable(drawable)
-
-        if (drawable is Animatable) {
-            (drawable as Animatable).start()
+    fun toggle(isPlaying: Boolean, isLoading: Boolean) {
+        val drawable = when {
+            isLoading -> CircularProgressDrawable(context).apply {
+                setColorSchemeColors(Color.WHITE)
+                start()
+            }
+            isPlaying -> pauseDrawable
+            else -> playDrawable
         }
+        view.setImageDrawable(drawable)
+        (drawable as? Animatable)?.start()
     }
 }

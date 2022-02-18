@@ -8,7 +8,7 @@ import me.echeung.moemoekyun.util.ext.launchIO
 
 class Stream(context: Context) {
 
-    val flow = MutableSharedFlow<State>(replay = 1)
+    val state = MutableSharedFlow<State>(replay = 1)
 
     private var player: StreamPlayer<*> = LocalStreamPlayer(context)
 
@@ -18,9 +18,11 @@ class Stream(context: Context) {
     val isPlaying: Boolean
         get() = player.isPlaying
 
+    val isLoading: Boolean
+        get() = player.isLoading
 
     fun toggle() {
-        if (isPlaying) {
+        if (player.isPlaying) {
             pause()
         } else {
             play()
@@ -31,7 +33,7 @@ class Stream(context: Context) {
         player.play()
 
         launchIO {
-            flow.emit(State.PLAY)
+            state.emit(State.Playing)
         }
     }
 
@@ -39,7 +41,7 @@ class Stream(context: Context) {
         player.pause()
 
         launchIO {
-            flow.emit(State.PAUSE)
+            state.emit(State.Paused)
         }
     }
 
@@ -47,7 +49,7 @@ class Stream(context: Context) {
         player.stop()
 
         launchIO {
-            flow.emit(State.STOP)
+            state.emit(State.Stopped)
         }
     }
 
@@ -55,13 +57,13 @@ class Stream(context: Context) {
         launchIO {
             player.fadeOut()
 
-            flow.emit(State.STOP)
+            state.emit(State.Stopped)
         }
     }
-
-    enum class State {
-        PLAY,
-        PAUSE,
-        STOP,
+    sealed class State {
+        object Loading : State()
+        object Playing : State()
+        object Paused : State()
+        object Stopped : State()
     }
 }

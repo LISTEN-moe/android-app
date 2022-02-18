@@ -80,6 +80,9 @@ class RadioService : Service() {
     val isPlaying: Boolean
         get() = stream.isPlaying
 
+    val isLoading: Boolean
+        get() = stream.isLoading
+
     override fun onBind(intent: Intent): IBinder? = binder
 
     override fun onCreate() {
@@ -95,20 +98,22 @@ class RadioService : Service() {
             .onEach { updateMediaSession() }
             .launchIn(scope)
 
-        stream.flow
+        stream.state
             .onEach {
                 when (it) {
-                    Stream.State.PLAY -> {
+                    Stream.State.Loading -> {
+                        radioViewModel.isLoading = true
+                        updateNotification()
+                    }
+                    Stream.State.Playing -> {
                         radioViewModel.isPlaying = true
-
                         updateNotification()
                     }
-                    Stream.State.PAUSE -> {
+                    Stream.State.Paused -> {
                         radioViewModel.isPlaying = false
-
                         updateNotification()
                     }
-                    Stream.State.STOP -> {
+                    Stream.State.Stopped -> {
                         stopForeground(true)
                         stopSelf()
 
@@ -121,11 +126,11 @@ class RadioService : Service() {
             }
             .launchIn(scope)
 
-        socket.flow
+        socket.state
             .onEach {
                 when (it) {
-                    is Socket.SocketResponse -> it.info?.let { data -> onSocketReceive(data) }
-                    is Socket.SocketError -> onSocketFailure()
+                    is Socket.State.Update -> it.info?.let { data -> onSocketReceive(data) }
+                    is Socket.State.Error -> onSocketFailure()
                 }
             }
             .launchIn(scope)
@@ -230,17 +235,14 @@ class RadioService : Service() {
         val stateBuilder = PlaybackStateCompat.Builder()
             .setActions(MEDIA_SESSION_ACTIONS)
             .setState(
-                if (isStreamStarted) {
-                    if (isPlaying) {
-                        PlaybackStateCompat.STATE_PLAYING
-                    } else {
-                        PlaybackStateCompat.STATE_PAUSED
-                    }
-                } else {
-                    PlaybackStateCompat.STATE_STOPPED
+                when {
+                    !isStreamStarted -> PlaybackStateCompat.STATE_STOPPED
+                    isLoading -> PlaybackStateCompat.STATE_CONNECTING
+                    isPlaying -> PlaybackStateCompat.STATE_PLAYING
+                    else -> PlaybackStateCompat.STATE_PAUSED
                 },
                 radioViewModel.currentSongProgress,
-                1f
+                1f,
             )
 
         // Favorite action

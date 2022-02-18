@@ -32,7 +32,7 @@ class Socket(
     private val networkClient: NetworkClient
 ) : WebSocketListener() {
 
-    val flow = MutableSharedFlow<SocketResult>(replay = 1)
+    val state = MutableSharedFlow<State>(replay = 1)
 
     private val scope = MainScope()
 
@@ -158,7 +158,7 @@ class Socket(
     private fun parseResponse(jsonString: String?) {
         if (jsonString == null) {
             launchIO {
-                flow.emit(SocketError())
+                state.emit(State.Error)
             }
             return
         }
@@ -184,7 +184,7 @@ class Socket(
                     }
 
                     launchIO {
-                        flow.emit(SocketResponse(updateResponse.d))
+                        state.emit(State.Update(updateResponse.d))
                     }
                 }
 
@@ -225,9 +225,10 @@ class Socket(
         return updateResponse.t == NOTIFICATION
     }
 
-    interface SocketResult
-    class SocketResponse(val info: UpdateResponse.Details?) : SocketResult
-    class SocketError : SocketResult
+    sealed class State {
+        class Update(val info: UpdateResponse.Details?) : State()
+        object Error : State()
+    }
 }
 
 private val json = Json { ignoreUnknownKeys = true }

@@ -43,6 +43,13 @@ class RadioViewModel(
     }
 
     @get:Bindable
+    var isLoading = false
+        set(isLoading) {
+            field = isLoading
+            notifyPropertyChanged(BR.loading)
+        }
+
+    @get:Bindable
     var isPlaying = false
         set(isPlaying) {
             field = isPlaying

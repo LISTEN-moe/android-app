@@ -8,6 +8,10 @@ import kotlin.math.max
 abstract class StreamPlayer<T : Player> {
 
     protected val eventListener = object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            isLoading = playbackState == Player.STATE_BUFFERING
+        }
+
         override fun onPlayerError(error: PlaybackException) {
             // Try to reconnect to the stream
             val wasPlaying = isPlaying
@@ -29,6 +33,9 @@ abstract class StreamPlayer<T : Player> {
 
     val isPlaying: Boolean
         get() = player?.isPlaying ?: false
+
+    var isLoading: Boolean = false
+        private set
 
     abstract fun initPlayer()
 
