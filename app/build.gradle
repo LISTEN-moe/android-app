@@ -8,12 +8,12 @@ apply plugin: 'kotlinx-serialization'
 apply plugin: 'com.apollographql.apollo3'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 23
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 99
         versionName '5.5.1'
     }
