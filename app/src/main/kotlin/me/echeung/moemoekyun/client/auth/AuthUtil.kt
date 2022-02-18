@@ -1,8 +1,8 @@
 package me.echeung.moemoekyun.client.auth
 
 import android.content.Context
+import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 
 /**
@@ -11,7 +11,7 @@ import kotlin.math.roundToInt
  */
 class AuthUtil(context: Context) {
 
-    private val contextRef: WeakReference<Context> = WeakReference(context)
+    private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
 
     /**
      * Checks if the user has previously logged in (i.e. a token is stored).
@@ -36,20 +36,12 @@ class AuthUtil(context: Context) {
      * @param token The auth token to store, provided via the LISTEN.moe API.
      */
     var authToken: String?
-        get() {
-            val context = contextRef.get() ?: return null
-
-            return PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(USER_TOKEN, null)
-        }
+        get() = sharedPrefs.getString(USER_TOKEN, null)
         set(token) {
-            val context = contextRef.get() ?: return
-
-            PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putString(USER_TOKEN, token)
-                .putLong(LAST_AUTH, System.currentTimeMillis() / 1000)
-                .apply()
+            sharedPrefs.edit {
+                putString(USER_TOKEN, token)
+                putLong(LAST_AUTH, System.currentTimeMillis() / 1000)
+            }
         }
 
     /**
@@ -71,12 +63,7 @@ class AuthUtil(context: Context) {
      * @return The time in seconds since the stored auth token was stored.
      */
     private val tokenAge: Long
-        get() {
-            val context = contextRef.get() ?: return 0L
-
-            return PreferenceManager.getDefaultSharedPreferences(context)
-                .getLong(LAST_AUTH, 0L)
-        }
+        get() = sharedPrefs.getLong(LAST_AUTH, 0L)
 
     /**
      * Checks how old the stored auth token is. If it's older than 28 days, it becomes invalidated.
@@ -102,13 +89,10 @@ class AuthUtil(context: Context) {
      * Removes the stored auth token.
      */
     fun clearAuthToken() {
-        val context = contextRef.get() ?: return
-
-        PreferenceManager.getDefaultSharedPreferences(context)
-            .edit()
-            .putString(USER_TOKEN, null)
-            .putLong(LAST_AUTH, 0)
-            .apply()
+        sharedPrefs.edit {
+            putString(USER_TOKEN, null)
+            putLong(LAST_AUTH, 0)
+        }
     }
 
     /**
