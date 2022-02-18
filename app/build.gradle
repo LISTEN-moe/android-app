@@ -110,7 +110,7 @@ dependencies {
     implementation "io.coil-kt:coil-gif:$coil_version"
 
     implementation 'com.google.android.exoplayer:exoplayer-core:2.16.1'
-    implementation 'androidx.media:media:1.4.3'
+    implementation 'androidx.media:media:1.5.0'
 
     implementation "com.mikepenz:aboutlibraries-core:$aboutlibs_version"
     implementation "com.mikepenz:aboutlibraries:$aboutlibs_version"
@@ -128,15 +128,13 @@ apollo {
 buildscript {
     ext {
         kotlin_version = '1.6.10'
-        apollo_version = '3.0.0'
+        apollo_version = '3.1.0'
         aboutlibs_version = '8.9.4'
     }
     repositories {
         mavenCentral()
         google()
-        maven {
-            url "https://plugins.gradle.org/m2/"
-        }
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
