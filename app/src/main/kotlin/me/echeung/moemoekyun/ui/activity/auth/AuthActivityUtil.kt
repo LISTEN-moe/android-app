@@ -41,9 +41,11 @@ object AuthActivityUtil : KoinComponent {
     }
 
     fun FragmentActivity.broadcastAuthEvent() {
-        sendBroadcast(Intent(AUTH_EVENT).apply {
-            setPackage(applicationContext.packageName)
-        })
+        sendBroadcast(
+            Intent(AUTH_EVENT).apply {
+                setPackage(applicationContext.packageName)
+            },
+        )
 
         val radioViewModel: RadioViewModel = get()
         val authUtil: AuthUtil = get()
@@ -74,7 +76,11 @@ object AuthActivityUtil : KoinComponent {
             REGISTER_REQUEST -> showLoginActivity(data!!)
 
             // Favorite song after logging in
-            LOGIN_FAVORITE_REQUEST -> sendBroadcast(Intent(RadioService.TOGGLE_FAVORITE))
+            LOGIN_FAVORITE_REQUEST -> sendBroadcast(
+                Intent(RadioService.TOGGLE_FAVORITE).apply {
+                    setPackage(packageName)
+                },
+            )
         }
     }
 

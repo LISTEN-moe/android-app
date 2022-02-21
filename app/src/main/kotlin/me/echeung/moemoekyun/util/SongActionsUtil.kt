@@ -94,7 +94,11 @@ class SongActionsUtil(
                     activity ?: return@launchUI
 
                     // Broadcast event
-                    activity.sendBroadcast(Intent(FAVORITE_EVENT))
+                    activity.sendBroadcast(
+                        Intent(FAVORITE_EVENT).apply {
+                            setPackage(activity.packageName)
+                        },
+                    )
 
                     if (isCurrentlyFavorite) {
                         // Undo action

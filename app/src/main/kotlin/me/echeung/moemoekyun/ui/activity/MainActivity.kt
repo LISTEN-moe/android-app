@@ -99,7 +99,11 @@ class MainActivity : BaseActivity() {
         // Kill service/notification if killing activity and not playing
         val service = App.service
         if (service != null && !service.isPlaying) {
-            sendBroadcast(Intent(RadioService.STOP))
+            sendBroadcast(
+                Intent(RadioService.STOP).apply {
+                    setPackage(packageName)
+                },
+            )
         }
 
         binding.unbind()
@@ -130,7 +134,11 @@ class MainActivity : BaseActivity() {
         if (NetworkUtil.isNetworkAvailable(this)) {
             recreate()
 
-            sendBroadcast(Intent(RadioService.UPDATE))
+            sendBroadcast(
+                Intent(RadioService.UPDATE).apply {
+                    setPackage(packageName)
+                },
+            )
         }
     }
 
@@ -330,7 +338,11 @@ class MainActivity : BaseActivity() {
     }
 
     private fun togglePlayPause() {
-        sendBroadcast(Intent(RadioService.PLAY_PAUSE))
+        sendBroadcast(
+            Intent(RadioService.PLAY_PAUSE).apply {
+                setPackage(packageName)
+            },
+        )
     }
 
     private fun favorite() {
@@ -339,7 +351,11 @@ class MainActivity : BaseActivity() {
             return
         }
 
-        sendBroadcast(Intent(RadioService.TOGGLE_FAVORITE))
+        sendBroadcast(
+            Intent(RadioService.TOGGLE_FAVORITE).apply {
+                setPackage(packageName)
+            },
+        )
     }
 
     private fun showHistory() {
