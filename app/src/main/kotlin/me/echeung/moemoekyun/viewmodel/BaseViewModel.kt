@@ -1,9 +1,7 @@
 package me.echeung.moemoekyun.viewmodel
 
 import android.graphics.Bitmap
-import android.os.SystemClock
 import android.view.View
-import android.widget.Chronometer
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
@@ -72,13 +70,6 @@ abstract class BaseViewModel : BaseObservable() {
         @BindingAdapter("android:transitionBackgroundColor")
         fun transitionBackgroundColor(v: View, @ColorInt toColor: Int) {
             v.transitionBackgroundColor(toColor)
-        }
-
-        @JvmStatic
-        @BindingAdapter("android:chronometerProgress")
-        fun setChronometerProgress(v: Chronometer, progress: Long) {
-            v.base = SystemClock.elapsedRealtime() - progress
-            v.start()
         }
     }
 }

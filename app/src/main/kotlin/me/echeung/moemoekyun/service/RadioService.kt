@@ -310,9 +310,6 @@ class RadioService : Service() {
                     KeyEvent.KEYCODE_MEDIA_PLAY -> stream.play()
                     KeyEvent.KEYCODE_MEDIA_PAUSE -> stream.pause()
                     KeyEvent.KEYCODE_MEDIA_STOP -> stream.stop()
-                    KeyEvent.KEYCODE_MEDIA_NEXT, KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                        // Do nothing
-                    }
                 }
             }
 
@@ -331,71 +328,71 @@ class RadioService : Service() {
 
     private fun initMediaSession() {
         synchronized(mediaSessionLock) {
-            mediaSession = MediaSessionCompat(this, APP_PACKAGE_NAME, null, null)
-            mediaSession!!.setRatingType(RatingCompat.RATING_HEART)
-            mediaSession!!.setCallback(object : MediaSessionCompat.Callback() {
-                override fun onPlay() {
-                    stream.play()
-                }
-
-                override fun onPause() {
-                    stream.pause()
-                }
-
-                override fun onStop() {
-                    stream.stop()
-                }
-
-                override fun onSkipToNext() {}
-
-                override fun onSkipToPrevious() {}
-
-                override fun onSeekTo(pos: Long) {}
-
-                override fun onSetRating(rating: RatingCompat?) {
-                    favoriteCurrentSong()
-                }
-
-                override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
-                    return handleIntent(mediaButtonEvent)
-                }
-
-                override fun onCustomAction(action: String?, extras: Bundle?) {
-                    when (action) {
-                        TOGGLE_FAVORITE -> {
-                            favoriteCurrentSong()
-                            updateMediaSessionPlaybackState()
-                        }
-
-                        else -> logcat { "Unsupported action: $action" }
-                    }
-                }
-
-                override fun onPlayFromSearch(query: String?, extras: Bundle?) {
-                    if (!query.isNullOrEmpty()) {
-                        when (query.lowercase()) {
-                            "jpop", "j-pop" -> onPlayFromMediaId(LIBRARY_JPOP, extras)
-                            "kpop", "k-pop" -> onPlayFromMediaId(LIBRARY_KPOP, extras)
-                        }
-                    }
-
-                    if (!isPlaying) {
+            mediaSession = MediaSessionCompat(this, APP_PACKAGE_NAME, null, null).apply {
+                setRatingType(RatingCompat.RATING_HEART)
+                setCallback(object : MediaSessionCompat.Callback() {
+                    override fun onPlay() {
                         stream.play()
                     }
-                }
 
-                override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
-                    super.onPlayFromMediaId(mediaId, extras)
-
-                    // Handles changing library mode via Android Auto
-                    when (mediaId) {
-                        LIBRARY_JPOP -> radioClient.changeLibrary(Library.jpop)
-                        LIBRARY_KPOP -> radioClient.changeLibrary(Library.kpop)
+                    override fun onPause() {
+                        stream.pause()
                     }
-                }
-            })
 
-            mediaSession!!.isActive = true
+                    override fun onStop() {
+                        stream.stop()
+                    }
+
+                    override fun onSkipToNext() {}
+
+                    override fun onSkipToPrevious() {}
+
+                    override fun onSeekTo(pos: Long) {}
+
+                    override fun onSetRating(rating: RatingCompat?) {
+                        favoriteCurrentSong()
+                    }
+
+                    override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
+                        return handleIntent(mediaButtonEvent)
+                    }
+
+                    override fun onCustomAction(action: String?, extras: Bundle?) {
+                        when (action) {
+                            TOGGLE_FAVORITE -> {
+                                favoriteCurrentSong()
+                                updateMediaSessionPlaybackState()
+                            }
+
+                            else -> logcat { "Unsupported action: $action" }
+                        }
+                    }
+
+                    override fun onPlayFromSearch(query: String?, extras: Bundle?) {
+                        if (!query.isNullOrEmpty()) {
+                            when (query.lowercase()) {
+                                "jpop", "j-pop" -> onPlayFromMediaId(LIBRARY_JPOP, extras)
+                                "kpop", "k-pop" -> onPlayFromMediaId(LIBRARY_KPOP, extras)
+                            }
+                        }
+
+                        if (!isPlaying) {
+                            stream.play()
+                        }
+                    }
+
+                    override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
+                        super.onPlayFromMediaId(mediaId, extras)
+
+                        // Handles changing library mode via Android Auto
+                        when (mediaId) {
+                            LIBRARY_JPOP -> radioClient.changeLibrary(Library.jpop)
+                            LIBRARY_KPOP -> radioClient.changeLibrary(Library.kpop)
+                        }
+                    }
+                })
+                isActive = true
+            }
         }
     }
 
