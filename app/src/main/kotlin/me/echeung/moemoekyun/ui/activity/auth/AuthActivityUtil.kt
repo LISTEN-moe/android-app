@@ -74,7 +74,9 @@ object AuthActivityUtil : KoinComponent {
             REGISTER_REQUEST -> showLoginActivity(data!!)
 
             // Favorite song after logging in
-            LOGIN_FAVORITE_REQUEST -> sendBroadcast(Intent(RadioService.TOGGLE_FAVORITE))
+            LOGIN_FAVORITE_REQUEST -> sendBroadcast(Intent(RadioService.TOGGLE_FAVORITE).apply {
+                setPackage(packageName)
+            })
         }
     }
 

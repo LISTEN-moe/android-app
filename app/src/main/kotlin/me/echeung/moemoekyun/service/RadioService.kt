@@ -474,7 +474,9 @@ class RadioService : Service() {
                 song.favorite = !isCurrentlyFavorite
 
                 launchUI {
-                    val favIntent = Intent(SongActionsUtil.FAVORITE_EVENT)
+                    val favIntent = Intent(SongActionsUtil.FAVORITE_EVENT).apply {
+                        setPackage(packageName)
+                    }
                     sendBroadcast(favIntent)
 
                     updateNotification()
