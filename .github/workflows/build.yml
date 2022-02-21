@@ -50,7 +50,7 @@ jobs:
 
           if [[ "${{ github.event.ref }}" =~ "-beta" ]]
           then
-            echo "GOOGLE_PLAY_TRACK=beta" >> $GITHUB_ENV
+            echo "GOOGLE_PLAY_TRACK=alpha" >> $GITHUB_ENV
           else
             echo "GOOGLE_PLAY_TRACK=production" >> $GITHUB_ENV
           fi
