@@ -17,6 +17,7 @@
     <string name="action_unfavorite">Unfavorite</string>
     <string name="action_request">Request</string>
     <string name="action_undo">Undo</string>
+    <string name="action_back">Back</string>
 
 
     <!-- == Radio stations == -->

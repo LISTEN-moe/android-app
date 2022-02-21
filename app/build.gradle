@@ -19,8 +19,15 @@ android {
     }
 
     buildFeatures {
-        dataBinding = true
-        viewBinding = true
+        compose true
+        dataBinding true
+        viewBinding true
+
+        // Disable unused AGP features
+        aidl false
+        renderScript false
+        resValues false
+        shaders false
     }
 
     buildTypes {
@@ -74,13 +81,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
     }
 }
 
 dependencies {
+    // Jetpack Compose
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.compose.ui:ui-util:$compose_version"
+    implementation 'androidx.activity:activity-compose:1.5.0-alpha02'
+
     final coroutines_version = '1.6.0'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
@@ -128,6 +145,7 @@ apollo {
 buildscript {
     ext {
         kotlin_version = '1.6.10'
+        compose_version = '1.1.0'
         apollo_version = '3.1.0'
         aboutlibs_version = '8.9.4'
     }

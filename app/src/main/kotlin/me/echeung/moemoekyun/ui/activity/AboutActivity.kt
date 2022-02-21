@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.ui.activity
 
 import android.content.pm.PackageManager
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.core.view.isVisible
 import coil.load
 import com.mikepenz.aboutlibraries.LibsBuilder
@@ -9,6 +10,8 @@ import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.databinding.ActivityAboutBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
+import me.echeung.moemoekyun.ui.screen.about.AboutScreen
+import me.echeung.moemoekyun.ui.theme.AppTheme
 import me.echeung.moemoekyun.util.ext.openUrl
 
 class AboutActivity : BaseActivity() {
@@ -17,13 +20,11 @@ class AboutActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAboutBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        initAppbar()
-
-        setupInfo()
-        setupClickListeners()
+        setContent {
+            AppTheme {
+                AboutScreen()
+            }
+        }
     }
 
     private fun setupInfo() {
