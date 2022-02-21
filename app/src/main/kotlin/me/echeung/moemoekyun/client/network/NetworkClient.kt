@@ -7,7 +7,7 @@ import com.apollographql.apollo3.cache.http.httpCache
 import com.apollographql.apollo3.cache.http.httpFetchPolicy
 import com.apollographql.apollo3.network.okHttpClient
 import me.echeung.moemoekyun.client.api.Library
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

@@ -8,9 +8,9 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.BR
-import me.echeung.moemoekyun.client.model.Event
-import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.client.model.User
+import me.echeung.moemoekyun.client.api.model.Event
+import me.echeung.moemoekyun.client.api.model.Song
+import me.echeung.moemoekyun.client.api.model.User
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.system.ThemeUtil

@@ -31,7 +31,7 @@ import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.api.socket.response.UpdateResponse
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.service.notification.MusicNotifier
 import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil

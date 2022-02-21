@@ -20,10 +20,10 @@ import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.data.SongsCache
 import me.echeung.moemoekyun.client.api.data.transform
-import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.client.model.User
-import me.echeung.moemoekyun.client.model.search
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.model.Song
+import me.echeung.moemoekyun.client.api.model.User
+import me.echeung.moemoekyun.client.api.model.search
 import java.util.concurrent.TimeUnit
 
 class APIClient(

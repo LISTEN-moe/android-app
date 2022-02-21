@@ -16,7 +16,7 @@ import me.echeung.moemoekyun.BR
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.Library
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.databinding.ActivityMainBinding
 import me.echeung.moemoekyun.databinding.RadioControlsBinding
 import me.echeung.moemoekyun.service.RadioService

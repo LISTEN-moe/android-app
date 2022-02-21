@@ -60,6 +60,7 @@ class Stream(context: Context) {
             state.emit(State.Stopped)
         }
     }
+
     sealed class State {
         object Loading : State()
         object Playing : State()

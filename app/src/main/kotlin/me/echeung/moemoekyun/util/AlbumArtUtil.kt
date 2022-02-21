@@ -20,7 +20,7 @@ import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.api.model.Song
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.component.KoinComponent

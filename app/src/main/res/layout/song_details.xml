@@ -7,7 +7,7 @@
 
         <variable
             name="song"
-            type="me.echeung.moemoekyun.client.model.Song" />
+            type="me.echeung.moemoekyun.client.api.model.Song" />
 
         <variable
             name="isAuthenticated"

@@ -70,14 +70,13 @@ fun Context.toast(text: String?, duration: Int = Toast.LENGTH_SHORT) {
  * @param url Page URL to open.
  */
 fun Context.openUrl(url: String) {
-    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-    startActivity(browserIntent)
+    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
 }
 
 /**
  * Checks if the device is currently running in Android Auto mode.
  */
-fun Context.isCarUiMode(): Boolean {
+fun Context.isAndroidAuto(): Boolean {
     val uiModeManager = getSystemService(Context.UI_MODE_SERVICE) as UiModeManager
     return uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
 }

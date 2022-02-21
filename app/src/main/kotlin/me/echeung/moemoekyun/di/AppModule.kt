@@ -2,7 +2,7 @@ package me.echeung.moemoekyun.di
 
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.Socket
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.AlbumArtUtil

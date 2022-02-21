@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.model
+package me.echeung.moemoekyun.client.api.model
 
 import kotlinx.serialization.Serializable
 

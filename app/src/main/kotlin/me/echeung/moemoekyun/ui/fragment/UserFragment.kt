@@ -11,7 +11,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.Library
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.databinding.FragmentUserBinding
 import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment

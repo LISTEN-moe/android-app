@@ -1,7 +1,7 @@
 package me.echeung.moemoekyun.util
 
-import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.client.model.getSongDisplayString
+import me.echeung.moemoekyun.client.api.model.Song
+import me.echeung.moemoekyun.client.api.model.getSongDisplayString
 
 class SongFormatter(
     private val preferenceUtil: PreferenceUtil,

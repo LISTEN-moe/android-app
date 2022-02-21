@@ -76,6 +76,14 @@ abstract class StreamPlayer<T : Player> {
         stop()
     }
 
+    fun duck() {
+        player?.volume = 0.5f
+    }
+
+    fun unduck() {
+        player?.volume = 1f
+    }
+
     private fun releasePlayer() {
         player?.removeListener(eventListener)
         player?.release()

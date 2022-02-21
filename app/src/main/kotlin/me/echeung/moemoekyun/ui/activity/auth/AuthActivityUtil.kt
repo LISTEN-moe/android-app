@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.service.RadioService
 import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel

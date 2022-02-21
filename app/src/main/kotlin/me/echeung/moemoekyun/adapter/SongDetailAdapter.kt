@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.model.Song
 import me.echeung.moemoekyun.databinding.SongDetailsBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.ext.openUrl

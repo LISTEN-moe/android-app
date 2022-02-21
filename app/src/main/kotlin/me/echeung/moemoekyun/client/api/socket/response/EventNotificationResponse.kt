@@ -1,7 +1,7 @@
 package me.echeung.moemoekyun.client.api.socket.response
 
 import kotlinx.serialization.Serializable
-import me.echeung.moemoekyun.client.model.Event
+import me.echeung.moemoekyun.client.api.model.Event
 
 @Serializable
 class EventNotificationResponse : BaseResponse() {

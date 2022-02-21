@@ -1,7 +1,7 @@
 -dontobfuscate
 
 -keep public class me.echeung.moemoekyun.client.api.socket.response.**
--keep public class me.echeung.moemoekyun.client.model.Event
+-keep public class me.echeung.moemoekyun.client.api.model.Event
 
 # OkHttp
 -dontwarn okhttp3.**

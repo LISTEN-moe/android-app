@@ -2,7 +2,7 @@ package me.echeung.moemoekyun.viewmodel
 
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import me.echeung.moemoekyun.client.model.User
+import me.echeung.moemoekyun.client.api.model.User
 
 class UserViewModel : BaseViewModel() {
 

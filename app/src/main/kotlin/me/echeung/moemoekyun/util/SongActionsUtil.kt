@@ -11,8 +11,8 @@ import com.google.android.material.snackbar.Snackbar
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchUI

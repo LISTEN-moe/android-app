@@ -1,7 +1,7 @@
 package me.echeung.moemoekyun.client.api.data
 
 import me.echeung.moemoekyun.client.api.APIClient
-import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.api.model.Song
 import java.util.Date
 import java.util.concurrent.TimeUnit
 

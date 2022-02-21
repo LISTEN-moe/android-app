@@ -1,9 +1,9 @@
 package me.echeung.moemoekyun.client.api.socket.response
 
 import kotlinx.serialization.Serializable
-import me.echeung.moemoekyun.client.model.Event
-import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.client.model.User
+import me.echeung.moemoekyun.client.api.model.Event
+import me.echeung.moemoekyun.client.api.model.Song
+import me.echeung.moemoekyun.client.api.model.User
 
 @Serializable
 class UpdateResponse : BaseResponse() {

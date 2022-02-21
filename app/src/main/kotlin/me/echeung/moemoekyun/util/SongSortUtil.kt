@@ -7,7 +7,7 @@ import android.view.MenuItem
 import androidx.preference.PreferenceManager
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
-import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.api.model.Song
 
 class SongSortUtil(
     context: Context

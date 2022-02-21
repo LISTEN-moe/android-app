@@ -3,7 +3,7 @@ package me.echeung.moemoekyun.client
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.api.socket.Socket
-import me.echeung.moemoekyun.client.auth.AuthUtil
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -49,8 +49,6 @@ class RadioClient(
         var library: Library = Library.jpop
             private set
 
-        fun isKpop(): Boolean {
-            return library == Library.kpop
-        }
+        fun isKpop() = library == Library.kpop
     }
 }

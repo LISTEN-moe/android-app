@@ -4,9 +4,9 @@ import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
-import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.client.model.SongDescriptor
-import me.echeung.moemoekyun.client.model.User
+import me.echeung.moemoekyun.client.api.model.Song
+import me.echeung.moemoekyun.client.api.model.SongDescriptor
+import me.echeung.moemoekyun.client.api.model.User
 import me.echeung.moemoekyun.fragment.SongFields
 import me.echeung.moemoekyun.fragment.SongListFields
 

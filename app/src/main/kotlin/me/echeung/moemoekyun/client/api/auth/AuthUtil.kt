@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.auth
+package me.echeung.moemoekyun.client.api.auth
 
 import android.content.Context
 import androidx.core.content.edit

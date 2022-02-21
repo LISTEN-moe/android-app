@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.client.api.model.Song
 import me.echeung.moemoekyun.databinding.SongItemBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
