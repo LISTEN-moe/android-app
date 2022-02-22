@@ -3,10 +3,8 @@ package me.echeung.moemoekyun.ui.screen.about
 import android.content.pm.PackageManager
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -14,10 +12,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -125,11 +121,6 @@ fun AboutScreen() {
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                         text = stringResource(R.string.translators_list),
                     )
-
-//                    Image(
-//                        painter = painterResource(R.drawable.kanna_dancing),
-//                        contentDescription = null,
-//                    )
                 }
             }
 
