@@ -18,9 +18,9 @@ import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.client.api.data.SongsCache
 import me.echeung.moemoekyun.client.api.data.transform
-import me.echeung.moemoekyun.client.api.auth.AuthUtil
 import me.echeung.moemoekyun.client.api.model.Song
 import me.echeung.moemoekyun.client.api.model.User
 import me.echeung.moemoekyun.client.api.model.search
@@ -31,7 +31,7 @@ class APIClient(
     private val authUtil: AuthUtil,
 ) {
 
-    private val songsCache = SongsCache(this)
+    private val songsCache by lazy { SongsCache { getAllSongs() } }
 
     /**
      * Authenticates to the radio.
@@ -168,9 +168,8 @@ class APIClient(
     /**
      * Gets all songs.
      */
-    suspend fun getAllSongs(): List<Song> {
-        // TODO: do actual pagination
-        // TODO: maintain an actual DB of song info so we don't need to query as much stuff
+    private suspend fun getAllSongs(): List<Song> {
+        // TODO: do actual pagination/maintain an actual DB of song info
         val response = client.query(
             SongsQuery(
                 0, 50000,

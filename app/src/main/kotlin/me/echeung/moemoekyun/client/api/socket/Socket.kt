@@ -29,7 +29,8 @@ import java.io.IOException
 
 class Socket(
     private val context: Context,
-    private val networkClient: NetworkClient
+    private val networkClient: NetworkClient,
+    private val json: Json,
 ) : WebSocketListener() {
 
     val state = MutableSharedFlow<State>(replay = 1)
@@ -175,10 +176,10 @@ class Socket(
                 // Update
                 1 -> {
                     val updateResponse = json.decodeFromString<UpdateResponse>(jsonString)
-                    if (!isValidUpdate(updateResponse)) {
+                    if (!updateResponse.isValidUpdate()) {
                         return
                     }
-                    if (isNotification(updateResponse)) {
+                    if (updateResponse.isNotification()) {
                         parseNotification(jsonString)
                         return
                     }
@@ -212,31 +213,11 @@ class Socket(
         }
     }
 
-    private fun isValidUpdate(updateResponse: UpdateResponse): Boolean {
-        return (
-            updateResponse.t == TRACK_UPDATE ||
-                updateResponse.t == TRACK_UPDATE_REQUEST ||
-                updateResponse.t == QUEUE_UPDATE ||
-                isNotification(updateResponse)
-            )
-    }
-
-    private fun isNotification(updateResponse: UpdateResponse): Boolean {
-        return updateResponse.t == NOTIFICATION
-    }
-
     sealed class State {
         class Update(val info: UpdateResponse.Details?) : State()
         object Error : State()
     }
 }
-
-private val json = Json { ignoreUnknownKeys = true }
-
-private const val TRACK_UPDATE = "TRACK_UPDATE"
-private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
-private const val QUEUE_UPDATE = "QUEUE_UPDATE"
-private const val NOTIFICATION = "NOTIFICATION"
 
 private const val RETRY_TIME_MIN = 250
 private const val RETRY_TIME_MAX = 4000

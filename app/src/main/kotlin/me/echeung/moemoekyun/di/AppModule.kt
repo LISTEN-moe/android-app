@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.di
 
+import kotlinx.serialization.json.Json
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.api.auth.AuthUtil
@@ -25,11 +26,12 @@ val appModule = module {
     single { SongActionsUtil(get(), get(), get(), get()) }
     single { SongFormatter(get()) }
     single { SongSortUtil(get()) }
+    single { Json { ignoreUnknownKeys = true } }
 }
 
 val radioModule = module {
     single { Stream(androidContext()) }
-    single { Socket(androidContext(), get()) }
+    single { Socket(androidContext(), get(), get()) }
     single { RadioClient(get(), get(), get(), get(), get()) }
 }
 

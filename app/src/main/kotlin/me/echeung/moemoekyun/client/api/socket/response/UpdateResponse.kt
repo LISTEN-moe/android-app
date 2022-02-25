@@ -19,4 +19,14 @@ class UpdateResponse : BaseResponse() {
         val requester: User? = null,
         val event: Event? = null,
     )
+
+    fun isValidUpdate(): Boolean =
+        t == TRACK_UPDATE || t == TRACK_UPDATE_REQUEST || t == QUEUE_UPDATE || isNotification()
+
+    fun isNotification(): Boolean = t == NOTIFICATION
 }
+
+private const val TRACK_UPDATE = "TRACK_UPDATE"
+private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
+private const val QUEUE_UPDATE = "QUEUE_UPDATE"
+private const val NOTIFICATION = "NOTIFICATION"
