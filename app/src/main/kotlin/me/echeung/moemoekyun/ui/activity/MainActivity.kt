@@ -214,7 +214,7 @@ class MainActivity : BaseActivity() {
 
     override fun invalidateOptionsMenu() {
         super.invalidateOptionsMenu()
-        updateMenuOptions(nowPlayingSheetMenu!!)
+        nowPlayingSheetMenu?.let { updateMenuOptions(it) }
     }
 
     private fun initSecondaryMenus() {

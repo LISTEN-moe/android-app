@@ -108,7 +108,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
     implementation 'androidx.coordinatorlayout:coordinatorlayout:1.2.0'
-    implementation 'androidx.fragment:fragment-ktx:1.5.0-alpha03'
+    implementation 'androidx.fragment:fragment-ktx:1.5.0-alpha04'
     implementation 'androidx.palette:palette-ktx:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01'
@@ -116,7 +116,7 @@ dependencies {
     implementation 'androidx.preference:preference-ktx:1.2.0'
     implementation 'com.github.tfcporciuncula:flow-preferences:1.3.4'
 
-    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.3'
+    implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.6'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2'
 
     implementation "com.apollographql.apollo3:apollo-runtime:$apollo_version"
@@ -126,8 +126,8 @@ dependencies {
     implementation "io.coil-kt:coil:$coil_version"
     implementation "io.coil-kt:coil-gif:$coil_version"
 
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.17.0'
-    implementation 'androidx.media:media:1.6.0-alpha01'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
+    implementation 'androidx.media:media:1.6.0-beta01'
 
     implementation "com.mikepenz:aboutlibraries-core:$aboutlibs_version"
     implementation "com.mikepenz:aboutlibraries:$aboutlibs_version"
