@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.client.api.socket
 import android.content.Context
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
@@ -33,7 +34,7 @@ class Socket(
     private val json: Json,
 ) : WebSocketListener() {
 
-    val state = MutableSharedFlow<State>(replay = 1)
+    val state = MutableSharedFlow<State>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     private val scope = MainScope()
 

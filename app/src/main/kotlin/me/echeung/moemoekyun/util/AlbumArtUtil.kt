@@ -15,6 +15,7 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import coil.size.Scale
+import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import logcat.LogPriority
 import logcat.asLog
@@ -37,7 +38,7 @@ class AlbumArtUtil(
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
     }
 
-    val flow = MutableSharedFlow<Bitmap>(replay = 1)
+    val flow = MutableSharedFlow<Bitmap>(extraBufferCapacity = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST)
 
     var isDefaultAlbumArt = true
         private set
