@@ -30,6 +30,6 @@ object EventNotification {
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
 
-        return PendingIntent.getActivity(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getActivity(context, 0, action, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
     }
 }
