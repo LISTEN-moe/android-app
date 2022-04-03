@@ -14,8 +14,8 @@ android {
         applicationId 'me.echeung.moemoekyun'
         minSdkVersion 23
         targetSdkVersion 32
-        versionCode 101
-        versionName '5.5.2-beta.2'
+        versionCode 102
+        versionName '5.5.2-beta.3'
     }
 
     buildFeatures {
