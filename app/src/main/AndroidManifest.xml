@@ -76,12 +76,12 @@
             android:value="2.1" />
 
         <!-- Android Auto -->
-        <meta-data
-            android:name="com.google.android.gms.car.application"
-            android:resource="@xml/automotive_app_desc" />
-        <meta-data
-            android:name="com.google.android.gms.car.notification.SmallIcon"
-            android:resource="@drawable/ic_icon" />
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.car.application"-->
+<!--            android:resource="@xml/automotive_app_desc" />-->
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.car.notification.SmallIcon"-->
+<!--            android:resource="@drawable/ic_icon" />-->
 
         <service
             android:name=".service.auto.AutoMediaBrowserService"
