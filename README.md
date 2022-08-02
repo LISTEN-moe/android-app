@@ -6,13 +6,13 @@
 ## Download
 
 <a href="https://play.google.com/store/apps/details?id=me.echeung.moemoekyun">
-  <img height="50" alt="Get it on Google Play"
-       src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" />
+  <img height="80" alt="Get it on Google Play"
+       src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" />
 </a>
 
 <a href="https://f-droid.org/app/me.echeung.moemoekyun.fdroid">
-  <img height="50" alt="Get it on F-Droid"
-       src="https://i.imgur.com/um29KX1.png">
+  <img height="80" alt="Get it on F-Droid"
+       src="https://f-droid.org/badge/get-it-on.png">
 </a>
 
 
