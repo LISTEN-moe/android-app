@@ -1,15 +1,15 @@
 buildscript {
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.6.21")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.10")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.7.10")
     }
 }
 
 plugins {
-    id("com.android.application") version "7.0.2" apply false
-    id("com.android.library") version "7.0.2" apply false
-    kotlin("android") version "1.6.21" apply false
-    id("org.jmailen.kotlinter") version "3.6.0"
+    id("com.android.application") version "7.2.2" apply false
+    id("com.android.library") version "7.2.2" apply false
+    kotlin("android") version "1.7.10" apply false
+    id("org.jmailen.kotlinter") version "3.11.1"
 }
 
 allprojects {

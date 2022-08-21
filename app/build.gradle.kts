@@ -51,20 +51,22 @@ android {
         disable.addAll(listOf("MissingTranslation", "ExtraTranslation"))
         enable.addAll(listOf("ObsoleteSdkInt"))
 
-        isAbortOnError = true
+        abortOnError = true
     }
 
     packagingOptions {
-        resources.excludes.addAll(listOf(
-            "META-INF/DEPENDENCIES",
-            "LICENSE.txt",
-            "META-INF/LICENSE",
-            "META-INF/LICENSE.txt",
-            "META-INF/README.md",
-            "META-INF/NOTICE",
-            "META-INF/*.kotlin_module",
-            "META-INF/*.version",
-        ))
+        resources.excludes.addAll(
+            listOf(
+                "META-INF/DEPENDENCIES",
+                "LICENSE.txt",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/README.md",
+                "META-INF/NOTICE",
+                "META-INF/*.kotlin_module",
+                "META-INF/*.version",
+            ),
+        )
     }
 
     dependenciesInfo {
@@ -137,10 +139,9 @@ tasks {
     withType<KotlinCompile> {
         // See https://kotlinlang.org/docs/reference/experimental.html#experimental-status-of-experimental-api-markers
         kotlinOptions.freeCompilerArgs += listOf(
-            "-Xopt-in=kotlin.Experimental",
-            "-Xopt-in=kotlin.RequiresOptIn",
-            "-Xuse-experimental=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-Xuse-experimental=kotlinx.coroutines.FlowPreview",
+            "-opt-in=kotlin.Experimental",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-opt-in=kotlinx.coroutines.FlowPreview",
         )
     }
 

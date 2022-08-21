@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit
 class APIClient(
     okHttpClient: OkHttpClient,
     cacheDirectory: File,
-    private val authUtil: AuthUtil
+    private val authUtil: AuthUtil,
 ) {
 
     private val client: ApolloClient

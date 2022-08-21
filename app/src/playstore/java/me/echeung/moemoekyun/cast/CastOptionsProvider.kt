@@ -15,7 +15,7 @@ class CastOptionsProvider : OptionsProvider {
     override fun getCastOptions(context: Context): CastOptions {
         val buttonActions: List<String> = listOf(
             MediaIntentReceiver.ACTION_TOGGLE_PLAYBACK,
-            MediaIntentReceiver.ACTION_STOP_CASTING
+            MediaIntentReceiver.ACTION_STOP_CASTING,
         )
         val compatButtonActionsIndices = intArrayOf(0, 1)
 

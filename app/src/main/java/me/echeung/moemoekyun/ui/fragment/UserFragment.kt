@@ -73,7 +73,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
             binding.favoritesList.refreshLayout,
             binding.query,
             LIST_ID,
-            this::loadSongs
+            this::loadSongs,
         )
     }
 
@@ -84,7 +84,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
                 {
                     songSortUtil.initSortMenu(LIST_ID, this)
                 },
-                songList::handleMenuItemClick
+                songList::handleMenuItemClick,
             )
         }
     }

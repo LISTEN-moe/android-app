@@ -17,7 +17,7 @@ import org.koin.core.component.inject
 
 class SongDetailAdapter(
     private val activity: Activity,
-    songs: List<Song>
+    songs: List<Song>,
 ) : ArrayAdapter<Song>(activity, 0, songs), KoinComponent {
 
     private val authUtil: AuthUtil by inject()

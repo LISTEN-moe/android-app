@@ -35,7 +35,7 @@ fun ImageView.loadImage(bitmap: Bitmap?) {
                 .placeholder(drawable)
                 .override(width, height)
                 .centerCrop()
-                .dontAnimate()
+                .dontAnimate(),
         )
         .into(this)
 }
@@ -55,7 +55,7 @@ fun ImageView.loadImage(url: String?) {
                 .placeholder(drawable)
                 .override(width, height)
                 .centerCrop()
-                .dontAnimate()
+                .dontAnimate(),
         )
         .into(this)
 }

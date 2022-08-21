@@ -14,7 +14,7 @@ import me.echeung.moemoekyun.util.ext.notificationManager
 
 class MusicNotifier internal constructor(
     private val service: RadioService,
-    private val albumArtUtil: AlbumArtUtil
+    private val albumArtUtil: AlbumArtUtil,
 ) {
 
     fun update(song: Song?, isAuthenticated: Boolean) {
@@ -29,7 +29,7 @@ class MusicNotifier internal constructor(
         val playPauseAction = NotificationCompat.Action(
             if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp,
             if (isPlaying) service.getString(R.string.action_pause) else service.getString(R.string.action_play),
-            getPlaybackActionService(RadioService.PLAY_PAUSE)
+            getPlaybackActionService(RadioService.PLAY_PAUSE),
         )
 
         // Build the notification
@@ -72,8 +72,8 @@ class MusicNotifier internal constructor(
                     NotificationCompat.Action(
                         if (song.favorite) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp,
                         if (song.favorite) service.getString(R.string.action_unfavorite) else service.getString(R.string.action_favorite),
-                        getPlaybackActionService(RadioService.TOGGLE_FAVORITE)
-                    )
+                        getPlaybackActionService(RadioService.TOGGLE_FAVORITE),
+                    ),
                 )
 
                 builder.setStyle(style.setShowActionsInCompactView(0, 1))

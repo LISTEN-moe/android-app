@@ -26,7 +26,7 @@ class CastDelegate(
     context: Context,
     private val radioViewModel: RadioViewModel,
     private val stream: Stream,
-    private val socket: Socket
+    private val socket: Socket,
 ) {
 
     private val scope = MainScope()
@@ -44,16 +44,18 @@ class CastDelegate(
         castPlayer?.let { player ->
             castStreamPlayer = CastStreamPlayer(player)
 
-            player.setSessionAvailabilityListener(object : SessionAvailabilityListener {
-                override fun onCastSessionAvailable() {
-                    stream.setAltPlayer(castStreamPlayer)
-                    updateSong()
-                }
+            player.setSessionAvailabilityListener(
+                object : SessionAvailabilityListener {
+                    override fun onCastSessionAvailable() {
+                        stream.setAltPlayer(castStreamPlayer)
+                        updateSong()
+                    }
 
-                override fun onCastSessionUnavailable() {
-                    stream.setAltPlayer(null)
-                }
-            })
+                    override fun onCastSessionUnavailable() {
+                        stream.setAltPlayer(null)
+                    }
+                },
+            )
 
             merge(socket.channel.asFlow(), stream.channel.asFlow())
                 .distinctUntilChanged()

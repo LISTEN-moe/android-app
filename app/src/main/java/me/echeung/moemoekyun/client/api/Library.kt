@@ -4,12 +4,12 @@ enum class Library(val id: String, val socketUrl: String, val streamUrl: String)
     Jpop(
         "jpop",
         "wss://listen.moe/gateway_v2",
-        "https://listen.moe/fallback"
+        "https://listen.moe/fallback",
     ),
     Kpop(
         "kpop",
         "wss://listen.moe/kpop/gateway_v2",
-        "https://listen.moe/kpop/fallback"
+        "https://listen.moe/kpop/fallback",
     ),
     ;
 

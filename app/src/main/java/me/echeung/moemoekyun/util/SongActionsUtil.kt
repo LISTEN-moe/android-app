@@ -23,7 +23,7 @@ class SongActionsUtil(
     private val radioClient: RadioClient,
     private val preferenceUtil: PreferenceUtil,
     private val authUtil: AuthUtil,
-    private val radioViewModel: RadioViewModel
+    private val radioViewModel: RadioViewModel,
 ) {
 
     fun showSongsDialog(activity: Activity, title: String?, song: Song) {
@@ -103,7 +103,7 @@ class SongActionsUtil(
                             val undoBar = Snackbar.make(
                                 coordinatorLayout,
                                 String.format(activity.getString(R.string.unfavorited), song.toString()),
-                                Snackbar.LENGTH_LONG
+                                Snackbar.LENGTH_LONG,
                             )
                             undoBar.setAction(R.string.action_undo) { toggleFavorite(activity, song) }
                             undoBar.show()

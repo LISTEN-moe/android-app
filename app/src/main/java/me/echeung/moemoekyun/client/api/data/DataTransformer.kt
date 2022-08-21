@@ -15,7 +15,7 @@ fun UserQuery.User.transform(): User {
         this.uuid,
         this.displayName!!,
         this.avatarImage,
-        this.bannerImage
+        this.bannerImage,
     )
 }
 
@@ -44,7 +44,7 @@ private fun SongFields.transform(): Song {
         this.artists.mapNotNull { it?.transform() },
         this.sources.mapNotNull { it?.transform() },
         this.albums.mapNotNull { it?.transform() },
-        this.duration
+        this.duration,
     )
 }
 
@@ -52,7 +52,7 @@ private fun SongFields.Artist.transform(): SongDescriptor {
     return SongDescriptor(
         this.name,
         this.nameRomaji,
-        this.image
+        this.image,
     )
 }
 
@@ -60,7 +60,7 @@ private fun SongFields.Source.transform(): SongDescriptor {
     return SongDescriptor(
         this.name,
         this.nameRomaji,
-        this.image
+        this.image,
     )
 }
 
@@ -68,7 +68,7 @@ private fun SongFields.Album.transform(): SongDescriptor {
     return SongDescriptor(
         this.name,
         this.nameRomaji,
-        this.image
+        this.image,
     )
 }
 
@@ -77,13 +77,13 @@ private fun SongListFields.transform(): Song {
         this.id,
         this.title,
         this.titleRomaji,
-        this.artists.mapNotNull { it?.transform() }
+        this.artists.mapNotNull { it?.transform() },
     )
 }
 
 private fun SongListFields.Artist.transform(): SongDescriptor {
     return SongDescriptor(
         this.name,
-        this.nameRomaji
+        this.nameRomaji,
     )
 }

@@ -14,7 +14,7 @@ class CastDelegate(
     context: Context,
     radioViewModel: RadioViewModel,
     stream: Stream,
-    socket: Socket
+    socket: Socket,
 ) {
 
     fun onDestroy() {

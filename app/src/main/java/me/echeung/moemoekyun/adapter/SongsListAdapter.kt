@@ -21,7 +21,7 @@ import java.util.Random
 
 class SongsListAdapter(
     activity: Activity,
-    private val listId: String
+    private val listId: String,
 ) : ListAdapter<Song, RecyclerView.ViewHolder>(DIFF_CALLBACK), KoinComponent {
 
     private val songActionsUtil: SongActionsUtil by inject()
@@ -115,7 +115,7 @@ class SongsListAdapter(
     private class SongViewHolder internal constructor(
         private val binding: SongItemBinding,
         adapter: SongsListAdapter,
-        songActionsUtil: SongActionsUtil
+        songActionsUtil: SongActionsUtil,
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {

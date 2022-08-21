@@ -15,7 +15,7 @@ data class Song(
     var albums: List<SongDescriptor>? = null,
     var duration: Int = 0,
     var enabled: Boolean = false,
-    var favorite: Boolean = false
+    var favorite: Boolean = false,
 ) {
 
     val titleString: String?

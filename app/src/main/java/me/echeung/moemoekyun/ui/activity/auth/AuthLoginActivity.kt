@@ -45,7 +45,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
                     return@OnEditorActionListener true
                 }
                 false
-            }
+            },
         )
 
         // TODO: forgot password page doesn't exist at the moment
@@ -117,7 +117,7 @@ class AuthLoginActivity : BaseDataBindingActivity<ActivityAuthLoginBinding>() {
                             launchUI { toast(e.message) }
                         }
                     }
-                }
+                },
             )
             .create()
 

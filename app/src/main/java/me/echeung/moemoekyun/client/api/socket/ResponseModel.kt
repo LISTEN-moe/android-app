@@ -63,7 +63,7 @@ sealed class ResponseModel {
     data class EventNotificationResponse(
         override val op: Int,
         val t: String?,
-        val d: Details?
+        val d: Details?,
     ) : ResponseModel() {
 
         @Serializable

@@ -13,7 +13,7 @@ class RadioClient(
     networkClient: NetworkClient,
     private val preferenceUtil: PreferenceUtil,
     private val stream: Stream,
-    private val socket: Socket
+    private val socket: Socket,
 ) {
 
     val api: APIClient

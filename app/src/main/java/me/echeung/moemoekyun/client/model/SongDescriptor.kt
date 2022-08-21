@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class SongDescriptor(
     val name: String? = null,
     val nameRomaji: String? = null,
-    val image: String? = null
+    val image: String? = null,
 ) {
 
     fun contains(query: String): Boolean {

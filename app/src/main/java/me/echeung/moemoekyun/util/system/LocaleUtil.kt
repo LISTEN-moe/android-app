@@ -10,7 +10,7 @@ import java.util.Locale
 
 // Based on https://proandroiddev.com/change-language-programmatically-at-runtime-on-android-5e6bc15c758
 class LocaleUtil(
-    private val preferenceUtil: PreferenceUtil
+    private val preferenceUtil: PreferenceUtil,
 ) {
 
     fun setLocale(context: Context): Context {

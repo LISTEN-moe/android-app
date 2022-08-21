@@ -23,7 +23,7 @@ import java.io.IOException
 
 class Socket(
     private val context: Context,
-    private val networkClient: NetworkClient
+    private val networkClient: NetworkClient,
 ) : WebSocketListener() {
 
     val channel = ConflatedBroadcastChannel<SocketResult>()

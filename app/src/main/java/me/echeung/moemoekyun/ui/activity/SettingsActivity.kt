@@ -57,7 +57,7 @@ class SettingsActivity : BaseActivity() {
                         preference.entries[index]
                     } else {
                         null
-                    }
+                    },
                 )
             } else {
                 preference.summary = stringValue

@@ -142,11 +142,13 @@ class MainActivity : BaseActivity() {
         }
 
         searchMenu = appbar?.findViewById(R.id.appbar_search_menu)
-        searchMenu?.setOnMenuItemClickListener(object : ActionMenuView.OnMenuItemClickListener {
-            override fun onMenuItemClick(menuItem: MenuItem): Boolean {
-                return onOptionsItemSelected(menuItem)
-            }
-        })
+        searchMenu?.setOnMenuItemClickListener(
+            object : ActionMenuView.OnMenuItemClickListener {
+                override fun onMenuItemClick(menuItem: MenuItem): Boolean {
+                    return onOptionsItemSelected(menuItem)
+                }
+            },
+        )
     }
 
     private fun initNowPlaying() {
@@ -159,16 +161,18 @@ class MainActivity : BaseActivity() {
             radioViewModel.miniPlayerAlpha = 1f
         }
 
-        nowPlayingSheet?.setBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
-                preferenceUtil.isNowPlayingExpanded().set(newState == BottomSheetBehavior.STATE_EXPANDED)
-            }
+        nowPlayingSheet?.setBottomSheetCallback(
+            object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(@NonNull bottomSheet: View, newState: Int) {
+                    preferenceUtil.isNowPlayingExpanded().set(newState == BottomSheetBehavior.STATE_EXPANDED)
+                }
 
-            override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
-                // Shows/hides mini player
-                this@MainActivity.radioViewModel.miniPlayerAlpha = 1f - slideOffset
-            }
-        })
+                override fun onSlide(@NonNull bottomSheet: View, slideOffset: Float) {
+// Shows/hides mini player
+                    this@MainActivity.radioViewModel.miniPlayerAlpha = 1f - slideOffset
+                }
+            },
+        )
 
         // Expand when tap mini player
         binding.nowPlaying.miniPlayer.root.setOnClickListener { nowPlayingSheet!!.setState(BottomSheetBehavior.STATE_EXPANDED) }

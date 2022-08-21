@@ -26,7 +26,7 @@ class SongList(
     private val swipeRefreshLayout: SwipeRefreshLayout?,
     filterView: View,
     listId: String,
-    private val loadSongs: (adapter: SongsListAdapter) -> Unit
+    private val loadSongs: (adapter: SongsListAdapter) -> Unit,
 ) : KoinComponent {
 
     private val songActionsUtil: SongActionsUtil by inject()
@@ -47,43 +47,49 @@ class SongList(
             swipeRefreshLayout.isRefreshing = false
 
             // Only allow pull to refresh when user is at the top of the list
-            songsList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val topRowVerticalPosition = if (songsList.childCount != 0) {
-                        songsList.getChildAt(0).top
-                    } else {
-                        0
+            songsList.addOnScrollListener(
+                object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        val topRowVerticalPosition = if (songsList.childCount != 0) {
+                            songsList.getChildAt(0).top
+                        } else {
+                            0
+                        }
+                        swipeRefreshLayout.isEnabled = topRowVerticalPosition >= 0
                     }
-                    swipeRefreshLayout.isEnabled = topRowVerticalPosition >= 0
-                }
-            })
+                },
+            )
         }
 
         // Filter
         if (filterView is EditText) {
-            filterView.addTextChangedListener(object : TextWatcher {
-                override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+            filterView.addTextChangedListener(
+                object : TextWatcher {
+                    override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-                override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+                    override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-                override fun afterTextChanged(editable: Editable) {
-                    handleQuery(editable.toString())
-                }
-            })
+                    override fun afterTextChanged(editable: Editable) {
+                        handleQuery(editable.toString())
+                    }
+                },
+            )
         }
 
         if (filterView is SearchView) {
-            filterView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    handleQuery(query!!)
-                    return true
-                }
+            filterView.setOnQueryTextListener(
+                object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        handleQuery(query!!)
+                        return true
+                    }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    handleQuery(newText!!)
-                    return true
-                }
-            })
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        handleQuery(newText!!)
+                        return true
+                    }
+                },
+            )
 
             filterView.setOnCloseListener {
                 handleQuery("")

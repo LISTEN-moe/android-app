@@ -37,15 +37,17 @@ class SleepTimerDialog(private val activity: Activity) : KoinComponent {
         }
 
         sleepTimerText.text = activity.getPluralString(R.plurals.minutes, prevSleepTimer)
-        sleepTimerSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                sleepTimerText.text = activity.getPluralString(R.plurals.minutes, progress)
-            }
+        sleepTimerSeekBar.setOnSeekBarChangeListener(
+            object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                    sleepTimerText.text = activity.getPluralString(R.plurals.minutes, progress)
+                }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+                override fun onStartTrackingTouch(seekBar: SeekBar) {}
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {}
-        })
+                override fun onStopTrackingTouch(seekBar: SeekBar) {}
+            },
+        )
 
         // Build dialog
         val sleepTimerDialog = MaterialAlertDialogBuilder(activity, R.style.Theme_Widget_Dialog)

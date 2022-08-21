@@ -17,7 +17,7 @@ object NetworkUtil : KoinComponent {
             BuildConfig.VERSION_NAME,
             Build.DEVICE,
             Build.BRAND,
-            Build.VERSION.SDK_INT
+            Build.VERSION.SDK_INT,
         )
 
     fun isNetworkAvailable(context: Context?): Boolean {

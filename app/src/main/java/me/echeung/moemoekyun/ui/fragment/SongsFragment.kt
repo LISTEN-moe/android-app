@@ -71,7 +71,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>() {
             binding.songs.refreshLayout,
             binding.searchView,
             LIST_ID,
-            this::loadSongs
+            this::loadSongs,
         )
     }
 

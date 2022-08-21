@@ -16,4 +16,5 @@ pluginManagement {
     }
 }
 
+rootProject.name = "LISTEN.moe Android"
 include(":app")

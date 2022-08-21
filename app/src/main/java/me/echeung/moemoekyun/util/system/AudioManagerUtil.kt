@@ -9,7 +9,7 @@ import me.echeung.moemoekyun.util.ext.audioManager
 
 class AudioManagerUtil(
     context: Context,
-    audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener
+    audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener,
 ) {
 
     private val audioManager: AudioManager = context.audioManager

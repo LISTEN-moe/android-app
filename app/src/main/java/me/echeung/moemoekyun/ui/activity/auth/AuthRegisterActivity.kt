@@ -37,7 +37,7 @@ class AuthRegisterActivity : BaseDataBindingActivity<ActivityAuthRegisterBinding
                     return@OnEditorActionListener true
                 }
                 false
-            }
+            },
         )
     }
 

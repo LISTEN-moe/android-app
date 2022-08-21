@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit
 
 class NetworkClient(
     context: Context,
-    authUtil: AuthUtil
+    authUtil: AuthUtil,
 ) {
 
     val client: OkHttpClient
@@ -19,36 +19,40 @@ class NetworkClient(
 
     init {
         client = OkHttpClient.Builder()
-            .addNetworkInterceptor(object : Interceptor {
-                override fun intercept(chain: Interceptor.Chain): Response {
-                    val request = chain.request()
+            .addNetworkInterceptor(
+                object : Interceptor {
+                    override fun intercept(chain: Interceptor.Chain): Response {
+                        val request = chain.request()
 
-                    val newRequest = request.newBuilder()
-                        .addHeader(HEADER_USER_AGENT, NetworkUtil.userAgent)
-                        .addHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE)
-                        .build()
+                        val newRequest = request.newBuilder()
+                            .addHeader(HEADER_USER_AGENT, NetworkUtil.userAgent)
+                            .addHeader(HEADER_CONTENT_TYPE, CONTENT_TYPE)
+                            .build()
 
-                    return chain.proceed(newRequest)
-                }
-            })
-            .addNetworkInterceptor(object : Interceptor {
-                override fun intercept(chain: Interceptor.Chain): Response {
-                    val original = chain.request()
-                    val builder = original.newBuilder().method(original.method, original.body)
-
-                    // MFA login
-                    if (authUtil.mfaToken != null) {
-                        builder.header(HEADER_AUTHZ, authUtil.mfaAuthTokenWithPrefix)
+                        return chain.proceed(newRequest)
                     }
+                },
+            )
+            .addNetworkInterceptor(
+                object : Interceptor {
+                    override fun intercept(chain: Interceptor.Chain): Response {
+                        val original = chain.request()
+                        val builder = original.newBuilder().method(original.method, original.body)
 
-                    // Authorized calls
-                    if (authUtil.isAuthenticated) {
-                        builder.header(HEADER_AUTHZ, authUtil.authTokenWithPrefix)
+                        // MFA login
+                        if (authUtil.mfaToken != null) {
+                            builder.header(HEADER_AUTHZ, authUtil.mfaAuthTokenWithPrefix)
+                        }
+
+                        // Authorized calls
+                        if (authUtil.isAuthenticated) {
+                            builder.header(HEADER_AUTHZ, authUtil.authTokenWithPrefix)
+                        }
+
+                        return chain.proceed(builder.build())
                     }
-
-                    return chain.proceed(builder.build())
-                }
-            })
+                },
+            )
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build()

@@ -27,7 +27,7 @@ import org.koin.core.component.inject
 import kotlin.math.max
 
 class AlbumArtUtil(
-    private val context: Context
+    private val context: Context,
 ) : KoinComponent {
 
     private val radioViewModel: RadioViewModel by inject()
@@ -106,18 +106,20 @@ class AlbumArtUtil(
                 .asBitmap()
                 .load(url)
                 .apply(requestOptions)
-                .listener(object : RequestListener<Bitmap> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-                        return false
-                    }
+                .listener(
+                    object : RequestListener<Bitmap> {
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                            return false
+                        }
 
-                    override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
-                        isDefaultAlbumArt = false
-                        extractAccentColor(resource)
-                        updateListeners(resource)
-                        return true
-                    }
-                })
+                        override fun onResourceReady(resource: Bitmap, model: Any, target: Target<Bitmap>, dataSource: DataSource, isFirstResource: Boolean): Boolean {
+                            isDefaultAlbumArt = false
+                            extractAccentColor(resource)
+                            updateListeners(resource)
+                            return true
+                        }
+                    },
+                )
                 .submit()
         }
     }

@@ -61,14 +61,14 @@ class App : Application(), ServiceConnection {
                 NotificationChannel(
                     MusicNotifier.NOTIFICATION_CHANNEL_ID,
                     MusicNotifier.NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_LOW
+                    NotificationManager.IMPORTANCE_LOW,
                 ),
                 // Events
                 NotificationChannel(
                     EventNotification.NOTIFICATION_CHANNEL_ID,
                     EventNotification.NOTIFICATION_CHANNEL_NAME,
-                    NotificationManager.IMPORTANCE_DEFAULT
-                )
+                    NotificationManager.IMPORTANCE_DEFAULT,
+                ),
             ).forEach(notificationManager::createNotificationChannel)
         }
     }

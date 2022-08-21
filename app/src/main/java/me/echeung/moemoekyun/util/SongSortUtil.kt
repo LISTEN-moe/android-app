@@ -10,7 +10,7 @@ import me.echeung.moemoekyun.client.model.Song
 import java.util.Comparator
 
 class SongSortUtil(
-    private val context: Context
+    private val context: Context,
 ) {
 
     fun setListSortType(listId: String, sortType: String) {
