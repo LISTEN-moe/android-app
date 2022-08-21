@@ -3,7 +3,6 @@ plugins {
     id("com.android.library") version "7.0.2" apply false
     kotlin("android") version "1.5.31" apply false
     id("org.jmailen.kotlinter") version "3.6.0"
-    id("com.github.ben-manes.versions") version "0.33.0"
 }
 
 allprojects {
@@ -16,7 +15,7 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "org.jmailen.kotlinter")
+    apply<org.jmailen.gradle.kotlinter.KotlinterPlugin>()
 
     kotlinter {
         experimentalRules = true
@@ -26,6 +25,6 @@ subprojects {
     }
 }
 
-tasks.register("clean", Delete::class) {
+tasks.register<Delete>("clean") {
     delete(rootProject.buildDir)
 }
