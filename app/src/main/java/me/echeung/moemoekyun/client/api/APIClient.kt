@@ -1,27 +1,22 @@
 package me.echeung.moemoekyun.client.api
 
-import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.api.Input
-import com.apollographql.apollo.api.cache.http.HttpCachePolicy
-import com.apollographql.apollo.cache.http.ApolloHttpCache
-import com.apollographql.apollo.coroutines.await
-import com.apollographql.apollo.coroutines.toFlow
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.Input
+import com.apollographql.apollo3.cache.http.HttpFetchPolicy
+import com.apollographql.apollo3.cache.http.httpCache
+import com.apollographql.apollo3.cache.http.httpExpireTimeout
+import com.apollographql.apollo3.cache.http.httpFetchPolicy
+import com.apollographql.apollo3.network.okHttpClient
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LoginMfaMutation
 import me.echeung.moemoekyun.LoginMutation
-import me.echeung.moemoekyun.QueueQuery
-import me.echeung.moemoekyun.QueueSubscription
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
-import me.echeung.moemoekyun.UserQueueSubscription
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.data.SongsCache
 import me.echeung.moemoekyun.client.api.data.transform
@@ -30,28 +25,27 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.client.model.search
 import okhttp3.OkHttpClient
+import java.io.File
 import java.util.concurrent.TimeUnit
 
 class APIClient(
     okHttpClient: OkHttpClient,
-    apolloCache: ApolloHttpCache,
+    cacheDirectory: File,
     private val authUtil: AuthUtil
 ) {
-
-    private val scope = MainScope()
 
     private val client: ApolloClient
     private val songsCache: SongsCache
 
     init {
-//        val transportFactory = WebSocketSubscriptionTransport.Factory(webSocketUrl, okHttpClient)
-
-        client = ApolloClient.builder()
+        client = ApolloClient.Builder()
             .serverUrl(Library.API_BASE)
-            .httpCache(apolloCache)
-            .defaultHttpCachePolicy(DEFAULT_CACHE_POLICY)
+            .httpCache(
+                directory = cacheDirectory,
+                maxSize = 1024 * 1024,
+            )
+            .httpFetchPolicy(HttpFetchPolicy.NetworkFirst)
             .okHttpClient(okHttpClient)
-//            .subscriptionTransportFactory(transportFactory)
             .build()
 
         songsCache = SongsCache(this)
@@ -64,7 +58,7 @@ class APIClient(
      * @param password User's password.
      */
     suspend fun authenticate(username: String, password: String): Pair<LoginState, String> {
-        val response = client.mutate(LoginMutation(username, password)).await()
+        val response = client.mutation(LoginMutation(username, password)).execute()
 
         val userToken = response.data?.login?.token!!
 
@@ -84,7 +78,7 @@ class APIClient(
      * @param otpToken User's one-time password token.
      */
     suspend fun authenticateMfa(otpToken: String): String {
-        val response = client.mutate(LoginMfaMutation(otpToken)).await()
+        val response = client.mutation(LoginMfaMutation(otpToken)).execute()
 
         val userToken = response.data?.loginMFA?.token!!
         authUtil.authToken = userToken
@@ -97,14 +91,14 @@ class APIClient(
      * Register a new user.
      */
     suspend fun register(email: String, username: String, password: String) {
-        client.mutate(RegisterMutation(email, username, password)).await()
+        client.mutation(RegisterMutation(email, username, password)).execute()
     }
 
     /**
      * Gets the user information (id and username).
      */
     suspend fun getUserInfo(): User {
-        val response = client.query(UserQuery("@me")).await()
+        val response = client.query(UserQuery("@me")).execute()
 
         return response.data?.user!!.transform()
     }
@@ -114,7 +108,7 @@ class APIClient(
      */
     suspend fun getUserFavorites(): List<Song> {
         // TODO: do actual pagination
-        val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop()))).await()
+        val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop()))).execute()
 
         return response.data?.user?.favorites?.favorites
             ?.mapNotNull { it?.song }
@@ -128,7 +122,7 @@ class APIClient(
      * @param songIds IDs of songs to check status of.
      */
     suspend fun isFavorite(songIds: List<Int>): List<Int> {
-        val response = client.query(CheckFavoriteQuery(songIds)).await()
+        val response = client.query(CheckFavoriteQuery(songIds)).execute()
 
         return response.data?.checkFavorite?.filterNotNull() ?: emptyList()
     }
@@ -139,7 +133,7 @@ class APIClient(
      * @param songId Song to update favorite status of.
      */
     suspend fun toggleFavorite(songId: Int) {
-        client.mutate(FavoriteMutation(songId)).await()
+        client.mutation(FavoriteMutation(songId)).execute()
     }
 
     /**
@@ -148,7 +142,7 @@ class APIClient(
      * @param songId Song to request.
      */
     suspend fun requestSong(songId: Int) {
-        val response = client.mutate(RequestSongMutation(songId, Input.optional(RadioClient.isKpop()))).await()
+        val response = client.mutation(RequestSongMutation(songId, Input.optional(RadioClient.isKpop()))).execute()
 
         if (response.hasErrors()) {
             throw Exception(response.errors?.get(0)?.message)
@@ -173,10 +167,9 @@ class APIClient(
      */
     suspend fun getSongDetails(songId: Int): Song {
         val response = client.query(SongQuery(songId))
-            .toBuilder()
-            .httpCachePolicy(SONG_CACHE_POLICY)
-            .build()
-            .await()
+            .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
+            .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
+            .execute()
 
         return response.data?.song!!.transform()
     }
@@ -188,48 +181,15 @@ class APIClient(
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
         val response = client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
-            .toBuilder()
-            .httpCachePolicy(SONG_CACHE_POLICY)
-            .build()
-            .await()
+            .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
+            .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
+            .execute()
 
         return response.data?.songs?.songs?.map { it.transform() } ?: emptyList()
-    }
-
-    /**
-     * Gets and subscribes to song queue info.
-     */
-    suspend fun getQueue(user: User) {
-        val queue = client.query(QueueQuery()).await()
-
-//           callback.onQueueSuccess(response.data?.queue ?: 0)
-
-        client.subscribe(QueueSubscription(RadioClient.library.name))
-            .toFlow()
-            .onEach {
-//                    callback.onQueueSuccess(response.data?.queue?.amount ?: 0)
-            }
-            .launchIn(scope)
-
-        // TODO: handle user change
-        client.subscribe(UserQueueSubscription(RadioClient.library.name, user.uuid))
-            .toFlow()
-            .onEach {
-//                    callback.onUserQueueSuccess(
-//                            response.data?.userQueue?.amount ?: 0,
-//                            response.data?.userQueue?.before ?: 0
-//                    )
-            }
-            .launchIn(scope)
     }
 
     enum class LoginState {
         REQUIRE_OTP,
         COMPLETE,
-    }
-
-    companion object {
-        private val DEFAULT_CACHE_POLICY = HttpCachePolicy.NETWORK_FIRST
-        private val SONG_CACHE_POLICY = HttpCachePolicy.CACHE_FIRST.expireAfter(1, TimeUnit.DAYS)
     }
 }

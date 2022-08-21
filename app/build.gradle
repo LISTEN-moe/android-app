@@ -1,22 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-buildscript {
-    ext.apollo_version = '2.5.9'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "com.apollographql.apollo:apollo-gradle-plugin:$apollo_version"
-    }
-}
-
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id "com.apollographql.apollo3" version "3.5.0"
 }
-
-apply plugin: 'com.apollographql.apollo'
 
 android {
     compileSdkVersion 33
@@ -80,16 +69,19 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+        coreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
 dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
     final coroutines_version = '1.5.2'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
@@ -113,9 +105,9 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:5.0.0-alpha.2'
     implementation 'com.squareup.moshi:moshi:1.8.0'
 
-    implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
-    implementation "com.apollographql.apollo:apollo-http-cache:$apollo_version"
-    implementation "com.apollographql.apollo:apollo-coroutines-support:$apollo_version"
+    final apollo_version = '3.5.0'
+    implementation("com.apollographql.apollo3:apollo-runtime:$apollo_version")
+    implementation("com.apollographql.apollo3:apollo-http-cache:$apollo_version")
 
     final glide_version = '4.12.0'
     implementation "com.github.bumptech.glide:glide:$glide_version"
@@ -135,6 +127,7 @@ dependencies {
 }
 
 apollo {
+    packageName.set("me.echeung.moemoekyun")
     generateKotlinModels = true
 }
 

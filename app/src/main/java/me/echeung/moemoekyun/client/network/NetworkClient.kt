@@ -1,8 +1,6 @@
 package me.echeung.moemoekyun.client.network
 
 import android.content.Context
-import com.apollographql.apollo.cache.http.ApolloHttpCache
-import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import okhttp3.Interceptor
@@ -16,16 +14,10 @@ class NetworkClient(
     authUtil: AuthUtil
 ) {
 
-    val apolloCache: ApolloHttpCache
     val client: OkHttpClient
+    val apolloCache = File(context.externalCacheDir, "apolloCache")
 
     init {
-        val cacheFile = File(context.externalCacheDir, "apolloCache")
-        val cacheSize = 1024 * 1024.toLong()
-        val cacheStore = DiskLruHttpCacheStore(cacheFile, cacheSize)
-
-        apolloCache = ApolloHttpCache(cacheStore)
-
         client = OkHttpClient.Builder()
             .addNetworkInterceptor(object : Interceptor {
                 override fun intercept(chain: Interceptor.Chain): Response {
