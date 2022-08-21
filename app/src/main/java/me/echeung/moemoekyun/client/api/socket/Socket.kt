@@ -2,18 +2,15 @@ package me.echeung.moemoekyun.client.api.socket
 
 import android.content.Context
 import android.util.Log
-import com.squareup.moshi.Moshi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.socket.response.BaseResponse
-import me.echeung.moemoekyun.client.api.socket.response.ConnectResponse
-import me.echeung.moemoekyun.client.api.socket.response.EventNotificationResponse
-import me.echeung.moemoekyun.client.api.socket.response.NotificationResponse
-import me.echeung.moemoekyun.client.api.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.service.notification.EventNotification
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -96,7 +93,7 @@ class Socket(
                 return
             }
 
-            socket!!.send("{ \"op\": 2 }")
+            socket?.send(json.encodeToString(ResponseModel.Base(2)))
         }
     }
 
@@ -141,7 +138,7 @@ class Socket(
         }
 
         Log.d(TAG, "Sending heartbeat to socket")
-        socket!!.send("{ \"op\": 9 }")
+        socket?.send(json.encodeToString(ResponseModel.Base(9)))
 
         // Repeat
         sendHeartbeat(delayMillis)
@@ -161,18 +158,18 @@ class Socket(
         }
 
         try {
-            val baseResponse = getResponse(BaseResponse::class.java, jsonString)
-            when (baseResponse!!.op) {
+            val baseResponse = json.decodeFromString<ResponseModel.Base>(jsonString)
+            when (baseResponse.op) {
                 // Heartbeat init
                 0 -> {
-                    val connectResponse = getResponse(ConnectResponse::class.java, jsonString)
-                    initHeartbeat(connectResponse!!.d!!.heartbeat.toLong())
+                    val connectResponse = json.decodeFromString<ResponseModel.Connect>(jsonString)
+                    initHeartbeat(connectResponse.d!!.heartbeat.toLong())
                 }
 
                 // Update
                 1 -> {
-                    val updateResponse = getResponse(UpdateResponse::class.java, jsonString)
-                    if (!isValidUpdate(updateResponse!!)) {
+                    val updateResponse = json.decodeFromString<ResponseModel.Update>(jsonString)
+                    if (!isValidUpdate(updateResponse)) {
                         return
                     }
                     if (isNotification(updateResponse)) {
@@ -197,11 +194,11 @@ class Socket(
 
     private fun parseNotification(jsonString: String) {
         try {
-            val notificationResponse = getResponse(NotificationResponse::class.java, jsonString)
-            when (notificationResponse!!.t) {
-                EventNotificationResponse.TYPE -> {
-                    val eventResponse = getResponse(EventNotificationResponse::class.java, jsonString)
-                    EventNotification.notify(context, eventResponse!!.d!!.event!!.name)
+            val notificationResponse = json.decodeFromString<ResponseModel.Notification>(jsonString)
+            when (notificationResponse.t) {
+                ResponseModel.EventNotificationResponse.TYPE -> {
+                    val eventResponse = json.decodeFromString<ResponseModel.EventNotificationResponse>(jsonString)
+                    EventNotification.notify(context, eventResponse.d!!.event!!.name)
                 }
             }
         } catch (e: IOException) {
@@ -209,7 +206,7 @@ class Socket(
         }
     }
 
-    private fun isValidUpdate(updateResponse: UpdateResponse): Boolean {
+    private fun isValidUpdate(updateResponse: ResponseModel.Update): Boolean {
         return (
             updateResponse.t == TRACK_UPDATE ||
                 updateResponse.t == TRACK_UPDATE_REQUEST ||
@@ -218,23 +215,21 @@ class Socket(
             )
     }
 
-    private fun isNotification(updateResponse: UpdateResponse): Boolean {
+    private fun isNotification(updateResponse: ResponseModel.Update): Boolean {
         return updateResponse.t == NOTIFICATION
     }
 
-    @Throws(IOException::class)
-    private fun <T : BaseResponse> getResponse(responseClass: Class<T>, jsonString: String): T? {
-        return MOSHI.adapter(responseClass).fromJson(jsonString)
-    }
-
     interface SocketResult
-    class SocketResponse(val info: UpdateResponse.Details?) : SocketResult
+    class SocketResponse(val info: ResponseModel.Update.Details?) : SocketResult
     class SocketError : SocketResult
 
     companion object {
         private val TAG = Socket::class.java.simpleName
 
-        private val MOSHI = Moshi.Builder().build()
+        private val json = Json {
+            ignoreUnknownKeys = true
+            explicitNulls = false
+        }
 
         private const val TRACK_UPDATE = "TRACK_UPDATE"
         private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"

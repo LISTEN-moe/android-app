@@ -28,8 +28,8 @@ import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.Library
+import me.echeung.moemoekyun.client.api.socket.ResponseModel
 import me.echeung.moemoekyun.client.api.socket.Socket
-import me.echeung.moemoekyun.client.api.socket.response.UpdateResponse
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.service.notification.MusicNotifier
@@ -159,7 +159,7 @@ class RadioService : Service() {
         super.onDestroy()
     }
 
-    private fun onSocketReceive(info: UpdateResponse.Details?) {
+    private fun onSocketReceive(info: ResponseModel.Update.Details?) {
         radioViewModel.listeners = info!!.listeners
         radioViewModel.setRequester(info.requester)
         radioViewModel.event = info.event

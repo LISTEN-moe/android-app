@@ -1,9 +1,11 @@
 package me.echeung.moemoekyun.client.model
 
+import kotlinx.serialization.Serializable
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.client.api.Library
 import java.util.Locale
 
+@Serializable
 data class Song(
     var id: Int = 0,
     var title: String? = null,

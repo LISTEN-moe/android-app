@@ -1,5 +1,8 @@
 package me.echeung.moemoekyun.client.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class SongDescriptor(
     val name: String? = null,
     val nameRomaji: String? = null,
