@@ -1,27 +1,18 @@
 package me.echeung.moemoekyun.client
 
-import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.api.socket.Socket
-import me.echeung.moemoekyun.client.auth.AuthUtil
-import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.util.PreferenceUtil
 
 class RadioClient(
-    authUtil: AuthUtil,
-    networkClient: NetworkClient,
     private val preferenceUtil: PreferenceUtil,
     private val stream: Stream,
     private val socket: Socket,
 ) {
 
-    val api: APIClient
-
     init {
         setLibrary(preferenceUtil.libraryMode().get())
-
-        this.api = APIClient(networkClient.client, networkClient.apolloCache, authUtil)
     }
 
     fun changeLibrary(newLibrary: Library) {
@@ -49,8 +40,6 @@ class RadioClient(
         var library: Library = Library.JPOP
             private set
 
-        fun isKpop(): Boolean {
-            return library == Library.KPOP
-        }
+        fun isKpop() = library == Library.KPOP
     }
 }

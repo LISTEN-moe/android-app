@@ -1,14 +1,11 @@
 package me.echeung.moemoekyun.client.network
 
-import android.content.Context
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import okhttp3.OkHttpClient
-import java.io.File
 import java.util.concurrent.TimeUnit
 
 class NetworkClient(
-    context: Context,
     authUtil: AuthUtil,
 ) {
 
@@ -35,8 +32,6 @@ class NetworkClient(
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
-
-    val apolloCache = File(context.externalCacheDir, "apolloCache")
 }
 
 private const val HEADER_AUTHZ = "Authorization"

@@ -7,7 +7,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -17,7 +17,7 @@ import org.koin.android.ext.android.inject
 
 class AuthRegisterActivity : BaseActivity() {
 
-    private val radioClient: RadioClient by inject()
+    private val api: APIClient by inject()
 
     private lateinit var binding: ActivityAuthRegisterBinding
 
@@ -63,7 +63,7 @@ class AuthRegisterActivity : BaseActivity() {
 
         launchIO {
             try {
-                radioClient.api.register(email, username, password)
+                api.register(email, username, password)
 
                 launchUI {
                     val returnIntent = Intent()

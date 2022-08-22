@@ -10,7 +10,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongDetailAdapter
-import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
@@ -20,7 +20,7 @@ import me.echeung.moemoekyun.util.ext.toast
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class SongActionsUtil(
-    private val radioClient: RadioClient,
+    private val api: APIClient,
     private val preferenceUtil: PreferenceUtil,
     private val authUtil: AuthUtil,
     private val radioViewModel: RadioViewModel,
@@ -39,7 +39,7 @@ class SongActionsUtil(
         // Asynchronously update songs with more details
         launchIO {
             detailedSongs.forEachIndexed { index, song ->
-                val detailedSong = radioClient.api.getSongDetails(song.id)
+                val detailedSong = api.getSongDetails(song.id)
                 detailedSong.favorite = song.favorite
                 detailedSongs[index] = detailedSong
 
@@ -53,7 +53,7 @@ class SongActionsUtil(
         if (authUtil.isAuthenticated) {
             val songIds = songs.map { it.id }
             launchIO {
-                val favoritedSongIds = radioClient.api.isFavorite(songIds)
+                val favoritedSongIds = api.isFavorite(songIds)
 
                 detailedSongs
                     .filter { it.id in favoritedSongIds }
@@ -83,7 +83,7 @@ class SongActionsUtil(
 
         launchIO {
             try {
-                radioClient.api.toggleFavorite(songId)
+                api.toggleFavorite(songId)
 
                 if (radioViewModel.currentSong!!.id == songId) {
                     radioViewModel.isFavorited = !isCurrentlyFavorite
@@ -128,7 +128,7 @@ class SongActionsUtil(
     fun request(activity: Activity?, song: Song) {
         launchIO {
             try {
-                radioClient.api.requestSong(song.id)
+                api.requestSong(song.id)
 
                 launchUI {
                     activity ?: return@launchUI

@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
-import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.databinding.FragmentSongsBinding
 import me.echeung.moemoekyun.ui.base.SongsListBaseFragment
 import me.echeung.moemoekyun.ui.view.SongList
@@ -25,7 +25,7 @@ import org.koin.android.ext.android.inject
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>() {
 
-    private val radioClient: RadioClient by inject()
+    private val api: APIClient by inject()
     private val songSortUtil: SongSortUtil by inject()
 
     init {
@@ -80,7 +80,7 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>() {
 
         launchIO {
             try {
-                val favorites = radioClient.api.search(null)
+                val favorites = api.search(null)
                 launchUI { adapter.songs = favorites }
             } catch (e: Exception) {
                 launchUI { activity?.toast(e.message) }

@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.di
 import me.echeung.moemoekyun.App
 import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
@@ -20,7 +21,7 @@ val appModule = module {
     single { AlbumArtUtil(androidContext()) }
     single { AuthUtil(androidContext()) }
     single { LocaleUtil(get()) }
-    single { NetworkClient(androidContext(), get()) }
+    single { NetworkClient(get()) }
     single { App.preferenceUtil }
     single { SongActionsUtil(get(), get(), get(), get()) }
     single { SongSortUtil(get()) }
@@ -29,7 +30,8 @@ val appModule = module {
 val radioModule = module {
     single { Stream(androidContext()) }
     single { Socket(androidContext(), get()) }
-    single { RadioClient(get(), get(), get(), get(), get()) }
+    single { RadioClient(get(), get(), get()) }
+    single { APIClient(androidContext(), get(), get()) }
     single { CastDelegate(androidContext(), get(), get(), get()) }
 }
 

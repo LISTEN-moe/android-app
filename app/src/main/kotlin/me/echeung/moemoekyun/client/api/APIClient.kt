@@ -1,7 +1,8 @@
 package me.echeung.moemoekyun.client.api
 
+import android.content.Context
 import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.Input
+import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.cache.http.HttpFetchPolicy
 import com.apollographql.apollo3.cache.http.httpCache
 import com.apollographql.apollo3.cache.http.httpExpireTimeout
@@ -24,32 +25,27 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.client.model.search
-import okhttp3.OkHttpClient
+import me.echeung.moemoekyun.client.network.NetworkClient
 import java.io.File
 import java.util.concurrent.TimeUnit
 
 class APIClient(
-    okHttpClient: OkHttpClient,
-    cacheDirectory: File,
+    context: Context,
+    networkClient: NetworkClient,
     private val authUtil: AuthUtil,
 ) {
 
-    private val client: ApolloClient
-    private val songsCache: SongsCache
+    private val client = ApolloClient.Builder()
+        .serverUrl(Library.API_BASE)
+        .httpCache(
+            directory = File(context.externalCacheDir, "apolloCache"),
+            maxSize = 1024 * 1024,
+        )
+        .httpFetchPolicy(HttpFetchPolicy.NetworkFirst)
+        .okHttpClient(networkClient.client)
+        .build()
 
-    init {
-        client = ApolloClient.Builder()
-            .serverUrl(Library.API_BASE)
-            .httpCache(
-                directory = cacheDirectory,
-                maxSize = 1024 * 1024,
-            )
-            .httpFetchPolicy(HttpFetchPolicy.NetworkFirst)
-            .okHttpClient(okHttpClient)
-            .build()
-
-        songsCache = SongsCache(this)
-    }
+    private val songsCache = SongsCache(this)
 
     /**
      * Authenticates to the radio.
@@ -108,7 +104,7 @@ class APIClient(
      */
     suspend fun getUserFavorites(): List<Song> {
         // TODO: do actual pagination
-        val response = client.query(FavoritesQuery("@me", 0, 2500, Input.optional(RadioClient.isKpop()))).execute()
+        val response = client.query(FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(RadioClient.isKpop()))).execute()
 
         return response.data?.user?.favorites?.favorites
             ?.mapNotNull { it?.song }
@@ -142,7 +138,7 @@ class APIClient(
      * @param songId Song to request.
      */
     suspend fun requestSong(songId: Int) {
-        val response = client.mutation(RequestSongMutation(songId, Input.optional(RadioClient.isKpop()))).execute()
+        val response = client.mutation(RequestSongMutation(songId, Optional.presentIfNotNull(RadioClient.isKpop()))).execute()
 
         if (response.hasErrors()) {
             throw Exception(response.errors?.get(0)?.message)
@@ -155,9 +151,7 @@ class APIClient(
      * @param query Search query string.
      */
     suspend fun search(query: String?): List<Song> {
-        val songs = songsCache.getSongs()
-
-        return songs!!.search(query)
+        return songsCache.getSongs().search(query)
     }
 
     /**
@@ -180,7 +174,7 @@ class APIClient(
     suspend fun getAllSongs(): List<Song> {
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
-        val response = client.query(SongsQuery(0, 50000, Input.optional(RadioClient.isKpop())))
+        val response = client.query(SongsQuery(0, 50000, Optional.presentIfNotNull(RadioClient.isKpop())))
             .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
             .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
             .execute()

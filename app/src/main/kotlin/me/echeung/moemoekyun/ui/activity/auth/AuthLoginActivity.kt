@@ -8,7 +8,6 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.databinding.ActivityAuthLoginBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
@@ -22,7 +21,7 @@ import org.koin.android.ext.android.inject
 
 class AuthLoginActivity : BaseActivity() {
 
-    private val radioClient: RadioClient by inject()
+    private val api: APIClient by inject()
 
     private var mfaDialog: AlertDialog? = null
 
@@ -74,7 +73,7 @@ class AuthLoginActivity : BaseActivity() {
 
         launchIO {
             try {
-                val result = radioClient.api.authenticate(userLogin, password)
+                val result = api.authenticate(userLogin, password)
                 when (result.first) {
                     APIClient.LoginState.REQUIRE_OTP -> {
                         launchUI { showMfaDialog() }
@@ -104,7 +103,7 @@ class AuthLoginActivity : BaseActivity() {
                 if (otpToken.length == OTP_LENGTH) {
                     launchIO {
                         try {
-                            radioClient.api.authenticateMfa(otpToken)
+                            api.authenticateMfa(otpToken)
                             launchUI { finish(Activity.RESULT_OK) }
                         } catch (e: Exception) {
                             launchUI { toast(e.message) }

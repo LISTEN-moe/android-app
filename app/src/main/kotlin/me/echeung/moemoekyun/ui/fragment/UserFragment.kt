@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
-import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.databinding.FragmentUserBinding
@@ -27,7 +27,7 @@ import org.koin.android.ext.android.inject
 
 class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
 
-    private val radioClient: RadioClient by inject()
+    private val api: APIClient by inject()
     private val authUtil: AuthUtil by inject()
     private val songSortUtil: SongSortUtil by inject()
 
@@ -92,7 +92,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
     private fun loadSongs(adapter: SongsListAdapter) {
         launchIO {
             try {
-                val favorites = radioClient.api.getUserFavorites()
+                val favorites = api.getUserFavorites()
 
                 launchUI {
                     songList.showLoading(false)
@@ -116,7 +116,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
 
     private fun getUserInfo() {
         launchIO {
-            val user = radioClient.api.getUserInfo()
+            val user = api.getUserInfo()
 
             userViewModel.user = user
 

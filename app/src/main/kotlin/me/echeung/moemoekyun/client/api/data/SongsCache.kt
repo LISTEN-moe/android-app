@@ -10,14 +10,11 @@ import java.util.concurrent.TimeUnit
  */
 class SongsCache(private val apiClient: APIClient) {
 
-    private var cachedSongs: List<Song>? = null
+    private var cachedSongs: List<Song> = emptyList()
     private var lastUpdated = 0L
 
-    private val isCacheValid: Boolean
-        get() = Date().time - lastUpdated < MAX_AGE
-
-    suspend fun getSongs(): List<Song>? {
-        if (lastUpdated != 0L && isCacheValid && cachedSongs != null) {
+    suspend fun getSongs(): List<Song> {
+        if (lastUpdated != 0L && isCacheValid() && cachedSongs.isNotEmpty()) {
             return cachedSongs
         }
 
@@ -28,7 +25,7 @@ class SongsCache(private val apiClient: APIClient) {
         return cachedSongs
     }
 
-    companion object {
-        private val MAX_AGE = TimeUnit.DAYS.toMillis(1)
-    }
+    private fun isCacheValid() = Date().time - lastUpdated < MAX_AGE
 }
+
+private val MAX_AGE = TimeUnit.DAYS.toMillis(1)

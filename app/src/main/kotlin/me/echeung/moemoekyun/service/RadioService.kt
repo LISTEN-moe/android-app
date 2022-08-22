@@ -29,6 +29,7 @@ import logcat.logcat
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.RadioClient
+import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.Library
 import me.echeung.moemoekyun.client.api.socket.ResponseModel
 import me.echeung.moemoekyun.client.api.socket.Socket
@@ -55,6 +56,7 @@ class RadioService : Service() {
     private val scope = MainScope()
 
     private val radioClient: RadioClient by inject()
+    private val api: APIClient by inject()
     private val stream: Stream by inject()
     private val socket: Socket by inject()
 
@@ -177,7 +179,7 @@ class RadioService : Service() {
         // Check if current song is favorited
         if (info.song != null && authUtil.isAuthenticated) {
             launchIO {
-                val favoritedSongIds = radioClient.api.isFavorite(listOf(info.song.id))
+                val favoritedSongIds = api.isFavorite(listOf(info.song.id))
                 if (info.song.id in favoritedSongIds && radioViewModel.currentSong?.id == info.song.id) {
                     radioViewModel.isFavorited = true
                 }
@@ -467,7 +469,7 @@ class RadioService : Service() {
 
         launchIO {
             try {
-                radioClient.api.toggleFavorite(songId)
+                api.toggleFavorite(songId)
 
                 val currentSong = radioViewModel.currentSong
                 if (currentSong!!.id == songId) {
