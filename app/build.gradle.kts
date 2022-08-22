@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("com.android.application")
+    id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
     kotlin("plugin.serialization")
@@ -23,8 +24,15 @@ android {
     }
 
     buildFeatures {
+        compose = true
         dataBinding = true
         viewBinding = true
+
+        // Disable unused AGP features
+        aidl = false
+        renderScript = false
+        resValues = false
+        shaders = false
     }
 
     buildTypes {
@@ -86,12 +94,24 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.3.0"
+    }
 }
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
 
-    val coroutinesVersion = "1.5.2"
+    val composeVersion = "1.2.1"
+    implementation("androidx.compose.ui:ui:$composeVersion")
+    implementation("androidx.compose.material:material:$composeVersion")
+    implementation("androidx.compose.material:material-icons-extended:$composeVersion")
+    implementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    implementation("androidx.compose.ui:ui-util:$composeVersion")
+    implementation("androidx.activity:activity-compose:1.6.0-beta01")
+
+    val coroutinesVersion = "1.6.4"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
 
@@ -129,7 +149,7 @@ dependencies {
     // Google Cast support (not available in fdroid flavour)
     "playstoreImplementation"("com.google.android.gms:play-services-cast-framework:21.1.0")
 
-    implementation("de.psdev.licensesdialog:licensesdialog:2.1.0")
+    implementation("com.mikepenz:aboutlibraries:10.4.0")
 
     implementation("com.squareup.logcat:logcat:0.1")
 

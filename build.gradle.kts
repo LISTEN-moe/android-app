@@ -10,6 +10,7 @@ plugins {
     id("com.android.library") version "7.2.2" apply false
     kotlin("android") version "1.7.10" apply false
     id("org.jmailen.kotlinter") version "3.11.1"
+    id("com.mikepenz.aboutlibraries.plugin") version "10.4.0" apply false
 }
 
 allprojects {
