@@ -13,7 +13,7 @@ import me.echeung.moemoekyun.databinding.SongItemBinding
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchUI
+import me.echeung.moemoekyun.util.ext.withUIContext
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.lang.ref.WeakReference
@@ -102,7 +102,7 @@ class SongsListAdapter(
                 .sortedWith(songSortUtil.getComparator(listId))
                 .toList()
 
-            launchUI {
+            withUIContext {
                 notifyDataSetChanged()
             }
         }

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
@@ -15,8 +16,8 @@ import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.finish
 import me.echeung.moemoekyun.util.ext.getTrimmedText
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.ext.withUIContext
 import org.koin.android.ext.android.inject
 
 class AuthLoginActivity : BaseActivity() {
@@ -71,19 +72,21 @@ class AuthLoginActivity : BaseActivity() {
             return
         }
 
-        launchIO {
+        lifecycleScope.launchIO {
             try {
                 val result = api.authenticate(userLogin, password)
-                when (result.first) {
-                    APIClient.LoginState.REQUIRE_OTP -> {
-                        launchUI { showMfaDialog() }
-                    }
-                    APIClient.LoginState.COMPLETE -> {
-                        launchUI { finish(Activity.RESULT_OK) }
+                withUIContext {
+                    when (result.first) {
+                        APIClient.LoginState.REQUIRE_OTP -> {
+                            showMfaDialog()
+                        }
+                        APIClient.LoginState.COMPLETE -> {
+                            finish(Activity.RESULT_OK)
+                        }
                     }
                 }
             } catch (e: Exception) {
-                launchUI { toast(e.message) }
+                withUIContext { toast(e.message) }
             }
         }
     }
@@ -104,9 +107,9 @@ class AuthLoginActivity : BaseActivity() {
                     launchIO {
                         try {
                             api.authenticateMfa(otpToken)
-                            launchUI { finish(Activity.RESULT_OK) }
+                            withUIContext { finish(Activity.RESULT_OK) }
                         } catch (e: Exception) {
-                            launchUI { toast(e.message) }
+                            withUIContext { toast(e.message) }
                         }
                     }
                 }
@@ -138,9 +141,7 @@ class AuthLoginActivity : BaseActivity() {
     private fun setError(editText: TextInputEditText, isError: Boolean, errorMessage: String) {
         editText.error = if (isError) errorMessage else null
     }
-
-    companion object {
-        private const val OTP_LENGTH = 6
-        private val OTP_REGEX = "^[0-9]*$".toRegex()
-    }
 }
+
+private const val OTP_LENGTH = 6
+private val OTP_REGEX = "^[0-9]*$".toRegex()

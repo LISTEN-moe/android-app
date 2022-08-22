@@ -10,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.api.APIClient
@@ -19,8 +20,8 @@ import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.ext.withUIContext
 import org.koin.android.ext.android.inject
 
 class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>() {
@@ -78,19 +79,17 @@ class SongsFragment : SongsListBaseFragment<FragmentSongsBinding>() {
     private fun loadSongs(adapter: SongsListAdapter) {
         songList.showLoading(true)
 
-        launchIO {
+        lifecycleScope.launchIO {
             try {
                 val favorites = api.search(null)
-                launchUI { adapter.songs = favorites }
+                withUIContext { adapter.songs = favorites }
             } catch (e: Exception) {
-                launchUI { activity?.toast(e.message) }
+                withUIContext { activity?.toast(e.message) }
             } finally {
-                launchUI { songList.showLoading(false) }
+                withUIContext { songList.showLoading(false) }
             }
         }
     }
-
-    companion object {
-        private const val LIST_ID = "SONGS_LIST"
-    }
 }
+
+private const val LIST_ID = "SONGS_LIST"

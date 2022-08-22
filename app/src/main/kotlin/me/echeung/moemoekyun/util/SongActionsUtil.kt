@@ -15,8 +15,8 @@ import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.ext.withUIContext
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 
 class SongActionsUtil(
@@ -43,7 +43,7 @@ class SongActionsUtil(
                 detailedSong.favorite = song.favorite
                 detailedSongs[index] = detailedSong
 
-                launchUI {
+                withUIContext {
                     adapter.notifyDataSetInvalidated()
                 }
             }
@@ -59,7 +59,7 @@ class SongActionsUtil(
                     .filter { it.id in favoritedSongIds }
                     .forEach { it.favorite = true }
 
-                launchUI {
+                withUIContext {
                     adapter.notifyDataSetInvalidated()
                 }
             }
@@ -90,8 +90,8 @@ class SongActionsUtil(
                 }
                 song.favorite = !isCurrentlyFavorite
 
-                launchUI {
-                    activity ?: return@launchUI
+                withUIContext {
+                    activity ?: return@withUIContext
 
                     // Broadcast event
                     activity.sendBroadcast(
@@ -115,7 +115,7 @@ class SongActionsUtil(
                     }
                 }
             } catch (e: Exception) {
-                launchUI { activity?.toast(e.message) }
+                withUIContext { activity?.toast(e.message) }
             }
         }
     }
@@ -130,8 +130,8 @@ class SongActionsUtil(
             try {
                 api.requestSong(song.id)
 
-                launchUI {
-                    activity ?: return@launchUI
+                withUIContext {
+                    activity ?: return@withUIContext
 
                     // Broadcast event
                     activity.sendBroadcast(Intent(REQUEST_EVENT))
@@ -145,7 +145,7 @@ class SongActionsUtil(
                     activity.toast(toastMsg, Toast.LENGTH_LONG)
                 }
             } catch (e: Exception) {
-                launchUI { activity?.toast(e.message) }
+                withUIContext { activity?.toast(e.message) }
             }
         }
     }

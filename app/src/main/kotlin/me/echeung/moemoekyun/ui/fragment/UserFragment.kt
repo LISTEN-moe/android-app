@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.adapter.SongsListAdapter
 import me.echeung.moemoekyun.client.api.APIClient
@@ -19,8 +20,8 @@ import me.echeung.moemoekyun.ui.view.SongList
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.popupMenu
+import me.echeung.moemoekyun.util.ext.withUIContext
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import me.echeung.moemoekyun.viewmodel.UserViewModel
 import org.koin.android.ext.android.inject
@@ -90,17 +91,17 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
     }
 
     private fun loadSongs(adapter: SongsListAdapter) {
-        launchIO {
+        lifecycleScope.launchIO {
             try {
                 val favorites = api.getUserFavorites()
 
-                launchUI {
+                withUIContext {
                     songList.showLoading(false)
                     adapter.songs = favorites
                     userViewModel.hasFavorites = favorites.isNotEmpty()
                 }
             } catch (e: Exception) {
-                launchUI { songList.showLoading(false) }
+                withUIContext { songList.showLoading(false) }
             }
         }
     }
@@ -115,7 +116,7 @@ class UserFragment : SongsListBaseFragment<FragmentUserBinding>() {
     }
 
     private fun getUserInfo() {
-        launchIO {
+        lifecycleScope.launchIO {
             val user = api.getUserInfo()
 
             userViewModel.user = user

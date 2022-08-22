@@ -42,8 +42,8 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.ext.withUIContext
 import me.echeung.moemoekyun.util.system.TimeUtil
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.android.ext.android.inject
@@ -477,7 +477,7 @@ class RadioService : Service() {
                 }
                 song.favorite = !isCurrentlyFavorite
 
-                launchUI {
+                withUIContext {
                     val favIntent = Intent(SongActionsUtil.FAVORITE_EVENT).apply {
                         setPackage(packageName)
                     }
@@ -487,7 +487,7 @@ class RadioService : Service() {
                     updateMediaSessionPlaybackState()
                 }
             } catch (e: Exception) {
-                launchUI { toast(e.message) }
+                withUIContext { toast(e.message) }
             }
         }
     }

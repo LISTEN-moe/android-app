@@ -5,14 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.databinding.ActivityAuthRegisterBinding
 import me.echeung.moemoekyun.ui.base.BaseActivity
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchUI
 import me.echeung.moemoekyun.util.ext.toast
+import me.echeung.moemoekyun.util.ext.withUIContext
 import org.koin.android.ext.android.inject
 
 class AuthRegisterActivity : BaseActivity() {
@@ -61,19 +62,20 @@ class AuthRegisterActivity : BaseActivity() {
             return
         }
 
-        launchIO {
+        lifecycleScope.launchIO {
             try {
                 api.register(email, username, password)
 
-                launchUI {
-                    val returnIntent = Intent()
-                    returnIntent.putExtra(AuthActivityUtil.LOGIN_NAME, username)
-                    returnIntent.putExtra(AuthActivityUtil.LOGIN_PASS, password)
+                withUIContext {
+                    val returnIntent = Intent().apply {
+                        putExtra(AuthActivityUtil.LOGIN_NAME, username)
+                        putExtra(AuthActivityUtil.LOGIN_PASS, password)
+                    }
                     setResult(Activity.RESULT_OK, returnIntent)
                     finish()
                 }
             } catch (e: Exception) {
-                launchUI { toast(e.message) }
+                withUIContext { toast(e.message) }
             }
         }
     }
