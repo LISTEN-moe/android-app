@@ -99,7 +99,7 @@ class RadioService : Service() {
             .onEach { updateMediaSession() }
             .launchIn(scope)
 
-        stream.channel.asFlow()
+        stream.flow
             .onEach {
                 when (it) {
                     Stream.State.PLAY -> {
