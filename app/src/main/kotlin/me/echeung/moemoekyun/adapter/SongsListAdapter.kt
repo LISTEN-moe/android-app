@@ -40,7 +40,7 @@ class SongsListAdapter(
     val randomRequestSong: Song?
         get() {
             val songs = songs
-            return if (songs == null || songs.isEmpty()) {
+            return if (songs.isNullOrEmpty()) {
                 null
             } else {
                 songs[Random().nextInt(songs.size)]
@@ -112,7 +112,7 @@ class SongsListAdapter(
         return activity.get()!!
     }
 
-    private class SongViewHolder internal constructor(
+    private class SongViewHolder constructor(
         private val binding: SongItemBinding,
         adapter: SongsListAdapter,
         songActionsUtil: SongActionsUtil,

@@ -250,8 +250,8 @@ class MainActivity : BaseActivity() {
 
         // Pre-check the library mode
         when (preferenceUtil.libraryMode().get()) {
-            Library.Jpop.id -> menu.findItem(R.id.action_library_jpop).isChecked = true
-            Library.Kpop.id -> menu.findItem(R.id.action_library_kpop).isChecked = true
+            Library.JPOP -> menu.findItem(R.id.action_library_jpop).isChecked = true
+            Library.KPOP -> menu.findItem(R.id.action_library_kpop).isChecked = true
         }
     }
 
@@ -259,13 +259,13 @@ class MainActivity : BaseActivity() {
         when (item.itemId) {
             R.id.action_library_jpop -> {
                 item.isChecked = true
-                setLibraryMode(Library.Jpop)
+                setLibraryMode(Library.JPOP)
                 return true
             }
 
             R.id.action_library_kpop -> {
                 item.isChecked = true
-                setLibraryMode(Library.Kpop)
+                setLibraryMode(Library.KPOP)
                 return true
             }
 

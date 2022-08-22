@@ -19,14 +19,14 @@ class RadioClient(
     val api: APIClient
 
     init {
-        setLibrary(Library.fromId(preferenceUtil.libraryMode().get()))
+        setLibrary(preferenceUtil.libraryMode().get())
 
         this.api = APIClient(networkClient.client, networkClient.apolloCache, authUtil)
     }
 
     fun changeLibrary(newLibrary: Library) {
         // Avoid unnecessary changes
-        if (preferenceUtil.libraryMode().get() == newLibrary.id) {
+        if (preferenceUtil.libraryMode().get() == newLibrary) {
             return
         }
 
@@ -41,16 +41,16 @@ class RadioClient(
     }
 
     private fun setLibrary(newLibrary: Library) {
-        preferenceUtil.libraryMode().set(newLibrary.id)
+        preferenceUtil.libraryMode().set(newLibrary)
         library = newLibrary
     }
 
     companion object {
-        var library: Library = Library.Jpop
+        var library: Library = Library.JPOP
             private set
 
         fun isKpop(): Boolean {
-            return library.name == Library.Kpop.id
+            return library == Library.KPOP
         }
     }
 }

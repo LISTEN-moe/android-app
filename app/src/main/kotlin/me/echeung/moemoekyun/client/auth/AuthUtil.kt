@@ -105,9 +105,7 @@ class AuthUtil(context: Context) {
     private fun getPrefixedToken(token: String?): String {
         return "Bearer $token"
     }
-
-    companion object {
-        private const val USER_TOKEN = "user_token"
-        private const val LAST_AUTH = "last_auth"
-    }
 }
+
+private const val USER_TOKEN = "user_token"
+private const val LAST_AUTH = "last_auth"

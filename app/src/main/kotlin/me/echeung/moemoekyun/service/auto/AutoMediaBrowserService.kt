@@ -62,8 +62,6 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
 
         return MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
     }
-
-    companion object {
-        private const val MEDIA_ID_ROOT = "media_root"
-    }
 }
+
+private const val MEDIA_ID_ROOT = "media_root"

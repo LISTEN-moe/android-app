@@ -66,7 +66,7 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<ExoPlayer>(
             player!!.volume = 1f
 
             val audioAttributes = AudioAttributes.Builder()
-                .setContentType(C.CONTENT_TYPE_MUSIC)
+                .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
                 .setUsage(C.USAGE_MEDIA)
                 .build()
             player!!.setAudioAttributes(audioAttributes, true)

@@ -14,7 +14,7 @@ class PreferenceUtil(context: Context) {
 
     fun language() = prefs.getString(PREF_GENERAL_LANGUAGE, LocaleUtil.DEFAULT)!!
 
-    fun libraryMode() = flowPrefs.getString(LIBRARY_MODE, Library.Jpop.id)
+    fun libraryMode() = flowPrefs.getEnum(LIBRARY_MODE, Library.JPOP)
 
     fun isNowPlayingExpanded() = flowPrefs.getBoolean(NOW_PLAYING_EXPANDED, true)
 
@@ -33,7 +33,7 @@ class PreferenceUtil(context: Context) {
     fun shouldShowLockscreenAlbumArt() = flowPrefs.getBoolean(PREF_MUSIC_LOCKSCREEN_ALBUMART, true)
 
     companion object {
-        private const val LIBRARY_MODE = "library_mode"
+        private const val LIBRARY_MODE = "library_mode_v2"
         private const val NOW_PLAYING_EXPANDED = "now_playing_expanded"
         private const val SLEEP_TIMER_MINS = "pref_sleep_timer"
 

@@ -167,11 +167,6 @@ class RadioService : Service() {
         radioViewModel.setRequester(info.requester)
         radioViewModel.event = info.event
 
-        // TODO: get queue info
-//        radioViewModel.queueSize = info.queue.inQueue
-//        radioViewModel.inQueueByUser = info.queue.inQueueByUser
-//        radioViewModel.queuePosition = info.queue.inQueueBeforeUser
-
         var startTime: Calendar? = null
         try {
             startTime = TimeUtil.toCalendar(info.startTime!!)
@@ -395,8 +390,8 @@ class RadioService : Service() {
 
                         // Handles changing library mode via Android Auto
                         when (mediaId) {
-                            LIBRARY_JPOP -> radioClient.changeLibrary(Library.Jpop)
-                            LIBRARY_KPOP -> radioClient.changeLibrary(Library.Kpop)
+                            LIBRARY_JPOP -> radioClient.changeLibrary(Library.JPOP)
+                            LIBRARY_KPOP -> radioClient.changeLibrary(Library.KPOP)
                         }
                     }
                 },

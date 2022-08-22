@@ -8,11 +8,14 @@ plugins {
     id("com.apollographql.apollo3") version "3.5.0"
 }
 
+val appPackageName = "me.echeung.moemoekyun"
+
 android {
     compileSdk = 33
+    namespace = appPackageName
 
     defaultConfig {
-        applicationId = "me.echeung.moemoekyun"
+        applicationId = appPackageName
         minSdk = 23
         targetSdk = 33
         versionCode = 105
@@ -135,7 +138,7 @@ dependencies {
 }
 
 apollo {
-    packageName.set("me.echeung.moemoekyun")
+    packageName.set(appPackageName)
 }
 
 tasks {
