@@ -3,9 +3,6 @@
 -keep public class me.echeung.moemoekyun.client.api.socket.response.**
 -keep public class me.echeung.moemoekyun.client.model.Event
 
-# Google Cast
--keep class androidx.mediarouter.app.MediaRouteActionProvider { public <init>(...); }
-
 # OkHttp
 -dontwarn okhttp3.**
 -dontwarn okio.**

@@ -144,10 +144,6 @@ dependencies {
 
     val exoplayerVersion = "2.18.1"
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")
-    "playstoreImplementation"("com.google.android.exoplayer:extension-cast:$exoplayerVersion")
-
-    // Google Cast support (not available in fdroid flavour)
-    "playstoreImplementation"("com.google.android.gms:play-services-cast-framework:21.1.0")
 
     implementation("com.mikepenz:aboutlibraries:10.4.0")
 

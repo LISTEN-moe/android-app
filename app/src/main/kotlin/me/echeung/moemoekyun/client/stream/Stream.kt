@@ -11,31 +11,13 @@ class Stream(context: Context) {
 
     val channel = ConflatedBroadcastChannel<State>()
 
-    private var localPlayer: StreamPlayer<*> = LocalStreamPlayer(context)
-    private var altPlayer: StreamPlayer<*>? = null
-
-    private val player: StreamPlayer<*>
-        get() = altPlayer ?: localPlayer
+    private val player = LocalStreamPlayer(context)
 
     val isStarted: Boolean
         get() = player.isStarted
 
     val isPlaying: Boolean
         get() = player.isPlaying
-
-    /**
-     * Used to "replace" the local player with a Cast player.
-     */
-    fun setAltPlayer(newAltPlayer: StreamPlayer<*>?) {
-        val wasPlaying = isPlaying
-        newAltPlayer?.pause()
-
-        altPlayer = newAltPlayer
-
-        if (wasPlaying || altPlayer != null) {
-            newAltPlayer?.play()
-        }
-    }
 
     fun toggle() {
         if (isPlaying) {

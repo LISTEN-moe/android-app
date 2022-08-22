@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.di
 
 import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.cast.CastDelegate
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.api.APIClient
 import me.echeung.moemoekyun.client.api.socket.Socket
@@ -32,7 +31,6 @@ val radioModule = module {
     single { Socket(androidContext(), get()) }
     single { RadioClient(get(), get(), get()) }
     single { APIClient(androidContext(), get(), get()) }
-    single { CastDelegate(androidContext(), get(), get(), get()) }
 }
 
 val viewModelModule = module {
