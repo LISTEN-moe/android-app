@@ -16,8 +16,6 @@ import logcat.logcat
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.service.notification.EventNotification
-import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchNow
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -33,6 +31,11 @@ class Socket(
     val flow = _flow.asStateFlow()
 
     private val scope = MainScope()
+
+    private val json = Json {
+        ignoreUnknownKeys = true
+        explicitNulls = false
+    }
 
     private var retryTime = RETRY_TIME_MIN
     private var attemptingReconnect = false
@@ -76,7 +79,7 @@ class Socket(
 
         attemptingReconnect = true
 
-        launchNow {
+        scope.launch {
             delay(retryTime.toLong())
 
             // Exponential backoff
@@ -155,7 +158,7 @@ class Socket(
 
     private fun parseResponse(jsonString: String?) {
         if (jsonString == null) {
-            scope.launchIO {
+            scope.launch {
                 _flow.value = SocketError
             }
             return
@@ -181,7 +184,7 @@ class Socket(
                         return
                     }
 
-                    scope.launchIO {
+                    scope.launch {
                         _flow.value = SocketResponse(updateResponse.d)
                     }
                 }
@@ -227,19 +230,12 @@ class Socket(
     object SocketLoading : SocketResult
     data class SocketResponse(val info: ResponseModel.Update.Details?) : SocketResult
     object SocketError : SocketResult
-
-    companion object {
-        private val json = Json {
-            ignoreUnknownKeys = true
-            explicitNulls = false
-        }
-
-        private const val TRACK_UPDATE = "TRACK_UPDATE"
-        private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
-        private const val QUEUE_UPDATE = "QUEUE_UPDATE"
-        private const val NOTIFICATION = "NOTIFICATION"
-
-        private const val RETRY_TIME_MIN = 250
-        private const val RETRY_TIME_MAX = 4000
-    }
 }
+
+private const val TRACK_UPDATE = "TRACK_UPDATE"
+private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
+private const val QUEUE_UPDATE = "QUEUE_UPDATE"
+private const val NOTIFICATION = "NOTIFICATION"
+
+private const val RETRY_TIME_MIN = 250
+private const val RETRY_TIME_MAX = 4000

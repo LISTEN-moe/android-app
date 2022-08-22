@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
@@ -292,7 +293,7 @@ class RadioService : Service() {
 
             UPDATE, SongActionsUtil.REQUEST_EVENT -> socket.update()
 
-            TIMER_STOP -> stream.fadeOut()
+            TIMER_STOP -> scope.launch { stream.fadeOut() }
 
             // Pause when headphones unplugged
             AudioManager.ACTION_AUDIO_BECOMING_NOISY -> if (preferenceUtil.shouldPauseOnNoisy()) {

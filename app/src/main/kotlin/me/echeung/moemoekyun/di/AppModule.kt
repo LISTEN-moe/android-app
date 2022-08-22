@@ -7,6 +7,7 @@ import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.network.NetworkClient
 import me.echeung.moemoekyun.client.stream.Stream
+import me.echeung.moemoekyun.client.stream.StreamPlayer
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.SongActionsUtil
 import me.echeung.moemoekyun.util.SongSortUtil
@@ -27,7 +28,8 @@ val appModule = module {
 }
 
 val radioModule = module {
-    single { Stream(androidContext()) }
+    single { StreamPlayer(androidContext()) }
+    single { Stream(get()) }
     single { Socket(androidContext(), get()) }
     single { RadioClient(get(), get(), get()) }
     single { APIClient(androidContext(), get(), get()) }

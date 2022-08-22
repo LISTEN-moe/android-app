@@ -102,9 +102,7 @@ class AuthUtil(context: Context) {
         this.mfaToken = null
     }
 
-    private fun getPrefixedToken(token: String?): String {
-        return "Bearer $token"
-    }
+    private fun getPrefixedToken(token: String?) = "Bearer $token"
 }
 
 private const val USER_TOKEN = "user_token"

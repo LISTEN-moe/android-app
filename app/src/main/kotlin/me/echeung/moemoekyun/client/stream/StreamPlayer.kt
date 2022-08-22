@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.stream.player
+package me.echeung.moemoekyun.client.stream
 
 import android.content.Context
 import android.media.AudioManager
@@ -6,11 +6,14 @@ import android.net.Uri
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.PlaybackException
+import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import kotlinx.coroutines.delay
 import me.echeung.moemoekyun.client.RadioClient
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
@@ -18,14 +21,37 @@ import me.echeung.moemoekyun.util.system.AudioManagerUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import kotlin.math.max
 
-class LocalStreamPlayer(private val context: Context) : StreamPlayer<ExoPlayer>(), KoinComponent {
+class StreamPlayer(private val context: Context) : KoinComponent {
 
     private val preferenceUtil: PreferenceUtil by inject()
 
     private var audioManagerUtil: AudioManagerUtil
     private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener
     private var wasPlayingBeforeLoss: Boolean = false
+
+    private var currentStreamUrl: String? = null
+    private var player: ExoPlayer? = null
+
+    private val eventListener = object : Player.Listener {
+        override fun onPlayerError(error: PlaybackException) {
+            // Try to reconnect to the stream
+            val wasPlaying = isPlaying
+
+            releasePlayer()
+            initPlayer()
+            if (wasPlaying) {
+                play()
+            }
+        }
+    }
+
+    val isStarted: Boolean
+        get() = player != null
+
+    val isPlaying: Boolean
+        get() = player?.isPlaying ?: false
 
     init {
         audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
@@ -56,7 +82,7 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<ExoPlayer>(
         audioManagerUtil = AudioManagerUtil(context, audioFocusChangeListener)
     }
 
-    override fun initPlayer() {
+    fun initPlayer() {
         if (player == null) {
             player = ExoPlayer.Builder(context).build()
 
@@ -87,19 +113,54 @@ class LocalStreamPlayer(private val context: Context) : StreamPlayer<ExoPlayer>(
     }
 
     @Synchronized
-    override fun play() {
+    fun play() {
         // Request audio focus for playback
         val result = audioManagerUtil.requestAudioFocus()
 
         if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            super.play()
+            initPlayer()
+
+            if (!isPlaying) {
+                player!!.play()
+                player!!.seekToDefaultPosition()
+            }
         }
     }
 
-    override fun stop() {
+    fun pause() {
+        player?.pause()
+    }
+
+    fun stop() {
         audioManagerUtil.abandonAudioFocus()
 
-        super.stop()
+        player?.stop()
+        player?.clearMediaItems()
+
+        releasePlayer()
+    }
+
+    suspend fun fadeOut() {
+        while (player != null) {
+            val vol = player!!.volume
+            val newVol = max(0f, vol - 0.05f)
+
+            if (newVol <= 0) {
+                break
+            }
+
+            player!!.volume = newVol
+
+            delay(200)
+        }
+
+        stop()
+    }
+
+    private fun releasePlayer() {
+        player?.removeListener(eventListener)
+        player?.release()
+        player = null
     }
 
     private fun duck() {
