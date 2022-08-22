@@ -3,7 +3,6 @@ package me.echeung.moemoekyun.client.stream
 import android.content.Context
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import me.echeung.moemoekyun.client.stream.player.LocalStreamPlayer
-import me.echeung.moemoekyun.client.stream.player.StreamPlayer
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.launchNow
 

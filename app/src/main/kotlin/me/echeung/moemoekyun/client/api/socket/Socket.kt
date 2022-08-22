@@ -3,8 +3,9 @@ package me.echeung.moemoekyun.client.api.socket
 import android.content.Context
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -28,7 +29,8 @@ class Socket(
     private val networkClient: NetworkClient,
 ) : WebSocketListener() {
 
-    val channel = ConflatedBroadcastChannel<SocketResult>()
+    private val _flow = MutableStateFlow<SocketResult>(SocketLoading)
+    val flow = _flow.asStateFlow()
 
     private val scope = MainScope()
 
@@ -153,8 +155,8 @@ class Socket(
 
     private fun parseResponse(jsonString: String?) {
         if (jsonString == null) {
-            launchIO {
-                channel.send(SocketError())
+            scope.launchIO {
+                _flow.value = SocketError
             }
             return
         }
@@ -179,8 +181,8 @@ class Socket(
                         return
                     }
 
-                    launchIO {
-                        channel.send(SocketResponse(updateResponse.d))
+                    scope.launchIO {
+                        _flow.value = SocketResponse(updateResponse.d)
                     }
                 }
 
@@ -221,9 +223,10 @@ class Socket(
         return updateResponse.t == NOTIFICATION
     }
 
-    interface SocketResult
-    class SocketResponse(val info: ResponseModel.Update.Details?) : SocketResult
-    class SocketError : SocketResult
+    sealed interface SocketResult
+    object SocketLoading : SocketResult
+    data class SocketResponse(val info: ResponseModel.Update.Details?) : SocketResult
+    object SocketError : SocketResult
 
     companion object {
         private val json = Json {

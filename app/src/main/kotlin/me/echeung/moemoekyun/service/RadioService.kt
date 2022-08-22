@@ -95,7 +95,7 @@ class RadioService : Service() {
             .onEach { updateMediaSession() }
             .launchIn(scope)
 
-        albumArtUtil.channel.asFlow()
+        albumArtUtil.flow
             .onEach { updateMediaSession() }
             .launchIn(scope)
 
@@ -125,9 +125,10 @@ class RadioService : Service() {
             }
             .launchIn(scope)
 
-        socket.channel.asFlow()
+        socket.flow
             .onEach {
                 when (it) {
+                    is Socket.SocketLoading -> {}
                     is Socket.SocketResponse -> it.info?.let { data -> onSocketReceive(data) }
                     is Socket.SocketError -> onSocketFailure()
                 }
@@ -178,7 +179,7 @@ class RadioService : Service() {
 
         // Check if current song is favorited
         if (info.song != null && authUtil.isAuthenticated) {
-            launchIO {
+            scope.launchIO {
                 val favoritedSongIds = api.isFavorite(listOf(info.song.id))
                 if (info.song.id in favoritedSongIds && radioViewModel.currentSong?.id == info.song.id) {
                     radioViewModel.isFavorited = true
@@ -467,7 +468,7 @@ class RadioService : Service() {
 
         val isCurrentlyFavorite = song.favorite
 
-        launchIO {
+        scope.launchIO {
             try {
                 api.toggleFavorite(songId)
 

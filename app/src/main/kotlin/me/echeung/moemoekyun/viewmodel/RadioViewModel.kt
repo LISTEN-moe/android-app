@@ -172,7 +172,7 @@ class RadioViewModel(
         }
 
     init {
-        albumArtUtil.channel.asFlow()
+        albumArtUtil.flow
             .onEach { notifyPropertyChanged(BR.albumArt) }
             .launchIn(scope)
 

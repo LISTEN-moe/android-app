@@ -104,7 +104,7 @@ class AuthLoginActivity : BaseActivity() {
             ) { _, _ ->
                 val otpToken = otpText.text.toString().trim { it <= ' ' }
                 if (otpToken.length == OTP_LENGTH) {
-                    launchIO {
+                    lifecycleScope.launchIO {
                         try {
                             api.authenticateMfa(otpToken)
                             withUIContext { finish(Activity.RESULT_OK) }

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import androidx.core.graphics.BitmapCompat
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Target.MUTED
@@ -15,14 +16,16 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import coil.size.Scale
-import kotlinx.coroutines.channels.ConflatedBroadcastChannel
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.launchNow
 import me.echeung.moemoekyun.viewmodel.RadioViewModel
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
@@ -38,7 +41,15 @@ class AlbumArtUtil(
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
     }
 
-    val channel = ConflatedBroadcastChannel<Bitmap>()
+    private val maxSize: Int by lazy {
+        val displayMetrics = Resources.getSystem().displayMetrics
+        max(displayMetrics.widthPixels, displayMetrics.heightPixels)
+    }
+
+    private val _flow = MutableStateFlow<Bitmap?>(null)
+    val flow = _flow.asStateFlow()
+
+    private val scope = MainScope()
 
     var isDefaultAlbumArt = true
         private set
@@ -47,18 +58,13 @@ class AlbumArtUtil(
     var currentAccentColor: Int = 0
         private set
 
-    private val maxSize: Int by lazy {
-        val displayMetrics = Resources.getSystem().displayMetrics
-        max(displayMetrics.widthPixels, displayMetrics.heightPixels)
-    }
-
     fun getCurrentAlbumArt(maxSize: Int): Bitmap? {
         if (currentAlbumArt == null) {
             return null
         }
 
         return try {
-            Bitmap.createScaledBitmap(currentAlbumArt!!, maxSize, maxSize, false)
+            BitmapCompat.createScaledBitmap(currentAlbumArt!!, maxSize, maxSize, null, false)
         } catch (e: Throwable) {
             // Typically OutOfMemoryError or NullPointerException
             e.printStackTrace()
@@ -92,12 +98,12 @@ class AlbumArtUtil(
 
     private fun updateListeners(bitmap: Bitmap) {
         currentAlbumArt = bitmap
-        launchNow {
-            channel.send(bitmap)
+        scope.launch {
+            _flow.value = bitmap
         }
     }
 
-    private fun downloadAlbumArtBitmap(url: String) = launchIO {
+    private fun downloadAlbumArtBitmap(url: String) = scope.launchIO {
         val request = ImageRequest.Builder(context)
             .data(url)
             .scale(Scale.FILL)
@@ -110,11 +116,10 @@ class AlbumArtUtil(
             return@launchIO
         }
 
-        val bitmap = (result.drawable as? BitmapDrawable)?.bitmap
-        if (bitmap != null) {
+        (result.drawable as? BitmapDrawable)?.bitmap?.let {
             isDefaultAlbumArt = false
-            extractAccentColor(bitmap)
-            updateListeners(bitmap)
+            extractAccentColor(it)
+            updateListeners(it)
         }
     }
 

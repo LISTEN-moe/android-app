@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import kotlinx.coroutines.MainScope
+import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import me.echeung.moemoekyun.ui.activity.auth.AuthActivityUtil
@@ -17,8 +17,6 @@ import me.echeung.moemoekyun.viewmodel.SongListViewModel
 import org.koin.android.ext.android.inject
 
 abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>() {
-
-    private val scope = MainScope()
 
     private val preferenceUtil: PreferenceUtil by inject()
 
@@ -33,7 +31,7 @@ abstract class SongsListBaseFragment<T : ViewDataBinding> : BaseFragment<T>() {
 
         preferenceUtil.shouldPreferRomaji().asFlow()
             .onEach { songList.notifyDataSetChanged() }
-            .launchIn(scope)
+            .launchIn(lifecycleScope)
 
         return view
     }
