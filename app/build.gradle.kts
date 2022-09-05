@@ -19,8 +19,8 @@ android {
         applicationId = appPackageName
         minSdk = 23
         targetSdk = 33
-        versionCode = 105
-        versionName = "5.4.2"
+        versionCode = 106
+        versionName = "5.4.3"
     }
 
     buildFeatures {
