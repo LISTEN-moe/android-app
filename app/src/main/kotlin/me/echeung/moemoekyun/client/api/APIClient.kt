@@ -1,13 +1,12 @@
 package me.echeung.moemoekyun.client.api
 
-import android.content.Context
 import com.apollographql.apollo3.ApolloClient
 import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.cache.http.HttpFetchPolicy
-import com.apollographql.apollo3.cache.http.httpCache
 import com.apollographql.apollo3.cache.http.httpExpireTimeout
 import com.apollographql.apollo3.cache.http.httpFetchPolicy
-import com.apollographql.apollo3.network.okHttpClient
+import logcat.LogPriority
+import logcat.logcat
 import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
@@ -18,34 +17,19 @@ import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
-import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.api.data.SongsCache
 import me.echeung.moemoekyun.client.api.data.transform
-import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
-import me.echeung.moemoekyun.client.model.search
-import me.echeung.moemoekyun.client.network.NetworkClient
-import java.io.File
+import me.echeung.moemoekyun.util.PreferenceUtil
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class APIClient(
-    context: Context,
-    networkClient: NetworkClient,
-    private val authUtil: AuthUtil,
+@Singleton
+class ApiClient @Inject constructor(
+    private val client: ApolloClient,
+    private val preferenceUtil: PreferenceUtil,
 ) {
-
-    private val client = ApolloClient.Builder()
-        .serverUrl(Library.API_BASE)
-        .httpCache(
-            directory = File(context.externalCacheDir, "apolloCache"),
-            maxSize = 1024 * 1024,
-        )
-        .httpFetchPolicy(HttpFetchPolicy.NetworkFirst)
-        .okHttpClient(networkClient.client)
-        .build()
-
-    private val songsCache = SongsCache(this)
 
     /**
      * Authenticates to the radio.
@@ -55,17 +39,18 @@ class APIClient(
      */
     suspend fun authenticate(username: String, password: String): Pair<LoginState, String> {
         val response = client.mutation(LoginMutation(username, password)).execute()
+        try {
+            val userToken = response.data?.login?.token!!
 
-        val userToken = response.data?.login?.token!!
+            if (response.data?.login?.mfa!!) {
+                return Pair(LoginState.REQUIRE_OTP, userToken)
+            }
 
-        if (response.data?.login?.mfa!!) {
-            authUtil.mfaToken = userToken
-            return Pair(LoginState.REQUIRE_OTP, userToken)
+            return Pair(LoginState.COMPLETE, userToken)
+        } catch (e: Exception) {
+            logcat(LogPriority.ERROR) { "Failed to authenticate" }
+            return Pair(LoginState.ERROR, response.errors?.joinToString() ?: "")
         }
-
-        authUtil.authToken = userToken
-
-        return Pair(LoginState.COMPLETE, userToken)
     }
 
     /**
@@ -73,14 +58,14 @@ class APIClient(
      *
      * @param otpToken User's one-time password token.
      */
-    suspend fun authenticateMfa(otpToken: String): String {
+    suspend fun authenticateMfa(otpToken: String): Pair<LoginState, String> {
         val response = client.mutation(LoginMfaMutation(otpToken)).execute()
-
-        val userToken = response.data?.loginMFA?.token!!
-        authUtil.authToken = userToken
-        authUtil.clearMfaAuthToken()
-
-        return userToken
+        return try {
+            Pair(LoginState.COMPLETE, response.data?.loginMFA?.token!!)
+        } catch (e: Exception) {
+            logcat(LogPriority.ERROR) { "Failed to authenticate (MFA)" }
+            return Pair(LoginState.ERROR, response.errors?.joinToString() ?: "")
+        }
     }
 
     /**
@@ -104,7 +89,7 @@ class APIClient(
      */
     suspend fun getUserFavorites(): List<Song> {
         // TODO: do actual pagination
-        val response = client.query(FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(RadioClient.isKpop()))).execute()
+        val response = client.query(FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP))).execute()
 
         return response.data?.user?.favorites?.favorites
             ?.mapNotNull { it?.song }
@@ -138,20 +123,11 @@ class APIClient(
      * @param songId Song to request.
      */
     suspend fun requestSong(songId: Int) {
-        val response = client.mutation(RequestSongMutation(songId, Optional.presentIfNotNull(RadioClient.isKpop()))).execute()
+        val response = client.mutation(RequestSongMutation(songId, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP))).execute()
 
         if (response.hasErrors()) {
             throw Exception(response.errors?.get(0)?.message)
         }
-    }
-
-    /**
-     * Searches for songs.
-     *
-     * @param query Search query string.
-     */
-    suspend fun search(query: String?): List<Song> {
-        return songsCache.getSongs().search(query)
     }
 
     /**
@@ -174,7 +150,7 @@ class APIClient(
     suspend fun getAllSongs(): List<Song> {
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
-        val response = client.query(SongsQuery(0, 50000, Optional.presentIfNotNull(RadioClient.isKpop())))
+        val response = client.query(SongsQuery(0, 50000, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)))
             .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
             .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
             .execute()
@@ -183,6 +159,7 @@ class APIClient(
     }
 
     enum class LoginState {
+        ERROR,
         REQUIRE_OTP,
         COMPLETE,
     }

@@ -10,8 +10,8 @@ import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import androidx.media.MediaBrowserServiceCompat
 import me.echeung.moemoekyun.App
-import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.service.RadioService
+import me.echeung.moemoekyun.client.api.Station
+import me.echeung.moemoekyun.service.AppService
 
 class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
 
@@ -21,26 +21,25 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
         if (App.service != null) {
             setSessionToken()
         } else {
-            val intent = Intent(applicationContext, RadioService::class.java)
+            val intent = Intent(applicationContext, AppService::class.java)
             applicationContext.bindService(intent, this, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)
         }
     }
 
     override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot? {
-        return BrowserRoot(MEDIA_ID_ROOT, null)
+        return BrowserRoot("media_root", null)
     }
 
     override fun onLoadChildren(parentId: String, result: Result<List<MediaBrowserCompat.MediaItem>>) {
-        val mediaItems = listOf(
-            createPlayableMediaItem(RadioService.LIBRARY_JPOP, resources.getString(R.string.jpop)),
-            createPlayableMediaItem(RadioService.LIBRARY_KPOP, resources.getString(R.string.kpop)),
-        )
+        val mediaItems = Station.values().map {
+            createPlayableMediaItem(it.name, resources.getString(it.labelRes))
+        }
 
         result.sendResult(mediaItems)
     }
 
     override fun onServiceConnected(className: ComponentName, service: IBinder) {
-        val binder = service as RadioService.ServiceBinder
+        val binder = service as AppService.ServiceBinder
         val radioService = binder.service
 
         App.service = radioService
@@ -51,8 +50,9 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
     }
 
     private fun setSessionToken() {
-        val mediaSession = App.service!!.mediaSession
-        sessionToken = mediaSession!!.sessionToken
+        App.service?.mediaSession?.let {
+            sessionToken = it.sessionToken
+        }
     }
 
     private fun createPlayableMediaItem(mediaId: String, title: String): MediaBrowserCompat.MediaItem {
@@ -63,5 +63,3 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
         return MediaBrowserCompat.MediaItem(builder.build(), MediaBrowserCompat.MediaItem.FLAG_PLAYABLE)
     }
 }
-
-private const val MEDIA_ID_ROOT = "media_root"

@@ -4,47 +4,36 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.tfcporciuncula.flow.FlowSharedPreferences
-import me.echeung.moemoekyun.client.api.Library
-import me.echeung.moemoekyun.util.system.LocaleUtil
+import dagger.hilt.android.qualifiers.ApplicationContext
+import me.echeung.moemoekyun.client.api.Station
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PreferenceUtil(context: Context) {
+@Singleton
+class PreferenceUtil @Inject constructor(
+    @ApplicationContext context: Context,
+) {
 
     private val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     private val flowPrefs = FlowSharedPreferences(prefs)
 
-    fun language() = prefs.getString(PREF_GENERAL_LANGUAGE, LocaleUtil.DEFAULT)!!
+    fun station() = flowPrefs.getEnum("library_mode_v2", Station.JPOP)
 
-    fun libraryMode() = flowPrefs.getEnum(LIBRARY_MODE, Library.JPOP)
+    fun isNowPlayingExpanded() = flowPrefs.getBoolean("now_playing_expanded", true)
 
-    fun isNowPlayingExpanded() = flowPrefs.getBoolean(NOW_PLAYING_EXPANDED, true)
+    fun shouldPreferRomaji() = flowPrefs.getBoolean("pref_general_romaji", false)
 
-    fun sleepTimer() = flowPrefs.getInt(SLEEP_TIMER_MINS, 0)
+    fun shouldShowRandomRequestTitle() = flowPrefs.getBoolean("pref_general_random_request_title", true)
 
-    fun shouldPreferRomaji() = flowPrefs.getBoolean(PREF_GENERAL_ROMAJI, false)
+    fun shouldPauseOnNoisy() = flowPrefs.getBoolean("pref_audio_pause_on_noisy", true)
 
-    fun shouldShowRandomRequestTitle() = prefs.getBoolean(PREF_MUSIC_RANDOM_REQUEST_TITLE, true)
+    fun shouldDuckAudio() = flowPrefs.getBoolean("pref_audio_duck", true)
 
-    fun shouldPauseOnNoisy() = prefs.getBoolean(PREF_AUDIO_PAUSE_ON_NOISY, true)
+    fun shouldPauseAudioOnLoss() = flowPrefs.getBoolean("pref_audio_pause_on_loss", true)
 
-    fun shouldDuckAudio() = prefs.getBoolean(PREF_AUDIO_DUCK, true)
+    fun songsSortType() = flowPrefs.getEnum("all_songs_sort_type", SortType.TITLE)
+    fun songsSortDescending() = flowPrefs.getBoolean("all_songs_sort_desc", false)
 
-    fun shouldPauseAudioOnLoss() = prefs.getBoolean(PREF_AUDIO_PAUSE_ON_LOSS, true)
-
-    fun shouldShowLockscreenAlbumArt() = flowPrefs.getBoolean(PREF_MUSIC_LOCKSCREEN_ALBUMART, true)
-
-    companion object {
-        private const val LIBRARY_MODE = "library_mode_v2"
-        private const val NOW_PLAYING_EXPANDED = "now_playing_expanded"
-        private const val SLEEP_TIMER_MINS = "pref_sleep_timer"
-
-        const val PREF_GENERAL_LANGUAGE = "pref_general_language"
-        const val PREF_GENERAL_ROMAJI = "pref_general_romaji"
-
-        const val PREF_MUSIC_RANDOM_REQUEST_TITLE = "pref_general_random_request_title"
-        const val PREF_MUSIC_LOCKSCREEN_ALBUMART = "pref_lockscreen_albumart"
-
-        const val PREF_AUDIO_PAUSE_ON_NOISY = "pref_audio_pause_on_noisy"
-        const val PREF_AUDIO_DUCK = "pref_audio_duck"
-        const val PREF_AUDIO_PAUSE_ON_LOSS = "pref_audio_pause_on_loss"
-    }
+    fun favoritesSortType() = flowPrefs.getEnum("favorites_sort_type", SortType.TITLE)
+    fun favoritesSortDescending() = flowPrefs.getBoolean("favorites_sort_desc", false)
 }

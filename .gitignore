@@ -45,3 +45,6 @@ captures/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Generated files
+locales_config.xml

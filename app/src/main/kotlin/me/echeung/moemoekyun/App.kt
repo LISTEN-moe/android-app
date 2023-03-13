@@ -9,71 +9,74 @@ import android.os.Build
 import android.os.IBinder
 import androidx.core.app.NotificationChannelCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import coil.ImageLoader
 import coil.ImageLoaderFactory
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
+import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import logcat.LogcatLogger
-import me.echeung.moemoekyun.di.appModule
-import me.echeung.moemoekyun.di.radioModule
-import me.echeung.moemoekyun.di.viewModelModule
-import me.echeung.moemoekyun.service.RadioService
-import me.echeung.moemoekyun.service.notification.EventNotification
-import me.echeung.moemoekyun.service.notification.MusicNotifier
-import me.echeung.moemoekyun.util.PreferenceUtil
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.core.logger.Level
+import me.echeung.moemoekyun.domain.radio.RadioService
+import me.echeung.moemoekyun.service.AppService
+import me.echeung.moemoekyun.service.MusicNotifier
+import javax.inject.Inject
 
-class App : Application(), ServiceConnection, ImageLoaderFactory {
+@HiltAndroidApp
+class App : Application(), DefaultLifecycleObserver, ServiceConnection, ImageLoaderFactory {
+
+    @Inject
+    lateinit var radioService: RadioService
 
     override fun onCreate() {
-        super.onCreate()
+        super<Application>.onCreate()
 
         if (!LogcatLogger.isInstalled) {
             LogcatLogger.install(AndroidLogcatLogger(if (BuildConfig.DEBUG) LogPriority.VERBOSE else LogPriority.ERROR))
         }
 
-        // TODO: instantiate/access this with Koin
-        preferenceUtil = PreferenceUtil(this)
-
-        startKoin {
-            androidLogger(if (BuildConfig.DEBUG) Level.DEBUG else Level.ERROR)
-            androidContext(this@App)
-
-            modules(appModule, radioModule, viewModelModule)
-        }
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 
         initNotificationChannels()
         initRadioService()
     }
 
     private fun initRadioService() {
-        val intent = Intent(this, RadioService::class.java)
+        val intent = Intent(this, AppService::class.java)
         bindService(intent, this, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)
     }
 
     override fun onServiceConnected(className: ComponentName, service: IBinder) {
-        val binder = service as RadioService.ServiceBinder
+        val binder = service as AppService.ServiceBinder
         App.service = binder.service
     }
 
     override fun onServiceDisconnected(className: ComponentName) {
     }
 
+    override fun onStart(owner: LifecycleOwner) {
+        radioService.connect()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        radioService.disconnectIfIdle()
+    }
+
     override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this).apply {
-            components {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    add(ImageDecoderDecoder.Factory())
-                } else {
-                    add(GifDecoder.Factory())
+        return ImageLoader.Builder(this)
+            .apply {
+                components {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        add(ImageDecoderDecoder.Factory())
+                    } else {
+                        add(GifDecoder.Factory())
+                    }
                 }
             }
-        }.build()
+            .build()
     }
 
     private fun initNotificationChannels() {
@@ -83,17 +86,10 @@ class App : Application(), ServiceConnection, ImageLoaderFactory {
             NotificationChannelCompat.Builder(MusicNotifier.NOTIFICATION_CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_LOW)
                 .setName(MusicNotifier.NOTIFICATION_CHANNEL_NAME)
                 .build(),
-            // Events
-            NotificationChannelCompat.Builder(EventNotification.NOTIFICATION_CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_DEFAULT)
-                .setName(EventNotification.NOTIFICATION_CHANNEL_NAME)
-                .build(),
         ).forEach(notificationManager::createNotificationChannel)
     }
 
     companion object {
-        var service: RadioService? = null
-
-        var preferenceUtil: PreferenceUtil? = null
-            private set
+        var service: AppService? = null
     }
 }

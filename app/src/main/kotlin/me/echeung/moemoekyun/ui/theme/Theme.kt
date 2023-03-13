@@ -1,21 +1,22 @@
 package me.echeung.moemoekyun.ui.theme
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+private val ThemePalette = darkColorScheme(
     primary = Color(0xFFFF015B),
-    primaryVariant = Color(0xFFFF015B),
-    secondary = Color(0xFFC7CCD8),
+    onPrimary = Color(0xFFFFFFFF),
+    secondary = Color(0xFFB4B8C2),
+    primaryContainer = Color(0xFFFF015B),
     background = Color(0xFF1C1D1C),
 )
 
 @Composable
 fun AppTheme(content: @Composable () -> Unit) {
     MaterialTheme(
-        colors = DarkColorPalette,
+        colorScheme = ThemePalette,
         content = content,
     )
 }

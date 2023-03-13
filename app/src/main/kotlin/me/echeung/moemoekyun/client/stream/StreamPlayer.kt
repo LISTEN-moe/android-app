@@ -13,19 +13,18 @@ import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
-import kotlinx.coroutines.delay
-import me.echeung.moemoekyun.client.RadioClient
+import dagger.hilt.android.qualifiers.ApplicationContext
+import logcat.logcat
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.system.AudioManagerUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import kotlin.math.max
+import javax.inject.Inject
 
-class StreamPlayer(private val context: Context) : KoinComponent {
-
-    private val preferenceUtil: PreferenceUtil by inject()
+class StreamPlayer @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val preferenceUtil: PreferenceUtil,
+) {
 
     private var audioManagerUtil: AudioManagerUtil
     private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener
@@ -65,14 +64,14 @@ class StreamPlayer(private val context: Context) : KoinComponent {
 
                 AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                     wasPlayingBeforeLoss = isPlaying
-                    if (wasPlayingBeforeLoss && (preferenceUtil.shouldPauseAudioOnLoss() || context.isCarUiMode())) {
+                    if (wasPlayingBeforeLoss && (preferenceUtil.shouldPauseAudioOnLoss().get() || context.isCarUiMode())) {
                         pause()
                     }
                 }
 
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
                     wasPlayingBeforeLoss = isPlaying
-                    if (preferenceUtil.shouldDuckAudio()) {
+                    if (preferenceUtil.shouldDuckAudio().get()) {
                         duck()
                     }
                 }
@@ -99,7 +98,7 @@ class StreamPlayer(private val context: Context) : KoinComponent {
         }
 
         // Set stream
-        val streamUrl = RadioClient.library.streamUrl
+        val streamUrl = preferenceUtil.station().get().streamUrl
         if (streamUrl != currentStreamUrl) {
             val dataSourceFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory().setUserAgent(NetworkUtil.userAgent))
             val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
@@ -132,29 +131,13 @@ class StreamPlayer(private val context: Context) : KoinComponent {
     }
 
     fun stop() {
+        logcat { "Stopping stream" }
         audioManagerUtil.abandonAudioFocus()
 
         player?.stop()
         player?.clearMediaItems()
 
         releasePlayer()
-    }
-
-    suspend fun fadeOut() {
-        while (player != null) {
-            val vol = player!!.volume
-            val newVol = max(0f, vol - 0.05f)
-
-            if (newVol <= 0) {
-                break
-            }
-
-            player!!.volume = newVol
-
-            delay(200)
-        }
-
-        stop()
     }
 
     private fun releasePlayer() {

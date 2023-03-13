@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.App" parent="Theme.MaterialComponents">
-        <item name="colorPrimary">@color/grey</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/colorAccent</item>
-        <item name="colorSecondary">@color/colorAccent</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="colorSurface">@color/darker_grey</item>
-        <item name="colorOnSurface">@color/white</item>
-
+    <style name="Theme.App" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- App bar -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -23,15 +14,6 @@
         <item name="android:windowBackground">@color/darker_grey</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/light_grey</item>
-
-        <!-- UI widget theming -->
-        <item name="elevationOverlayEnabled">false</item>
-        <item name="alertDialogTheme">@style/Theme.Widget.Dialog</item>
-        <item name="dialogTheme">@style/Theme.Widget.Dialog</item>
-        <item name="materialAlertDialogTheme">@style/Theme.Widget.Dialog</item>
-        <item name="materialButtonStyle">@style/Theme.Widget.Button</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
-        <item name="textInputStyle">@style/Theme.Widget.TextInputLayout.OutlinedBox</item>
     </style>
 
     <!-- Splash screen -->

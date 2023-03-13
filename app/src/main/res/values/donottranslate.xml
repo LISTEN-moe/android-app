@@ -15,7 +15,7 @@
         copy([...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => '\\n' + div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'))
     -->
     <string name="translators_list" translatable="false">
-        \n3316482
+        3316482
         \nAnany Meza
         \narkon94
         \nArthur Um

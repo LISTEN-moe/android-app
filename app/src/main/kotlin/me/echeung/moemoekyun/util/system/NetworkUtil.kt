@@ -4,11 +4,8 @@ import android.content.Context
 import android.os.Build
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.util.ext.connectivityManager
-import me.echeung.moemoekyun.viewmodel.RadioViewModel
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.get
 
-object NetworkUtil : KoinComponent {
+object NetworkUtil {
 
     val userAgent: String
         get() = String.format(
@@ -22,12 +19,6 @@ object NetworkUtil : KoinComponent {
 
     fun isNetworkAvailable(context: Context?): Boolean {
         context ?: return false
-
-        val isAvailable = context.connectivityManager.activeNetworkInfo?.isConnected ?: false
-
-        val radioViewModel: RadioViewModel = get()
-        radioViewModel.isConnected = isAvailable
-
-        return isAvailable
+        return context.connectivityManager.activeNetworkInfo?.isConnected ?: false
     }
 }
