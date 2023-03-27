@@ -16,26 +16,27 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import coil.size.Scale
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.model.Song
+import me.echeung.moemoekyun.domain.radio.interactor.CurrentSong
+import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.viewmodel.RadioViewModel
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import me.echeung.moemoekyun.util.ext.withIOContext
+import javax.inject.Inject
 import kotlin.math.max
 
-class AlbumArtUtil(
-    private val context: Context,
-) : KoinComponent {
-
-    private val radioViewModel: RadioViewModel by inject()
+class AlbumArtUtil @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val currentSong: CurrentSong,
+) {
 
     private val defaultAlbumArt: Bitmap by lazy {
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
@@ -46,25 +47,24 @@ class AlbumArtUtil(
         max(displayMetrics.widthPixels, displayMetrics.heightPixels)
     }
 
-    private val _flow = MutableStateFlow<Bitmap?>(null)
+    private val _flow = MutableStateFlow<State?>(null)
     val flow = _flow.asStateFlow()
 
     private val scope = MainScope()
 
-    var isDefaultAlbumArt = true
-        private set
-    var currentAlbumArt: Bitmap? = null
-        private set
-    var currentAccentColor: Int = 0
-        private set
+    init {
+        scope.launchIO {
+            currentSong.asFlow().collectLatest(::updateAlbumArt)
+        }
+    }
 
-    fun getCurrentAlbumArt(maxSize: Int): Bitmap? {
-        if (currentAlbumArt == null) {
+    fun getCurrentAlbumArt(size: Int): Bitmap? {
+        if (_flow.value?.bitmap == null) {
             return null
         }
 
         return try {
-            BitmapCompat.createScaledBitmap(currentAlbumArt!!, maxSize, maxSize, null, false)
+            BitmapCompat.createScaledBitmap(_flow.value!!.bitmap!!, size, size, null, false)
         } catch (e: Throwable) {
             // Typically OutOfMemoryError or NullPointerException
             e.printStackTrace()
@@ -72,38 +72,23 @@ class AlbumArtUtil(
         }
     }
 
-    fun updateAlbumArt(song: Song?) {
-        if (song != null) {
-            val albumArtUrl = song.albumArtUrl
+    private suspend fun updateAlbumArt(song: DomainSong?) {
+        val bitmap = getAlbumArtBitmap(song?.albumArtUrl)
+        val accentColor = extractAccentColor(bitmap)
 
-            // Get event image if available when there's no regular album art
-            if (albumArtUrl == null && radioViewModel.event != null) {
-                val eventImageUrl = radioViewModel.event!!.image
-                if (eventImageUrl != null) {
-                    downloadAlbumArtBitmap(eventImageUrl)
-                    return
-                }
-            }
-
-            if (albumArtUrl != null) {
-                downloadAlbumArtBitmap(albumArtUrl)
-                return
-            }
-        }
-
-        isDefaultAlbumArt = true
-        setDefaultColors()
-        updateListeners(defaultAlbumArt)
-    }
-
-    private fun updateListeners(bitmap: Bitmap) {
-        currentAlbumArt = bitmap
         scope.launch {
-            _flow.value = bitmap
+            _flow.value = State(
+                bitmap = bitmap,
+                accentColor = accentColor,
+            )
         }
     }
 
-    private fun downloadAlbumArtBitmap(url: String) = scope.launchIO {
+    private suspend fun getAlbumArtBitmap(url: String?): Bitmap = withIOContext {
+        if (url == null) {
+            return@withIOContext defaultAlbumArt
+        }
+
         val request = ImageRequest.Builder(context)
             .data(url)
             .scale(Scale.FILL)
@@ -113,18 +98,14 @@ class AlbumArtUtil(
 
         val result = context.imageLoader.execute(request)
         if (result !is SuccessResult) {
-            return@launchIO
+            return@withIOContext defaultAlbumArt
         }
 
-        (result.drawable as? BitmapDrawable)?.bitmap?.let {
-            isDefaultAlbumArt = false
-            extractAccentColor(it)
-            updateListeners(it)
-        }
+        (result.drawable as? BitmapDrawable)?.bitmap ?: defaultAlbumArt
     }
 
-    private fun extractAccentColor(resource: Bitmap) {
-        try {
+    private fun extractAccentColor(resource: Bitmap): Int? {
+        return try {
             val palette = Palette.from(resource).generate()
             val swatch: Palette.Swatch? = palette[VIBRANT] ?: palette[MUTED]
 
@@ -136,15 +117,17 @@ class AlbumArtUtil(
                     color = ColorUtils.blendARGB(color, Color.BLACK, 0.2f)
                 }
 
-                currentAccentColor = color
+                return color
             }
+            null
         } catch (e: Exception) {
             logcat(LogPriority.WARN) { e.asLog() }
-            setDefaultColors()
+            null
         }
     }
 
-    private fun setDefaultColors() {
-        currentAccentColor = Color.BLACK
-    }
+    data class State(
+        val bitmap: Bitmap?,
+        val accentColor: Int?,
+    )
 }

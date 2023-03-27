@@ -3,13 +3,19 @@ package me.echeung.moemoekyun.client.auth
 import android.content.Context
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.roundToInt
 
 /**
  * Helper for handling authorization-related tasks. Helps with the storage of the auth token and
  * actions requiring it.
  */
-class AuthUtil(context: Context) {
+@Singleton
+class AuthUtil @Inject constructor(
+    @ApplicationContext context: Context,
+) {
 
     private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -70,7 +76,7 @@ class AuthUtil(context: Context) {
      *
      * @return Whether the token is still valid.
      */
-    fun checkAuthTokenValidity(): Boolean {
+    fun isAuthTokenValid(): Boolean {
         if (!isAuthenticated) {
             return false
         }

@@ -12,12 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.Code
@@ -26,6 +20,12 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Radio
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -38,98 +38,109 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.mikepenz.aboutlibraries.LibsBuilder
+import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.Toolbar
 import me.echeung.moemoekyun.ui.theme.AppTheme
 
-@Composable
-fun AboutScreen() {
-    val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
+class AboutScreen : Screen {
 
-    val appVersion = remember {
-        try {
-            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
-            var versionText = context.getString(R.string.version, packageInfo.versionName)
-            if (BuildConfig.DEBUG) {
-                versionText += " (${packageInfo.packageName})"
+    @Composable
+    override fun Content() {
+        val navigator = LocalNavigator.currentOrThrow
+        val context = LocalContext.current
+        val uriHandler = LocalUriHandler.current
+
+        val appVersion = remember(context) {
+            try {
+                val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+                var versionText = context.getString(R.string.version, packageInfo.versionName)
+                if (BuildConfig.DEBUG) {
+                    versionText += " (${packageInfo.packageName})"
+                }
+                versionText
+            } catch (e: PackageManager.NameNotFoundException) {
+                ""
             }
-            versionText
-        } catch (e: PackageManager.NameNotFoundException) {
-            ""
         }
-    }
 
-    Scaffold(
-        topBar = { Toolbar(titleResId = R.string.about, showUpButton = true) },
-    ) {
-        LazyColumn(modifier = Modifier.padding(horizontal = 16.dp)) {
-            item {
-                AboutCard {
-                    Image(
-                        modifier = Modifier
-                            .widthIn(max = 250.dp)
-                            .heightIn(max = 80.dp)
-                            .padding(16.dp),
-                        painter = painterResource(R.drawable.logo),
-                        contentDescription = null,
-                    )
+        Scaffold(
+            topBar = { Toolbar(titleResId = R.string.about, showUpButton = true) },
+        ) { contentPadding ->
+            LazyColumn(
+                contentPadding = contentPadding,
+                modifier = Modifier.padding(horizontal = 16.dp),
+            ) {
+                item {
+                    AboutCard {
+                        Image(
+                            modifier = Modifier
+                                .widthIn(max = 250.dp)
+                                .heightIn(max = 80.dp)
+                                .padding(16.dp),
+                            painter = painterResource(R.drawable.logo),
+                            contentDescription = null,
+                        )
 
-                    Text(
-                        modifier = Modifier.padding(8.dp),
-                        style = MaterialTheme.typography.caption,
-                        textAlign = TextAlign.Center,
-                        text = appVersion,
-                    )
+                        Text(
+                            modifier = Modifier.padding(8.dp),
+                            style = MaterialTheme.typography.labelSmall,
+                            textAlign = TextAlign.Center,
+                            text = appVersion,
+                        )
 
-                    if (BuildConfig.FLAVOR != "playstore") {
-                        AboutCardItem(Icons.Default.Star, R.string.rate) {
-                            uriHandler.openUri("https://play.google.com/store/apps/details?id=me.echeung.moemoekyun")
+                        if (BuildConfig.FLAVOR != "playstore") {
+                            AboutCardItem(Icons.Default.Star, R.string.rate) {
+                                uriHandler.openUri("https://play.google.com/store/apps/details?id=me.echeung.moemoekyun")
+                            }
+                        }
+                        AboutCardItem(Icons.Default.Language, R.string.translate) {
+                            uriHandler.openUri("https://crwd.in/listenmoe-android-app")
+                        }
+                        AboutCardItem(Icons.Default.Code, R.string.github) {
+                            uriHandler.openUri("https://github.com/LISTEN-moe/android-app")
+                        }
+                        AboutCardItem(Icons.Default.Description, R.string.licenses) {
+                            navigator.push(LicensesScreen())
                         }
                     }
-                    AboutCardItem(Icons.Default.Language, R.string.translate) {
-                        uriHandler.openUri("https://crwd.in/listenmoe-android-app")
-                    }
-                    AboutCardItem(Icons.Default.Code, R.string.github) {
-                        uriHandler.openUri("https://github.com/LISTEN-moe/android-app")
-                    }
-                    AboutCardItem(Icons.Default.Description, R.string.licenses) {
-                        LibsBuilder().start(context)
+                }
+
+                item {
+                    AboutCard(R.string.listenmoe) {
+                        AboutCardItem(Icons.Default.Radio, R.string.open_in_browser) {
+                            uriHandler.openUri("https://listen.moe")
+                        }
+                        AboutCardItem(Icons.Default.Person, R.string.discord) {
+                            uriHandler.openUri("https://discordapp.com/invite/4S8JYr8")
+                        }
+                        AboutCardItem(Icons.Default.CardGiftcard, R.string.patreon) {
+                            uriHandler.openUri("https://www.patreon.com/odysseyradio")
+                        }
                     }
                 }
-            }
 
-            item {
-                AboutCard(R.string.listenmoe) {
-                    AboutCardItem(Icons.Default.Radio, R.string.open_in_browser) {
-                        uriHandler.openUri("https://listen.moe")
-                    }
-                    AboutCardItem(Icons.Default.Person, R.string.discord) {
-                        uriHandler.openUri("https://discordapp.com/invite/4S8JYr8")
-                    }
-                    AboutCardItem(Icons.Default.CardGiftcard, R.string.patreon) {
-                        uriHandler.openUri("https://www.patreon.com/odysseyradio")
+                item {
+                    AboutCard(R.string.translators) {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp),
+                            text = stringResource(R.string.translators_list),
+                        )
                     }
                 }
-            }
 
-            item {
-                AboutCard(R.string.translators) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
-                        text = stringResource(R.string.translators_list),
-                    )
-                }
-            }
-
-            item {
-                TextButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = { uriHandler.openUri("https://listen-moe.github.io/android-app/privacy.txt") },
-                ) {
-                    Text(stringResource(R.string.privacy_policy))
+                item {
+                    TextButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = { uriHandler.openUri("https://listen-moe.github.io/android-app/privacy.txt") },
+                    ) {
+                        Text(stringResource(R.string.privacy_policy))
+                    }
                 }
             }
         }
@@ -144,7 +155,6 @@ private fun AboutCard(
     Box(modifier = Modifier.padding(vertical = 8.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth(),
-            elevation = 4.dp,
         ) {
             Column(
                 modifier = Modifier.padding(vertical = 8.dp),
@@ -152,9 +162,11 @@ private fun AboutCard(
             ) {
                 headingResId?.let {
                     Text(
-                        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 8.dp),
-                        style = MaterialTheme.typography.body1,
-                        color = MaterialTheme.colors.secondary,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp, vertical = 8.dp),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary,
                         text = stringResource(headingResId),
                     )
                 }
@@ -172,17 +184,19 @@ private fun AboutCardItem(
     onClick: () -> Unit = {},
 ) {
     TextButton(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
         onClick = onClick,
     ) {
         Icon(
             imageVector = imageVector,
-            tint = MaterialTheme.colors.secondary,
+            tint = MaterialTheme.colorScheme.secondary,
             contentDescription = null,
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            color = MaterialTheme.colors.secondary,
+            color = MaterialTheme.colorScheme.secondary,
             text = stringResource(textResId),
         )
         Spacer(modifier = Modifier.weight(1f))

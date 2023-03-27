@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.client.api.socket
 
-import android.content.Context
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -13,29 +12,27 @@ import kotlinx.serialization.json.Json
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
-import me.echeung.moemoekyun.client.RadioClient
-import me.echeung.moemoekyun.client.network.NetworkClient
-import me.echeung.moemoekyun.service.notification.EventNotification
+import me.echeung.moemoekyun.util.PreferenceUtil
+import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import java.io.IOException
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Socket(
-    private val context: Context,
-    private val networkClient: NetworkClient,
+@Singleton
+class Socket @Inject constructor(
+    private val okHttpClient: OkHttpClient,
+    private val preferenceUtil: PreferenceUtil,
+    private val json: Json,
 ) : WebSocketListener() {
 
     private val _flow = MutableStateFlow<SocketResult>(SocketLoading)
     val flow = _flow.asStateFlow()
 
     private val scope = MainScope()
-
-    private val json = Json {
-        ignoreUnknownKeys = true
-        explicitNulls = false
-    }
 
     private var retryTime = RETRY_TIME_MIN
     private var attemptingReconnect = false
@@ -54,12 +51,13 @@ class Socket(
                 disconnect()
             }
 
-            val request = Request.Builder().url(RadioClient.library.socketUrl).build()
-            socket = networkClient.client.newWebSocket(request, this)
+            val request = Request.Builder().url(preferenceUtil.station().get().socketUrl).build()
+            socket = okHttpClient.newWebSocket(request, this)
         }
     }
 
     fun disconnect() {
+        logcat { "Disconnecting from socket" }
         synchronized(socketLock) {
             clearHeartbeat()
 
@@ -179,10 +177,6 @@ class Socket(
                     if (!isValidUpdate(updateResponse)) {
                         return
                     }
-                    if (isNotification(updateResponse)) {
-                        parseNotification(jsonString)
-                        return
-                    }
 
                     scope.launch {
                         _flow.value = SocketResponse(updateResponse.d)
@@ -196,20 +190,6 @@ class Socket(
             }
         } catch (e: IOException) {
             logcat(LogPriority.ERROR) { "Failed to parse socket data: $jsonString ${e.asLog()}" }
-        }
-    }
-
-    private fun parseNotification(jsonString: String) {
-        try {
-            val notificationResponse = json.decodeFromString<ResponseModel.Notification>(jsonString)
-            when (notificationResponse.t) {
-                ResponseModel.EventNotificationResponse.TYPE -> {
-                    val eventResponse = json.decodeFromString<ResponseModel.EventNotificationResponse>(jsonString)
-                    EventNotification.notify(context, eventResponse.d!!.event!!.name)
-                }
-            }
-        } catch (e: IOException) {
-            logcat(LogPriority.ERROR) { "Failed to parse notification data: $jsonString ${e.asLog()}" }
         }
     }
 
