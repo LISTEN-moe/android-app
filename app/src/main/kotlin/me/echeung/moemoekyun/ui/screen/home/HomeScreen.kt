@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.ui.screen.home
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,11 +9,13 @@ import androidx.compose.material.icons.outlined.LibraryMusic
 import androidx.compose.material.icons.outlined.RadioButtonChecked
 import androidx.compose.material.icons.outlined.RadioButtonUnchecked
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -22,8 +23,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
@@ -32,6 +31,7 @@ import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
+import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.DropdownMenu
 import me.echeung.moemoekyun.ui.common.Toolbar
 import me.echeung.moemoekyun.ui.screen.about.AboutScreen
@@ -76,18 +76,11 @@ class HomeScreen : Screen {
                     )
                 },
             ) { contentPadding ->
-                Box(
+                BackgroundBox(
                     modifier = Modifier
                         .padding(contentPadding)
                         .fillMaxSize(),
                 ) {
-                    Image(
-                        modifier = Modifier.matchParentSize(),
-                        painter = painterResource(R.drawable.background),
-                        contentScale = ContentScale.Crop,
-                        contentDescription = null,
-                    )
-
                     Box(modifier = Modifier.padding(bottom = PlayerPeekHeight)) {
                         if (state.user == null) {
                             UnauthedHomeContent()
@@ -121,6 +114,7 @@ class HomeScreen : Screen {
 
         var showLibraryMenu by remember { mutableStateOf(false) }
         var showOverflowMenu by remember { mutableStateOf(false) }
+        var showLogoutConfirmation by remember { mutableStateOf(false) }
 
         IconButton(onClick = { navigator.push(SearchScreen()) }) {
             Icon(
@@ -174,16 +168,33 @@ class HomeScreen : Screen {
                 onClick = { navigator.push(SettingsScreen()) },
                 text = { Text(stringResource(R.string.settings)) },
             )
-            onClickLogOut?.let { onClick ->
-                // TODO: logout confirmation
+            onClickLogOut?.let {
                 DropdownMenuItem(
                     onClick = {
-                        onClick()
+                        showLogoutConfirmation = true
                         showOverflowMenu = false
                     },
                     text = { Text(stringResource(R.string.logout)) },
                 )
             }
+        }
+
+        if (showLogoutConfirmation && onClickLogOut != null) {
+            val dismissDialog = { showLogoutConfirmation = false }
+            AlertDialog(
+                onDismissRequest = dismissDialog,
+                text = { Text(stringResource(R.string.logout_confirmation)) },
+                confirmButton = {
+                    TextButton(onClick = onClickLogOut) {
+                        Text(stringResource(R.string.logout))
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = dismissDialog) {
+                        Text(stringResource(android.R.string.cancel))
+                    }
+                },
+            )
         }
     }
 }

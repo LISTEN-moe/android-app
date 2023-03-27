@@ -26,8 +26,8 @@ class SongsScreenModel @AssistedInject constructor(
         coroutineScope.launchIO {
             val detailedSongs = songs.map { getSong.await(it.id) }
 
-            mutableState.update {
-                it.copy(
+            mutableState.update { state ->
+                state.copy(
                     songs = detailedSongs,
                     actionsEnabled = getAuthenticatedUser.get() != null,
                 )
@@ -38,6 +38,19 @@ class SongsScreenModel @AssistedInject constructor(
     fun toggleFavorite(songId: Int) {
         coroutineScope.launchIO {
             val favorited = favoriteSong.await(songId)
+
+            mutableState.update { state ->
+                state.copy(
+                    songs = state.songs.map {
+                        if (it.id == songId) {
+                            it.copy(favorited = favorited)
+                        } else {
+                            it
+                        }
+                    },
+                    actionsEnabled = getAuthenticatedUser.get() != null,
+                )
+            }
         }
     }
 

@@ -70,7 +70,7 @@ fun SongDetails(
                     LocalContentColor provides MaterialTheme.colorScheme.secondary,
                 ) {
                     Text(
-                        text = song.duration,
+                        text = song.duration.takeIf { song.durationSeconds > 0 } ?: "-",
                         maxLines = 1,
                     )
                 }
@@ -82,6 +82,7 @@ fun SongDetails(
         Section(R.string.song_source, song.sources)
 
         Row(
+            modifier = Modifier.padding(top = 8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             OutlinedButton(

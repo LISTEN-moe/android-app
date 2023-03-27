@@ -9,6 +9,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,13 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.lifecycle.LifecycleEffect
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.ApiClient
+import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
 
@@ -51,63 +52,65 @@ class LoginScreen : Screen {
             }
         }
 
-        // TODO: this doesn't get triggered when the app is refocused
-        LifecycleEffect(
-            onStarted = {
-                if (state.requiresMfa) {
-                    screenModel.getOtpTokenFromClipboardOrNull(context)?.let {
-                        otpToken = otpToken.copy(text = it)
-                    }
-                }
-            },
-        )
-
         Scaffold(
             topBar = { Toolbar(titleResId = R.string.login, showUpButton = true) },
         ) { contentPadding ->
-            Column(
+            BackgroundBox(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-                    .padding(contentPadding),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                    .padding(contentPadding)
+                    .fillMaxSize(),
             ) {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(stringResource(R.string.username_or_email)) },
-                    value = username,
-                    onValueChange = { username = it },
-                    singleLine = true,
-                )
-
-                PasswordTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(stringResource(R.string.password)) },
-                    value = password,
-                    onValueChange = { password = it },
-                )
-
-                if (state.requiresMfa) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
-                        label = { Text(stringResource(R.string.mfa_hint)) },
-                        value = otpToken,
-                        onValueChange = { otpToken = it },
+                        label = { Text(stringResource(R.string.username_or_email)) },
+                        value = username,
+                        onValueChange = { username = it },
                         singleLine = true,
                     )
-                }
 
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        if (state.requiresMfa) {
-                            screenModel.loginMfa(otpToken.text)
-                        } else {
-                            screenModel.login(username.text, password.text)
+                    PasswordTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(stringResource(R.string.password)) },
+                        value = password,
+                        onValueChange = { password = it },
+                    )
+
+                    if (state.requiresMfa) {
+                        OutlinedTextField(
+                            modifier = Modifier.fillMaxWidth(),
+                            label = { Text(stringResource(R.string.mfa_hint)) },
+                            value = otpToken,
+                            onValueChange = { otpToken = it },
+                            singleLine = true,
+                        )
+
+                        TextButton(onClick = {
+                            screenModel.getOtpTokenFromClipboardOrNull(context)?.let {
+                                otpToken = otpToken.copy(text = it)
+                            }
+                        },) {
+                            Text(stringResource(R.string.paste_from_clipboard))
                         }
-                    },
-                ) {
-                    Text(stringResource(R.string.login))
+                    }
+
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            if (state.requiresMfa) {
+                                screenModel.loginMfa(otpToken.text)
+                            } else {
+                                screenModel.login(username.text, password.text)
+                            }
+                        },
+                    ) {
+                        Text(stringResource(R.string.login))
+                    }
                 }
             }
         }

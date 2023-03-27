@@ -38,7 +38,8 @@
         <service
             android:name=".service.AppService"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback">
             <intent-filter>
                 <action android:name="android.media.AUDIO_BECOMING_NOISY" />
                 <action android:name="android.intent.action.MEDIA_BUTTON" />

@@ -11,13 +11,13 @@ object TimeUtil {
 
     // Example string: "2018-01-20T10:36:35.680Z"
     @Throws(ParseException::class)
-    fun toCalendar(iso8601string: String): Calendar {
+    fun String.toCalendar(): Calendar {
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
             timeZone = TimeZone.getTimeZone("UTC")
         }
 
         return Calendar.getInstance().apply {
-            time = simpleDateFormat.parse(iso8601string)!!
+            time = simpleDateFormat.parse(this@toCalendar)!!
         }
     }
 }

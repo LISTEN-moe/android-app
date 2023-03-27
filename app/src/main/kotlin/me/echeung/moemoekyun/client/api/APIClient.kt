@@ -94,7 +94,7 @@ class ApiClient @Inject constructor(
         return response.data?.user?.favorites?.favorites
             ?.mapNotNull { it?.song }
             ?.map { it.transform() }
-            ?: emptyList()
+            .orEmpty()
     }
 
     /**
@@ -105,7 +105,7 @@ class ApiClient @Inject constructor(
     suspend fun isFavorite(songIds: List<Int>): List<Int> {
         val response = client.query(CheckFavoriteQuery(songIds)).execute()
 
-        return response.data?.checkFavorite?.filterNotNull() ?: emptyList()
+        return response.data?.checkFavorite?.filterNotNull().orEmpty()
     }
 
     /**
@@ -155,7 +155,7 @@ class ApiClient @Inject constructor(
             .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
             .execute()
 
-        return response.data?.songs?.songs?.map { it.transform() } ?: emptyList()
+        return response.data?.songs?.songs?.map { it.transform() }.orEmpty()
     }
 
     enum class LoginState {

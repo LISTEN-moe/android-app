@@ -5,7 +5,6 @@ import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.util.PreferenceUtil
 import java.util.Locale
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
 
 class SongConverter @Inject constructor(
     private val preferenceUtil: PreferenceUtil,
@@ -23,7 +22,7 @@ class SongConverter @Inject constructor(
             albums = song.albums?.toDomainSong(),
             sources = song.sources?.toDomainSong(),
             duration = song.duration(),
-            durationSeconds = song.duration.milliseconds.inWholeSeconds,
+            durationSeconds = song.duration.toLong(),
             albumArtUrl = song.albumArtUrl(),
             favorited = song.favorite,
         )

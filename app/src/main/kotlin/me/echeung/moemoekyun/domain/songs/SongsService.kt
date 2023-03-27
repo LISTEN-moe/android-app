@@ -20,7 +20,6 @@ class SongsService @Inject constructor(
     private val _songs = MutableStateFlow<Map<Int, DomainSong>>(emptyMap())
     val songs = _songs.asStateFlow().onStart { getSongs() }
 
-    // TODO: do this differently?
     private val _favoriteEvents = MutableStateFlow<DomainSong?>(null)
     val favoriteEvents = _favoriteEvents.asStateFlow()
 

@@ -256,9 +256,6 @@ private fun SongInfo(
             }
         }
 
-        // TODO: show song progress
-        // Text("${radioState.startTime} / ${currentSong?.duration}")
-
         Row(
             modifier = Modifier.padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),

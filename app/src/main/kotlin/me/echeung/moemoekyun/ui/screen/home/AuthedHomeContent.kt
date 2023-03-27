@@ -144,6 +144,7 @@ private fun FavoritesToolbar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         SearchTextInput(
             modifier = Modifier.weight(1f),

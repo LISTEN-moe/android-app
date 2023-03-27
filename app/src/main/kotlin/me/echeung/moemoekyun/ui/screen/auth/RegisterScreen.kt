@@ -26,6 +26,7 @@ import cafe.adriel.voyager.hilt.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
 
@@ -52,57 +53,67 @@ class RegisterScreen : Screen {
         Scaffold(
             topBar = { Toolbar(titleResId = R.string.register, showUpButton = true) },
         ) { contentPadding ->
-            Column(
+            BackgroundBox(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-                    .padding(contentPadding),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
+                    .padding(contentPadding)
+                    .fillMaxSize(),
             ) {
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(stringResource(R.string.username)) },
-                    value = username,
-                    onValueChange = { username = it },
-                    singleLine = true,
-                )
-
-                OutlinedTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(stringResource(R.string.email)) },
-                    value = email,
-                    onValueChange = { email = it },
-                    singleLine = true,
-                )
-
-                PasswordTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(stringResource(R.string.password)) },
-                    value = password1,
-                    onValueChange = { password1 = it },
-                )
-
-                PasswordTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    label = { Text(stringResource(R.string.password_confirm)) },
-                    value = password2,
-                    onValueChange = { password2 = it },
-                )
-
-                if (state.registerState is RegisterScreenModel.RegisterState.Error) {
-                    Text(
-                        text = (state.registerState as RegisterScreenModel.RegisterState.Error).message,
-                        color = MaterialTheme.colorScheme.error,
-                    )
-                }
-
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        screenModel.register(username.text, email.text, password1.text, password2.text)
-                    },
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
-                    Text(stringResource(R.string.register))
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(stringResource(R.string.username)) },
+                        value = username,
+                        onValueChange = { username = it },
+                        singleLine = true,
+                    )
+
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(stringResource(R.string.email)) },
+                        value = email,
+                        onValueChange = { email = it },
+                        singleLine = true,
+                    )
+
+                    PasswordTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(stringResource(R.string.password)) },
+                        value = password1,
+                        onValueChange = { password1 = it },
+                    )
+
+                    PasswordTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(stringResource(R.string.password_confirm)) },
+                        value = password2,
+                        onValueChange = { password2 = it },
+                    )
+
+                    if (state.registerState is RegisterScreenModel.RegisterState.Error) {
+                        Text(
+                            text = (state.registerState as RegisterScreenModel.RegisterState.Error).message,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {
+                            screenModel.register(
+                                username.text,
+                                email.text,
+                                password1.text,
+                                password2.text,
+                            )
+                        },
+                    ) {
+                        Text(stringResource(R.string.register))
+                    }
                 }
             }
         }

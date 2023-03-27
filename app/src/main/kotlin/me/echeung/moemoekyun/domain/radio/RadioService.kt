@@ -27,8 +27,7 @@ import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.system.TimeUtil
-import java.text.ParseException
+import me.echeung.moemoekyun.util.system.TimeUtil.toCalendar
 import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -65,19 +64,16 @@ class RadioService @Inject constructor(
                 .collectLatest { socketResponse ->
                     val info = socketResponse.info
 
-                    var startTime: Calendar? = null
-                    try {
-                        if (info?.startTime != null) {
-                            startTime = TimeUtil.toCalendar(info.startTime)
-                        }
-                    } catch (e: ParseException) {
+                    val startTime = runCatching {
+                        info?.startTime?.toCalendar()
+                    }.onFailure { e ->
                         logcat(LogPriority.ERROR) { "Error parsing time: ${e.asLog()}" }
                     }
 
                     _state.value = _state.value.copy(
                         currentSong = info?.song?.let(songConverter::toDomainSong),
-                        startTime = startTime,
-                        pastSongs = (info?.lastPlayed ?: emptyList()).map(songConverter::toDomainSong),
+                        startTime = startTime.getOrNull(),
+                        pastSongs = info?.lastPlayed.orEmpty().map(songConverter::toDomainSong),
                         listeners = info?.listeners ?: 0,
                         requester = info?.requester?.displayName,
                         event = info?.event,

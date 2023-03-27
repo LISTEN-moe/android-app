@@ -30,12 +30,11 @@ import me.echeung.moemoekyun.domain.radio.interactor.PlayPause
 import me.echeung.moemoekyun.domain.radio.interactor.SetStation
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
-import me.echeung.moemoekyun.domain.user.UserService
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.launchIO
-import java.util.Locale
+import java.util.Calendar
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -58,9 +57,6 @@ class AppService : Service() {
 
     @Inject
     lateinit var getAuthenticatedUser: GetAuthenticatedUser
-
-    @Inject
-    lateinit var userService: UserService
 
     @Inject
     lateinit var musicNotifier: MusicNotifier
@@ -149,6 +145,7 @@ class AppService : Service() {
                     }
 
                     override fun onStop() {
+                        playPause.stop()
                     }
 
                     override fun onSetRating(rating: RatingCompat?) {
@@ -156,8 +153,7 @@ class AppService : Service() {
                     }
 
                     override fun onMediaButtonEvent(mediaButtonEvent: Intent): Boolean {
-                        //                        return handleIntent(mediaButtonEvent)
-                        return false
+                        return handleIntent(mediaButtonEvent)
                     }
 
                     override fun onCustomAction(action: String?, extras: Bundle?) {
@@ -169,9 +165,9 @@ class AppService : Service() {
 
                     override fun onPlayFromSearch(query: String?, extras: Bundle?) {
                         if (!query.isNullOrEmpty()) {
-                            when (query.lowercase(Locale.ROOT)) {
-                                "jpop", "j-pop" -> onPlayFromMediaId(STATION_JPOP, extras)
-                                "kpop", "k-pop" -> onPlayFromMediaId(STATION_KPOP, extras)
+                            when (query) {
+                                Station.JPOP.name -> onPlayFromMediaId(STATION_JPOP, extras)
+                                Station.KPOP.name -> onPlayFromMediaId(STATION_KPOP, extras)
                             }
                             playPause.play()
                         }
@@ -210,10 +206,10 @@ class AppService : Service() {
         }
 
         mediaSession?.setMetadata(metadata.build())
-        updateMediaSessionPlaybackState(currentSong)
+        updateMediaSessionPlaybackState(currentSong, radioState.startTime)
     }
 
-    private fun updateMediaSessionPlaybackState(currentSong: DomainSong) {
+    private fun updateMediaSessionPlaybackState(currentSong: DomainSong, songStartTime: Calendar?) {
         val stateBuilder = PlaybackStateCompat.Builder()
             .setActions(MEDIA_SESSION_ACTIONS)
             .setState(
@@ -221,9 +217,9 @@ class AppService : Service() {
                     Stream.State.PLAY -> PlaybackStateCompat.STATE_PLAYING
                     Stream.State.PAUSE -> PlaybackStateCompat.STATE_PAUSED
                     Stream.State.STOP -> PlaybackStateCompat.STATE_STOPPED
-                    // TODO: PlaybackStateCompat.STATE_BUFFERING
+                    // TODO: else -> PlaybackStateCompat.STATE_BUFFERING
                 },
-                0, // TODO: radioViewModel.currentSongProgress,
+                songStartTime?.let { System.currentTimeMillis() - it.timeInMillis } ?: 0,
                 1f,
             )
 
