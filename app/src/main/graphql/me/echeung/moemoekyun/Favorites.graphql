@@ -11,10 +11,6 @@ query FavoritesQuery($username: String!, $offset: Int!, $count: Int!, $kpop: Boo
     }
 }
 
-query CheckFavoriteQuery($songs: [Int!]!) {
-    checkFavorite(songs: $songs)
-}
-
 mutation FavoriteMutation($id: Int!) {
     favoriteSong(id: $id) {
         id

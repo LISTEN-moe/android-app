@@ -25,16 +25,6 @@ class SongsService @Inject constructor(
 
     private var lastUpdated = 0L
 
-    suspend fun getSongs(): List<DomainSong> {
-        if (lastUpdated == 0L || !isCacheValid() || _songs.value.isEmpty()) {
-            val songs = api.getAllSongs().map(songConverter::toDomainSong)
-            lastUpdated = Date().time
-            _songs.value = songs.associateBy { it.id }.toMutableMap()
-        }
-
-        return _songs.value.values.toList()
-    }
-
     suspend fun getDetailedSong(songId: Int): DomainSong {
         val song = _songs.value[songId]
 
@@ -68,6 +58,16 @@ class SongsService @Inject constructor(
 
     suspend fun request(songId: Int) {
         api.requestSong(songId)
+    }
+
+    private suspend fun getSongs(): List<DomainSong> {
+        if (lastUpdated == 0L || !isCacheValid() || _songs.value.isEmpty()) {
+            val songs = api.getAllSongs().map(songConverter::toDomainSong)
+            lastUpdated = Date().time
+            _songs.value = songs.associateBy { it.id }.toMutableMap()
+        }
+
+        return _songs.value.values.toList()
     }
 
     private fun isCacheValid() = Date().time - lastUpdated < MAX_AGE

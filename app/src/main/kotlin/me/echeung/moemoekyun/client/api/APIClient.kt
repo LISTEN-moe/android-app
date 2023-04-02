@@ -7,7 +7,6 @@ import com.apollographql.apollo3.cache.http.httpExpireTimeout
 import com.apollographql.apollo3.cache.http.httpFetchPolicy
 import logcat.LogPriority
 import logcat.logcat
-import me.echeung.moemoekyun.CheckFavoriteQuery
 import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LoginMfaMutation
@@ -95,17 +94,6 @@ class ApiClient @Inject constructor(
             ?.mapNotNull { it?.song }
             ?.map { it.transform() }
             .orEmpty()
-    }
-
-    /**
-     * Gets the favorited status of a list of songs.
-     *
-     * @param songIds IDs of songs to check status of.
-     */
-    suspend fun isFavorite(songIds: List<Int>): List<Int> {
-        val response = client.query(CheckFavoriteQuery(songIds)).execute()
-
-        return response.data?.checkFavorite?.filterNotNull().orEmpty()
     }
 
     /**
