@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -14,15 +13,26 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Logout
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -37,6 +47,7 @@ import me.echeung.moemoekyun.util.SortType
 @Composable
 fun AuthedHomeContent(
     user: DomainUser,
+    onClickLogOut: () -> Unit,
     favorites: List<DomainSong>?,
     query: String?,
     onQueryChange: (String) -> Unit,
@@ -46,27 +57,32 @@ fun AuthedHomeContent(
     onSortDescending: (Boolean) -> Unit,
     requestRandomSong: () -> Unit,
 ) {
-    Column(
+    LazyColumn(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        UserInfo(user = user)
+        item {
+            UserInfo(
+                user = user,
+                onClickLogOut = onClickLogOut,
+            )
+        }
 
-        FavoritesToolbar(
-            query = query,
-            onQueryChange = onQueryChange,
-            sortType = sortType,
-            onSortBy = onSortBy,
-            sortDescending = sortDescending,
-            onSortDescending = onSortDescending,
-            requestRandomSong = requestRandomSong,
-        )
+        item {
+            FavoritesToolbar(
+                query = query,
+                onQueryChange = onQueryChange,
+                sortType = sortType,
+                onSortBy = onSortBy,
+                sortDescending = sortDescending,
+                onSortDescending = onSortDescending,
+                requestRandomSong = requestRandomSong,
+            )
+        }
 
         if (favorites != null) {
-            LazyColumn {
-                songsItems(
-                    songs = favorites,
-                )
-            }
+            songsItems(
+                songs = favorites,
+            )
         }
     }
 }
@@ -79,7 +95,10 @@ private val UserAvatarModifier = Modifier
 @Composable
 private fun UserInfo(
     user: DomainUser,
+    onClickLogOut: () -> Unit,
 ) {
+    var showLogoutConfirmation by remember { mutableStateOf(false) }
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -126,7 +145,32 @@ private fun UserInfo(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )
+
+            IconButton(onClick = { showLogoutConfirmation = true }) {
+                Icon(
+                    imageVector = Icons.Outlined.Logout,
+                    contentDescription = stringResource(R.string.logout),
+                )
+            }
         }
+    }
+
+    if (showLogoutConfirmation) {
+        val dismissDialog = { showLogoutConfirmation = false }
+        AlertDialog(
+            onDismissRequest = dismissDialog,
+            text = { Text(stringResource(R.string.logout_confirmation)) },
+            confirmButton = {
+                TextButton(onClick = onClickLogOut) {
+                    Text(stringResource(R.string.logout))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = dismissDialog) {
+                    Text(stringResource(android.R.string.cancel))
+                }
+            },
+        )
     }
 }
 

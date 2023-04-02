@@ -1,5 +1,8 @@
 package me.echeung.moemoekyun.ui.screen.home
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,6 +37,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,10 +51,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
+import me.echeung.moemoekyun.ui.common.SegmentedButtons
 
 val PlayerPeekHeight = BottomSheetScaffoldDefaults.SheetPeekHeight
 
@@ -58,6 +64,7 @@ val PlayerPeekHeight = BottomSheetScaffoldDefaults.SheetPeekHeight
 fun PlayerScaffold(
     radioState: RadioState,
     accentColor: Color?,
+    onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
     toggleFavorite: (Int) -> Unit,
@@ -68,7 +75,9 @@ fun PlayerScaffold(
     )
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
-        sheetContent = { PlayerContent(scaffoldState, radioState, accentColor, onClickHistory, togglePlayState, toggleFavorite) },
+        sheetContent = {
+            PlayerContent(scaffoldState, radioState, accentColor, onClickStation, onClickHistory, togglePlayState, toggleFavorite)
+        },
         sheetBackgroundColor = MaterialTheme.colorScheme.background,
     ) { contentPadding ->
         content(contentPadding)
@@ -80,6 +89,7 @@ private fun PlayerContent(
     scaffoldState: BottomSheetScaffoldState,
     radioState: RadioState,
     accentColor: Color?,
+    onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
     toggleFavorite: (Int) -> Unit,
@@ -88,6 +98,7 @@ private fun PlayerContent(
         ExpandedPlayerContent(
             radioState,
             accentColor,
+            onClickStation,
             onClickHistory,
             togglePlayState,
             toggleFavorite,
@@ -178,37 +189,52 @@ private fun CollapsedPlayerContent(
 private fun ExpandedPlayerContent(
     radioState: RadioState,
     accentColor: Color?,
+    onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
     toggleFavorite: (Int) -> Unit,
 ) {
-    Surface(
-        color = accentColor ?: MaterialTheme.colorScheme.surface,
-    ) {
-        Icon(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
-                .alpha(0.5f),
-            imageVector = Icons.Outlined.ExpandMore,
-            contentDescription = null,
-        )
+    val backgroundColor = animateColorAsState(
+        targetValue = accentColor ?: MaterialTheme.colorScheme.surface,
+        animationSpec = tween(500, 0, LinearEasing),
+    )
 
+    Surface(
+        color = backgroundColor.value,
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Icon(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+                    .alpha(0.5f),
+                imageVector = Icons.Outlined.ExpandMore,
+                contentDescription = null,
+            )
+
+            CompositionLocalProvider(
+                LocalContentColor provides contentColorFor(backgroundColor.value),
+            ) {
+                SegmentedButtons(
+                    entries = Station.values().map { stringResource(it.labelRes) },
+                    selectedIndex = Station.values().indexOf(radioState.station),
+                    onClick = { index -> onClickStation(Station.values()[index]) },
+                )
+            }
+
             AlbumArt(
                 modifier = Modifier
                     .fillMaxWidth(0.85f)
-                    .weight(2f),
+                    .weight(1f),
                 albumArtUrl = radioState.currentSong?.albumArtUrl,
             )
 
             SongInfo(
-                modifier = Modifier.weight(1f),
                 radioState,
                 radioState.currentSong,
                 onClickHistory,
@@ -221,7 +247,6 @@ private fun ExpandedPlayerContent(
 
 @Composable
 private fun SongInfo(
-    modifier: Modifier,
     radioState: RadioState,
     currentSong: DomainSong?,
     onClickHistory: () -> Unit,
@@ -229,7 +254,7 @@ private fun SongInfo(
     toggleFavorite: (Int) -> Unit,
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

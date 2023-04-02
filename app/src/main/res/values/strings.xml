@@ -18,12 +18,10 @@
     <string name="action_request">Request</string>
     <string name="action_undo">Undo</string>
     <string name="action_back">Back</string>
-    <string name="action_more">More</string>
 
 
     <!-- == Radio stations == -->
 
-    <string name="action_library">Station</string>
     <string name="jpop">J-pop</string>
     <string name="kpop">K-pop</string>
 
