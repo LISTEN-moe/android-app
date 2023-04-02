@@ -1,11 +1,13 @@
 package me.echeung.moemoekyun.ui.screen.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -70,9 +72,20 @@ fun PlayerScaffold(
     toggleFavorite: (Int) -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(BottomSheetValue.Expanded),
     )
+
+    BackHandler(
+        enabled = scaffoldState.bottomSheetState.isExpanded,
+        onBack = {
+            scope.launch {
+                scaffoldState.bottomSheetState.collapse()
+            }
+        },
+    )
+
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
@@ -202,37 +215,93 @@ private fun ExpandedPlayerContent(
     Surface(
         color = backgroundColor.value,
     ) {
+        CompositionLocalProvider(
+            LocalContentColor provides contentColorFor(backgroundColor.value),
+        ) {
+            BoxWithConstraints {
+                if (maxWidth < maxHeight) {
+                    PortraitExpandedPlayerContent(
+                        radioState = radioState,
+                        onClickStation = onClickStation,
+                        onClickHistory = onClickHistory,
+                        togglePlayState = togglePlayState,
+                        toggleFavorite = toggleFavorite,
+                    )
+                } else {
+                    LandscapeExpandedPlayerContent(
+                        radioState = radioState,
+                        onClickStation = onClickStation,
+                        onClickHistory = onClickHistory,
+                        togglePlayState = togglePlayState,
+                        toggleFavorite = toggleFavorite,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun PortraitExpandedPlayerContent(
+    radioState: RadioState,
+    onClickStation: (Station) -> Unit,
+    onClickHistory: () -> Unit,
+    togglePlayState: () -> Unit,
+    toggleFavorite: (Int) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        CollapseIcon()
+        StationPicker(radioState, onClickStation)
+
+        AlbumArt(
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
+                .weight(1f),
+            albumArtUrl = radioState.currentSong?.albumArtUrl,
+        )
+
+        SongInfo(
+            radioState,
+            radioState.currentSong,
+            onClickHistory,
+            togglePlayState,
+            toggleFavorite,
+        )
+    }
+}
+
+@Composable
+private fun LandscapeExpandedPlayerContent(
+    radioState: RadioState,
+    onClickStation: (Station) -> Unit,
+    onClickHistory: () -> Unit,
+    togglePlayState: () -> Unit,
+    toggleFavorite: (Int) -> Unit,
+) {
+    Row {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(32.dp),
+        ) {
+            AlbumArt(
+                albumArtUrl = radioState.currentSong?.albumArtUrl,
+            )
+        }
+
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Icon(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp)
-                    .alpha(0.5f),
-                imageVector = Icons.Outlined.ExpandMore,
-                contentDescription = null,
-            )
-
-            CompositionLocalProvider(
-                LocalContentColor provides contentColorFor(backgroundColor.value),
-            ) {
-                SegmentedButtons(
-                    entries = Station.values().map { stringResource(it.labelRes) },
-                    selectedIndex = Station.values().indexOf(radioState.station),
-                    onClick = { index -> onClickStation(Station.values()[index]) },
-                )
-            }
-
-            AlbumArt(
-                modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .weight(1f),
-                albumArtUrl = radioState.currentSong?.albumArtUrl,
-            )
+            CollapseIcon()
+            StationPicker(radioState, onClickStation)
 
             SongInfo(
                 radioState,
@@ -243,6 +312,30 @@ private fun ExpandedPlayerContent(
             )
         }
     }
+}
+
+@Composable
+private fun CollapseIcon() {
+    Icon(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp)
+            .alpha(0.5f),
+        imageVector = Icons.Outlined.ExpandMore,
+        contentDescription = null,
+    )
+}
+
+@Composable
+private fun StationPicker(
+    radioState: RadioState,
+    onClickStation: (Station) -> Unit,
+) {
+    SegmentedButtons(
+        entries = Station.values().map { stringResource(it.labelRes) },
+        selectedIndex = Station.values().indexOf(radioState.station),
+        onClick = { index -> onClickStation(Station.values()[index]) },
+    )
 }
 
 @Composable
