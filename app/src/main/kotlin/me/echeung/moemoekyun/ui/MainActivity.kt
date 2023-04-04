@@ -4,6 +4,7 @@ import android.media.AudioManager
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity() {
 
         // Sets audio type to media (volume button control)
         volumeControlStream = AudioManager.STREAM_MUSIC
+
+        // Draw edge-to-edge
+        WindowCompat.setDecorFitsSystemWindows(window, false)
 
         setContent {
             AppTheme {

@@ -1,10 +1,16 @@
 package me.echeung.moemoekyun.ui.screen.songs
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.util.fastForEach
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
@@ -22,7 +28,10 @@ class SongsScreen(
         val state by screenModel.state.collectAsState()
 
         Surface {
-            LazyColumn {
+            LazyColumn(
+                modifier = Modifier
+                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom)),
+            ) {
                 state.songs.fastForEach {
                     item {
                         SongDetails(

@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import logcat.LogPriority
 import logcat.asLog
@@ -21,7 +20,7 @@ import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.client.stream.Stream
-import me.echeung.moemoekyun.domain.songs.SongsService
+import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -39,7 +38,7 @@ class RadioService @Inject constructor(
     private val stream: Stream,
     private val socket: Socket,
     private val songConverter: SongConverter,
-    private val songsService: SongsService,
+    private val getFavoriteSongs: GetFavoriteSongs,
 ) {
 
     private val scope = MainScope()
@@ -58,8 +57,9 @@ class RadioService @Inject constructor(
         scope.launchIO {
             combine(
                 socket.flow,
+                getFavoriteSongs.asFlow(),
                 preferenceUtil.shouldPreferRomaji().asFlow(),
-            ) { socketResponse, _ -> socketResponse }
+            ) { socketResponse, _, _ -> socketResponse }
                 .filterIsInstance<Socket.SocketResponse>()
                 .collectLatest { socketResponse ->
                     val info = socketResponse.info
@@ -71,7 +71,9 @@ class RadioService @Inject constructor(
                     }
 
                     _state.value = _state.value.copy(
-                        currentSong = info?.song?.let(songConverter::toDomainSong),
+                        currentSong = info?.song?.let(songConverter::toDomainSong)?.copy(
+                            favorited = getFavoriteSongs.isFavorite(info.song.id),
+                        ),
                         startTime = startTime.getOrNull(),
                         pastSongs = info?.lastPlayed.orEmpty().map(songConverter::toDomainSong),
                         listeners = info?.listeners ?: 0,
@@ -105,16 +107,6 @@ class RadioService @Inject constructor(
                         stop()
                         play()
                     }
-                }
-        }
-
-        scope.launchIO {
-            songsService.favoriteEvents
-                .filter { it?.id == state.value.currentSong?.id }
-                .collectLatest {
-                    _state.value = _state.value.copy(
-                        currentSong = it,
-                    )
                 }
         }
     }

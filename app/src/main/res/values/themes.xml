@@ -8,7 +8,7 @@
 
         <!-- Nav bar -->
         <item name="android:statusBarColor">@color/colorAccent</item>
-        <item name="android:navigationBarColor">@color/darker_grey</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
 
         <!-- Base background/text colors -->
         <item name="android:windowBackground">@color/darker_grey</item>

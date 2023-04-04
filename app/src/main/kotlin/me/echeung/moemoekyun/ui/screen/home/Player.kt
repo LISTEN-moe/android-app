@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.BottomSheetScaffold
 import androidx.compose.material.BottomSheetScaffoldDefaults
 import androidx.compose.material.BottomSheetScaffoldState
@@ -107,20 +110,27 @@ private fun PlayerContent(
     togglePlayState: () -> Unit,
     toggleFavorite: (Int) -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+
     Box {
         ExpandedPlayerContent(
-            radioState,
-            accentColor,
-            onClickStation,
-            onClickHistory,
-            togglePlayState,
-            toggleFavorite,
+            radioState = radioState,
+            accentColor = accentColor,
+            onClickCollapse = {
+                scope.launch {
+                    scaffoldState.bottomSheetState.collapse()
+                }
+            },
+            onClickStation = onClickStation,
+            onClickHistory = onClickHistory,
+            togglePlayState = togglePlayState,
+            toggleFavorite = toggleFavorite,
         )
 
         CollapsedPlayerContent(
-            scaffoldState,
-            radioState,
-            togglePlayState,
+            scaffoldState = scaffoldState,
+            radioState = radioState,
+            togglePlayState = togglePlayState,
         )
     }
 }
@@ -142,7 +152,11 @@ private fun CollapsedPlayerContent(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { scope.launch { scaffoldState.bottomSheetState.expand() } }
+            .clickable(enabled = scaffoldState.bottomSheetState.isCollapsed) {
+                scope.launch {
+                    scaffoldState.bottomSheetState.expand()
+                }
+            }
             .height(PlayerPeekHeight)
             .alpha(alpha),
     ) {
@@ -181,7 +195,10 @@ private fun CollapsedPlayerContent(
                 }
             }
 
-            IconButton(onClick = togglePlayState) {
+            IconButton(
+                onClick = togglePlayState,
+                enabled = scaffoldState.bottomSheetState.isCollapsed,
+            ) {
                 if (radioState.streamState == Stream.State.PLAY) {
                     Icon(
                         Icons.Outlined.Pause,
@@ -202,6 +219,7 @@ private fun CollapsedPlayerContent(
 private fun ExpandedPlayerContent(
     radioState: RadioState,
     accentColor: Color?,
+    onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
@@ -222,6 +240,7 @@ private fun ExpandedPlayerContent(
                 if (maxWidth < maxHeight) {
                     PortraitExpandedPlayerContent(
                         radioState = radioState,
+                        onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
                         togglePlayState = togglePlayState,
@@ -230,6 +249,7 @@ private fun ExpandedPlayerContent(
                 } else {
                     LandscapeExpandedPlayerContent(
                         radioState = radioState,
+                        onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
                         togglePlayState = togglePlayState,
@@ -244,6 +264,7 @@ private fun ExpandedPlayerContent(
 @Composable
 private fun PortraitExpandedPlayerContent(
     radioState: RadioState,
+    onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
@@ -252,10 +273,11 @@ private fun PortraitExpandedPlayerContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.systemBars)
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        CollapseIcon()
+        CollapseIcon(onClickCollapse)
         StationPicker(radioState, onClickStation)
 
         AlbumArt(
@@ -278,12 +300,16 @@ private fun PortraitExpandedPlayerContent(
 @Composable
 private fun LandscapeExpandedPlayerContent(
     radioState: RadioState,
+    onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
     toggleFavorite: (Int) -> Unit,
 ) {
-    Row {
+    Row(
+        modifier = Modifier
+            .windowInsetsPadding(WindowInsets.systemBars),
+    ) {
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -300,7 +326,7 @@ private fun LandscapeExpandedPlayerContent(
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            CollapseIcon()
+            CollapseIcon(onClickCollapse)
             StationPicker(radioState, onClickStation)
 
             SongInfo(
@@ -315,15 +341,22 @@ private fun LandscapeExpandedPlayerContent(
 }
 
 @Composable
-private fun CollapseIcon() {
-    Icon(
+private fun CollapseIcon(
+    onClickCollapse: () -> Unit,
+) {
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 16.dp)
-            .alpha(0.5f),
-        imageVector = Icons.Outlined.ExpandMore,
-        contentDescription = null,
-    )
+            .clickable(onClick = onClickCollapse)
+            .padding(vertical = 16.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            modifier = Modifier.alpha(0.5f),
+            imageVector = Icons.Outlined.ExpandMore,
+            contentDescription = null,
+        )
+    }
 }
 
 @Composable

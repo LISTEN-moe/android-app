@@ -47,7 +47,7 @@ class StreamPlayer @Inject constructor(
     }
 
     val isPlaying: Boolean
-        get() = player != null && !player!!.isLoading && player!!.isPlaying
+        get() = player?.isPlaying ?: false
 
     init {
         audioFocusChangeListener = AudioManager.OnAudioFocusChangeListener { focusChange ->

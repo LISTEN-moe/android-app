@@ -31,6 +31,10 @@ class GetFavoriteSongs @Inject constructor(
         }
     }
 
+    fun isFavorite(songId: Int): Boolean {
+        return getAll().any { it.id == songId }
+    }
+
     fun setSortType(sortType: SortType) {
         preferenceUtil.favoritesSortType().set(sortType)
     }
