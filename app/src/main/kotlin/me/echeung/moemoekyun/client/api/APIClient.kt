@@ -71,7 +71,10 @@ class ApiClient @Inject constructor(
      * Register a new user.
      */
     suspend fun register(email: String, username: String, password: String) {
-        client.mutation(RegisterMutation(email, username, password)).execute()
+        val result = client.mutation(RegisterMutation(email, username, password)).execute()
+        if (result.hasErrors()) {
+            throw IllegalStateException(result.errors?.joinToString { it.message })
+        }
     }
 
     /**

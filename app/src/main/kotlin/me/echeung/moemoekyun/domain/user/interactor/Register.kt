@@ -9,7 +9,7 @@ class Register @Inject constructor(
 
     suspend fun register(username: String, email: String, password: String): State {
         return try {
-            userService.register(email, username, password) // TODO: get errors
+            userService.register(email, username, password)
             userService.login(username, password)
 
             State.Complete

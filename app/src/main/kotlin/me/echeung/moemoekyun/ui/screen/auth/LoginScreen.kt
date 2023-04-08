@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -17,9 +18,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
@@ -31,9 +36,11 @@ import me.echeung.moemoekyun.client.api.ApiClient
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
+import me.echeung.moemoekyun.ui.util.autofill
 
 class LoginScreen : Screen {
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -67,11 +74,19 @@ class LoginScreen : Screen {
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .autofill(
+                                autofillTypes = listOf(AutofillType.Username),
+                                onFill = { username = TextFieldValue(it) },
+                            ),
                         label = { Text(stringResource(R.string.username_or_email)) },
                         value = username,
                         onValueChange = { username = it },
                         singleLine = true,
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                        ),
                     )
 
                     PasswordTextField(
@@ -88,6 +103,10 @@ class LoginScreen : Screen {
                             value = otpToken,
                             onValueChange = { otpToken = it },
                             singleLine = true,
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done,
+                            ),
                         )
 
                         TextButton(onClick = {
