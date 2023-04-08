@@ -19,7 +19,8 @@ import me.echeung.moemoekyun.util.SortType
 
 @Composable
 fun RowScope.SongsListActions(
-    sortType: SortType,
+    sortTypes: List<SortType> = listOf(SortType.TITLE, SortType.ARTIST),
+    selectedSortType: SortType,
     onSortBy: (SortType) -> Unit,
     sortDescending: Boolean,
     onSortDescending: (Boolean) -> Unit,
@@ -37,26 +38,19 @@ fun RowScope.SongsListActions(
             expanded = showSortMenu,
             onDismissRequest = { showSortMenu = false },
         ) {
-            DropdownMenuItem(
-                onClick = {
-                    onSortBy(SortType.TITLE)
-                    showSortMenu = false
-                },
-                text = { Text(stringResource(R.string.sort_title)) },
-                trailingIcon = {
-                    RadioIcon(checked = sortType == SortType.TITLE)
-                },
-            )
-            DropdownMenuItem(
-                onClick = {
-                    onSortBy(SortType.ARTIST)
-                    showSortMenu = false
-                },
-                text = { Text(stringResource(R.string.sort_artist)) },
-                trailingIcon = {
-                    RadioIcon(checked = sortType == SortType.ARTIST)
-                },
-            )
+            sortTypes.forEach { sortType ->
+                DropdownMenuItem(
+                    onClick = {
+                        onSortBy(sortType)
+                        showSortMenu = false
+                    },
+                    text = { Text(stringResource(sortType.labelRes)) },
+                    trailingIcon = {
+                        RadioIcon(checked = selectedSortType == sortType)
+                    },
+                )
+            }
+
             DropdownMenuItem(
                 onClick = {
                     onSortDescending(!sortDescending)

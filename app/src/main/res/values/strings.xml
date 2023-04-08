@@ -48,6 +48,7 @@
     <string name="sort">Sort</string>
     <string name="sort_title">Title</string>
     <string name="sort_artist">Artist</string>
+    <string name="sort_favorited_at">Favorited</string>
     <string name="sort_desc">Descending</string>
 
 

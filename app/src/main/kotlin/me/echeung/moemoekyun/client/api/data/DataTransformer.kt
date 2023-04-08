@@ -17,11 +17,12 @@ fun UserQuery.User.transform() = User(
     this.bannerImage,
 )
 
-fun FavoritesQuery.Song.transform(): Song {
-    val song = songListFields.transform()
+fun FavoritesQuery.Favorite.transform(): Song? {
+    val song = this.song?.songListFields?.transform()
 
     // Manually mark a user's favorite as favorited
-    song.favorite = true
+    song?.favorite = true
+    song?.favoritedAt = this.createdAt?.toLong() // e.g. "1516637758993"
 
     return song
 }

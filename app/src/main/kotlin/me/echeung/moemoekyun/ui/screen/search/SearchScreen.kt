@@ -35,7 +35,7 @@ class SearchScreen : Screen {
                     showUpButton = true,
                     actions = {
                         SongsListActions(
-                            sortType = state.sortType,
+                            selectedSortType = state.sortType,
                             onSortBy = screenModel::sortBy,
                             sortDescending = state.sortDescending,
                             onSortDescending = screenModel::sortDescending,

@@ -13,4 +13,5 @@ data class Song(
     var duration: Int = 0,
     var enabled: Boolean = false,
     var favorite: Boolean = false,
+    var favoritedAt: Long? = null,
 )

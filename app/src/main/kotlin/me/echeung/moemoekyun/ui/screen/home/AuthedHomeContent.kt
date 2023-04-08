@@ -212,7 +212,8 @@ private fun FavoritesToolbar(
         )
 
         SongsListActions(
-            sortType = sortType,
+            sortTypes = listOf(SortType.TITLE, SortType.ARTIST, SortType.FAVORITED_AT),
+            selectedSortType = sortType,
             onSortBy = onSortBy,
             sortDescending = sortDescending,
             onSortDescending = onSortDescending,

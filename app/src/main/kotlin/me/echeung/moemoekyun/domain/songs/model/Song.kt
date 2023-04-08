@@ -10,6 +10,7 @@ data class DomainSong(
     val durationSeconds: Long,
     val albumArtUrl: String?,
     val favorited: Boolean,
+    val favoritedAtEpoch: Long?,
 ) {
     fun search(query: String?): Boolean {
         if (query.isNullOrBlank()) {

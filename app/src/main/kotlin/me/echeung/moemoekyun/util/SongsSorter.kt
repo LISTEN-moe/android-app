@@ -1,5 +1,7 @@
 package me.echeung.moemoekyun.util
 
+import androidx.annotation.StringRes
+import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import javax.inject.Inject
 
@@ -26,11 +28,19 @@ class SongsSorter @Inject constructor() {
                 } else {
                     compareBy(String.CASE_INSENSITIVE_ORDER) { it.artists.orEmpty() }
                 }
+
+            SortType.FAVORITED_AT ->
+                if (descending) {
+                    compareByDescending { it.favoritedAtEpoch }
+                } else {
+                    compareBy { it.favoritedAtEpoch }
+                }
         }
     }
 }
 
-enum class SortType {
-    TITLE,
-    ARTIST,
+enum class SortType(@StringRes val labelRes: Int) {
+    TITLE(R.string.sort_title),
+    ARTIST(R.string.sort_artist),
+    FAVORITED_AT(R.string.sort_favorited_at),
 }

@@ -91,8 +91,7 @@ class ApiClient @Inject constructor(
         val response = client.query(FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP))).execute()
 
         return response.data?.user?.favorites?.favorites
-            ?.mapNotNull { it?.song }
-            ?.map { it.transform() }
+            ?.mapNotNull { it?.transform() }
             .orEmpty()
     }
 

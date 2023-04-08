@@ -45,7 +45,12 @@ class SongsService @Inject constructor(
         api.toggleFavorite(songId)
 
         val song = getDetailedSong(songId)
-        val updatedSong = song.copy(favorited = !song.favorited)
+
+        val newState = !song.favorited
+        val updatedSong = song.copy(
+            favorited = newState,
+            favoritedAtEpoch = if (newState) System.currentTimeMillis() else null,
+        )
 
         val updatedMap = _songs.value.toMutableMap()
         updatedMap[songId] = updatedSong

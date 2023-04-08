@@ -25,6 +25,7 @@ class SongConverter @Inject constructor(
             durationSeconds = song.duration.toLong(),
             albumArtUrl = song.albumArtUrl(),
             favorited = song.favorite,
+            favoritedAtEpoch = song.favoritedAt,
         )
     }
 
