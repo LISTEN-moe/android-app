@@ -39,10 +39,14 @@ class RegisterScreen : Screen {
         val screenModel = getScreenModel<RegisterScreenModel>()
         val state by screenModel.state.collectAsState()
 
-        LaunchedEffect(state.registerState) {
-            if (state.registerState == RegisterScreenModel.RegisterState.Complete) {
+        LaunchedEffect(state.result) {
+            if (state.result is RegisterScreenModel.Result.Complete) {
                 navigator.pop()
             }
+        }
+
+        if (state.result is RegisterScreenModel.Result.Complete) {
+            return
         }
 
         var username by remember { mutableStateOf(TextFieldValue("")) }
@@ -70,6 +74,7 @@ class RegisterScreen : Screen {
                         value = username,
                         onValueChange = { username = it },
                         singleLine = true,
+                        enabled = !state.loading,
                     )
 
                     OutlinedTextField(
@@ -78,6 +83,7 @@ class RegisterScreen : Screen {
                         value = email,
                         onValueChange = { email = it },
                         singleLine = true,
+                        enabled = !state.loading,
                     )
 
                     PasswordTextField(
@@ -85,6 +91,7 @@ class RegisterScreen : Screen {
                         label = { Text(stringResource(R.string.password)) },
                         value = password1,
                         onValueChange = { password1 = it },
+                        enabled = !state.loading,
                     )
 
                     PasswordTextField(
@@ -92,17 +99,24 @@ class RegisterScreen : Screen {
                         label = { Text(stringResource(R.string.password_confirm)) },
                         value = password2,
                         onValueChange = { password2 = it },
+                        enabled = !state.loading,
                     )
 
-                    if (state.registerState is RegisterScreenModel.RegisterState.Error) {
+                    when (state.result) {
+                        is RegisterScreenModel.Result.AllFieldsRequired -> stringResource(R.string.required)
+                        is RegisterScreenModel.Result.MismatchedPasswords -> stringResource(R.string.password_mismatch)
+                        is RegisterScreenModel.Result.ApiError -> (state.result as RegisterScreenModel.Result.ApiError).message
+                        else -> null
+                    }?.let {
                         Text(
-                            text = (state.registerState as RegisterScreenModel.RegisterState.Error).message,
+                            text = it,
                             color = MaterialTheme.colorScheme.error,
                         )
                     }
 
                     Button(
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !state.loading,
                         onClick = {
                             screenModel.register(
                                 username.text,

@@ -5,18 +5,18 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.client.api.ApiClient
-import me.echeung.moemoekyun.domain.user.UserService
+import me.echeung.moemoekyun.domain.user.interactor.LoginLogout
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
 class LoginScreenModel @Inject constructor(
-    private val userService: UserService,
+    private val loginLogout: LoginLogout,
 ) : StateScreenModel<LoginScreenModel.State>(State()) {
 
     fun login(username: String, password: String) {
         coroutineScope.launchIO {
-            val state = userService.login(username, password)
+            val state = loginLogout.login(username, password)
 
             mutableState.update {
                 it.copy(
@@ -30,7 +30,7 @@ class LoginScreenModel @Inject constructor(
         val token = otpToken.trim { it <= ' ' }
         if (token.length == OTP_LENGTH) {
             coroutineScope.launchIO {
-                val state = userService.loginMfa(token)
+                val state = loginLogout.loginMfa(token)
 
                 mutableState.update {
                     it.copy(

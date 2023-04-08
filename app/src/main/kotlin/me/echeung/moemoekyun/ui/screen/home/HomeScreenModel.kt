@@ -16,7 +16,7 @@ import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
 import me.echeung.moemoekyun.domain.songs.interactor.RequestSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
-import me.echeung.moemoekyun.domain.user.interactor.Logout
+import me.echeung.moemoekyun.domain.user.interactor.LoginLogout
 import me.echeung.moemoekyun.domain.user.model.DomainUser
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -32,7 +32,7 @@ class HomeScreenModel @Inject constructor(
     private val requestSong: RequestSong,
     private val getAuthenticatedUser: GetAuthenticatedUser,
     private val getFavoriteSongs: GetFavoriteSongs,
-    private val logout: Logout,
+    private val loginLogout: LoginLogout,
     private val albumArtUtil: AlbumArtUtil,
     private val preferenceUtil: PreferenceUtil,
 ) : StateScreenModel<HomeScreenModel.State>(State()) {
@@ -105,7 +105,7 @@ class HomeScreenModel @Inject constructor(
     }
 
     fun logout() {
-        logout.logout()
+        loginLogout.logout()
     }
 
     fun search(query: String) {

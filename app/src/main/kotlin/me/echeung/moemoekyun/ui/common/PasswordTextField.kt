@@ -27,6 +27,7 @@ fun PasswordTextField(
     modifier: Modifier = Modifier,
     label: @Composable (() -> Unit)? = null,
     isError: Boolean = false,
+    enabled: Boolean = true,
 ) {
     var hidePassword by remember { mutableStateOf(true) }
 
@@ -58,5 +59,6 @@ fun PasswordTextField(
         ),
         isError = isError,
         singleLine = true,
+        enabled = enabled,
     )
 }
