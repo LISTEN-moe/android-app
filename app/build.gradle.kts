@@ -7,7 +7,7 @@ plugins {
     kotlin("kapt")
     kotlin("plugin.serialization")
     id("dagger.hilt.android.plugin")
-    id("com.apollographql.apollo3") version "3.7.3"
+    id("com.apollographql.apollo3") version "3.8.0"
 }
 
 val appPackageName = "me.echeung.moemoekyun"
@@ -18,7 +18,7 @@ android {
 
     defaultConfig {
         applicationId = appPackageName
-        minSdk = 23
+        minSdk = 26
         targetSdk = 33
         versionCode = 200
         versionName = "6.0.0-beta.1"
@@ -106,7 +106,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     kapt("com.google.dagger:hilt-compiler:$hiltVersion")
 
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation(platform("androidx.compose:compose-bom:2023.04.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.material:material-icons-extended")
     implementation("androidx.compose.material:material")
@@ -135,7 +135,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 
-    val apolloVersion = "3.7.3"
+    val apolloVersion = "3.8.0"
     implementation("com.apollographql.apollo3:apollo-runtime:$apolloVersion")
     implementation("com.apollographql.apollo3:apollo-http-cache:$apolloVersion")
 
@@ -147,7 +147,7 @@ dependencies {
     val exoplayerVersion = "2.18.1"
     implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")
 
-    implementation("com.mikepenz:aboutlibraries-compose:10.6.1")
+    implementation("com.mikepenz:aboutlibraries-compose:10.6.2")
 
     implementation("com.squareup.logcat:logcat:0.1")
 
