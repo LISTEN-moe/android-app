@@ -26,6 +26,7 @@ import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
+import me.echeung.moemoekyun.util.ext.withUIContext
 import me.echeung.moemoekyun.util.system.TimeUtil.toCalendar
 import java.util.Calendar
 import javax.inject.Inject
@@ -103,9 +104,11 @@ class RadioService @Inject constructor(
                     socket.reconnect()
 
                     // Force it to play with new stream
-                    if (stream.isPlaying) {
-                        stop()
-                        play()
+                    withUIContext {
+                        if (stream.isPlaying) {
+                            stop()
+                            play()
+                        }
                     }
                 }
         }
