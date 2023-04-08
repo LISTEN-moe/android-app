@@ -52,7 +52,7 @@ class HomeScreen : Screen {
                 }
             },
             togglePlayState = { screenModel.togglePlayState() },
-            toggleFavorite = { screenModel.toggleFavorite(it) },
+            toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
         ) {
             Scaffold(
                 topBar = { Toolbar(isAuthenticated = isAuthenticated) },

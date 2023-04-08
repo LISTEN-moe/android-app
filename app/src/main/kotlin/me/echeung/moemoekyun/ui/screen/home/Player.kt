@@ -77,7 +77,7 @@ fun PlayerScaffold(
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
-    toggleFavorite: (Int) -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
     content: @Composable BoxScope.(PaddingValues) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -137,7 +137,7 @@ private fun PlayerContent(
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
-    toggleFavorite: (Int) -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
     onClickCollapse: () -> Unit,
 ) {
     ExpandedPlayerContent(
@@ -228,7 +228,7 @@ private fun ExpandedPlayerContent(
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
-    toggleFavorite: (Int) -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
 ) {
     val backgroundColor = animateColorAsState(
         targetValue = accentColor ?: MaterialTheme.colorScheme.surface,
@@ -273,7 +273,7 @@ private fun PortraitExpandedPlayerContent(
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
-    toggleFavorite: (Int) -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
 ) {
     Column(
         modifier = Modifier
@@ -309,7 +309,7 @@ private fun LandscapeExpandedPlayerContent(
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
-    toggleFavorite: (Int) -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
 ) {
     Row(
         modifier = Modifier
@@ -382,7 +382,7 @@ private fun SongInfo(
     currentSong: DomainSong?,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
-    toggleFavorite: (Int) -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
 ) {
     Column(
         modifier = Modifier
@@ -433,8 +433,8 @@ private fun SongInfo(
                 }
             }
             IconButton(
-                onClick = { currentSong?.let { toggleFavorite(it.id) } },
-                enabled = currentSong != null,
+                onClick = { currentSong?.let { toggleFavorite?.invoke(it.id) } },
+                enabled = currentSong != null && toggleFavorite != null,
             ) {
                 if (currentSong?.favorited == true) {
                     Icon(
