@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.ui.screen.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -97,32 +99,40 @@ private val UserAvatarModifier = Modifier
     .clip(RoundedCornerShape(8.dp))
     .fillMaxHeight()
 
+private val BannerScrim = Color.Black.copy(alpha = 0.65f)
+
 @Composable
 private fun UserInfo(
     user: DomainUser,
     onClickLogOut: () -> Unit,
 ) {
+    val uriHandler = LocalUriHandler.current
     var showLogoutConfirmation by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable {
+                uriHandler.openUri("https://listen.moe/u/${user.username}")
+            },
     ) {
-        AsyncImage(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(96.dp),
-            model = user.bannerUrl,
-            contentScale = ContentScale.Crop,
-            contentDescription = null,
-        )
+        if (user.bannerUrl != null) {
+            AsyncImage(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(96.dp),
+                model = user.bannerUrl,
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+            )
+        }
 
         Row(
             modifier = Modifier
                 .height(96.dp)
-                .background(Color.Black.copy(alpha = 0.65f))
+                .background(BannerScrim)
                 .padding(8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp),
