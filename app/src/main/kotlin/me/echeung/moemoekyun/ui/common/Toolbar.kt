@@ -58,7 +58,7 @@ fun Toolbar(
     val navigator = LocalNavigator.currentOrThrow
 
     TopAppBar(
-        title = { title() },
+        title = title,
         navigationIcon = {
             if (showUpButton) {
                 IconButton(onClick = { navigator.pop() }) {

@@ -51,7 +51,7 @@ class HomeScreen : Screen {
                     )
                 }
             },
-            togglePlayState = { screenModel.togglePlayState() },
+            togglePlayState = screenModel::togglePlayState,
             toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
         ) {
             Scaffold(

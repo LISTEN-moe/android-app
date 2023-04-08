@@ -32,41 +32,42 @@ fun RowScope.SongsListActions(
             imageVector = Icons.Outlined.Sort,
             contentDescription = stringResource(R.string.sort),
         )
-    }
-    DropdownMenu(
-        expanded = showSortMenu,
-        onDismissRequest = { showSortMenu = false },
-    ) {
-        DropdownMenuItem(
-            onClick = {
-                onSortBy(SortType.TITLE)
-                showSortMenu = false
-            },
-            text = { Text(stringResource(R.string.sort_title)) },
-            trailingIcon = {
-                RadioIcon(checked = sortType == SortType.TITLE)
-            },
-        )
-        DropdownMenuItem(
-            onClick = {
-                onSortBy(SortType.ARTIST)
-                showSortMenu = false
-            },
-            text = { Text(stringResource(R.string.sort_artist)) },
-            trailingIcon = {
-                RadioIcon(checked = sortType == SortType.ARTIST)
-            },
-        )
-        DropdownMenuItem(
-            onClick = {
-                onSortDescending(!sortDescending)
-                showSortMenu = false
-            },
-            text = { Text(stringResource(R.string.sort_desc)) },
-            trailingIcon = {
-                CheckboxIcon(checked = sortDescending)
-            },
-        )
+
+        DropdownMenu(
+            expanded = showSortMenu,
+            onDismissRequest = { showSortMenu = false },
+        ) {
+            DropdownMenuItem(
+                onClick = {
+                    onSortBy(SortType.TITLE)
+                    showSortMenu = false
+                },
+                text = { Text(stringResource(R.string.sort_title)) },
+                trailingIcon = {
+                    RadioIcon(checked = sortType == SortType.TITLE)
+                },
+            )
+            DropdownMenuItem(
+                onClick = {
+                    onSortBy(SortType.ARTIST)
+                    showSortMenu = false
+                },
+                text = { Text(stringResource(R.string.sort_artist)) },
+                trailingIcon = {
+                    RadioIcon(checked = sortType == SortType.ARTIST)
+                },
+            )
+            DropdownMenuItem(
+                onClick = {
+                    onSortDescending(!sortDescending)
+                    showSortMenu = false
+                },
+                text = { Text(stringResource(R.string.sort_desc)) },
+                trailingIcon = {
+                    CheckboxIcon(checked = sortDescending)
+                },
+            )
+        }
     }
 
     IconButton(onClick = requestRandomSong) {
