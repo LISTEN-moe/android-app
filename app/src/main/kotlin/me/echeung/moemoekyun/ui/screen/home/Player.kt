@@ -7,20 +7,24 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetScaffoldDefaults
-import androidx.compose.material.BottomSheetScaffoldState
 import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExpandMore
@@ -49,6 +53,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -63,7 +68,7 @@ import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
 import me.echeung.moemoekyun.ui.common.SegmentedButtons
 
-val PlayerPeekHeight = BottomSheetScaffoldDefaults.SheetPeekHeight
+val PlayerPeekHeight = 72.dp
 
 @Composable
 fun PlayerScaffold(
@@ -73,7 +78,7 @@ fun PlayerScaffold(
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
     toggleFavorite: (Int) -> Unit,
-    content: @Composable (PaddingValues) -> Unit,
+    content: @Composable BoxScope.(PaddingValues) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState(
@@ -92,76 +97,77 @@ fun PlayerScaffold(
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
-            PlayerContent(scaffoldState, radioState, accentColor, onClickStation, onClickHistory, togglePlayState, toggleFavorite)
+            PlayerContent(
+                radioState = radioState,
+                accentColor = accentColor,
+                onClickStation = onClickStation,
+                onClickHistory = onClickHistory,
+                togglePlayState = togglePlayState,
+                toggleFavorite = toggleFavorite,
+                onClickCollapse = {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.collapse()
+                    }
+                },
+            )
         },
         sheetBackgroundColor = MaterialTheme.colorScheme.background,
+        sheetPeekHeight = 0.dp,
     ) { contentPadding ->
-        content(contentPadding)
+        Box {
+            content(contentPadding)
+
+            CollapsedPlayerContent(
+                radioState = radioState,
+                togglePlayState = togglePlayState,
+                onClick = {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.expand()
+                    }
+                },
+            )
+        }
     }
 }
 
 @Composable
 private fun PlayerContent(
-    scaffoldState: BottomSheetScaffoldState,
     radioState: RadioState,
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
     toggleFavorite: (Int) -> Unit,
+    onClickCollapse: () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
-
-    Box {
-        ExpandedPlayerContent(
-            radioState = radioState,
-            accentColor = accentColor,
-            onClickCollapse = {
-                scope.launch {
-                    scaffoldState.bottomSheetState.collapse()
-                }
-            },
-            onClickStation = onClickStation,
-            onClickHistory = onClickHistory,
-            togglePlayState = togglePlayState,
-            toggleFavorite = toggleFavorite,
-        )
-
-        CollapsedPlayerContent(
-            scaffoldState = scaffoldState,
-            radioState = radioState,
-            togglePlayState = togglePlayState,
-        )
-    }
+    ExpandedPlayerContent(
+        radioState = radioState,
+        accentColor = accentColor,
+        onClickCollapse = onClickCollapse,
+        onClickStation = onClickStation,
+        onClickHistory = onClickHistory,
+        togglePlayState = togglePlayState,
+        toggleFavorite = toggleFavorite,
+    )
 }
 
 @Composable
-private fun CollapsedPlayerContent(
-    scaffoldState: BottomSheetScaffoldState,
+private fun BoxScope.CollapsedPlayerContent(
     radioState: RadioState,
     togglePlayState: () -> Unit,
+    onClick: () -> Unit,
 ) {
-    val scope = rememberCoroutineScope()
-
-    val alpha = when {
-        scaffoldState.bottomSheetState.isExpanded -> 0f
-        scaffoldState.bottomSheetState.isCollapsed -> 1f
-        else -> scaffoldState.bottomSheetState.progress
-    }
-
     Surface(
         modifier = Modifier
-            .fillMaxWidth()
-            .clickable(enabled = scaffoldState.bottomSheetState.isCollapsed) {
-                scope.launch {
-                    scaffoldState.bottomSheetState.expand()
-                }
-            }
+            .align(Alignment.BottomCenter)
+            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
             .height(PlayerPeekHeight)
-            .alpha(alpha),
+            .padding(8.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .fillMaxWidth(),
     ) {
         Row(
-            modifier = Modifier.padding(end = 8.dp),
+            modifier = Modifier.clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AlbumArt(
@@ -195,10 +201,7 @@ private fun CollapsedPlayerContent(
                 }
             }
 
-            IconButton(
-                onClick = togglePlayState,
-                enabled = scaffoldState.bottomSheetState.isCollapsed,
-            ) {
+            IconButton(onClick = togglePlayState) {
                 if (radioState.streamState == Stream.State.PLAY) {
                     Icon(
                         Icons.Outlined.Pause,
@@ -211,6 +214,8 @@ private fun CollapsedPlayerContent(
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }

@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.ui.screen.home
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -38,6 +37,7 @@ class HomeScreen : Screen {
         val state by screenModel.state.collectAsState()
 
         val radioState by screenModel.radioState.collectAsState()
+        val isAuthenticated = state.user != null
 
         PlayerScaffold(
             radioState = radioState,
@@ -55,30 +55,28 @@ class HomeScreen : Screen {
             toggleFavorite = { screenModel.toggleFavorite(it) },
         ) {
             Scaffold(
-                topBar = { Toolbar() },
+                topBar = { Toolbar(isAuthenticated = isAuthenticated) },
             ) { contentPadding ->
                 BackgroundBox(
                     modifier = Modifier
                         .padding(contentPadding)
                         .fillMaxSize(),
                 ) {
-                    Box(modifier = Modifier.padding(bottom = PlayerPeekHeight)) {
-                        if (state.user == null) {
-                            UnauthedHomeContent()
-                        } else {
-                            AuthedHomeContent(
-                                user = state.user!!,
-                                onClickLogOut = screenModel::logout,
-                                favorites = state.filteredFavorites,
-                                query = state.searchQuery,
-                                onQueryChange = screenModel::search,
-                                sortType = state.sortType,
-                                onSortBy = screenModel::sortBy,
-                                sortDescending = state.sortDescending,
-                                onSortDescending = screenModel::sortDescending,
-                                requestRandomSong = screenModel::requestRandomSong,
-                            )
-                        }
+                    if (isAuthenticated) {
+                        AuthedHomeContent(
+                            user = state.user!!,
+                            onClickLogOut = screenModel::logout,
+                            favorites = state.filteredFavorites,
+                            query = state.searchQuery,
+                            onQueryChange = screenModel::search,
+                            sortType = state.sortType,
+                            onSortBy = screenModel::sortBy,
+                            sortDescending = state.sortDescending,
+                            onSortDescending = screenModel::sortDescending,
+                            requestRandomSong = screenModel::requestRandomSong,
+                        )
+                    } else {
+                        UnauthedHomeContent()
                     }
                 }
             }
@@ -86,17 +84,21 @@ class HomeScreen : Screen {
     }
 
     @Composable
-    private fun Toolbar() {
+    private fun Toolbar(
+        isAuthenticated: Boolean,
+    ) {
         val navigator = LocalNavigator.currentOrThrow
 
         TopAppBar(
             title = {},
             navigationIcon = {
-                IconButton(onClick = { navigator.push(SearchScreen()) }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = stringResource(R.string.search),
-                    )
+                if (isAuthenticated) {
+                    IconButton(onClick = { navigator.push(SearchScreen()) }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = stringResource(R.string.search),
+                        )
+                    }
                 }
             },
             actions = {
