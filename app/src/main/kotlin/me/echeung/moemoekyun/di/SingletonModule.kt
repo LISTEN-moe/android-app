@@ -12,9 +12,11 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
+import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -34,29 +36,39 @@ object SingletonModule {
     @Singleton
     fun okhttpClient(
         authUtil: AuthUtil,
-    ) = OkHttpClient.Builder()
-        .addNetworkInterceptor { chain ->
-            val request = chain.request()
+    ): OkHttpClient {
+        val builder = OkHttpClient.Builder()
+            .addNetworkInterceptor { chain ->
+                val request = chain.request()
 
-            val newRequest = request.newBuilder()
-                .header("User-Agent", NetworkUtil.userAgent)
-                .header("Content-Type", "application/json")
+                val newRequest = request.newBuilder()
+                    .header("User-Agent", NetworkUtil.userAgent)
+                    .header("Content-Type", "application/json")
 
-            // MFA login
-            if (authUtil.mfaToken != null) {
-                newRequest.header(HEADER_AUTHZ, authUtil.mfaAuthTokenWithPrefix)
+                // MFA login
+                if (authUtil.mfaToken != null) {
+                    newRequest.header(HEADER_AUTHZ, authUtil.mfaAuthTokenWithPrefix)
+                }
+
+                // Authorized calls
+                if (authUtil.isAuthenticated) {
+                    newRequest.header(HEADER_AUTHZ, authUtil.authTokenWithPrefix)
+                }
+
+                chain.proceed(newRequest.build())
             }
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
 
-            // Authorized calls
-            if (authUtil.isAuthenticated) {
-                newRequest.header(HEADER_AUTHZ, authUtil.authTokenWithPrefix)
+        if (BuildConfig.DEBUG) {
+            val httpLoggingInterceptor = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.HEADERS
             }
-
-            chain.proceed(newRequest.build())
+            builder.addNetworkInterceptor(httpLoggingInterceptor)
         }
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
-        .build()
+
+        return builder.build()
+    }
 
     @Provides
     @Singleton

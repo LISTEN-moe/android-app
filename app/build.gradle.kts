@@ -1,13 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("com.android.application")
+    alias(libs.plugins.android.application)
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("kapt")
     kotlin("plugin.serialization")
     id("dagger.hilt.android.plugin")
-    id("com.apollographql.apollo3") version "3.8.0"
+    alias(libs.plugins.apollo)
+    alias(libs.plugins.kotlinter)
 }
 
 val appPackageName = "me.echeung.moemoekyun"
@@ -95,72 +96,57 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.4"
+        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.version.get()
     }
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.3")
+    coreLibraryDesugaring(libs.desugar)
+    implementation(libs.bundles.coroutines)
+    implementation(libs.serialization)
 
-    val hiltVersion = "2.45"
-    implementation("com.google.dagger:hilt-android:$hiltVersion")
-    kapt("com.google.dagger:hilt-compiler:$hiltVersion")
+    implementation(libs.bundles.coil)
+    implementation(libs.bundles.okhttp)
+    implementation(libs.bundles.apollo)
+    implementation(libs.logcat)
 
-    implementation(platform("androidx.compose:compose-bom:2023.04.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.material:material-icons-extended")
-    implementation("androidx.compose.material:material")
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.ui:ui-util")
-    implementation("androidx.activity:activity-compose:1.7.0")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
-    val voyagerVersion = "1.0.0-rc03"
-    implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
-    implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
-    implementation("cafe.adriel.voyager:voyager-hilt:$voyagerVersion")
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
+    implementation(libs.aboutLibraries.compose)
 
-    val coroutinesVersion = "1.6.4"
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion")
+    implementation(libs.bundles.voyager)
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("androidx.lifecycle:lifecycle-process:2.6.1")
-    implementation("androidx.media:media:1.6.0")
-    implementation("androidx.palette:palette-ktx:1.0.0")
-    implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation(libs.exoplayer)
 
-    implementation("com.github.tfcporciuncula:flow-preferences:1.3.4")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.media)
+    implementation(libs.androidx.palette)
 
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-
-    val apolloVersion = "3.8.0"
-    implementation("com.apollographql.apollo3:apollo-runtime:$apolloVersion")
-    implementation("com.apollographql.apollo3:apollo-http-cache:$apolloVersion")
-
-    val coilVersion = "2.3.0"
-    implementation("io.coil-kt:coil:$coilVersion")
-    implementation("io.coil-kt:coil-gif:$coilVersion")
-    implementation("io.coil-kt:coil-compose:$coilVersion")
-
-    val exoplayerVersion = "2.18.1"
-    implementation("com.google.android.exoplayer:exoplayer-core:$exoplayerVersion")
-
-    implementation("com.mikepenz:aboutlibraries-compose:10.6.2")
-
-    implementation("com.squareup.logcat:logcat:0.1")
+    implementation(libs.bundles.preferences)
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
     // "debugImplementation"("com.squareup.leakcanary:leakcanary-android:2.2")
 }
 
 apollo {
-    packageName.set(appPackageName)
+    service("service") {
+        packageName.set(appPackageName)
+    }
 }
 
 kapt {
     correctErrorTypes = true
+}
+
+kotlinter {
+    experimentalRules = true
+
+    // Doesn't play well with Android Studio
+    disabledRules = arrayOf("experimental:argument-list-wrapping")
 }
 
 tasks {
