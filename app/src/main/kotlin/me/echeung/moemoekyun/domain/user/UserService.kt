@@ -64,30 +64,30 @@ class UserService @Inject constructor(
     val isAuthenticated: Boolean
         get() = authUtil.isAuthenticated
 
-    suspend fun login(username: String, password: String): ApiClient.LoginState {
-        val (state, token) = api.authenticate(username, password)
+    suspend fun login(username: String, password: String): ApiClient.LoginResult {
+        val (state, value) = api.authenticate(username, password)
         when (state) {
-            ApiClient.LoginState.REQUIRE_OTP -> {
-                authUtil.mfaToken = token
+            ApiClient.LoginResult.REQUIRE_OTP -> {
+                authUtil.mfaToken = value
             }
-            ApiClient.LoginState.COMPLETE -> {
-                authUtil.authToken = token
+            ApiClient.LoginResult.COMPLETE -> {
+                authUtil.authToken = value
                 getUser()
             }
-            else -> {}
+            else -> throw IllegalStateException(value)
         }
         return state
     }
 
-    suspend fun loginMfa(otpToken: String): ApiClient.LoginState {
-        val (state, token) = api.authenticateMfa(otpToken)
+    suspend fun loginMfa(otpToken: String): ApiClient.LoginResult {
+        val (state, value) = api.authenticateMfa(otpToken)
         when (state) {
-            ApiClient.LoginState.COMPLETE -> {
-                authUtil.authToken = token
+            ApiClient.LoginResult.COMPLETE -> {
+                authUtil.authToken = value
                 authUtil.clearMfaAuthToken()
                 getUser()
             }
-            else -> {}
+            else -> throw IllegalStateException(value)
         }
         return state
     }

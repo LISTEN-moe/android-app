@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -32,7 +33,6 @@ import cafe.adriel.voyager.hilt.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.api.ApiClient
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
@@ -53,8 +53,8 @@ class LoginScreen : Screen {
         var password by remember { mutableStateOf(TextFieldValue("")) }
         var otpToken by remember { mutableStateOf(TextFieldValue("")) }
 
-        LaunchedEffect(state.loginState) {
-            if (state.loginState == ApiClient.LoginState.COMPLETE) {
+        LaunchedEffect(state.result) {
+            if (state.result is LoginScreenModel.Result.Complete) {
                 navigator.pop()
             }
         }
@@ -84,6 +84,7 @@ class LoginScreen : Screen {
                         value = username,
                         onValueChange = { username = it },
                         singleLine = true,
+                        enabled = !state.loading,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
                         ),
@@ -94,6 +95,7 @@ class LoginScreen : Screen {
                         label = { Text(stringResource(R.string.password)) },
                         value = password,
                         onValueChange = { password = it },
+                        enabled = !state.loading,
                     )
 
                     if (state.requiresMfa) {
@@ -103,23 +105,39 @@ class LoginScreen : Screen {
                             value = otpToken,
                             onValueChange = { otpToken = it },
                             singleLine = true,
+                            enabled = !state.loading,
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Number,
                                 imeAction = ImeAction.Done,
                             ),
                         )
 
-                        TextButton(onClick = {
-                            screenModel.getOtpTokenFromClipboardOrNull(context)?.let {
-                                otpToken = otpToken.copy(text = it)
-                            }
-                        },) {
+                        TextButton(
+                            enabled = !state.loading,
+                            onClick = {
+                                screenModel.getOtpTokenFromClipboardOrNull(context)?.let {
+                                    otpToken = otpToken.copy(text = it)
+                                }
+                            },
+                        ) {
                             Text(stringResource(R.string.paste_from_clipboard))
                         }
                     }
 
+                    when (state.result) {
+                        is LoginScreenModel.Result.InvalidOtp -> stringResource(R.string.invalid_mfa_token)
+                        is LoginScreenModel.Result.ApiError -> (state.result as LoginScreenModel.Result.ApiError).message
+                        else -> null
+                    }?.let {
+                        Text(
+                            text = it,
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    }
+
                     Button(
                         modifier = Modifier.fillMaxWidth(),
+                        enabled = !state.loading,
                         onClick = {
                             if (state.requiresMfa) {
                                 screenModel.loginMfa(otpToken.text)

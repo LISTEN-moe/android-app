@@ -16,6 +16,7 @@ import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
 import me.echeung.moemoekyun.UserQuery
+import me.echeung.moemoekyun.client.api.data.toMessage
 import me.echeung.moemoekyun.client.api.data.transform
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
@@ -36,19 +37,19 @@ class ApiClient @Inject constructor(
      * @param username User's username.
      * @param password User's password.
      */
-    suspend fun authenticate(username: String, password: String): Pair<LoginState, String> {
+    suspend fun authenticate(username: String, password: String): Pair<LoginResult, String> {
         val response = client.mutation(LoginMutation(username, password)).execute()
         try {
             val userToken = response.data?.login?.token!!
 
             if (response.data?.login?.mfa!!) {
-                return Pair(LoginState.REQUIRE_OTP, userToken)
+                return Pair(LoginResult.REQUIRE_OTP, userToken)
             }
 
-            return Pair(LoginState.COMPLETE, userToken)
+            return Pair(LoginResult.COMPLETE, userToken)
         } catch (e: Exception) {
             logcat(LogPriority.ERROR) { "Failed to authenticate" }
-            return Pair(LoginState.ERROR, response.errors?.joinToString() ?: "")
+            return Pair(LoginResult.ERROR, response.errors.toMessage())
         }
     }
 
@@ -57,13 +58,13 @@ class ApiClient @Inject constructor(
      *
      * @param otpToken User's one-time password token.
      */
-    suspend fun authenticateMfa(otpToken: String): Pair<LoginState, String> {
+    suspend fun authenticateMfa(otpToken: String): Pair<LoginResult, String> {
         val response = client.mutation(LoginMfaMutation(otpToken)).execute()
         return try {
-            Pair(LoginState.COMPLETE, response.data?.loginMFA?.token!!)
+            Pair(LoginResult.COMPLETE, response.data?.loginMFA?.token!!)
         } catch (e: Exception) {
             logcat(LogPriority.ERROR) { "Failed to authenticate (MFA)" }
-            return Pair(LoginState.ERROR, response.errors?.joinToString() ?: "")
+            return Pair(LoginResult.ERROR, response.errors.toMessage())
         }
     }
 
@@ -72,8 +73,9 @@ class ApiClient @Inject constructor(
      */
     suspend fun register(email: String, username: String, password: String) {
         val result = client.mutation(RegisterMutation(email, username, password)).execute()
+
         if (result.hasErrors()) {
-            throw IllegalStateException(result.errors?.joinToString { it.message })
+            throw IllegalStateException(result.errors.toMessage())
         }
     }
 
@@ -116,7 +118,7 @@ class ApiClient @Inject constructor(
         val response = client.mutation(RequestSongMutation(songId, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP))).execute()
 
         if (response.hasErrors()) {
-            throw Exception(response.errors?.get(0)?.message)
+            throw Exception(response.errors.toMessage())
         }
     }
 
@@ -148,9 +150,9 @@ class ApiClient @Inject constructor(
         return response.data?.songs?.songs?.map { it.transform() }.orEmpty()
     }
 
-    enum class LoginState {
-        ERROR,
-        REQUIRE_OTP,
+    enum class LoginResult {
         COMPLETE,
+        REQUIRE_OTP,
+        ERROR,
     }
 }

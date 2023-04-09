@@ -4,7 +4,6 @@ import android.content.Context
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import kotlinx.coroutines.flow.update
-import me.echeung.moemoekyun.client.api.ApiClient
 import me.echeung.moemoekyun.domain.user.interactor.LoginLogout
 import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -15,28 +14,46 @@ class LoginScreenModel @Inject constructor(
 ) : StateScreenModel<LoginScreenModel.State>(State()) {
 
     fun login(username: String, password: String) {
+        mutableState.update {
+            it.copy(loading = true)
+        }
+
         coroutineScope.launchIO {
             val state = loginLogout.login(username, password)
 
             mutableState.update {
                 it.copy(
-                    loginState = state,
+                    loading = false,
+                    result = state.toResult(),
                 )
             }
         }
     }
 
     fun loginMfa(otpToken: String) {
-        val token = otpToken.trim { it <= ' ' }
-        if (token.length == OTP_LENGTH) {
-            coroutineScope.launchIO {
-                val state = loginLogout.loginMfa(token)
+        mutableState.update {
+            it.copy(loading = true)
+        }
 
-                mutableState.update {
-                    it.copy(
-                        loginState = state,
-                    )
-                }
+        val token = otpToken.trim { it <= ' ' }
+        if (token.length != OTP_LENGTH) {
+            mutableState.update {
+                it.copy(
+                    result = Result.InvalidOtp,
+                    loading = false,
+                )
+            }
+            return
+        }
+
+        coroutineScope.launchIO {
+            val state = loginLogout.loginMfa(token)
+
+            mutableState.update {
+                it.copy(
+                    loading = false,
+                    result = state.toResult(),
+                )
             }
         }
     }
@@ -57,13 +74,27 @@ class LoginScreenModel @Inject constructor(
         return null
     }
 
+    private fun LoginLogout.State.toResult() = when (this) {
+        is LoginLogout.State.Complete -> Result.Complete
+        is LoginLogout.State.RequireOtp -> Result.RequireOtp
+        is LoginLogout.State.Error -> Result.ApiError(this.message)
+    }
+
     data class State(
-        val loginState: ApiClient.LoginState? = null,
+        val loading: Boolean = false,
+        val result: Result? = null,
     ) {
         val requiresMfa: Boolean
-            get() = loginState == ApiClient.LoginState.REQUIRE_OTP
+            get() = result is Result.RequireOtp || result is Result.InvalidOtp
+    }
+
+    sealed interface Result {
+        object Complete : Result
+        object InvalidOtp : Result
+        object RequireOtp : Result
+        data class ApiError(val message: String) : Result
     }
 }
 
 private const val OTP_LENGTH = 6
-private val OTP_REGEX = "^[0-9]*$".toRegex()
+private val OTP_REGEX = "^\\d*$".toRegex()

@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.client.api.data
 
+import com.apollographql.apollo3.api.Error
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
@@ -30,6 +31,8 @@ fun FavoritesQuery.Favorite.transform(): Song? {
 fun SongQuery.Song.transform() = songFields.transform()
 
 fun SongsQuery.Song.transform() = songListFields.transform()
+
+fun List<Error>?.toMessage() = this?.joinToString { it.message } ?: ""
 
 private fun SongFields.transform() = Song(
     this.id,
