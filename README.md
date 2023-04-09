@@ -18,9 +18,8 @@
 
 ## About
 
-A native Android app using things like [OkHttp](http://square.github.io/okhttp/), [Apollo](https://www.apollographql.com), and [Jetpack Compose UI](https://developer.android.com/jetpack/compose). Features things like [Android Auto](https://www.android.com/auto/) and [autofill](https://android-developers.googleblog.com/2017/11/getting-your-android-app-ready-for.html) support.
-
-This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/store/apps/details?id=jcotter.listenmoe) and serves as the official Android app.
+A native Android app using things like [OkHttp](http://square.github.io/okhttp/), [Apollo](https://www.apollographql.com), and [Jetpack Compose UI](https://developer.android.com/jetpack/compose).
+Features things like [Android Auto](https://www.android.com/auto/) and [autofill](https://android-developers.googleblog.com/2017/11/getting-your-android-app-ready-for.html) support.
 
 
 ## Developing
@@ -33,13 +32,13 @@ This is a fork/rewrite of J-Cotter's [original app](https://play.google.com/stor
 
 ### Translations
 
-Translations are crowdsourced through [CrowdIn](https://crwd.in/listenmoe-android-app) and managed by [@arkon](https://github.com/arkon/).
+Translations are crowd-sourced through [CrowdIn](https://crwd.in/listenmoe-android-app) and managed by [@arkon](https://github.com/arkon/).
 
 ### Release
 
-The release builds are signed by and uploaded to the Google Play Store by [@arkon](https://github.com/arkon/).
+Tagged release builds are automatically uploaded to the Google Play Store via a [workflow](https://github.com/LISTEN-moe/android-app/blob/main/.github/workflows/build.yml).
 
-F-Droid releases are automated ([see F-Droid wiki](https://f-droid.org/wiki/page/me.echeung.moemoekyun.fdroid)).
+F-Droid releases are also automated ([see F-Droid wiki](https://f-droid.org/wiki/page/me.echeung.moemoekyun.fdroid)).
 
 
 ## License
