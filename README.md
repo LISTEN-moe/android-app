@@ -44,4 +44,4 @@ F-Droid releases are automated ([see F-Droid wiki](https://f-droid.org/wiki/page
 
 ## License
 
-[MIT](https://github.com/LISTEN-moe/android-app/blob/master/LICENSE)
+[MIT](https://github.com/LISTEN-moe/android-app/blob/main/LICENSE)
