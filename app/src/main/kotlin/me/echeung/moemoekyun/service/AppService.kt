@@ -165,11 +165,7 @@ class AppService : Service() {
 
                     override fun onPlayFromSearch(query: String?, extras: Bundle?) {
                         if (!query.isNullOrEmpty()) {
-                            when (query) {
-                                Station.JPOP.name -> onPlayFromMediaId(STATION_JPOP, extras)
-                                Station.KPOP.name -> onPlayFromMediaId(STATION_KPOP, extras)
-                            }
-                            playPause.play()
+                            onPlayFromMediaId(query, extras)
                         }
                     }
 
@@ -177,9 +173,10 @@ class AppService : Service() {
                     override fun onPlayFromMediaId(mediaId: String?, extras: Bundle?) {
                         super.onPlayFromMediaId(mediaId, extras)
                         when (mediaId) {
-                            STATION_JPOP -> setStation.set(Station.JPOP)
-                            STATION_KPOP -> setStation.set(Station.KPOP)
+                            Station.JPOP.name -> setStation.set(Station.JPOP)
+                            Station.KPOP.name -> setStation.set(Station.KPOP)
                         }
+                        playPause.play()
                     }
                 },
             )
@@ -311,8 +308,6 @@ class AppService : Service() {
         const val PLAY_PAUSE = "$APP_PACKAGE_NAME.play_pause"
         const val STOP = "$APP_PACKAGE_NAME.stop"
         const val TOGGLE_FAVORITE = "$APP_PACKAGE_NAME.toggle_favorite"
-        const val STATION_JPOP = "$APP_PACKAGE_NAME.station_jpop"
-        const val STATION_KPOP = "$APP_PACKAGE_NAME.station_kpop"
 
         private const val MEDIA_SESSION_ACTIONS =
             PlaybackStateCompat.ACTION_PLAY or
