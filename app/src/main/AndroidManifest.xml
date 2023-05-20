@@ -12,6 +12,7 @@
         android:name=".App"
         android:allowAudioPlaybackCapture="false"
         android:allowBackup="true"
+        android:enableOnBackInvokedCallback="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:localeConfig="@xml/locales_config"
