@@ -14,13 +14,13 @@ plugins {
 val appPackageName = "me.echeung.moemoekyun"
 
 android {
-    compileSdk = 33
+    compileSdk = 34
     namespace = appPackageName
 
     defaultConfig {
         applicationId = appPackageName
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 200
         versionName = "6.0.0-beta.1"
     }

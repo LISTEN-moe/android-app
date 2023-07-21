@@ -1,16 +1,16 @@
 [versions]
-aboutlib_version = "10.6.3"
+aboutlib_version = "10.8.3"
 apollo_version = "3.8.0"
-coil_version = "2.3.0"
-compose_compiler_version = "1.4.4"
-coroutines_version = "1.7.1"
-hilt_version = "2.46.1"
-kotlin_version = "1.8.10"
+coil_version = "2.4.0"
+compose_compiler_version = "1.5.0"
+coroutines_version = "1.7.2"
+hilt_version = "2.47"
+kotlin_version = "1.9.0"
 okhttp_version = "5.0.0-alpha.11"
 voyager_version = "1.0.0-rc06"
 
 [plugins]
-android-application = { id = "com.android.application", version = "8.0.1" }
+android-application = { id = "com.android.application", version = "8.0.2" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
@@ -34,14 +34,14 @@ coil-core = { module = "io.coil-kt:coil", version.ref = "coil_version" }
 coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil_version" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil_version" }
 
-compose-bom = { module = "androidx.compose:compose-bom", version = "2023.04.00" }
+compose-bom = { module = "androidx.compose:compose-bom", version = "2023.06.01" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
-compose-activity = { module = "androidx.activity:activity-compose", version = "1.7.1" }
+compose-activity = { module = "androidx.activity:activity-compose", version = "1.7.2" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_version" }
