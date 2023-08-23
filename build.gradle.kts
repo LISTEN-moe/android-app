@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.serialization) apply false
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlinter) apply false
+    alias(libs.plugins.autoresconfig) apply false
 }
 
 tasks.register<Delete>("clean") {

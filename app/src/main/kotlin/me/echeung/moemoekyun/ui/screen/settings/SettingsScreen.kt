@@ -21,7 +21,7 @@ import me.echeung.moemoekyun.ui.common.preferences.ListPreference
 import me.echeung.moemoekyun.ui.common.preferences.PreferenceGroupHeader
 import me.echeung.moemoekyun.ui.common.preferences.SwitchPreference
 import me.echeung.moemoekyun.util.system.LocaleUtil
-import org.xmlpull.v1.XmlPullParser
+import rikka.autoresconfig.AutoResConfigLocales
 
 class SettingsScreen : Screen {
 
@@ -111,27 +111,9 @@ class SettingsScreen : Screen {
     }
 
     private fun getLangs(context: Context): Map<String, String> {
-        val langs = mutableListOf<Pair<String, String>>()
-        val parser = context.resources.getXml(R.xml.locales_config)
-        var eventType = parser.eventType
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            if (eventType == XmlPullParser.START_TAG && parser.name == "locale") {
-                for (i in 0 until parser.attributeCount) {
-                    if (parser.getAttributeName(i) == "name") {
-                        val langTag = parser.getAttributeValue(i)
-                        val displayName = LocaleUtil.getDisplayName(langTag)
-                        if (displayName.isNotEmpty()) {
-                            langs.add(Pair(langTag, displayName))
-                        }
-                    }
-                }
-            }
-            eventType = parser.next()
-        }
-
-        langs.sortBy { it.second }
-        langs.add(0, Pair("", context.getString(R.string.system_default)))
-
-        return langs.toMap()
+        return mapOf("" to context.getString(R.string.system_default)) +
+            AutoResConfigLocales.LOCALES.drop(1)
+                .zip(AutoResConfigLocales.DISPLAY_LOCALES.drop(1).map(LocaleUtil::getDisplayName))
+                .toMap()
     }
 }

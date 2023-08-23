@@ -9,6 +9,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.apollo)
     alias(libs.plugins.kotlinter)
+    alias(libs.plugins.autoresconfig)
 }
 
 val appPackageName = "me.echeung.moemoekyun"
@@ -33,6 +34,12 @@ android {
         renderScript = false
         resValues = false
         shaders = false
+    }
+
+    autoResConfig {
+        generateClass = true
+        generateRes = true
+        generateLocaleConfig = true
     }
 
     buildTypes {
@@ -150,8 +157,6 @@ kotlinter {
 }
 
 tasks {
-    val localesConfigTask = registerLocalesConfigTask(project)
-
     withType<KotlinCompile> {
         // See https://kotlinlang.org/docs/reference/experimental.html#experimental-status-of-experimental-api-markers
         kotlinOptions.freeCompilerArgs += listOf(
@@ -166,6 +171,6 @@ tasks {
     }
 
     preBuild {
-        dependsOn(formatKotlin, localesConfigTask)
+        dependsOn(formatKotlin)
     }
 }
