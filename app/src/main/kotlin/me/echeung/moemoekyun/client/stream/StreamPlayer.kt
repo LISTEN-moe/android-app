@@ -3,16 +3,17 @@ package me.echeung.moemoekyun.client.stream
 import android.content.Context
 import android.media.AudioManager
 import android.net.Uri
-import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
-import com.google.android.exoplayer2.PlaybackException
-import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
-import com.google.android.exoplayer2.source.ProgressiveMediaSource
-import com.google.android.exoplayer2.upstream.DefaultDataSource
-import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
+import androidx.media3.common.AudioAttributes
+import androidx.media3.common.C
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.extractor.DefaultExtractorsFactory
 import dagger.hilt.android.qualifiers.ApplicationContext
 import logcat.logcat
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -78,20 +79,24 @@ class StreamPlayer @Inject constructor(
         audioManagerUtil = AudioManagerUtil(context, audioFocusChangeListener)
     }
 
+    // TODO: hook up to MediaSession directly
+    @androidx.annotation.OptIn(UnstableApi::class)
     fun initPlayer() {
         if (player == null) {
-            player = ExoPlayer.Builder(context).build()
-
-            player!!.setWakeMode(C.WAKE_MODE_NETWORK)
-
-            player!!.addListener(eventListener)
-            player!!.volume = 1f
-
-            val audioAttributes = AudioAttributes.Builder()
-                .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
-                .setUsage(C.USAGE_MEDIA)
+            player = ExoPlayer.Builder(context)
+                .setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+                        .setUsage(C.USAGE_MEDIA)
+                        .build(),
+                    true,
+                )
+                .setWakeMode(C.WAKE_MODE_NETWORK)
                 .build()
-            player!!.setAudioAttributes(audioAttributes, true)
+                .also {
+                    it.addListener(eventListener)
+                    it.volume = 1f
+                }
         }
 
         // Set stream
