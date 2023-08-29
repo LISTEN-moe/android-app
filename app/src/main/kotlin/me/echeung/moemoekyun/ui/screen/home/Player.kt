@@ -62,7 +62,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
-import me.echeung.moemoekyun.client.stream.Stream
+import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
@@ -202,17 +202,7 @@ private fun BoxScope.CollapsedPlayerContent(
             }
 
             IconButton(onClick = togglePlayState) {
-                if (radioState.streamState == Stream.State.PLAY) {
-                    Icon(
-                        Icons.Outlined.Pause,
-                        contentDescription = stringResource(R.string.action_pause),
-                    )
-                } else {
-                    Icon(
-                        Icons.Outlined.PlayArrow,
-                        contentDescription = stringResource(R.string.action_play),
-                    )
-                }
+                PlayStateIcon(radioState.streamState)
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -233,6 +223,7 @@ private fun ExpandedPlayerContent(
     val backgroundColor = animateColorAsState(
         targetValue = accentColor ?: MaterialTheme.colorScheme.surface,
         animationSpec = tween(500, 0, LinearEasing),
+        label = "playerBackground",
     )
 
     Surface(
@@ -420,17 +411,7 @@ private fun SongInfo(
                 Icon(Icons.Outlined.History, contentDescription = stringResource(R.string.last_played))
             }
             FloatingActionButton(onClick = togglePlayState) {
-                if (radioState.streamState == Stream.State.PLAY) {
-                    Icon(
-                        Icons.Outlined.Pause,
-                        contentDescription = stringResource(R.string.action_pause),
-                    )
-                } else {
-                    Icon(
-                        Icons.Outlined.PlayArrow,
-                        contentDescription = stringResource(R.string.action_play),
-                    )
-                }
+                PlayStateIcon(radioState.streamState)
             }
             IconButton(
                 onClick = { currentSong?.let { toggleFavorite?.invoke(it.id) } },
@@ -468,6 +449,31 @@ private fun SongInfo(
                     Text(it)
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun PlayStateIcon(state: Stream.State) {
+    when (state) {
+        Stream.State.PAUSE, Stream.State.STOP -> {
+            Icon(
+                Icons.Outlined.PlayArrow,
+                contentDescription = stringResource(R.string.action_play),
+            )
+        }
+
+        Stream.State.PLAY -> {
+            Icon(
+                Icons.Outlined.Pause,
+                contentDescription = stringResource(R.string.action_pause),
+            )
+        }
+
+        Stream.State.BUFFERING -> {
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
         }
     }
 }

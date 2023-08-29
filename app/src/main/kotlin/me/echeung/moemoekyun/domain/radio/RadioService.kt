@@ -17,9 +17,9 @@ import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.client.api.Station
+import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.model.Event
-import me.echeung.moemoekyun.client.stream.Stream
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.songs.model.SongConverter
@@ -127,7 +127,7 @@ class RadioService @Inject constructor(
     }
 
     fun togglePlayState() {
-        if (_state.value.streamState == Stream.State.PLAY) {
+        if (_state.value.streamState != Stream.State.PAUSE) {
             stream.pause()
         } else {
             stream.play()

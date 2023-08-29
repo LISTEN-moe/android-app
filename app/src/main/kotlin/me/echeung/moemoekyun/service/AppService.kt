@@ -23,7 +23,7 @@ import logcat.logcat
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
-import me.echeung.moemoekyun.client.stream.Stream
+import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.domain.radio.RadioService
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.radio.interactor.PlayPause
@@ -214,7 +214,7 @@ class AppService : Service() {
                     Stream.State.PLAY -> PlaybackStateCompat.STATE_PLAYING
                     Stream.State.PAUSE -> PlaybackStateCompat.STATE_PAUSED
                     Stream.State.STOP -> PlaybackStateCompat.STATE_STOPPED
-                    // TODO: else -> PlaybackStateCompat.STATE_BUFFERING
+                    Stream.State.BUFFERING -> PlaybackStateCompat.STATE_BUFFERING
                 },
                 songStartTime?.let { System.currentTimeMillis() - it.timeInMillis } ?: 0,
                 1f,

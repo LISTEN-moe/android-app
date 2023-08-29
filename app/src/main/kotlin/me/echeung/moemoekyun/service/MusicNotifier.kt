@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.client.stream.Stream
+import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil

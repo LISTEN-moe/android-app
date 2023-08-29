@@ -1,4 +1,4 @@
-package me.echeung.moemoekyun.client.stream
+package me.echeung.moemoekyun.client.api
 
 import android.content.Context
 import android.media.AudioManager
@@ -15,17 +15,24 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import logcat.logcat
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.system.AudioManagerUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class StreamPlayer @Inject constructor(
+@Singleton
+class Stream @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
 ) {
+
+    private val _flow = MutableStateFlow(State.STOP)
+    val flow = _flow.asStateFlow()
 
     private var audioManagerUtil: AudioManagerUtil
     private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener
@@ -35,6 +42,14 @@ class StreamPlayer @Inject constructor(
     private var player: ExoPlayer? = null
 
     private val eventListener = object : Player.Listener {
+        override fun onPlaybackStateChanged(playbackState: Int) {
+            if (playbackState == Player.STATE_BUFFERING) {
+                _flow.value = State.BUFFERING
+            } else if (playbackState == Player.STATE_READY) {
+                _flow.value = State.PLAY
+            }
+        }
+
         override fun onPlayerError(error: PlaybackException) {
             // Try to reconnect to the stream
             val wasPlaying = isPlaying
@@ -79,9 +94,38 @@ class StreamPlayer @Inject constructor(
         audioManagerUtil = AudioManagerUtil(context, audioFocusChangeListener)
     }
 
+    @Synchronized
+    fun play() {
+        val result = audioManagerUtil.requestAudioFocus()
+        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+            initPlayer()
+
+            if (!isPlaying) {
+                player!!.play()
+                player!!.seekToDefaultPosition()
+            }
+        }
+    }
+
+    fun pause() {
+        player?.pause()
+        _flow.value = State.PAUSE
+    }
+
+    fun stop() {
+        logcat { "Stopping stream" }
+        audioManagerUtil.abandonAudioFocus()
+
+        player?.stop()
+        player?.clearMediaItems()
+
+        releasePlayer()
+        _flow.value = State.STOP
+    }
+
     // TODO: hook up to MediaSession directly
     @androidx.annotation.OptIn(UnstableApi::class)
-    fun initPlayer() {
+    private fun initPlayer() {
         if (player == null) {
             player = ExoPlayer.Builder(context)
                 .setAudioAttributes(
@@ -113,35 +157,6 @@ class StreamPlayer @Inject constructor(
         }
     }
 
-    @Synchronized
-    fun play() {
-        // Request audio focus for playback
-        val result = audioManagerUtil.requestAudioFocus()
-
-        if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-            initPlayer()
-
-            if (!isPlaying) {
-                player!!.play()
-                player!!.seekToDefaultPosition()
-            }
-        }
-    }
-
-    fun pause() {
-        player?.pause()
-    }
-
-    fun stop() {
-        logcat { "Stopping stream" }
-        audioManagerUtil.abandonAudioFocus()
-
-        player?.stop()
-        player?.clearMediaItems()
-
-        releasePlayer()
-    }
-
     private fun releasePlayer() {
         player?.removeListener(eventListener)
         player?.release()
@@ -154,5 +169,12 @@ class StreamPlayer @Inject constructor(
 
     private fun unduck() {
         player?.volume = 1f
+    }
+
+    enum class State {
+        PLAY,
+        PAUSE,
+        STOP,
+        BUFFERING,
     }
 }
