@@ -127,7 +127,7 @@ class RadioService @Inject constructor(
     }
 
     fun togglePlayState() {
-        if (_state.value.streamState != Stream.State.PAUSE) {
+        if (_state.value.streamState != Stream.State.PAUSED) {
             stream.pause()
         } else {
             stream.play()
@@ -177,7 +177,7 @@ class RadioService @Inject constructor(
 
 data class RadioState(
     val station: Station = Station.JPOP,
-    val streamState: Stream.State = Stream.State.STOP,
+    val streamState: Stream.State = Stream.State.STOPPED,
     val listeners: Int = 0,
     val requester: String? = null,
     val currentSong: DomainSong? = null,

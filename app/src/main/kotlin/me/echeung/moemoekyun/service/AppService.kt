@@ -121,7 +121,7 @@ class AppService : Service() {
     private fun update(radioState: RadioState) {
         updateMediaSession(radioState)
 
-        if (radioState.streamState != Stream.State.STOP) {
+        if (radioState.streamState != Stream.State.STOPPED) {
             musicNotifier.update(
                 this,
                 radioState.currentSong,
@@ -211,9 +211,9 @@ class AppService : Service() {
             .setActions(MEDIA_SESSION_ACTIONS)
             .setState(
                 when (radioService.state.value.streamState) {
-                    Stream.State.PLAY -> PlaybackStateCompat.STATE_PLAYING
-                    Stream.State.PAUSE -> PlaybackStateCompat.STATE_PAUSED
-                    Stream.State.STOP -> PlaybackStateCompat.STATE_STOPPED
+                    Stream.State.PLAYING -> PlaybackStateCompat.STATE_PLAYING
+                    Stream.State.PAUSED -> PlaybackStateCompat.STATE_PAUSED
+                    Stream.State.STOPPED -> PlaybackStateCompat.STATE_STOPPED
                     Stream.State.BUFFERING -> PlaybackStateCompat.STATE_BUFFERING
                 },
                 songStartTime?.let { System.currentTimeMillis() - it.timeInMillis } ?: 0,

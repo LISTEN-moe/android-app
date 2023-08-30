@@ -31,7 +31,7 @@ class Stream @Inject constructor(
     private val preferenceUtil: PreferenceUtil,
 ) {
 
-    private val _flow = MutableStateFlow(State.STOP)
+    private val _flow = MutableStateFlow(State.STOPPED)
     val flow = _flow.asStateFlow()
 
     private var audioManagerUtil: AudioManagerUtil
@@ -45,8 +45,10 @@ class Stream @Inject constructor(
         override fun onPlaybackStateChanged(playbackState: Int) {
             if (playbackState == Player.STATE_BUFFERING) {
                 _flow.value = State.BUFFERING
-            } else if (playbackState == Player.STATE_READY) {
-                _flow.value = State.PLAY
+            } else if (isPlaying && playbackState == Player.STATE_READY) {
+                _flow.value = State.PLAYING
+            } else if (player?.playWhenReady == true) {
+                _flow.value = State.PAUSED
             }
         }
 
@@ -109,7 +111,7 @@ class Stream @Inject constructor(
 
     fun pause() {
         player?.pause()
-        _flow.value = State.PAUSE
+        _flow.value = State.PAUSED
     }
 
     fun stop() {
@@ -120,7 +122,7 @@ class Stream @Inject constructor(
         player?.clearMediaItems()
 
         releasePlayer()
-        _flow.value = State.STOP
+        _flow.value = State.STOPPED
     }
 
     // TODO: hook up to MediaSession directly
@@ -172,9 +174,9 @@ class Stream @Inject constructor(
     }
 
     enum class State {
-        PLAY,
-        PAUSE,
-        STOP,
+        PLAYING,
+        PAUSED,
+        STOPPED,
         BUFFERING,
     }
 }

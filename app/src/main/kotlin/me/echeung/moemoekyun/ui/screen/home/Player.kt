@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -410,7 +411,10 @@ private fun SongInfo(
             IconButton(onClick = onClickHistory) {
                 Icon(Icons.Outlined.History, contentDescription = stringResource(R.string.last_played))
             }
-            FloatingActionButton(onClick = togglePlayState) {
+            FloatingActionButton(
+                modifier = Modifier.size(56.dp),
+                onClick = togglePlayState,
+            ) {
                 PlayStateIcon(radioState.streamState)
             }
             IconButton(
@@ -456,14 +460,14 @@ private fun SongInfo(
 @Composable
 private fun PlayStateIcon(state: Stream.State) {
     when (state) {
-        Stream.State.PAUSE, Stream.State.STOP -> {
+        Stream.State.PAUSED, Stream.State.STOPPED -> {
             Icon(
                 Icons.Outlined.PlayArrow,
                 contentDescription = stringResource(R.string.action_play),
             )
         }
 
-        Stream.State.PLAY -> {
+        Stream.State.PLAYING -> {
             Icon(
                 Icons.Outlined.Pause,
                 contentDescription = stringResource(R.string.action_pause),
@@ -472,6 +476,7 @@ private fun PlayStateIcon(state: Stream.State) {
 
         Stream.State.BUFFERING -> {
             CircularProgressIndicator(
+                modifier = Modifier.fillMaxWidth(0.7f),
                 color = MaterialTheme.colorScheme.onPrimary,
             )
         }

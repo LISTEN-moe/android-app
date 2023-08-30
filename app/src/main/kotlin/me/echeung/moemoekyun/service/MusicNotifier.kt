@@ -18,12 +18,12 @@ class MusicNotifier @Inject constructor(
 
     @SuppressLint("MissingPermission")
     fun update(service: AppService, currentSong: DomainSong?, streamState: Stream.State, isAuthenticated: Boolean) {
-        if (currentSong == null || service.mediaSession == null || streamState == Stream.State.STOP) {
+        if (currentSong == null || service.mediaSession == null || streamState == Stream.State.STOPPED) {
             return
         }
 
         // Play/pause action
-        val isPlaying = streamState == Stream.State.PLAY
+        val isPlaying = streamState == Stream.State.PLAYING
         val playPauseAction = NotificationCompat.Action(
             if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp,
             if (isPlaying) service.getString(R.string.action_pause) else service.getString(R.string.action_play),
