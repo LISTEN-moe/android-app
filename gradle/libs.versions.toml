@@ -11,7 +11,7 @@ okhttp_version = "5.0.0-alpha.11"
 voyager_version = "1.0.0-rc06"
 
 [plugins]
-android-application = { id = "com.android.application", version = "8.1.0" }
+android-application = { id = "com.android.application", version = "8.1.1" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
