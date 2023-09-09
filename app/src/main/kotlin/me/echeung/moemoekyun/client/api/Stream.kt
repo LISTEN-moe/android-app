@@ -43,10 +43,15 @@ class Stream @Inject constructor(
 
     private val eventListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
+            logcat { "stream onPlaybackStateChanged: $playbackState" }
             if (playbackState == Player.STATE_BUFFERING) {
                 _flow.value = State.BUFFERING
-            } else if (isPlaying && playbackState == Player.STATE_READY) {
-                _flow.value = State.PLAYING
+            } else if (playbackState == Player.STATE_READY) {
+                if (isPlaying) {
+                    _flow.value = State.PLAYING
+                } else {
+                    play()
+                }
             } else if (player?.playWhenReady == true) {
                 _flow.value = State.PAUSED
             }

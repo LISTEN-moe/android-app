@@ -87,6 +87,7 @@ class RadioService @Inject constructor(
         scope.launchIO {
             stream.flow
                 .collectLatest {
+                    logcat { "stream service flow: $it" }
                     _state.value = _state.value.copy(
                         streamState = it,
                     )
@@ -127,10 +128,9 @@ class RadioService @Inject constructor(
     }
 
     fun togglePlayState() {
-        if (_state.value.streamState != Stream.State.PAUSED) {
-            stream.pause()
-        } else {
-            stream.play()
+        when (_state.value.streamState) {
+            Stream.State.PLAYING, Stream.State.BUFFERING -> stream.pause()
+            Stream.State.PAUSED, Stream.State.STOPPED -> stream.play()
         }
     }
 
