@@ -15,6 +15,7 @@ android-application = { id = "com.android.application", version = "8.1.1" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
+ksp = { id = "com.google.devtools.ksp", version = "1.9.0-1.0.12" }
 
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo_version" }
 kotlinter = { id = "org.jmailen.kotlinter", version = "3.11.1" }

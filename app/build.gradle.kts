@@ -4,9 +4,9 @@ plugins {
     alias(libs.plugins.android.application)
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
-    kotlin("kapt")
     kotlin("plugin.serialization")
     id("dagger.hilt.android.plugin")
+    alias(libs.plugins.ksp)
     alias(libs.plugins.apollo)
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.autoresconfig)
@@ -119,7 +119,7 @@ dependencies {
     implementation(libs.logcat)
 
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
@@ -144,10 +144,6 @@ apollo {
     service("service") {
         packageName.set(appPackageName)
     }
-}
-
-kapt {
-    correctErrorTypes = true
 }
 
 kotlinter {

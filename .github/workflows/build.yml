@@ -78,7 +78,7 @@ jobs:
         with:
           serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
           packageName: me.echeung.moemoekyun
-          releaseFile: ${{ env.SIGNED_RELEASE_FILE }}
+          releaseFiles: ${{ env.SIGNED_RELEASE_FILE }}
           mappingFile: app/build/outputs/mapping/playstoreRelease/mapping.txt
           track: ${{ env.GOOGLE_PLAY_TRACK }}
           whatsNewDirectory: distribution/whatsnew
