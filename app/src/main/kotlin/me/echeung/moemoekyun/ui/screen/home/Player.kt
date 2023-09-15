@@ -45,6 +45,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MultiChoiceSegmentedButtonRow
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
@@ -68,7 +71,6 @@ import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
-import me.echeung.moemoekyun.ui.common.SegmentedButtons
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 val PlayerPeekHeight = 72.dp
@@ -363,11 +365,30 @@ private fun StationPicker(
     radioState: RadioState,
     onClickStation: (Station) -> Unit,
 ) {
-    SegmentedButtons(
-        entries = Station.values().map { stringResource(it.labelRes) },
-        selectedIndex = Station.values().indexOf(radioState.station),
-        onClick = { index -> onClickStation(Station.values()[index]) },
+    val colors = SegmentedButtonDefaults.colors(
+        activeContainerColor = MaterialTheme.colorScheme.primary,
+        inactiveContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+        activeBorderColor = MaterialTheme.colorScheme.surface,
+        inactiveBorderColor = MaterialTheme.colorScheme.surface,
     )
+
+    MultiChoiceSegmentedButtonRow(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Station.values().forEachIndexed { index, station ->
+            SegmentedButton(
+                checked = radioState.station == station,
+                onCheckedChange = { onClickStation(station) },
+                colors = colors,
+                shape = SegmentedButtonDefaults.itemShape(
+                    index,
+                    Station.values().size,
+                ),
+            ) {
+                Text(stringResource(station.labelRes))
+            }
+        }
+    }
 }
 
 @Composable
