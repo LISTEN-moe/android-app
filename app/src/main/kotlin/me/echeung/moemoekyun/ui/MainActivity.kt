@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         // Replace splash screen theme
+        // TODO: use actual splash screen API
         setTheme(R.style.Theme_App)
         super.onCreate(savedInstanceState)
 

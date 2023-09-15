@@ -509,7 +509,7 @@ private fun PlayStateIcon(state: Stream.State) {
 
         Stream.State.BUFFERING -> {
             CircularProgressIndicator(
-                modifier = Modifier.fillMaxWidth(0.7f),
+                modifier = Modifier.alpha(0.7f),
                 color = MaterialTheme.colorScheme.onPrimary,
             )
         }
