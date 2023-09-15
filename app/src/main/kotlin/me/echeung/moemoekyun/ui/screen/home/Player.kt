@@ -56,6 +56,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -68,6 +69,7 @@ import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
 import me.echeung.moemoekyun.ui.common.SegmentedButtons
+import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 val PlayerPeekHeight = 72.dp
 
@@ -376,6 +378,8 @@ private fun SongInfo(
     togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -392,6 +396,10 @@ private fun SongInfo(
                 style = MaterialTheme.typography.titleLarge,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .clickable {
+                        context.copyToClipboard(currentSong.title, currentSong.title)
+                    },
             )
 
             currentSong.artists?.let {
@@ -400,6 +408,10 @@ private fun SongInfo(
                     textAlign = TextAlign.Center,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .clickable {
+                            context.copyToClipboard(currentSong.artists, currentSong.artists)
+                        },
                 )
             }
         }

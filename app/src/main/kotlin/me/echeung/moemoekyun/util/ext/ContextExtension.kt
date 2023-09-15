@@ -1,13 +1,17 @@
 package me.echeung.moemoekyun.util.ext
 
 import android.app.UiModeManager
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.res.Configuration
 import android.media.AudioManager
 import android.net.ConnectivityManager
+import android.os.Build
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.content.getSystemService
+import me.echeung.moemoekyun.R
 
 /**
  * Display a toast in this context.
@@ -27,6 +31,28 @@ fun Context.toast(@StringRes resource: Int, duration: Int = Toast.LENGTH_SHORT) 
  */
 fun Context.toast(text: String?, duration: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(this, text.orEmpty(), duration).show()
+}
+
+/**
+ * Copies a string to clipboard
+ *
+ * @param label Label to show to the user describing the content
+ * @param content the actual text to copy to the board
+ */
+fun Context.copyToClipboard(label: String, content: String) {
+    if (content.isBlank()) return
+
+    try {
+        val clipboard = getSystemService<ClipboardManager>()!!
+        clipboard.setPrimaryClip(ClipData.newPlainText(label, content))
+
+        // Android 13 and higher shows a visual confirmation of copied contents
+        // https://developer.android.com/about/versions/13/features/copy-paste
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            toast(getString(R.string.copied_to_clipboard_content, content))
+        }
+    } catch (e: Throwable) {
+    }
 }
 
 /**

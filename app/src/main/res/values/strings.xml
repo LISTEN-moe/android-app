@@ -5,7 +5,7 @@
 
     <string name="submit">Submit</string>
     <string name="error">An error occurred</string>
-    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="copied_to_clipboard_content">Copied to clipboard: %s</string>
 
 
     <!-- == Actions (notification, dialogs) == -->

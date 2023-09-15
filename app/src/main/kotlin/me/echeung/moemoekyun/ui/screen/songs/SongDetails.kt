@@ -18,14 +18,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalClipboardManager
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
+import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 @Composable
 fun SongDetails(
@@ -34,7 +34,7 @@ fun SongDetails(
     toggleFavorite: (Int) -> Unit,
     request: (DomainSong) -> Unit,
 ) {
-    val clipboard = LocalClipboardManager.current
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -61,7 +61,7 @@ fun SongDetails(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            clipboard.setText(AnnotatedString(song.title))
+                            context.copyToClipboard(song.title, song.title)
                         },
                 )
 
@@ -109,7 +109,7 @@ private fun ColumnScope.Section(
     @StringRes heading: Int,
     value: String?,
 ) {
-    val clipboard = LocalClipboardManager.current
+    val context = LocalContext.current
 
     value.orEmpty().takeIf { it.isNotBlank() }?.let {
         CompositionLocalProvider(
@@ -127,7 +127,7 @@ private fun ColumnScope.Section(
             modifier = Modifier
                 .fillMaxWidth()
                 .clickable {
-                    clipboard.setText(AnnotatedString(it))
+                    context.copyToClipboard(it, it)
                 },
         )
     }
