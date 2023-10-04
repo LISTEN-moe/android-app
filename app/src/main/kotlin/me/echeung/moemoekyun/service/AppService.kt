@@ -14,6 +14,7 @@ import android.support.v4.media.RatingCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.KeyEvent
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -259,7 +260,7 @@ class AppService : Service() {
             addAction(Intent.ACTION_MEDIA_BUTTON)
         }
 
-        registerReceiver(intentReceiver, intentFilter)
+        ContextCompat.registerReceiver(this, intentReceiver, intentFilter, ContextCompat.RECEIVER_NOT_EXPORTED)
     }
 
     private fun handleIntent(intent: Intent?): Boolean {
