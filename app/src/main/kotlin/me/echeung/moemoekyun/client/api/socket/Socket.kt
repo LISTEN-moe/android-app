@@ -207,9 +207,9 @@ class Socket @Inject constructor(
     }
 
     sealed interface SocketResult
-    object SocketLoading : SocketResult
+    data object SocketLoading : SocketResult
     data class SocketResponse(val info: ResponseModel.Update.Details?) : SocketResult
-    object SocketError : SocketResult
+    data object SocketError : SocketResult
 }
 
 private const val TRACK_UPDATE = "TRACK_UPDATE"

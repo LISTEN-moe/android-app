@@ -1,7 +1,8 @@
 package me.echeung.moemoekyun.ui.screen.songs
 
+import androidx.compose.runtime.Immutable
 import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import cafe.adriel.voyager.hilt.ScreenModelFactory
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -23,7 +24,7 @@ class SongsScreenModel @AssistedInject constructor(
 ) : StateScreenModel<SongsScreenModel.State>(State(songs)) {
 
     init {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             val detailedSongs = songs.map { getSong.await(it.id) }
 
             mutableState.update { state ->
@@ -36,7 +37,7 @@ class SongsScreenModel @AssistedInject constructor(
     }
 
     fun toggleFavorite(songId: Int) {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             val favorited = favoriteSong.await(songId)
 
             mutableState.update { state ->
@@ -55,7 +56,7 @@ class SongsScreenModel @AssistedInject constructor(
     }
 
     fun request(song: DomainSong) {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             requestSong.await(song)
         }
     }
@@ -65,6 +66,7 @@ class SongsScreenModel @AssistedInject constructor(
         fun create(songs: List<DomainSong>): SongsScreenModel
     }
 
+    @Immutable
     data class State(
         val songs: List<DomainSong>,
         val actionsEnabled: Boolean = false,

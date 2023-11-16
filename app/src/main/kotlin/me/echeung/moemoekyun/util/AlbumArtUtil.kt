@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.BitmapDrawable
+import androidx.compose.runtime.Immutable
 import androidx.core.graphics.BitmapCompat
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
@@ -126,6 +127,7 @@ class AlbumArtUtil @Inject constructor(
         }
     }
 
+    @Immutable
     data class State(
         val bitmap: Bitmap?,
         val accentColor: Int?,

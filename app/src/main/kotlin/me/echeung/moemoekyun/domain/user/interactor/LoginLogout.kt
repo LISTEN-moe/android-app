@@ -36,8 +36,8 @@ class LoginLogout @Inject constructor(
     }
 
     sealed interface State {
-        object Complete : State
-        object RequireOtp : State
+        data object Complete : State
+        data object RequireOtp : State
         data class Error(val message: String) : State
     }
 }

@@ -1,7 +1,8 @@
 package me.echeung.moemoekyun.ui.screen.auth
 
+import androidx.compose.runtime.Immutable
 import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.domain.user.interactor.Register
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -36,7 +37,7 @@ class RegisterScreenModel @Inject constructor(
             return
         }
 
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             val state = register.register(email, username, password1)
 
             mutableState.update {
@@ -51,15 +52,16 @@ class RegisterScreenModel @Inject constructor(
         }
     }
 
+    @Immutable
     data class State(
         val loading: Boolean = false,
         val result: Result? = null,
     )
 
     sealed interface Result {
-        object Complete : Result
-        object AllFieldsRequired : Result
-        object MismatchedPasswords : Result
+        data object Complete : Result
+        data object AllFieldsRequired : Result
+        data object MismatchedPasswords : Result
         data class ApiError(val message: String) : Result
     }
 }

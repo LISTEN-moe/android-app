@@ -1,7 +1,8 @@
 package me.echeung.moemoekyun.ui.screen.search
 
+import androidx.compose.runtime.Immutable
 import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
@@ -20,7 +21,7 @@ class SearchScreenModel @Inject constructor(
 ) : StateScreenModel<SearchScreenModel.State>(State()) {
 
     init {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             getSongs.asFlow()
                 .collectLatest {
                     mutableState.update { state ->
@@ -31,7 +32,7 @@ class SearchScreenModel @Inject constructor(
                 }
         }
 
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             combine(
                 preferenceUtil.songsSortType().asFlow(),
                 preferenceUtil.songsSortDescending().asFlow(),
@@ -48,7 +49,7 @@ class SearchScreenModel @Inject constructor(
     }
 
     fun requestRandomSong() {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             mutableState.value.filteredSongs?.randomOrNull()?.let {
                 requestSong.await(it)
             }
@@ -71,6 +72,7 @@ class SearchScreenModel @Inject constructor(
         getSongs.setSortDescending(descending)
     }
 
+    @Immutable
     data class State(
         val songs: List<DomainSong>? = null,
         val searchQuery: String? = null,

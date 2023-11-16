@@ -1,9 +1,7 @@
 package me.echeung.moemoekyun.util.system
 
-import android.content.Context
 import android.os.Build
 import me.echeung.moemoekyun.BuildConfig
-import me.echeung.moemoekyun.util.ext.connectivityManager
 
 object NetworkUtil {
 
@@ -16,9 +14,4 @@ object NetworkUtil {
             Build.BRAND,
             Build.VERSION.SDK_INT,
         )
-
-    fun isNetworkAvailable(context: Context?): Boolean {
-        context ?: return false
-        return context.connectivityManager.activeNetworkInfo?.isConnected ?: false
-    }
 }

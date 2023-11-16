@@ -2,8 +2,8 @@ package me.echeung.moemoekyun.ui.common
 
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Sort
 import androidx.compose.material.icons.outlined.Shuffle
-import androidx.compose.material.icons.outlined.Sort
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,7 +30,7 @@ fun RowScope.SongsListActions(
 
     IconButton(onClick = { showSortMenu = !showSortMenu }) {
         Icon(
-            imageVector = Icons.Outlined.Sort,
+            imageVector = Icons.AutoMirrored.Outlined.Sort,
             contentDescription = stringResource(R.string.sort),
         )
 

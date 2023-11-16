@@ -1,8 +1,9 @@
 package me.echeung.moemoekyun.ui.screen.auth
 
 import android.content.Context
+import androidx.compose.runtime.Immutable
 import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.domain.user.interactor.LoginLogout
 import me.echeung.moemoekyun.util.ext.clipboardManager
@@ -18,7 +19,7 @@ class LoginScreenModel @Inject constructor(
             it.copy(loading = true)
         }
 
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             val state = loginLogout.login(username, password)
 
             mutableState.update {
@@ -46,7 +47,7 @@ class LoginScreenModel @Inject constructor(
             return
         }
 
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             val state = loginLogout.loginMfa(token)
 
             mutableState.update {
@@ -80,6 +81,7 @@ class LoginScreenModel @Inject constructor(
         is LoginLogout.State.Error -> Result.ApiError(this.message)
     }
 
+    @Immutable
     data class State(
         val loading: Boolean = false,
         val result: Result? = null,
@@ -89,9 +91,9 @@ class LoginScreenModel @Inject constructor(
     }
 
     sealed interface Result {
-        object Complete : Result
-        object InvalidOtp : Result
-        object RequireOtp : Result
+        data object Complete : Result
+        data object InvalidOtp : Result
+        data object RequireOtp : Result
         data class ApiError(val message: String) : Result
     }
 }

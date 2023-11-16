@@ -1,8 +1,9 @@
 package me.echeung.moemoekyun.ui.screen.home
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
@@ -40,7 +41,7 @@ class HomeScreenModel @Inject constructor(
     val radioState = radioService.state
 
     init {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             getAuthenticatedUser.asFlow()
                 .collectLatest {
                     mutableState.update { state ->
@@ -51,7 +52,7 @@ class HomeScreenModel @Inject constructor(
                 }
         }
 
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             getFavoriteSongs.asFlow()
                 .collectLatest {
                     mutableState.update { state ->
@@ -62,7 +63,7 @@ class HomeScreenModel @Inject constructor(
                 }
         }
 
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             albumArtUtil.flow
                 .filterNotNull()
                 .collectLatest {
@@ -74,7 +75,7 @@ class HomeScreenModel @Inject constructor(
                 }
         }
 
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             combine(
                 preferenceUtil.favoritesSortType().asFlow(),
                 preferenceUtil.favoritesSortDescending().asFlow(),
@@ -95,7 +96,7 @@ class HomeScreenModel @Inject constructor(
     }
 
     fun toggleFavorite(songId: Int) {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             favoriteSong.await(songId)
         }
     }
@@ -125,13 +126,14 @@ class HomeScreenModel @Inject constructor(
     }
 
     fun requestRandomSong() {
-        coroutineScope.launchIO {
+        screenModelScope.launchIO {
             mutableState.value.filteredFavorites?.randomOrNull()?.let {
                 requestSong.await(it)
             }
         }
     }
 
+    @Immutable
     data class State(
         val user: DomainUser? = null,
         val favorites: List<DomainSong>? = null,

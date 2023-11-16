@@ -19,7 +19,7 @@ class Register @Inject constructor(
     }
 
     sealed interface State {
-        object Complete : State
+        data object Complete : State
         data class Error(val message: String) : State
     }
 }
