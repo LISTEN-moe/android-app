@@ -83,6 +83,7 @@ fun PlayerScaffold(
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
+    modifier: Modifier = Modifier,
     content: @Composable BoxScope.(PaddingValues) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
@@ -118,6 +119,7 @@ fun PlayerScaffold(
         },
         sheetBackgroundColor = MaterialTheme.colorScheme.background,
         sheetPeekHeight = 0.dp,
+        modifier = modifier,
     ) { contentPadding ->
         Box {
             content(contentPadding)
@@ -375,14 +377,14 @@ private fun StationPicker(
     MultiChoiceSegmentedButtonRow(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        Station.values().forEachIndexed { index, station ->
+        Station.entries.forEachIndexed { index, station ->
             SegmentedButton(
                 checked = radioState.station == station,
                 onCheckedChange = { onClickStation(station) },
                 colors = colors,
                 shape = SegmentedButtonDefaults.itemShape(
                     index,
-                    Station.values().size,
+                    Station.entries.size,
                 ),
             ) {
                 Text(stringResource(station.labelRes))

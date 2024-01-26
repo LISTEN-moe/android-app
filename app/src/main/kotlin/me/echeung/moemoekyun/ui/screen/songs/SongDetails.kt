@@ -33,11 +33,12 @@ fun SongDetails(
     actionsEnabled: Boolean,
     toggleFavorite: (Int) -> Unit,
     request: (DomainSong) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(4.dp),

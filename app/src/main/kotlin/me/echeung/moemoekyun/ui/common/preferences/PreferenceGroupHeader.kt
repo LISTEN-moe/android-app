@@ -11,10 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PreferenceGroupHeader(title: String) {
+fun PreferenceGroupHeader(
+    title: String,
+    modifier: Modifier = Modifier,
+) {
     Box(
         contentAlignment = Alignment.CenterStart,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(bottom = 8.dp, top = 14.dp),
     ) {

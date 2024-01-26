@@ -15,6 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
+import kotlinx.collections.immutable.ImmutableMap
+import kotlinx.collections.immutable.persistentMapOf
+import kotlinx.collections.immutable.plus
+import kotlinx.collections.immutable.toImmutableMap
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.Toolbar
 import me.echeung.moemoekyun.ui.common.preferences.ListPreference
@@ -110,10 +114,11 @@ class SettingsScreen : Screen {
         }
     }
 
-    private fun getLangs(context: Context): Map<String, String> {
-        return mapOf("" to context.getString(R.string.system_default)) +
+    private fun getLangs(context: Context): ImmutableMap<String, String> {
+        return persistentMapOf("" to context.getString(R.string.system_default)) +
             AutoResConfigLocales.LOCALES.drop(1)
                 .zip(AutoResConfigLocales.DISPLAY_LOCALES.drop(1).map(LocaleUtil::getDisplayName))
                 .toMap()
+                .toImmutableMap()
     }
 }

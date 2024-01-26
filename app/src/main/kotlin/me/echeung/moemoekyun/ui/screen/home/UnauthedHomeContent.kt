@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
@@ -28,11 +28,13 @@ import me.echeung.moemoekyun.ui.screen.auth.RegisterScreen
 import me.echeung.moemoekyun.ui.theme.AppTheme
 
 @Composable
-fun UnauthedHomeContent() {
+fun UnauthedHomeContent(
+    modifier: Modifier = Modifier,
+) {
     val navigator = LocalNavigator.currentOrThrow
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,7 +70,7 @@ fun UnauthedHomeContent() {
     }
 }
 
-@Preview
+@PreviewLightDark
 @Composable
 private fun UnauthedHomeContentPreview() {
     AppTheme {

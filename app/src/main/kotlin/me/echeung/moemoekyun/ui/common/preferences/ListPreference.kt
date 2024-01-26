@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.collections.immutable.ImmutableMap
 import me.echeung.moemoekyun.R
 
 @Composable
@@ -30,7 +31,7 @@ fun <T> ListPreference(
     value: T,
     title: String,
     subtitle: String?,
-    entries: Map<out T, String>,
+    entries: ImmutableMap<out T, String>,
     onValueChange: (T) -> Unit,
 ) {
     var isDialogShown by remember { mutableStateOf(false) }

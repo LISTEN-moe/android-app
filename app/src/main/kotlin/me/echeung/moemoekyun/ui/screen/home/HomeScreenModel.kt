@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
@@ -57,7 +59,7 @@ class HomeScreenModel @Inject constructor(
                 .collectLatest {
                     mutableState.update { state ->
                         state.copy(
-                            favorites = it,
+                            favorites = it.toImmutableList(),
                         )
                     }
                 }
@@ -136,14 +138,15 @@ class HomeScreenModel @Inject constructor(
     @Immutable
     data class State(
         val user: DomainUser? = null,
-        val favorites: List<DomainSong>? = null,
+        val favorites: ImmutableList<DomainSong>? = null,
         val accentColor: Color? = null,
         val searchQuery: String? = null,
         val sortType: SortType = SortType.TITLE,
         val sortDescending: Boolean = false,
     ) {
-        val filteredFavorites: List<DomainSong>?
+        val filteredFavorites: ImmutableList<DomainSong>?
             get() = favorites
                 ?.filter { searchQuery.isNullOrBlank() || it.search(searchQuery) }
+                ?.toImmutableList()
     }
 }

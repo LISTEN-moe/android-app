@@ -26,12 +26,12 @@ class AutoMediaBrowserService : MediaBrowserServiceCompat(), ServiceConnection {
         }
     }
 
-    override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot? {
+    override fun onGetRoot(clientPackageName: String, clientUid: Int, rootHints: Bundle?): BrowserRoot {
         return BrowserRoot("media_root", null)
     }
 
     override fun onLoadChildren(parentId: String, result: Result<List<MediaBrowserCompat.MediaItem>>) {
-        val mediaItems = Station.values().map {
+        val mediaItems = Station.entries.map {
             createPlayableMediaItem(it.name, resources.getString(it.labelRes))
         }
 

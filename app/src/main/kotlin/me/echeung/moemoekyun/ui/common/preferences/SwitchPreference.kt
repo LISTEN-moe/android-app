@@ -10,10 +10,10 @@ import me.echeung.moemoekyun.util.ext.collectAsState
 
 @Composable
 fun SwitchPreference(
-    modifier: Modifier = Modifier,
     title: String,
-    subtitle: String? = null,
     preference: Preference<Boolean>,
+    modifier: Modifier = Modifier,
+    subtitle: String? = null,
 ) {
     val checked by preference.collectAsState()
     TextPreference(

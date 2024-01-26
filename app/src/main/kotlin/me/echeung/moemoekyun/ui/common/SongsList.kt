@@ -13,11 +13,12 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
+import kotlinx.collections.immutable.ImmutableList
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.screen.songs.SongsScreen
 
 fun LazyListScope.songsItems(
-    songs: List<DomainSong>,
+    songs: ImmutableList<DomainSong>,
     showFavoriteIcons: Boolean = false,
 ) = items(
     items = songs,

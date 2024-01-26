@@ -3,6 +3,8 @@ package me.echeung.moemoekyun.ui.screen.search
 import androidx.compose.runtime.Immutable
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.screenModelScope
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
@@ -26,7 +28,7 @@ class SearchScreenModel @Inject constructor(
                 .collectLatest {
                     mutableState.update { state ->
                         state.copy(
-                            songs = it,
+                            songs = it.toImmutableList(),
                         )
                     }
                 }
@@ -74,13 +76,14 @@ class SearchScreenModel @Inject constructor(
 
     @Immutable
     data class State(
-        val songs: List<DomainSong>? = null,
+        val songs: ImmutableList<DomainSong>? = null,
         val searchQuery: String? = null,
         val sortType: SortType = SortType.TITLE,
         val sortDescending: Boolean = false,
     ) {
-        val filteredSongs: List<DomainSong>?
+        val filteredSongs: ImmutableList<DomainSong>?
             get() = songs
                 ?.filter { searchQuery.isNullOrBlank() || it.search(searchQuery) }
+                ?.toImmutableList()
     }
 }

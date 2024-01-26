@@ -37,16 +37,19 @@ fun DropdownMenu(
 @Composable
 fun RadioIcon(
     checked: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     if (checked) {
         Icon(
             Icons.Outlined.RadioButtonChecked,
             contentDescription = null,
+            modifier = modifier,
         )
     } else {
         Icon(
             Icons.Outlined.RadioButtonUnchecked,
             contentDescription = null,
+            modifier = modifier,
         )
     }
 }
@@ -54,16 +57,19 @@ fun RadioIcon(
 @Composable
 fun CheckboxIcon(
     checked: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     if (checked) {
         Icon(
             Icons.Outlined.CheckBox,
             contentDescription = null,
+            modifier = modifier,
         )
     } else {
         Icon(
             Icons.Outlined.CheckBoxOutlineBlank,
             contentDescription = null,
+            modifier = modifier,
         )
     }
 }

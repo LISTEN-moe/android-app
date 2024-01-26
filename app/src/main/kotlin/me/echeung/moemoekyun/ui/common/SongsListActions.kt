@@ -19,12 +19,12 @@ import me.echeung.moemoekyun.util.SortType
 
 @Composable
 fun RowScope.SongsListActions(
-    sortTypes: List<SortType> = listOf(SortType.TITLE, SortType.ARTIST),
     selectedSortType: SortType,
     onSortBy: (SortType) -> Unit,
     sortDescending: Boolean,
     onSortDescending: (Boolean) -> Unit,
     requestRandomSong: () -> Unit,
+    sortTypes: List<SortType> = listOf(SortType.TITLE, SortType.ARTIST),
 ) {
     var showSortMenu by remember { mutableStateOf(false) }
 

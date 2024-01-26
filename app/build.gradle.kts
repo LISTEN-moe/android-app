@@ -112,6 +112,7 @@ dependencies {
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.bundles.coroutines)
     implementation(libs.serialization)
+    implementation(libs.immutables)
 
     implementation(libs.bundles.coil)
     implementation(libs.bundles.okhttp)
@@ -124,6 +125,7 @@ dependencies {
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
     implementation(libs.aboutLibraries.compose)
+    lintChecks(libs.compose.lintchecks)
 
     implementation(libs.bundles.voyager)
 

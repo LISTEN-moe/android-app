@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import kotlinx.collections.immutable.ImmutableList
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.user.model.DomainUser
@@ -51,7 +52,7 @@ import me.echeung.moemoekyun.util.SortType
 fun AuthedHomeContent(
     user: DomainUser,
     onClickLogOut: () -> Unit,
-    favorites: List<DomainSong>?,
+    favorites: ImmutableList<DomainSong>?,
     query: String?,
     onQueryChange: (String) -> Unit,
     sortType: SortType,
@@ -59,9 +60,10 @@ fun AuthedHomeContent(
     sortDescending: Boolean,
     onSortDescending: (Boolean) -> Unit,
     requestRandomSong: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
     ) {
         item {
             UserInfo(

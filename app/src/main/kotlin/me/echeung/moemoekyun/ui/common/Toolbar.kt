@@ -10,7 +10,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +36,7 @@ import me.echeung.moemoekyun.R
 
 @Composable
 fun Toolbar(
+    modifier: Modifier = Modifier,
     @StringRes titleResId: Int? = null,
     showUpButton: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
@@ -47,12 +47,14 @@ fun Toolbar(
         },
         showUpButton = showUpButton,
         actions = actions,
+        modifier = modifier,
     )
 }
 
 @Composable
 fun Toolbar(
     title: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     showUpButton: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
@@ -71,13 +73,14 @@ fun Toolbar(
             }
         },
         actions = actions,
+        modifier = modifier,
     )
 }
 
 @Composable
 fun SearchTextInput(
-    modifier: Modifier = Modifier,
     query: String?,
+    modifier: Modifier = Modifier,
     onQueryChange: (String) -> Unit,
 ) {
     val focusManager = LocalFocusManager.current

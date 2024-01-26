@@ -51,7 +51,7 @@ fun Context.copyToClipboard(label: String, content: String) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             toast(getString(R.string.copied_to_clipboard_content, content))
         }
-    } catch (e: Throwable) {
+    } catch (_: Throwable) {
     }
 }
 

@@ -19,8 +19,8 @@ private val AlbumArtModifier = Modifier
 
 @Composable
 fun AlbumArt(
-    modifier: Modifier = Modifier,
     albumArtUrl: String?,
+    modifier: Modifier = Modifier,
     openUrlOnClick: Boolean = true,
 ) {
     val uriHandler = LocalUriHandler.current
