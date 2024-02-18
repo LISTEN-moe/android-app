@@ -1,12 +1,12 @@
 [versions]
 aboutlib_version = "10.10.0"
-apollo_version = "3.8.0"
+apollo_version = "4.0.0-beta.4"
 coil_version = "2.5.0"
 compose_compiler_version = "1.5.8"
 coroutines_version = "1.8.0"
 hilt_version = "2.50"
 kotlin_version = "1.9.22"
-media3_version = "1.2.1"
+media3_version = "1.3.0-beta01"
 okhttp_version = "5.0.0-alpha.12"
 voyager_version = "1.0.0-rc10"
 
@@ -15,7 +15,7 @@ android-application = { id = "com.android.application", version = "8.2.2" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
-ksp = { id = "com.google.devtools.ksp", version = "1.9.20-1.0.14" }
+ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.17" }
 
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo_version" }
 kotlinter = { id = "org.jmailen.kotlinter", version = "3.11.1" }
@@ -59,7 +59,7 @@ hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt_version" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt_version" }
 
-immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.6" }
+immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.7" }
 
 logcat = { module = "com.squareup.logcat:logcat", version = "0.1" }
 

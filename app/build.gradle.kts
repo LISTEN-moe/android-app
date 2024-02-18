@@ -169,8 +169,4 @@ tasks {
             "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
         )
     }
-
-    preBuild {
-        dependsOn(formatKotlin)
-    }
 }
