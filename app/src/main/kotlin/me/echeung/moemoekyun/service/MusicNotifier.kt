@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.service
 
 import android.annotation.SuppressLint
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -78,7 +79,7 @@ class MusicNotifier @Inject constructor(
         if (isPlaying) {
             service.startForeground(NOTIFICATION_ID, notification)
         } else {
-            service.stopForeground(false)
+            service.stopForeground(Service.STOP_FOREGROUND_DETACH)
         }
 
         NotificationManagerCompat.from(service).notify(NOTIFICATION_ID, notification)

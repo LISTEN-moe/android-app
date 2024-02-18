@@ -15,6 +15,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import android.view.KeyEvent
 import androidx.core.content.ContextCompat
+import androidx.core.content.IntentCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -278,9 +279,7 @@ class AppService : Service() {
 
             // Headphone media button action
             Intent.ACTION_MEDIA_BUTTON -> {
-                val extras = intent.extras ?: return false
-
-                val keyEvent = extras.get(Intent.EXTRA_KEY_EVENT) as KeyEvent?
+                val keyEvent = IntentCompat.getParcelableExtra(intent, Intent.EXTRA_KEY_EVENT, KeyEvent::class.java)
                 if (keyEvent == null || keyEvent.action != KeyEvent.ACTION_DOWN) {
                     return false
                 }
