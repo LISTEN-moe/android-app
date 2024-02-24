@@ -58,23 +58,33 @@ fun Toolbar(
     showUpButton: Boolean = false,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
-    val navigator = LocalNavigator.currentOrThrow
-
     TopAppBar(
         title = title,
         navigationIcon = {
             if (showUpButton) {
-                IconButton(onClick = { navigator.pop() }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                        contentDescription = stringResource(R.string.action_back),
-                    )
-                }
+                UpButton()
             }
         },
         actions = actions,
         modifier = modifier,
     )
+}
+
+@Composable
+fun UpButton(
+    modifier: Modifier = Modifier,
+) {
+    val navigator = LocalNavigator.currentOrThrow
+
+    IconButton(
+        modifier = modifier,
+        onClick = { navigator.pop() },
+    ) {
+        Icon(
+            imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
+            contentDescription = stringResource(R.string.action_back),
+        )
+    }
 }
 
 @Composable
