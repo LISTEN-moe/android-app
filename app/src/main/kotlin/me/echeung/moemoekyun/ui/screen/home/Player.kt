@@ -25,8 +25,6 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetScaffold
-import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Headphones
@@ -36,8 +34,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
-import androidx.compose.material.rememberBottomSheetScaffoldState
-import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -48,9 +45,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MultiChoiceSegmentedButtonRow
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.rememberCoroutineScope
@@ -88,14 +88,17 @@ fun PlayerScaffold(
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberBottomSheetState(BottomSheetValue.Expanded),
+        bottomSheetState = rememberStandardBottomSheetState(
+            initialValue = SheetValue.Expanded,
+            skipHiddenState = false,
+        ),
     )
 
     BackHandler(
-        enabled = scaffoldState.bottomSheetState.isExpanded,
+        enabled = scaffoldState.bottomSheetState.hasExpandedState,
         onBack = {
             scope.launch {
-                scaffoldState.bottomSheetState.collapse()
+                scaffoldState.bottomSheetState.hide()
             }
         },
     )
@@ -112,13 +115,14 @@ fun PlayerScaffold(
                 toggleFavorite = toggleFavorite,
                 onClickCollapse = {
                     scope.launch {
-                        scaffoldState.bottomSheetState.collapse()
+                        scaffoldState.bottomSheetState.hide()
                     }
                 },
             )
         },
-        sheetBackgroundColor = MaterialTheme.colorScheme.background,
+        sheetContainerColor = MaterialTheme.colorScheme.background,
         sheetPeekHeight = 0.dp,
+        sheetDragHandle = {},
         modifier = modifier,
     ) { contentPadding ->
         Box {
