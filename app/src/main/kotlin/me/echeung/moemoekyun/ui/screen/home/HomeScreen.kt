@@ -27,7 +27,7 @@ import me.echeung.moemoekyun.ui.screen.search.SearchScreen
 import me.echeung.moemoekyun.ui.screen.settings.SettingsScreen
 import me.echeung.moemoekyun.ui.screen.songs.SongsScreen
 
-class HomeScreen : Screen {
+object HomeScreen : Screen {
 
     @Composable
     override fun Content() {
@@ -93,7 +93,7 @@ class HomeScreen : Screen {
             title = {},
             navigationIcon = {
                 if (isAuthenticated) {
-                    IconButton(onClick = { navigator.push(SearchScreen()) }) {
+                    IconButton(onClick = { navigator.push(SearchScreen) }) {
                         Icon(
                             imageVector = Icons.Outlined.Search,
                             contentDescription = stringResource(R.string.search),
@@ -102,13 +102,13 @@ class HomeScreen : Screen {
                 }
             },
             actions = {
-                IconButton(onClick = { navigator.push(AboutScreen()) }) {
+                IconButton(onClick = { navigator.push(AboutScreen) }) {
                     Icon(
                         imageVector = Icons.Outlined.Info,
                         contentDescription = stringResource(R.string.about),
                     )
                 }
-                IconButton(onClick = { navigator.push(SettingsScreen()) }) {
+                IconButton(onClick = { navigator.push(SettingsScreen) }) {
                     Icon(
                         imageVector = Icons.Outlined.Settings,
                         contentDescription = stringResource(R.string.settings),

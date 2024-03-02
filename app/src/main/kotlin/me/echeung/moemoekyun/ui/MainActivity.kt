@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             AppTheme {
                 BottomSheetNavigator {
-                    Navigator(HomeScreen())
+                    Navigator(HomeScreen)
                 }
             }
         }

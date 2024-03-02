@@ -38,7 +38,7 @@ import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
 import me.echeung.moemoekyun.ui.util.autofill
 
-class LoginScreen : Screen {
+object LoginScreen : Screen {
 
     @OptIn(ExperimentalComposeUiApi::class)
     @Composable

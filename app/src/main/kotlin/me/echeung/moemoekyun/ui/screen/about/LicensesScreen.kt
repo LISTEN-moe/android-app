@@ -9,7 +9,7 @@ import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.Toolbar
 
-class LicensesScreen : Screen {
+object LicensesScreen : Screen {
 
     @Composable
     override fun Content() {

@@ -32,7 +32,7 @@ import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
 
-class RegisterScreen : Screen {
+object RegisterScreen : Screen {
 
     @Composable
     override fun Content() {

@@ -55,14 +55,14 @@ fun UnauthedHomeContent(
         ) {
             OutlinedButton(
                 modifier = Modifier.weight(1f),
-                onClick = { navigator.push(RegisterScreen()) },
+                onClick = { navigator.push(RegisterScreen) },
             ) {
                 Text(stringResource(R.string.register))
             }
 
             Button(
                 modifier = Modifier.weight(1f),
-                onClick = { navigator.push(LoginScreen()) },
+                onClick = { navigator.push(LoginScreen) },
             ) {
                 Text(stringResource(R.string.login))
             }

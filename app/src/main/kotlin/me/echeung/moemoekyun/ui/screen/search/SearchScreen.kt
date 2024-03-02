@@ -25,7 +25,7 @@ import me.echeung.moemoekyun.ui.common.SongsListActions
 import me.echeung.moemoekyun.ui.common.UpButton
 import me.echeung.moemoekyun.ui.common.songsItems
 
-class SearchScreen : Screen {
+object SearchScreen : Screen {
 
     @Composable
     override fun Content() {

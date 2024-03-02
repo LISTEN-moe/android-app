@@ -46,7 +46,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.Toolbar
 import me.echeung.moemoekyun.ui.theme.AppTheme
 
-class AboutScreen : Screen {
+object AboutScreen : Screen {
 
     @Composable
     override fun Content() {
@@ -104,7 +104,7 @@ class AboutScreen : Screen {
                             uriHandler.openUri("https://github.com/LISTEN-moe/android-app")
                         }
                         AboutCardItem(Icons.Default.Description, R.string.licenses) {
-                            navigator.push(LicensesScreen())
+                            navigator.push(LicensesScreen)
                         }
                     }
                 }
@@ -207,6 +207,6 @@ private fun AboutCardItem(
 @Composable
 private fun AboutScreenPreview() {
     AppTheme {
-        AboutScreen()
+        AboutScreen
     }
 }

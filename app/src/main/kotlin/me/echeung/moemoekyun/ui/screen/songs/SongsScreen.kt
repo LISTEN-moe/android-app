@@ -14,7 +14,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 
-class SongsScreen(
+data class SongsScreen(
     private val songs: List<DomainSong>,
 ) : Screen {
 

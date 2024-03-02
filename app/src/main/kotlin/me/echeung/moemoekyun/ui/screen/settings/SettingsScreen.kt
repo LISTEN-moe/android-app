@@ -27,7 +27,7 @@ import me.echeung.moemoekyun.ui.common.preferences.SwitchPreference
 import me.echeung.moemoekyun.util.system.LocaleUtil
 import rikka.autoresconfig.AutoResConfigLocales
 
-class SettingsScreen : Screen {
+object SettingsScreen : Screen {
 
     @Composable
     override fun Content() {
