@@ -92,7 +92,7 @@ class AboutScreen : Screen {
                             text = appVersion,
                         )
 
-                        if (BuildConfig.FLAVOR != "playstore") {
+                        if (BuildConfig.FLAVOR == "playstore") {
                             AboutCardItem(Icons.Default.Star, R.string.rate) {
                                 uriHandler.openUri("https://play.google.com/store/apps/details?id=me.echeung.moemoekyun")
                             }
