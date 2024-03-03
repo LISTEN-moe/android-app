@@ -35,10 +35,7 @@ fun DropdownMenu(
 }
 
 @Composable
-fun RadioIcon(
-    checked: Boolean,
-    modifier: Modifier = Modifier,
-) {
+fun RadioIcon(checked: Boolean, modifier: Modifier = Modifier) {
     if (checked) {
         Icon(
             Icons.Outlined.RadioButtonChecked,
@@ -55,10 +52,7 @@ fun RadioIcon(
 }
 
 @Composable
-fun CheckboxIcon(
-    checked: Boolean,
-    modifier: Modifier = Modifier,
-) {
+fun CheckboxIcon(checked: Boolean, modifier: Modifier = Modifier) {
     if (checked) {
         Icon(
             Icons.Outlined.CheckBox,

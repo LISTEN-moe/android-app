@@ -126,7 +126,8 @@ object LoginScreen : Screen {
 
                     when (state.result) {
                         is LoginScreenModel.Result.InvalidOtp -> stringResource(R.string.invalid_mfa_token)
-                        is LoginScreenModel.Result.ApiError -> (state.result as LoginScreenModel.Result.ApiError).message
+                        is LoginScreenModel.Result.ApiError ->
+                            (state.result as LoginScreenModel.Result.ApiError).message
                         else -> null
                     }?.let {
                         Text(

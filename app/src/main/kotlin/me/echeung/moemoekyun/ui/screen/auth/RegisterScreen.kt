@@ -110,7 +110,8 @@ object RegisterScreen : Screen {
                     when (state.result) {
                         is RegisterScreenModel.Result.AllFieldsRequired -> stringResource(R.string.required)
                         is RegisterScreenModel.Result.MismatchedPasswords -> stringResource(R.string.password_mismatch)
-                        is RegisterScreenModel.Result.ApiError -> (state.result as RegisterScreenModel.Result.ApiError).message
+                        is RegisterScreenModel.Result.ApiError ->
+                            (state.result as RegisterScreenModel.Result.ApiError).message
                         else -> null
                     }?.let {
                         Text(

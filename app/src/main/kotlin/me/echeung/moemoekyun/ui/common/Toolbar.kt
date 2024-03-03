@@ -71,9 +71,7 @@ fun Toolbar(
 }
 
 @Composable
-fun UpButton(
-    modifier: Modifier = Modifier,
-) {
+fun UpButton(modifier: Modifier = Modifier) {
     val navigator = LocalNavigator.currentOrThrow
 
     IconButton(
@@ -88,11 +86,7 @@ fun UpButton(
 }
 
 @Composable
-fun SearchTextInput(
-    query: String?,
-    modifier: Modifier = Modifier,
-    onQueryChange: (String) -> Unit,
-) {
+fun SearchTextInput(query: String?, modifier: Modifier = Modifier, onQueryChange: (String) -> Unit) {
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 

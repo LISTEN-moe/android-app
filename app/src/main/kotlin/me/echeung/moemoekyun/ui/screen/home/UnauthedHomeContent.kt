@@ -28,9 +28,7 @@ import me.echeung.moemoekyun.ui.screen.auth.RegisterScreen
 import me.echeung.moemoekyun.ui.theme.AppTheme
 
 @Composable
-fun UnauthedHomeContent(
-    modifier: Modifier = Modifier,
-) {
+fun UnauthedHomeContent(modifier: Modifier = Modifier) {
     val navigator = LocalNavigator.currentOrThrow
 
     Column(

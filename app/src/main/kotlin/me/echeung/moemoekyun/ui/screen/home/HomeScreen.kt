@@ -84,9 +84,7 @@ object HomeScreen : Screen {
     }
 
     @Composable
-    private fun Toolbar(
-        isAuthenticated: Boolean,
-    ) {
+    private fun Toolbar(isAuthenticated: Boolean) {
         val navigator = LocalNavigator.currentOrThrow
 
         TopAppBar(

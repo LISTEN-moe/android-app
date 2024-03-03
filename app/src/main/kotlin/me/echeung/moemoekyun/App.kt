@@ -83,7 +83,10 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, ImageLoa
         val notificationManager = NotificationManagerCompat.from(this)
         listOf(
             // Playing
-            NotificationChannelCompat.Builder(MusicNotifier.NOTIFICATION_CHANNEL_ID, NotificationManagerCompat.IMPORTANCE_LOW)
+            NotificationChannelCompat.Builder(
+                MusicNotifier.NOTIFICATION_CHANNEL_ID,
+                NotificationManagerCompat.IMPORTANCE_LOW,
+            )
                 .setName(MusicNotifier.NOTIFICATION_CHANNEL_NAME)
                 .build(),
         ).forEach(notificationManager::createNotificationChannel)

@@ -76,11 +76,7 @@ fun <T> ListPreference(
 }
 
 @Composable
-private fun DialogRow(
-    label: String,
-    isSelected: Boolean,
-    onSelected: () -> Unit,
-) {
+private fun DialogRow(label: String, isSelected: Boolean, onSelected: () -> Unit) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier

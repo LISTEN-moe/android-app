@@ -10,10 +10,7 @@ import androidx.compose.ui.res.painterResource
 import me.echeung.moemoekyun.R
 
 @Composable
-fun BackgroundBox(
-    modifier: Modifier = Modifier,
-    content: @Composable BoxScope.() -> Unit,
-) {
+fun BackgroundBox(modifier: Modifier = Modifier, content: @Composable BoxScope.() -> Unit) {
     Box(
         modifier = modifier,
     ) {

@@ -27,7 +27,11 @@ class GetFavoriteSongs @Inject constructor(
 
     fun getAll(): List<DomainSong> {
         return userService.state.value.favorites.let {
-            songsSorter.sort(it, preferenceUtil.favoritesSortType().get(), preferenceUtil.favoritesSortDescending().get())
+            songsSorter.sort(
+                it,
+                preferenceUtil.favoritesSortType().get(),
+                preferenceUtil.favoritesSortDescending().get(),
+            )
         }
     }
 

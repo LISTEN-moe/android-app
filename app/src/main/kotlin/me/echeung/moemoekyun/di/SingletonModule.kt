@@ -34,9 +34,7 @@ object SingletonModule {
 
     @Provides
     @Singleton
-    fun okhttpClient(
-        authUtil: AuthUtil,
-    ): OkHttpClient {
+    fun okhttpClient(authUtil: AuthUtil): OkHttpClient {
         val builder = OkHttpClient.Builder()
             .addNetworkInterceptor { chain ->
                 val request = chain.request()
@@ -72,10 +70,7 @@ object SingletonModule {
 
     @Provides
     @Singleton
-    fun apolloClient(
-        @ApplicationContext context: Context,
-        okHttpClient: OkHttpClient,
-    ) = ApolloClient.Builder()
+    fun apolloClient(@ApplicationContext context: Context, okHttpClient: OkHttpClient) = ApolloClient.Builder()
         .serverUrl("https://listen.moe/graphql")
         .httpCache(
             directory = File(context.externalCacheDir, "apolloCache"),

@@ -106,10 +106,7 @@ fun SongDetails(
 }
 
 @Composable
-private fun ColumnScope.Section(
-    @StringRes heading: Int,
-    value: String?,
-) {
+private fun ColumnScope.Section(@StringRes heading: Int, value: String?) {
     val context = LocalContext.current
 
     value.orEmpty().takeIf { it.isNotBlank() }?.let {

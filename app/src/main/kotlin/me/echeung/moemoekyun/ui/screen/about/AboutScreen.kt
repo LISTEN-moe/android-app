@@ -94,7 +94,9 @@ object AboutScreen : Screen {
 
                         if (BuildConfig.FLAVOR == "playstore") {
                             AboutCardItem(Icons.Default.Star, R.string.rate) {
-                                uriHandler.openUri("https://play.google.com/store/apps/details?id=me.echeung.moemoekyun")
+                                uriHandler.openUri(
+                                    "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun",
+                                )
                             }
                         }
                         AboutCardItem(Icons.Default.Language, R.string.translate) {
@@ -148,10 +150,7 @@ object AboutScreen : Screen {
 }
 
 @Composable
-private fun AboutCard(
-    @StringRes headingResId: Int? = null,
-    content: @Composable () -> Unit,
-) {
+private fun AboutCard(@StringRes headingResId: Int? = null, content: @Composable () -> Unit) {
     Box(modifier = Modifier.padding(vertical = 8.dp)) {
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -178,11 +177,7 @@ private fun AboutCard(
 }
 
 @Composable
-private fun AboutCardItem(
-    imageVector: ImageVector,
-    @StringRes textResId: Int,
-    onClick: () -> Unit = {},
-) {
+private fun AboutCardItem(imageVector: ImageVector, @StringRes textResId: Int, onClick: () -> Unit = {}) {
     TextButton(
         modifier = Modifier
             .fillMaxWidth()

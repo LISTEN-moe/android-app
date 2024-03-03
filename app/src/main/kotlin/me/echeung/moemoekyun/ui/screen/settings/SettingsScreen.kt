@@ -36,7 +36,9 @@ object SettingsScreen : Screen {
         val screenModel = getScreenModel<SettingsScreenModel>()
 
         val langs = remember { getLangs(context) }
-        var currentLanguage by remember { mutableStateOf(AppCompatDelegate.getApplicationLocales().get(0)?.toLanguageTag() ?: "") }
+        var currentLanguage by remember {
+            mutableStateOf(AppCompatDelegate.getApplicationLocales().get(0)?.toLanguageTag() ?: "")
+        }
 
         LaunchedEffect(currentLanguage) {
             val locale = if (currentLanguage.isEmpty()) {

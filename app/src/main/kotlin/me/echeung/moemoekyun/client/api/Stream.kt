@@ -84,7 +84,10 @@ class Stream @Inject constructor(
 
                 AudioManager.AUDIOFOCUS_LOSS, AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
                     wasPlayingBeforeLoss = isPlaying
-                    if (wasPlayingBeforeLoss && (preferenceUtil.shouldPauseAudioOnLoss().get() || context.isCarUiMode())) {
+                    if (
+                        wasPlayingBeforeLoss &&
+                        (preferenceUtil.shouldPauseAudioOnLoss().get() || context.isCarUiMode())
+                    ) {
                         pause()
                     }
                 }
@@ -153,7 +156,10 @@ class Stream @Inject constructor(
         // Set stream
         val streamUrl = preferenceUtil.station().get().streamUrl
         if (streamUrl != currentStreamUrl) {
-            val dataSourceFactory = DefaultDataSource.Factory(context, DefaultHttpDataSource.Factory().setUserAgent(NetworkUtil.userAgent))
+            val dataSourceFactory = DefaultDataSource.Factory(
+                context,
+                DefaultHttpDataSource.Factory().setUserAgent(NetworkUtil.userAgent),
+            )
             val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
                 .createMediaSource(MediaItem.Builder().setUri(Uri.parse(streamUrl)).build())
             with(player!!) {

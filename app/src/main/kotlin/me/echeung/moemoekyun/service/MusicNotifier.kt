@@ -36,7 +36,12 @@ class MusicNotifier @Inject constructor(
             flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         }
 
-        val clickIntent = PendingIntent.getActivity(service, 0, action, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val clickIntent = PendingIntent.getActivity(
+            service,
+            0,
+            action,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
         val deleteIntent = getPlaybackActionService(service, AppService.STOP)
 
         val builder = NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
@@ -52,7 +57,9 @@ class MusicNotifier @Inject constructor(
             .setOnlyAlertOnce(true)
 
         // Needs to be set after setting the color
-        val style = androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(service.mediaSession!!.sessionToken)
+        val style = androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(
+            service.mediaSession!!.sessionToken,
+        )
         builder.setStyle(style.setShowActionsInCompactView(0))
 
         builder.setContentTitle(currentSong.title)
@@ -64,9 +71,13 @@ class MusicNotifier @Inject constructor(
             builder.addAction(
                 NotificationCompat.Action(
                     if (currentSong.favorited) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp,
-                    if (currentSong.favorited) service.getString(R.string.action_unfavorite) else service.getString(
-                        R.string.action_favorite,
-                    ),
+                    if (currentSong.favorited) {
+                        service.getString(R.string.action_unfavorite)
+                    } else {
+                        service.getString(
+                            R.string.action_favorite,
+                        )
+                    },
                     getPlaybackActionService(service, AppService.TOGGLE_FAVORITE),
                 ),
             )
@@ -90,7 +101,12 @@ class MusicNotifier @Inject constructor(
             action = intentAction
         }
 
-        return PendingIntent.getService(service, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        return PendingIntent.getService(
+            service,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
     }
 
     companion object {

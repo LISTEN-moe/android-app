@@ -8,7 +8,7 @@ plugins {
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
     alias(libs.plugins.apollo)
-    alias(libs.plugins.kotlinter)
+    alias(libs.plugins.ktlint)
     alias(libs.plugins.autoresconfig)
 }
 
@@ -149,11 +149,12 @@ apollo {
     }
 }
 
-kotlinter {
-    experimentalRules = true
-
-    // Doesn't play well with Android Studio
-    disabledRules = arrayOf("experimental:argument-list-wrapping")
+ktlint {
+    filter {
+        exclude { element ->
+            element.file.path.contains("generated/")
+        }
+    }
 }
 
 tasks {

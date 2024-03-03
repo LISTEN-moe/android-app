@@ -163,11 +163,7 @@ private fun PlayerContent(
 }
 
 @Composable
-private fun BoxScope.CollapsedPlayerContent(
-    radioState: RadioState,
-    togglePlayState: () -> Unit,
-    onClick: () -> Unit,
-) {
+private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlayState: () -> Unit, onClick: () -> Unit) {
     Surface(
         modifier = Modifier
             .align(Alignment.BottomCenter)
@@ -348,9 +344,7 @@ private fun LandscapeExpandedPlayerContent(
 }
 
 @Composable
-private fun CollapseIcon(
-    onClickCollapse: () -> Unit,
-) {
+private fun CollapseIcon(onClickCollapse: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -367,10 +361,7 @@ private fun CollapseIcon(
 }
 
 @Composable
-private fun StationPicker(
-    radioState: RadioState,
-    onClickStation: (Station) -> Unit,
-) {
+private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> Unit) {
     val colors = SegmentedButtonDefaults.colors(
         activeContainerColor = MaterialTheme.colorScheme.primary,
         inactiveContainerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),

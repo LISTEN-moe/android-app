@@ -18,11 +18,7 @@ private val AlbumArtModifier = Modifier
     .clip(RoundedCornerShape(8.dp))
 
 @Composable
-fun AlbumArt(
-    albumArtUrl: String?,
-    modifier: Modifier = Modifier,
-    openUrlOnClick: Boolean = true,
-) {
+fun AlbumArt(albumArtUrl: String?, modifier: Modifier = Modifier, openUrlOnClick: Boolean = true) {
     val uriHandler = LocalUriHandler.current
 
     if (albumArtUrl == null) {

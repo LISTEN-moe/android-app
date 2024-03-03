@@ -13,10 +13,7 @@ import androidx.compose.ui.platform.LocalAutofillTree
 
 // Yoinked from https://issuetracker.google.com/issues/176949051#comment8
 @OptIn(ExperimentalComposeUiApi::class)
-fun Modifier.autofill(
-    autofillTypes: List<AutofillType>,
-    onFill: (String) -> Unit,
-) = composed {
+fun Modifier.autofill(autofillTypes: List<AutofillType>, onFill: (String) -> Unit) = composed {
     val autofill = LocalAutofill.current
     val autofillNode = AutofillNode(onFill = onFill, autofillTypes = autofillTypes)
     LocalAutofillTree.current += autofillNode

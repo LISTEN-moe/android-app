@@ -11,10 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PreferenceGroupHeader(
-    title: String,
-    modifier: Modifier = Modifier,
-) {
+fun PreferenceGroupHeader(title: String, modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.CenterStart,
         modifier = modifier

@@ -104,10 +104,7 @@ private val UserAvatarModifier = Modifier
 private val BannerScrim = Color.Black.copy(alpha = 0.65f)
 
 @Composable
-private fun UserInfo(
-    user: DomainUser,
-    onClickLogOut: () -> Unit,
-) {
+private fun UserInfo(user: DomainUser, onClickLogOut: () -> Unit) {
     val uriHandler = LocalUriHandler.current
     var showLogoutConfirmation by remember { mutableStateOf(false) }
 

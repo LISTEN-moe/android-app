@@ -93,7 +93,9 @@ class ApiClient @Inject constructor(
      */
     suspend fun getUserFavorites(): List<Song> {
         // TODO: do actual pagination
-        val response = client.query(FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP))).execute()
+        val response = client.query(
+            FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)),
+        ).execute()
 
         return response.data?.user?.favorites?.favorites
             ?.mapNotNull { it?.transform() }
@@ -115,7 +117,9 @@ class ApiClient @Inject constructor(
      * @param songId Song to request.
      */
     suspend fun requestSong(songId: Int) {
-        val response = client.mutation(RequestSongMutation(songId, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP))).execute()
+        val response = client.mutation(
+            RequestSongMutation(songId, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)),
+        ).execute()
 
         if (response.hasErrors()) {
             throw Exception(response.errors.toMessage())
@@ -142,7 +146,9 @@ class ApiClient @Inject constructor(
     suspend fun getAllSongs(): List<Song> {
         // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
-        val response = client.query(SongsQuery(0, 50000, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)))
+        val response = client.query(
+            SongsQuery(0, 50000, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)),
+        )
             .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
             .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
             .execute()
