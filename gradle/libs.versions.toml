@@ -18,7 +18,7 @@ serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref 
 ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.18" }
 
 apollo = { id = "com.apollographql.apollo3", version.ref = "apollo_version" }
-kotlinter = { id = "org.jmailen.kotlinter", version = "3.11.1" }
+kotlinter = { id = "org.jmailen.kotlinter", version = "3.16.0" }
 autoresconfig = { id = "dev.rikka.tools.autoresconfig", version = "1.2.2" }
 
 [libraries]
