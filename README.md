@@ -10,9 +10,9 @@
        src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" />
 </a>
 
-<a href="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
+<a href="https://f-droid.org/app/me.echeung.moemoekyun.fdroid">
   <img height="80" alt="Get it on F-Droid"
-       src="https://f-droid.org/badge/get-it-on.png">
+       src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
 </a>
 
 
