@@ -84,11 +84,7 @@ fun AuthedHomeContent(
             )
         }
 
-        if (favorites != null) {
-            songsItems(
-                songs = favorites,
-            )
-        }
+        songsItems(songs = favorites)
 
         item {
             Spacer(modifier = Modifier.height(PlayerPeekHeight))

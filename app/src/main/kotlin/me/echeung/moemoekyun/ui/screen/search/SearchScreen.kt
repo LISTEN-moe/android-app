@@ -68,7 +68,7 @@ object SearchScreen : Screen {
                 ) {
                     LazyColumn {
                         songsItems(
-                            songs = state.filteredSongs!!,
+                            songs = state.filteredSongs,
                             showFavoriteIcons = true,
                         )
                     }
@@ -84,7 +84,7 @@ object SearchScreen : Screen {
                 contentPadding = contentPadding,
             ) {
                 songsItems(
-                    songs = state.filteredSongs!!,
+                    songs = state.filteredSongs,
                     showFavoriteIcons = true,
                 )
             }
