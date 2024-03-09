@@ -1,0 +1,13 @@
+Features:
+
+* Tune in to the radio 24/7
+* No ads
+* Login to your account to access your favorites and make requests
+* Search for songs to favorite and request
+* See the last 2 songs played
+* Android Auto support
+* Bluetooth and headphone control support
+
+About:
+
+* You can listen to the radio on any device with a browser too: https://listen.moe/
