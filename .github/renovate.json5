@@ -10,7 +10,8 @@
       "groupName": "Kotlin",
       "matchPackagePrefixes": [
         "androidx.compose.compiler",
-        "org.jetbrains.kotlin"
+        "org.jetbrains.kotlin",
+        "com.google.devtools.ksp"
       ]
     }
   ]
