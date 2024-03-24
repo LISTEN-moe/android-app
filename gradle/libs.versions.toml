@@ -1,5 +1,5 @@
 [versions]
-aboutlib_version = "11.1.0"
+aboutlib_version = "11.1.1"
 apollo_version = "4.0.0-beta.5"
 coil_version = "2.6.0"
 compose_compiler_version = "1.5.11"
