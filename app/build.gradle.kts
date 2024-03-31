@@ -5,6 +5,7 @@ plugins {
     id("com.mikepenz.aboutlibraries.plugin")
     kotlin("android")
     kotlin("plugin.serialization")
+    id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
     alias(libs.plugins.apollo)
