@@ -82,8 +82,14 @@ class SearchScreenModel @Inject constructor(
         val sortDescending: Boolean = false,
     ) {
         val filteredSongs: ImmutableList<DomainSong>?
-            get() = songs
-                ?.filter { searchQuery.isNullOrBlank() || it.search(searchQuery) }
-                ?.toImmutableList()
+            get() {
+                return if (searchQuery.isNullOrBlank()) {
+                    songs
+                } else {
+                    songs?.asSequence()
+                        ?.filter { it.search(searchQuery) }
+                        ?.toImmutableList()
+                }
+            }
     }
 }
