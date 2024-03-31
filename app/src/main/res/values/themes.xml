@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="Theme.App" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- App bar -->
@@ -18,6 +18,7 @@
 
     <!-- Splash screen -->
     <style name="Theme.Splash" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenBehavior" tools:targetApi="33">icon_preferred</item>
         <item name="windowSplashScreenBackground">@color/darker_grey</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash</item>
         <item name="postSplashScreenTheme">@style/Theme.App</item>
