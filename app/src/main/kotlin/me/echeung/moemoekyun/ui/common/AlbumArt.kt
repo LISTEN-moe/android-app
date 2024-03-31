@@ -28,6 +28,11 @@ fun AlbumArt(albumArtUrl: String?, modifier: Modifier = Modifier, openUrlOnClick
             contentDescription = null,
         )
     } else {
+//        val request = ImageRequest.Builder(LocalContext.current)
+//            .data(albumArtUrl)
+//            .transformations(BlurTransformation())
+//            .build()
+
         AsyncImage(
             modifier = AlbumArtModifier
                 .then(modifier)
