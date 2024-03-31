@@ -1,5 +1,8 @@
 package me.echeung.moemoekyun.domain.songs.model
 
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
+
 data class DomainSong(
     val id: Int,
     val title: String,
@@ -12,20 +15,20 @@ data class DomainSong(
     val favorited: Boolean,
     val favoritedAtEpoch: Long?,
 ) {
-    fun search(query: String?): Boolean {
-        if (query.isNullOrBlank()) {
-            return true
-        }
-
+    fun search(query: String): Boolean {
         return title.contains(query, ignoreCase = true) ||
-            artists?.contains(query) ?: false ||
-            albums?.contains(query) ?: false ||
-            sources?.contains(query) ?: false
+            artists?.contains(query, ignoreCase = true) ?: false ||
+            albums?.contains(query, ignoreCase = true) ?: false ||
+            sources?.contains(query, ignoreCase = true) ?: false
     }
 }
 
-fun List<DomainSong>.search(query: String?): List<DomainSong> {
-    return asSequence()
-        .filter { it.search(query) }
-        .toList()
+fun ImmutableList<DomainSong>.search(query: String?): ImmutableList<DomainSong> {
+    return if (query.isNullOrBlank()) {
+        this
+    } else {
+        asSequence()
+            .filter { it.search(query) }
+            .toImmutableList()
+    }
 }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.domain.songs.interactor.GetSongs
 import me.echeung.moemoekyun.domain.songs.interactor.RequestSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
+import me.echeung.moemoekyun.domain.songs.model.search
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SortType
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -82,14 +83,6 @@ class SearchScreenModel @Inject constructor(
         val sortDescending: Boolean = false,
     ) {
         val filteredSongs: ImmutableList<DomainSong>?
-            get() {
-                return if (searchQuery.isNullOrBlank()) {
-                    songs
-                } else {
-                    songs?.asSequence()
-                        ?.filter { it.search(searchQuery) }
-                        ?.toImmutableList()
-                }
-            }
+            get() = songs?.search(searchQuery)
     }
 }

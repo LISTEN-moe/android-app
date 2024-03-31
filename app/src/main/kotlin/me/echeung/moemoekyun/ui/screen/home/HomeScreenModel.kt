@@ -18,6 +18,7 @@ import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
 import me.echeung.moemoekyun.domain.songs.interactor.RequestSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
+import me.echeung.moemoekyun.domain.songs.model.search
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
 import me.echeung.moemoekyun.domain.user.interactor.LoginLogout
 import me.echeung.moemoekyun.domain.user.model.DomainUser
@@ -145,8 +146,6 @@ class HomeScreenModel @Inject constructor(
         val sortDescending: Boolean = false,
     ) {
         val filteredFavorites: ImmutableList<DomainSong>?
-            get() = favorites
-                ?.filter { searchQuery.isNullOrBlank() || it.search(searchQuery) }
-                ?.toImmutableList()
+            get() = favorites?.search(searchQuery)
     }
 }
