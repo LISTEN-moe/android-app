@@ -95,7 +95,7 @@ fun PlayerScaffold(
     )
 
     BackHandler(
-        enabled = scaffoldState.bottomSheetState.hasExpandedState,
+        enabled = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded,
         onBack = {
             scope.launch {
                 scaffoldState.bottomSheetState.hide()
