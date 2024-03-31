@@ -17,10 +17,7 @@ import kotlinx.collections.immutable.ImmutableList
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.screen.songs.SongsScreen
 
-fun LazyListScope.songsItems(
-    songs: ImmutableList<DomainSong>?,
-    showFavoriteIcons: Boolean = false,
-) = items(
+fun LazyListScope.songsItems(songs: ImmutableList<DomainSong>?, showFavoriteIcons: Boolean = false) = items(
     items = songs.orEmpty(),
     key = { it.id },
 ) {

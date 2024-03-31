@@ -236,4 +236,3 @@ private suspend fun Bitmap.blur(scale: Float, radius: Int): Bitmap? = withContex
     sentBitmap.recycle()
     return@withContext bitmap
 }
-

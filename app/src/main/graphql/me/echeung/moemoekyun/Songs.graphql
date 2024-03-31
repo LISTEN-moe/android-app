@@ -42,5 +42,6 @@ query SongsQuery($offset: Int!, $count: Int!, $kpop: Boolean) {
         songs {
             ...songListFields
         }
+        count
     }
 }

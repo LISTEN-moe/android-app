@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.api
 
 import com.apollographql.apollo3.ApolloClient
+import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Optional
 import com.apollographql.apollo3.cache.http.HttpFetchPolicy
 import com.apollographql.apollo3.cache.http.httpExpireTimeout
@@ -144,16 +145,26 @@ class ApiClient @Inject constructor(
      * Gets all songs.
      */
     suspend fun getAllSongs(): List<Song> {
-        // TODO: do actual pagination
         // TODO: maintain an actual DB of song info so we don't need to query as much stuff
-        val response = client.query(
-            SongsQuery(0, 50000, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)),
-        )
-            .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
-            .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
-            .execute()
+        val pageSize = 15_000
+        var offset = 0
+        val songs = mutableListOf<Song>()
+        var response: ApolloResponse<SongsQuery.Data>
 
-        return response.data?.songs?.songs?.map { it.transform() }.orEmpty()
+        do {
+            response = client.query(
+                SongsQuery(offset, pageSize, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)),
+            )
+                .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
+                .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
+                .execute()
+
+            songs.addAll(response.data?.songs?.songs?.map { it.transform() }.orEmpty())
+
+            offset += pageSize
+        } while (offset < (response.data?.songs?.count ?: 0))
+
+        return songs
     }
 
     enum class LoginResult {
