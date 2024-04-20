@@ -8,6 +8,7 @@ plugins {
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.apollo)
     alias(libs.plugins.ktlint)
     alias(libs.plugins.autoresconfig)
@@ -162,14 +163,18 @@ ktlint {
 tasks {
     withType<KotlinCompile> {
         // See https://kotlinlang.org/docs/reference/experimental.html#experimental-status-of-experimental-api-markers
-        kotlinOptions.freeCompilerArgs += listOf(
-            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=kotlin.Experimental",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-        )
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
+                "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-opt-in=kotlin.Experimental",
+                "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-opt-in=kotlinx.coroutines.FlowPreview",
+                "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
+                "-P",
+                "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=2.0.0-RC1",
+            )
+        }
     }
 }
