@@ -115,8 +115,9 @@ dependencies {
     implementation(libs.serialization)
     implementation(libs.immutables)
 
-    implementation(libs.bundles.coil)
+    implementation(platform(libs.okhttp.bom))
     implementation(libs.bundles.okhttp)
+    implementation(libs.bundles.coil)
     implementation(libs.bundles.apollo)
     implementation(libs.logcat)
 
