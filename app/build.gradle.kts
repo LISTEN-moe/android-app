@@ -96,18 +96,18 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
         isCoreLibraryDesugaringEnabled = true
     }
+}
 
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
     }
+}
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.compiler.version.get()
-    }
+kotlin {
+    jvmToolchain(17)
 }
 
 dependencies {
