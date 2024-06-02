@@ -25,7 +25,7 @@ aboutLibraries-gradle = { module = "com.mikepenz.aboutlibraries.plugin:aboutlibr
 aboutLibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlib_version" }
 
 androidx-appcompat = "androidx.appcompat:appcompat:1.6.1"
-androidx-lifecycle = "androidx.lifecycle:lifecycle-process:2.8.0"
+androidx-lifecycle = "androidx.lifecycle:lifecycle-process:2.8.1"
 androidx-media = "androidx.media:media:1.7.0"
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3_version" }
 androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3_version" }
