@@ -1,23 +1,26 @@
 package me.echeung.moemoekyun.service
 
-import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
+import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import logcat.LogPriority
+import logcat.logcat
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
+import me.echeung.moemoekyun.util.ext.notifyIfPermitted
 import javax.inject.Inject
 
 class MusicNotifier @Inject constructor(
     private val albumArtUtil: AlbumArtUtil,
 ) {
 
-    @SuppressLint("MissingPermission")
     fun update(service: AppService, currentSong: DomainSong?, streamState: Stream.State, isAuthenticated: Boolean) {
         if (currentSong == null || service.mediaSession == null || streamState == Stream.State.STOPPED) {
             return
@@ -85,15 +88,31 @@ class MusicNotifier @Inject constructor(
             builder.setStyle(style.setShowActionsInCompactView(0, 1))
         }
 
-        val notification = builder.build()
+        // ForegroundServiceStartNotAllowedException can be thrown in Android 12+
+        // if this ends up getting started once the app was already backgrounded.
+        try {
+            val notification = builder.build()
 
-        if (isPlaying) {
-            service.startForeground(NOTIFICATION_ID, notification)
-        } else {
-            service.stopForeground(Service.STOP_FOREGROUND_DETACH)
+            if (isPlaying) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    service.startForeground(
+                        NOTIFICATION_ID,
+                        notification,
+                        ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK,
+                    )
+                } else {
+                    service.startForeground(NOTIFICATION_ID, notification)
+                }
+            } else {
+                service.stopForeground(Service.STOP_FOREGROUND_DETACH)
+            }
+
+            with(service) {
+                NotificationManagerCompat.from(service).notifyIfPermitted(NOTIFICATION_ID, notification)
+            }
+        } catch (e: IllegalStateException) {
+            logcat(LogPriority.ERROR) { "Failed to start foreground service" }
         }
-
-        NotificationManagerCompat.from(service).notify(NOTIFICATION_ID, notification)
     }
 
     private fun getPlaybackActionService(service: AppService, intentAction: String): PendingIntent {

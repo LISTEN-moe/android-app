@@ -13,6 +13,9 @@ target/
 # Java class files
 *.class
 
+# Kotlin compiler
+.kotlin/
+
 # Local configuration file (sdk path, etc)
 local.properties
 .gitattributes
