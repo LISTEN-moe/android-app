@@ -1,8 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
-    id("com.mikepenz.aboutlibraries.plugin")
-    kotlin("android")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.aboutLibraries)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.serialization)
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
@@ -160,18 +160,11 @@ ktlint {
 
 kotlin {
     compilerOptions {
-        // See https://kotlinlang.org/docs/reference/experimental.html#experimental-status-of-experimental-api-markers
         freeCompilerArgs.addAll(
             "-Xcontext-receivers",
-            "-opt-in=androidx.compose.animation.ExperimentalAnimationApi",
             "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=kotlin.Experimental",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-opt-in=kotlinx.coroutines.FlowPreview",
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi",
-            "-P",
-            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=2.0.0-RC1",
         )
     }
 }
