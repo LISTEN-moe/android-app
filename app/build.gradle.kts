@@ -98,14 +98,37 @@ android {
     }
 }
 
+val jvmVersion = JavaLanguageVersion.of(17)
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(jvmVersion)
+    }
+}
+kotlin {
+    jvmToolchain(jvmVersion.asInt())
+
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-Xcontext-receivers",
+            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
+            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+        )
     }
 }
 
-kotlin {
-    jvmToolchain(17)
+apollo {
+    service("service") {
+        packageName.set(appPackageName)
+    }
+}
+
+ktlint {
+    filter {
+        exclude { element ->
+            element.file.path.contains("generated/")
+        }
+    }
 }
 
 dependencies {
@@ -142,29 +165,4 @@ dependencies {
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
     // "debugImplementation"("com.squareup.leakcanary:leakcanary-android:2.2")
-}
-
-apollo {
-    service("service") {
-        packageName.set(appPackageName)
-    }
-}
-
-ktlint {
-    filter {
-        exclude { element ->
-            element.file.path.contains("generated/")
-        }
-    }
-}
-
-kotlin {
-    compilerOptions {
-        freeCompilerArgs.addAll(
-            "-Xcontext-receivers",
-            "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
-            "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
-            "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-        )
-    }
 }
