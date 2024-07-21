@@ -1,7 +1,7 @@
 [versions]
 aboutlib_version = "11.2.2"
 apollo_version = "4.0.0-beta.7"
-coil_version = "2.6.0"
+coil_version = "2.7.0"
 coroutines_version = "1.8.1"
 hilt_version = "2.50"
 kotlin_version = "2.0.0"
