@@ -16,12 +16,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -52,6 +54,14 @@ fun Toolbar(
 }
 
 @Composable
+fun ToolbarColors() = TopAppBarDefaults.topAppBarColors(
+    containerColor = MaterialTheme.colorScheme.primary,
+    navigationIconContentColor = Color.White,
+    titleContentColor = Color.White,
+    actionIconContentColor = Color.White,
+)
+
+@Composable
 fun Toolbar(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
@@ -67,6 +77,7 @@ fun Toolbar(
         },
         actions = actions,
         modifier = modifier,
+        colors = ToolbarColors(),
     )
 }
 

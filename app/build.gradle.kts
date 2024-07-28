@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId = appPackageName
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 208
         versionName = "6.1.1"
     }

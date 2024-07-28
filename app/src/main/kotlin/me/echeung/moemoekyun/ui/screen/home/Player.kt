@@ -124,6 +124,7 @@ fun PlayerScaffold(
         sheetContainerColor = MaterialTheme.colorScheme.background,
         sheetMaxWidth = Dp.Unspecified,
         sheetPeekHeight = 0.dp,
+        sheetShape = RoundedCornerShape(0.dp),
         sheetDragHandle = {},
         modifier = modifier,
     ) { contentPadding ->

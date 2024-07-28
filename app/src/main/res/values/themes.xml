@@ -7,7 +7,7 @@
         <item name="windowNoTitle">true</item>
 
         <!-- Nav bar -->
-        <item name="android:statusBarColor">@color/colorAccent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
 
         <!-- Base background/text colors -->
