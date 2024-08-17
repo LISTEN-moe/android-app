@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- e.g. 10 requests remaining -->
+    <plurals name="user_requests">
+        <item quantity="one">Pozostało 1 żądanie</item>
+        <item quantity="few">Pozostało %d żądania</item>
+        <item quantity="many">Pozostało %d żądań</item>
+        <item quantity="other">Pozostało %d żądań</item>
+    </plurals>
+    <!-- Timer -->
+    <plurals name="minutes">
+        <item quantity="one">1 minuta</item>
+        <item quantity="few">%d minuty</item>
+        <item quantity="many">%d minut</item>
+        <item quantity="other">%d minut(y)</item>
+    </plurals>
+    <!-- Confirmation of timer being set -->
+    <plurals name="sleep_timer_set">
+        <item quantity="one">Ustaw licznik na 1 minutę</item>
+        <item quantity="few">Ustaw licznik na %d minuty</item>
+        <item quantity="many">Ustaw licznik na %d minut</item>
+        <item quantity="other">Ustaw licznik na %d minut</item>
+    </plurals>
+</resources>

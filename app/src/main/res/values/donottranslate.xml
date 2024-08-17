@@ -15,11 +15,15 @@
         copy([...document.querySelectorAll('#project_members_table .items-js-content tr .ps-members-name')].map(div => '\\n' + div.innerText.trim().split(' (')[0]).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).join('\n'))
     -->
     <string name="translators_list" translatable="false">
-        3316482
+        - k͢e͢k͢m͢a͢c͢s͢k͢a͢ -
+        \n3316482
+        \nAna Paula
         \nAnany Meza
-        \narkon94
+        \nANDREY 01
         \nArthur Um
         \nAtFr
+        \nayoubchan
+        \nBardkauza9
         \nbhj
         \nChuen Li
         \nClaireStanfield
@@ -33,28 +37,31 @@
         \ndungles
         \nEmachii 🦋
         \nemre özdemir
+        \nEnrico Belleri
         \nErinç Esen
         \nFlutterCZ
         \nFoorack
         \nGabriel Henrique da Cunha Gonçalves
-        \nGiorgioHerbie
         \nGuai
         \nGuo Yunhe
+        \nHelaBasa Group
         \nHoa Gia Đại Thiếu
-        \nIdesmi
+        \nhypnotichemionus
+        \nIgoor Silver
         \nIgor Pissolati
         \nIsabel Vianna Montovani
         \nJeluang
+        \nKaajjo
         \nKaede
         \nkairuu
         \nkamal-kun
         \nKana
         \nKathya Teran
         \nKhaing Yin Mon Aung
+        \nKiwitomato
         \nKónya Márton
         \nLeozard
         \nlinguist
-        \nLiu Tao
         \nLuke Produkcje
         \nmarc0tjevp
         \nMayra Ignacia Celedon Vidal
@@ -71,24 +78,23 @@
         \nPoussinou
         \nPraxic
         \nPytey
-        \nQWERT
         \nRap Management
         \nReza Rangga Dirza
-        \nrobflop
         \nŠarūnas
+        \nSascha355
         \nSatsuki Yanagi
+        \nSc
         \nSDTR
         \nSilvanaFP
         \nspoonm
         \nsT
-        \nStore
         \nsunmoon
         \nTAKAHASHI Shuuji
         \nTatsuya Ishikawa
         \nTill Kottmann
         \nTũn A. R. M. Y
         \ntzium
-        \nVinicius Ferreira
+        \nVinicius
         \nvoltrare
         \nWachid Adi Nugroho
         \nWarrock3280
@@ -97,11 +103,12 @@
         \nyami
         \nYassir Lagrich
         \nYayaka
+        \nพิษณุ สุพรรณ์
         \n노스스
         \n사람
         \n한병규
+        \n刘韬
         \n尤鈺欽
-        \n离芯_sc
     </string>
 
     <string-array name="pref_language_names" translatable="false">

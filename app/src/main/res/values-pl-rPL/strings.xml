@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- == Generic strings == -->
+    <string name="submit">Zatwierdź</string>
+    <string name="error">Wystąpił błąd</string>
+    <string name="copied_to_clipboard">Skopiowano do schowka</string>
+    <!-- == Actions (notification, dialogs) == -->
+    <string name="action_play">Odtwórz</string>
+    <string name="action_pause">Wstrzymaj</string>
+    <string name="action_stop">Zatrzymaj</string>
+    <string name="action_favorite">Dodaj do Ulubionych</string>
+    <string name="action_unfavorite">Usuń z ulubionych</string>
+    <string name="action_request">Żądanie</string>
+    <string name="action_undo">Cofnij</string>
+    <!-- == Radio stations == -->
+    <string name="action_library">Stacja</string>
+    <string name="jpop">J-pop</string>
+    <string name="kpop">K-pop</string>
+    <!-- == Sleep timer == -->
+    <string name="sleep_timer">Wyłącznik czasowy</string>
+    <string name="set">Ustaw</string>
+    <string name="close">Zamknij</string>
+    <string name="cancel_timer">Anuluj licznik</string>
+    <string name="sleep_timer_canceled">Anulowane liczniki</string>
+    <!-- == Search == -->
+    <string name="search">Szukaj...</string>
+    <string name="clear_query">Wyczyść zapytanie</string>
+    <!-- e.g. No results for "user's search query" -->
+    <string name="no_results">Brak wyników dla \"%s\"</string>
+    <!-- == Sort == -->
+    <string name="sort">Sortuj</string>
+    <string name="sort_title">Tytuł</string>
+    <string name="sort_artist">Artysta</string>
+    <string name="sort_desc">Malejąco</string>
+    <!-- == Auth == -->
+    <string name="register">Rejestracja</string>
+    <string name="login">Zaloguj się</string>
+    <string name="logout">Wyloguj się</string>
+    <string name="username_or_email">Nazwa użytkownika / adres e-mail</string>
+    <string name="username">Nazwa użytkownika</string>
+    <string name="email">Adres e-mail</string>
+    <string name="password">Hasło</string>
+    <string name="password_confirm">Potwierdź hasło</string>
+    <string name="mfa_prompt">Wprowadź kod bezpieczeństwa wygenerowany przez aplikację uwierzytelniającą.</string>
+    <string name="mfa_hint">6-cyfrowy kod bezpieczeństwa</string>
+    <string name="logout_confirmation">Czy na pewno chcesz się wylogować?</string>
+    <string name="logged_out">Wylogowano</string>
+    <string name="login_required">Zaloguj się, aby użyć tej funkcji.</string>
+    <string name="required">Wymagane</string>
+    <string name="password_mismatch">Hasła nie są identyczne</string>
+    <string name="forgot_password">Nie pamiętasz hasła?</string>
+    <!-- == Radio tab == -->
+    <string name="play_pause">Odtwórz/wstrzymaj</string>
+    <string name="last_played">Ostatnio odtwarzane</string>
+    <string name="favorite">Dodaj do ulubionych</string>
+    <!-- e.g. Requested by: username -->
+    <string name="requested_by">Żądane przez: %s</string>
+    <string name="event_start_title">Wydarzenie się rozpoczyna!</string>
+    <!-- == User tab == -->
+    <string name="no_favorites">Brak ulubionych</string>
+    <string name="filter_favorites">Filtruj ulubione</string>
+    <!-- e.g. Unfavorited <Song Title> -->
+    <string name="unfavorited">Usunięto z ulubionych %s</string>
+    <!-- e.g. 2 queued -->
+    <string name="queue_info_none_queued">%d w kolejce</string>
+    <!-- e.g. 2 queued, 1 before yours -->
+    <string name="queue_info">%d w kolejce, %d przed tobą</string>
+    <string name="random_request">Poproś o losową piosenkę</string>
+    <!-- == Song item actions == -->
+    <!-- Requested song title -->
+    <!-- e.g. Requested <Song Title> -->
+    <string name="requested_song">Żądano %s</string>
+    <string name="requested_random_song">Żądano losowej piosenki</string>
+    <!-- == Song details == -->
+    <string name="song_title">Tytuł</string>
+    <string name="song_album">Album</string>
+    <string name="song_artist">Artysta</string>
+    <string name="song_source">Źródło</string>
+    <string name="song_duration">Czas trwania</string>
+    <string name="song_release_date">Data wydania</string>
+    <string name="song_uploader">Wrzucający</string>
+    <string name="song_last_played">Ostatnio odtwarzane</string>
+    <string name="song_tags">Tagi</string>
+    <!-- == No Internet view == -->
+    <string name="no_internet">Nie można się połączyć z LISTEN.moe\n\nSprawdź swoje połączenie internetowe</string>
+    <string name="retry">Spróbuj ponownie</string>
+    <!-- == About == -->
+    <string name="about">O Aplikacji</string>
+    <!-- e.g. Version 1.0 -->
+    <string name="version">Wersja %s</string>
+    <string name="rate">Oceń w Google Play</string>
+    <string name="github">Daj gwiazdkę na GitHub</string>
+    <string name="translate">Pomóż nam w tłumaczeniu</string>
+    <string name="translators">Tłumacze</string>
+    <string name="licenses">Licencje</string>
+    <string name="listenmoe">LISTEN.moe radio</string>
+    <string name="open_in_browser">Otwórz w przeglądarce</string>
+    <string name="discord">Dołącz do nas na Discordzie</string>
+    <string name="patreon">Uzyskaj żądania / Wesprzyj nas</string>
+    <string name="privacy_policy">Polityka prywatności</string>
+    <!-- == Settings == -->
+    <string name="settings">Ustawienia</string>
+    <string name="system_default">Domyślne ustawienie systemowe</string>
+    <string name="pref_header_general">Ogólne</string>
+    <string name="pref_title_language">Język</string>
+    <string name="pref_title_general_download">Automatyczne pobieranie obrazów</string>
+    <string name="pref_header_music">Muzyka</string>
+    <string name="pref_title_general_romaji">Preferuj romaji</string>
+    <string name="pref_title_general_romaji_summary">\"Nanahira\" zamiast \"ななひら\"</string>
+    <string name="pref_title_general_random_request_title">Losowy tytuł żądania</string>
+    <string name="pref_title_general_random_request_summary">Pokaż tytuł żądanej piosenki</string>
+    <string name="pref_title_lockscreen_albumart_title">Okładka albumu</string>
+    <string name="pref_title_lockscreen_albumart_summary">Pokaż okładkę albumu na ekranie blokady i Android Auto</string>
+    <string name="pref_title_color_now_playing_title">Kolor teraz odtwarzanego ekranu</string>
+    <string name="pref_title_color_now_playing_summary">Użyj głównego koloru okładki albumu</string>
+    <string name="pref_header_audio">Dźwięk</string>
+    <string name="pref_title_pause_on_noisy_title">Wstrzymaj poza słuchawkami</string>
+    <string name="pref_title_pause_on_noisy_summary">Muzyka zostanie wstrzymana po odłączeniu słuchawek</string>
+    <string name="pref_title_audio_pause_on_loss_title">Wstrzymywanie odtwarzania</string>
+    <string name="pref_title_audio_pause_on_loss_summary">Muzyka zostanie wstrzymana podczas odtwarzania innych mediów, takich jak filmy lub inna muzyka</string>
+    <string name="pref_title_audio_duck_title">Wyciszanie</string>
+    <string name="pref_title_audio_duck_summary">Głośność muzyki zostanie zmniejszona podczas otrzymywania powiadomienia, używania nawigacji itp.</string>
+</resources>
