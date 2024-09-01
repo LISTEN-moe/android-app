@@ -52,7 +52,7 @@ compose-lintchecks = { module = "com.slack.lint.compose:compose-lint-checks", ve
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_version" }
 
-desugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.0.4" }
+desugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.1" }
 
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt_version" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt_version" }
