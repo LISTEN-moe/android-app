@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.serialization)
+    alias(libs.plugins.kotlin.serialization)
     id("kotlin-parcelize")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
@@ -15,7 +15,7 @@ plugins {
 val appPackageName = "me.echeung.moemoekyun"
 
 android {
-    compileSdk = 34
+    compileSdk = 35
     namespace = appPackageName
 
     defaultConfig {

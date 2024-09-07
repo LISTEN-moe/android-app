@@ -13,7 +13,7 @@ android-application = { id = "com.android.application", version = "8.5.2" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin_version" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin_version" }
-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin_version" }
 ksp = { id = "com.google.devtools.ksp", version = "2.0.20-1.0.24" }
 
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib_version" }
@@ -25,12 +25,12 @@ autoresconfig = { id = "dev.rikka.tools.autoresconfig", version = "1.2.2" }
 aboutLibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlib_version" }
 
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.0"
-androidx-lifecycle = "androidx.lifecycle:lifecycle-process:2.8.4"
+androidx-lifecycle = "androidx.lifecycle:lifecycle-process:2.8.5"
 androidx-media = "androidx.media:media:1.7.0"
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3_version" }
 androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3_version" }
 androidx-palette = "androidx.palette:palette-ktx:1.0.0"
-androidx-splashscreen = "androidx.core:core-splashscreen:1.2.0-alpha01"
+androidx-splashscreen = "androidx.core:core-splashscreen:1.2.0-alpha02"
 
 apollo-runtime = { module = "com.apollographql.apollo3:apollo-runtime", version.ref = "apollo_version" }
 apollo-http-cache = { module = "com.apollographql.apollo3:apollo-http-cache", version.ref = "apollo_version" }
@@ -39,20 +39,20 @@ coil-core = { module = "io.coil-kt:coil", version.ref = "coil_version" }
 coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coil_version" }
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil_version" }
 
-compose-bom = { module = "dev.chrisbanes.compose:compose-bom", version = "2024.08.00-alpha02" }
+compose-bom = { module = "androidx.compose:compose-bom", version = "2024.09.00" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
-compose-activity = { module = "androidx.activity:activity-compose", version = "1.9.1" }
+compose-activity = { module = "androidx.activity:activity-compose", version = "1.9.2" }
 compose-lintchecks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.3.1" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_version" }
 
-desugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.1" }
+desugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.2" }
 
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt_version" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt_version" }
