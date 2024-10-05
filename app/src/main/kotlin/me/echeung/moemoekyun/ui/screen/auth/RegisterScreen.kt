@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -15,13 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
@@ -29,7 +28,6 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
-import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
 
 object RegisterScreen : Screen {
@@ -51,10 +49,10 @@ object RegisterScreen : Screen {
             return
         }
 
-        var username by remember { mutableStateOf(TextFieldValue("")) }
-        var email by remember { mutableStateOf(TextFieldValue("")) }
-        var password1 by remember { mutableStateOf(TextFieldValue("")) }
-        var password2 by remember { mutableStateOf(TextFieldValue("")) }
+        val username = rememberTextFieldState("")
+        val email = rememberTextFieldState("")
+        val password1 = rememberTextFieldState("")
+        val password2 = rememberTextFieldState("")
 
         Scaffold(
             topBar = { Toolbar(titleResId = R.string.register, showUpButton = true) },
@@ -73,37 +71,33 @@ object RegisterScreen : Screen {
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text(stringResource(R.string.username)) },
-                        value = username,
-                        onValueChange = { username = it },
-                        singleLine = true,
+                        state = username,
+                        lineLimits = TextFieldLineLimits.SingleLine,
                         enabled = !state.loading,
                     )
 
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text(stringResource(R.string.email)) },
-                        value = email,
-                        onValueChange = { email = it },
-                        singleLine = true,
+                        state = email,
+                        lineLimits = TextFieldLineLimits.SingleLine,
                         enabled = !state.loading,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
                         ),
                     )
 
-                    PasswordTextField(
+                    OutlinedSecureTextField(
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text(stringResource(R.string.password)) },
-                        value = password1,
-                        onValueChange = { password1 = it },
+                        state = password1,
                         enabled = !state.loading,
                     )
 
-                    PasswordTextField(
+                    OutlinedSecureTextField(
                         modifier = Modifier.fillMaxWidth(),
                         label = { Text(stringResource(R.string.password_confirm)) },
-                        value = password2,
-                        onValueChange = { password2 = it },
+                        state = password2,
                         enabled = !state.loading,
                     )
 
@@ -125,10 +119,10 @@ object RegisterScreen : Screen {
                         enabled = !state.loading,
                         onClick = {
                             screenModel.register(
-                                username.text,
-                                email.text,
-                                password1.text,
-                                password2.text,
+                                username.text.toString(),
+                                email.text.toString(),
+                                password1.text.toString(),
+                                password2.text.toString(),
                             )
                         },
                     ) {

@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.input.TextFieldLineLimits
+import androidx.compose.foundation.text.input.rememberTextFieldState
+import androidx.compose.foundation.text.input.setTextAndPlaceCursorAtEnd
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedSecureTextField
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -16,17 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.AutofillType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
@@ -34,13 +33,11 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
-import me.echeung.moemoekyun.ui.common.PasswordTextField
 import me.echeung.moemoekyun.ui.common.Toolbar
 import me.echeung.moemoekyun.ui.util.autofill
 
 object LoginScreen : Screen {
 
-    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
@@ -49,9 +46,9 @@ object LoginScreen : Screen {
         val screenModel = getScreenModel<LoginScreenModel>()
         val state by screenModel.state.collectAsState()
 
-        var username by remember { mutableStateOf(TextFieldValue("")) }
-        var password by remember { mutableStateOf(TextFieldValue("")) }
-        var otpToken by remember { mutableStateOf(TextFieldValue("")) }
+        val username = rememberTextFieldState("")
+        val password = rememberTextFieldState("")
+        val otpToken = rememberTextFieldState("")
 
         LaunchedEffect(state.result) {
             if (state.result is LoginScreenModel.Result.Complete) {
@@ -78,23 +75,25 @@ object LoginScreen : Screen {
                             .fillMaxWidth()
                             .autofill(
                                 autofillTypes = listOf(AutofillType.Username),
-                                onFill = { username = TextFieldValue(it) },
+                                onFill = { username.setTextAndPlaceCursorAtEnd(it) },
                             ),
                         label = { Text(stringResource(R.string.username_or_email)) },
-                        value = username,
-                        onValueChange = { username = it },
-                        singleLine = true,
+                        state = username,
+                        lineLimits = TextFieldLineLimits.SingleLine,
                         enabled = !state.loading,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Email,
                         ),
                     )
 
-                    PasswordTextField(
-                        modifier = Modifier.fillMaxWidth(),
+                    OutlinedSecureTextField(
+                        modifier = Modifier.fillMaxWidth()
+                            .autofill(
+                                autofillTypes = listOf(AutofillType.Password),
+                                onFill = { password.setTextAndPlaceCursorAtEnd(it) },
+                            ),
                         label = { Text(stringResource(R.string.password)) },
-                        value = password,
-                        onValueChange = { password = it },
+                        state = password,
                         enabled = !state.loading,
                     )
 
@@ -102,9 +101,8 @@ object LoginScreen : Screen {
                         OutlinedTextField(
                             modifier = Modifier.fillMaxWidth(),
                             label = { Text(stringResource(R.string.mfa_hint)) },
-                            value = otpToken,
-                            onValueChange = { otpToken = it },
-                            singleLine = true,
+                            state = otpToken,
+                            lineLimits = TextFieldLineLimits.SingleLine,
                             enabled = !state.loading,
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Number,
@@ -116,7 +114,7 @@ object LoginScreen : Screen {
                             enabled = !state.loading,
                             onClick = {
                                 screenModel.getOtpTokenFromClipboardOrNull(context)?.let {
-                                    otpToken = otpToken.copy(text = it)
+                                    otpToken.setTextAndPlaceCursorAtEnd(it)
                                 }
                             },
                         ) {
@@ -141,9 +139,9 @@ object LoginScreen : Screen {
                         enabled = !state.loading,
                         onClick = {
                             if (state.requiresMfa) {
-                                screenModel.loginMfa(otpToken.text)
+                                screenModel.loginMfa(otpToken.text.toString())
                             } else {
-                                screenModel.login(username.text, password.text)
+                                screenModel.login(username.text.toString(), password.text.toString())
                             }
                         },
                     ) {
