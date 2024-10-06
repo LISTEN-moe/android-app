@@ -47,7 +47,7 @@ compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
 compose-activity = { module = "androidx.activity:activity-compose", version = "1.9.2" }
-compose-lintchecks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.3.1" }
+compose-lintchecks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.4.1" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines_version" }
 coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines_version" }
