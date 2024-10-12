@@ -33,9 +33,9 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build app
-        run: ./gradlew bundlePlaystoreRelease
+        run: ./gradlew assemblePlaystoreRelease
 
-      # Sign app bundle and create release for tags
+      # Sign APK and create release for tags
 
       - name: Prepare build metadata
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
@@ -43,24 +43,17 @@ jobs:
           set -x
           echo "VERSION_TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
 
-          if [[ "${{ github.event.ref }}" =~ "-beta" ]]
-          then
-            echo "GOOGLE_PLAY_TRACK=alpha" >> $GITHUB_ENV
-          else
-            echo "GOOGLE_PLAY_TRACK=production" >> $GITHUB_ENV
-          fi
-
       - name: Sign app bundle
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/playstoreRelease
+          releaseDirectory: app/build/outputs/apk/playstore/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
         env:
-          BUILD_TOOLS_VERSION: "34.0.0"
+          BUILD_TOOLS_VERSION: "35.0.0"
 
       - name: Create release
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
@@ -74,14 +67,3 @@ jobs:
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-#      - name: Publish to Google Play
-#        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-#        uses: r0adkll/upload-google-play@v1
-#        with:
-#          serviceAccountJsonPlainText: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
-#          packageName: me.echeung.moemoekyun
-#          releaseFiles: ${{ env.SIGNED_RELEASE_FILE }}
-#          mappingFile: app/build/outputs/mapping/playstoreRelease/mapping.txt
-#          track: ${{ env.GOOGLE_PLAY_TRACK }}
-#          whatsNewDirectory: distribution/whatsnew
