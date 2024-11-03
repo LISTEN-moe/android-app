@@ -20,10 +20,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.autofill.AutofillType
+import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.platform.LocalAutofillManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -34,14 +38,15 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.Toolbar
-import me.echeung.moemoekyun.ui.util.autofill
 
 object LoginScreen : Screen {
 
+    @OptIn(ExperimentalComposeUiApi::class)
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val context = LocalContext.current
+        val autofillManager = LocalAutofillManager.current
 
         val screenModel = getScreenModel<LoginScreenModel>()
         val state by screenModel.state.collectAsState()
@@ -73,10 +78,7 @@ object LoginScreen : Screen {
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .autofill(
-                                autofillTypes = listOf(AutofillType.Username),
-                                onFill = { username.setTextAndPlaceCursorAtEnd(it) },
-                            ),
+                            .semantics { contentType = ContentType.Username },
                         label = { Text(stringResource(R.string.username_or_email)) },
                         state = username,
                         lineLimits = TextFieldLineLimits.SingleLine,
@@ -88,10 +90,7 @@ object LoginScreen : Screen {
 
                     OutlinedSecureTextField(
                         modifier = Modifier.fillMaxWidth()
-                            .autofill(
-                                autofillTypes = listOf(AutofillType.Password),
-                                onFill = { password.setTextAndPlaceCursorAtEnd(it) },
-                            ),
+                            .semantics { contentType = ContentType.Password },
                         label = { Text(stringResource(R.string.password)) },
                         state = password,
                         enabled = !state.loading,
@@ -138,6 +137,7 @@ object LoginScreen : Screen {
                         modifier = Modifier.fillMaxWidth(),
                         enabled = !state.loading,
                         onClick = {
+                            autofillManager?.commit()
                             if (state.requiresMfa) {
                                 screenModel.loginMfa(otpToken.text.toString())
                             } else {
