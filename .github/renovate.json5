@@ -1,19 +1,20 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
   ],
-  "schedule": ["every sunday"],
-  "packageRules": [
+  schedule: [
+    'on sunday',
+  ],
+  packageRules: [
     {
-      // Compiler plugins are tightly coupled to Kotlin version
-      "groupName": "Kotlin",
-      "matchPackagePrefixes": [
-        "androidx.compose.compiler",
-        "org.jetbrains.kotlin.",
-        "org.jetbrains.kotlin:",
-        "com.google.devtools.ksp"
-      ]
-    }
-  ]
+      groupName: 'Kotlin',
+      matchPackageNames: [
+        'androidx.compose.compiler{/,}**',
+        'org.jetbrains.kotlin.{/,}**',
+        'org.jetbrains.kotlin:{/,}**',
+        'com.google.devtools.ksp{/,}**',
+      ],
+    },
+  ],
 }
