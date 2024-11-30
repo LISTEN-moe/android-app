@@ -1,11 +1,11 @@
 package me.echeung.moemoekyun.client.api
 
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.api.ApolloResponse
-import com.apollographql.apollo3.api.Optional
-import com.apollographql.apollo3.cache.http.HttpFetchPolicy
-import com.apollographql.apollo3.cache.http.httpExpireTimeout
-import com.apollographql.apollo3.cache.http.httpFetchPolicy
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.api.ApolloResponse
+import com.apollographql.apollo.api.Optional
+import com.apollographql.apollo.cache.http.HttpFetchPolicy
+import com.apollographql.apollo.cache.http.httpExpireTimeout
+import com.apollographql.apollo.cache.http.httpFetchPolicy
 import logcat.LogPriority
 import logcat.logcat
 import me.echeung.moemoekyun.FavoriteMutation

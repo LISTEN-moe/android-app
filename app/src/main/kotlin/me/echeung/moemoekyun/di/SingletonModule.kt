@@ -1,11 +1,11 @@
 package me.echeung.moemoekyun.di
 
 import android.content.Context
-import com.apollographql.apollo3.ApolloClient
-import com.apollographql.apollo3.cache.http.HttpFetchPolicy
-import com.apollographql.apollo3.cache.http.httpCache
-import com.apollographql.apollo3.cache.http.httpFetchPolicy
-import com.apollographql.apollo3.network.okHttpClient
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.cache.http.HttpFetchPolicy
+import com.apollographql.apollo.cache.http.httpCache
+import com.apollographql.apollo.cache.http.httpFetchPolicy
+import com.apollographql.apollo.network.okHttpClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

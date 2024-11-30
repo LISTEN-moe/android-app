@@ -1,6 +1,6 @@
 package me.echeung.moemoekyun.client.api.data
 
-import com.apollographql.apollo3.api.Error
+import com.apollographql.apollo.api.Error
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.SongsQuery
