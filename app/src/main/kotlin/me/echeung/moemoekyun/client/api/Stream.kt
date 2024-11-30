@@ -2,7 +2,7 @@ package me.echeung.moemoekyun.client.api
 
 import android.content.Context
 import android.media.AudioManager
-import android.net.Uri
+import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -30,6 +30,7 @@ class Stream @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
     audioManagerUtilFactory: AudioManagerUtil.Factory,
+    private val audioAttributes: AudioAttributes,
 ) {
 
     private val _flow = MutableStateFlow(State.STOPPED)
@@ -139,13 +140,7 @@ class Stream @Inject constructor(
     private fun initPlayer() {
         if (player == null) {
             player = ExoPlayer.Builder(context)
-                .setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
-                        .setUsage(C.USAGE_MEDIA)
-                        .build(),
-                    true,
-                )
+                .setAudioAttributes(audioAttributes, true)
                 .setWakeMode(C.WAKE_MODE_NETWORK)
                 .build()
                 .also {
@@ -162,7 +157,11 @@ class Stream @Inject constructor(
                 DefaultHttpDataSource.Factory().setUserAgent(NetworkUtil.userAgent),
             )
             val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
-                .createMediaSource(MediaItem.Builder().setUri(Uri.parse(streamUrl)).build())
+                .createMediaSource(
+                    MediaItem.Builder()
+                        .setUri(streamUrl.toUri())
+                        .build()
+                )
             with(player!!) {
                 setMediaSource(streamSource)
                 prepare()
