@@ -1,7 +1,6 @@
 package me.echeung.moemoekyun.util
 
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -27,25 +26,22 @@ import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.di.DisplayModule
 import me.echeung.moemoekyun.domain.radio.interactor.CurrentSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.withIOContext
 import javax.inject.Inject
-import kotlin.math.max
 
 class AlbumArtUtil @Inject constructor(
     @ApplicationContext private val context: Context,
     private val currentSong: CurrentSong,
+    @DisplayModule.MaxBitmapSize
+    private val maxBitmapSize: Int,
 ) {
 
     private val defaultAlbumArt: Bitmap by lazy {
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
-    }
-
-    private val maxSize: Int by lazy {
-        val displayMetrics = Resources.getSystem().displayMetrics
-        max(displayMetrics.widthPixels, displayMetrics.heightPixels)
     }
 
     private val _flow = MutableStateFlow<State?>(null)
@@ -93,7 +89,7 @@ class AlbumArtUtil @Inject constructor(
         val request = ImageRequest.Builder(context)
             .data(url)
             .scale(Scale.FILL)
-            .size(maxSize, maxSize)
+            .size(maxBitmapSize, maxBitmapSize)
             .allowHardware(false)
             .build()
 
