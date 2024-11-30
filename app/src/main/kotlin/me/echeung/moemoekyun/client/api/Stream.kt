@@ -29,6 +29,7 @@ import javax.inject.Singleton
 class Stream @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
+    audioManagerUtilFactory: AudioManagerUtil.Factory,
 ) {
 
     private val _flow = MutableStateFlow(State.STOPPED)
@@ -101,7 +102,7 @@ class Stream @Inject constructor(
             }
         }
 
-        audioManagerUtil = AudioManagerUtil(context, audioFocusChangeListener)
+        audioManagerUtil = audioManagerUtilFactory.create(audioFocusChangeListener)
     }
 
     @Synchronized

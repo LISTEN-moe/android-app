@@ -1,33 +1,24 @@
 package me.echeung.moemoekyun.util.system
 
-import android.content.Context
 import android.media.AudioManager
 import androidx.media.AudioAttributesCompat
 import androidx.media.AudioFocusRequestCompat
 import androidx.media.AudioManagerCompat
-import me.echeung.moemoekyun.util.ext.audioManager
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-class AudioManagerUtil(
-    context: Context,
-    audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener,
+class AudioManagerUtil @AssistedInject constructor(
+    private val audioManager: AudioManager,
+    audioAttributes: AudioAttributesCompat,
+    @Assisted audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener,
 ) {
 
-    private val audioManager: AudioManager = context.audioManager
-    private val focusRequest: AudioFocusRequestCompat
-
-    init {
-        val audioAttributes = AudioAttributesCompat.Builder()
-            .setUsage(AudioAttributesCompat.USAGE_MEDIA)
-            .setLegacyStreamType(AudioManager.STREAM_MUSIC)
-            .setContentType(AudioAttributesCompat.CONTENT_TYPE_MUSIC)
-            .build()
-
-        focusRequest = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN)
-            .setAudioAttributes(audioAttributes)
-            .setWillPauseWhenDucked(true)
-            .setOnAudioFocusChangeListener(audioFocusChangeListener)
-            .build()
-    }
+    private val focusRequest: AudioFocusRequestCompat = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN)
+        .setAudioAttributes(audioAttributes)
+        .setWillPauseWhenDucked(true)
+        .setOnAudioFocusChangeListener(audioFocusChangeListener)
+        .build()
 
     fun requestAudioFocus(): Int {
         return AudioManagerCompat.requestAudioFocus(audioManager, focusRequest)
@@ -35,5 +26,10 @@ class AudioManagerUtil(
 
     fun abandonAudioFocus() {
         AudioManagerCompat.abandonAudioFocusRequest(audioManager, focusRequest)
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener): AudioManagerUtil
     }
 }

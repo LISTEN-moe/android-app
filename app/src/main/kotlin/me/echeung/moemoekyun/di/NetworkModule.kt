@@ -11,7 +11,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.json.Json
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
@@ -23,14 +22,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SingletonModule {
-
-    @Provides
-    @Singleton
-    fun json() = Json {
-        ignoreUnknownKeys = true
-        explicitNulls = false
-    }
+object NetworkModule {
 
     @Provides
     @Singleton
