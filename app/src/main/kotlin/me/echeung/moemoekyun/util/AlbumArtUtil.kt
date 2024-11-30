@@ -4,18 +4,19 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import androidx.compose.runtime.Immutable
 import androidx.core.graphics.BitmapCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.graphics.drawable.toBitmap
 import androidx.palette.graphics.Palette
 import androidx.palette.graphics.Target.MUTED
 import androidx.palette.graphics.Target.VIBRANT
 import androidx.palette.graphics.get
-import coil.imageLoader
-import coil.request.ImageRequest
-import coil.request.SuccessResult
-import coil.size.Scale
+import coil3.asDrawable
+import coil3.imageLoader
+import coil3.request.ImageRequest
+import coil3.request.SuccessResult
+import coil3.size.Scale
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +27,6 @@ import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.di.DisplayModule
 import me.echeung.moemoekyun.domain.radio.interactor.CurrentSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -36,8 +36,6 @@ import javax.inject.Inject
 class AlbumArtUtil @Inject constructor(
     @ApplicationContext private val context: Context,
     private val currentSong: CurrentSong,
-    @DisplayModule.MaxBitmapSize
-    private val maxBitmapSize: Int,
 ) {
 
     private val defaultAlbumArt: Bitmap by lazy {
@@ -89,8 +87,6 @@ class AlbumArtUtil @Inject constructor(
         val request = ImageRequest.Builder(context)
             .data(url)
             .scale(Scale.FILL)
-            .size(maxBitmapSize, maxBitmapSize)
-            .allowHardware(false)
             .build()
 
         val result = context.imageLoader.execute(request)
@@ -98,7 +94,7 @@ class AlbumArtUtil @Inject constructor(
             return@withIOContext defaultAlbumArt
         }
 
-        (result.drawable as? BitmapDrawable)?.bitmap ?: defaultAlbumArt
+        result.image.asDrawable(context.resources).toBitmap()
     }
 
     private fun extractAccentColor(resource: Bitmap): Int? {

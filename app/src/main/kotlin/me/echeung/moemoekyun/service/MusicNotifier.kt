@@ -60,6 +60,7 @@ class MusicNotifier @Inject constructor(
             .setOnlyAlertOnce(true)
 
         // Needs to be set after setting the color
+        // TODO: replace with MediaStyleNotificationHelper.MediaStyle
         val style = androidx.media.app.NotificationCompat.MediaStyle().setMediaSession(
             service.mediaSession!!.sessionToken,
         )

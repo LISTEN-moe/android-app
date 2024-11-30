@@ -12,10 +12,12 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import coil.ImageLoader
-import coil.ImageLoaderFactory
-import coil.decode.GifDecoder
-import coil.decode.ImageDecoderDecoder
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.SingletonImageLoader
+import coil3.gif.AnimatedImageDecoder
+import coil3.gif.GifDecoder
+import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
@@ -23,13 +25,17 @@ import logcat.LogcatLogger
 import me.echeung.moemoekyun.domain.radio.RadioService
 import me.echeung.moemoekyun.service.AppService
 import me.echeung.moemoekyun.service.MusicNotifier
+import okhttp3.OkHttpClient
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application(), DefaultLifecycleObserver, ServiceConnection, ImageLoaderFactory {
+class App : Application(), DefaultLifecycleObserver, ServiceConnection, SingletonImageLoader.Factory {
 
     @Inject
     lateinit var radioService: RadioService
+
+    @Inject
+    lateinit var okHttpClient: OkHttpClient
 
     override fun onCreate() {
         super<Application>.onCreate()
@@ -65,12 +71,14 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, ImageLoa
         radioService.disconnectIfIdle()
     }
 
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(this)
+    override fun newImageLoader(context: PlatformContext): ImageLoader {
+        return ImageLoader.Builder(context)
             .apply {
                 components {
+                    add(OkHttpNetworkFetcherFactory(okHttpClient))
+
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        add(ImageDecoderDecoder.Factory())
+                        add(AnimatedImageDecoder.Factory())
                     } else {
                         add(GifDecoder.Factory())
                     }
