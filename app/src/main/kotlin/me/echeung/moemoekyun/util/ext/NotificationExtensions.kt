@@ -7,10 +7,9 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 
-context(Context)
-fun NotificationManagerCompat.notifyIfPermitted(id: Int, notification: Notification) {
+fun NotificationManagerCompat.notifyIfPermitted(context: Context, id: Int, notification: Notification) {
     if (ActivityCompat.checkSelfPermission(
-            this@Context,
+            context,
             Manifest.permission.POST_NOTIFICATIONS,
         ) == PackageManager.PERMISSION_GRANTED
     ) {

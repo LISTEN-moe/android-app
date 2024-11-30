@@ -108,7 +108,7 @@ class MusicNotifier @Inject constructor(
             }
 
             with(service) {
-                NotificationManagerCompat.from(service).notifyIfPermitted(NOTIFICATION_ID, notification)
+                NotificationManagerCompat.from(service).notifyIfPermitted(service, NOTIFICATION_ID, notification)
             }
         } catch (e: IllegalStateException) {
             logcat(LogPriority.ERROR) { "Failed to start foreground service" }
