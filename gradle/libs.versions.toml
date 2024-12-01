@@ -3,10 +3,10 @@ aboutlib = "11.2.3"
 apollo = "4.1.0"
 coil = "3.0.4"
 coroutines = "1.9.0"
-hilt = "2.50"
+hilt = "2.52"
 kotlin = "2.0.21"
 media3 = "1.5.0"
-voyager = "1.0.0"
+voyager = "1.1.0-beta03"
 
 [plugins]
 android-application = { id = "com.android.application", version = "8.7.2" }
