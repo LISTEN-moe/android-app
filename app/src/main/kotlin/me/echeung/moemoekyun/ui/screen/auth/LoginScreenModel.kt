@@ -10,6 +10,7 @@ import me.echeung.moemoekyun.util.ext.clipboardManager
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
+// TODO: consider integrating with https://developer.android.com/identity/sign-in/credential-manager
 class LoginScreenModel @Inject constructor(
     private val loginLogout: LoginLogout,
 ) : StateScreenModel<LoginScreenModel.State>(State()) {
