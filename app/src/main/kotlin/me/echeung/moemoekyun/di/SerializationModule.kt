@@ -16,5 +16,6 @@ object SerializationModule {
     fun json() = Json {
         ignoreUnknownKeys = true
         explicitNulls = false
+        encodeDefaults = true
     }
 }

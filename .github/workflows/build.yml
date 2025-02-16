@@ -33,7 +33,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Build app
-        run: ./gradlew assemblePlaystoreRelease
+        run: ./gradlew :app:testPlaystoreReleaseUnitTest assemblePlaystoreRelease
 
       # Sign APK and create release for tags
 

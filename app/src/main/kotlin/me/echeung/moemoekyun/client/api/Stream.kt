@@ -160,7 +160,7 @@ class Stream @Inject constructor(
                 .createMediaSource(
                     MediaItem.Builder()
                         .setUri(streamUrl.toUri())
-                        .build()
+                        .build(),
                 )
             with(player!!) {
                 setMediaSource(streamSource)

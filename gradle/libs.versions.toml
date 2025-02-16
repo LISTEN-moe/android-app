@@ -4,6 +4,7 @@ apollo = "4.1.1"
 coil = "3.1.0"
 coroutines = "1.10.1"
 hilt = "2.55"
+junit = "5.11.4"
 kotlin = "2.1.10"
 media3 = "1.5.1"
 voyager = "1.1.0-beta03"
@@ -76,6 +77,9 @@ serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", v
 voyager-bottom-sheet = { module = "cafe.adriel.voyager:voyager-bottom-sheet-navigator", version.ref = "voyager" }
 voyager-navigator = { module = "cafe.adriel.voyager:voyager-navigator", version.ref = "voyager" }
 voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voyager" }
+
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 
 [bundles]
 apollo = ["apollo-runtime", "apollo-http-cache"]

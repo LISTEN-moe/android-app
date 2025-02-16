@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.aboutLibraries)
@@ -130,6 +132,15 @@ ktlint {
     }
 }
 
+tasks {
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events = setOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
+        }
+    }
+}
+
 dependencies {
     coreLibraryDesugaring(libs.desugar)
     implementation(libs.bundles.coroutines)
@@ -159,6 +170,9 @@ dependencies {
 
     implementation(libs.bundles.media)
     implementation(libs.bundles.preferences)
+
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
     // "debugImplementation"("com.squareup.leakcanary:leakcanary-android:2.2")

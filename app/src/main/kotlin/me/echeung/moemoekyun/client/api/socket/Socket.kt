@@ -6,8 +6,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import logcat.LogPriority
 import logcat.asLog
@@ -98,7 +96,7 @@ class Socket @Inject constructor(
                 return
             }
 
-            socket?.send(json.encodeToString(ResponseModel.Base(2)))
+            socket?.send(json.encodeToString(WebsocketRequest.Update()))
         }
     }
 
@@ -127,11 +125,11 @@ class Socket @Inject constructor(
         reconnect()
     }
 
-    private fun initHeartbeat(delayMillis: Long) {
+    private fun initHeartbeat(delayMillis: Int) {
         clearHeartbeat()
         heartbeatJob = scope.launch {
             logcat { "Created heartbeat job for $delayMillis ms" }
-            sendHeartbeat(delayMillis)
+            sendHeartbeat(delayMillis.toLong())
         }
     }
 
@@ -142,16 +140,19 @@ class Socket @Inject constructor(
             return
         }
 
-        logcat { "Sending heartbeat to socket" }
-        socket?.send(json.encodeToString(ResponseModel.Base(9)))
+        val request = json.encodeToString(WebsocketRequest.Heartbeat())
+        logcat { "Sending heartbeat to socket: $request" }
+        socket?.send(request)
 
         // Repeat
         sendHeartbeat(delayMillis)
     }
 
     private fun clearHeartbeat() {
-        logcat { "Cancelling heartbeat job" }
-        heartbeatJob?.cancel()
+        heartbeatJob?.let {
+            logcat { "Cancelling heartbeat job" }
+            it.cancel()
+        }
     }
 
     private fun parseResponse(jsonString: String?) {
@@ -163,59 +164,31 @@ class Socket @Inject constructor(
         }
 
         try {
-            val baseResponse = json.decodeFromString<ResponseModel.Base>(jsonString)
-            when (baseResponse.op) {
-                // Heartbeat init
-                0 -> {
-                    val connectResponse = json.decodeFromString<ResponseModel.Connect>(jsonString)
-                    initHeartbeat(connectResponse.d!!.heartbeat.toLong())
+            when (val response = json.decodeFromString<WebsocketResponse>(jsonString)) {
+                is WebsocketResponse.Connect -> {
+                    initHeartbeat(response.d.heartbeat)
                 }
-
-                // Update
-                1 -> {
-                    val updateResponse = json.decodeFromString<ResponseModel.Update>(jsonString)
-                    if (!isValidUpdate(updateResponse)) {
+                is WebsocketResponse.Update -> {
+                    if (!response.isValidUpdate()) {
                         return
                     }
 
                     scope.launch {
-                        _flow.value = SocketResponse(updateResponse.d)
+                        _flow.value = SocketResponse(response.d)
                     }
                 }
-
-                // Heartbeat ACK
-                10 -> {}
-
-                else -> logcat { "Received invalid socket data: $jsonString" }
+                is WebsocketResponse.HeartbeatAck -> {}
             }
         } catch (e: IOException) {
             logcat(LogPriority.ERROR) { "Failed to parse socket data: $jsonString ${e.asLog()}" }
         }
     }
 
-    private fun isValidUpdate(updateResponse: ResponseModel.Update): Boolean {
-        return (
-            updateResponse.t == TRACK_UPDATE ||
-                updateResponse.t == TRACK_UPDATE_REQUEST ||
-                updateResponse.t == QUEUE_UPDATE ||
-                isNotification(updateResponse)
-            )
-    }
-
-    private fun isNotification(updateResponse: ResponseModel.Update): Boolean {
-        return updateResponse.t == NOTIFICATION
-    }
-
     sealed interface SocketResult
     data object SocketLoading : SocketResult
-    data class SocketResponse(val info: ResponseModel.Update.Details?) : SocketResult
+    data class SocketResponse(val info: WebsocketResponse.Update.Details?) : SocketResult
     data object SocketError : SocketResult
 }
-
-private const val TRACK_UPDATE = "TRACK_UPDATE"
-private const val TRACK_UPDATE_REQUEST = "TRACK_UPDATE_REQUEST"
-private const val QUEUE_UPDATE = "QUEUE_UPDATE"
-private const val NOTIFICATION = "NOTIFICATION"
 
 private const val RETRY_TIME_MIN = 250
 private const val RETRY_TIME_MAX = 4000

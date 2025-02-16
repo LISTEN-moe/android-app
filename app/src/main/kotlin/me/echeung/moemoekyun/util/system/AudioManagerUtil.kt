@@ -14,7 +14,9 @@ class AudioManagerUtil @AssistedInject constructor(
     @Assisted audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener,
 ) {
 
-    private val focusRequest: AudioFocusRequestCompat = AudioFocusRequestCompat.Builder(AudioManagerCompat.AUDIOFOCUS_GAIN)
+    private val focusRequest: AudioFocusRequestCompat = AudioFocusRequestCompat.Builder(
+        AudioManagerCompat.AUDIOFOCUS_GAIN,
+    )
         .setAudioAttributes(audioAttributes)
         .setWillPauseWhenDucked(true)
         .setOnAudioFocusChangeListener(audioFocusChangeListener)
