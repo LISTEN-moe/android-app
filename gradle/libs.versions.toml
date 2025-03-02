@@ -19,7 +19,7 @@ ksp = { id = "com.google.devtools.ksp", version = "2.1.10-1.0.30" }
 
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.1.2" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "12.2.0" }
 autoresconfig = { id = "dev.rikka.tools.autoresconfig", version = "1.2.2" }
 
 [libraries]
