@@ -10,7 +10,7 @@ media3 = "1.5.1"
 voyager = "1.1.0-beta03"
 
 [plugins]
-android-application = { id = "com.android.application", version = "8.9.0" }
+android-application = { id = "com.android.application", version = "8.9.1" }
 
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
