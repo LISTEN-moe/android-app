@@ -172,7 +172,7 @@ dependencies {
     implementation(libs.bundles.preferences)
 
     testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.bundles.junit.runtime)
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
     // "debugImplementation"("com.squareup.leakcanary:leakcanary-android:2.2")

@@ -4,7 +4,7 @@ apollo = "4.1.1"
 coil = "3.1.0"
 coroutines = "1.10.1"
 hilt = "2.56.1"
-junit = "5.11.4"
+junit = "5.12.1"
 kotlin = "2.1.20"
 media3 = "1.6.0"
 voyager = "1.1.0-beta03"
@@ -80,12 +80,14 @@ voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voy
 
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.12.1" }
 
 [bundles]
 apollo = ["apollo-runtime", "apollo-http-cache"]
 coil = ["coil-core", "coil-compose", "coil-gif", "coil-network-okhttp"]
 compose = ["compose-activity", "compose-material", "compose-material-icons-extended", "compose-material3", "compose-ui", "compose-ui-tooling", "compose-ui-util"]
 coroutines = ["coroutines-core", "coroutines-android"]
+junit-runtime = ["junit-platform-launcher", "junit-jupiter-engine"]
 media = ["androidx-media", "androidx-media3-common", "androidx-media3-exoplayer", "androidx-media3-session"]
 okhttp = ["okhttp-core", "okhttp-logging"]
 preferences = ["preferences-androidx", "preferences-flow"]
