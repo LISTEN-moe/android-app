@@ -32,7 +32,7 @@ androidx-media3-common = { module = "androidx.media3:media3-common-ktx", version
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3" }
 androidx-palette = "androidx.palette:palette-ktx:1.0.0"
-androidx-splashscreen = "androidx.core:core-splashscreen:1.2.0-beta01"
+androidx-splashscreen = "androidx.core:core-splashscreen:1.2.0-beta02"
 
 apollo-runtime = { module = "com.apollographql.apollo:apollo-runtime", version.ref = "apollo" }
 apollo-http-cache = { module = "com.apollographql.apollo:apollo-http-cache", version.ref = "apollo" }
