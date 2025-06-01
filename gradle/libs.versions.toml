@@ -5,7 +5,7 @@ coil = "3.1.0"
 coroutines = "1.10.1"
 hilt = "2.56.2"
 junit = "5.12.1"
-kotlin = "2.1.20"
+kotlin = "2.1.21"
 media3 = "1.6.0"
 voyager = "1.1.0-beta03"
 
@@ -15,7 +15,7 @@ android-application = { id = "com.android.application", version = "8.9.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.1.20-1.0.32" }
+ksp = { id = "com.google.devtools.ksp", version = "2.1.21-2.0.1" }
 
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
