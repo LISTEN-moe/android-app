@@ -63,7 +63,7 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 
 immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.3.8" }
 
-logcat = { module = "com.squareup.logcat:logcat", version = "0.1" }
+logcat = { module = "com.squareup.logcat:logcat", version = "0.2.3" }
 
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version = "5.0.0-alpha.14" }
 okhttp-core = { module = "com.squareup.okhttp3:okhttp" }
