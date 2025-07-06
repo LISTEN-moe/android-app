@@ -411,6 +411,26 @@ private fun SongInfo(
         if (currentSong == null) {
             CircularProgressIndicator()
         } else {
+            radioState.event?.let {
+                Row(
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+//                    AlbumArt(
+//                        albumArtUrl = it.image,
+//                        openUrlOnClick = false,
+//                        modifier = Modifier.width(50.dp),
+//                    )
+
+                    Text(
+                        text = "♫♪.ılılıll ${it.name} llılılı.♫♪",
+                        maxLines = 1,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                }
+            }
+
             Text(
                 text = currentSong.title,
                 textAlign = TextAlign.Center,

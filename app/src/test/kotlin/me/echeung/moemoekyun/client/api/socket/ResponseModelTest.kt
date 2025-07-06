@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.client.api.socket
 
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.di.SerializationModule
@@ -129,6 +130,10 @@ class ResponseModelTest {
             enabled = false,
             favorite = false,
             favoritedAt = null,
+        )
+        response.d?.event shouldBe Event(
+            name = "Throwback to some good stuff",
+            image = "https://i.imgur.com/G3nzMLQ.png",
         )
     }
 }
