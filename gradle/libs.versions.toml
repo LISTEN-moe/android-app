@@ -4,7 +4,7 @@ apollo = "4.3.1"
 coil = "3.2.0"
 coroutines = "1.10.2"
 hilt = "2.56.2"
-junit = "5.13.1"
+junit = "5.13.3"
 kotlin = "2.2.0"
 media3 = "1.7.1"
 voyager = "1.1.0-beta03"
@@ -80,7 +80,7 @@ voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voy
 
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.13.1" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.13.3" }
 
 [bundles]
 apollo = ["apollo-runtime", "apollo-http-cache"]
