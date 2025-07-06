@@ -84,6 +84,7 @@ class RadioService @Inject constructor(
                 }
         }
 
+        // TODO: use https://developer.android.com/media/media3/ui/compose instead
         scope.launchIO {
             stream.flow
                 .collectLatest {
