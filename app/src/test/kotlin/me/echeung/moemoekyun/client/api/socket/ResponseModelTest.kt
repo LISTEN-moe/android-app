@@ -1,7 +1,8 @@
 package me.echeung.moemoekyun.client.api.socket
 
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import me.echeung.moemoekyun.di.SerializationModule
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.fail
 
@@ -15,17 +16,14 @@ class ResponseModelTest {
             """{"op":0,"d":{"message":"Welcome to LISTEN.moe! Enjoy your stay!","heartbeat":35000}}""",
         )
 
-        if (response !is WebsocketResponse.Connect) {
-            fail("Unexpected type")
-        }
-
-        assertEquals(35000, response.d.heartbeat)
+        response.shouldBeInstanceOf<WebsocketResponse.Connect>()
+        response.d.heartbeat shouldBe 35000
     }
 
     @Test
     fun `serializes heartbeat message`() {
         val request = json.encodeToString(WebsocketRequest.Heartbeat())
 
-        assertEquals("""{"op":9}""", request)
+        request shouldBe """{"op":9}"""
     }
 }

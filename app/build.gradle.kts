@@ -172,6 +172,7 @@ dependencies {
     implementation(libs.bundles.preferences)
 
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.kotest.assertions)
     testRuntimeOnly(libs.bundles.junit.runtime)
 
     // For detecting memory leaks; see https://square.github.io/leakcanary/
