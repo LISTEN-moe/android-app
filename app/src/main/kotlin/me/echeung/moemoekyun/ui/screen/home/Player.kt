@@ -181,7 +181,7 @@ private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlaySt
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AlbumArt(
-                albumArtUrl = radioState.currentSong?.albumArtUrl,
+                albumArtUrl = radioState.albumArtUrl,
                 openUrlOnClick = false,
             )
 
@@ -290,7 +290,7 @@ private fun PortraitExpandedPlayerContent(
             modifier = Modifier
                 .fillMaxWidth(0.85f)
                 .weight(1f),
-            albumArtUrl = radioState.currentSong?.albumArtUrl,
+            albumArtUrl = radioState.albumArtUrl,
         )
 
         SongInfo(
@@ -322,7 +322,7 @@ private fun LandscapeExpandedPlayerContent(
                 .padding(32.dp),
         ) {
             AlbumArt(
-                albumArtUrl = radioState.currentSong?.albumArtUrl,
+                albumArtUrl = radioState.albumArtUrl,
             )
         }
 
@@ -412,23 +412,11 @@ private fun SongInfo(
             CircularProgressIndicator()
         } else {
             radioState.event?.let {
-                Row(
-                    modifier = Modifier.padding(vertical = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-//                    AlbumArt(
-//                        albumArtUrl = it.image,
-//                        openUrlOnClick = false,
-//                        modifier = Modifier.width(50.dp),
-//                    )
-
-                    Text(
-                        text = "♫♪.ılılıll ${it.name} llılılı.♫♪",
-                        maxLines = 1,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
+                Text(
+                    text = "♫♪.ılılıll ${it.name} llılılı.♫♪",
+                    maxLines = 1,
+                    color = MaterialTheme.colorScheme.primary,
+                )
             }
 
             Text(

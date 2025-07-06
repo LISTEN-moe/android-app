@@ -185,4 +185,7 @@ data class RadioState(
     val startTime: Calendar? = null,
     val pastSongs: List<DomainSong> = emptyList(),
     val event: Event? = null,
-)
+) {
+    val albumArtUrl: String?
+        get() = currentSong?.albumArtUrl ?: event?.image
+}
