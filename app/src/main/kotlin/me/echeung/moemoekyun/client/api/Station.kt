@@ -6,7 +6,7 @@ import me.echeung.moemoekyun.R
 enum class Station(
     val socketUrl: String,
     val streamUrl: String,
-    @StringRes val labelRes: Int,
+    @param:StringRes val labelRes: Int,
 ) {
     JPOP(
         "wss://listen.moe/gateway_v2",

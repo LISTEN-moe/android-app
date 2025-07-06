@@ -21,7 +21,6 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
-import logcat.LogcatLogger
 import me.echeung.moemoekyun.domain.radio.RadioService
 import me.echeung.moemoekyun.service.AppService
 import me.echeung.moemoekyun.service.MusicNotifier
@@ -40,9 +39,7 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, Singleto
     override fun onCreate() {
         super<Application>.onCreate()
 
-        if (!LogcatLogger.isInstalled) {
-            LogcatLogger.install(AndroidLogcatLogger(if (BuildConfig.DEBUG) LogPriority.VERBOSE else LogPriority.ERROR))
-        }
+        AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 

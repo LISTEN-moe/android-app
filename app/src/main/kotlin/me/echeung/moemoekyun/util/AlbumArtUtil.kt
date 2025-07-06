@@ -34,7 +34,7 @@ import me.echeung.moemoekyun.util.ext.withIOContext
 import javax.inject.Inject
 
 class AlbumArtUtil @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val currentSong: CurrentSong,
 ) {
 

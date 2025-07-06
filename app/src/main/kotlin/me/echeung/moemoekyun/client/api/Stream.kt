@@ -27,7 +27,7 @@ import javax.inject.Singleton
 
 @Singleton
 class Stream @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
     audioManagerUtilFactory: AudioManagerUtil.Factory,
     private val audioAttributes: AudioAttributes,

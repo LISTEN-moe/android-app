@@ -34,7 +34,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RadioService @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
     private val stream: Stream,
     private val socket: Socket,

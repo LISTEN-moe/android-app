@@ -11,7 +11,7 @@ import me.echeung.moemoekyun.util.ext.withUIContext
 import javax.inject.Inject
 
 class RequestSong @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val songsService: SongsService,
     private val preferenceUtil: PreferenceUtil,
 ) {
