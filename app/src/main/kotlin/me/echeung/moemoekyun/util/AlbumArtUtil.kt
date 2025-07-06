@@ -49,7 +49,7 @@ class AlbumArtUtil @Inject constructor(
 
     init {
         scope.launchIO {
-            currentSong.asFlow().collectLatest(::updateAlbumArt)
+            currentSong.albumArtFlow().collectLatest(::updateAlbumArt)
         }
     }
 
@@ -67,8 +67,8 @@ class AlbumArtUtil @Inject constructor(
         }
     }
 
-    private suspend fun updateAlbumArt(song: DomainSong?) {
-        val bitmap = getAlbumArtBitmap(song?.albumArtUrl)
+    private suspend fun updateAlbumArt(albumArtUrl: String?) {
+        val bitmap = getAlbumArtBitmap(albumArtUrl)
         val accentColor = extractAccentColor(bitmap)
 
         scope.launch {

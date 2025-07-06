@@ -200,8 +200,8 @@ class AppService : Service() {
             .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentSong.albums.toString())
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, currentSong.durationSeconds)
 
-        if (currentSong.albumArtUrl != null) {
-            metadata.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, albumArtUtil.getCurrentAlbumArt(500))
+        albumArtUtil.getCurrentAlbumArt(size = 500)?.let {
+            metadata.putBitmap(MediaMetadataCompat.METADATA_KEY_ALBUM_ART, it)
         }
 
         mediaSession?.setMetadata(metadata.build())
