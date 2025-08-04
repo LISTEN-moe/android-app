@@ -7,8 +7,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.IBinder
-import androidx.core.app.NotificationChannelCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -25,7 +23,6 @@ import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import me.echeung.moemoekyun.domain.radio.RadioService
 import me.echeung.moemoekyun.service.AppService
-import me.echeung.moemoekyun.service.MusicNotifier
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 
@@ -45,7 +42,6 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, Singleto
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
 
-        initNotificationChannels()
         initRadioService()
     }
 
@@ -84,19 +80,6 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, Singleto
                 }
             }
             .build()
-    }
-
-    private fun initNotificationChannels() {
-        val notificationManager = NotificationManagerCompat.from(this)
-        listOf(
-            // Playing
-            NotificationChannelCompat.Builder(
-                MusicNotifier.NOTIFICATION_CHANNEL_ID,
-                NotificationManagerCompat.IMPORTANCE_LOW,
-            )
-                .setName(MusicNotifier.NOTIFICATION_CHANNEL_NAME)
-                .build(),
-        ).forEach(notificationManager::createNotificationChannel)
     }
 
     companion object {

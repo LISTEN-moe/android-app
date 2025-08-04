@@ -142,6 +142,7 @@ class PlaybackService : MediaSessionService() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
+        // FIXME: dismiss doesn't work
         session = MediaSession.Builder(applicationContext, player)
             .setSessionActivity(clickIntent)
             .setCallback(

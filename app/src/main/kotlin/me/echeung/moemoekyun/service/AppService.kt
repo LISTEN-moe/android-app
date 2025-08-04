@@ -61,9 +61,6 @@ class AppService : Service() {
     lateinit var getAuthenticatedUser: GetAuthenticatedUser
 
     @Inject
-    lateinit var musicNotifier: MusicNotifier
-
-    @Inject
     lateinit var albumArtUtil: AlbumArtUtil
 
     @Inject
@@ -122,14 +119,6 @@ class AppService : Service() {
 
     private fun update(radioState: RadioState) {
         updateMediaSession(radioState)
-
-        if (radioState.streamState != Stream.State.STOPPED) {
-            musicNotifier.update(
-                this,
-                radioState.currentSong,
-                radioState.streamState,
-            )
-        }
     }
 
     private fun initMediaSession() {
