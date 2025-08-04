@@ -1,6 +1,8 @@
+
 package me.echeung.moemoekyun.ui.screen.home
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.OptIn
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -65,6 +67,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.session.MediaController
+import androidx.media3.ui.compose.state.PlayPauseButtonState
+import androidx.media3.ui.compose.state.rememberPlayPauseButtonState
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
@@ -77,8 +83,10 @@ import me.echeung.moemoekyun.util.ext.copyToClipboard
 val PlayerPeekHeight = 72.dp
 
 @Composable
+@OptIn(UnstableApi::class)
 fun PlayerScaffold(
     radioState: RadioState,
+    mediaController: MediaController,
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -88,6 +96,7 @@ fun PlayerScaffold(
     content: @Composable BoxScope.(PaddingValues) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val playPauseButtonState = rememberPlayPauseButtonState(mediaController)
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
             initialValue = SheetValue.Expanded,
@@ -109,6 +118,7 @@ fun PlayerScaffold(
         sheetContent = {
             PlayerContent(
                 radioState = radioState,
+                playPauseButtonState = playPauseButtonState,
                 accentColor = accentColor,
                 onClickStation = onClickStation,
                 onClickHistory = onClickHistory,
@@ -133,6 +143,7 @@ fun PlayerScaffold(
 
             CollapsedPlayerContent(
                 radioState = radioState,
+                playPauseButtonState = playPauseButtonState,
                 togglePlayState = togglePlayState,
                 onClick = {
                     scope.launch {
@@ -145,8 +156,10 @@ fun PlayerScaffold(
 }
 
 @Composable
+@OptIn(UnstableApi::class)
 private fun PlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -156,6 +169,7 @@ private fun PlayerContent(
 ) {
     ExpandedPlayerContent(
         radioState = radioState,
+        playPauseButtonState = playPauseButtonState,
         accentColor = accentColor,
         onClickCollapse = onClickCollapse,
         onClickStation = onClickStation,
@@ -165,8 +179,14 @@ private fun PlayerContent(
     )
 }
 
+@OptIn(UnstableApi::class)
 @Composable
-private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlayState: () -> Unit, onClick: () -> Unit) {
+private fun BoxScope.CollapsedPlayerContent(
+    radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
+    togglePlayState: () -> Unit,
+    onClick: () -> Unit,
+) {
     Surface(
         modifier = Modifier
             .align(Alignment.BottomCenter)
@@ -211,8 +231,8 @@ private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlaySt
                 }
             }
 
-            IconButton(onClick = togglePlayState) {
-                PlayStateIcon(radioState.streamState)
+            IconButton(onClick = playPauseButtonState::onClick) {
+                PlayStateIcon(playPauseButtonState)
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -221,8 +241,10 @@ private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlaySt
 }
 
 @Composable
+@OptIn(UnstableApi::class)
 private fun ExpandedPlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
@@ -246,6 +268,7 @@ private fun ExpandedPlayerContent(
                 if (maxWidth < maxHeight) {
                     PortraitExpandedPlayerContent(
                         radioState = radioState,
+                        playPauseButtonState = playPauseButtonState,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
@@ -255,6 +278,7 @@ private fun ExpandedPlayerContent(
                 } else {
                     LandscapeExpandedPlayerContent(
                         radioState = radioState,
+                        playPauseButtonState = playPauseButtonState,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
@@ -267,9 +291,11 @@ private fun ExpandedPlayerContent(
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 private fun PortraitExpandedPlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -295,6 +321,7 @@ private fun PortraitExpandedPlayerContent(
 
         SongInfo(
             radioState,
+            playPauseButtonState,
             radioState.currentSong,
             onClickHistory,
             togglePlayState,
@@ -303,9 +330,11 @@ private fun PortraitExpandedPlayerContent(
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 private fun LandscapeExpandedPlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -337,6 +366,7 @@ private fun LandscapeExpandedPlayerContent(
 
             SongInfo(
                 radioState,
+                playPauseButtonState,
                 radioState.currentSong,
                 onClickHistory,
                 togglePlayState,
@@ -391,9 +421,11 @@ private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> U
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 private fun SongInfo(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     currentSong: DomainSong?,
     onClickHistory: () -> Unit,
     togglePlayState: () -> Unit,
@@ -454,9 +486,9 @@ private fun SongInfo(
             }
             FloatingActionButton(
                 modifier = Modifier.size(56.dp),
-                onClick = togglePlayState,
+                onClick = playPauseButtonState::onClick,
             ) {
-                PlayStateIcon(radioState.streamState)
+                PlayStateIcon(playPauseButtonState)
             }
             IconButton(
                 onClick = { currentSong?.let { toggleFavorite?.invoke(it.id) } },
@@ -498,28 +530,29 @@ private fun SongInfo(
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
-private fun PlayStateIcon(state: Stream.State) {
-    when (state) {
-        Stream.State.PAUSED, Stream.State.STOPPED -> {
+private fun PlayStateIcon(playPauseButtonState: PlayPauseButtonState) {
+    when {
+        playPauseButtonState.showPlay -> {
             Icon(
                 Icons.Outlined.PlayArrow,
                 contentDescription = stringResource(R.string.action_play),
             )
         }
 
-        Stream.State.PLAYING -> {
+        !playPauseButtonState.showPlay -> {
             Icon(
                 Icons.Outlined.Pause,
                 contentDescription = stringResource(R.string.action_pause),
             )
         }
 
-        Stream.State.BUFFERING -> {
-            CircularProgressIndicator(
-                modifier = Modifier.alpha(0.7f),
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
-        }
+        // Stream.State.BUFFERING -> {
+        //     CircularProgressIndicator(
+        //         modifier = Modifier.alpha(0.7f),
+        //         color = MaterialTheme.colorScheme.onPrimary,
+        //     )
+        // }
     }
 }
