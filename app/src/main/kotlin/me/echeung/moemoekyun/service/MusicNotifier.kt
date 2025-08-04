@@ -21,7 +21,7 @@ class MusicNotifier @Inject constructor(
     private val albumArtUtil: AlbumArtUtil,
 ) {
 
-    fun update(service: AppService, currentSong: DomainSong?, streamState: Stream.State, isAuthenticated: Boolean) {
+    fun update(service: AppService, currentSong: DomainSong?, streamState: Stream.State) {
         if (currentSong == null || service.mediaSession == null || streamState == Stream.State.STOPPED) {
             return
         }
@@ -69,25 +69,6 @@ class MusicNotifier @Inject constructor(
         builder.setContentTitle(currentSong.title)
         builder.setContentText(currentSong.artists)
         builder.setSubText(currentSong.albums)
-
-        // Add favorite action if logged in
-        if (isAuthenticated) {
-            builder.addAction(
-                NotificationCompat.Action(
-                    if (currentSong.favorited) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp,
-                    if (currentSong.favorited) {
-                        service.getString(R.string.action_unfavorite)
-                    } else {
-                        service.getString(
-                            R.string.action_favorite,
-                        )
-                    },
-                    getPlaybackActionService(service, AppService.TOGGLE_FAVORITE),
-                ),
-            )
-
-            builder.setStyle(style.setShowActionsInCompactView(0, 1))
-        }
 
         // ForegroundServiceStartNotAllowedException can be thrown in Android 12+
         // if this ends up getting started once the app was already backgrounded.

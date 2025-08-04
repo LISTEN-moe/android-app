@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.service
 
+import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -15,14 +16,22 @@ import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
+import androidx.media3.session.CommandButton
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
+import androidx.media3.session.SessionCommand
+import androidx.media3.session.SessionResult
 import coil3.Bitmap
+import com.google.common.collect.ImmutableList
+import com.google.common.util.concurrent.Futures
+import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.combine
 import logcat.logcat
+import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.radio.RadioService
+import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
@@ -30,7 +39,13 @@ import me.echeung.moemoekyun.util.ext.collectWithUiContext
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import java.io.ByteArrayOutputStream
+import java.util.concurrent.Future
 import javax.inject.Inject
+
+const val FAVORITE_ACTION_ID = "a_favorite"
+const val UNFAVORITE_ACTION_ID = "a_unfavorite"
+const val FAVORITE_COMMAND = "a_favorite_command"
+const val UNFAVORITE_COMMAND = "a_unfavorite_command"
 
 @AndroidEntryPoint
 class PlaybackService : MediaSessionService() {
@@ -53,8 +68,10 @@ class PlaybackService : MediaSessionService() {
     @Inject
     lateinit var getAuthenticatedUser: GetAuthenticatedUser
 
-    lateinit var session: MediaSession
+    @Inject
+    lateinit var favoriteSong: FavoriteSong
 
+    lateinit var session: MediaSession
 
 
     @OptIn(UnstableApi::class)
@@ -84,7 +101,59 @@ class PlaybackService : MediaSessionService() {
             )
             .build()
 
+        val favoriteButton =
+            CommandButton.Builder(CommandButton.ICON_STAR_UNFILLED)
+                .setEnabled(true)
+                .setDisplayName("Favorite")
+                .setSessionCommand(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
+                .setSlots(CommandButton.SLOT_BACK)
+                .build()
+        val unfavoriteButton =
+            CommandButton.Builder(CommandButton.ICON_STAR_FILLED)
+                .setEnabled(true)
+                .setDisplayName("Unfavorite")
+                .setSessionCommand(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
+                .setSlots(CommandButton.SLOT_BACK)
+                .build()
+
         session = MediaSession.Builder(applicationContext, player)
+            .setCallback(
+                object : MediaSession.Callback {
+                    override fun onConnect(
+                        session: MediaSession,
+                        controller: MediaSession.ControllerInfo,
+                    ): MediaSession.ConnectionResult {
+                        val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
+                            .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
+                            .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
+                            .build()
+                        return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
+                            .setAvailableSessionCommands(sessionCommands)
+                            .build()
+                    }
+
+                    override fun onCustomCommand(
+                        session: MediaSession,
+                        controller: MediaSession.ControllerInfo,
+                        customCommand: SessionCommand,
+                        args: Bundle,
+                    ): ListenableFuture<SessionResult> {
+                        return when (customCommand.customAction) {
+                            FAVORITE_ACTION_ID, UNFAVORITE_ACTION_ID -> {
+                                scope.launchIO {
+                                    radioService.state.value.currentSong?.id?.let {
+                                        favoriteSong.await(it)
+                                    }
+                                }
+                                Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                            }
+                            else -> super.onCustomCommand(session, controller, customCommand, args)
+                        }
+                    }
+
+
+                },
+            )
             .build()
 
         scope.launchIO {
@@ -109,7 +178,7 @@ class PlaybackService : MediaSessionService() {
                 radioService.state,
                 albumArtUtil.flow,
                 getAuthenticatedUser.asFlow(),
-                preferenceUtil.shouldPreferRomaji().asFlow()
+                preferenceUtil.shouldPreferRomaji().asFlow(),
             ) { radioState, _, _, _ -> radioState }
                 .collectWithUiContext { radioState ->
                     val currentSong = radioState.currentSong
@@ -119,6 +188,17 @@ class PlaybackService : MediaSessionService() {
                             setMediaMetadata(MediaMetadata.EMPTY)
                         }
                         return@collectWithUiContext
+                    }
+
+                    if (getAuthenticatedUser.isAuthenticated()) {
+                        val commandButtons = if (currentSong.favorited) {
+                            listOf(unfavoriteButton)
+                        } else {
+                            listOf(favoriteButton)
+                        }
+                        session.setMediaButtonPreferences(commandButtons)
+                    } else {
+                        session.setMediaButtonPreferences(listOf())
                     }
 
                     session.player.editCurrentMediaItem { currentMediaItem ->
@@ -131,11 +211,11 @@ class PlaybackService : MediaSessionService() {
                                 albumArtUtil.getCurrentAlbumArt(500)?.toByteArray()?.let {
                                     setArtworkData(
                                         it,
-                                        MediaMetadata.PICTURE_TYPE_FRONT_COVER
+                                        MediaMetadata.PICTURE_TYPE_FRONT_COVER,
                                     )
                                 }
                                 build()
-                            }
+                            },
                         )
                     }
 

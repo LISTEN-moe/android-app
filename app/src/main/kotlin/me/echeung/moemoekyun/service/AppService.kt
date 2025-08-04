@@ -128,7 +128,6 @@ class AppService : Service() {
                 this,
                 radioState.currentSong,
                 radioState.streamState,
-                getAuthenticatedUser.isAuthenticated(),
             )
         }
     }
