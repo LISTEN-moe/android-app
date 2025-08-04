@@ -37,6 +37,7 @@ class AlbumArtUtil @Inject constructor(
     private val currentSong: CurrentSong,
 ) {
 
+    // FIXME: Change to ByteArray?
     private val defaultAlbumArt: Bitmap by lazy {
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
     }
@@ -52,6 +53,7 @@ class AlbumArtUtil @Inject constructor(
         }
     }
 
+    // FIXME: Change to ByteArray? Instead of converting in PlayerService
     fun getCurrentAlbumArt(size: Int): Bitmap? {
         if (_flow.value.bitmap == null) {
             return null
