@@ -1,5 +1,7 @@
 package me.echeung.moemoekyun.service
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.core.content.res.ResourcesCompat
@@ -17,6 +19,7 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.session.CommandButton
+import androidx.media3.session.DefaultMediaNotificationProvider
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.SessionCommand
@@ -33,6 +36,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.radio.RadioService
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
+import me.echeung.moemoekyun.ui.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.collectWithUiContext
@@ -101,6 +105,17 @@ class PlaybackService : MediaSessionService() {
             )
             .build()
 
+        setMediaNotificationProvider(
+            DefaultMediaNotificationProvider.Builder(applicationContext)
+                .setChannelName(androidx.media3.session.R.string.default_notification_channel_name)
+                .setChannelId("default")
+                .setNotificationId(1)
+                .build()
+                .apply {
+                    setSmallIcon(R.drawable.ic_icon)
+                }
+        )
+
         val favoriteButton =
             CommandButton.Builder(CommandButton.ICON_STAR_UNFILLED)
                 .setEnabled(true)
@@ -116,7 +131,19 @@ class PlaybackService : MediaSessionService() {
                 .setSlots(CommandButton.SLOT_BACK)
                 .build()
 
+        val action = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        }
+
+        val clickIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            action,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        )
+
         session = MediaSession.Builder(applicationContext, player)
+            .setSessionActivity(clickIntent)
             .setCallback(
                 object : MediaSession.Callback {
                     override fun onConnect(

@@ -34,23 +34,10 @@ class MusicNotifier @Inject constructor(
             getPlaybackActionService(service, AppService.PLAY_PAUSE),
         )
 
-        // Build the notification
-        val action = Intent(service, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        }
-
-        val clickIntent = PendingIntent.getActivity(
-            service,
-            0,
-            action,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-        )
         val deleteIntent = getPlaybackActionService(service, AppService.STOP)
 
         val builder = NotificationCompat.Builder(service, NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_icon)
             .setLargeIcon(albumArtUtil.getCurrentAlbumArt(500))
-            .setContentIntent(clickIntent)
             .setDeleteIntent(deleteIntent)
             .addAction(playPauseAction)
             .setContentTitle(service.getString(R.string.app_name))
