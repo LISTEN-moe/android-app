@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.client.api
 
+import android.content.ComponentName
 import android.content.Context
 import android.media.AudioManager
 import androidx.annotation.OptIn
@@ -10,10 +11,15 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.extractor.DefaultExtractorsFactory
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
+import com.google.common.util.concurrent.MoreExecutors
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import logcat.logcat
+import me.echeung.moemoekyun.service.PlaybackService
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.ext.toMediaItem
@@ -39,7 +45,7 @@ class Stream @Inject constructor(
     private var wasPlayingBeforeLoss: Boolean = false
 
     private var currentStreamUrl: String? = null
-    private var player: ExoPlayer? = null
+    private var player: MediaController? = null
 
     private val eventListener = object : Player.Listener {
         override fun onPlaybackStateChanged(playbackState: Int) {
@@ -111,8 +117,8 @@ class Stream @Inject constructor(
             initPlayer()
 
             if (!isPlaying) {
-                player!!.play()
-                player!!.seekToDefaultPosition()
+                // player!!.play()
+                // player!!.seekToDefaultPosition()
             }
         }
     }
@@ -136,26 +142,21 @@ class Stream @Inject constructor(
     // TODO: hook up to MediaSession directly
     private fun initPlayer() {
         if (player == null) {
-            player = ExoPlayer.Builder(context)
-                .setAudioAttributes(audioAttributes, true)
-                .setWakeMode(C.WAKE_MODE_NETWORK)
-                .build()
-                .also {
-                    it.addListener(eventListener)
-                    it.volume = 1f
-                }
-        }
+            val sessionToken = SessionToken(context, ComponentName(context, PlaybackService::class.java))
 
-        // Set stream
-        val streamUrl = preferenceUtil.station().get().streamUrl
-        if (streamUrl != currentStreamUrl) {
-            val streamSource = progressiveMediaSourceFactory
-                .createMediaSource(preferenceUtil.station().get().toMediaItem())
-            with(player!!) {
-                setMediaSource(streamSource)
-                prepare()
-            }
-            currentStreamUrl = streamUrl
+            // Build the MediaController asynchronously
+            val controllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
+
+            // Set up a listener to handle the controller when it's ready
+            controllerFuture.addListener(
+                {
+                    player = controllerFuture.get().also {
+                        it.addListener(eventListener)
+                        it.volume = 1f
+                    }
+                },
+                MoreExecutors.directExecutor(),
+            )
         }
     }
 
