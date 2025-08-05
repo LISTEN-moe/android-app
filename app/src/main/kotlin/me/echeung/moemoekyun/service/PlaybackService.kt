@@ -236,7 +236,7 @@ class PlaybackService : MediaSessionService() {
                                 setArtist(currentSong.artists)
                                 setAlbumTitle(currentSong.albums)
                                 setDurationMs(currentSong.durationSeconds.seconds.inWholeMilliseconds)
-                                albumArtUtil.getCurrentAlbumArt(500)?.toByteArray()?.let {
+                                albumArtUtil.getCurrentAlbumArt(500)?.let {
                                     setArtworkData(
                                         it,
                                         MediaMetadata.PICTURE_TYPE_FRONT_COVER,
@@ -271,10 +271,4 @@ fun Player.editCurrentMediaItem(block: MediaItem.Builder.(MediaItem?) -> Unit) {
     val builder = mediaItem?.buildUpon() ?: MediaItem.Builder()
     block(builder, mediaItem)
     replaceMediaItem(0, builder.build())
-}
-
-fun android.graphics.Bitmap.toByteArray(): ByteArray {
-    val stream = ByteArrayOutputStream()
-    compress(android.graphics.Bitmap.CompressFormat.PNG, 100, stream)
-    return stream.toByteArray()
 }

@@ -66,7 +66,6 @@ class HomeScreenModel @Inject constructor(
 
         screenModelScope.launchIO {
             albumArtUtil.flow
-                .filterNotNull()
                 .collectLatest {
                     mutableState.update { state ->
                         state.copy(
