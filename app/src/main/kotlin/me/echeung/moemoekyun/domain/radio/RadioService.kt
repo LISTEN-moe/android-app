@@ -108,10 +108,7 @@ class RadioService @Inject constructor(
     }
 
     fun disconnectIfIdle() {
-        if (!stream.isPlaying) {
-            stream.stop()
-            socket.disconnect()
-        }
+        socket.disconnect()
     }
 
     private fun initNetworkStateCallback() {

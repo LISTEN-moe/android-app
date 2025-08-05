@@ -110,7 +110,7 @@ class PlaybackService : MediaSessionService() {
                 .build()
                 .apply {
                     setSmallIcon(R.drawable.ic_icon)
-                }
+                },
         )
 
         val favoriteButton =
@@ -251,6 +251,10 @@ class PlaybackService : MediaSessionService() {
         }
     }
 
+    @OptIn(UnstableApi::class)
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        pauseAllPlayersAndStopSelf()
+    }
 
     override fun onDestroy() {
         session.player.release()

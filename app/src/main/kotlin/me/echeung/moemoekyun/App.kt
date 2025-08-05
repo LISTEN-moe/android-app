@@ -62,10 +62,6 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, Singleto
         radioService.connect()
     }
 
-    override fun onStop(owner: LifecycleOwner) {
-        radioService.disconnectIfIdle()
-    }
-
     @OptIn(ExperimentalCoilApi::class)
     override fun newImageLoader(context: PlatformContext): ImageLoader {
         return ImageLoader.Builder(context)
