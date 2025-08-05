@@ -4,8 +4,6 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.OptIn
-import androidx.core.content.res.ResourcesCompat
-import androidx.core.graphics.drawable.toBitmap
 import androidx.core.net.toUri
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -24,8 +22,6 @@ import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionResult
-import coil3.Bitmap
-import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,8 +39,9 @@ import me.echeung.moemoekyun.util.ext.collectWithUiContext
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import java.io.ByteArrayOutputStream
-import java.util.concurrent.Future
 import javax.inject.Inject
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 const val FAVORITE_ACTION_ID = "a_favorite"
 const val UNFAVORITE_ACTION_ID = "a_unfavorite"
@@ -143,6 +140,10 @@ class PlaybackService : MediaSessionService() {
         )
 
         // FIXME: dismiss doesn't work
+        // TODO: Investigate if player position can be changed
+        // TODO: Investigate if skip next/prev can be remove on Auto
+        // FIXME: Handle changing station on Auto
+        // TODO: Investigate how to change station on Auto
         session = MediaSession.Builder(applicationContext, player)
             .setSessionActivity(clickIntent)
             .setCallback(
@@ -178,8 +179,6 @@ class PlaybackService : MediaSessionService() {
                             else -> super.onCustomCommand(session, controller, customCommand, args)
                         }
                     }
-
-
                 },
             )
             .build()
@@ -196,7 +195,7 @@ class PlaybackService : MediaSessionService() {
                                 .build(),
                         )
                         prepare()
-                        play()
+                        // play()
                     }
                 }
         }
@@ -236,6 +235,7 @@ class PlaybackService : MediaSessionService() {
                                 setTitle(currentSong.title)
                                 setArtist(currentSong.artists)
                                 setAlbumTitle(currentSong.albums)
+                                setDurationMs(currentSong.durationSeconds.seconds.inWholeMilliseconds)
                                 albumArtUtil.getCurrentAlbumArt(500)?.toByteArray()?.let {
                                     setArtworkData(
                                         it,

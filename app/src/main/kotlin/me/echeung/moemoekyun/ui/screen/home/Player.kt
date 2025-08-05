@@ -74,7 +74,6 @@ import androidx.media3.ui.compose.state.rememberPlayPauseButtonState
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
-import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
@@ -90,7 +89,6 @@ fun PlayerScaffold(
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.(PaddingValues) -> Unit,
@@ -122,14 +120,12 @@ fun PlayerScaffold(
                 accentColor = accentColor,
                 onClickStation = onClickStation,
                 onClickHistory = onClickHistory,
-                togglePlayState = togglePlayState,
                 toggleFavorite = toggleFavorite,
-                onClickCollapse = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.hide()
-                    }
-                },
-            )
+            ) {
+                scope.launch {
+                    scaffoldState.bottomSheetState.hide()
+                }
+            }
         },
         sheetContainerColor = MaterialTheme.colorScheme.background,
         sheetMaxWidth = Dp.Unspecified,
@@ -144,13 +140,11 @@ fun PlayerScaffold(
             CollapsedPlayerContent(
                 radioState = radioState,
                 playPauseButtonState = playPauseButtonState,
-                togglePlayState = togglePlayState,
-                onClick = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.expand()
-                    }
-                },
-            )
+            ) {
+                scope.launch {
+                    scaffoldState.bottomSheetState.expand()
+                }
+            }
         }
     }
 }
@@ -163,7 +157,6 @@ private fun PlayerContent(
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
     onClickCollapse: () -> Unit,
 ) {
@@ -174,7 +167,6 @@ private fun PlayerContent(
         onClickCollapse = onClickCollapse,
         onClickStation = onClickStation,
         onClickHistory = onClickHistory,
-        togglePlayState = togglePlayState,
         toggleFavorite = toggleFavorite,
     )
 }
@@ -184,7 +176,6 @@ private fun PlayerContent(
 private fun BoxScope.CollapsedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
-    togglePlayState: () -> Unit,
     onClick: () -> Unit,
 ) {
     Surface(
@@ -249,7 +240,6 @@ private fun ExpandedPlayerContent(
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     val backgroundColor = animateColorAsState(
@@ -272,7 +262,6 @@ private fun ExpandedPlayerContent(
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
-                        togglePlayState = togglePlayState,
                         toggleFavorite = toggleFavorite,
                     )
                 } else {
@@ -282,7 +271,6 @@ private fun ExpandedPlayerContent(
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
-                        togglePlayState = togglePlayState,
                         toggleFavorite = toggleFavorite,
                     )
                 }
@@ -299,7 +287,6 @@ private fun PortraitExpandedPlayerContent(
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     Column(
@@ -324,7 +311,6 @@ private fun PortraitExpandedPlayerContent(
             playPauseButtonState,
             radioState.currentSong,
             onClickHistory,
-            togglePlayState,
             toggleFavorite,
         )
     }
@@ -338,7 +324,6 @@ private fun LandscapeExpandedPlayerContent(
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     Row(
@@ -369,7 +354,6 @@ private fun LandscapeExpandedPlayerContent(
                 playPauseButtonState,
                 radioState.currentSong,
                 onClickHistory,
-                togglePlayState,
                 toggleFavorite,
             )
         }
@@ -428,7 +412,6 @@ private fun SongInfo(
     playPauseButtonState: PlayPauseButtonState,
     currentSong: DomainSong?,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     val context = LocalContext.current

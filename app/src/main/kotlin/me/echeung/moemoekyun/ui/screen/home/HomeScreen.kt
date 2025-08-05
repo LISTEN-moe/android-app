@@ -67,8 +67,8 @@ object HomeScreen : Screen {
         }
 
         PlayerScaffold(
-            mediaController = player!!,
             radioState = radioState,
+            mediaController = player!!,
             accentColor = state.accentColor,
             onClickStation = screenModel::toggleLibrary,
             onClickHistory = {
@@ -79,36 +79,36 @@ object HomeScreen : Screen {
                     )
                 }
             },
-            togglePlayState = screenModel::togglePlayState,
             toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
-        ) {
-            Scaffold(
-                topBar = { Toolbar(isAuthenticated = isAuthenticated) },
-            ) { contentPadding ->
-                BackgroundBox(
-                    modifier = Modifier
-                        .padding(contentPadding)
-                        .fillMaxSize(),
-                ) {
-                    if (isAuthenticated) {
-                        AuthedHomeContent(
-                            user = state.user!!,
-                            onClickLogOut = screenModel::logout,
-                            favorites = state.filteredFavorites,
-                            query = state.searchQuery,
-                            onQueryChange = screenModel::search,
-                            sortType = state.sortType,
-                            onSortBy = screenModel::sortBy,
-                            sortDescending = state.sortDescending,
-                            onSortDescending = screenModel::sortDescending,
-                            requestRandomSong = screenModel::requestRandomSong,
-                        )
-                    } else {
-                        UnauthedHomeContent()
+            content = {
+                Scaffold(
+                    topBar = { Toolbar(isAuthenticated = isAuthenticated) },
+                ) { contentPadding ->
+                    BackgroundBox(
+                        modifier = Modifier
+                            .padding(contentPadding)
+                            .fillMaxSize(),
+                    ) {
+                        if (isAuthenticated) {
+                            AuthedHomeContent(
+                                user = state.user!!,
+                                onClickLogOut = screenModel::logout,
+                                favorites = state.filteredFavorites,
+                                query = state.searchQuery,
+                                onQueryChange = screenModel::search,
+                                sortType = state.sortType,
+                                onSortBy = screenModel::sortBy,
+                                sortDescending = state.sortDescending,
+                                onSortDescending = screenModel::sortDescending,
+                                requestRandomSong = screenModel::requestRandomSong,
+                            )
+                        } else {
+                            UnauthedHomeContent()
+                        }
                     }
                 }
-            }
-        }
+            },
+        )
     }
 
     @Composable

@@ -33,12 +33,7 @@ class Stream @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
     audioManagerUtilFactory: AudioManagerUtil.Factory,
-    private val audioAttributes: AudioAttributes,
-    private val progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
 ) {
-
-    private val _flow = MutableStateFlow(State.STOPPED)
-    val flow = _flow.asStateFlow()
 
     private var audioManagerUtil: AudioManagerUtil
     private var audioFocusChangeListener: AudioManager.OnAudioFocusChangeListener
@@ -48,20 +43,6 @@ class Stream @Inject constructor(
     private var player: MediaController? = null
 
     private val eventListener = object : Player.Listener {
-        override fun onPlaybackStateChanged(playbackState: Int) {
-            logcat { "stream onPlaybackStateChanged: $playbackState" }
-            if (playbackState == Player.STATE_BUFFERING) {
-                _flow.value = State.BUFFERING
-            } else if (playbackState == Player.STATE_READY) {
-                if (isPlaying) {
-                    _flow.value = State.PLAYING
-                } else {
-                    play()
-                }
-            } else if (player?.playWhenReady == true) {
-                _flow.value = State.PAUSED
-            }
-        }
 
         override fun onPlayerError(error: PlaybackException) {
             // Try to reconnect to the stream
@@ -125,7 +106,6 @@ class Stream @Inject constructor(
 
     fun pause() {
         player?.pause()
-        _flow.value = State.PAUSED
     }
 
     fun stop() {
@@ -136,7 +116,6 @@ class Stream @Inject constructor(
         player?.clearMediaItems()
 
         releasePlayer()
-        _flow.value = State.STOPPED
     }
 
     // TODO: hook up to MediaSession directly
@@ -174,10 +153,4 @@ class Stream @Inject constructor(
         player?.volume = 1f
     }
 
-    enum class State {
-        PLAYING,
-        PAUSED,
-        STOPPED,
-        BUFFERING,
-    }
 }

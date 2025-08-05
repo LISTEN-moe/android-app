@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioService
-import me.echeung.moemoekyun.domain.radio.interactor.PlayPause
 import me.echeung.moemoekyun.domain.radio.interactor.SetStation
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
@@ -30,7 +29,6 @@ import javax.inject.Inject
 
 class HomeScreenModel @Inject constructor(
     radioService: RadioService,
-    private val playPause: PlayPause,
     private val setStation: SetStation,
     private val favoriteSong: FavoriteSong,
     private val requestSong: RequestSong,
@@ -92,10 +90,6 @@ class HomeScreenModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    fun togglePlayState() {
-        playPause.toggle()
     }
 
     fun toggleFavorite(songId: Int) {
