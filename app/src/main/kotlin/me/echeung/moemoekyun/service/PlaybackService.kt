@@ -2,9 +2,12 @@ package me.echeung.moemoekyun.service
 
 import android.app.PendingIntent
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Bundle
 import androidx.annotation.OptIn
 import androidx.core.net.toUri
+import androidx.media.AudioFocusRequestCompat
+import androidx.media.AudioManagerCompat
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -37,6 +40,7 @@ import me.echeung.moemoekyun.ui.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.collectWithUiContext
+import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import javax.inject.Inject
@@ -72,7 +76,6 @@ class PlaybackService : MediaSessionService() {
     lateinit var favoriteSong: FavoriteSong
 
     lateinit var session: MediaSession
-
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
