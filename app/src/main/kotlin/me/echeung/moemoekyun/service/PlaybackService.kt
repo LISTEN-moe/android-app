@@ -24,6 +24,7 @@ import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionResult
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.SettableFuture
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.combine
@@ -158,6 +159,21 @@ class PlaybackService : MediaSessionService() {
                         return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                             .setAvailableSessionCommands(sessionCommands)
                             .build()
+                    }
+
+                    override fun onPlaybackResumption(
+                        mediaSession: MediaSession,
+                        controller: MediaSession.ControllerInfo
+                    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+                        val future = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
+                        val mediaItem = preferenceUtil.station().get()
+                            .let { station ->
+                                MediaItem.Builder()
+                                    .setUri(station.streamUrl.toUri())
+                                    .build()
+                            }
+                        future.set(MediaSession.MediaItemsWithStartPosition(listOf(mediaItem), C.INDEX_UNSET, C.TIME_UNSET))
+                        return future
                     }
 
                     override fun onCustomCommand(
