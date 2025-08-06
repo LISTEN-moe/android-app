@@ -22,20 +22,26 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import androidx.media3.session.CommandButton
 import androidx.media3.session.DefaultMediaNotificationProvider
+import androidx.media3.session.LibraryResult
+import androidx.media3.session.MediaConstants
+import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import androidx.media3.session.MediaSessionService
 import androidx.media3.session.SessionCommand
 import androidx.media3.session.SessionResult
+import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.SettableFuture
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.combine
 import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioService
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
@@ -55,7 +61,7 @@ const val FAVORITE_COMMAND = "a_favorite_command"
 const val UNFAVORITE_COMMAND = "a_unfavorite_command"
 
 @AndroidEntryPoint
-class PlaybackService : MediaSessionService() {
+class PlaybackService : MediaLibraryService() {
 
     val scope = MainScope()
 
@@ -78,12 +84,11 @@ class PlaybackService : MediaSessionService() {
     @Inject
     lateinit var favoriteSong: FavoriteSong
 
-    lateinit var session: MediaSession
+    lateinit var session: MediaLibrarySession
 
     @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
-
         logcat { "Starting engine :fire:" }
 
         val dataSourceFactory = DefaultDataSource.Factory(
@@ -150,76 +155,133 @@ class PlaybackService : MediaSessionService() {
         // FIXME: Handle changing station on Auto
         // TODO: Investigate how to change station on Auto
         val player = PlaybackPlayer(audioPlayer)
-        player.addListener(object : Player.Listener {
-            override fun onPlayerError(error: PlaybackException) {
-                logcat(LogPriority.ERROR) { "An error ocurred in the player.\n\n" + error.asLog() }
-                val wasPlaying = audioPlayer.isPlaying
+        player.addListener(
+            object : Player.Listener {
+                override fun onPlayerError(error: PlaybackException) {
+                    logcat(LogPriority.ERROR) { "An error ocurred in the player.\n\n" + error.asLog() }
+                    val wasPlaying = audioPlayer.isPlaying
 
-                val mediaItem = preferenceUtil.station().get()
-                    .let { station ->
-                        MediaItem.Builder()
-                            .setUri(station.streamUrl.toUri())
-                            .build()
-                    }
-                player.setMediaItem(mediaItem)
-                player.prepare()
-                if (wasPlaying) {
-                    player.play()
-                }
-            }
-        })
-        session = MediaSession.Builder(applicationContext, player)
-            .setSessionActivity(clickIntent)
-            .setCallback(
-                object : MediaSession.Callback {
-                    override fun onConnect(
-                        session: MediaSession,
-                        controller: MediaSession.ControllerInfo,
-                    ): MediaSession.ConnectionResult {
-                        val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
-                            .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
-                            .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
-                            .build()
-                        return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
-                            .setAvailableSessionCommands(sessionCommands)
-                            .build()
-                    }
-
-                    override fun onPlaybackResumption(
-                        mediaSession: MediaSession,
-                        controller: MediaSession.ControllerInfo
-                    ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
-                        val future = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
-                        val mediaItem = preferenceUtil.station().get()
-                            .let { station ->
-                                MediaItem.Builder()
-                                    .setUri(station.streamUrl.toUri())
-                                    .build()
-                            }
-                        future.set(MediaSession.MediaItemsWithStartPosition(listOf(mediaItem), C.INDEX_UNSET, C.TIME_UNSET))
-                        return future
-                    }
-
-                    override fun onCustomCommand(
-                        session: MediaSession,
-                        controller: MediaSession.ControllerInfo,
-                        customCommand: SessionCommand,
-                        args: Bundle,
-                    ): ListenableFuture<SessionResult> {
-                        return when (customCommand.customAction) {
-                            FAVORITE_ACTION_ID, UNFAVORITE_ACTION_ID -> {
-                                scope.launchIO {
-                                    radioService.state.value.currentSong?.id?.let {
-                                        favoriteSong.await(it)
-                                    }
-                                }
-                                Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
-                            }
-                            else -> super.onCustomCommand(session, controller, customCommand, args)
+                    val mediaItem = preferenceUtil.station().get()
+                        .let { station ->
+                            MediaItem.Builder()
+                                .setUri(station.streamUrl.toUri())
+                                .build()
                         }
+                    player.setMediaItem(mediaItem)
+                    player.prepare()
+                    if (wasPlaying) {
+                        player.play()
                     }
-                },
-            )
+                }
+            },
+        )
+        session = MediaLibrarySession.Builder(
+            this,
+            player,
+            object : MediaLibrarySession.Callback {
+                override fun onConnect(
+                    session: MediaSession,
+                    controller: MediaSession.ControllerInfo,
+                ): MediaSession.ConnectionResult {
+                    val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
+                        .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
+                        .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
+                        .build()
+                    return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
+                        .setAvailableSessionCommands(sessionCommands)
+                        .build()
+                }
+
+                override fun onPlaybackResumption(
+                    mediaSession: MediaSession,
+                    controller: MediaSession.ControllerInfo,
+                ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+                    val future = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
+                    val mediaItem = preferenceUtil.station().get()
+                        .let { station ->
+                            MediaItem.Builder()
+                                .setUri(station.streamUrl.toUri())
+                                .build()
+                        }
+                    future.set(MediaSession.MediaItemsWithStartPosition(listOf(mediaItem), C.INDEX_UNSET, C.TIME_UNSET))
+                    return future
+                }
+
+                override fun onGetLibraryRoot(
+                    session: MediaLibrarySession,
+                    browser: MediaSession.ControllerInfo,
+                    params: LibraryParams?,
+                ): ListenableFuture<LibraryResult<MediaItem>> {
+                    val future = SettableFuture.create<LibraryResult<MediaItem>>()
+                    future.set(
+                        LibraryResult.ofItem(
+                            MediaItem.Builder()
+                                .setMediaId("media_root")
+                                .build(),
+                            null,
+                        ),
+                    )
+                    return future
+                }
+
+                override fun onGetChildren(
+                    session: MediaLibrarySession,
+                    browser: MediaSession.ControllerInfo,
+                    parentId: String,
+                    page: Int,
+                    pageSize: Int,
+                    params: LibraryParams?,
+                ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
+                    val future = SettableFuture.create<LibraryResult<ImmutableList<MediaItem>>>()
+                    future.set(
+                        LibraryResult.ofItemList(
+                            ImmutableList.copyOf(
+                                Station.entries.map {
+                                    MediaItem.Builder()
+                                        .setMediaId(it.name)
+                                        .setMediaMetadata(
+                                            MediaMetadata.Builder()
+                                                .setTitle(resources.getString(it.labelRes))
+                                                .build(),
+                                        )
+                                        .build()
+                                },
+                            ),
+                            LibraryParams.Builder()
+                                .setSuggested(true)
+                                .build(),
+                        ),
+                    )
+                    return future
+                }
+
+                override fun onCustomCommand(
+                    session: MediaSession,
+                    controller: MediaSession.ControllerInfo,
+                    customCommand: SessionCommand,
+                    args: Bundle,
+                ): ListenableFuture<SessionResult> {
+                    val mediaId = args.getString(MediaConstants.EXTRA_KEY_MEDIA_ID)
+                    if (mediaId != null) {
+                        println(mediaId)
+                        return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                    }
+                    return when (customCommand.customAction) {
+                        FAVORITE_ACTION_ID, UNFAVORITE_ACTION_ID -> {
+                            scope.launchIO {
+                                radioService.state.value.currentSong?.id?.let {
+                                    favoriteSong.await(it)
+                                }
+                            }
+                            Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                        }
+
+                        else -> super.onCustomCommand(session, controller, customCommand, args)
+                    }
+                }
+            },
+        )
+            .setSessionActivity(clickIntent)
             .build()
 
         scope.launchIO {
@@ -234,7 +296,6 @@ class PlaybackService : MediaSessionService() {
                                 .build(),
                         )
                         prepare()
-                        // play()
                     }
                 }
         }
@@ -301,7 +362,7 @@ class PlaybackService : MediaSessionService() {
         super.onDestroy()
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaSession? = session
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
 
 }
 
