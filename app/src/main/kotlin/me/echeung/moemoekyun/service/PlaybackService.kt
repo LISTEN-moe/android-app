@@ -38,9 +38,7 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.collectWithUiContext
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.NetworkUtil
-import java.io.ByteArrayOutputStream
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Duration.Companion.seconds
 
 const val FAVORITE_ACTION_ID = "a_favorite"
@@ -89,7 +87,7 @@ class PlaybackService : MediaSessionService() {
         val progressiveMediaSourceFactory =
             ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
 
-        val player = ExoPlayer.Builder(applicationContext)
+        val audioPlayer = ExoPlayer.Builder(applicationContext)
             .setMediaSourceFactory(progressiveMediaSourceFactory)
             .setAudioAttributes(audioAttributes, true)
             .setWakeMode(C.WAKE_MODE_NETWORK)
@@ -144,6 +142,7 @@ class PlaybackService : MediaSessionService() {
         // TODO: Investigate if skip next/prev can be remove on Auto
         // FIXME: Handle changing station on Auto
         // TODO: Investigate how to change station on Auto
+        val player = PlaybackPlayer(audioPlayer)
         session = MediaSession.Builder(applicationContext, player)
             .setSessionActivity(clickIntent)
             .setCallback(
@@ -187,7 +186,7 @@ class PlaybackService : MediaSessionService() {
             preferenceUtil.station()
                 .asFlow()
                 .collectWithUiContext { station ->
-                    with(player) {
+                    with(audioPlayer) {
                         replaceMediaItem(
                             0,
                             MediaItem.Builder()
