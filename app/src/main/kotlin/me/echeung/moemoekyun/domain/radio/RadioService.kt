@@ -17,7 +17,6 @@ import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.client.api.Station
-import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
@@ -36,7 +35,6 @@ import javax.inject.Singleton
 class RadioService @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
-    private val stream: Stream,
     private val socket: Socket,
     private val songConverter: SongConverter,
     private val getFavoriteSongs: GetFavoriteSongs,

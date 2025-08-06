@@ -12,6 +12,7 @@ import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
@@ -31,6 +32,8 @@ import com.google.common.util.concurrent.SettableFuture
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.combine
+import logcat.LogPriority
+import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.radio.RadioService
@@ -147,6 +150,24 @@ class PlaybackService : MediaSessionService() {
         // FIXME: Handle changing station on Auto
         // TODO: Investigate how to change station on Auto
         val player = PlaybackPlayer(audioPlayer)
+        player.addListener(object : Player.Listener {
+            override fun onPlayerError(error: PlaybackException) {
+                logcat(LogPriority.ERROR) { "An error ocurred in the player.\n\n" + error.asLog() }
+                val wasPlaying = audioPlayer.isPlaying
+
+                val mediaItem = preferenceUtil.station().get()
+                    .let { station ->
+                        MediaItem.Builder()
+                            .setUri(station.streamUrl.toUri())
+                            .build()
+                    }
+                player.setMediaItem(mediaItem)
+                player.prepare()
+                if (wasPlaying) {
+                    player.play()
+                }
+            }
+        })
         session = MediaSession.Builder(applicationContext, player)
             .setSessionActivity(clickIntent)
             .setCallback(
