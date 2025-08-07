@@ -139,7 +139,6 @@ class PlaybackService : MediaLibraryService() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
-        // FIXME: dismiss doesn't work
         // TODO: Investigate if player position can be changed
         // TODO: Investigate if skip next/prev can be remove on Auto
         // FIXME: Handle changing station on Auto
