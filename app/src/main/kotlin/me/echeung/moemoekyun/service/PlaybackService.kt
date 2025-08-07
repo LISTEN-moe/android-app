@@ -2,18 +2,15 @@ package me.echeung.moemoekyun.service
 
 import android.app.PendingIntent
 import android.content.Intent
-import android.media.AudioManager
 import android.os.Bundle
 import androidx.annotation.OptIn
-import androidx.core.net.toUri
-import androidx.media.AudioFocusRequestCompat
-import androidx.media.AudioManagerCompat
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
+import androidx.media3.common.Rating
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
@@ -26,15 +23,13 @@ import androidx.media3.session.LibraryResult
 import androidx.media3.session.MediaConstants
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
-import androidx.media3.session.MediaSessionService
 import androidx.media3.session.SessionCommand
+import androidx.media3.session.SessionError
 import androidx.media3.session.SessionResult
 import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
-import com.google.common.util.concurrent.SettableFuture
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.combine
 import logcat.LogPriority
@@ -49,22 +44,18 @@ import me.echeung.moemoekyun.ui.MainActivity
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.collectWithUiContext
-import me.echeung.moemoekyun.util.ext.isCarUiMode
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 const val FAVORITE_ACTION_ID = "a_favorite"
 const val UNFAVORITE_ACTION_ID = "a_unfavorite"
-const val FAVORITE_COMMAND = "a_favorite_command"
-const val UNFAVORITE_COMMAND = "a_unfavorite_command"
 
 @AndroidEntryPoint
+@OptIn(UnstableApi::class)
 class PlaybackService : MediaLibraryService() {
 
     val scope = MainScope()
-
 
     @Inject
     lateinit var audioAttributes: AudioAttributes
@@ -86,7 +77,6 @@ class PlaybackService : MediaLibraryService() {
 
     lateinit var session: MediaLibrarySession
 
-    @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
         logcat { "Starting engine :fire:" }
@@ -155,135 +145,11 @@ class PlaybackService : MediaLibraryService() {
         // FIXME: Handle changing station on Auto
         // TODO: Investigate how to change station on Auto
         val player = PlaybackPlayer(audioPlayer)
-        player.addListener(
-            object : Player.Listener {
-                override fun onPlayerError(error: PlaybackException) {
-                    logcat(LogPriority.ERROR) { "An error ocurred in the player.\n\n" + error.asLog() }
-                    val wasPlaying = audioPlayer.isPlaying
-
-                    val mediaItem = preferenceUtil.station().get()
-                        .let { station ->
-                            MediaItem.Builder()
-                                .setUri(station.streamUrl.toUri())
-                                .build()
-                        }
-                    player.setMediaItem(mediaItem)
-                    player.prepare()
-                    if (wasPlaying) {
-                        player.play()
-                    }
-                }
-            },
-        )
-        session = MediaLibrarySession.Builder(
-            this,
-            player,
-            object : MediaLibrarySession.Callback {
-                override fun onConnect(
-                    session: MediaSession,
-                    controller: MediaSession.ControllerInfo,
-                ): MediaSession.ConnectionResult {
-                    val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_COMMANDS.buildUpon()
-                        .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
-                        .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
-                        .build()
-                    return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
-                        .setAvailableSessionCommands(sessionCommands)
-                        .build()
-                }
-
-                override fun onPlaybackResumption(
-                    mediaSession: MediaSession,
-                    controller: MediaSession.ControllerInfo,
-                ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
-                    val future = SettableFuture.create<MediaSession.MediaItemsWithStartPosition>()
-                    val mediaItem = preferenceUtil.station().get()
-                        .let { station ->
-                            MediaItem.Builder()
-                                .setUri(station.streamUrl.toUri())
-                                .build()
-                        }
-                    future.set(MediaSession.MediaItemsWithStartPosition(listOf(mediaItem), C.INDEX_UNSET, C.TIME_UNSET))
-                    return future
-                }
-
-                override fun onGetLibraryRoot(
-                    session: MediaLibrarySession,
-                    browser: MediaSession.ControllerInfo,
-                    params: LibraryParams?,
-                ): ListenableFuture<LibraryResult<MediaItem>> {
-                    val future = SettableFuture.create<LibraryResult<MediaItem>>()
-                    future.set(
-                        LibraryResult.ofItem(
-                            MediaItem.Builder()
-                                .setMediaId("media_root")
-                                .build(),
-                            null,
-                        ),
-                    )
-                    return future
-                }
-
-                override fun onGetChildren(
-                    session: MediaLibrarySession,
-                    browser: MediaSession.ControllerInfo,
-                    parentId: String,
-                    page: Int,
-                    pageSize: Int,
-                    params: LibraryParams?,
-                ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
-                    val future = SettableFuture.create<LibraryResult<ImmutableList<MediaItem>>>()
-                    future.set(
-                        LibraryResult.ofItemList(
-                            ImmutableList.copyOf(
-                                Station.entries.map {
-                                    MediaItem.Builder()
-                                        .setMediaId(it.name)
-                                        .setMediaMetadata(
-                                            MediaMetadata.Builder()
-                                                .setTitle(resources.getString(it.labelRes))
-                                                .build(),
-                                        )
-                                        .build()
-                                },
-                            ),
-                            LibraryParams.Builder()
-                                .setSuggested(true)
-                                .build(),
-                        ),
-                    )
-                    return future
-                }
-
-                override fun onCustomCommand(
-                    session: MediaSession,
-                    controller: MediaSession.ControllerInfo,
-                    customCommand: SessionCommand,
-                    args: Bundle,
-                ): ListenableFuture<SessionResult> {
-                    val mediaId = args.getString(MediaConstants.EXTRA_KEY_MEDIA_ID)
-                    if (mediaId != null) {
-                        println(mediaId)
-                        return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
-                    }
-                    return when (customCommand.customAction) {
-                        FAVORITE_ACTION_ID, UNFAVORITE_ACTION_ID -> {
-                            scope.launchIO {
-                                radioService.state.value.currentSong?.id?.let {
-                                    favoriteSong.await(it)
-                                }
-                            }
-                            Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
-                        }
-
-                        else -> super.onCustomCommand(session, controller, customCommand, args)
-                    }
-                }
-            },
-        )
+        player.addListener(PlaybackServicePlayerListener())
+        session = MediaLibrarySession.Builder(this, player, PlaybackServiceSessionCallback())
             .setSessionActivity(clickIntent)
             .build()
-
+        setListener(PlaybackServiceSessionListener())
         scope.launchIO {
             preferenceUtil.station()
                 .asFlow()
@@ -291,9 +157,7 @@ class PlaybackService : MediaLibraryService() {
                     with(audioPlayer) {
                         replaceMediaItem(
                             0,
-                            MediaItem.Builder()
-                                .setUri(station.streamUrl.toUri())
-                                .build(),
+                            station.toMediaItem(),
                         )
                         prepare()
                     }
@@ -312,7 +176,12 @@ class PlaybackService : MediaLibraryService() {
 
                     if (currentSong == null) {
                         session.player.editCurrentMediaItem { currentMediaItem ->
-                            setMediaMetadata(MediaMetadata.EMPTY)
+                            setMediaMetadata(
+                                MediaMetadata.Builder()
+                                    .setTitle("<no name>")
+                                    .setArtist("Listen MOE")
+                                    .build()
+                            )
                         }
                         return@collectWithUiContext
                     }
@@ -335,7 +204,7 @@ class PlaybackService : MediaLibraryService() {
                                 setTitle(currentSong.title)
                                 setArtist(currentSong.artists)
                                 setAlbumTitle(currentSong.albums)
-                                setDurationMs(currentSong.durationSeconds.seconds.inWholeMilliseconds)
+                                // setDurationMs(currentSong.durationSeconds.seconds.inWholeMilliseconds)
                                 albumArtUtil.getCurrentAlbumArt(500)?.let {
                                     setArtworkData(
                                         it,
@@ -351,8 +220,8 @@ class PlaybackService : MediaLibraryService() {
         }
     }
 
-    @OptIn(UnstableApi::class)
     override fun onTaskRemoved(rootIntent: Intent?) {
+        logcat { "onTaskRemoved" }
         pauseAllPlayersAndStopSelf()
     }
 
@@ -364,7 +233,202 @@ class PlaybackService : MediaLibraryService() {
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
 
+    inner class PlaybackServicePlayerListener : Player.Listener {
+        override fun onPlayerError(error: PlaybackException) {
+            logcat(LogPriority.ERROR) { "An error ocurred in the player.\n\n" + error.asLog() }
+            val wasPlaying = session.player.isPlaying
+
+            val mediaItem = preferenceUtil.station().get().toMediaItem()
+            session.player.setMediaItem(mediaItem)
+            session.player.prepare()
+            if (wasPlaying) {
+                session.player.play()
+            }
+        }
+    }
+
+    inner class PlaybackServiceSessionListener : Listener {
+        override fun onForegroundServiceStartNotAllowedException() {
+            logcat { "Couldn't start foreground service." }
+            super.onForegroundServiceStartNotAllowedException()
+        }
+    }
+
+    inner class PlaybackServiceSessionCallback : MediaLibrarySession.Callback {
+        override fun onConnect(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo,
+        ): MediaSession.ConnectionResult {
+            logcat { "onConnect request from: ${controller.packageName}, uid: ${controller.uid}" }
+            if (
+                session.isMediaNotificationController(controller) ||
+                session.isAutomotiveController(controller) ||
+                session.isAutoCompanionController(controller)
+            ) {
+                val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS.buildUpon()
+                    .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
+                    .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
+                    .build()
+                return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
+                    .setAvailableSessionCommands(sessionCommands)
+                    .build()
+            }
+            return MediaSession.ConnectionResult.AcceptedResultBuilder(session).build()
+        }
+
+        override fun onPlaybackResumption(
+            mediaSession: MediaSession,
+            controller: MediaSession.ControllerInfo,
+        ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+            logcat { "onPlackbackResumption request from: ${controller.packageName}, uid: ${controller.uid}" }
+            val mediaItem = preferenceUtil.station().get().toMediaItem()
+            return Futures.immediateFuture(MediaSession.MediaItemsWithStartPosition(listOf(mediaItem), C.INDEX_UNSET, C.TIME_UNSET))
+        }
+
+        override fun onGetLibraryRoot(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            params: LibraryParams?,
+        ): ListenableFuture<LibraryResult<MediaItem>> {
+            logcat { "onGetLibraryRoot request from: ${browser.packageName}, uid: ${browser.uid}" }
+            val rootExtras = Bundle().apply {
+                putBoolean(CONTENT_STYLE_SUPPORTED, true)
+                putInt(CONTENT_STYLE_BROWSABLE_HINT, CONTENT_STYLE_GRID)
+                putInt(CONTENT_STYLE_PLAYABLE_HINT, CONTENT_STYLE_LIST)
+            }
+            val rootMediaItem = MediaItem.Builder()
+                .setMediaId("media_root")
+                .setMediaMetadata(
+                    MediaMetadata.Builder()
+                        .setIsBrowsable(true)
+                        .setIsPlayable(false)
+                        .build(),
+                )
+                .build()
+            return Futures.immediateFuture(
+                LibraryResult.ofItem(
+                    rootMediaItem,
+                    LibraryParams.Builder()
+                        .setExtras(rootExtras)
+                        .build(),
+                ),
+            )
+        }
+
+        override fun onGetChildren(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            parentId: String,
+            page: Int,
+            pageSize: Int,
+            params: LibraryParams?,
+        ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
+            logcat { "onGetChildren request from: ${browser.packageName}, uid: ${browser.uid}" }
+            val mediaItems = ImmutableList.copyOf(
+                Station.entries.map {
+                    MediaItem.Builder()
+                        .setMediaId(it.name)
+                        .setMediaMetadata(
+                            MediaMetadata.Builder()
+                                .setTitle(resources.getString(it.labelRes))
+                                .setIsBrowsable(false)
+                                .setIsPlayable(true)
+                                .build(),
+                        )
+                        .build()
+                },
+            )
+            return Futures.immediateFuture(
+                LibraryResult.ofItemList(
+                    mediaItems,
+                    LibraryParams.Builder().build(),
+                ),
+            )
+        }
+
+        override fun onGetItem(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            mediaId: String
+        ): ListenableFuture<LibraryResult<MediaItem>> {
+            logcat { "onGetItem request from: ${browser.packageName}, uid: ${browser.uid}" }
+            return super.onGetItem(session, browser, mediaId)
+        }
+
+        override fun onSearch(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            query: String,
+            params: LibraryParams?
+        ): ListenableFuture<LibraryResult<Void>> {
+            logcat { "onSearch request from: ${browser.packageName}, uid: ${browser.uid}" }
+            return Futures.immediateFuture(LibraryResult.ofVoid())
+        }
+
+        override fun onGetSearchResult(
+            session: MediaLibrarySession,
+            browser: MediaSession.ControllerInfo,
+            query: String,
+            page: Int,
+            pageSize: Int,
+            params: LibraryParams?
+        ): ListenableFuture<LibraryResult<ImmutableList<MediaItem>>> {
+            logcat { "onGetSearchResult request from: ${browser.packageName}, uid: ${browser.uid}" }
+            return Futures.immediateFuture(LibraryResult.ofItemList(ImmutableList.of(), LibraryParams.Builder().build()))
+        }
+
+        override fun onSetRating(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            mediaId: String,
+            rating: Rating
+        ): ListenableFuture<SessionResult> {
+            toggleFavoriteSong()
+            return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+        }
+
+        override fun onCustomCommand(
+            session: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            customCommand: SessionCommand,
+            args: Bundle,
+        ): ListenableFuture<SessionResult> {
+            val mediaId = args.getString(MediaConstants.EXTRA_KEY_MEDIA_ID)
+            if (mediaId != null) {
+                println(mediaId)
+                return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+            }
+            return when (customCommand.customAction) {
+                FAVORITE_ACTION_ID, UNFAVORITE_ACTION_ID -> {
+                    toggleFavoriteSong()
+                    Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
+                }
+
+                else -> Futures.immediateFuture(SessionResult(SessionError.ERROR_NOT_SUPPORTED));
+            }
+        }
+
+        fun toggleFavoriteSong() {
+            scope.launchIO {
+                radioService.state.value.currentSong?.id?.let {
+                    favoriteSong.await(it)
+                }
+            }
+        }
+    }
+
 }
+
+private const val CONTENT_STYLE_BROWSABLE_HINT = "android.media.browse.CONTENT_STYLE_BROWSABLE_HINT"
+private const val CONTENT_STYLE_PLAYABLE_HINT = "android.media.browse.CONTENT_STYLE_PLAYABLE_HINT"
+private const val CONTENT_STYLE_SUPPORTED = "android.media.browse.CONTENT_STYLE_SUPPORTED"
+private const val CONTENT_STYLE_LIST = 1
+private const val CONTENT_STYLE_GRID = 2
+
+fun Station.toMediaItem() = MediaItem.Builder()
+    .setUri(streamUrl)
+    .setMediaId(name)
+    .build()
 
 fun Player.editCurrentMediaItem(block: MediaItem.Builder.(MediaItem?) -> Unit) {
     val mediaItem = currentMediaItem

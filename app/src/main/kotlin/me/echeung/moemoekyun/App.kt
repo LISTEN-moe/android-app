@@ -1,12 +1,7 @@
 package me.echeung.moemoekyun
 
 import android.app.Application
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Build
-import android.os.IBinder
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -22,12 +17,11 @@ import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import me.echeung.moemoekyun.domain.radio.RadioService
-import me.echeung.moemoekyun.service.AppService
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application(), DefaultLifecycleObserver, ServiceConnection, SingletonImageLoader.Factory {
+class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factory {
 
     @Inject
     lateinit var radioService: RadioService
@@ -41,21 +35,6 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, Singleto
         AndroidLogcatLogger.installOnDebuggableApp(this, minPriority = LogPriority.VERBOSE)
 
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
-
-        initRadioService()
-    }
-
-    private fun initRadioService() {
-        val intent = Intent(this, AppService::class.java)
-        bindService(intent, this, Context.BIND_AUTO_CREATE or Context.BIND_IMPORTANT)
-    }
-
-    override fun onServiceConnected(className: ComponentName, service: IBinder) {
-        val binder = service as AppService.ServiceBinder
-        App.service = binder.service
-    }
-
-    override fun onServiceDisconnected(className: ComponentName) {
     }
 
     override fun onStart(owner: LifecycleOwner) {
@@ -78,7 +57,4 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, Singleto
             .build()
     }
 
-    companion object {
-        var service: AppService? = null
-    }
 }
