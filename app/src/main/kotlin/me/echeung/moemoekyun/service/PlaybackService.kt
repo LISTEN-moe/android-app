@@ -48,8 +48,8 @@ import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.system.NetworkUtil
 import javax.inject.Inject
 
-const val FAVORITE_ACTION_ID = "a_favorite"
-const val UNFAVORITE_ACTION_ID = "a_unfavorite"
+const val FAVORITE_ACTION_ID = "action_favorite"
+const val UNFAVORITE_ACTION_ID = "action_unfavorite"
 
 @AndroidEntryPoint
 @OptIn(UnstableApi::class)
@@ -141,8 +141,6 @@ class PlaybackService : MediaLibraryService() {
 
         // TODO: Investigate if player position can be changed
         // TODO: Investigate if skip next/prev can be remove on Auto
-        // FIXME: Handle changing station on Auto
-        // TODO: Investigate how to change station on Auto
         val player = PlaybackPlayer(audioPlayer)
         player.addListener(PlaybackServicePlayerListener())
         session = MediaLibrarySession.Builder(this, player, PlaybackServiceSessionCallback())
@@ -268,8 +266,17 @@ class PlaybackService : MediaLibraryService() {
                     .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
                     .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
                     .build()
+                val playerCommands = MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
+                    .remove(Player.COMMAND_SEEK_TO_NEXT)
+                    .remove(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+                    .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
+                    .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+                    .remove(Player.COMMAND_SEEK_BACK)
+                    .remove(Player.COMMAND_SEEK_FORWARD)
+                    .build()
                 return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                     .setAvailableSessionCommands(sessionCommands)
+                    .setAvailablePlayerCommands(playerCommands)
                     .build()
             }
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session).build()
@@ -290,11 +297,6 @@ class PlaybackService : MediaLibraryService() {
             params: LibraryParams?,
         ): ListenableFuture<LibraryResult<MediaItem>> {
             logcat { "onGetLibraryRoot request from: ${browser.packageName}, uid: ${browser.uid}" }
-            val rootExtras = Bundle().apply {
-                putBoolean(CONTENT_STYLE_SUPPORTED, true)
-                putInt(CONTENT_STYLE_BROWSABLE_HINT, CONTENT_STYLE_GRID)
-                putInt(CONTENT_STYLE_PLAYABLE_HINT, CONTENT_STYLE_LIST)
-            }
             val rootMediaItem = MediaItem.Builder()
                 .setMediaId("media_root")
                 .setMediaMetadata(
@@ -308,7 +310,6 @@ class PlaybackService : MediaLibraryService() {
                 LibraryResult.ofItem(
                     rootMediaItem,
                     LibraryParams.Builder()
-                        .setExtras(rootExtras)
                         .build(),
                 ),
             )
@@ -345,23 +346,28 @@ class PlaybackService : MediaLibraryService() {
             )
         }
 
-        override fun onGetItem(
-            session: MediaLibrarySession,
-            browser: MediaSession.ControllerInfo,
-            mediaId: String
-        ): ListenableFuture<LibraryResult<MediaItem>> {
-            logcat { "onGetItem request from: ${browser.packageName}, uid: ${browser.uid}" }
-            return super.onGetItem(session, browser, mediaId)
-        }
+        override fun onSetMediaItems(
+            mediaSession: MediaSession,
+            controller: MediaSession.ControllerInfo,
+            mediaItems: List<MediaItem>,
+            startIndex: Int,
+            startPositionMs: Long
+        ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
+            logcat { "onSetMediaItems request from: ${controller.packageName}, uid: ${controller.uid}" }
+            if (mediaItems.size != 1) {
+                return Futures.immediateFailedFuture(UnsupportedOperationException("Only one media item supported"))
+            }
 
-        override fun onSearch(
-            session: MediaLibrarySession,
-            browser: MediaSession.ControllerInfo,
-            query: String,
-            params: LibraryParams?
-        ): ListenableFuture<LibraryResult<Void>> {
-            logcat { "onSearch request from: ${browser.packageName}, uid: ${browser.uid}" }
-            return Futures.immediateFuture(LibraryResult.ofVoid())
+            try {
+                val requested = mediaItems.first()
+                val station = Station.valueOf(requested.mediaId)
+                preferenceUtil.station().set(station)
+                // Instead of returning a media item here we just set the preference,
+                // and the flow will actually set the station as a media item
+                return super.onSetMediaItems(mediaSession, controller, mediaItems, startIndex, startPositionMs)
+            } catch (e: IllegalArgumentException) {
+                return Futures.immediateFailedFuture(e)
+            }
         }
 
         override fun onGetSearchResult(
@@ -382,6 +388,7 @@ class PlaybackService : MediaLibraryService() {
             mediaId: String,
             rating: Rating
         ): ListenableFuture<SessionResult> {
+            logcat { "onSetRating request from: ${controller.packageName}, uid: ${controller.uid}" }
             toggleFavoriteSong()
             return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
         }
@@ -392,6 +399,7 @@ class PlaybackService : MediaLibraryService() {
             customCommand: SessionCommand,
             args: Bundle,
         ): ListenableFuture<SessionResult> {
+            logcat { "onCustomCommand request from: ${controller.packageName}, uid: ${controller.uid}" }
             val mediaId = args.getString(MediaConstants.EXTRA_KEY_MEDIA_ID)
             if (mediaId != null) {
                 println(mediaId)
@@ -417,12 +425,6 @@ class PlaybackService : MediaLibraryService() {
     }
 
 }
-
-private const val CONTENT_STYLE_BROWSABLE_HINT = "android.media.browse.CONTENT_STYLE_BROWSABLE_HINT"
-private const val CONTENT_STYLE_PLAYABLE_HINT = "android.media.browse.CONTENT_STYLE_PLAYABLE_HINT"
-private const val CONTENT_STYLE_SUPPORTED = "android.media.browse.CONTENT_STYLE_SUPPORTED"
-private const val CONTENT_STYLE_LIST = 1
-private const val CONTENT_STYLE_GRID = 2
 
 fun Station.toMediaItem() = MediaItem.Builder()
     .setUri(streamUrl)
