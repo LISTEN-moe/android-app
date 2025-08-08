@@ -8,27 +8,26 @@ import androidx.media3.common.C
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import me.echeung.moemoekyun.util.ext.audioManager
 import me.echeung.moemoekyun.util.system.NetworkUtil
-import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
+@OptIn(UnstableApi::class)
+@InstallIn(ServiceComponent::class)
 object MediaModule {
 
     @Provides
-    @Singleton
     fun audioManager(@ApplicationContext context: Context): AudioManager = context.audioManager
 
     @Provides
-    @Singleton
     fun audioAttributes(): AudioAttributes = AudioAttributes.Builder()
         .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
         .setUsage(C.USAGE_MEDIA)
@@ -48,5 +47,26 @@ object MediaModule {
     @Provides
     fun progressiveMediaSourceFactory(dataSourceFactory: DefaultDataSource.Factory): ProgressiveMediaSource.Factory {
         return ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
+    }
+
+    @Provides
+    fun exoPlayer(
+        @ApplicationContext context: Context,
+        progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
+        audioAttributes: AudioAttributes
+    ): ExoPlayer
+    {
+        return ExoPlayer.Builder(context)
+            .setMediaSourceFactory(progressiveMediaSourceFactory)
+            .setAudioAttributes(audioAttributes, true)
+            .setWakeMode(C.WAKE_MODE_NETWORK)
+            .setAudioAttributes(
+                AudioAttributes.Builder()
+                    .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
+                    .setUsage(C.USAGE_MEDIA)
+                    .build(),
+                true,
+            )
+            .build()
     }
 }
