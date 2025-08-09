@@ -62,6 +62,7 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
                 .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
                 .remove(Player.COMMAND_SEEK_BACK)
                 .remove(Player.COMMAND_SEEK_FORWARD)
+                .remove(Player.COMMAND_GET_TIMELINE)
                 .build()
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
