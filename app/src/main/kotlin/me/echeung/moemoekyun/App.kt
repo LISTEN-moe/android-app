@@ -15,8 +15,10 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import coil3.ImageLoader
 import coil3.PlatformContext
 import coil3.SingletonImageLoader
+import coil3.annotation.ExperimentalCoilApi
 import coil3.gif.AnimatedImageDecoder
 import coil3.gif.GifDecoder
+import coil3.memoryCacheMaxSizePercentWhileInBackground
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
@@ -68,17 +70,17 @@ class App : Application(), DefaultLifecycleObserver, ServiceConnection, Singleto
         radioService.disconnectIfIdle()
     }
 
+    @OptIn(ExperimentalCoilApi::class)
     override fun newImageLoader(context: PlatformContext): ImageLoader {
         return ImageLoader.Builder(context)
-            .apply {
-                components {
-                    add(OkHttpNetworkFetcherFactory(okHttpClient))
+            .memoryCacheMaxSizePercentWhileInBackground(0.5)
+            .components {
+                add(OkHttpNetworkFetcherFactory(okHttpClient))
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        add(AnimatedImageDecoder.Factory())
-                    } else {
-                        add(GifDecoder.Factory())
-                    }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    add(AnimatedImageDecoder.Factory())
+                } else {
+                    add(GifDecoder.Factory())
                 }
             }
             .build()
