@@ -116,11 +116,10 @@ object SettingsScreen : Screen {
         }
     }
 
-    private fun getLangs(context: Context): ImmutableMap<String, String> {
-        return persistentMapOf("" to context.getString(R.string.system_default)) +
+    private fun getLangs(context: Context): ImmutableMap<String, String> =
+        persistentMapOf("" to context.getString(R.string.system_default)) +
             AutoResConfigLocales.LOCALES.drop(1)
                 .zip(AutoResConfigLocales.DISPLAY_LOCALES.drop(1).map(LocaleUtil::getDisplayName))
                 .toMap()
                 .toImmutableMap()
-    }
 }

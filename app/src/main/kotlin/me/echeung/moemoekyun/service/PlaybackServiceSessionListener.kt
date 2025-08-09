@@ -7,7 +7,7 @@ import logcat.logcat
 import javax.inject.Inject
 
 @OptIn(UnstableApi::class)
-class PlaybackServiceSessionListener @Inject constructor(): MediaSessionService.Listener {
+class PlaybackServiceSessionListener @Inject constructor() : MediaSessionService.Listener {
     override fun onForegroundServiceStartNotAllowedException() {
         logcat { "Couldn't start foreground service." }
         super.onForegroundServiceStartNotAllowedException()

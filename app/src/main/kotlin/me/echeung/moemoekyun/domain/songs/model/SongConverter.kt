@@ -6,41 +6,35 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 import java.util.Locale
 import javax.inject.Inject
 
-class SongConverter @Inject constructor(
-    private val preferenceUtil: PreferenceUtil,
-) {
+class SongConverter @Inject constructor(private val preferenceUtil: PreferenceUtil) {
 
-    fun toDomainSong(song: Song): DomainSong {
-        return DomainSong(
-            id = song.id,
-            title = if (preferenceUtil.shouldPreferRomaji().get()) {
-                (song.titleRomaji ?: song.title).orEmpty().trim()
+    fun toDomainSong(song: Song): DomainSong = DomainSong(
+        id = song.id,
+        title = if (preferenceUtil.shouldPreferRomaji().get()) {
+            (song.titleRomaji ?: song.title).orEmpty().trim()
+        } else {
+            song.title.orEmpty().trim()
+        },
+        artists = song.artists?.toDomainSong(),
+        albums = song.albums?.toDomainSong(),
+        sources = song.sources?.toDomainSong(),
+        duration = song.duration(),
+        durationSeconds = song.duration.toLong(),
+        albumArtUrl = song.albumArtUrl(),
+        favorited = song.favorite,
+        favoritedAtEpoch = song.favoritedAt,
+    )
+
+    private fun List<SongDescriptor>.toDomainSong(): String = this
+        .mapNotNull {
+            val preferredName = if (preferenceUtil.shouldPreferRomaji().get()) {
+                it.nameRomaji
             } else {
-                song.title.orEmpty().trim()
-            },
-            artists = song.artists?.toDomainSong(),
-            albums = song.albums?.toDomainSong(),
-            sources = song.sources?.toDomainSong(),
-            duration = song.duration(),
-            durationSeconds = song.duration.toLong(),
-            albumArtUrl = song.albumArtUrl(),
-            favorited = song.favorite,
-            favoritedAtEpoch = song.favoritedAt,
-        )
-    }
-
-    private fun List<SongDescriptor>.toDomainSong(): String {
-        return this
-            .mapNotNull {
-                val preferredName = if (preferenceUtil.shouldPreferRomaji().get()) {
-                    it.nameRomaji
-                } else {
-                    it.name
-                }
-                preferredName ?: it.name
+                it.name
             }
-            .joinToString()
-    }
+            preferredName ?: it.name
+        }
+        .joinToString()
 
     private fun Song.duration(): String {
         var minutes = (duration / 60).toLong()

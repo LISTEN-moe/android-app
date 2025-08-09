@@ -15,7 +15,7 @@ import me.echeung.moemoekyun.util.PreferenceUtil
 @OptIn(UnstableApi::class)
 class PlaybackDontBeNoisyReceiver @AssistedInject constructor(
     @Assisted private val player: Player,
-    private val preferenceUtil: PreferenceUtil
+    private val preferenceUtil: PreferenceUtil,
 ) : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {

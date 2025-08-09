@@ -5,13 +5,11 @@ import javax.inject.Inject
 
 class UserConverter @Inject constructor() {
 
-    fun toDomainUser(user: User): DomainUser {
-        return DomainUser(
-            username = user.displayName,
-            avatarUrl = "$CDN_AVATAR_URL/${user.avatarImage}".takeIf { user.avatarImage != null },
-            bannerUrl = "$CDN_BANNER_URL/${user.bannerImage}".takeIf { user.bannerImage != null },
-        )
-    }
+    fun toDomainUser(user: User): DomainUser = DomainUser(
+        username = user.displayName,
+        avatarUrl = "$CDN_AVATAR_URL/${user.avatarImage}".takeIf { user.avatarImage != null },
+        bannerUrl = "$CDN_BANNER_URL/${user.bannerImage}".takeIf { user.bannerImage != null },
+    )
 }
 
 private const val CDN_AVATAR_URL = "https://cdn.listen.moe/avatars/"

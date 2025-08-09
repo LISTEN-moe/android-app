@@ -124,10 +124,7 @@ class AlbumArtUtil @Inject constructor(
     }
 
     @Immutable
-    data class State(
-        val bitmap: Bitmap?,
-        val accentColor: Int?,
-    ) {
+    data class State(val bitmap: Bitmap?, val accentColor: Int?) {
         companion object {
             val EMPTY = State(null, null)
         }

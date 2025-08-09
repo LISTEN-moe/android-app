@@ -7,35 +7,31 @@ import javax.inject.Inject
 
 class SongsSorter @Inject constructor() {
 
-    fun sort(songs: Collection<DomainSong>, sortType: SortType, descending: Boolean): List<DomainSong> {
-        return songs
-            .distinctBy { it.id }
-            .sortedWith(getComparator(sortType, descending))
-    }
+    fun sort(songs: Collection<DomainSong>, sortType: SortType, descending: Boolean): List<DomainSong> = songs
+        .distinctBy { it.id }
+        .sortedWith(getComparator(sortType, descending))
 
-    private fun getComparator(sortType: SortType, descending: Boolean): Comparator<DomainSong> {
-        return when (sortType) {
-            SortType.TITLE ->
-                if (descending) {
-                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.title }
-                } else {
-                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.title }
-                }
+    private fun getComparator(sortType: SortType, descending: Boolean): Comparator<DomainSong> = when (sortType) {
+        SortType.TITLE ->
+            if (descending) {
+                compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.title }
+            } else {
+                compareBy(String.CASE_INSENSITIVE_ORDER) { it.title }
+            }
 
-            SortType.ARTIST ->
-                if (descending) {
-                    compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.artists.orEmpty() }
-                } else {
-                    compareBy(String.CASE_INSENSITIVE_ORDER) { it.artists.orEmpty() }
-                }
+        SortType.ARTIST ->
+            if (descending) {
+                compareByDescending(String.CASE_INSENSITIVE_ORDER) { it.artists.orEmpty() }
+            } else {
+                compareBy(String.CASE_INSENSITIVE_ORDER) { it.artists.orEmpty() }
+            }
 
-            SortType.FAVORITED_AT ->
-                if (descending) {
-                    compareByDescending { it.favoritedAtEpoch }
-                } else {
-                    compareBy { it.favoritedAtEpoch }
-                }
-        }
+        SortType.FAVORITED_AT ->
+            if (descending) {
+                compareByDescending { it.favoritedAtEpoch }
+            } else {
+                compareBy { it.favoritedAtEpoch }
+            }
     }
 }
 

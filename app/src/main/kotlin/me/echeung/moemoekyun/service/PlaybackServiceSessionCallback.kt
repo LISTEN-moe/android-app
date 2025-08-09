@@ -10,7 +10,6 @@ import androidx.media3.common.Player
 import androidx.media3.common.Rating
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.LibraryResult
-import androidx.media3.session.MediaConstants
 import androidx.media3.session.MediaLibraryService
 import androidx.media3.session.MediaSession
 import androidx.media3.session.SessionCommand
@@ -30,7 +29,6 @@ import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.toMediaItem
-
 
 @OptIn(UnstableApi::class)
 class PlaybackServiceSessionCallback @AssistedInject constructor(
@@ -207,7 +205,7 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
                 Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
             }
 
-            else -> Futures.immediateFuture(SessionResult(SessionError.ERROR_NOT_SUPPORTED));
+            else -> Futures.immediateFuture(SessionResult(SessionError.ERROR_NOT_SUPPORTED))
         }
     }
 
@@ -223,5 +221,4 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
     interface Factory {
         fun create(context: Context): PlaybackServiceSessionCallback
     }
-
 }

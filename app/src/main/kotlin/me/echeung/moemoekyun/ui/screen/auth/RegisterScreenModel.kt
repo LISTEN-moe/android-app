@@ -8,9 +8,8 @@ import me.echeung.moemoekyun.domain.user.interactor.Register
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
-class RegisterScreenModel @Inject constructor(
-    private val register: Register,
-) : StateScreenModel<RegisterScreenModel.State>(State()) {
+class RegisterScreenModel @Inject constructor(private val register: Register) :
+    StateScreenModel<RegisterScreenModel.State>(State()) {
 
     fun register(username: String, email: String, password1: String, password2: String) {
         mutableState.update {
@@ -53,10 +52,7 @@ class RegisterScreenModel @Inject constructor(
     }
 
     @Immutable
-    data class State(
-        val loading: Boolean = false,
-        val result: Result? = null,
-    )
+    data class State(val loading: Boolean = false, val result: Result? = null)
 
     sealed interface Result {
         data object Complete : Result

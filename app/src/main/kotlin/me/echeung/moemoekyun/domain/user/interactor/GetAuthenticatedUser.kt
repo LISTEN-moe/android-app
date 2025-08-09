@@ -12,9 +12,7 @@ class GetAuthenticatedUser @Inject constructor(
     private val userConverter: UserConverter,
 ) {
 
-    fun asFlow(): Flow<DomainUser?> {
-        return userService.state.map { get() }
-    }
+    fun asFlow(): Flow<DomainUser?> = userService.state.map { get() }
 
     fun get(): DomainUser? {
         if (!userService.isAuthenticated || userService.state.value.user == null) {
@@ -24,7 +22,5 @@ class GetAuthenticatedUser @Inject constructor(
         return userService.state.value.user?.let(userConverter::toDomainUser)
     }
 
-    fun isAuthenticated(): Boolean {
-        return userService.isAuthenticated
-    }
+    fun isAuthenticated(): Boolean = userService.isAuthenticated
 }

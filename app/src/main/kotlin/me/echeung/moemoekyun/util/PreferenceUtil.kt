@@ -6,9 +6,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class PreferenceUtil @Inject constructor(
-    private val prefs: FlowSharedPreferences,
-) {
+class PreferenceUtil @Inject constructor(private val prefs: FlowSharedPreferences) {
 
     fun station() = prefs.getEnum("library_mode_v2", Station.JPOP)
 

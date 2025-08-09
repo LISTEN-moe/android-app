@@ -42,31 +42,25 @@ object MediaModule {
 
     @OptIn(UnstableApi::class)
     @Provides
-    fun dateSourceFactory(@ApplicationContext context: Context): DefaultDataSource.Factory {
-        return DefaultDataSource.Factory(
-            context,
-            DefaultHttpDataSource.Factory()
-                .setUserAgent(NetworkUtil.userAgent),
-        )
-    }
+    fun dateSourceFactory(@ApplicationContext context: Context): DefaultDataSource.Factory = DefaultDataSource.Factory(
+        context,
+        DefaultHttpDataSource.Factory()
+            .setUserAgent(NetworkUtil.userAgent),
+    )
 
     @OptIn(UnstableApi::class)
     @Provides
-    fun progressiveMediaSourceFactory(dataSourceFactory: DefaultDataSource.Factory): ProgressiveMediaSource.Factory {
-        return ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
-    }
+    fun progressiveMediaSourceFactory(dataSourceFactory: DefaultDataSource.Factory): ProgressiveMediaSource.Factory =
+        ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
 
     @Provides
     fun exoPlayer(
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
-        audioAttributes: AudioAttributes
-    ): ExoPlayer
-    {
-        return ExoPlayer.Builder(context)
-            .setMediaSourceFactory(progressiveMediaSourceFactory)
-            .setAudioAttributes(audioAttributes, true)
-            .setWakeMode(C.WAKE_MODE_NETWORK)
-            .build()
-    }
+        audioAttributes: AudioAttributes,
+    ): ExoPlayer = ExoPlayer.Builder(context)
+        .setMediaSourceFactory(progressiveMediaSourceFactory)
+        .setAudioAttributes(audioAttributes, true)
+        .setWakeMode(C.WAKE_MODE_NETWORK)
+        .build()
 }

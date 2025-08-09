@@ -12,14 +12,13 @@ import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 
 object WebsocketResponseSerializer : JsonContentPolymorphicSerializer<WebsocketResponse>(WebsocketResponse::class) {
-    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<WebsocketResponse> {
-        return when (val opValue = element.jsonObject["op"]?.jsonPrimitive?.intOrNull) {
+    override fun selectDeserializer(element: JsonElement): DeserializationStrategy<WebsocketResponse> =
+        when (val opValue = element.jsonObject["op"]?.jsonPrimitive?.intOrNull) {
             0 -> WebsocketResponse.Connect.serializer()
             1 -> WebsocketResponse.Update.serializer()
             10 -> WebsocketResponse.HeartbeatAck.serializer()
             else -> error("Unknown op value: $opValue")
         }
-    }
 }
 
 @Serializable(with = WebsocketResponseSerializer::class)
@@ -28,11 +27,7 @@ sealed interface WebsocketResponse {
     @Serializable
     data class Connect(val d: Details) : WebsocketResponse {
         @Serializable
-        data class Details(
-            val heartbeat: Int,
-            val message: String?,
-            val user: User?,
-        )
+        data class Details(val heartbeat: Int, val message: String?, val user: User?)
     }
 
     @Serializable
@@ -47,18 +42,14 @@ sealed interface WebsocketResponse {
             val listeners: Int,
         )
 
-        fun isValidUpdate(): Boolean {
-            return (
-                t == TRACK_UPDATE ||
-                    t == TRACK_UPDATE_REQUEST ||
-                    t == QUEUE_UPDATE ||
-                    isNotification()
-                )
-        }
+        fun isValidUpdate(): Boolean = (
+            t == TRACK_UPDATE ||
+                t == TRACK_UPDATE_REQUEST ||
+                t == QUEUE_UPDATE ||
+                isNotification()
+            )
 
-        private fun isNotification(): Boolean {
-            return t == NOTIFICATION
-        }
+        private fun isNotification(): Boolean = t == NOTIFICATION
 
         companion object {
             private const val TRACK_UPDATE = "TRACK_UPDATE"

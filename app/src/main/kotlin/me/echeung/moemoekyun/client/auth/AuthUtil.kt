@@ -13,9 +13,7 @@ import kotlin.math.roundToInt
  * actions requiring it.
  */
 @Singleton
-class AuthUtil @Inject constructor(
-    @ApplicationContext context: Context,
-) {
+class AuthUtil @Inject constructor(@ApplicationContext context: Context) {
 
     private val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
 

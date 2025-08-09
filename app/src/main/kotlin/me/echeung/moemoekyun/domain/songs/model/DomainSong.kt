@@ -18,21 +18,18 @@ data class DomainSong(
     val albumArtUrl: String?,
     val favorited: Boolean,
     val favoritedAtEpoch: Long?,
-) : Parcelable, Serializable {
-    fun search(query: String): Boolean {
-        return title.contains(query, ignoreCase = true) ||
-            artists?.contains(query, ignoreCase = true) ?: false ||
-            albums?.contains(query, ignoreCase = true) ?: false ||
-            sources?.contains(query, ignoreCase = true) ?: false
-    }
+) : Parcelable,
+    Serializable {
+    fun search(query: String): Boolean = title.contains(query, ignoreCase = true) ||
+        artists?.contains(query, ignoreCase = true) ?: false ||
+        albums?.contains(query, ignoreCase = true) ?: false ||
+        sources?.contains(query, ignoreCase = true) ?: false
 }
 
-fun ImmutableList<DomainSong>.search(query: String?): ImmutableList<DomainSong> {
-    return if (query.isNullOrBlank()) {
-        this
-    } else {
-        asSequence()
-            .filter { it.search(query) }
-            .toImmutableList()
-    }
+fun ImmutableList<DomainSong>.search(query: String?): ImmutableList<DomainSong> = if (query.isNullOrBlank()) {
+    this
+} else {
+    asSequence()
+        .filter { it.search(query) }
+        .toImmutableList()
 }

@@ -124,10 +124,7 @@ class UserService @Inject constructor(
     }
 }
 
-data class UserState(
-    val user: User?,
-    val favorites: List<DomainSong>,
-)
+data class UserState(val user: User?, val favorites: List<DomainSong>)
 
 private val LoggedOutState = UserState(
     user = null,

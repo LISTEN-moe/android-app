@@ -17,20 +17,18 @@ class GetSongs @Inject constructor(
     private val preferenceUtil: PreferenceUtil,
 ) {
 
-    fun asFlow(): Flow<List<DomainSong>> {
-        return combine(
-            songsService.songs,
-            getFavoriteSongs.asFlow(),
-            preferenceUtil.songsSortType().asFlow(),
-            preferenceUtil.songsSortDescending().asFlow(),
-        ) { songs, favorites, _, _ -> Pair(songs, favorites.map { it.id }) }
-            .map { (songs, favorites) ->
-                songs.values.map { it.copy(favorited = it.id in favorites) }
-            }
-            .map {
-                songsSorter.sort(it, preferenceUtil.songsSortType().get(), preferenceUtil.songsSortDescending().get())
-            }
-    }
+    fun asFlow(): Flow<List<DomainSong>> = combine(
+        songsService.songs,
+        getFavoriteSongs.asFlow(),
+        preferenceUtil.songsSortType().asFlow(),
+        preferenceUtil.songsSortDescending().asFlow(),
+    ) { songs, favorites, _, _ -> Pair(songs, favorites.map { it.id }) }
+        .map { (songs, favorites) ->
+            songs.values.map { it.copy(favorited = it.id in favorites) }
+        }
+        .map {
+            songsSorter.sort(it, preferenceUtil.songsSortType().get(), preferenceUtil.songsSortDescending().get())
+        }
 
     fun setSortType(sortType: SortType) {
         preferenceUtil.songsSortType().set(sortType)

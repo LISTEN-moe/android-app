@@ -21,7 +21,10 @@ import okhttp3.OkHttpClient
 import javax.inject.Inject
 
 @HiltAndroidApp
-class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factory {
+class App :
+    Application(),
+    DefaultLifecycleObserver,
+    SingletonImageLoader.Factory {
 
     @Inject
     lateinit var radioService: RadioService
@@ -42,19 +45,16 @@ class App : Application(), DefaultLifecycleObserver, SingletonImageLoader.Factor
     }
 
     @OptIn(ExperimentalCoilApi::class)
-    override fun newImageLoader(context: PlatformContext): ImageLoader {
-        return ImageLoader.Builder(context)
-            .memoryCacheMaxSizePercentWhileInBackground(0.5)
-            .components {
-                add(OkHttpNetworkFetcherFactory(okHttpClient))
+    override fun newImageLoader(context: PlatformContext): ImageLoader = ImageLoader.Builder(context)
+        .memoryCacheMaxSizePercentWhileInBackground(0.5)
+        .components {
+            add(OkHttpNetworkFetcherFactory(okHttpClient))
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    add(AnimatedImageDecoder.Factory())
-                } else {
-                    add(GifDecoder.Factory())
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                add(AnimatedImageDecoder.Factory())
+            } else {
+                add(GifDecoder.Factory())
             }
-            .build()
-    }
-
+        }
+        .build()
 }

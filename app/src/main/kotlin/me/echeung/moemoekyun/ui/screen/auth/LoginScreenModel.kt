@@ -11,9 +11,8 @@ import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
 // TODO: consider integrating with https://developer.android.com/identity/sign-in/credential-manager
-class LoginScreenModel @Inject constructor(
-    private val loginLogout: LoginLogout,
-) : StateScreenModel<LoginScreenModel.State>(State()) {
+class LoginScreenModel @Inject constructor(private val loginLogout: LoginLogout) :
+    StateScreenModel<LoginScreenModel.State>(State()) {
 
     fun login(username: String, password: String) {
         mutableState.update {
@@ -83,10 +82,7 @@ class LoginScreenModel @Inject constructor(
     }
 
     @Immutable
-    data class State(
-        val loading: Boolean = false,
-        val result: Result? = null,
-    ) {
+    data class State(val loading: Boolean = false, val result: Result? = null) {
         val requiresMfa: Boolean
             get() = result is Result.RequireOtp || result is Result.InvalidOtp
     }

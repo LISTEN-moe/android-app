@@ -12,10 +12,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SongsService @Inject constructor(
-    private val api: ApiClient,
-    private val songConverter: SongConverter,
-) {
+class SongsService @Inject constructor(private val api: ApiClient, private val songConverter: SongConverter) {
 
     private val _songs = MutableStateFlow<Map<Int, DomainSong>>(emptyMap())
     val songs = _songs.asStateFlow().onStart { getSongs() }

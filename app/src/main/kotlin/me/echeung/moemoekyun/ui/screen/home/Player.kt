@@ -571,18 +571,17 @@ class PlayPauseButtonState(private val player: Player?) {
         handlePlayPauseButtonAction(player)
     }
 
-    suspend fun observe(): Nothing? =
-        player?.listen { events ->
-            if (
-                events.containsAny(
-                    Player.EVENT_PLAYBACK_STATE_CHANGED,
-                    Player.EVENT_PLAY_WHEN_READY_CHANGED,
-                    Player.EVENT_AVAILABLE_COMMANDS_CHANGED,
-                )
-            ) {
-                showPlay = shouldShowPlayButton(this)
-                isEnabled = shouldEnablePlayPauseButton(this)
-                isBuffering = playbackState == Player.STATE_BUFFERING
-            }
+    suspend fun observe(): Nothing? = player?.listen { events ->
+        if (
+            events.containsAny(
+                Player.EVENT_PLAYBACK_STATE_CHANGED,
+                Player.EVENT_PLAY_WHEN_READY_CHANGED,
+                Player.EVENT_AVAILABLE_COMMANDS_CHANGED,
+            )
+        ) {
+            showPlay = shouldShowPlayButton(this)
+            isEnabled = shouldEnablePlayPauseButton(this)
+            isBuffering = playbackState == Player.STATE_BUFFERING
         }
+    }
 }

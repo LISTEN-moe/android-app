@@ -185,7 +185,6 @@ class PlaybackService : MediaLibraryService() {
                             },
                         )
                     }
-
                 }
         }
     }
@@ -202,7 +201,6 @@ class PlaybackService : MediaLibraryService() {
     }
 
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
-
 }
 
 const val NOTIFICATION_CHANNEL_ID = "default"

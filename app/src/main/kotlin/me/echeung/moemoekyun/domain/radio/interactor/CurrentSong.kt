@@ -6,13 +6,9 @@ import kotlinx.coroutines.flow.map
 import me.echeung.moemoekyun.domain.radio.RadioService
 import javax.inject.Inject
 
-class CurrentSong @Inject constructor(
-    private val radioService: RadioService,
-) {
+class CurrentSong @Inject constructor(private val radioService: RadioService) {
 
-    fun albumArtFlow(): Flow<String?> {
-        return radioService.state
-            .map { it.albumArtUrl }
-            .distinctUntilChanged()
-    }
+    fun albumArtFlow(): Flow<String?> = radioService.state
+        .map { it.albumArtUrl }
+        .distinctUntilChanged()
 }

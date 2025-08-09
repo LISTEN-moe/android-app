@@ -25,7 +25,6 @@ import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.ext.withUIContext
 import me.echeung.moemoekyun.util.system.TimeUtil.toCalendar
 import java.util.Calendar
 import javax.inject.Inject

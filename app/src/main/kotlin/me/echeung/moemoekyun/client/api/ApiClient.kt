@@ -27,10 +27,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ApiClient @Inject constructor(
-    private val client: ApolloClient,
-    private val preferenceUtil: PreferenceUtil,
-) {
+class ApiClient @Inject constructor(private val client: ApolloClient, private val preferenceUtil: PreferenceUtil) {
 
     /**
      * Authenticates to the radio.

@@ -16,28 +16,22 @@ class GetFavoriteSongs @Inject constructor(
     private val preferenceUtil: PreferenceUtil,
 ) {
 
-    fun asFlow(): Flow<List<DomainSong>> {
-        return combine(
-            userService.state,
-            preferenceUtil.favoritesSortType().asFlow(),
-            preferenceUtil.favoritesSortDescending().asFlow(),
-        ) { _, _, _ -> }
-            .map { getAll() }
+    fun asFlow(): Flow<List<DomainSong>> = combine(
+        userService.state,
+        preferenceUtil.favoritesSortType().asFlow(),
+        preferenceUtil.favoritesSortDescending().asFlow(),
+    ) { _, _, _ -> }
+        .map { getAll() }
+
+    fun getAll(): List<DomainSong> = userService.state.value.favorites.let {
+        songsSorter.sort(
+            it,
+            preferenceUtil.favoritesSortType().get(),
+            preferenceUtil.favoritesSortDescending().get(),
+        )
     }
 
-    fun getAll(): List<DomainSong> {
-        return userService.state.value.favorites.let {
-            songsSorter.sort(
-                it,
-                preferenceUtil.favoritesSortType().get(),
-                preferenceUtil.favoritesSortDescending().get(),
-            )
-        }
-    }
-
-    fun isFavorite(songId: Int): Boolean {
-        return getAll().any { it.id == songId }
-    }
+    fun isFavorite(songId: Int): Boolean = getAll().any { it.id == songId }
 
     fun setSortType(sortType: SortType) {
         preferenceUtil.favoritesSortType().set(sortType)
