@@ -20,13 +20,10 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v4
 
-      - name: Validate Gradle Wrapper
-        uses: gradle/actions/wrapper-validation@v4
-
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: 17
+          java-version: 21
           distribution: adopt
 
       - name: Setup Gradle

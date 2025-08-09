@@ -100,7 +100,7 @@ android {
     }
 }
 
-val jvmVersion = JavaLanguageVersion.of(17)
+val jvmVersion = JavaLanguageVersion.of(21)
 java {
     toolchain {
         languageVersion.set(jvmVersion)
