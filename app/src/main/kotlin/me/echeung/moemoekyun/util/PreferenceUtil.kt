@@ -10,17 +10,11 @@ class PreferenceUtil @Inject constructor(private val prefs: FlowSharedPreference
 
     fun station() = prefs.getEnum("library_mode_v2", Station.JPOP)
 
-    fun isNowPlayingExpanded() = prefs.getBoolean("now_playing_expanded", true)
-
     fun shouldPreferRomaji() = prefs.getBoolean("pref_general_romaji", false)
 
     fun shouldShowRandomRequestTitle() = prefs.getBoolean("pref_general_random_request_title", true)
 
     fun shouldPauseOnNoisy() = prefs.getBoolean("pref_audio_pause_on_noisy", true)
-
-    fun shouldDuckAudio() = prefs.getBoolean("pref_audio_duck", true)
-
-    fun shouldPauseAudioOnLoss() = prefs.getBoolean("pref_audio_pause_on_loss", true)
 
     fun songsSortType() = prefs.getEnum("all_songs_sort_type", SortType.TITLE)
     fun songsSortDescending() = prefs.getBoolean("all_songs_sort_desc", false)

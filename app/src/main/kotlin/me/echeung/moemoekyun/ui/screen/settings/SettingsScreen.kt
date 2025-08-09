@@ -93,23 +93,9 @@ object SettingsScreen : Screen {
                 }
                 item {
                     SwitchPreference(
-                        title = stringResource(R.string.pref_title_audio_pause_on_loss_title),
-                        subtitle = stringResource(R.string.pref_title_audio_pause_on_loss_summary),
-                        preference = screenModel.preferenceUtil.shouldPauseAudioOnLoss(),
-                    )
-                }
-                item {
-                    SwitchPreference(
                         title = stringResource(R.string.pref_title_pause_on_noisy_title),
                         subtitle = stringResource(R.string.pref_title_pause_on_noisy_summary),
                         preference = screenModel.preferenceUtil.shouldPauseOnNoisy(),
-                    )
-                }
-                item {
-                    SwitchPreference(
-                        title = stringResource(R.string.pref_title_audio_duck_title),
-                        subtitle = stringResource(R.string.pref_title_audio_duck_summary),
-                        preference = screenModel.preferenceUtil.shouldDuckAudio(),
                     )
                 }
             }
