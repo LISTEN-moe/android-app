@@ -128,11 +128,12 @@ fun PlayerScaffold(
                 onClickStation = onClickStation,
                 onClickHistory = onClickHistory,
                 toggleFavorite = toggleFavorite,
-            ) {
-                scope.launch {
-                    scaffoldState.bottomSheetState.hide()
-                }
-            }
+                onClickCollapse = {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.hide()
+                    }
+                },
+            )
         },
         sheetContainerColor = MaterialTheme.colorScheme.background,
         sheetMaxWidth = Dp.Unspecified,
@@ -524,7 +525,7 @@ private fun SongInfo(
 @Composable
 private fun PlayStateIcon(playPauseButtonState: PlayPauseButtonState) {
     when {
-        !playPauseButtonState.isEnabled -> {
+        playPauseButtonState.isBuffering -> {
             CircularProgressIndicator(
                 modifier = Modifier.alpha(0.7f),
                 color = MaterialTheme.colorScheme.onPrimary,
@@ -563,6 +564,8 @@ class PlayPauseButtonState(private val player: Player?) {
     var showPlay by mutableStateOf(shouldShowPlayButton(player))
         private set
 
+    var isBuffering by mutableStateOf(player?.playbackState == Player.STATE_BUFFERING)
+
     fun onClick() {
         handlePlayPauseButtonAction(player)
     }
@@ -578,6 +581,7 @@ class PlayPauseButtonState(private val player: Player?) {
             ) {
                 showPlay = shouldShowPlayButton(this)
                 isEnabled = shouldEnablePlayPauseButton(this)
+                isBuffering = playbackState == Player.STATE_BUFFERING
             }
         }
 }

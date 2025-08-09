@@ -75,7 +75,7 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
     ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
-        logcat { "onPlackbackResumption request from: ${controller.packageName}, uid: ${controller.uid}" }
+        logcat { "onPlaybackResumption request from: ${controller.packageName}, uid: ${controller.uid}" }
         val mediaItem = preferenceUtil.station().get().toMediaItem()
         return Futures.immediateFuture(
             MediaSession.MediaItemsWithStartPosition(
@@ -200,11 +200,6 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
         args: Bundle,
     ): ListenableFuture<SessionResult> {
         logcat { "onCustomCommand request from: ${controller.packageName}, uid: ${controller.uid}" }
-        val mediaId = args.getString(MediaConstants.EXTRA_KEY_MEDIA_ID)
-        if (mediaId != null) {
-            println(mediaId)
-            return Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
-        }
         return when (customCommand.customAction) {
             FAVORITE_ACTION_ID, UNFAVORITE_ACTION_ID -> {
                 toggleFavoriteSong()
@@ -215,7 +210,7 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
         }
     }
 
-    fun toggleFavoriteSong() {
+    private fun toggleFavoriteSong() {
         scope.launchIO {
             radioService.state.value.currentSong?.id?.let {
                 favoriteSong.await(it)

@@ -69,8 +69,8 @@ class PlaybackService : MediaLibraryService() {
 
         setMediaNotificationProvider(
             DefaultMediaNotificationProvider.Builder(applicationContext)
-                .setChannelName(androidx.media3.session.R.string.default_notification_channel_name)
-                .setChannelId("default")
+                .setChannelName(R.string.notification_channel_name)
+                .setChannelId(NOTIFICATION_CHANNEL_ID)
                 .setNotificationId(1)
                 .build()
                 .apply {
@@ -81,14 +81,14 @@ class PlaybackService : MediaLibraryService() {
         val favoriteButton =
             CommandButton.Builder(CommandButton.ICON_STAR_UNFILLED)
                 .setEnabled(true)
-                .setDisplayName("Favorite")
+                .setDisplayName(resources.getString(R.string.action_favorite))
                 .setSessionCommand(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
                 .setSlots(CommandButton.SLOT_BACK)
                 .build()
         val unfavoriteButton =
             CommandButton.Builder(CommandButton.ICON_STAR_FILLED)
                 .setEnabled(true)
-                .setDisplayName("Unfavorite")
+                .setDisplayName(resources.getString(R.string.action_unfavorite))
                 .setSessionCommand(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
                 .setSlots(CommandButton.SLOT_BACK)
                 .build()
@@ -142,7 +142,7 @@ class PlaybackService : MediaLibraryService() {
                         session.player.editCurrentMediaItem { currentMediaItem ->
                             setMediaMetadata(
                                 MediaMetadata.Builder()
-                                    .setTitle("「no name」")
+                                    .setTitle(resources.getString(R.string.song_no_name))
                                     .setArtist(resources.getString(R.string.app_name))
                                     .build(),
                             )
@@ -158,7 +158,7 @@ class PlaybackService : MediaLibraryService() {
                         }
                         session.setMediaButtonPreferences(commandButtons)
                     } else {
-                        session.setMediaButtonPreferences(listOf())
+                        session.setMediaButtonPreferences(emptyList())
                     }
 
                     session.player.editCurrentMediaItem { currentMediaItem ->
@@ -198,3 +198,5 @@ class PlaybackService : MediaLibraryService() {
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
 
 }
+
+const val NOTIFICATION_CHANNEL_ID = "default"

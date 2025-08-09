@@ -30,14 +30,16 @@ class PlaybackServicePlayerListener @AssistedInject constructor(
             context.unregisterReceiver(dontBeNoisyReceiver)
         }
     }
+
     override fun onPlayerError(error: PlaybackException) {
-        logcat(LogPriority.ERROR) { "An error ocurred in the player.\n\n" + error.asLog() }
+        logcat(LogPriority.ERROR) { "An error occurred in the player.\n\n" + error.asLog() }
         val wasPlaying = player.isPlaying
 
         val mediaItem = preferenceUtil.station().get().toMediaItem()
         player.setMediaItem(mediaItem)
         player.prepare()
         if (wasPlaying) {
+            // TODO: avoid infinitely retrying
             player.play()
         }
     }

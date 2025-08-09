@@ -115,6 +115,7 @@
     <string name="song_uploader">Uploader</string>
     <string name="song_last_played">Last played</string>
     <string name="song_tags">Tags</string>
+    <string name="song_no_name">「no name」</string>
 
 
     <!-- == No Internet view == -->
@@ -163,5 +164,7 @@
     <string name="pref_title_audio_pause_on_loss_summary">Music will pause when other media plays, such as videos or other music</string>
     <string name="pref_title_audio_duck_title">Volume ducking</string>
     <string name="pref_title_audio_duck_summary">Music volume will be lowered for notifications, navigation, etc.</string>
+
+    <string name="notification_channel_name">Default</string>
 
 </resources>
