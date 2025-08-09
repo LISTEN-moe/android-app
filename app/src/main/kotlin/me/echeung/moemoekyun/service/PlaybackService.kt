@@ -108,7 +108,7 @@ class PlaybackService : MediaLibraryService() {
 
         // TODO: Investigate if player position can be changed
         // TODO: Investigate if skip next/prev can be remove on Auto
-        player.addListener(playbackServicePlayerListenerFactory.create(player))
+        player.addListener(playbackServicePlayerListenerFactory.create(applicationContext, player))
         session =
             MediaLibrarySession.Builder(this, player, playbackServiceSessionCallbackFactory.create(applicationContext))
                 .setSessionActivity(clickIntent)
