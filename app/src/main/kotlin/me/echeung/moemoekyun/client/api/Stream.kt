@@ -2,35 +2,33 @@ package me.echeung.moemoekyun.client.api
 
 import android.content.Context
 import android.media.AudioManager
-import androidx.core.net.toUri
+import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
-import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import androidx.media3.extractor.DefaultExtractorsFactory
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import logcat.logcat
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.isCarUiMode
+import me.echeung.moemoekyun.util.ext.toMediaItem
 import me.echeung.moemoekyun.util.system.AudioManagerUtil
-import me.echeung.moemoekyun.util.system.NetworkUtil
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
+@OptIn(UnstableApi::class)
 class Stream @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
     audioManagerUtilFactory: AudioManagerUtil.Factory,
     private val audioAttributes: AudioAttributes,
+    private val progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
 ) {
 
     private val _flow = MutableStateFlow(State.STOPPED)
@@ -136,7 +134,6 @@ class Stream @Inject constructor(
     }
 
     // TODO: hook up to MediaSession directly
-    @androidx.annotation.OptIn(UnstableApi::class)
     private fun initPlayer() {
         if (player == null) {
             player = ExoPlayer.Builder(context)
@@ -152,16 +149,8 @@ class Stream @Inject constructor(
         // Set stream
         val streamUrl = preferenceUtil.station().get().streamUrl
         if (streamUrl != currentStreamUrl) {
-            val dataSourceFactory = DefaultDataSource.Factory(
-                context,
-                DefaultHttpDataSource.Factory().setUserAgent(NetworkUtil.userAgent),
-            )
-            val streamSource = ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
-                .createMediaSource(
-                    MediaItem.Builder()
-                        .setUri(streamUrl.toUri())
-                        .build(),
-                )
+            val streamSource = progressiveMediaSourceFactory
+                .createMediaSource(preferenceUtil.station().get().toMediaItem())
             with(player!!) {
                 setMediaSource(streamSource)
                 prepare()

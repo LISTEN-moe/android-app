@@ -28,7 +28,6 @@ import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.radio.interactor.CurrentSong
-import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.withIOContext
 import javax.inject.Inject
@@ -42,7 +41,7 @@ class AlbumArtUtil @Inject constructor(
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
     }
 
-    private val _flow = MutableStateFlow<State?>(null)
+    private val _flow = MutableStateFlow<State>(State.EMPTY)
     val flow = _flow.asStateFlow()
 
     private val scope = MainScope()
@@ -54,7 +53,7 @@ class AlbumArtUtil @Inject constructor(
     }
 
     fun getCurrentAlbumArt(size: Int): Bitmap? {
-        if (_flow.value?.bitmap == null) {
+        if (_flow.value.bitmap == null) {
             return null
         }
 
@@ -123,5 +122,9 @@ class AlbumArtUtil @Inject constructor(
     data class State(
         val bitmap: Bitmap?,
         val accentColor: Int?,
-    )
+    ) {
+        companion object {
+            val EMPTY = State(null, null)
+        }
+    }
 }
