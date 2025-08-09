@@ -148,11 +148,12 @@ fun PlayerScaffold(
             CollapsedPlayerContent(
                 radioState = radioState,
                 playPauseButtonState = playPauseButtonState,
-            ) {
-                scope.launch {
-                    scaffoldState.bottomSheetState.expand()
-                }
-            }
+                onClick = {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.expand()
+                    }
+                },
+            )
         }
     }
 }
