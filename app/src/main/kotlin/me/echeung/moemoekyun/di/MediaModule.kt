@@ -38,7 +38,9 @@ object MediaModule {
 
     @Provides
     @Reusable
-    fun liveConfiguration() = MediaItem.LiveConfiguration.Builder().build()
+    fun liveConfiguration() = MediaItem.LiveConfiguration.Builder()
+        .setTargetOffsetMs(0)
+        .build()
 
     @OptIn(UnstableApi::class)
     @Provides

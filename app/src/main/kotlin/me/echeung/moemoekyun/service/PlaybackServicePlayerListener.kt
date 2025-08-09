@@ -37,7 +37,10 @@ class PlaybackServicePlayerListener @AssistedInject constructor(
 
         val mediaItem = preferenceUtil.station().get().toMediaItem()
         player.setMediaItem(mediaItem)
+        // Ensure we're "reset" to live
+        player.seekToDefaultPosition()
         player.prepare()
+
         if (wasPlaying) {
             // TODO: avoid infinitely retrying
             player.play()
