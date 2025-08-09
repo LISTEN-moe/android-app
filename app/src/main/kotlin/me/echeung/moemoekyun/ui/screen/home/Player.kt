@@ -1,4 +1,3 @@
-
 package me.echeung.moemoekyun.ui.screen.home
 
 import androidx.activity.compose.BackHandler
@@ -55,7 +54,12 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -67,10 +71,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.Player
+import androidx.media3.common.listen
 import androidx.media3.common.util.UnstableApi
+import androidx.media3.common.util.Util.handlePlayPauseButtonAction
+import androidx.media3.common.util.Util.shouldEnablePlayPauseButton
+import androidx.media3.common.util.Util.shouldShowPlayButton
 import androidx.media3.session.MediaController
-import androidx.media3.ui.compose.state.PlayPauseButtonState
-import androidx.media3.ui.compose.state.rememberPlayPauseButtonState
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
@@ -85,7 +92,7 @@ val PlayerPeekHeight = 72.dp
 @OptIn(UnstableApi::class)
 fun PlayerScaffold(
     radioState: RadioState,
-    mediaController: MediaController,
+    mediaController: MediaController?,
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -222,7 +229,7 @@ private fun BoxScope.CollapsedPlayerContent(
                 }
             }
 
-            IconButton(onClick = playPauseButtonState::onClick) {
+            IconButton(onClick = playPauseButtonState::onClick, enabled = playPauseButtonState.isEnabled) {
                 PlayStateIcon(playPauseButtonState)
             }
 
@@ -517,6 +524,13 @@ private fun SongInfo(
 @Composable
 private fun PlayStateIcon(playPauseButtonState: PlayPauseButtonState) {
     when {
+        !playPauseButtonState.isEnabled -> {
+            CircularProgressIndicator(
+                modifier = Modifier.alpha(0.7f),
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
+        }
+
         playPauseButtonState.showPlay -> {
             Icon(
                 Icons.Outlined.PlayArrow,
@@ -530,12 +544,40 @@ private fun PlayStateIcon(playPauseButtonState: PlayPauseButtonState) {
                 contentDescription = stringResource(R.string.action_pause),
             )
         }
-
-        // Stream.State.BUFFERING -> {
-        //     CircularProgressIndicator(
-        //         modifier = Modifier.alpha(0.7f),
-        //         color = MaterialTheme.colorScheme.onPrimary,
-        //     )
-        // }
     }
+}
+
+@UnstableApi
+@Composable
+fun rememberPlayPauseButtonState(player: Player?): PlayPauseButtonState {
+    val playPauseButtonState = remember(player) { PlayPauseButtonState(player) }
+    LaunchedEffect(player) { playPauseButtonState.observe() }
+    return playPauseButtonState
+}
+
+@UnstableApi
+class PlayPauseButtonState(private val player: Player?) {
+    var isEnabled by mutableStateOf(shouldEnablePlayPauseButton(player))
+        private set
+
+    var showPlay by mutableStateOf(shouldShowPlayButton(player))
+        private set
+
+    fun onClick() {
+        handlePlayPauseButtonAction(player)
+    }
+
+    suspend fun observe(): Nothing? =
+        player?.listen { events ->
+            if (
+                events.containsAny(
+                    Player.EVENT_PLAYBACK_STATE_CHANGED,
+                    Player.EVENT_PLAY_WHEN_READY_CHANGED,
+                    Player.EVENT_AVAILABLE_COMMANDS_CHANGED,
+                )
+            ) {
+                showPlay = shouldShowPlayButton(this)
+                isEnabled = shouldEnablePlayPauseButton(this)
+            }
+        }
 }

@@ -62,13 +62,9 @@ object HomeScreen : Screen {
             )
         }
 
-        if (player == null) {
-            return
-        }
-
         PlayerScaffold(
             radioState = radioState,
-            mediaController = player!!,
+            mediaController = player,
             accentColor = state.accentColor,
             onClickStation = screenModel::toggleLibrary,
             onClickHistory = {
