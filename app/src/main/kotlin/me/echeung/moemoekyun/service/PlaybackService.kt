@@ -168,7 +168,7 @@ class PlaybackService : MediaLibraryService() {
                                 setTitle(currentSong.title)
                                 setArtist(currentSong.artists)
                                 setAlbumTitle(currentSong.albums)
-                                setDurationMs(currentSong.durationSeconds.seconds.inWholeMilliseconds)
+                                setDurationMs(currentSong.durationSeconds.seconds.inWholeMilliseconds.takeIf { it > 0 })
                                 albumArtUtil.getCurrentAlbumArt(500)?.let {
                                     setArtworkData(
                                         it,
