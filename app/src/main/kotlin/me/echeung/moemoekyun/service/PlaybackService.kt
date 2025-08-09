@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.OptIn
+import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.CommandButton
@@ -61,6 +62,9 @@ class PlaybackService : MediaLibraryService() {
 
     @Inject
     lateinit var playbackServiceSessionListener: PlaybackServiceSessionListener
+
+    @Inject
+    lateinit var liveConfiguration: MediaItem.LiveConfiguration
 
     lateinit var session: MediaLibrarySession
 
@@ -140,6 +144,7 @@ class PlaybackService : MediaLibraryService() {
 
                     if (currentSong == null) {
                         session.player.editCurrentMediaItem { currentMediaItem ->
+                            setLiveConfiguration(liveConfiguration)
                             setMediaMetadata(
                                 MediaMetadata.Builder()
                                     .setTitle(resources.getString(R.string.song_no_name))
@@ -163,6 +168,7 @@ class PlaybackService : MediaLibraryService() {
 
                     session.player.editCurrentMediaItem { currentMediaItem ->
                         val builder = currentMediaItem?.mediaMetadata?.buildUpon() ?: MediaMetadata.Builder()
+                        setLiveConfiguration(liveConfiguration)
                         setMediaMetadata(
                             builder.run {
                                 setTitle(currentSong.title)
