@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.ui.screen.home
 
 import androidx.activity.compose.BackHandler
+import androidx.annotation.OptIn
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -53,7 +54,12 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -65,10 +71,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.media3.common.Player
+import androidx.media3.common.listen
+import androidx.media3.common.util.UnstableApi
+import androidx.media3.common.util.Util.handlePlayPauseButtonAction
+import androidx.media3.common.util.Util.shouldEnablePlayPauseButton
+import androidx.media3.common.util.Util.shouldShowPlayButton
+import androidx.media3.session.MediaController
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
-import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
@@ -77,17 +89,19 @@ import me.echeung.moemoekyun.util.ext.copyToClipboard
 val PlayerPeekHeight = 72.dp
 
 @Composable
+@OptIn(UnstableApi::class)
 fun PlayerScaffold(
     radioState: RadioState,
+    mediaController: MediaController?,
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.(PaddingValues) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
+    val playPauseButtonState = rememberPlayPauseButtonState(mediaController)
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
             initialValue = SheetValue.Expanded,
@@ -109,10 +123,10 @@ fun PlayerScaffold(
         sheetContent = {
             PlayerContent(
                 radioState = radioState,
+                playPauseButtonState = playPauseButtonState,
                 accentColor = accentColor,
                 onClickStation = onClickStation,
                 onClickHistory = onClickHistory,
-                togglePlayState = togglePlayState,
                 toggleFavorite = toggleFavorite,
                 onClickCollapse = {
                     scope.launch {
@@ -133,7 +147,7 @@ fun PlayerScaffold(
 
             CollapsedPlayerContent(
                 radioState = radioState,
-                togglePlayState = togglePlayState,
+                playPauseButtonState = playPauseButtonState,
                 onClick = {
                     scope.launch {
                         scaffoldState.bottomSheetState.expand()
@@ -145,28 +159,34 @@ fun PlayerScaffold(
 }
 
 @Composable
+@OptIn(UnstableApi::class)
 private fun PlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
     onClickCollapse: () -> Unit,
 ) {
     ExpandedPlayerContent(
         radioState = radioState,
+        playPauseButtonState = playPauseButtonState,
         accentColor = accentColor,
         onClickCollapse = onClickCollapse,
         onClickStation = onClickStation,
         onClickHistory = onClickHistory,
-        togglePlayState = togglePlayState,
         toggleFavorite = toggleFavorite,
     )
 }
 
+@OptIn(UnstableApi::class)
 @Composable
-private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlayState: () -> Unit, onClick: () -> Unit) {
+private fun BoxScope.CollapsedPlayerContent(
+    radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
+    onClick: () -> Unit,
+) {
     Surface(
         modifier = Modifier
             .align(Alignment.BottomCenter)
@@ -211,8 +231,8 @@ private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlaySt
                 }
             }
 
-            IconButton(onClick = togglePlayState) {
-                PlayStateIcon(radioState.streamState)
+            IconButton(onClick = playPauseButtonState::onClick, enabled = playPauseButtonState.isEnabled) {
+                PlayStateIcon(playPauseButtonState)
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -221,13 +241,14 @@ private fun BoxScope.CollapsedPlayerContent(radioState: RadioState, togglePlaySt
 }
 
 @Composable
+@OptIn(UnstableApi::class)
 private fun ExpandedPlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     val backgroundColor = animateColorAsState(
@@ -246,19 +267,19 @@ private fun ExpandedPlayerContent(
                 if (maxWidth < maxHeight) {
                     PortraitExpandedPlayerContent(
                         radioState = radioState,
+                        playPauseButtonState = playPauseButtonState,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
-                        togglePlayState = togglePlayState,
                         toggleFavorite = toggleFavorite,
                     )
                 } else {
                     LandscapeExpandedPlayerContent(
                         radioState = radioState,
+                        playPauseButtonState = playPauseButtonState,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
-                        togglePlayState = togglePlayState,
                         toggleFavorite = toggleFavorite,
                     )
                 }
@@ -267,13 +288,14 @@ private fun ExpandedPlayerContent(
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 private fun PortraitExpandedPlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     Column(
@@ -295,21 +317,22 @@ private fun PortraitExpandedPlayerContent(
 
         SongInfo(
             radioState,
+            playPauseButtonState,
             radioState.currentSong,
             onClickHistory,
-            togglePlayState,
             toggleFavorite,
         )
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 private fun LandscapeExpandedPlayerContent(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     Row(
@@ -337,9 +360,9 @@ private fun LandscapeExpandedPlayerContent(
 
             SongInfo(
                 radioState,
+                playPauseButtonState,
                 radioState.currentSong,
                 onClickHistory,
-                togglePlayState,
                 toggleFavorite,
             )
         }
@@ -391,12 +414,13 @@ private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> U
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
 private fun SongInfo(
     radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
     currentSong: DomainSong?,
     onClickHistory: () -> Unit,
-    togglePlayState: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     val context = LocalContext.current
@@ -454,9 +478,9 @@ private fun SongInfo(
             }
             FloatingActionButton(
                 modifier = Modifier.size(56.dp),
-                onClick = togglePlayState,
+                onClick = playPauseButtonState::onClick,
             ) {
-                PlayStateIcon(radioState.streamState)
+                PlayStateIcon(playPauseButtonState)
             }
             IconButton(
                 onClick = { currentSong?.let { toggleFavorite?.invoke(it.id) } },
@@ -498,28 +522,67 @@ private fun SongInfo(
     }
 }
 
+@OptIn(UnstableApi::class)
 @Composable
-private fun PlayStateIcon(state: Stream.State) {
-    when (state) {
-        Stream.State.PAUSED, Stream.State.STOPPED -> {
+private fun PlayStateIcon(playPauseButtonState: PlayPauseButtonState) {
+    when {
+        playPauseButtonState.isBuffering -> {
+            CircularProgressIndicator(
+                modifier = Modifier.alpha(0.7f),
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
+        }
+
+        playPauseButtonState.showPlay -> {
             Icon(
                 Icons.Outlined.PlayArrow,
                 contentDescription = stringResource(R.string.action_play),
             )
         }
 
-        Stream.State.PLAYING -> {
+        !playPauseButtonState.showPlay -> {
             Icon(
                 Icons.Outlined.Pause,
                 contentDescription = stringResource(R.string.action_pause),
             )
         }
-
-        Stream.State.BUFFERING -> {
-            CircularProgressIndicator(
-                modifier = Modifier.alpha(0.7f),
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
-        }
     }
+}
+
+@UnstableApi
+@Composable
+fun rememberPlayPauseButtonState(player: Player?): PlayPauseButtonState {
+    val playPauseButtonState = remember(player) { PlayPauseButtonState(player) }
+    LaunchedEffect(player) { playPauseButtonState.observe() }
+    return playPauseButtonState
+}
+
+@UnstableApi
+class PlayPauseButtonState(private val player: Player?) {
+    var isEnabled by mutableStateOf(shouldEnablePlayPauseButton(player))
+        private set
+
+    var showPlay by mutableStateOf(shouldShowPlayButton(player))
+        private set
+
+    var isBuffering by mutableStateOf(player?.playbackState == Player.STATE_BUFFERING)
+
+    fun onClick() {
+        handlePlayPauseButtonAction(player)
+    }
+
+    suspend fun observe(): Nothing? =
+        player?.listen { events ->
+            if (
+                events.containsAny(
+                    Player.EVENT_PLAYBACK_STATE_CHANGED,
+                    Player.EVENT_PLAY_WHEN_READY_CHANGED,
+                    Player.EVENT_AVAILABLE_COMMANDS_CHANGED,
+                )
+            ) {
+                showPlay = shouldShowPlayButton(this)
+                isEnabled = shouldEnablePlayPauseButton(this)
+                isBuffering = playbackState == Player.STATE_BUFFERING
+            }
+        }
 }

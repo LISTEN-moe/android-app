@@ -17,7 +17,6 @@ import logcat.LogPriority
 import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.client.api.Station
-import me.echeung.moemoekyun.client.api.Stream
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
@@ -36,7 +35,6 @@ import javax.inject.Singleton
 class RadioService @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
-    private val stream: Stream,
     private val socket: Socket,
     private val songConverter: SongConverter,
     private val getFavoriteSongs: GetFavoriteSongs,
@@ -84,17 +82,6 @@ class RadioService @Inject constructor(
                 }
         }
 
-        // TODO: use https://developer.android.com/media/media3/ui/compose instead
-        scope.launchIO {
-            stream.flow
-                .collectLatest {
-                    logcat { "stream service flow: $it" }
-                    _state.value = _state.value.copy(
-                        streamState = it,
-                    )
-                }
-        }
-
         scope.launchIO {
             preferenceUtil.station().asFlow()
                 .distinctUntilChanged()
@@ -104,34 +91,7 @@ class RadioService @Inject constructor(
                     )
 
                     socket.reconnect()
-
-                    // Force it to play with new stream
-                    withUIContext {
-                        if (stream.isPlaying) {
-                            stop()
-                            play()
-                        }
-                    }
                 }
-        }
-    }
-
-    fun play() {
-        stream.play()
-    }
-
-    fun pause() {
-        stream.pause()
-    }
-
-    fun stop() {
-        stream.stop()
-    }
-
-    fun togglePlayState() {
-        when (_state.value.streamState) {
-            Stream.State.PLAYING, Stream.State.BUFFERING -> stream.pause()
-            Stream.State.PAUSED, Stream.State.STOPPED -> stream.play()
         }
     }
 
@@ -146,10 +106,7 @@ class RadioService @Inject constructor(
     }
 
     fun disconnectIfIdle() {
-        if (!stream.isPlaying) {
-            stream.stop()
-            socket.disconnect()
-        }
+        socket.disconnect()
     }
 
     private fun initNetworkStateCallback() {
@@ -178,7 +135,6 @@ class RadioService @Inject constructor(
 
 data class RadioState(
     val station: Station = Station.JPOP,
-    val streamState: Stream.State = Stream.State.STOPPED,
     val listeners: Int = 0,
     val requester: String? = null,
     val currentSong: DomainSong? = null,

@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.ui.screen.home
 
+import android.content.ComponentName
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -13,14 +14,20 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.hilt.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import com.google.common.util.concurrent.MoreExecutors
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.service.PlaybackService
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.ToolbarColors
 import me.echeung.moemoekyun.ui.screen.about.AboutScreen
@@ -40,8 +47,24 @@ object HomeScreen : Screen {
         val radioState by screenModel.radioState.collectAsState()
         val isAuthenticated = state.user != null
 
+        val context = LocalContext.current
+
+        val player by produceState<MediaController?>(null) {
+            val sessionToken = SessionToken(context, ComponentName(context, PlaybackService::class.java))
+
+            // Build the MediaController asynchronously
+            val controllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
+
+            // Set up a listener to handle the controller when it's ready
+            controllerFuture.addListener(
+                { value = controllerFuture.get() },
+                MoreExecutors.directExecutor(),
+            )
+        }
+
         PlayerScaffold(
             radioState = radioState,
+            mediaController = player,
             accentColor = state.accentColor,
             onClickStation = screenModel::toggleLibrary,
             onClickHistory = {
@@ -52,36 +75,36 @@ object HomeScreen : Screen {
                     )
                 }
             },
-            togglePlayState = screenModel::togglePlayState,
             toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
-        ) {
-            Scaffold(
-                topBar = { Toolbar(isAuthenticated = isAuthenticated) },
-            ) { contentPadding ->
-                BackgroundBox(
-                    modifier = Modifier
-                        .padding(contentPadding)
-                        .fillMaxSize(),
-                ) {
-                    if (isAuthenticated) {
-                        AuthedHomeContent(
-                            user = state.user!!,
-                            onClickLogOut = screenModel::logout,
-                            favorites = state.filteredFavorites,
-                            query = state.searchQuery,
-                            onQueryChange = screenModel::search,
-                            sortType = state.sortType,
-                            onSortBy = screenModel::sortBy,
-                            sortDescending = state.sortDescending,
-                            onSortDescending = screenModel::sortDescending,
-                            requestRandomSong = screenModel::requestRandomSong,
-                        )
-                    } else {
-                        UnauthedHomeContent()
+            content = {
+                Scaffold(
+                    topBar = { Toolbar(isAuthenticated = isAuthenticated) },
+                ) { contentPadding ->
+                    BackgroundBox(
+                        modifier = Modifier
+                            .padding(contentPadding)
+                            .fillMaxSize(),
+                    ) {
+                        if (isAuthenticated) {
+                            AuthedHomeContent(
+                                user = state.user!!,
+                                onClickLogOut = screenModel::logout,
+                                favorites = state.filteredFavorites,
+                                query = state.searchQuery,
+                                onQueryChange = screenModel::search,
+                                sortType = state.sortType,
+                                onSortBy = screenModel::sortBy,
+                                sortDescending = state.sortDescending,
+                                onSortDescending = screenModel::sortDescending,
+                                requestRandomSong = screenModel::requestRandomSong,
+                            )
+                        } else {
+                            UnauthedHomeContent()
+                        }
                     }
                 }
-            }
-        }
+            },
+        )
     }
 
     @Composable

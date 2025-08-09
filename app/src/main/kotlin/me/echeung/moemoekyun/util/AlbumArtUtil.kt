@@ -30,6 +30,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.radio.interactor.CurrentSong
 import me.echeung.moemoekyun.util.ext.launchIO
 import me.echeung.moemoekyun.util.ext.withIOContext
+import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class AlbumArtUtil @Inject constructor(
@@ -37,6 +38,7 @@ class AlbumArtUtil @Inject constructor(
     private val currentSong: CurrentSong,
 ) {
 
+    // FIXME: Change to ByteArray?
     private val defaultAlbumArt: Bitmap by lazy {
         BitmapFactory.decodeResource(context.resources, R.drawable.default_album_art)
     }
@@ -52,13 +54,16 @@ class AlbumArtUtil @Inject constructor(
         }
     }
 
-    fun getCurrentAlbumArt(size: Int): Bitmap? {
+    fun getCurrentAlbumArt(size: Int): ByteArray? {
         if (_flow.value.bitmap == null) {
             return null
         }
 
         return try {
-            BitmapCompat.createScaledBitmap(_flow.value!!.bitmap!!, size, size, null, false)
+            val scaledBitmap = BitmapCompat.createScaledBitmap(_flow.value.bitmap!!, size, size, null, false)
+            val stream = ByteArrayOutputStream()
+            scaledBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream.toByteArray()
         } catch (e: Throwable) {
             // Typically OutOfMemoryError or NullPointerException
             e.printStackTrace()
