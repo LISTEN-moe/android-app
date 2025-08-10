@@ -139,6 +139,10 @@ tasks {
             events = setOf(TestLogEvent.PASSED, TestLogEvent.FAILED, TestLogEvent.SKIPPED)
         }
     }
+
+    named("preBuild") {
+        dependsOn("ktlintFormat")
+    }
 }
 
 dependencies {
