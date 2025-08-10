@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
-import logcat.logcat
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.model.Event
@@ -25,7 +24,6 @@ import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -61,13 +59,6 @@ class RadioService @Inject constructor(
                 .filterIsInstance<Socket.SocketResponse>()
                 .collectLatest { socketResponse ->
                     val info = socketResponse.info
-
-                    // TODO: actually do something with computed start time/progress
-                    info?.startTime?.let {
-                        val foo = Clock.System.now() - it
-
-                        logcat { "Started ${foo.inWholeMilliseconds}ms ago" }
-                    }
 
                     _state.value = _state.value.copy(
                         currentSong = info?.song?.let(songConverter::toDomainSong)?.copy(
