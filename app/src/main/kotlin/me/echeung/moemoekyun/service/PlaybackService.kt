@@ -175,6 +175,7 @@ class PlaybackService : MediaLibraryService() {
                                 setArtist(currentSong.artists)
                                 setAlbumTitle(currentSong.albums)
                                 setDurationMs(currentSong.durationSeconds.seconds.inWholeMilliseconds.takeIf { it > 0 })
+                                setMediaType(MediaMetadata.MEDIA_TYPE_RADIO_STATION)
                                 albumArtUtil.getCurrentAlbumArt(500)?.let {
                                     setArtworkData(
                                         it,
@@ -203,4 +204,4 @@ class PlaybackService : MediaLibraryService() {
     override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
 }
 
-const val NOTIFICATION_CHANNEL_ID = "default"
+private const val NOTIFICATION_CHANNEL_ID = "default"

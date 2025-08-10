@@ -1,5 +1,6 @@
 package me.echeung.moemoekyun.client.api.socket
 
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.DeserializationStrategy
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
@@ -10,6 +11,8 @@ import kotlinx.serialization.json.jsonPrimitive
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 object WebsocketResponseSerializer : JsonContentPolymorphicSerializer<WebsocketResponse>(WebsocketResponse::class) {
     override fun selectDeserializer(element: JsonElement): DeserializationStrategy<WebsocketResponse> =
@@ -32,10 +35,12 @@ sealed interface WebsocketResponse {
 
     @Serializable
     data class Update(val t: String?, val d: Details?) : WebsocketResponse {
+        @OptIn(ExperimentalTime::class)
         @Serializable
         data class Details(
             val song: Song?,
-            val startTime: String?,
+            @Contextual
+            val startTime: Instant?,
             val lastPlayed: List<Song>?,
             val requester: User?,
             val event: Event?,

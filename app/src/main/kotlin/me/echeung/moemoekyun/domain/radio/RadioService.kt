@@ -13,8 +13,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
-import logcat.LogPriority
-import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.socket.Socket
@@ -25,11 +23,13 @@ import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
-import me.echeung.moemoekyun.util.system.TimeUtil.toCalendar
-import java.util.Calendar
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Singleton
 class RadioService @Inject constructor(
     @param:ApplicationContext private val context: Context,
@@ -62,17 +62,18 @@ class RadioService @Inject constructor(
                 .collectLatest { socketResponse ->
                     val info = socketResponse.info
 
-                    val startTime = runCatching {
-                        info?.startTime?.toCalendar()
-                    }.onFailure { e ->
-                        logcat(LogPriority.ERROR) { "Error parsing time: ${e.asLog()}" }
+                    // TODO: actually do something with computed start time/progress
+                    info?.startTime?.let {
+                        val foo = Clock.System.now() - it
+
+                        logcat { "Started ${foo.inWholeMilliseconds}ms ago" }
                     }
 
                     _state.value = _state.value.copy(
                         currentSong = info?.song?.let(songConverter::toDomainSong)?.copy(
                             favorited = getFavoriteSongs.isFavorite(info.song.id),
                         ),
-                        startTime = startTime.getOrNull(),
+                        startTime = info?.startTime,
                         pastSongs = info?.lastPlayed.orEmpty().map(songConverter::toDomainSong),
                         listeners = info?.listeners ?: 0,
                         requester = info?.requester?.displayName,
@@ -132,12 +133,13 @@ class RadioService @Inject constructor(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 data class RadioState(
     val station: Station = Station.JPOP,
     val listeners: Int = 0,
     val requester: String? = null,
     val currentSong: DomainSong? = null,
-    val startTime: Calendar? = null,
+    val startTime: Instant? = null,
     val pastSongs: List<DomainSong> = emptyList(),
     val event: Event? = null,
 ) {
