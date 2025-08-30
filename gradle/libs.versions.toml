@@ -1,6 +1,6 @@
 [versions]
 aboutlib = "12.2.4"
-apollo = "4.3.2"
+apollo = "4.3.3"
 coil = "3.3.0"
 coroutines = "1.10.2"
 hilt = "2.57.1"
