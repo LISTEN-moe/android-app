@@ -5,7 +5,7 @@ coil = "3.3.0"
 coroutines = "1.10.2"
 hilt = "2.57.1"
 junit = "5.13.4"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 media3 = "1.8.0"
 voyager = "1.1.0-beta03"
 
@@ -15,7 +15,7 @@ android-application = { id = "com.android.application", version = "8.13.0" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.2.10-2.0.2" }
+ksp = { id = "com.google.devtools.ksp", version = "2.2.20-2.0.3" }
 
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
@@ -41,14 +41,14 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" 
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
-compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2025.08.01" }
+compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2025.09.00" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
-compose-activity = { module = "androidx.activity:activity-compose", version = "1.10.1" }
+compose-activity = { module = "androidx.activity:activity-compose", version = "1.11.0" }
 compose-lintchecks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.4.2" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -80,7 +80,7 @@ voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voy
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.13.4" }
-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.0.2" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.0.3" }
 
 [bundles]
 apollo = ["apollo-runtime", "apollo-http-cache"]
