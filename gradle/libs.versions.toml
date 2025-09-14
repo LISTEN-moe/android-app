@@ -80,7 +80,7 @@ voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voy
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.13.4" }
-kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.0.2" }
+kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.0.3" }
 
 [bundles]
 apollo = ["apollo-runtime", "apollo-http-cache"]
