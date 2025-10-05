@@ -4,7 +4,7 @@ apollo = "4.3.3"
 coil = "3.3.0"
 coroutines = "1.10.2"
 hilt = "2.57.2"
-junit = "5.14.0"
+junit = "6.0.0"
 kotlin = "2.2.20"
 media3 = "1.8.0"
 voyager = "1.1.0-beta03"
@@ -79,7 +79,7 @@ voyager-hilt = { module = "cafe.adriel.voyager:voyager-hilt", version.ref = "voy
 
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.14.0" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "6.0.0" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.0.3" }
 
 [bundles]
