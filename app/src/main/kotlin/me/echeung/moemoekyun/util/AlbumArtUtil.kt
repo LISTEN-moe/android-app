@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import androidx.annotation.ColorInt
 import androidx.compose.runtime.Immutable
 import androidx.core.graphics.BitmapCompat
 import androidx.core.graphics.ColorUtils
@@ -35,7 +36,7 @@ import java.io.ByteArrayOutputStream
 import javax.inject.Inject
 
 class AlbumArtUtil @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+    @ApplicationContext private val context: Context,
     private val currentSong: CurrentSong,
 ) {
 
@@ -112,7 +113,7 @@ class AlbumArtUtil @Inject constructor(
                 var color = swatch.rgb
 
                 // Darken if needed
-                if (ColorUtils.calculateLuminance(color) >= 0.5) {
+                if (ColorUtils.calculateLuminance(color) >= 0.4) {
                     color = ColorUtils.blendARGB(color, Color.BLACK, 0.2f)
                 }
 
@@ -126,7 +127,7 @@ class AlbumArtUtil @Inject constructor(
     }
 
     @Immutable
-    data class State(val bitmap: Bitmap?, val accentColor: Int?) {
+    data class State(val bitmap: Bitmap?, @ColorInt val accentColor: Int?) {
         companion object {
             val EMPTY = State(null, null)
         }

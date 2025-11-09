@@ -30,7 +30,7 @@ import kotlin.time.Instant
 @OptIn(ExperimentalTime::class)
 @Singleton
 class RadioService @Inject constructor(
-    @param:ApplicationContext private val context: Context,
+    @ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
     private val socket: Socket,
     private val songConverter: SongConverter,

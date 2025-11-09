@@ -3,7 +3,7 @@ package me.echeung.moemoekyun.client.api
 import androidx.annotation.StringRes
 import me.echeung.moemoekyun.R
 
-enum class Station(val socketUrl: String, val streamUrl: String, @param:StringRes val labelRes: Int) {
+enum class Station(val socketUrl: String, val streamUrl: String, @StringRes val labelRes: Int) {
     JPOP(
         "wss://listen.moe/gateway_v2",
         "https://listen.moe/fallback",

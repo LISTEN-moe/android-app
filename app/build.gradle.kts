@@ -114,6 +114,7 @@ kotlin {
             "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode",
         )
     }
 }

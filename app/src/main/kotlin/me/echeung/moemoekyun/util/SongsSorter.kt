@@ -35,7 +35,7 @@ class SongsSorter @Inject constructor() {
     }
 }
 
-enum class SortType(@param:StringRes val labelRes: Int) {
+enum class SortType(@StringRes val labelRes: Int) {
     TITLE(R.string.sort_title),
     ARTIST(R.string.sort_artist),
     FAVORITED_AT(R.string.sort_favorited_at),
