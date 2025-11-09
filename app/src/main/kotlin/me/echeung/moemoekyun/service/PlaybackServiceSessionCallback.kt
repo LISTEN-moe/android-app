@@ -70,6 +70,20 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
         return MediaSession.ConnectionResult.AcceptedResultBuilder(session).build()
     }
 
+    // https://stackoverflow.com/a/70103460
+    override fun onAddMediaItems(
+        mediaSession: MediaSession,
+        controller: MediaSession.ControllerInfo,
+        mediaItems: MutableList<MediaItem>,
+    ): ListenableFuture<List<MediaItem>> {
+        val updatedMediaItems = mediaItems.map { mediaItem ->
+            mediaItem.buildUpon()
+                .setUri(mediaItem.requestMetadata.mediaUri)
+                .build()
+        }
+        return Futures.immediateFuture(updatedMediaItems)
+    }
+
     override fun onPlaybackResumption(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
