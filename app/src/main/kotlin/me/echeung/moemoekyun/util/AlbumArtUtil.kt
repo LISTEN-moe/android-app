@@ -16,6 +16,7 @@ import coil3.asDrawable
 import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
+import coil3.request.allowHardware
 import coil3.size.Scale
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.MainScope
@@ -91,6 +92,7 @@ class AlbumArtUtil @Inject constructor(
         val request = ImageRequest.Builder(context)
             .data(url)
             .scale(Scale.FILL)
+            .allowHardware(false) // Required for Palette
             .build()
 
         val result = context.imageLoader.execute(request)
