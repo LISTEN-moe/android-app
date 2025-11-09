@@ -20,9 +20,10 @@ import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Radio
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -62,7 +63,7 @@ object AboutScreen : Screen {
                     versionText += " (${packageInfo.packageName})"
                 }
                 versionText
-            } catch (e: PackageManager.NameNotFoundException) {
+            } catch (_: PackageManager.NameNotFoundException) {
                 ""
             }
         }
@@ -72,7 +73,7 @@ object AboutScreen : Screen {
         ) { contentPadding ->
             LazyColumn(
                 contentPadding = contentPadding,
-                modifier = Modifier.padding(horizontal = 16.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 8.dp),
             ) {
                 item {
                     AboutCard {
@@ -152,7 +153,10 @@ object AboutScreen : Screen {
 @Composable
 private fun AboutCard(@StringRes headingResId: Int? = null, content: @Composable () -> Unit) {
     Box(modifier = Modifier.padding(vertical = 8.dp)) {
-        Card(
+        OutlinedCard(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface,
+            ),
             modifier = Modifier.fillMaxWidth(),
         ) {
             Column(

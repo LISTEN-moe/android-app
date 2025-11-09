@@ -472,12 +472,13 @@ private fun SongInfo(
         Row(
             modifier = Modifier.padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = onClickHistory) {
                 Icon(Icons.Outlined.History, contentDescription = stringResource(R.string.last_played))
             }
             FloatingActionButton(
-                modifier = Modifier.size(56.dp),
+                modifier = Modifier.size(64.dp),
                 onClick = playPauseButtonState::onClick,
             ) {
                 PlayStateIcon(playPauseButtonState)

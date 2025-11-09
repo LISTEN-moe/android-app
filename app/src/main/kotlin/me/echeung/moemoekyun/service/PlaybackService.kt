@@ -143,8 +143,7 @@ class PlaybackService : MediaLibraryService() {
                     val currentSong = radioState.currentSong
 
                     if (currentSong == null) {
-                        session.player.editCurrentMediaItem { currentMediaItem ->
-                            setLiveConfiguration(liveConfiguration)
+                        session.player.editCurrentMediaItem {
                             setMediaMetadata(
                                 MediaMetadata.Builder()
                                     .setTitle(resources.getString(R.string.song_no_name))
