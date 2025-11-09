@@ -7,24 +7,4 @@ data class SongDescriptor(val name: String? = null, val nameRomaji: String? = nu
 
     fun contains(query: String): Boolean = name.orEmpty().contains(query, ignoreCase = true) ||
         nameRomaji.orEmpty().contains(query, ignoreCase = true)
-
-    companion object {
-        fun getDisplayString(songDescriptors: List<SongDescriptor>?, preferRomaji: Boolean): String? {
-            if (songDescriptors == null) {
-                return null
-            }
-
-            val displayString = songDescriptors
-                .mapNotNull {
-                    if (preferRomaji && !it.nameRomaji.isNullOrBlank()) {
-                        it.nameRomaji
-                    } else {
-                        it.name
-                    }
-                }
-                .joinToString(", ")
-
-            return displayString.ifEmpty { null }
-        }
-    }
 }
