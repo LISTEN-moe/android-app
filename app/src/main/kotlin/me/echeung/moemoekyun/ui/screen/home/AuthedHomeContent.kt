@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -61,6 +62,7 @@ fun AuthedHomeContent(
     onSortDescending: (Boolean) -> Unit,
     requestRandomSong: () -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
@@ -87,7 +89,7 @@ fun AuthedHomeContent(
         songsItems(songs = favorites)
 
         item {
-            Spacer(modifier = Modifier.height(PlayerPeekHeight))
+            Spacer(modifier = Modifier.height(PlayerPeekHeight + contentPadding.calculateBottomPadding()))
         }
     }
 }

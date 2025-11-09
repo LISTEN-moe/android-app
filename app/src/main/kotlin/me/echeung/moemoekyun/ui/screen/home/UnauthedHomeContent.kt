@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.ui.screen.home
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,15 +27,16 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.screen.auth.LoginScreen
 import me.echeung.moemoekyun.ui.screen.auth.RegisterScreen
 import me.echeung.moemoekyun.ui.theme.AppTheme
+import me.echeung.moemoekyun.ui.util.plus
 
 @Composable
-fun UnauthedHomeContent(modifier: Modifier = Modifier) {
+fun UnauthedHomeContent(modifier: Modifier = Modifier, contentPadding: PaddingValues = PaddingValues(0.dp)) {
     val navigator = LocalNavigator.currentOrThrow
 
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(contentPadding + 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {

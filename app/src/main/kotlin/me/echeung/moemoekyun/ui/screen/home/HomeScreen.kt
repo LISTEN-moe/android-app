@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.ui.screen.home
 
 import android.content.ComponentName
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Search
@@ -81,9 +80,7 @@ object HomeScreen : Screen {
                     topBar = { Toolbar(isAuthenticated = isAuthenticated) },
                 ) { contentPadding ->
                     BackgroundBox(
-                        modifier = Modifier
-                            .padding(contentPadding)
-                            .fillMaxSize(),
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         if (isAuthenticated) {
                             AuthedHomeContent(
@@ -97,9 +94,12 @@ object HomeScreen : Screen {
                                 sortDescending = state.sortDescending,
                                 onSortDescending = screenModel::sortDescending,
                                 requestRandomSong = screenModel::requestRandomSong,
+                                contentPadding = contentPadding,
                             )
                         } else {
-                            UnauthedHomeContent()
+                            UnauthedHomeContent(
+                                contentPadding = contentPadding,
+                            )
                         }
                     }
                 }
