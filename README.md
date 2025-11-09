@@ -19,7 +19,7 @@ Features things like [Android Auto](https://www.android.com/auto/) and [autofill
 
 ## Developing
 
-![CI](https://github.com/LISTEN-moe/android-app/workflows/CI/badge.svg?event=push)
+[![CI](https://github.com/LISTEN-moe/android-app/actions/workflows/build.yml/badge.svg)](https://github.com/LISTEN-moe/android-app/actions/workflows/build.yml)
 
 ### Prerequisites
 
