@@ -29,7 +29,7 @@ import com.google.common.util.concurrent.MoreExecutors
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.service.PlaybackService
 import me.echeung.moemoekyun.ui.common.BackgroundBox
-import me.echeung.moemoekyun.ui.common.ToolbarColors
+import me.echeung.moemoekyun.ui.common.toolbarColors
 import me.echeung.moemoekyun.ui.screen.about.AboutScreen
 import me.echeung.moemoekyun.ui.screen.search.SearchScreen
 import me.echeung.moemoekyun.ui.screen.settings.SettingsScreen
@@ -137,7 +137,7 @@ object HomeScreen : Screen {
                     )
                 }
             },
-            colors = ToolbarColors(),
+            colors = toolbarColors(),
         )
     }
 }

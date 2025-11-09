@@ -8,6 +8,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.TextFieldDefaults.textFieldColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Close
@@ -54,7 +55,7 @@ fun Toolbar(
 }
 
 @Composable
-fun ToolbarColors() = TopAppBarDefaults.topAppBarColors(
+fun toolbarColors() = TopAppBarDefaults.topAppBarColors(
     containerColor = MaterialTheme.colorScheme.primary,
     navigationIconContentColor = Color.White,
     titleContentColor = Color.White,
@@ -77,7 +78,7 @@ fun Toolbar(
         },
         actions = actions,
         modifier = modifier,
-        colors = ToolbarColors(),
+        colors = toolbarColors(),
     )
 }
 
@@ -139,6 +140,7 @@ fun SearchTextInput(query: String?, modifier: Modifier = Modifier, onQueryChange
                     },
                     visualTransformation = VisualTransformation.None,
                     interactionSource = remember { MutableInteractionSource() },
+                    colors = textFieldColors(backgroundColor = Color.Transparent),
                 )
             },
         )
