@@ -64,7 +64,7 @@ immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", v
 
 logcat = { module = "com.squareup.logcat:logcat", version = "0.4" }
 
-okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version = "5.3.0" }
+okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version = "5.3.1" }
 okhttp-core = { module = "com.squareup.okhttp3:okhttp" }
 okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor" }
 
