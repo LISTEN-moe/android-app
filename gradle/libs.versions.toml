@@ -6,7 +6,7 @@ coroutines = "1.10.2"
 hilt = "2.57.2"
 junit = "6.0.1"
 kotlin = "2.2.21"
-media3 = "1.8.0"
+media3 = "1.9.0"
 voyager = "1.1.0-beta03"
 
 [plugins]
