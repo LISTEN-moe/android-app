@@ -71,6 +71,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.media3.cast.MediaRouteButton
 import androidx.media3.common.Player
 import androidx.media3.common.listen
 import androidx.media3.common.util.UnstableApi
@@ -371,18 +372,21 @@ private fun LandscapeExpandedPlayerContent(
 
 @Composable
 private fun CollapseIcon(onClickCollapse: () -> Unit) {
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClickCollapse)
             .padding(vertical = 16.dp),
-        contentAlignment = Alignment.Center,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier.alpha(0.5f),
             imageVector = Icons.Outlined.ExpandMore,
             contentDescription = null,
         )
+
+        MediaRouteButton()
     }
 }
 

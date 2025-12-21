@@ -45,6 +45,12 @@
             android:name="com.google.android.gms.car.notification.SmallIcon"
             android:resource="@drawable/ic_icon" />
 
+        <!-- Cast -->
+        <meta-data
+            android:name="com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME"
+            android:value="me.echeung.moemoekyun.service.CastOptionsProvider" />
+        <receiver android:name="androidx.mediarouter.media.MediaTransferReceiver" />
+
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
             android:enabled="false"
