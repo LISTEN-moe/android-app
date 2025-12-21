@@ -1,12 +1,12 @@
 [versions]
-aboutlib = "13.1.0"
+aboutlib = "13.2.1"
 apollo = "4.3.3"
 coil = "3.3.0"
 coroutines = "1.10.2"
 hilt = "2.57.2"
 junit = "6.0.1"
-kotlin = "2.2.21"
-media3 = "1.8.0"
+kotlin = "2.3.0"
+media3 = "1.9.0"
 voyager = "1.1.0-beta03"
 
 [plugins]
@@ -15,7 +15,7 @@ android-application = { id = "com.android.application", version = "8.13.2" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.3" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.4" }
 
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlib" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
@@ -41,14 +41,14 @@ coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" 
 coil-gif = { module = "io.coil-kt.coil3:coil-gif", version.ref = "coil" }
 coil-network-okhttp = { module = "io.coil-kt.coil3:coil-network-okhttp", version.ref = "coil" }
 
-compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2025.12.00" }
+compose-bom = { module = "androidx.compose:compose-bom-alpha", version = "2025.12.01" }
 compose-material = { module = "androidx.compose.material:material" }
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 compose-material3 = { module = "androidx.compose.material3:material3" }
 compose-ui = { module = "androidx.compose.ui:ui" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-util = { module = "androidx.compose.ui:ui-util" }
-compose-activity = { module = "androidx.activity:activity-compose", version = "1.12.1" }
+compose-activity = { module = "androidx.activity:activity-compose", version = "1.12.2" }
 compose-lintchecks = { module = "com.slack.lint.compose:compose-lint-checks", version = "1.4.2" }
 
 coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -59,6 +59,7 @@ desugar = { module = "com.android.tools:desugar_jdk_libs", version = "2.1.5" }
 hilt-gradle = { module = "com.google.dagger:hilt-android-gradle-plugin", version.ref = "hilt" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hilt" }
+kotlin-metadata = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
 immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.4.0" }
 

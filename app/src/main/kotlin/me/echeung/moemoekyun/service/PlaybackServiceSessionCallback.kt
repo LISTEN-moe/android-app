@@ -87,8 +87,11 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
     override fun onPlaybackResumption(
         mediaSession: MediaSession,
         controller: MediaSession.ControllerInfo,
+        isForPlayback: Boolean,
     ): ListenableFuture<MediaSession.MediaItemsWithStartPosition> {
-        logcat { "onPlaybackResumption request from: ${controller.packageName}, uid: ${controller.uid}" }
+        logcat {
+            "onPlaybackResumption request from: ${controller.packageName}, uid: ${controller.uid}, isForPlayback: $isForPlayback"
+        }
         val mediaItem = preferenceUtil.station().get().toMediaItem()
         return Futures.immediateFuture(
             MediaSession.MediaItemsWithStartPosition(

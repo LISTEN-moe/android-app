@@ -114,7 +114,7 @@ kotlin {
             "-opt-in=androidx.compose.material.ExperimentalMaterialApi",
             "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
             "-opt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-            "-XXLanguage:+PropertyParamAnnotationDefaultTargetMode",
+            "-Xannotation-default-target=param-property",
         )
     }
 }
@@ -160,6 +160,7 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
+    ksp(libs.kotlin.metadata)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
