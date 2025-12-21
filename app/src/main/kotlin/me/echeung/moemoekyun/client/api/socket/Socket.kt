@@ -27,7 +27,7 @@ class Socket @Inject constructor(
     private val json: Json,
 ) : WebSocketListener() {
 
-    private val _flow = MutableStateFlow<SocketResult>(SocketLoading)
+    private val _flow = MutableStateFlow<Result>(Result.Loading)
     val flow = _flow.asStateFlow()
 
     private val scope = MainScope()
@@ -158,7 +158,7 @@ class Socket @Inject constructor(
     private fun parseResponse(jsonString: String?) {
         if (jsonString == null) {
             scope.launch {
-                _flow.value = SocketError
+                _flow.value = Result.Error
             }
             return
         }
@@ -174,7 +174,7 @@ class Socket @Inject constructor(
                     }
 
                     scope.launch {
-                        _flow.value = SocketResponse(response.d)
+                        _flow.value = Result.Response(response.d)
                     }
                 }
                 is WebsocketResponse.HeartbeatAck -> {}
@@ -184,10 +184,11 @@ class Socket @Inject constructor(
         }
     }
 
-    sealed interface SocketResult
-    data object SocketLoading : SocketResult
-    data class SocketResponse(val info: WebsocketResponse.Update.Details?) : SocketResult
-    data object SocketError : SocketResult
+    sealed interface Result {
+        data object Loading : Result
+        data class Response(val info: WebsocketResponse.Update.Details?) : Result
+        data object Error : Result
+    }
 }
 
 private const val RETRY_TIME_MIN = 250

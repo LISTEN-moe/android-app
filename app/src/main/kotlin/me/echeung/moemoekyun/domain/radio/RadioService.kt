@@ -35,7 +35,7 @@ class RadioService @Inject constructor(
     private val socket: Socket,
     private val songConverter: SongConverter,
     private val getFavoriteSongs: GetFavoriteSongs,
-) {
+) : ConnectivityManager.NetworkCallback() {
 
     private val scope = MainScope()
 
@@ -47,16 +47,13 @@ class RadioService @Inject constructor(
     val state = _state.asStateFlow()
 
     init {
-        connect()
-        initNetworkStateCallback()
-
         scope.launchIO {
             combine(
                 socket.flow,
                 getFavoriteSongs.asFlow(),
                 preferenceUtil.shouldPreferRomaji().asFlow(),
             ) { socketResponse, _, _ -> socketResponse }
-                .filterIsInstance<Socket.SocketResponse>()
+                .filterIsInstance<Socket.Result.Response>()
                 .collectLatest { socketResponse ->
                     val info = socketResponse.info
 
@@ -94,35 +91,31 @@ class RadioService @Inject constructor(
 
     fun connect() {
         socket.connect()
+        context.connectivityManager.registerNetworkCallback(networkRequest, this)
     }
 
-    fun disconnectIfIdle() {
+    fun disconnect() {
+        socket.disconnect()
+        context.connectivityManager.unregisterNetworkCallback(this)
+    }
+
+    override fun onAvailable(network: Network) {
+        super.onAvailable(network)
+        socket.reconnect()
+    }
+
+    override fun onLost(network: Network) {
+        super.onLost(network)
         socket.disconnect()
     }
-
-    private fun initNetworkStateCallback() {
-        val networkRequest = NetworkRequest.Builder()
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
-            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
-            .addTransportType(NetworkCapabilities.TRANSPORT_VPN)
-            .build()
-
-        val callback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-                super.onAvailable(network)
-                socket.reconnect()
-            }
-
-            override fun onLost(network: Network) {
-                super.onLost(network)
-                socket.disconnect()
-            }
-        }
-
-        context.connectivityManager.registerNetworkCallback(networkRequest, callback)
-    }
 }
+
+private val networkRequest = NetworkRequest.Builder()
+    .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+    .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+    .addTransportType(NetworkCapabilities.TRANSPORT_VPN)
+    .build()
 
 @OptIn(ExperimentalTime::class)
 data class RadioState(

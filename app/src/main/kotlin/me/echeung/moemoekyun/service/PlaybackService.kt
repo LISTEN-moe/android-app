@@ -4,6 +4,9 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.OptIn
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.UnstableApi
@@ -70,6 +73,17 @@ class PlaybackService : MediaLibraryService() {
 
     override fun onCreate() {
         super.onCreate()
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(
+            object : DefaultLifecycleObserver {
+                override fun onStop(owner: LifecycleOwner) {
+                    if (!player.isPlaying) {
+                        radioService.disconnect()
+                        stopSelf()
+                    }
+                }
+            },
+        )
 
         setMediaNotificationProvider(
             DefaultMediaNotificationProvider.Builder(applicationContext)
@@ -200,7 +214,7 @@ class PlaybackService : MediaLibraryService() {
         super.onDestroy()
     }
 
-    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession? = session
+    override fun onGetSession(controllerInfo: MediaSession.ControllerInfo): MediaLibrarySession = session
 }
 
 private const val NOTIFICATION_CHANNEL_ID = "default"
