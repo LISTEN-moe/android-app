@@ -1,6 +1,6 @@
 package me.echeung.moemoekyun.util
 
-import com.tfcporciuncula.flow.FlowSharedPreferences
+import com.fredporciuncula.flow.preferences.FlowSharedPreferences
 import me.echeung.moemoekyun.client.api.Station
 import javax.inject.Inject
 import javax.inject.Singleton

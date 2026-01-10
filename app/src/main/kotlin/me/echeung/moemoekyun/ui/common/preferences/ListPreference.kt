@@ -24,7 +24,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableMap
-import me.echeung.moemoekyun.R
 
 @Composable
 fun <T> ListPreference(
