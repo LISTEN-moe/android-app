@@ -3,9 +3,8 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.aboutLibraries)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("kotlin-parcelize")
+    kotlin("plugin.parcelize")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
@@ -38,10 +37,6 @@ android {
         shaders = false
     }
 
-    androidResources {
-        generateLocaleConfig = true
-    }
-
     buildTypes {
         named("debug") {
             applicationIdSuffix = ".debug"
@@ -50,7 +45,7 @@ android {
         named("release") {
             isShrinkResources = true
             isMinifyEnabled = true
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 
@@ -64,6 +59,13 @@ android {
 
             applicationIdSuffix = ".fdroid"
         }
+    }
+
+    androidResources {
+        generateLocaleConfig = true
+    }
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
     }
 
     lint {
@@ -87,13 +89,8 @@ android {
             ),
         )
     }
-
     dependenciesInfo {
         includeInApk = false
-    }
-
-    compileOptions {
-        isCoreLibraryDesugaringEnabled = true
     }
 }
 
