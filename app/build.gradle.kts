@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.apollo)
     alias(libs.plugins.ktlint)
-    alias(libs.plugins.autoresconfig)
 }
 
 val appPackageName = "me.echeung.moemoekyun"
@@ -39,9 +38,7 @@ android {
         shaders = false
     }
 
-    autoResConfig {
-        generateClass = true
-        generateRes = true
+    androidResources {
         generateLocaleConfig = true
     }
 

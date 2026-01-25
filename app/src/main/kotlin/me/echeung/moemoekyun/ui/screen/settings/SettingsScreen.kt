@@ -25,7 +25,6 @@ import me.echeung.moemoekyun.ui.common.preferences.ListPreference
 import me.echeung.moemoekyun.ui.common.preferences.PreferenceGroupHeader
 import me.echeung.moemoekyun.ui.common.preferences.SwitchPreference
 import me.echeung.moemoekyun.util.system.LocaleUtil
-import rikka.autoresconfig.AutoResConfigLocales
 
 object SettingsScreen : Screen {
 
@@ -101,11 +100,16 @@ object SettingsScreen : Screen {
             }
         }
     }
-
-    private fun getLangs(context: Context): ImmutableMap<String, String> =
-        persistentMapOf("" to context.getString(R.string.system_default)) +
-            AutoResConfigLocales.LOCALES.drop(1)
-                .zip(AutoResConfigLocales.DISPLAY_LOCALES.drop(1).map(LocaleUtil::getDisplayName))
-                .toMap()
-                .toImmutableMap()
 }
+
+private val SUPPORTED_LOCALES = listOf(
+    "ca-ES", "cs-CZ", "de-DE", "en", "en-GB", "eo-UY", "es-ES", "fr-FR",
+    "in-ID", "it-IT", "ja-JP", "ko-KR", "lt-LT", "ms-MY", "nl-NL", "pl-PL",
+    "pt-PT", "ru-RU", "si-LK", "sv-SE", "tr-TR", "vi-VN", "zh-CN", "zh-TW",
+)
+
+private fun getLangs(context: Context): ImmutableMap<String, String> =
+    persistentMapOf("" to context.getString(R.string.system_default)) +
+        SUPPORTED_LOCALES
+            .associateWith { LocaleUtil.getDisplayName(it) }
+            .toImmutableMap()
