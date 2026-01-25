@@ -1,5 +1,5 @@
 [versions]
-aboutlib = "13.2.1"
+aboutlib = "14.0.0-b02"
 apollo = "4.4.0"
 coil = "3.3.0"
 coroutines = "1.10.2"
@@ -16,7 +16,7 @@ kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "ko
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version = "2.3.4" }
 
-aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutlib" }
+aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "14.0.1" }
 
