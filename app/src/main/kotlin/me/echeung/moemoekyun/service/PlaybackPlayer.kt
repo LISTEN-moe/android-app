@@ -3,10 +3,10 @@
 package me.echeung.moemoekyun.service
 
 import androidx.annotation.OptIn
+import androidx.media3.cast.CastPlayer
 import androidx.media3.common.C
 import androidx.media3.common.ForwardingPlayer
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.exoplayer.ExoPlayer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import logcat.logcat
@@ -22,7 +22,7 @@ import kotlin.time.toDuration
 
 @OptIn(UnstableApi::class)
 class PlaybackPlayer @Inject constructor(
-    val player: ExoPlayer,
+    val player: CastPlayer,
     val currentSong: CurrentSong,
     val scope: CoroutineScope,
 ) : ForwardingPlayer(player) {
