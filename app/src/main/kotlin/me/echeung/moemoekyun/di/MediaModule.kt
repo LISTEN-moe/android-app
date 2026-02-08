@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.di
 import android.content.Context
 import android.media.AudioManager
 import androidx.annotation.OptIn
+import androidx.media3.cast.CastPlayer
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
@@ -64,5 +65,10 @@ object MediaModule {
         .setMediaSourceFactory(progressiveMediaSourceFactory)
         .setAudioAttributes(audioAttributes, true)
         .setWakeMode(C.WAKE_MODE_NETWORK)
+        .build()
+
+    @Provides
+    fun castPlayer(@ApplicationContext context: Context, exoPlayer: ExoPlayer): CastPlayer = CastPlayer.Builder(context)
+        .setLocalPlayer(exoPlayer)
         .build()
 }
