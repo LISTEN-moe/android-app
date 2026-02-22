@@ -2,10 +2,14 @@ package me.echeung.moemoekyun.ui.screen.home
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
@@ -26,6 +30,7 @@ import me.echeung.moemoekyun.util.SortType
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
+@HiltViewModel
 class HomeScreenModel @Inject constructor(
     radioService: RadioService,
     private val setStation: SetStation,
@@ -36,15 +41,18 @@ class HomeScreenModel @Inject constructor(
     private val loginLogout: LoginLogout,
     private val albumArtUtil: AlbumArtUtil,
     private val preferenceUtil: PreferenceUtil,
-) : StateScreenModel<HomeScreenModel.State>(State()) {
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(State())
+    val state: StateFlow<State> = _state.asStateFlow()
 
     val radioState = radioService.state
 
     init {
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             getAuthenticatedUser.asFlow()
                 .collectLatest {
-                    mutableState.update { state ->
+                    _state.update { state ->
                         state.copy(
                             user = it,
                         )
@@ -52,10 +60,10 @@ class HomeScreenModel @Inject constructor(
                 }
         }
 
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             getFavoriteSongs.asFlow()
                 .collectLatest {
-                    mutableState.update { state ->
+                    _state.update { state ->
                         state.copy(
                             favorites = it.toImmutableList(),
                         )
@@ -63,10 +71,10 @@ class HomeScreenModel @Inject constructor(
                 }
         }
 
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             albumArtUtil.flow
                 .collectLatest {
-                    mutableState.update { state ->
+                    _state.update { state ->
                         state.copy(
                             accentColor = it.accentColor?.let { Color(it) },
                         )
@@ -74,13 +82,13 @@ class HomeScreenModel @Inject constructor(
                 }
         }
 
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             combine(
                 preferenceUtil.favoritesSortType().asFlow(),
                 preferenceUtil.favoritesSortDescending().asFlow(),
             ) { sortType, descending -> Pair(sortType, descending) }
                 .collectLatest { (sortType, descending) ->
-                    mutableState.update { state ->
+                    _state.update { state ->
                         state.copy(
                             sortType = sortType,
                             sortDescending = descending,
@@ -91,7 +99,7 @@ class HomeScreenModel @Inject constructor(
     }
 
     fun toggleFavorite(songId: Int) {
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             favoriteSong.await(songId)
         }
     }
@@ -105,7 +113,7 @@ class HomeScreenModel @Inject constructor(
     }
 
     fun search(query: String) {
-        mutableState.update { state ->
+        _state.update { state ->
             state.copy(
                 searchQuery = query,
             )
@@ -121,8 +129,8 @@ class HomeScreenModel @Inject constructor(
     }
 
     fun requestRandomSong() {
-        screenModelScope.launchIO {
-            mutableState.value.filteredFavorites?.randomOrNull()?.let {
+        viewModelScope.launchIO {
+            _state.value.filteredFavorites?.randomOrNull()?.let {
                 requestSong.await(it)
             }
         }

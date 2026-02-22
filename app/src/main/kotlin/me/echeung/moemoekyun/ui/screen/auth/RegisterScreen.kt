@@ -22,112 +22,104 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.hilt.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.hilt.navigation.compose.hiltViewModel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.Toolbar
 
-object RegisterScreen : Screen {
+@Composable
+fun RegisterScreen(onBack: () -> Unit) {
+    val screenModel = hiltViewModel<RegisterScreenModel>()
+    val state by screenModel.state.collectAsState()
 
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-
-        val screenModel = getScreenModel<RegisterScreenModel>()
-        val state by screenModel.state.collectAsState()
-
-        LaunchedEffect(state.result) {
-            if (state.result is RegisterScreenModel.Result.Complete) {
-                navigator.pop()
-            }
-        }
-
+    LaunchedEffect(state.result) {
         if (state.result is RegisterScreenModel.Result.Complete) {
-            return
+            onBack()
         }
+    }
 
-        val username = rememberTextFieldState("")
-        val email = rememberTextFieldState("")
-        val password1 = rememberTextFieldState("")
-        val password2 = rememberTextFieldState("")
+    if (state.result is RegisterScreenModel.Result.Complete) {
+        return
+    }
 
-        Scaffold(
-            topBar = { Toolbar(titleResId = R.string.register, showUpButton = true) },
-        ) { contentPadding ->
-            BackgroundBox(
+    val username = rememberTextFieldState("")
+    val email = rememberTextFieldState("")
+    val password1 = rememberTextFieldState("")
+    val password2 = rememberTextFieldState("")
+
+    Scaffold(
+        topBar = { Toolbar(titleResId = R.string.register, onBack = onBack) },
+    ) { contentPadding ->
+        BackgroundBox(
+            modifier = Modifier
+                .padding(contentPadding)
+                .fillMaxSize(),
+        ) {
+            Column(
                 modifier = Modifier
-                    .padding(contentPadding)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text(stringResource(R.string.username)) },
-                        state = username,
-                        lineLimits = TextFieldLineLimits.SingleLine,
-                        enabled = !state.loading,
-                    )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.username)) },
+                    state = username,
+                    lineLimits = TextFieldLineLimits.SingleLine,
+                    enabled = !state.loading,
+                )
 
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text(stringResource(R.string.email)) },
-                        state = email,
-                        lineLimits = TextFieldLineLimits.SingleLine,
-                        enabled = !state.loading,
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Email,
-                        ),
-                    )
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.email)) },
+                    state = email,
+                    lineLimits = TextFieldLineLimits.SingleLine,
+                    enabled = !state.loading,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                    ),
+                )
 
-                    OutlinedSecureTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text(stringResource(R.string.password)) },
-                        state = password1,
-                        enabled = !state.loading,
-                    )
+                OutlinedSecureTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.password)) },
+                    state = password1,
+                    enabled = !state.loading,
+                )
 
-                    OutlinedSecureTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        label = { Text(stringResource(R.string.password_confirm)) },
-                        state = password2,
-                        enabled = !state.loading,
-                    )
+                OutlinedSecureTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.password_confirm)) },
+                    state = password2,
+                    enabled = !state.loading,
+                )
 
-                    when (state.result) {
-                        is RegisterScreenModel.Result.AllFieldsRequired -> stringResource(R.string.required)
-                        is RegisterScreenModel.Result.MismatchedPasswords -> stringResource(R.string.password_mismatch)
-                        is RegisterScreenModel.Result.ApiError ->
-                            (state.result as RegisterScreenModel.Result.ApiError).message
-                        else -> null
-                    }?.let {
-                        Text(
-                            text = it,
-                            color = MaterialTheme.colorScheme.error,
+                when (state.result) {
+                    is RegisterScreenModel.Result.AllFieldsRequired -> stringResource(R.string.required)
+                    is RegisterScreenModel.Result.MismatchedPasswords -> stringResource(R.string.password_mismatch)
+                    is RegisterScreenModel.Result.ApiError ->
+                        (state.result as RegisterScreenModel.Result.ApiError).message
+                    else -> null
+                }?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !state.loading,
+                    onClick = {
+                        screenModel.register(
+                            username.text.toString(),
+                            email.text.toString(),
+                            password1.text.toString(),
+                            password2.text.toString(),
                         )
-                    }
-
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = !state.loading,
-                        onClick = {
-                            screenModel.register(
-                                username.text.toString(),
-                                email.text.toString(),
-                                password1.text.toString(),
-                                password2.text.toString(),
-                            )
-                        },
-                    ) {
-                        Text(stringResource(R.string.register))
-                    }
+                    },
+                ) {
+                    Text(stringResource(R.string.register))
                 }
             }
         }

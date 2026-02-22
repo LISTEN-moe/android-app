@@ -12,23 +12,21 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
 import kotlinx.collections.immutable.ImmutableList
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
-import me.echeung.moemoekyun.ui.screen.songs.SongsScreen
 
-fun LazyListScope.songsItems(songs: ImmutableList<DomainSong>?, showFavoriteIcons: Boolean = false) = items(
+fun LazyListScope.songsItems(
+    songs: ImmutableList<DomainSong>?,
+    showFavoriteIcons: Boolean = false,
+    onShowSongs: (List<DomainSong>) -> Unit = {},
+) = items(
     items = songs.orEmpty(),
     key = { it.id },
 ) {
-    val bottomSheetNavigator = LocalBottomSheetNavigator.current
-
     ListItem(
         modifier = Modifier
             .clickable {
-                bottomSheetNavigator.show(
-                    SongsScreen(songs = listOf(it)),
-                )
+                onShowSongs(listOf(it))
             },
         colors = ListItemDefaults.colors(
             containerColor = Color.Transparent,

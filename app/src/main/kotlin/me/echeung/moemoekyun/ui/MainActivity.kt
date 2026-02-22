@@ -6,10 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import cafe.adriel.voyager.navigator.Navigator
-import cafe.adriel.voyager.navigator.bottomSheet.BottomSheetNavigator
 import dagger.hilt.android.AndroidEntryPoint
-import me.echeung.moemoekyun.ui.screen.home.HomeScreen
+import me.echeung.moemoekyun.ui.navigation.AppNavDisplay
 import me.echeung.moemoekyun.ui.theme.AppTheme
 
 @AndroidEntryPoint
@@ -28,9 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             AppTheme {
-                BottomSheetNavigator {
-                    Navigator(HomeScreen)
-                }
+                AppNavDisplay()
             }
         }
     }

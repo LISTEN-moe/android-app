@@ -1,7 +1,9 @@
 package me.echeung.moemoekyun.ui.screen.settings
 
-import cafe.adriel.voyager.core.model.ScreenModel
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
 import me.echeung.moemoekyun.util.PreferenceUtil
 import javax.inject.Inject
 
-class SettingsScreenModel @Inject constructor(val preferenceUtil: PreferenceUtil) : ScreenModel
+@HiltViewModel
+class SettingsScreenModel @Inject constructor(val preferenceUtil: PreferenceUtil) : ViewModel()

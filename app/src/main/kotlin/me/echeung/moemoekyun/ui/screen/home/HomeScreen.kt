@@ -17,127 +17,133 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.hilt.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.bottomSheet.LocalBottomSheetNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import com.google.common.util.concurrent.MoreExecutors
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.service.PlaybackService
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.toolbarColors
-import me.echeung.moemoekyun.ui.screen.about.AboutScreen
-import me.echeung.moemoekyun.ui.screen.search.SearchScreen
-import me.echeung.moemoekyun.ui.screen.settings.SettingsScreen
-import me.echeung.moemoekyun.ui.screen.songs.SongsScreen
 
-object HomeScreen : Screen {
+@Composable
+fun HomeScreen(
+    onNavigateSearch: () -> Unit,
+    onNavigateSettings: () -> Unit,
+    onNavigateAbout: () -> Unit,
+    onNavigateLogin: () -> Unit,
+    onNavigateRegister: () -> Unit,
+    onShowHistory: (List<DomainSong>) -> Unit,
+) {
+    val screenModel = hiltViewModel<HomeScreenModel>()
+    val state by screenModel.state.collectAsState()
 
-    @Composable
-    override fun Content() {
-        val bottomSheetNavigator = LocalBottomSheetNavigator.current
+    val radioState by screenModel.radioState.collectAsState()
+    val isAuthenticated = state.user != null
 
-        val screenModel = getScreenModel<HomeScreenModel>()
-        val state by screenModel.state.collectAsState()
+    val context = LocalContext.current
 
-        val radioState by screenModel.radioState.collectAsState()
-        val isAuthenticated = state.user != null
+    val player by produceState<MediaController?>(null) {
+        val sessionToken = SessionToken(context, ComponentName(context, PlaybackService::class.java))
 
-        val context = LocalContext.current
+        // Build the MediaController asynchronously
+        val controllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
 
-        val player by produceState<MediaController?>(null) {
-            val sessionToken = SessionToken(context, ComponentName(context, PlaybackService::class.java))
-
-            // Build the MediaController asynchronously
-            val controllerFuture = MediaController.Builder(context, sessionToken).buildAsync()
-
-            // Set up a listener to handle the controller when it's ready
-            controllerFuture.addListener(
-                { value = controllerFuture.get() },
-                MoreExecutors.directExecutor(),
-            )
-        }
-
-        PlayerScaffold(
-            radioState = radioState,
-            mediaController = player,
-            accentColor = state.accentColor,
-            onClickStation = screenModel::toggleLibrary,
-            onClickHistory = {
-                val historySongs = listOfNotNull(radioState.currentSong) + radioState.pastSongs
-                if (historySongs.isNotEmpty()) {
-                    bottomSheetNavigator.show(
-                        SongsScreen(songs = historySongs),
-                    )
-                }
-            },
-            toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
-            content = {
-                Scaffold(
-                    topBar = { Toolbar(isAuthenticated = isAuthenticated) },
-                ) { contentPadding ->
-                    BackgroundBox(
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        if (isAuthenticated) {
-                            AuthedHomeContent(
-                                user = state.user!!,
-                                onClickLogOut = screenModel::logout,
-                                favorites = state.filteredFavorites,
-                                query = state.searchQuery,
-                                onQueryChange = screenModel::search,
-                                sortType = state.sortType,
-                                onSortBy = screenModel::sortBy,
-                                sortDescending = state.sortDescending,
-                                onSortDescending = screenModel::sortDescending,
-                                requestRandomSong = screenModel::requestRandomSong,
-                                contentPadding = contentPadding,
-                            )
-                        } else {
-                            UnauthedHomeContent(
-                                contentPadding = contentPadding,
-                            )
-                        }
-                    }
-                }
-            },
+        // Set up a listener to handle the controller when it's ready
+        controllerFuture.addListener(
+            { value = controllerFuture.get() },
+            MoreExecutors.directExecutor(),
         )
     }
 
-    @Composable
-    private fun Toolbar(isAuthenticated: Boolean) {
-        val navigator = LocalNavigator.currentOrThrow
-
-        TopAppBar(
-            title = {},
-            navigationIcon = {
-                if (isAuthenticated) {
-                    IconButton(onClick = { navigator.push(SearchScreen) }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = stringResource(R.string.search),
+    PlayerScaffold(
+        radioState = radioState,
+        mediaController = player,
+        accentColor = state.accentColor,
+        onClickStation = screenModel::toggleLibrary,
+        onClickHistory = {
+            val historySongs = listOfNotNull(radioState.currentSong) + radioState.pastSongs
+            if (historySongs.isNotEmpty()) {
+                onShowHistory(historySongs)
+            }
+        },
+        toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
+        content = {
+            Scaffold(
+                topBar = {
+                    HomeToolbar(
+                        isAuthenticated = isAuthenticated,
+                        onNavigateSearch = onNavigateSearch,
+                        onNavigateAbout = onNavigateAbout,
+                        onNavigateSettings = onNavigateSettings,
+                    )
+                },
+            ) { contentPadding ->
+                BackgroundBox(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    if (isAuthenticated) {
+                        AuthedHomeContent(
+                            user = state.user!!,
+                            onClickLogOut = screenModel::logout,
+                            favorites = state.filteredFavorites,
+                            query = state.searchQuery,
+                            onQueryChange = screenModel::search,
+                            sortType = state.sortType,
+                            onSortBy = screenModel::sortBy,
+                            sortDescending = state.sortDescending,
+                            onSortDescending = screenModel::sortDescending,
+                            requestRandomSong = screenModel::requestRandomSong,
+                            onShowSongs = onShowHistory,
+                            contentPadding = contentPadding,
+                        )
+                    } else {
+                        UnauthedHomeContent(
+                            onNavigateLogin = onNavigateLogin,
+                            onNavigateRegister = onNavigateRegister,
+                            contentPadding = contentPadding,
                         )
                     }
                 }
-            },
-            actions = {
-                IconButton(onClick = { navigator.push(AboutScreen) }) {
+            }
+        },
+    )
+}
+
+@Composable
+private fun HomeToolbar(
+    isAuthenticated: Boolean,
+    onNavigateSearch: () -> Unit,
+    onNavigateAbout: () -> Unit,
+    onNavigateSettings: () -> Unit,
+) {
+    TopAppBar(
+        title = {},
+        navigationIcon = {
+            if (isAuthenticated) {
+                IconButton(onClick = onNavigateSearch) {
                     Icon(
-                        imageVector = Icons.Outlined.Info,
-                        contentDescription = stringResource(R.string.about),
+                        imageVector = Icons.Outlined.Search,
+                        contentDescription = stringResource(R.string.search),
                     )
                 }
-                IconButton(onClick = { navigator.push(SettingsScreen) }) {
-                    Icon(
-                        imageVector = Icons.Outlined.Settings,
-                        contentDescription = stringResource(R.string.settings),
-                    )
-                }
-            },
-            colors = toolbarColors(),
-        )
-    }
+            }
+        },
+        actions = {
+            IconButton(onClick = onNavigateAbout) {
+                Icon(
+                    imageVector = Icons.Outlined.Info,
+                    contentDescription = stringResource(R.string.about),
+                )
+            }
+            IconButton(onClick = onNavigateSettings) {
+                Icon(
+                    imageVector = Icons.Outlined.Settings,
+                    contentDescription = stringResource(R.string.settings),
+                )
+            }
+        },
+        colors = toolbarColors(),
+    )
 }

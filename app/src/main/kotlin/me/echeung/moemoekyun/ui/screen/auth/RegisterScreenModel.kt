@@ -1,23 +1,30 @@
 package me.echeung.moemoekyun.ui.screen.auth
 
 import androidx.compose.runtime.Immutable
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.domain.user.interactor.Register
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
-class RegisterScreenModel @Inject constructor(private val register: Register) :
-    StateScreenModel<RegisterScreenModel.State>(State()) {
+@HiltViewModel
+class RegisterScreenModel @Inject constructor(private val register: Register) : ViewModel() {
+
+    private val _state = MutableStateFlow(State())
+    val state: StateFlow<State> = _state.asStateFlow()
 
     fun register(username: String, email: String, password1: String, password2: String) {
-        mutableState.update {
+        _state.update {
             it.copy(loading = true)
         }
 
         if (username.isEmpty() || email.isEmpty() || password1.isEmpty() || password2.isEmpty()) {
-            mutableState.update {
+            _state.update {
                 it.copy(
                     result = Result.AllFieldsRequired,
                     loading = false,
@@ -27,7 +34,7 @@ class RegisterScreenModel @Inject constructor(private val register: Register) :
         }
 
         if (password1 != password2) {
-            mutableState.update {
+            _state.update {
                 it.copy(
                     result = Result.MismatchedPasswords,
                     loading = false,
@@ -36,10 +43,10 @@ class RegisterScreenModel @Inject constructor(private val register: Register) :
             return
         }
 
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             val state = register.register(email, username, password1)
 
-            mutableState.update {
+            _state.update {
                 it.copy(
                     result = when (state) {
                         is Register.State.Complete -> Result.Complete

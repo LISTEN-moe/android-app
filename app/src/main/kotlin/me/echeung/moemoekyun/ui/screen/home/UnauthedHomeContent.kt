@@ -21,18 +21,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
-import me.echeung.moemoekyun.ui.screen.auth.LoginScreen
-import me.echeung.moemoekyun.ui.screen.auth.RegisterScreen
 import me.echeung.moemoekyun.ui.theme.AppTheme
 import me.echeung.moemoekyun.ui.util.plus
 
 @Composable
-fun UnauthedHomeContent(modifier: Modifier = Modifier, contentPadding: PaddingValues = PaddingValues(0.dp)) {
-    val navigator = LocalNavigator.currentOrThrow
-
+fun UnauthedHomeContent(
+    onNavigateLogin: () -> Unit,
+    onNavigateRegister: () -> Unit,
+    modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -55,14 +54,14 @@ fun UnauthedHomeContent(modifier: Modifier = Modifier, contentPadding: PaddingVa
         ) {
             OutlinedButton(
                 modifier = Modifier.weight(1f),
-                onClick = { navigator.push(RegisterScreen) },
+                onClick = { onNavigateRegister() },
             ) {
                 Text(stringResource(R.string.register))
             }
 
             Button(
                 modifier = Modifier.weight(1f),
-                onClick = { navigator.push(LoginScreen) },
+                onClick = { onNavigateLogin() },
             ) {
                 Text(stringResource(R.string.login))
             }
@@ -74,6 +73,9 @@ fun UnauthedHomeContent(modifier: Modifier = Modifier, contentPadding: PaddingVa
 @Composable
 private fun UnauthedHomeContentPreview() {
     AppTheme {
-        UnauthedHomeContent()
+        UnauthedHomeContent(
+            onNavigateLogin = {},
+            onNavigateRegister = {},
+        )
     }
 }

@@ -31,122 +31,115 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.hilt.getScreenModel
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.hilt.navigation.compose.hiltViewModel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.Toolbar
 
-object LoginScreen : Screen {
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun LoginScreen(onBack: () -> Unit) {
+    val context = LocalContext.current
+    val autofillManager = LocalAutofillManager.current
 
-    @OptIn(ExperimentalComposeUiApi::class)
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        val context = LocalContext.current
-        val autofillManager = LocalAutofillManager.current
+    val screenModel = hiltViewModel<LoginScreenModel>()
+    val state by screenModel.state.collectAsState()
 
-        val screenModel = getScreenModel<LoginScreenModel>()
-        val state by screenModel.state.collectAsState()
+    val username = rememberTextFieldState("")
+    val password = rememberTextFieldState("")
+    val otpToken = rememberTextFieldState("")
 
-        val username = rememberTextFieldState("")
-        val password = rememberTextFieldState("")
-        val otpToken = rememberTextFieldState("")
-
-        LaunchedEffect(state.result) {
-            if (state.result is LoginScreenModel.Result.Complete) {
-                navigator.pop()
-            }
+    LaunchedEffect(state.result) {
+        if (state.result is LoginScreenModel.Result.Complete) {
+            onBack()
         }
+    }
 
-        Scaffold(
-            topBar = { Toolbar(titleResId = R.string.login, showUpButton = true) },
-        ) { contentPadding ->
-            BackgroundBox(
+    Scaffold(
+        topBar = { Toolbar(titleResId = R.string.login, onBack = onBack) },
+    ) { contentPadding ->
+        BackgroundBox(
+            modifier = Modifier
+                .padding(contentPadding)
+                .fillMaxSize(),
+        ) {
+            Column(
                 modifier = Modifier
-                    .padding(contentPadding)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                Column(
+                OutlinedTextField(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
+                        .fillMaxWidth()
+                        .semantics { contentType = ContentType.Username },
+                    label = { Text(stringResource(R.string.username_or_email)) },
+                    state = username,
+                    lineLimits = TextFieldLineLimits.SingleLine,
+                    enabled = !state.loading,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                    ),
+                )
+
+                OutlinedSecureTextField(
+                    modifier = Modifier.fillMaxWidth()
+                        .semantics { contentType = ContentType.Password },
+                    label = { Text(stringResource(R.string.password)) },
+                    state = password,
+                    enabled = !state.loading,
+                )
+
+                if (state.requiresMfa) {
                     OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .semantics { contentType = ContentType.Username },
-                        label = { Text(stringResource(R.string.username_or_email)) },
-                        state = username,
+                        modifier = Modifier.fillMaxWidth(),
+                        label = { Text(stringResource(R.string.mfa_hint)) },
+                        state = otpToken,
                         lineLimits = TextFieldLineLimits.SingleLine,
                         enabled = !state.loading,
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Email,
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done,
                         ),
                     )
 
-                    OutlinedSecureTextField(
-                        modifier = Modifier.fillMaxWidth()
-                            .semantics { contentType = ContentType.Password },
-                        label = { Text(stringResource(R.string.password)) },
-                        state = password,
-                        enabled = !state.loading,
-                    )
-
-                    if (state.requiresMfa) {
-                        OutlinedTextField(
-                            modifier = Modifier.fillMaxWidth(),
-                            label = { Text(stringResource(R.string.mfa_hint)) },
-                            state = otpToken,
-                            lineLimits = TextFieldLineLimits.SingleLine,
-                            enabled = !state.loading,
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Number,
-                                imeAction = ImeAction.Done,
-                            ),
-                        )
-
-                        TextButton(
-                            enabled = !state.loading,
-                            onClick = {
-                                screenModel.getOtpTokenFromClipboardOrNull(context)?.let {
-                                    otpToken.setTextAndPlaceCursorAtEnd(it)
-                                }
-                            },
-                        ) {
-                            Text(stringResource(R.string.paste_from_clipboard))
-                        }
-                    }
-
-                    when (state.result) {
-                        is LoginScreenModel.Result.InvalidOtp -> stringResource(R.string.invalid_mfa_token)
-                        is LoginScreenModel.Result.ApiError ->
-                            (state.result as LoginScreenModel.Result.ApiError).message
-                        else -> null
-                    }?.let {
-                        Text(
-                            text = it,
-                            color = MaterialTheme.colorScheme.error,
-                        )
-                    }
-
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
+                    TextButton(
                         enabled = !state.loading,
                         onClick = {
-                            autofillManager?.commit()
-                            if (state.requiresMfa) {
-                                screenModel.loginMfa(otpToken.text.toString())
-                            } else {
-                                screenModel.login(username.text.toString(), password.text.toString())
+                            screenModel.getOtpTokenFromClipboardOrNull(context)?.let {
+                                otpToken.setTextAndPlaceCursorAtEnd(it)
                             }
                         },
                     ) {
-                        Text(stringResource(R.string.login))
+                        Text(stringResource(R.string.paste_from_clipboard))
                     }
+                }
+
+                when (state.result) {
+                    is LoginScreenModel.Result.InvalidOtp -> stringResource(R.string.invalid_mfa_token)
+                    is LoginScreenModel.Result.ApiError ->
+                        (state.result as LoginScreenModel.Result.ApiError).message
+                    else -> null
+                }?.let {
+                    Text(
+                        text = it,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = !state.loading,
+                    onClick = {
+                        autofillManager?.commit()
+                        if (state.requiresMfa) {
+                            screenModel.loginMfa(otpToken.text.toString())
+                        } else {
+                            screenModel.login(username.text.toString(), password.text.toString())
+                        }
+                    },
+                ) {
+                    Text(stringResource(R.string.login))
                 }
             }
         }

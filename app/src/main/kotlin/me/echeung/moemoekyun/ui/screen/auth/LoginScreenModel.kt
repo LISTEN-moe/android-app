@@ -2,8 +2,12 @@ package me.echeung.moemoekyun.ui.screen.auth
 
 import android.content.Context
 import androidx.compose.runtime.Immutable
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.domain.user.interactor.LoginLogout
 import me.echeung.moemoekyun.util.ext.clipboardManager
@@ -11,18 +15,21 @@ import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
 // TODO: consider integrating with https://developer.android.com/identity/sign-in/credential-manager
-class LoginScreenModel @Inject constructor(private val loginLogout: LoginLogout) :
-    StateScreenModel<LoginScreenModel.State>(State()) {
+@HiltViewModel
+class LoginScreenModel @Inject constructor(private val loginLogout: LoginLogout) : ViewModel() {
+
+    private val _state = MutableStateFlow(State())
+    val state: StateFlow<State> = _state.asStateFlow()
 
     fun login(username: String, password: String) {
-        mutableState.update {
+        _state.update {
             it.copy(loading = true)
         }
 
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             val state = loginLogout.login(username, password)
 
-            mutableState.update {
+            _state.update {
                 it.copy(
                     loading = false,
                     result = state.toResult(),
@@ -32,13 +39,13 @@ class LoginScreenModel @Inject constructor(private val loginLogout: LoginLogout)
     }
 
     fun loginMfa(otpToken: String) {
-        mutableState.update {
+        _state.update {
             it.copy(loading = true)
         }
 
         val token = otpToken.trim { it <= ' ' }
         if (token.length != OTP_LENGTH) {
-            mutableState.update {
+            _state.update {
                 it.copy(
                     result = Result.InvalidOtp,
                     loading = false,
@@ -47,10 +54,10 @@ class LoginScreenModel @Inject constructor(private val loginLogout: LoginLogout)
             return
         }
 
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             val state = loginLogout.loginMfa(token)
 
-            mutableState.update {
+            _state.update {
                 it.copy(
                     loading = false,
                     result = state.toResult(),

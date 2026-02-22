@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.kotlin.serialization)
-    kotlin("plugin.parcelize")
     id("dagger.hilt.android.plugin")
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.compose)
@@ -161,10 +160,11 @@ dependencies {
     implementation(libs.aboutLibraries.compose)
     lintChecks(libs.compose.lintchecks)
 
-    implementation(libs.bundles.voyager)
+    implementation(libs.bundles.navigation)
 
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.palette)
     implementation(libs.androidx.splashscreen)
 

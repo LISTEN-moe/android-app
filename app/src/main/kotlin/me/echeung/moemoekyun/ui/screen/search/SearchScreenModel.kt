@@ -1,10 +1,14 @@
 package me.echeung.moemoekyun.ui.screen.search
 
 import androidx.compose.runtime.Immutable
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
@@ -17,17 +21,21 @@ import me.echeung.moemoekyun.util.SortType
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
+@HiltViewModel
 class SearchScreenModel @Inject constructor(
     private val getSongs: GetSongs,
     private val requestSong: RequestSong,
     private val preferenceUtil: PreferenceUtil,
-) : StateScreenModel<SearchScreenModel.State>(State()) {
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(State())
+    val state: StateFlow<State> = _state.asStateFlow()
 
     init {
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             getSongs.asFlow()
                 .collectLatest {
-                    mutableState.update { state ->
+                    _state.update { state ->
                         state.copy(
                             songs = it.toImmutableList(),
                         )
@@ -35,13 +43,13 @@ class SearchScreenModel @Inject constructor(
                 }
         }
 
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             combine(
                 preferenceUtil.songsSortType().asFlow(),
                 preferenceUtil.songsSortDescending().asFlow(),
             ) { sortType, descending -> Pair(sortType, descending) }
                 .collectLatest { (sortType, descending) ->
-                    mutableState.update { state ->
+                    _state.update { state ->
                         state.copy(
                             sortType = sortType,
                             sortDescending = descending,
@@ -52,15 +60,15 @@ class SearchScreenModel @Inject constructor(
     }
 
     fun requestRandomSong() {
-        screenModelScope.launchIO {
-            mutableState.value.filteredSongs?.randomOrNull()?.let {
+        viewModelScope.launchIO {
+            _state.value.filteredSongs?.randomOrNull()?.let {
                 requestSong.await(it)
             }
         }
     }
 
     fun search(query: String) {
-        mutableState.update { state ->
+        _state.update { state ->
             state.copy(
                 searchQuery = query,
             )

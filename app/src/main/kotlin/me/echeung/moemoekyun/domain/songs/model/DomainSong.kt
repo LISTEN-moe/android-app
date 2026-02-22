@@ -1,12 +1,10 @@
 package me.echeung.moemoekyun.domain.songs.model
 
-import android.os.Parcelable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.parcelize.Parcelize
-import java.io.Serializable
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class DomainSong(
     val id: Int,
     val title: String,
@@ -18,8 +16,7 @@ data class DomainSong(
     val albumArtUrl: String?,
     val favorited: Boolean,
     val favoritedAtEpoch: Long?,
-) : Parcelable,
-    Serializable {
+) {
     fun search(query: String): Boolean = title.contains(query, ignoreCase = true) ||
         artists?.contains(query, ignoreCase = true) ?: false ||
         albums?.contains(query, ignoreCase = true) ?: false ||

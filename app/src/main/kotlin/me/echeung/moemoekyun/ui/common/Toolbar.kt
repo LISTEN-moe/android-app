@@ -33,22 +33,20 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import me.echeung.moemoekyun.R
 
 @Composable
 fun Toolbar(
     modifier: Modifier = Modifier,
     @StringRes titleResId: Int? = null,
-    showUpButton: Boolean = false,
+    onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     Toolbar(
         title = {
             titleResId?.let { Text(text = stringResource(it)) }
         },
-        showUpButton = showUpButton,
+        onBack = onBack,
         actions = actions,
         modifier = modifier,
     )
@@ -66,14 +64,14 @@ fun toolbarColors() = TopAppBarDefaults.topAppBarColors(
 fun Toolbar(
     title: @Composable () -> Unit,
     modifier: Modifier = Modifier,
-    showUpButton: Boolean = false,
+    onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
 ) {
     TopAppBar(
         title = title,
         navigationIcon = {
-            if (showUpButton) {
-                UpButton()
+            if (onBack != null) {
+                UpButton(onBack = onBack)
             }
         },
         actions = actions,
@@ -83,12 +81,10 @@ fun Toolbar(
 }
 
 @Composable
-fun UpButton(modifier: Modifier = Modifier) {
-    val navigator = LocalNavigator.currentOrThrow
-
+fun UpButton(modifier: Modifier = Modifier, onBack: () -> Unit) {
     IconButton(
         modifier = modifier,
-        onClick = { navigator.pop() },
+        onClick = onBack,
     ) {
         Icon(
             imageVector = Icons.AutoMirrored.Outlined.ArrowBack,

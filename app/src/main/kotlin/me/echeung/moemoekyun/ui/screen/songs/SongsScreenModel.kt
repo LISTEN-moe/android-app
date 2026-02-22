@@ -1,12 +1,15 @@
 package me.echeung.moemoekyun.ui.screen.songs
 
 import androidx.compose.runtime.Immutable
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.screenModelScope
-import cafe.adriel.voyager.hilt.ScreenModelFactory
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.interactor.GetSong
@@ -15,19 +18,23 @@ import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
 import me.echeung.moemoekyun.util.ext.launchIO
 
+@HiltViewModel(assistedFactory = SongsScreenModel.Factory::class)
 class SongsScreenModel @AssistedInject constructor(
     @Assisted val songs: List<DomainSong>,
     private val getSong: GetSong,
     private val favoriteSong: FavoriteSong,
     private val requestSong: RequestSong,
     private val getAuthenticatedUser: GetAuthenticatedUser,
-) : StateScreenModel<SongsScreenModel.State>(State(songs)) {
+) : ViewModel() {
+
+    private val _state = MutableStateFlow(State(songs))
+    val state: StateFlow<State> = _state.asStateFlow()
 
     init {
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             val detailedSongs = songs.map { getSong.await(it.id) }
 
-            mutableState.update { state ->
+            _state.update { state ->
                 state.copy(
                     songs = detailedSongs,
                     actionsEnabled = getAuthenticatedUser.get() != null,
@@ -37,10 +44,10 @@ class SongsScreenModel @AssistedInject constructor(
     }
 
     fun toggleFavorite(songId: Int) {
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             val favorited = favoriteSong.await(songId)
 
-            mutableState.update { state ->
+            _state.update { state ->
                 state.copy(
                     songs = state.songs.map {
                         if (it.id == songId) {
@@ -56,13 +63,13 @@ class SongsScreenModel @AssistedInject constructor(
     }
 
     fun request(song: DomainSong) {
-        screenModelScope.launchIO {
+        viewModelScope.launchIO {
             requestSong.await(song)
         }
     }
 
     @AssistedFactory
-    interface Factory : ScreenModelFactory {
+    interface Factory {
         fun create(songs: List<DomainSong>): SongsScreenModel
     }
 

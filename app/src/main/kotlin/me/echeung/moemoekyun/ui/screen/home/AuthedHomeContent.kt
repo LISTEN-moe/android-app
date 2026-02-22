@@ -61,6 +61,7 @@ fun AuthedHomeContent(
     sortDescending: Boolean,
     onSortDescending: (Boolean) -> Unit,
     requestRandomSong: () -> Unit,
+    onShowSongs: (List<DomainSong>) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
@@ -86,7 +87,7 @@ fun AuthedHomeContent(
             )
         }
 
-        songsItems(songs = favorites)
+        songsItems(songs = favorites, onShowSongs = onShowSongs)
 
         item {
             Spacer(modifier = Modifier.height(PlayerPeekHeight + contentPadding.calculateBottomPadding()))
