@@ -16,7 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.LoadingScreen
@@ -25,8 +25,7 @@ import me.echeung.moemoekyun.ui.common.UpButton
 import me.echeung.moemoekyun.ui.common.songsItems
 
 @Composable
-fun SearchScreen(onBack: () -> Unit, onShowSongs: (List<DomainSong>) -> Unit = {}) {
-    val screenModel = hiltViewModel<SearchScreenModel>()
+fun SearchScreen(onBack: () -> Unit, onShowSongs: (List<DomainSong>) -> Unit = {}, screenModel: SearchScreenModel = hiltViewModel()) {
     val state by screenModel.state.collectAsState()
 
     val onExpandedChange = { expanded: Boolean ->

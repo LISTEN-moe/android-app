@@ -17,7 +17,7 @@ import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
@@ -35,8 +35,8 @@ fun HomeScreen(
     onNavigateLogin: () -> Unit,
     onNavigateRegister: () -> Unit,
     onShowHistory: (List<DomainSong>) -> Unit,
+    screenModel: HomeScreenModel = hiltViewModel(),
 ) {
-    val screenModel = hiltViewModel<HomeScreenModel>()
     val state by screenModel.state.collectAsState()
 
     val radioState by screenModel.radioState.collectAsState()

@@ -31,18 +31,17 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.Toolbar
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun LoginScreen(onBack: () -> Unit) {
+fun LoginScreen(onBack: () -> Unit, screenModel: LoginScreenModel = hiltViewModel()) {
     val context = LocalContext.current
     val autofillManager = LocalAutofillManager.current
 
-    val screenModel = hiltViewModel<LoginScreenModel>()
     val state by screenModel.state.collectAsState()
 
     val username = rememberTextFieldState("")

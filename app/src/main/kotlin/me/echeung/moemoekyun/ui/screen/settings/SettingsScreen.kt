@@ -13,7 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.collections.immutable.plus
@@ -26,10 +26,8 @@ import me.echeung.moemoekyun.ui.common.preferences.SwitchPreference
 import me.echeung.moemoekyun.util.system.LocaleUtil
 
 @Composable
-fun SettingsScreen(onBack: () -> Unit) {
+fun SettingsScreen(onBack: () -> Unit, screenModel: SettingsScreenModel = hiltViewModel()) {
     val context = LocalContext.current
-
-    val screenModel = hiltViewModel<SettingsScreenModel>()
 
     val langs = remember { getLangs(context) }
     var currentLanguage by remember {
