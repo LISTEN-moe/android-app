@@ -67,6 +67,7 @@ fun AuthedHomeContent(
 ) {
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
+        contentPadding = contentPadding,
     ) {
         item {
             UserInfo(
