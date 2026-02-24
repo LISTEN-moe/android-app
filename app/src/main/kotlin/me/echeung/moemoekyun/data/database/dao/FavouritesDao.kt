@@ -16,9 +16,10 @@ abstract class FavouritesDao {
         SELECT songs.*, favourites.favoritedAtEpoch
         FROM songs
         INNER JOIN favourites ON songs.id = favourites.songId
+        WHERE favourites.station = :station
         """,
     )
-    abstract suspend fun getFavouriteSongs(): List<FavouriteSongView>
+    abstract suspend fun getFavouriteSongs(station: String): List<FavouriteSongView>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(favourite: FavouriteEntity)
@@ -26,15 +27,18 @@ abstract class FavouritesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insertAll(favourites: List<FavouriteEntity>)
 
-    @Query("DELETE FROM favourites WHERE songId = :songId")
-    abstract suspend fun delete(songId: Int)
+    @Query("DELETE FROM favourites WHERE songId = :songId AND station = :station")
+    abstract suspend fun delete(songId: Int, station: String)
+
+    @Query("DELETE FROM favourites WHERE station = :station")
+    abstract suspend fun deleteAllForStation(station: String)
 
     @Query("DELETE FROM favourites")
     abstract suspend fun deleteAll()
 
     @Transaction
-    open suspend fun replaceAll(favourites: List<FavouriteEntity>) {
-        deleteAll()
+    open suspend fun replaceAll(favourites: List<FavouriteEntity>, station: String) {
+        deleteAllForStation(station)
         insertAll(favourites)
     }
 }
