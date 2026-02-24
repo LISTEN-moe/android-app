@@ -63,7 +63,7 @@ class UserService @Inject constructor(
                             songsDao.upsert(eventSong.toSongEntity())
                             favouritesDao.insert(eventSong.toFavouriteEntity(station))
                         } else {
-                            favouritesDao.delete(eventSong.id, station.name)
+                            favouritesDao.delete(eventSong.id, station)
                         }
                     }
 
@@ -141,7 +141,7 @@ class UserService @Inject constructor(
         val station = preferenceUtil.station().get()
 
         // Show cached favourites immediately while the network refreshes
-        val cached = favouritesDao.getFavouriteSongs(station.name)
+        val cached = favouritesDao.getFavouriteSongs(station)
         if (cached.isNotEmpty()) {
             _state.update { state ->
                 state.copy(
@@ -154,7 +154,7 @@ class UserService @Inject constructor(
         // Refresh from network and update cache
         val userFavorites = api.getUserFavorites().map(songConverter::toDomainSong)
         songsDao.upsertAll(userFavorites.map { it.toSongEntity() })
-        favouritesDao.replaceAll(userFavorites.map { it.toFavouriteEntity(station) }, station.name)
+        favouritesDao.replaceAll(userFavorites.map { it.toFavouriteEntity(station) }, station)
 
         _state.update { state ->
             state.copy(
