@@ -21,12 +21,12 @@ import me.echeung.moemoekyun.domain.songs.model.DomainSong
 )
 data class FavouriteEntity(
     val songId: Int,
-    val station: String,
+    val station: Station,
     val favoritedAtEpoch: Long?,
 )
 
 fun DomainSong.toFavouriteEntity(station: Station) = FavouriteEntity(
     songId = id,
-    station = station.name,
+    station = station,
     favoritedAtEpoch = favoritedAtEpoch,
 )
