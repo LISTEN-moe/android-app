@@ -56,12 +56,15 @@ class UserService @Inject constructor(
             songsService.favoriteEvents
                 .filterNotNull()
                 .collectLatest { eventSong ->
-                    // Keep DB in sync with real-time favourite changes
-                    if (eventSong.favorited) {
-                        songsDao.upsert(eventSong.toSongEntity())
-                        favouritesDao.insert(eventSong.toFavouriteEntity())
-                    } else {
-                        favouritesDao.delete(eventSong.id)
+                    // Only write to DB when a user is logged in
+                    if (_state.value.user != null) {
+                        val station = preferenceUtil.station().get()
+                        if (eventSong.favorited) {
+                            songsDao.upsert(eventSong.toSongEntity())
+                            favouritesDao.insert(eventSong.toFavouriteEntity(station))
+                        } else {
+                            favouritesDao.delete(eventSong.id, station.name)
+                        }
                     }
 
                     _state.update { state ->
@@ -109,10 +112,11 @@ class UserService @Inject constructor(
 
     fun logout() {
         authUtil.clearAuthToken()
-
-        _state.update {
-            LoggedOutState
+        scope.launchIO {
+            favouritesDao.deleteAll()
         }
+        preferenceUtil.lastUserUuid().set("")
+        _state.update { LoggedOutState }
     }
 
     suspend fun register(username: String, email: String, password: String) {
@@ -134,8 +138,10 @@ class UserService @Inject constructor(
         }
         preferenceUtil.lastUserUuid().set(userInfo.uuid)
 
+        val station = preferenceUtil.station().get()
+
         // Show cached favourites immediately while the network refreshes
-        val cached = favouritesDao.getFavouriteSongs()
+        val cached = favouritesDao.getFavouriteSongs(station.name)
         if (cached.isNotEmpty()) {
             _state.update { state ->
                 state.copy(
@@ -148,7 +154,7 @@ class UserService @Inject constructor(
         // Refresh from network and update cache
         val userFavorites = api.getUserFavorites().map(songConverter::toDomainSong)
         songsDao.upsertAll(userFavorites.map { it.toSongEntity() })
-        favouritesDao.replaceAll(userFavorites.map { it.toFavouriteEntity() })
+        favouritesDao.replaceAll(userFavorites.map { it.toFavouriteEntity(station) }, station.name)
 
         _state.update { state ->
             state.copy(
