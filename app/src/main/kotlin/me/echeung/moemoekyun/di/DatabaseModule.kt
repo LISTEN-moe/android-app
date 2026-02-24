@@ -22,11 +22,14 @@ object DatabaseModule {
         @ApplicationContext context: Context,
     ): AppDatabase =
         Room.databaseBuilder(context, AppDatabase::class.java, "moemoekyun.db")
+            .fallbackToDestructiveMigration(true)
             .build()
 
     @Provides
+    @Singleton
     fun songsDao(db: AppDatabase): SongsDao = db.songsDao()
 
     @Provides
+    @Singleton
     fun favouritesDao(db: AppDatabase): FavouritesDao = db.favouritesDao()
 }

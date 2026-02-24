@@ -3,11 +3,12 @@ package me.echeung.moemoekyun.data.database.entity
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import androidx.room.PrimaryKey
+import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 
 @Entity(
     tableName = "favourites",
+    primaryKeys = ["songId", "station"],
     foreignKeys = [
         ForeignKey(
             entity = SongEntity::class,
@@ -19,11 +20,13 @@ import me.echeung.moemoekyun.domain.songs.model.DomainSong
     indices = [Index("songId")],
 )
 data class FavouriteEntity(
-    @PrimaryKey val songId: Int,
+    val songId: Int,
+    val station: String,
     val favoritedAtEpoch: Long?,
 )
 
-fun DomainSong.toFavouriteEntity() = FavouriteEntity(
+fun DomainSong.toFavouriteEntity(station: Station) = FavouriteEntity(
     songId = id,
+    station = station.name,
     favoritedAtEpoch = favoritedAtEpoch,
 )

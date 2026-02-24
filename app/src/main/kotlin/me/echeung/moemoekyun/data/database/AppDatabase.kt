@@ -9,7 +9,7 @@ import me.echeung.moemoekyun.data.database.entity.SongEntity
 
 @Database(
     entities = [SongEntity::class, FavouriteEntity::class],
-    version = 1,
+    version = 2,
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun songsDao(): SongsDao
