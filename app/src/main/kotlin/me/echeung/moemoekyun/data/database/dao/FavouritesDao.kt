@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.data.database.FavouriteSongView
 import me.echeung.moemoekyun.data.database.entity.FavouriteEntity
 
@@ -19,7 +20,7 @@ abstract class FavouritesDao {
         WHERE favourites.station = :station
         """,
     )
-    abstract suspend fun getFavouriteSongs(station: String): List<FavouriteSongView>
+    abstract suspend fun getFavouriteSongs(station: Station): List<FavouriteSongView>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun insert(favourite: FavouriteEntity)
@@ -28,16 +29,16 @@ abstract class FavouritesDao {
     abstract suspend fun insertAll(favourites: List<FavouriteEntity>)
 
     @Query("DELETE FROM favourites WHERE songId = :songId AND station = :station")
-    abstract suspend fun delete(songId: Int, station: String)
+    abstract suspend fun delete(songId: Int, station: Station)
 
     @Query("DELETE FROM favourites WHERE station = :station")
-    abstract suspend fun deleteAllForStation(station: String)
+    abstract suspend fun deleteAllForStation(station: Station)
 
     @Query("DELETE FROM favourites")
     abstract suspend fun deleteAll()
 
     @Transaction
-    open suspend fun replaceAll(favourites: List<FavouriteEntity>, station: String) {
+    open suspend fun replaceAll(favourites: List<FavouriteEntity>, station: Station) {
         deleteAllForStation(station)
         insertAll(favourites)
     }
