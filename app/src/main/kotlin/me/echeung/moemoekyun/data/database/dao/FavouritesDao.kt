@@ -9,9 +9,8 @@ import me.echeung.moemoekyun.data.database.FavouriteSongView
 import me.echeung.moemoekyun.data.database.entity.FavouriteEntity
 
 @Dao
-interface FavouritesDao {
+abstract class FavouritesDao {
 
-    @Transaction
     @Query(
         """
         SELECT songs.*, favourites.favoritedAtEpoch
@@ -19,22 +18,22 @@ interface FavouritesDao {
         INNER JOIN favourites ON songs.id = favourites.songId
         """,
     )
-    suspend fun getFavouriteSongs(): List<FavouriteSongView>
+    abstract suspend fun getFavouriteSongs(): List<FavouriteSongView>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(favourite: FavouriteEntity)
+    abstract suspend fun insert(favourite: FavouriteEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAll(favourites: List<FavouriteEntity>)
+    abstract suspend fun insertAll(favourites: List<FavouriteEntity>)
 
     @Query("DELETE FROM favourites WHERE songId = :songId")
-    suspend fun delete(songId: Int)
+    abstract suspend fun delete(songId: Int)
 
     @Query("DELETE FROM favourites")
-    suspend fun deleteAll()
+    abstract suspend fun deleteAll()
 
     @Transaction
-    suspend fun replaceAll(favourites: List<FavouriteEntity>) {
+    open suspend fun replaceAll(favourites: List<FavouriteEntity>) {
         deleteAll()
         insertAll(favourites)
     }
