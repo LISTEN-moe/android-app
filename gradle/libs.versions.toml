@@ -1,6 +1,5 @@
 [versions]
 aboutlib = "14.0.0-b02"
-room = "2.7.0"
 apollo = "4.4.1"
 coil = "3.3.0"
 coroutines = "1.10.2"
@@ -9,6 +8,7 @@ junit = "6.0.3"
 kotlin = "2.3.10"
 media3 = "1.9.2"
 navigation3 = "1.0.1"
+room = "2.8.4"
 
 [plugins]
 android-application = { id = "com.android.application", version = "9.0.1" }
