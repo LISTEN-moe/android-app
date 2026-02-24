@@ -2,6 +2,7 @@ package me.echeung.moemoekyun.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import me.echeung.moemoekyun.data.database.dao.FavouritesDao
 import me.echeung.moemoekyun.data.database.dao.SongsDao
 import me.echeung.moemoekyun.data.database.entity.FavouriteEntity
@@ -11,6 +12,7 @@ import me.echeung.moemoekyun.data.database.entity.SongEntity
     entities = [SongEntity::class, FavouriteEntity::class],
     version = 2,
 )
+@TypeConverters(StationConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun songsDao(): SongsDao
 
