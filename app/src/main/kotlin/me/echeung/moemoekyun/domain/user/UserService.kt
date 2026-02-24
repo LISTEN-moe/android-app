@@ -10,6 +10,11 @@ import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.client.api.ApiClient
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.client.model.User
+import me.echeung.moemoekyun.data.database.dao.FavouritesDao
+import me.echeung.moemoekyun.data.database.dao.SongsDao
+import me.echeung.moemoekyun.data.database.entity.toFavouriteEntity
+import me.echeung.moemoekyun.data.database.entity.toSongEntity
+import me.echeung.moemoekyun.data.database.toDomainSong
 import me.echeung.moemoekyun.domain.songs.SongsService
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.songs.model.SongConverter
@@ -25,6 +30,8 @@ class UserService @Inject constructor(
     private val api: ApiClient,
     private val songConverter: SongConverter,
     private val songsService: SongsService,
+    private val songsDao: SongsDao,
+    private val favouritesDao: FavouritesDao,
 ) {
 
     private val scope = MainScope()
@@ -49,6 +56,14 @@ class UserService @Inject constructor(
             songsService.favoriteEvents
                 .filterNotNull()
                 .collectLatest { eventSong ->
+                    // Keep DB in sync with real-time favourite changes
+                    if (eventSong.favorited) {
+                        songsDao.upsert(eventSong.toSongEntity())
+                        favouritesDao.insert(eventSong.toFavouriteEntity())
+                    } else {
+                        favouritesDao.delete(eventSong.id)
+                    }
+
                     _state.update { state ->
                         state.copy(
                             favorites = when (eventSong.favorited) {
@@ -111,14 +126,34 @@ class UserService @Inject constructor(
         }
 
         val userInfo = api.getUserInfo()
-        val userFavorites = api.getUserFavorites()
+
+        // Drop the favourites cache when a different user logs in
+        val lastUserUuid = preferenceUtil.lastUserUuid().get()
+        if (lastUserUuid.isNotEmpty() && lastUserUuid != userInfo.uuid) {
+            favouritesDao.deleteAll()
+        }
+        preferenceUtil.lastUserUuid().set(userInfo.uuid)
+
+        // Show cached favourites immediately while the network refreshes
+        val cached = favouritesDao.getFavouriteSongs()
+        if (cached.isNotEmpty()) {
+            _state.update { state ->
+                state.copy(
+                    user = userInfo,
+                    favorites = cached.map { it.toDomainSong() }.sortedBy { it.title },
+                )
+            }
+        }
+
+        // Refresh from network and update cache
+        val userFavorites = api.getUserFavorites().map(songConverter::toDomainSong)
+        songsDao.upsertAll(userFavorites.map { it.toSongEntity() })
+        favouritesDao.replaceAll(userFavorites.map { it.toFavouriteEntity() })
 
         _state.update { state ->
             state.copy(
                 user = userInfo,
-                favorites = userFavorites
-                    .map(songConverter::toDomainSong)
-                    .sortedBy { it.title },
+                favorites = userFavorites.sortedBy { it.title },
             )
         }
     }
