@@ -115,7 +115,7 @@ class UserService @Inject constructor(
         scope.launchIO {
             favouritesDao.deleteAll()
         }
-        preferenceUtil.lastUserUuid().set("")
+        preferenceUtil.lastUserUuid().delete()
         _state.update { LoggedOutState }
     }
 
