@@ -129,7 +129,6 @@
     <string name="about">About</string>
     <!-- e.g. Version 1.0 -->
     <string name="version">Version %s</string>
-    <string name="rate">Rate on Google Play</string>
     <string name="github">Star on GitHub</string>
     <string name="translate">Help us translate</string>
     <string name="translators">Translators</string>

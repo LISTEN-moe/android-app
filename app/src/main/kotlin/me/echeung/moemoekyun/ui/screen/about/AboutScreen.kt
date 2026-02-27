@@ -86,14 +86,6 @@ fun AboutScreen(onBack: () -> Unit, onNavigateLicenses: () -> Unit) {
                         textAlign = TextAlign.Center,
                         text = appVersion,
                     )
-
-                    if (BuildConfig.FLAVOR == "playstore") {
-                        AboutCardItem(Icons.Default.Star, R.string.rate) {
-                            uriHandler.openUri(
-                                "https://play.google.com/store/apps/details?id=me.echeung.moemoekyun",
-                            )
-                        }
-                    }
                     AboutCardItem(Icons.Default.Language, R.string.translate) {
                         uriHandler.openUri("https://crwd.in/listenmoe-android-app")
                     }
