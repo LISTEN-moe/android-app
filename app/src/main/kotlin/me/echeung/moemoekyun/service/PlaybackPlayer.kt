@@ -5,6 +5,7 @@ package me.echeung.moemoekyun.service
 import androidx.annotation.OptIn
 import androidx.media3.common.C
 import androidx.media3.common.ForwardingPlayer
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +23,7 @@ import kotlin.time.toDuration
 
 @OptIn(UnstableApi::class)
 class PlaybackPlayer @Inject constructor(
-    val player: ExoPlayer,
+    val player: Player,
     val currentSong: CurrentSong,
     val scope: CoroutineScope,
 ) : ForwardingPlayer(player) {
@@ -41,8 +42,12 @@ class PlaybackPlayer @Inject constructor(
     }
 
     override fun play() {
-        logcat { "will seek to default position and start playing" }
-        player.seekToDefaultPosition()
+        // Seek to the live edge when starting fresh, but not when resuming from pause —
+        // otherwise resuming will restart the stream from the beginning.
+        if (playbackState == STATE_IDLE || playbackState == STATE_ENDED) {
+            logcat { "will seek to default position and start playing" }
+            player.seekToDefaultPosition()
+        }
         super.play()
     }
 

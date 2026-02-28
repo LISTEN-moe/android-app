@@ -6,6 +6,7 @@ import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
@@ -60,7 +61,7 @@ object MediaModule {
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
         audioAttributes: AudioAttributes,
-    ): ExoPlayer = ExoPlayer.Builder(context)
+    ): Player = ExoPlayer.Builder(context)
         .setMediaSourceFactory(progressiveMediaSourceFactory)
         .setAudioAttributes(audioAttributes, true)
         .setWakeMode(C.WAKE_MODE_NETWORK)
