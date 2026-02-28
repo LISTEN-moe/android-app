@@ -7,7 +7,6 @@ import androidx.annotation.OptIn
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.CommandButton
@@ -65,9 +64,6 @@ class PlaybackService : MediaLibraryService() {
 
     @Inject
     lateinit var playbackServiceSessionListener: PlaybackServiceSessionListener
-
-    @Inject
-    lateinit var liveConfiguration: MediaItem.LiveConfiguration
 
     lateinit var session: MediaLibrarySession
 
@@ -181,7 +177,6 @@ class PlaybackService : MediaLibraryService() {
 
                     session.player.editCurrentMediaItem { currentMediaItem ->
                         val builder = currentMediaItem?.mediaMetadata?.buildUpon() ?: MediaMetadata.Builder()
-                        setLiveConfiguration(liveConfiguration)
                         setMediaMetadata(
                             builder.run {
                                 setTitle(currentSong.title)

@@ -44,6 +44,18 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
         controller: MediaSession.ControllerInfo,
     ): MediaSession.ConnectionResult {
         logcat { "onConnect request from: ${controller.packageName}, uid: ${controller.uid}" }
+        // Strip all seek commands for every controller — this is a live radio stream with no
+        // meaningful seek positions. These restrictions apply to Cast, Auto, notification, and
+        // any other controller.
+        val playerCommands = MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
+            .remove(Player.COMMAND_SEEK_TO_NEXT)
+            .remove(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
+            .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
+            .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
+            .remove(Player.COMMAND_SEEK_BACK)
+            .remove(Player.COMMAND_SEEK_FORWARD)
+            .remove(Player.COMMAND_SEEK_IN_CURRENT_MEDIA_ITEM)
+            .build()
         if (
             session.isMediaNotificationController(controller) ||
             session.isAutomotiveController(controller) ||
@@ -53,21 +65,14 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
                 .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
                 .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
                 .build()
-            val playerCommands = MediaSession.ConnectionResult.DEFAULT_PLAYER_COMMANDS.buildUpon()
-                .remove(Player.COMMAND_SEEK_TO_NEXT)
-                .remove(Player.COMMAND_SEEK_TO_NEXT_MEDIA_ITEM)
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS)
-                .remove(Player.COMMAND_SEEK_TO_PREVIOUS_MEDIA_ITEM)
-                .remove(Player.COMMAND_SEEK_BACK)
-                .remove(Player.COMMAND_SEEK_FORWARD)
-                .remove(Player.COMMAND_GET_TIMELINE)
-                .build()
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
                 .setAvailablePlayerCommands(playerCommands)
                 .build()
         }
-        return MediaSession.ConnectionResult.AcceptedResultBuilder(session).build()
+        return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
+            .setAvailablePlayerCommands(playerCommands)
+            .build()
     }
 
     // https://stackoverflow.com/a/70103460

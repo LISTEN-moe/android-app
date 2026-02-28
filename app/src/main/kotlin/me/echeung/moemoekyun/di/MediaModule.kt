@@ -5,7 +5,6 @@ import android.media.AudioManager
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
-import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
@@ -35,12 +34,6 @@ object MediaModule {
     fun audioAttributes(): AudioAttributes = AudioAttributes.Builder()
         .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
         .setUsage(C.USAGE_MEDIA)
-        .build()
-
-    @Provides
-    @Reusable
-    fun liveConfiguration() = MediaItem.LiveConfiguration.Builder()
-        .setTargetOffsetMs(0)
         .build()
 
     @OptIn(UnstableApi::class)
