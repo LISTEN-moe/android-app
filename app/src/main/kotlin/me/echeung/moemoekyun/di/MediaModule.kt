@@ -58,7 +58,7 @@ object MediaModule {
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
         audioAttributes: AudioAttributes,
-    ): Player = ExoPlayer.Builder(context)
+    ): ExoPlayer = ExoPlayer.Builder(context)
         .setMediaSourceFactory(progressiveMediaSourceFactory)
         .setAudioAttributes(audioAttributes, true)
         .setWakeMode(C.WAKE_MODE_NETWORK)
@@ -80,7 +80,7 @@ object MediaModule {
         @ApplicationContext context: Context,
         exoPlayer: ExoPlayer,
         remotePlayer: RemoteCastPlayer,
-    ): CastPlayer = CastPlayer.Builder(context)
+    ): Player = CastPlayer.Builder(context)
         .setLocalPlayer(exoPlayer)
         .setRemotePlayer(remotePlayer)
         .build()
