@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.onStart
 import me.echeung.moemoekyun.client.api.ApiClient
+import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import java.util.Date
@@ -14,7 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class SongsService @Inject constructor(private val api: ApiClient, private val songConverter: SongConverter) {
 
-    private val _songs = MutableStateFlow<Map<Int, DomainSong>>(emptyMap())
+    private val _songs = MutableStateFlow<Map<Int, Song>>(emptyMap())
     val songs = _songs.asStateFlow().onStart { getSongs() }
 
     private val _favoriteEvents = MutableStateFlow<DomainSong?>(null)
@@ -26,16 +27,16 @@ class SongsService @Inject constructor(private val api: ApiClient, private val s
         val song = _songs.value[songId]
 
         if (song != null && !song.albums.isNullOrEmpty()) {
-            return song
+            return songConverter.toDomainSong(song)
         }
 
-        val detailedSong = api.getSongDetails(songId).let(songConverter::toDomainSong)
+        val detailedSong = api.getSongDetails(songId)
 
         val updatedMap = _songs.value.toMutableMap()
         updatedMap[songId] = detailedSong
         _songs.value = updatedMap
 
-        return detailedSong
+        return songConverter.toDomainSong(detailedSong)
     }
 
     suspend fun favorite(songId: Int): DomainSong {
@@ -49,9 +50,15 @@ class SongsService @Inject constructor(private val api: ApiClient, private val s
             favoritedAtEpoch = if (newState) System.currentTimeMillis() else null,
         )
 
-        val updatedMap = _songs.value.toMutableMap()
-        updatedMap[songId] = updatedSong
-        _songs.value = updatedMap
+        val cachedSong = _songs.value[songId]
+        if (cachedSong != null) {
+            val updatedMap = _songs.value.toMutableMap()
+            updatedMap[songId] = cachedSong.copy(
+                favorite = newState,
+                favoritedAt = if (newState) System.currentTimeMillis() else null,
+            )
+            _songs.value = updatedMap
+        }
 
         _favoriteEvents.emit(updatedSong)
 
@@ -62,14 +69,14 @@ class SongsService @Inject constructor(private val api: ApiClient, private val s
         api.requestSong(songId)
     }
 
-    private suspend fun getSongs(): List<DomainSong> {
+    private suspend fun getSongs(): Collection<Song> {
         if (lastUpdated == 0L || !isCacheValid() || _songs.value.isEmpty()) {
-            val songs = api.getAllSongs().map(songConverter::toDomainSong)
+            val songs = api.getAllSongs()
             lastUpdated = Date().time
             _songs.value = songs.associateBy { it.id }.toMutableMap()
         }
 
-        return _songs.value.values.toList()
+        return _songs.value.values
     }
 
     private fun isCacheValid() = Date().time - lastUpdated < MAX_AGE

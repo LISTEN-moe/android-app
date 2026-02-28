@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import me.echeung.moemoekyun.domain.songs.SongsService
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
+import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SongsSorter
 import me.echeung.moemoekyun.util.SortType
@@ -13,6 +14,7 @@ import javax.inject.Inject
 class GetSongs @Inject constructor(
     private val songsService: SongsService,
     private val songsSorter: SongsSorter,
+    private val songConverter: SongConverter,
     private val getFavoriteSongs: GetFavoriteSongs,
     private val preferenceUtil: PreferenceUtil,
 ) {
@@ -24,7 +26,9 @@ class GetSongs @Inject constructor(
         preferenceUtil.songsSortDescending().asFlow(),
     ) { songs, favorites, _, _ -> Pair(songs, favorites.map { it.id }) }
         .map { (songs, favorites) ->
-            songs.values.map { it.copy(favorited = it.id in favorites) }
+            songs.values
+                .map(songConverter::toDomainSong)
+                .map { it.copy(favorited = it.id in favorites) }
         }
         .map {
             songsSorter.sort(it, preferenceUtil.songsSortType().get(), preferenceUtil.songsSortDescending().get())
