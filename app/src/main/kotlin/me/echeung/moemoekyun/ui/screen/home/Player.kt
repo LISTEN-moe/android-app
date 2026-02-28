@@ -71,7 +71,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.media3.cast.MediaRouteButton
 import androidx.media3.common.Player
 import androidx.media3.common.listen
 import androidx.media3.common.util.UnstableApi
@@ -85,6 +84,7 @@ import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
+import me.echeung.moemoekyun.ui.common.CastButton
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 val PlayerPeekHeight = 72.dp
@@ -386,7 +386,7 @@ private fun CollapseIcon(onClickCollapse: () -> Unit) {
             contentDescription = null,
         )
 
-        MediaRouteButton()
+        CastButton()
     }
 }
 
