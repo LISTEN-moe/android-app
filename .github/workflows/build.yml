@@ -30,7 +30,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v5
 
       - name: Build app
-        run: ./gradlew :app:testPlaystoreDebugUnitTest :app:assemblePlaystoreRelease
+        run: ./gradlew :app:testFullDebugUnitTest :app:assembleFullRelease
 
       # Sign APK and create release for tags
 
@@ -44,7 +44,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/apk/playstore/release
+          releaseDirectory: app/build/outputs/apk/full/release
           signingKeyBase64: ${{ secrets.SIGNING_KEY }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}

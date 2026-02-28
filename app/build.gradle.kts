@@ -50,7 +50,7 @@ android {
 
     flavorDimensions.add("variant")
     productFlavors {
-        create("playstore") {
+        create("full") {
             dimension = "variant"
         }
         create("fdroid") {
@@ -93,7 +93,7 @@ android {
     }
 }
 
-val jvmVersion = JavaLanguageVersion.of(21)
+val jvmVersion: JavaLanguageVersion = JavaLanguageVersion.of(21)
 java {
     toolchain {
         languageVersion.set(jvmVersion)
