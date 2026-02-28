@@ -4,6 +4,8 @@ import android.content.Context
 import android.media.AudioManager
 import androidx.annotation.OptIn
 import androidx.media3.cast.CastPlayer
+import androidx.media3.cast.DefaultMediaItemConverter
+import androidx.media3.cast.RemoteCastPlayer
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.Player
@@ -19,6 +21,7 @@ import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import me.echeung.moemoekyun.service.PlaybackMediaItemConverter
 import me.echeung.moemoekyun.util.ext.audioManager
 import me.echeung.moemoekyun.util.system.NetworkUtil
 
@@ -62,7 +65,23 @@ object MediaModule {
         .build()
 
     @Provides
-    fun castPlayer(@ApplicationContext context: Context, exoPlayer: ExoPlayer): CastPlayer = CastPlayer.Builder(context)
+    fun defaultMediaItemConverter(): DefaultMediaItemConverter = DefaultMediaItemConverter()
+
+    @Provides
+    fun remotePlayer(
+        @ApplicationContext context: Context,
+        mediaItemConverter: PlaybackMediaItemConverter,
+    ): RemoteCastPlayer = RemoteCastPlayer.Builder(context)
+        .setMediaItemConverter(mediaItemConverter)
+        .build()
+
+    @Provides
+    fun castPlayer(
+        @ApplicationContext context: Context,
+        exoPlayer: ExoPlayer,
+        remotePlayer: RemoteCastPlayer,
+    ): CastPlayer = CastPlayer.Builder(context)
         .setLocalPlayer(exoPlayer)
+        .setRemotePlayer(remotePlayer)
         .build()
 }
