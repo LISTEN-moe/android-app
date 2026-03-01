@@ -13,6 +13,7 @@ import coil3.gif.AnimatedImageDecoder
 import coil3.gif.GifDecoder
 import coil3.memoryCacheMaxSizePercentWhileInBackground
 import coil3.network.okhttp.OkHttpNetworkFetcherFactory
+import coil3.request.crossfade
 import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
@@ -47,6 +48,7 @@ class App :
     @OptIn(ExperimentalCoilApi::class)
     override fun newImageLoader(context: PlatformContext): ImageLoader = ImageLoader.Builder(context)
         .memoryCacheMaxSizePercentWhileInBackground(0.5)
+        .crossfade(true)
         .components {
             add(OkHttpNetworkFetcherFactory(okHttpClient))
 
