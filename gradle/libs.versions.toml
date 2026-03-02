@@ -8,6 +8,7 @@ junit = "6.0.3"
 kotlin = "2.3.10"
 media3 = "1.9.2"
 navigation3 = "1.0.1"
+room = "2.8.4"
 
 [plugins]
 android-application = { id = "com.android.application", version = "9.0.1" }
@@ -76,6 +77,10 @@ okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor" }
 preferences-androidx = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
 preferences-flow = { module = "com.github.tfcporciuncula:flow-preferences", version = "1.9.1" }
 
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+
 kotlin-gradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.10.0" }
 
@@ -94,3 +99,4 @@ media = ["androidx-media3-common", "androidx-media3-exoplayer", "androidx-media3
 okhttp = ["okhttp-core", "okhttp-logging"]
 navigation = ["navigation3-runtime", "navigation3-ui", "androidx-lifecycle-viewmodel-navigation3", "hilt-navigation-compose"]
 preferences = ["preferences-androidx", "preferences-flow"]
+room = ["room-runtime", "room-ktx"]
