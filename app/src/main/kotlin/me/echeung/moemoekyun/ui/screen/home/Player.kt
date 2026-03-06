@@ -84,6 +84,7 @@ import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.ui.common.AlbumArt
+import me.echeung.moemoekyun.ui.common.CastButton
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 val PlayerPeekHeight = 72.dp
@@ -371,18 +372,21 @@ private fun LandscapeExpandedPlayerContent(
 
 @Composable
 private fun CollapseIcon(onClickCollapse: () -> Unit) {
-    Box(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClickCollapse)
             .padding(vertical = 16.dp),
-        contentAlignment = Alignment.Center,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             modifier = Modifier.alpha(0.5f),
             imageVector = Icons.Outlined.ExpandMore,
             contentDescription = null,
         )
+
+        CastButton()
     }
 }
 

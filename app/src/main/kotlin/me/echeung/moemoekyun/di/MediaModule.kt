@@ -5,7 +5,6 @@ import android.media.AudioManager
 import androidx.annotation.OptIn
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
-import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
@@ -21,6 +20,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import me.echeung.moemoekyun.util.ext.audioManager
 import me.echeung.moemoekyun.util.system.NetworkUtil
 
+/**
+ * Common media module providing dependencies shared by all variants.
+ */
 @Module
 @OptIn(UnstableApi::class)
 @InstallIn(ServiceComponent::class)
@@ -36,15 +38,13 @@ object MediaModule {
         .setUsage(C.USAGE_MEDIA)
         .build()
 
-    @OptIn(UnstableApi::class)
     @Provides
-    fun dateSourceFactory(@ApplicationContext context: Context): DefaultDataSource.Factory = DefaultDataSource.Factory(
+    fun dataSourceFactory(@ApplicationContext context: Context): DefaultDataSource.Factory = DefaultDataSource.Factory(
         context,
         DefaultHttpDataSource.Factory()
             .setUserAgent(NetworkUtil.userAgent),
     )
 
-    @OptIn(UnstableApi::class)
     @Provides
     fun progressiveMediaSourceFactory(dataSourceFactory: DefaultDataSource.Factory): ProgressiveMediaSource.Factory =
         ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
@@ -54,7 +54,7 @@ object MediaModule {
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
         audioAttributes: AudioAttributes,
-    ): Player = ExoPlayer.Builder(context)
+    ): ExoPlayer = ExoPlayer.Builder(context)
         .setMediaSourceFactory(progressiveMediaSourceFactory)
         .setAudioAttributes(audioAttributes, true)
         .setWakeMode(C.WAKE_MODE_NETWORK)

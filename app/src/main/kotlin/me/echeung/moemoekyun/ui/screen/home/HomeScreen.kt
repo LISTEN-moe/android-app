@@ -25,6 +25,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.service.PlaybackService
 import me.echeung.moemoekyun.ui.common.BackgroundBox
+import me.echeung.moemoekyun.ui.common.CastButton
 import me.echeung.moemoekyun.ui.common.toolbarColors
 
 @Composable
@@ -131,6 +132,7 @@ private fun HomeToolbar(
             }
         },
         actions = {
+            CastButton()
             IconButton(onClick = onNavigateAbout) {
                 Icon(
                     imageVector = Icons.Outlined.Info,
