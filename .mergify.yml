@@ -1,11 +1,11 @@
 pull_request_rules:
-    - name: Automatic merge
-      description: Merge when dependency update PR passes all branch protection
-      conditions:
-          - and:
-                - check-success = build
-                - or:
-                      - author = dependabot[bot]
-                      - author = renovate[bot]
-      actions:
-          merge:
+  - name: Automatic merge
+    description: Merge when dependency update PR passes all branch protection
+    conditions:
+      - and:
+          - check-success = Build app
+          - or:
+              - author = dependabot[bot]
+              - author = renovate[bot]
+    actions:
+      merge:
