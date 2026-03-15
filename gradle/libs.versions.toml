@@ -27,6 +27,7 @@ androidx-appcompat = "androidx.appcompat:appcompat:1.7.1"
 androidx-lifecycle = "androidx.lifecycle:lifecycle-process:2.10.0"
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version = "2.10.0" }
+androidx-media3-cast = { module = "androidx.media3:media3-cast", version.ref = "media3" }
 androidx-media3-common = { module = "androidx.media3:media3-common-ktx", version.ref = "media3" }
 androidx-media3-exoplayer = { module = "androidx.media3:media3-exoplayer", version.ref = "media3" }
 androidx-media3-session = { module = "androidx.media3:media3-session", version.ref = "media3" }

@@ -168,7 +168,11 @@ dependencies {
     implementation(libs.androidx.palette)
     implementation(libs.androidx.splashscreen)
 
+    // Media dependencies (common)
     implementation(libs.bundles.media)
+    // Cast support (full variant only)
+    "fullImplementation"(libs.androidx.media3.cast)
+
     implementation(libs.bundles.preferences)
 
     testImplementation(libs.junit.jupiter.api)

@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.res.Configuration
 import android.media.AudioManager
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -71,3 +72,12 @@ val Context.clipboardManager: ClipboardManager
 
 val Context.audioManager: AudioManager
     get() = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+/**
+ * Checks if the device is currently connected to Wi-Fi.
+ */
+fun Context.isWifiConnected(): Boolean {
+    val network = connectivityManager.activeNetwork ?: return false
+    val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+    return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+}
