@@ -171,6 +171,9 @@ dependencies {
     implementation(libs.bundles.media)
     implementation(libs.bundles.preferences)
 
+    implementation(libs.bundles.room)
+    ksp(libs.room.compiler)
+
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.kotest.assertions)
     testRuntimeOnly(libs.bundles.junit.runtime)

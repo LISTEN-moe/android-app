@@ -21,4 +21,7 @@ class PreferenceUtil @Inject constructor(private val prefs: FlowSharedPreference
 
     fun favoritesSortType() = prefs.getEnum("favorites_sort_type", SortType.TITLE)
     fun favoritesSortDescending() = prefs.getBoolean("favorites_sort_desc", false)
+
+    /** UUID of the last authenticated user, used to detect user switches and invalidate caches. */
+    fun lastUserUuid() = prefs.getString("last_user_uuid", "")
 }
