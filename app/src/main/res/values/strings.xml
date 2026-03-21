@@ -159,6 +159,8 @@
     <string name="pref_header_audio">Audio</string>
     <string name="pref_title_pause_on_noisy_title">Pause for headphones</string>
     <string name="pref_title_pause_on_noisy_summary">Music will pause when headphones are removed</string>
+    <string name="pref_title_visualizer">Audio visualizer</string>
+    <string name="pref_title_visualizer_summary">Show frequency bars in the player</string>
 
     <string name="notification_channel_name">Default</string>
 

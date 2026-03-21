@@ -16,6 +16,8 @@ class PreferenceUtil @Inject constructor(private val prefs: FlowSharedPreference
 
     fun shouldPauseOnNoisy() = prefs.getBoolean("pref_audio_pause_on_noisy", true)
 
+    fun shouldShowVisualizer() = prefs.getBoolean("pref_audio_visualizer", false)
+
     fun songsSortType() = prefs.getEnum("all_songs_sort_type", SortType.TITLE)
     fun songsSortDescending() = prefs.getBoolean("all_songs_sort_desc", false)
 
