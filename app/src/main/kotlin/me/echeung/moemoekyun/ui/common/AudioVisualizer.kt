@@ -6,13 +6,13 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import me.echeung.moemoekyun.service.VisualizerState
@@ -25,7 +25,7 @@ private val BarCornerRadius = 2.dp
 private const val BAR_ALPHA = 0.12f
 
 @Composable
-fun AudioVisualizer(state: VisualizerState, accentColor: Color, modifier: Modifier = Modifier) {
+fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
     val density = LocalDensity.current
     val minBarWidthPx = with(density) { MinBarWidth.toPx() }
     val gapPx = with(density) { BarGap.toPx() }
@@ -45,7 +45,7 @@ fun AudioVisualizer(state: VisualizerState, accentColor: Color, modifier: Modifi
         animated
     }
 
-    val barColor = accentColor.copy(alpha = BAR_ALPHA)
+    val barColor = MaterialTheme.colorScheme.onBackground.copy(alpha = BAR_ALPHA)
 
     Canvas(
         modifier = modifier

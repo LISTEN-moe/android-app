@@ -21,13 +21,11 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @OptIn(UnstableApi::class)
-class PlaybackPlayer @Inject constructor(
-    player: Player,
-    scope: CoroutineScope,
-    currentSong: CurrentSong,
-) : ForwardingSimpleBasePlayer(player) {
+class PlaybackPlayer @Inject constructor(player: Player, scope: CoroutineScope, currentSong: CurrentSong) :
+    ForwardingSimpleBasePlayer(player) {
 
     @Volatile private var currentStartTime: Instant? = null
+
     @Volatile private var currentDuration = 0L
 
     init {

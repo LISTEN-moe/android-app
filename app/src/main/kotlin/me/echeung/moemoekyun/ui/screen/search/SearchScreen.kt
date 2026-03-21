@@ -25,7 +25,11 @@ import me.echeung.moemoekyun.ui.common.UpButton
 import me.echeung.moemoekyun.ui.common.songsItems
 
 @Composable
-fun SearchScreen(onBack: () -> Unit, onShowSongs: (List<DomainSong>) -> Unit = {}, screenModel: SearchScreenModel = hiltViewModel()) {
+fun SearchScreen(
+    onBack: () -> Unit,
+    onShowSongs: (List<DomainSong>) -> Unit = {},
+    screenModel: SearchScreenModel = hiltViewModel(),
+) {
     val state by screenModel.state.collectAsState()
 
     val onExpandedChange = { expanded: Boolean ->

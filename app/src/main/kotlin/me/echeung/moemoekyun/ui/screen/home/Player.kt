@@ -299,7 +299,6 @@ private fun ExpandedPlayerContent(
                     PortraitExpandedPlayerContent(
                         radioState = radioState,
                         playPauseButtonState = playPauseButtonState,
-                        accentColor = accentColor,
                         visualizerState = visualizerState,
                         isVisualizerEnabled = isVisualizerEnabled,
                         onClickCollapse = onClickCollapse,
@@ -311,7 +310,6 @@ private fun ExpandedPlayerContent(
                     LandscapeExpandedPlayerContent(
                         radioState = radioState,
                         playPauseButtonState = playPauseButtonState,
-                        accentColor = accentColor,
                         visualizerState = visualizerState,
                         isVisualizerEnabled = isVisualizerEnabled,
                         onClickCollapse = onClickCollapse,
@@ -330,7 +328,6 @@ private fun ExpandedPlayerContent(
 private fun PortraitExpandedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
-    accentColor: Color?,
     visualizerState: VisualizerState,
     isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
@@ -361,7 +358,6 @@ private fun PortraitExpandedPlayerContent(
             if (isVisualizerEnabled) {
                 AudioVisualizer(
                     state = visualizerState,
-                    accentColor = accentColor ?: MaterialTheme.colorScheme.primary,
                 )
             }
             SongInfo(
@@ -380,7 +376,6 @@ private fun PortraitExpandedPlayerContent(
 private fun LandscapeExpandedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
-    accentColor: Color?,
     visualizerState: VisualizerState,
     isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
@@ -417,7 +412,6 @@ private fun LandscapeExpandedPlayerContent(
                 if (isVisualizerEnabled) {
                     AudioVisualizer(
                         state = visualizerState,
-                        accentColor = accentColor ?: MaterialTheme.colorScheme.primary,
                     )
                 }
                 SongInfo(
