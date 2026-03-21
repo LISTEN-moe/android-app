@@ -78,7 +78,6 @@ import androidx.media3.common.util.Util.handlePlayPauseButtonAction
 import androidx.media3.common.util.Util.shouldEnablePlayPauseButton
 import androidx.media3.common.util.Util.shouldShowPlayButton
 import androidx.media3.session.MediaController
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
@@ -100,7 +99,6 @@ fun PlayerScaffold(
     visualizerState: VisualizerState,
     isVisualizerEnabled: Boolean,
     onSetVisualizerActive: (Boolean) -> Unit,
-    onEmitSimulatedVisualizer: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
@@ -120,14 +118,7 @@ fun PlayerScaffold(
     val isPlaying = !playPauseButtonState.showPlay
 
     LaunchedEffect(isVisualizerEnabled, isPlaying, isSheetExpanded) {
-        val active = isVisualizerEnabled && isPlaying && isSheetExpanded
-        onSetVisualizerActive(active)
-        if (active) {
-            while (true) {
-                onEmitSimulatedVisualizer()
-                delay(16)
-            }
-        }
+        onSetVisualizerActive(isVisualizerEnabled && isPlaying && isSheetExpanded)
     }
 
     BackHandler(

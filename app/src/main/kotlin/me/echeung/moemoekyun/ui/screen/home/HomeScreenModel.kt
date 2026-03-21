@@ -65,10 +65,6 @@ class HomeScreenModel @Inject constructor(
         visualizerAudioProcessor.isEnabled = active
     }
 
-    fun emitSimulatedVisualizer() {
-        visualizerAudioProcessor.emitSimulated()
-    }
-
     init {
         viewModelScope.launchIO {
             getAuthenticatedUser.asFlow()

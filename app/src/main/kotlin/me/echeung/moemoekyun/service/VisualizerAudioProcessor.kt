@@ -92,9 +92,6 @@ class VisualizerAudioProcessor : AudioProcessor {
         }
     }
 
-    private var lastRealDataTimeMs = 0L
-    private var simulatedPhase = 0.0
-
     override fun configure(inputAudioFormat: AudioFormat): AudioFormat {
         if (inputAudioFormat.encoding != C.ENCODING_PCM_16BIT) {
             throw AudioProcessor.UnhandledAudioFormatException(inputAudioFormat)
@@ -128,7 +125,6 @@ class VisualizerAudioProcessor : AudioProcessor {
             if (sampleBufferPos >= fftSize) {
                 performFft()
                 sampleBufferPos = 0
-                lastRealDataTimeMs = System.currentTimeMillis()
             }
         }
 
@@ -161,19 +157,6 @@ class VisualizerAudioProcessor : AudioProcessor {
         inputFormat = AudioFormat.NOT_SET
         sampleBuffer.fill(0f)
         smoothedMagnitudes.fill(0f)
-    }
-
-    fun emitSimulated() {
-        if (!isEnabled) return
-        if (System.currentTimeMillis() - lastRealDataTimeMs < 500) return
-        simulatedPhase += 0.15
-        val magnitudes = FloatArray(VisualizerState.BAND_COUNT) { i ->
-            val freq = 0.3 + i * 0.2
-            val value = 0.3f + 0.3f * sin(simulatedPhase * freq + i * 0.7).toFloat() +
-                0.1f * cos(simulatedPhase * freq * 1.7 + i * 1.3).toFloat()
-            value.coerceIn(0f, 1f)
-        }
-        _state.tryEmit(VisualizerState(magnitudes))
     }
 
     private fun performFft() {

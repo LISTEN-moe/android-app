@@ -67,7 +67,6 @@ fun HomeScreen(
         visualizerState = visualizerState,
         isVisualizerEnabled = isVisualizerEnabled,
         onSetVisualizerActive = screenModel::setVisualizerActive,
-        onEmitSimulatedVisualizer = screenModel::emitSimulatedVisualizer,
         onClickStation = screenModel::toggleLibrary,
         onClickHistory = {
             val historySongs = listOfNotNull(radioState.currentSong) + radioState.pastSongs
