@@ -18,6 +18,7 @@ import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import me.echeung.moemoekyun.service.VisualizerAudioProcessor
 import me.echeung.moemoekyun.util.ext.audioManager
 import me.echeung.moemoekyun.util.system.NetworkUtil
 
@@ -54,9 +55,13 @@ object MediaModule {
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
         audioAttributes: AudioAttributes,
+        visualizerAudioProcessor: VisualizerAudioProcessor,
     ): Player = ExoPlayer.Builder(context)
         .setMediaSourceFactory(progressiveMediaSourceFactory)
         .setAudioAttributes(audioAttributes, true)
         .setWakeMode(C.WAKE_MODE_NETWORK)
+        .setAudioProcessorsFactory { defaultProcessors ->
+            defaultProcessors + arrayOf(visualizerAudioProcessor)
+        }
         .build()
 }
