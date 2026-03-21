@@ -11,6 +11,10 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object VisualizerModule {
 
+    /**
+     * Provided at SingletonComponent scope (not ServiceComponent) so the same instance
+     * is accessible from both the playback service and the UI layer (HomeScreenModel).
+     */
     @Provides
     @Singleton
     fun visualizerAudioProcessor(): VisualizerAudioProcessor = VisualizerAudioProcessor()

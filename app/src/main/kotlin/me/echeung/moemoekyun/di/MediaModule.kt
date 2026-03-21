@@ -66,6 +66,9 @@ object MediaModule {
                 enableFloatOutput: Boolean,
                 enableAudioTrackPlaybackParams: Boolean,
             ): AudioSink = DefaultAudioSink.Builder(context)
+                // DefaultAudioSink has no default processors in Media3 1.9.x, so passing only
+                // visualizerAudioProcessor is equivalent to the intended "append to defaults" approach.
+                // Re-evaluate when upgrading Media3.
                 .setAudioProcessors(arrayOf(visualizerAudioProcessor))
                 .setEnableFloatOutput(enableFloatOutput)
                 .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)

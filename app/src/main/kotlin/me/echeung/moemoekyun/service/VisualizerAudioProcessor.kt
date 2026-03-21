@@ -36,6 +36,7 @@ data class VisualizerState(val magnitudes: FloatArray) {
 
 @OptIn(UnstableApi::class)
 class VisualizerAudioProcessor : AudioProcessor {
+    @Volatile
     var isEnabled: Boolean = false
 
     private val _state = MutableSharedFlow<VisualizerState>(replay = 1, extraBufferCapacity = 1)

@@ -31,28 +31,11 @@ fun AudioVisualizer(state: VisualizerState, accentColor: Color, modifier: Modifi
     val gapPx = with(density) { BarGap.toPx() }
     val cornerRadiusPx = with(density) { BarCornerRadius.toPx() }
 
-    val barCount = min(
-        VisualizerState.BAND_COUNT,
-        ((state.magnitudes.size * minBarWidthPx + gapPx) / (minBarWidthPx + gapPx)).toInt()
-            .coerceAtLeast(1),
-    )
-
-    // Animate each bar independently with spring physics
-    val animatedMagnitudes = Array(barCount) { i ->
-        // If fewer bars than bands, merge adjacent bands
-        val magnitude = if (barCount < state.magnitudes.size) {
-            val bandsPerBar = state.magnitudes.size.toFloat() / barCount
-            val startBand = (i * bandsPerBar).toInt()
-            val endBand = min(((i + 1) * bandsPerBar).toInt(), state.magnitudes.size)
-            var sum = 0f
-            for (b in startBand until endBand) sum += state.magnitudes[b]
-            if (endBand > startBand) sum / (endBand - startBand) else 0f
-        } else {
-            state.magnitudes.getOrElse(i) { 0f }
-        }
-
+    // Animate each bar independently with spring physics — always BAND_COUNT entries so
+    // the number of composable calls is stable across recompositions.
+    val animatedMagnitudes = Array(VisualizerState.BAND_COUNT) { i ->
         val animated by animateFloatAsState(
-            targetValue = magnitude,
+            targetValue = state.magnitudes[i],
             animationSpec = spring(
                 dampingRatio = Spring.DampingRatioNoBouncy,
                 stiffness = Spring.StiffnessLow,
@@ -69,15 +52,30 @@ fun AudioVisualizer(state: VisualizerState, accentColor: Color, modifier: Modifi
             .fillMaxWidth()
             .height(MaxHeight),
     ) {
-        val actualBarCount = min(
-            barCount,
+        val barCount = min(
+            VisualizerState.BAND_COUNT,
             ((size.width + gapPx) / (minBarWidthPx + gapPx)).toInt().coerceAtLeast(1),
         )
-        val totalGapWidth = (actualBarCount - 1) * gapPx
-        val barWidth = (size.width - totalGapWidth) / actualBarCount
 
-        for (i in 0 until actualBarCount) {
-            val barHeight = animatedMagnitudes.getOrElse(i) { 0f } * size.height
+        // If fewer bars than bands, merge adjacent bands
+        val mergedMagnitudes = if (barCount < VisualizerState.BAND_COUNT) {
+            FloatArray(barCount) { i ->
+                val bandsPerBar = VisualizerState.BAND_COUNT.toFloat() / barCount
+                val startBand = (i * bandsPerBar).toInt()
+                val endBand = min(((i + 1) * bandsPerBar).toInt(), VisualizerState.BAND_COUNT)
+                var sum = 0f
+                for (b in startBand until endBand) sum += animatedMagnitudes[b]
+                if (endBand > startBand) sum / (endBand - startBand) else 0f
+            }
+        } else {
+            FloatArray(barCount) { i -> animatedMagnitudes[i] }
+        }
+
+        val totalGapWidth = (barCount - 1) * gapPx
+        val barWidth = (size.width - totalGapWidth) / barCount
+
+        for (i in 0 until barCount) {
+            val barHeight = mergedMagnitudes[i] * size.height
             val x = i * (barWidth + gapPx)
             val y = size.height - barHeight
 
