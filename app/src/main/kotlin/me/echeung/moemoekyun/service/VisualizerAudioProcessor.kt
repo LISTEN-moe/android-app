@@ -76,7 +76,8 @@ class VisualizerAudioProcessor : AudioProcessor {
             return
         }
 
-        // Use a duplicate for reading so we don't affect the original buffer position
+        // Use a duplicate for reading so the original buffer position is untouched.
+        // The original buffer is passed through unchanged so ExoPlayer receives the audio data.
         val analysisBuffer = buffer.duplicate().order(ByteOrder.LITTLE_ENDIAN)
 
         while (analysisBuffer.remaining() >= 2 * channelCount) {
@@ -93,8 +94,6 @@ class VisualizerAudioProcessor : AudioProcessor {
             }
         }
 
-        // Advance original buffer to limit (signal all bytes consumed)
-        buffer.position(buffer.limit())
         inputBuffer = buffer
         outputBuffer = buffer
     }
