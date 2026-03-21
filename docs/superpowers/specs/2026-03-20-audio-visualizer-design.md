@@ -84,7 +84,7 @@ The visualizer is designed to have near-zero cost when not in use:
 |-----------|--------------|------------|------|
 | Setting off | Skipped (boolean check) | Not in composition tree | ~0 |
 | Setting on, sheet collapsed | Skipped (boolean check) | Not composed | ~0 |
-| Setting on, sheet expanded, paused | Skipped (no audio flowing) | Bars at zero, idle | ~0 |
+| Setting on, sheet expanded, paused | Skipped (boolean check) | Bars at zero, idle | ~0 |
 | Setting on, sheet expanded, playing | Active | Rendering | Normal |
 
 ## Settings
