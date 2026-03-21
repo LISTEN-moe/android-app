@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
@@ -42,6 +43,9 @@ fun HomeScreen(
     val radioState by screenModel.radioState.collectAsState()
     val isAuthenticated = state.user != null
 
+    val visualizerState by screenModel.visualizerState.collectAsStateWithLifecycle()
+    val isVisualizerEnabled by screenModel.isVisualizerEnabled.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
 
     val player by produceState<MediaController?>(null) {
@@ -61,6 +65,9 @@ fun HomeScreen(
         radioState = radioState,
         mediaController = player,
         accentColor = state.accentColor,
+        visualizerState = visualizerState,
+        isVisualizerEnabled = isVisualizerEnabled,
+        visualizerAudioProcessor = screenModel.visualizerAudioProcessor,
         onClickStation = screenModel::toggleLibrary,
         onClickHistory = {
             val historySongs = listOfNotNull(radioState.currentSong) + radioState.pastSongs
