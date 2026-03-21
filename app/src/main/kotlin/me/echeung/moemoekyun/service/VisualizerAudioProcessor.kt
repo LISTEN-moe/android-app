@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.exp
@@ -20,7 +22,8 @@ import kotlin.math.sin
 import kotlin.math.sqrt
 
 @OptIn(UnstableApi::class)
-class VisualizerAudioProcessor : AudioProcessor {
+@Singleton
+class VisualizerAudioProcessor @Inject constructor() : AudioProcessor {
     @Volatile
     var isEnabled: Boolean = false
 

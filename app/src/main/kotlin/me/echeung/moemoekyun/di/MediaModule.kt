@@ -11,6 +11,7 @@ import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.RenderersFactory
 import androidx.media3.exoplayer.audio.AudioSink
 import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
@@ -55,31 +56,31 @@ object MediaModule {
 
     @Provides
     @Reusable
+    fun renderersFactory(
+        @ApplicationContext context: Context,
+        visualizerAudioProcessor: VisualizerAudioProcessor,
+    ): RenderersFactory = object : DefaultRenderersFactory(context) {
+        override fun buildAudioSink(
+            context: Context,
+            enableFloatOutput: Boolean,
+            enableAudioTrackPlaybackParams: Boolean,
+        ): AudioSink = DefaultAudioSink.Builder(context)
+            .setAudioProcessors(arrayOf(visualizerAudioProcessor))
+            .setEnableFloatOutput(enableFloatOutput)
+            .setEnableAudioOutputPlaybackParameters(enableAudioTrackPlaybackParams)
+            .build()
+    }
+
+    @Provides
+    @Reusable
     fun exoPlayer(
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
         audioAttributes: AudioAttributes,
-        visualizerAudioProcessor: VisualizerAudioProcessor,
-    ): Player {
-        val renderersFactory = object : DefaultRenderersFactory(context) {
-            override fun buildAudioSink(
-                context: Context,
-                enableFloatOutput: Boolean,
-                enableAudioTrackPlaybackParams: Boolean,
-            ): AudioSink = DefaultAudioSink.Builder(context)
-                // DefaultAudioSink has no default processors in Media3 1.9.x, so passing only
-                // visualizerAudioProcessor is equivalent to the intended "append to defaults" approach.
-                // Re-evaluate when upgrading Media3.
-                .setAudioProcessors(arrayOf(visualizerAudioProcessor))
-                .setEnableFloatOutput(enableFloatOutput)
-                .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
-                .build()
-        }
-
-        return ExoPlayer.Builder(context, renderersFactory)
-            .setMediaSourceFactory(progressiveMediaSourceFactory)
-            .setAudioAttributes(audioAttributes, true)
-            .setWakeMode(C.WAKE_MODE_NETWORK)
-            .build()
-    }
+        renderersFactory: RenderersFactory,
+    ): Player = ExoPlayer.Builder(context, renderersFactory)
+        .setMediaSourceFactory(progressiveMediaSourceFactory)
+        .setAudioAttributes(audioAttributes, true)
+        .setWakeMode(C.WAKE_MODE_NETWORK)
+        .build()
 }
