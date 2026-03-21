@@ -9,7 +9,10 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.audio.AudioSink
+import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import dagger.Module
@@ -56,12 +59,23 @@ object MediaModule {
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
         audioAttributes: AudioAttributes,
         visualizerAudioProcessor: VisualizerAudioProcessor,
-    ): Player = ExoPlayer.Builder(context)
-        .setMediaSourceFactory(progressiveMediaSourceFactory)
-        .setAudioAttributes(audioAttributes, true)
-        .setWakeMode(C.WAKE_MODE_NETWORK)
-        .setAudioProcessorsFactory { defaultProcessors ->
-            defaultProcessors + arrayOf(visualizerAudioProcessor)
+    ): Player {
+        val renderersFactory = object : DefaultRenderersFactory(context) {
+            override fun buildAudioSink(
+                context: Context,
+                enableFloatOutput: Boolean,
+                enableAudioTrackPlaybackParams: Boolean,
+            ): AudioSink = DefaultAudioSink.Builder(context)
+                .setAudioProcessors(arrayOf(visualizerAudioProcessor))
+                .setEnableFloatOutput(enableFloatOutput)
+                .setEnableAudioTrackPlaybackParams(enableAudioTrackPlaybackParams)
+                .build()
         }
-        .build()
+
+        return ExoPlayer.Builder(context, renderersFactory)
+            .setMediaSourceFactory(progressiveMediaSourceFactory)
+            .setAudioAttributes(audioAttributes, true)
+            .setWakeMode(C.WAKE_MODE_NETWORK)
+            .build()
+    }
 }
