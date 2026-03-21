@@ -22,24 +22,24 @@ ExoPlayer audio pipeline
 **`VisualizerAudioProcessor`** — A Media3 `AudioProcessor` inserted into ExoPlayer's audio pipeline via `setAudioProcessorsFactory()`. Reads raw PCM samples, performs FFT, and publishes frequency magnitudes via `SharedFlow<VisualizerState>`.
 
 - Has an `isEnabled` flag. When disabled, `queueInput()` passes audio through without FFT work (one boolean check per buffer).
-- Enabled only when all three conditions are true: setting is on, player is playing, sheet is expanded.
+- Enabled only when all three conditions are true: setting is on, player is playing, sheet is expanded. The enable/disable logic lives in the UI layer (composable side-effects), not in `PlaybackService`, since sheet expanded state is local Compose state.
 - FFT size: 512 samples (good balance of frequency resolution and latency).
 - FFT implementation: Cooley-Tukey radix-2, ~50 lines of Kotlin, no external library.
 - 512 FFT bins grouped into logarithmically-spaced bands matching the bar count (adapts to available width, up to 16 bars).
 - Magnitudes normalized to 0f..1f with smoothing decay to reduce visual jitter.
 - Publishes results every ~16ms (~60fps).
-- Provided as a Hilt singleton so both the ExoPlayer builder and the UI can access it.
-
-**`SimulatedVisualizerSource`** — Fallback that generates synthetic bar values using sine waves at different frequencies with random phase offsets. Produces a convincing visualizer look without actual audio data. Same `VisualizerState` output type. Used when the AudioProcessor can't produce data (e.g. stream format issues).
+- Provided via Hilt from `SingletonComponent` (not `ServiceComponent`) so both the service and UI layers can access it. A separate Hilt module (e.g. `VisualizerModule`) provides it at singleton scope.
+- When no real FFT data is available (e.g. stream format issues, audio pipeline not yet started), the processor itself emits simulated bar values using sine waves at different frequencies with random phase offsets. This is internal to the processor — consumers always see `SharedFlow<VisualizerState>` regardless of source. The processor tracks whether it has received real audio data recently and switches to simulated output after a short timeout (~500ms).
 
 **`AudioVisualizer` composable** — A Compose `Canvas` that renders bars behind the player controls.
 
 ## FFT & Audio Processing
 
 - AudioProcessor implements Media3's `AudioProcessor` interface (`@UnstableApi`, already used in the project).
+- In `configure()`: reads the input `AudioFormat` to determine channel count and sample rate. Supports mono and stereo PCM (stereo is downmixed to mono before FFT). Returns the input format unchanged (passive tap).
 - In `queueInput()`: when enabled, copies PCM samples into a ring buffer, runs FFT every ~16ms, publishes results.
 - The 512 FFT bins are grouped into logarithmically-spaced bands (bass gets fewer bins, treble gets more, matching human hearing).
-- Bar count adapts to available width: `min(16, (canvasWidth / minBarWidth).toInt())` where `minBarWidth` is ~12dp. The FFT band grouping adjusts accordingly.
+- The processor always groups into 16 bands. The composable decides how many bars to render based on available width: `min(16, (canvasWidth / minBarWidth).toInt())` where `minBarWidth` is ~12dp. If fewer bars are needed, adjacent bands are merged.
 
 ## Compose Rendering
 
@@ -61,7 +61,7 @@ ExoPlayer audio pipeline
 
 ### ExoPlayer Setup (`MediaModule.kt`)
 
-- `VisualizerAudioProcessor` is created as a Hilt singleton.
+- `VisualizerAudioProcessor` is injected into `MediaModule` from `SingletonComponent` (provided by a new `VisualizerModule`).
 - Passed to `ExoPlayer.Builder` via `.setAudioProcessorsFactory()`.
 - The processor is a passive tap — reads PCM data and passes it through unmodified.
 
@@ -70,10 +70,11 @@ ExoPlayer audio pipeline
 - Collects the visualizer flow from the Hilt-provided `VisualizerAudioProcessor` singleton.
 - Passes `VisualizerState` down through `PlayerScaffold` → `ExpandedPlayerContent` → portrait/landscape composables.
 
-### PlaybackService
+### Enable/Disable Logic (UI layer)
 
-- Observes the settings preference and sheet expanded state.
-- Sets `VisualizerAudioProcessor.isEnabled` accordingly.
+- The `isEnabled` flag on `VisualizerAudioProcessor` is controlled from the UI layer via `LaunchedEffect` in `PlayerScaffold` or `ExpandedPlayerContent`.
+- It combines three signals: settings preference (from `PreferenceUtil`), player playing state (from `MediaController`), and sheet expanded state (from `scaffoldState.bottomSheetState`).
+- All three are available in the composable scope. When any becomes false, `isEnabled` is set to false.
 
 ## Lazy Efficiency
 
@@ -96,13 +97,13 @@ The visualizer is designed to have near-zero cost when not in use:
 ## Files to Create
 
 - `app/src/main/kotlin/me/echeung/moemoekyun/ui/common/AudioVisualizer.kt` — Canvas composable
-- `app/src/main/kotlin/me/echeung/moemoekyun/service/VisualizerAudioProcessor.kt` — AudioProcessor + FFT
+- `app/src/main/kotlin/me/echeung/moemoekyun/service/VisualizerAudioProcessor.kt` — AudioProcessor + FFT + simulated fallback
+- `app/src/main/kotlin/me/echeung/moemoekyun/di/VisualizerModule.kt` — Hilt module in `SingletonComponent` providing the processor
 
 ## Files to Modify
 
-- `MediaModule.kt` — provide VisualizerAudioProcessor, wire into ExoPlayer builder
-- `Player.kt` — Box wrapper around SongInfo, add AudioVisualizer composable
-- `HomeScreen.kt` — collect visualizer state, pass down
-- `PlaybackService.kt` — observe setting + sheet state, set processor enabled flag
-- Preferences file — add visualizerEnabled preference
-- Settings screen — add toggle row
+- `app/src/main/kotlin/me/echeung/moemoekyun/di/MediaModule.kt` — inject VisualizerAudioProcessor, wire into ExoPlayer builder via `setAudioProcessorsFactory()`
+- `app/src/main/kotlin/me/echeung/moemoekyun/ui/screen/home/Player.kt` — Box wrapper around SongInfo in portrait/landscape, add AudioVisualizer composable, LaunchedEffect for enable/disable logic
+- `app/src/main/kotlin/me/echeung/moemoekyun/ui/screen/home/HomeScreen.kt` — collect visualizer state, pass down
+- `app/src/main/kotlin/me/echeung/moemoekyun/util/PreferenceUtil.kt` — add `visualizerEnabled` boolean preference
+- `app/src/main/kotlin/me/echeung/moemoekyun/ui/screen/settings/SettingsScreen.kt` — add toggle row for visualizer
