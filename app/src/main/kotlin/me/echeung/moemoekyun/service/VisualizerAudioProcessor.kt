@@ -54,6 +54,44 @@ class VisualizerAudioProcessor : AudioProcessor {
     private var channelCount = 1
     private var bandBoundaries = computeBandBoundaries(44100)
 
+    // Pre-allocated scratch buffers for performFft() — avoids ~344 KB/sec of heap churn on the audio thread.
+    private val fftReal = FloatArray(fftSize)
+    private val fftImag = FloatArray(fftSize)
+    private val fftMagnitudes = FloatArray(VisualizerState.BAND_COUNT)
+
+    // Hann window coefficients are constant for a fixed fftSize — compute once.
+    private val hannWindow = FloatArray(fftSize) { i ->
+        (0.5f * (1 - cos(2.0 * PI * i / (fftSize - 1)))).toFloat()
+    }
+
+    // Precomputed twiddle factors for the fixed-size FFT.
+    private val twiddleCos: FloatArray
+    private val twiddleSin: FloatArray
+
+    init {
+        var tableSize = 0
+        var len = 2
+        while (len <= fftSize) {
+            tableSize += len / 2
+            len = len shl 1
+        }
+        twiddleCos = FloatArray(tableSize)
+        twiddleSin = FloatArray(tableSize)
+        var offset = 0
+        len = 2
+        while (len <= fftSize) {
+            val halfLen = len / 2
+            val angle = -2.0 * PI / len
+            for (k in 0 until halfLen) {
+                val theta = angle * k
+                twiddleCos[offset + k] = cos(theta).toFloat()
+                twiddleSin[offset + k] = sin(theta).toFloat()
+            }
+            offset += halfLen
+            len = len shl 1
+        }
+    }
+
     private var lastRealDataTimeMs = 0L
     private var simulatedPhase = 0.0
 
@@ -139,35 +177,69 @@ class VisualizerAudioProcessor : AudioProcessor {
     }
 
     private fun performFft() {
-        val real = FloatArray(fftSize)
-        val imag = FloatArray(fftSize)
         for (i in 0 until fftSize) {
-            val window = 0.5f * (1 - cos(2.0 * PI * i / (fftSize - 1))).toFloat()
-            real[i] = sampleBuffer[i] * window
+            fftReal[i] = sampleBuffer[i] * hannWindow[i]
+            fftImag[i] = 0f
         }
-        fft(real, imag)
-        val magnitudes = FloatArray(VisualizerState.BAND_COUNT)
+        fftInPlace(fftReal, fftImag)
+        fftMagnitudes.fill(0f)
         for (band in 0 until VisualizerState.BAND_COUNT) {
             val lo = bandBoundaries[band]
             val hi = bandBoundaries[band + 1]
             var sum = 0f
             var count = 0
             for (bin in lo until hi) {
-                sum += sqrt(real[bin] * real[bin] + imag[bin] * imag[bin])
+                sum += sqrt(fftReal[bin] * fftReal[bin] + fftImag[bin] * fftImag[bin])
                 count++
             }
-            if (count > 0) magnitudes[band] = sum / count
+            if (count > 0) fftMagnitudes[band] = sum / count
         }
-        val maxMag = magnitudes.maxOrNull() ?: 0f
+        val maxMag = fftMagnitudes.maxOrNull() ?: 0f
         if (maxMag > 0.001f) {
-            for (i in magnitudes.indices) {
-                magnitudes[i] = (magnitudes[i] / maxMag).coerceIn(0f, 1f)
+            for (i in fftMagnitudes.indices) {
+                fftMagnitudes[i] = (fftMagnitudes[i] / maxMag).coerceIn(0f, 1f)
             }
         }
         for (i in smoothedMagnitudes.indices) {
-            smoothedMagnitudes[i] = smoothedMagnitudes[i] * 0.4f + magnitudes[i] * 0.6f
+            smoothedMagnitudes[i] = smoothedMagnitudes[i] * 0.4f + fftMagnitudes[i] * 0.6f
         }
         _state.tryEmit(VisualizerState(smoothedMagnitudes.copyOf()))
+    }
+
+    private fun fftInPlace(real: FloatArray, imag: FloatArray) {
+        val n = real.size
+        var j = 0
+        for (i in 1 until n) {
+            var bit = n shr 1
+            while (j and bit != 0) {
+                j = j xor bit
+                bit = bit shr 1
+            }
+            j = j xor bit
+            if (i < j) {
+                real[i] = real[j].also { real[j] = real[i] }
+                imag[i] = imag[j].also { imag[j] = imag[i] }
+            }
+        }
+        var offset = 0
+        var len = 2
+        while (len <= n) {
+            val halfLen = len / 2
+            for (i in 0 until n step len) {
+                for (k in 0 until halfLen) {
+                    val cosT = twiddleCos[offset + k]
+                    val sinT = twiddleSin[offset + k]
+                    val tReal = real[i + k + halfLen] * cosT - imag[i + k + halfLen] * sinT
+                    val tImag = real[i + k + halfLen] * sinT + imag[i + k + halfLen] * cosT
+                    real[i + k + halfLen] = real[i + k] - tReal
+                    imag[i + k + halfLen] = imag[i + k] - tImag
+                    real[i + k] += tReal
+                    imag[i + k] += tImag
+                }
+            }
+            offset += halfLen
+            len = len shl 1
+        }
     }
 
     companion object {
@@ -187,6 +259,7 @@ class VisualizerAudioProcessor : AudioProcessor {
             return boundaries
         }
 
+        // Kept for tests.
         fun fft(real: FloatArray, imag: FloatArray) {
             val n = real.size
             var j = 0

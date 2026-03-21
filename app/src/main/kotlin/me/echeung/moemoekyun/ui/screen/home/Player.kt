@@ -84,7 +84,6 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
-import me.echeung.moemoekyun.service.VisualizerAudioProcessor
 import me.echeung.moemoekyun.service.VisualizerState
 import me.echeung.moemoekyun.ui.common.AlbumArt
 import me.echeung.moemoekyun.ui.common.AudioVisualizer
@@ -100,7 +99,8 @@ fun PlayerScaffold(
     accentColor: Color?,
     visualizerState: VisualizerState,
     isVisualizerEnabled: Boolean,
-    visualizerAudioProcessor: VisualizerAudioProcessor,
+    onSetVisualizerActive: (Boolean) -> Unit,
+    onEmitSimulatedVisualizer: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
@@ -120,13 +120,11 @@ fun PlayerScaffold(
     val isPlaying = !playPauseButtonState.showPlay
 
     LaunchedEffect(isVisualizerEnabled, isPlaying, isSheetExpanded) {
-        visualizerAudioProcessor.isEnabled = isVisualizerEnabled && isPlaying && isSheetExpanded
-    }
-
-    LaunchedEffect(isVisualizerEnabled, isPlaying, isSheetExpanded) {
-        if (isVisualizerEnabled && isPlaying && isSheetExpanded) {
+        val active = isVisualizerEnabled && isPlaying && isSheetExpanded
+        onSetVisualizerActive(active)
+        if (active) {
             while (true) {
-                visualizerAudioProcessor.emitSimulated()
+                onEmitSimulatedVisualizer()
                 delay(16)
             }
         }
@@ -352,22 +350,14 @@ private fun PortraitExpandedPlayerContent(
             albumArtUrl = radioState.albumArtUrl,
         )
 
-        Box(
-            contentAlignment = Alignment.BottomCenter,
-        ) {
-            if (isVisualizerEnabled) {
-                AudioVisualizer(
-                    state = visualizerState,
-                )
-            }
-            SongInfo(
-                radioState,
-                playPauseButtonState,
-                radioState.currentSong,
-                onClickHistory,
-                toggleFavorite,
-            )
-        }
+        SongInfoWithVisualizer(
+            radioState = radioState,
+            playPauseButtonState = playPauseButtonState,
+            visualizerState = visualizerState,
+            isVisualizerEnabled = isVisualizerEnabled,
+            onClickHistory = onClickHistory,
+            toggleFavorite = toggleFavorite,
+        )
     }
 }
 
@@ -406,23 +396,43 @@ private fun LandscapeExpandedPlayerContent(
             CollapseIcon(onClickCollapse)
             StationPicker(radioState, onClickStation)
 
-            Box(
-                contentAlignment = Alignment.BottomCenter,
-            ) {
-                if (isVisualizerEnabled) {
-                    AudioVisualizer(
-                        state = visualizerState,
-                    )
-                }
-                SongInfo(
-                    radioState,
-                    playPauseButtonState,
-                    radioState.currentSong,
-                    onClickHistory,
-                    toggleFavorite,
-                )
-            }
+            SongInfoWithVisualizer(
+                radioState = radioState,
+                playPauseButtonState = playPauseButtonState,
+                visualizerState = visualizerState,
+                isVisualizerEnabled = isVisualizerEnabled,
+                onClickHistory = onClickHistory,
+                toggleFavorite = toggleFavorite,
+            )
         }
+    }
+}
+
+@OptIn(UnstableApi::class)
+@Composable
+private fun SongInfoWithVisualizer(
+    radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
+    visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
+    onClickHistory: () -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
+) {
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+    ) {
+        if (isVisualizerEnabled) {
+            AudioVisualizer(
+                state = visualizerState,
+            )
+        }
+        SongInfo(
+            radioState,
+            playPauseButtonState,
+            radioState.currentSong,
+            onClickHistory,
+            toggleFavorite,
+        )
     }
 }
 

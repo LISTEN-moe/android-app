@@ -45,7 +45,7 @@ class HomeScreenModel @Inject constructor(
     private val loginLogout: LoginLogout,
     private val albumArtUtil: AlbumArtUtil,
     private val preferenceUtil: PreferenceUtil,
-    val visualizerAudioProcessor: VisualizerAudioProcessor,
+    private val visualizerAudioProcessor: VisualizerAudioProcessor,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -53,11 +53,21 @@ class HomeScreenModel @Inject constructor(
 
     val radioState = radioService.state
 
+    private val whileSubscribed = SharingStarted.WhileSubscribed(5000)
+
     val visualizerState: StateFlow<VisualizerState> = visualizerAudioProcessor.state
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), VisualizerState.EMPTY)
+        .stateIn(viewModelScope, whileSubscribed, VisualizerState.EMPTY)
 
     val isVisualizerEnabled: StateFlow<Boolean> = preferenceUtil.shouldShowVisualizer().asFlow()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+        .stateIn(viewModelScope, whileSubscribed, false)
+
+    fun setVisualizerActive(active: Boolean) {
+        visualizerAudioProcessor.isEnabled = active
+    }
+
+    fun emitSimulatedVisualizer() {
+        visualizerAudioProcessor.emitSimulated()
+    }
 
     init {
         viewModelScope.launchIO {
