@@ -63,6 +63,7 @@ class HomeScreenModel @Inject constructor(
 
     fun setVisualizerActive(active: Boolean) {
         visualizerAudioProcessor.isEnabled = active
+        if (!active) visualizerAudioProcessor.emitEmpty()
     }
 
     init {

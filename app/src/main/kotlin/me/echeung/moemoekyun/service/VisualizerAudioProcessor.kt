@@ -77,6 +77,11 @@ class VisualizerAudioProcessor : AudioProcessor {
         }
     }
 
+    fun emitEmpty() {
+        smoothedMagnitudes.fill(0f)
+        _state.tryEmit(VisualizerState.EMPTY)
+    }
+
     override fun configure(inputAudioFormat: AudioFormat): AudioFormat {
         if (inputAudioFormat.encoding != C.ENCODING_PCM_16BIT) {
             throw AudioProcessor.UnhandledAudioFormatException(inputAudioFormat)
