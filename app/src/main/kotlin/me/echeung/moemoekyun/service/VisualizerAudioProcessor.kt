@@ -12,6 +12,7 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import kotlin.math.PI
 import kotlin.math.cos
+import kotlin.math.exp
 import kotlin.math.ln
 import kotlin.math.max
 import kotlin.math.min
@@ -56,8 +57,8 @@ class VisualizerAudioProcessor : AudioProcessor {
     private var simulatedPhase = 0.0
 
     override fun configure(inputAudioFormat: AudioFormat): AudioFormat {
-        require(inputAudioFormat.encoding == C.ENCODING_PCM_16BIT) {
-            "Unsupported encoding: ${inputAudioFormat.encoding}"
+        if (inputAudioFormat.encoding != C.ENCODING_PCM_16BIT) {
+            throw AudioProcessor.UnhandledAudioFormatException(inputAudioFormat)
         }
         inputFormat = inputAudioFormat
         channelCount = inputAudioFormat.channelCount
@@ -73,13 +74,14 @@ class VisualizerAudioProcessor : AudioProcessor {
             outputBuffer = buffer
             return
         }
-        val order = buffer.order()
-        buffer.order(ByteOrder.LITTLE_ENDIAN)
-        val startPos = buffer.position()
-        while (buffer.remaining() >= 2 * channelCount) {
+
+        // Use a duplicate for reading so we don't affect the original buffer position
+        val analysisBuffer = buffer.duplicate().order(ByteOrder.LITTLE_ENDIAN)
+
+        while (analysisBuffer.remaining() >= 2 * channelCount) {
             var sample = 0f
             for (ch in 0 until channelCount) {
-                sample += buffer.getShort().toFloat() / Short.MAX_VALUE
+                sample += analysisBuffer.getShort().toFloat() / Short.MAX_VALUE
             }
             sample /= channelCount
             sampleBuffer[sampleBufferPos++] = sample
@@ -89,8 +91,9 @@ class VisualizerAudioProcessor : AudioProcessor {
                 lastRealDataTimeMs = System.currentTimeMillis()
             }
         }
-        buffer.position(startPos)
-        buffer.order(order)
+
+        // Advance original buffer to limit (signal all bytes consumed)
+        buffer.position(buffer.limit())
         inputBuffer = buffer
         outputBuffer = buffer
     }
@@ -108,7 +111,7 @@ class VisualizerAudioProcessor : AudioProcessor {
 
     override fun isEnded(): Boolean = inputEnded && outputBuffer === AudioProcessor.EMPTY_BUFFER
 
-    override fun flush() {
+    override fun flush(streamMetadata: AudioProcessor.StreamMetadata) {
         outputBuffer = AudioProcessor.EMPTY_BUFFER
         inputBuffer = AudioProcessor.EMPTY_BUFFER
         inputEnded = false
@@ -116,7 +119,7 @@ class VisualizerAudioProcessor : AudioProcessor {
     }
 
     override fun reset() {
-        flush()
+        flush(AudioProcessor.StreamMetadata.DEFAULT)
         inputFormat = AudioFormat.NOT_SET
         sampleBuffer.fill(0f)
         smoothedMagnitudes.fill(0f)
@@ -155,7 +158,7 @@ class VisualizerAudioProcessor : AudioProcessor {
             }
             if (count > 0) magnitudes[band] = sum / count
         }
-        val maxMag = magnitudes.max()
+        val maxMag = magnitudes.maxOrNull() ?: 0f
         if (maxMag > 0.001f) {
             for (i in magnitudes.indices) {
                 magnitudes[i] = (magnitudes[i] / maxMag).coerceIn(0f, 1f)
@@ -177,7 +180,7 @@ class VisualizerAudioProcessor : AudioProcessor {
             val logMax = ln(maxFreq)
             val boundaries = IntArray(bandCount + 1)
             for (i in 0..bandCount) {
-                val freq = Math.exp(logMin + (logMax - logMin) * i / bandCount)
+                val freq = exp(logMin + (logMax - logMin) * i / bandCount)
                 val bin = (freq * fftSize / sampleRate).toInt()
                 boundaries[i] = min(max(bin, if (i > 0) boundaries[i - 1] + 1 else 1), fftSize / 2)
             }

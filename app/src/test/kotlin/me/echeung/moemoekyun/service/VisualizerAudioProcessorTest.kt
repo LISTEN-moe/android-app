@@ -1,10 +1,12 @@
 package me.echeung.moemoekyun.service
 
+import androidx.media3.common.audio.AudioProcessor
 import io.kotest.assertions.withClue
 import io.kotest.matchers.floats.shouldBeGreaterThan
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.ints.shouldBeLessThanOrEqual
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.Test
 import kotlin.math.PI
 import kotlin.math.sin
@@ -96,13 +98,31 @@ class VisualizerAudioProcessorTest {
         processor.isEnabled = true
         processor.emitSimulated()
         val state = processor.state.replayCache.firstOrNull()
-        if (state != null) {
-            state.magnitudes.size shouldBe VisualizerState.BAND_COUNT
-            state.magnitudes.forEach { mag ->
-                withClue("Simulated magnitude should be in 0..1") {
-                    mag shouldBeGreaterThan -0.01f
-                }
+        state shouldNotBe null
+        requireNotNull(state)
+        state.magnitudes.size shouldBe VisualizerState.BAND_COUNT
+        state.magnitudes.forEach { mag ->
+            withClue("Simulated magnitude should be in 0..1") {
+                mag shouldBeGreaterThan -0.01f
             }
         }
+    }
+
+    @Test
+    fun `queueInput passes buffer through with position advanced to limit`() {
+        val processor = VisualizerAudioProcessor()
+        processor.isEnabled = true
+        val audioFormat = AudioProcessor.AudioFormat(44100, 1, androidx.media3.common.C.ENCODING_PCM_16BIT)
+        processor.configure(audioFormat)
+        processor.flush(AudioProcessor.StreamMetadata.DEFAULT)
+
+        // Create a test buffer with some PCM data
+        val pcmData = ByteArray(64) { it.toByte() }
+        val buffer = java.nio.ByteBuffer.wrap(pcmData)
+
+        processor.queueInput(buffer)
+
+        // Buffer position should be at limit (all bytes consumed)
+        buffer.position() shouldBe buffer.limit()
     }
 }
