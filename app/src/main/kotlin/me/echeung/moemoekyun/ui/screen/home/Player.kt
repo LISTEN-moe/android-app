@@ -55,6 +55,7 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,8 +83,9 @@ import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioState
-import me.echeung.moemoekyun.domain.songs.model.DomainSong
+import me.echeung.moemoekyun.service.VisualizerState
 import me.echeung.moemoekyun.ui.common.AlbumArt
+import me.echeung.moemoekyun.ui.common.AudioVisualizer
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 val PlayerPeekHeight = 72.dp
@@ -94,6 +96,9 @@ fun PlayerScaffold(
     radioState: RadioState,
     mediaController: MediaController?,
     accentColor: Color?,
+    visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
+    onSetVisualizerActive: (Boolean) -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
@@ -109,8 +114,15 @@ fun PlayerScaffold(
         ),
     )
 
+    val isSheetExpanded = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
+    val isPlaying = !playPauseButtonState.showPlay
+
+    SideEffect {
+        onSetVisualizerActive(isVisualizerEnabled && isPlaying && isSheetExpanded)
+    }
+
     BackHandler(
-        enabled = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded,
+        enabled = isSheetExpanded,
         onBack = {
             scope.launch {
                 scaffoldState.bottomSheetState.hide()
@@ -121,10 +133,12 @@ fun PlayerScaffold(
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
-            PlayerContent(
+            ExpandedPlayerContent(
                 radioState = radioState,
                 playPauseButtonState = playPauseButtonState,
                 accentColor = accentColor,
+                visualizerState = visualizerState,
+                isVisualizerEnabled = isVisualizerEnabled,
                 onClickStation = onClickStation,
                 onClickHistory = onClickHistory,
                 toggleFavorite = toggleFavorite,
@@ -156,28 +170,6 @@ fun PlayerScaffold(
             )
         }
     }
-}
-
-@Composable
-@OptIn(UnstableApi::class)
-private fun PlayerContent(
-    radioState: RadioState,
-    playPauseButtonState: PlayPauseButtonState,
-    accentColor: Color?,
-    onClickStation: (Station) -> Unit,
-    onClickHistory: () -> Unit,
-    toggleFavorite: ((Int) -> Unit)?,
-    onClickCollapse: () -> Unit,
-) {
-    ExpandedPlayerContent(
-        radioState = radioState,
-        playPauseButtonState = playPauseButtonState,
-        accentColor = accentColor,
-        onClickCollapse = onClickCollapse,
-        onClickStation = onClickStation,
-        onClickHistory = onClickHistory,
-        toggleFavorite = toggleFavorite,
-    )
 }
 
 @OptIn(UnstableApi::class)
@@ -246,6 +238,8 @@ private fun ExpandedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
+    visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -268,6 +262,8 @@ private fun ExpandedPlayerContent(
                     PortraitExpandedPlayerContent(
                         radioState = radioState,
                         playPauseButtonState = playPauseButtonState,
+                        visualizerState = visualizerState,
+                        isVisualizerEnabled = isVisualizerEnabled,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
@@ -277,6 +273,8 @@ private fun ExpandedPlayerContent(
                     LandscapeExpandedPlayerContent(
                         radioState = radioState,
                         playPauseButtonState = playPauseButtonState,
+                        visualizerState = visualizerState,
+                        isVisualizerEnabled = isVisualizerEnabled,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
@@ -293,6 +291,8 @@ private fun ExpandedPlayerContent(
 private fun PortraitExpandedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
+    visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -315,12 +315,13 @@ private fun PortraitExpandedPlayerContent(
             albumArtUrl = radioState.albumArtUrl,
         )
 
-        SongInfo(
-            radioState,
-            playPauseButtonState,
-            radioState.currentSong,
-            onClickHistory,
-            toggleFavorite,
+        SongInfoWithVisualizer(
+            radioState = radioState,
+            playPauseButtonState = playPauseButtonState,
+            visualizerState = visualizerState,
+            isVisualizerEnabled = isVisualizerEnabled,
+            onClickHistory = onClickHistory,
+            toggleFavorite = toggleFavorite,
         )
     }
 }
@@ -330,6 +331,8 @@ private fun PortraitExpandedPlayerContent(
 private fun LandscapeExpandedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
+    visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -358,14 +361,42 @@ private fun LandscapeExpandedPlayerContent(
             CollapseIcon(onClickCollapse)
             StationPicker(radioState, onClickStation)
 
-            SongInfo(
-                radioState,
-                playPauseButtonState,
-                radioState.currentSong,
-                onClickHistory,
-                toggleFavorite,
+            SongInfoWithVisualizer(
+                radioState = radioState,
+                playPauseButtonState = playPauseButtonState,
+                visualizerState = visualizerState,
+                isVisualizerEnabled = isVisualizerEnabled,
+                onClickHistory = onClickHistory,
+                toggleFavorite = toggleFavorite,
             )
         }
+    }
+}
+
+@OptIn(UnstableApi::class)
+@Composable
+private fun SongInfoWithVisualizer(
+    radioState: RadioState,
+    playPauseButtonState: PlayPauseButtonState,
+    visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
+    onClickHistory: () -> Unit,
+    toggleFavorite: ((Int) -> Unit)?,
+) {
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+    ) {
+        if (isVisualizerEnabled) {
+            AudioVisualizer(
+                state = visualizerState,
+            )
+        }
+        SongInfo(
+            radioState,
+            playPauseButtonState,
+            onClickHistory,
+            toggleFavorite,
+        )
     }
 }
 
@@ -419,11 +450,11 @@ private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> U
 private fun SongInfo(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
-    currentSong: DomainSong?,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     val context = LocalContext.current
+    val currentSong = radioState.currentSong
 
     Column(
         modifier = Modifier

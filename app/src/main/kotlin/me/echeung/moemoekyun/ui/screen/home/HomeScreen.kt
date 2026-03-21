@@ -11,13 +11,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
@@ -37,10 +37,13 @@ fun HomeScreen(
     onShowHistory: (List<DomainSong>) -> Unit,
     screenModel: HomeScreenModel = hiltViewModel(),
 ) {
-    val state by screenModel.state.collectAsState()
+    val state by screenModel.state.collectAsStateWithLifecycle()
 
-    val radioState by screenModel.radioState.collectAsState()
+    val radioState by screenModel.radioState.collectAsStateWithLifecycle()
     val isAuthenticated = state.user != null
+
+    val visualizerState by screenModel.visualizerState.collectAsStateWithLifecycle()
+    val isVisualizerEnabled by screenModel.isVisualizerEnabled.collectAsStateWithLifecycle()
 
     val context = LocalContext.current
 
@@ -61,6 +64,9 @@ fun HomeScreen(
         radioState = radioState,
         mediaController = player,
         accentColor = state.accentColor,
+        visualizerState = visualizerState,
+        isVisualizerEnabled = isVisualizerEnabled,
+        onSetVisualizerActive = screenModel::setVisualizerActive,
         onClickStation = screenModel::toggleLibrary,
         onClickHistory = {
             val historySongs = listOfNotNull(radioState.currentSong) + radioState.pastSongs

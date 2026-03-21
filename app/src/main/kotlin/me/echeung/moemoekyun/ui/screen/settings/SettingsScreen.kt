@@ -92,6 +92,13 @@ fun SettingsScreen(onBack: () -> Unit, screenModel: SettingsScreenModel = hiltVi
                     preference = screenModel.preferenceUtil.shouldPauseOnNoisy(),
                 )
             }
+            item {
+                SwitchPreference(
+                    title = stringResource(R.string.pref_title_visualizer),
+                    subtitle = stringResource(R.string.pref_title_visualizer_summary),
+                    preference = screenModel.preferenceUtil.shouldShowVisualizer(),
+                )
+            }
         }
     }
 }

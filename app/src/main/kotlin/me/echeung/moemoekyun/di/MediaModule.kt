@@ -9,7 +9,11 @@ import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.datasource.DefaultHttpDataSource
+import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.exoplayer.RenderersFactory
+import androidx.media3.exoplayer.audio.AudioSink
+import androidx.media3.exoplayer.audio.DefaultAudioSink
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import androidx.media3.extractor.DefaultExtractorsFactory
 import dagger.Module
@@ -18,6 +22,7 @@ import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import me.echeung.moemoekyun.service.VisualizerAudioProcessor
 import me.echeung.moemoekyun.util.ext.audioManager
 import me.echeung.moemoekyun.util.system.NetworkUtil
 
@@ -50,11 +55,30 @@ object MediaModule {
         ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
 
     @Provides
+    @Reusable
+    fun renderersFactory(
+        @ApplicationContext context: Context,
+        visualizerAudioProcessor: VisualizerAudioProcessor,
+    ): RenderersFactory = object : DefaultRenderersFactory(context) {
+        override fun buildAudioSink(
+            context: Context,
+            enableFloatOutput: Boolean,
+            enableAudioTrackPlaybackParams: Boolean,
+        ): AudioSink = DefaultAudioSink.Builder(context)
+            .setAudioProcessors(arrayOf(visualizerAudioProcessor))
+            .setEnableFloatOutput(enableFloatOutput)
+            .setEnableAudioOutputPlaybackParameters(enableAudioTrackPlaybackParams)
+            .build()
+    }
+
+    @Provides
+    @Reusable
     fun exoPlayer(
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,
         audioAttributes: AudioAttributes,
-    ): Player = ExoPlayer.Builder(context)
+        renderersFactory: RenderersFactory,
+    ): Player = ExoPlayer.Builder(context, renderersFactory)
         .setMediaSourceFactory(progressiveMediaSourceFactory)
         .setAudioAttributes(audioAttributes, true)
         .setWakeMode(C.WAKE_MODE_NETWORK)

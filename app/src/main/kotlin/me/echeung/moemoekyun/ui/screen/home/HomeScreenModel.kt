@@ -8,10 +8,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioService
@@ -24,6 +26,8 @@ import me.echeung.moemoekyun.domain.songs.model.search
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
 import me.echeung.moemoekyun.domain.user.interactor.LoginLogout
 import me.echeung.moemoekyun.domain.user.model.DomainUser
+import me.echeung.moemoekyun.service.VisualizerAudioProcessor
+import me.echeung.moemoekyun.service.VisualizerState
 import me.echeung.moemoekyun.util.AlbumArtUtil
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.SortType
@@ -41,12 +45,26 @@ class HomeScreenModel @Inject constructor(
     private val loginLogout: LoginLogout,
     private val albumArtUtil: AlbumArtUtil,
     private val preferenceUtil: PreferenceUtil,
+    private val visualizerAudioProcessor: VisualizerAudioProcessor,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
     val radioState = radioService.state
+
+    private val whileSubscribed = SharingStarted.WhileSubscribed(5000)
+
+    val visualizerState: StateFlow<VisualizerState> = visualizerAudioProcessor.state
+        .stateIn(viewModelScope, whileSubscribed, VisualizerState.EMPTY)
+
+    val isVisualizerEnabled: StateFlow<Boolean> = preferenceUtil.shouldShowVisualizer().asFlow()
+        .stateIn(viewModelScope, whileSubscribed, false)
+
+    fun setVisualizerActive(active: Boolean) {
+        visualizerAudioProcessor.isEnabled = active
+        if (!active) visualizerAudioProcessor.emitEmpty()
+    }
 
     init {
         viewModelScope.launchIO {
