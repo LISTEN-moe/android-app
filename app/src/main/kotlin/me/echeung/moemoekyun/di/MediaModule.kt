@@ -54,6 +54,7 @@ object MediaModule {
         ProgressiveMediaSource.Factory(dataSourceFactory, DefaultExtractorsFactory())
 
     @Provides
+    @Reusable
     fun exoPlayer(
         @ApplicationContext context: Context,
         progressiveMediaSourceFactory: ProgressiveMediaSource.Factory,

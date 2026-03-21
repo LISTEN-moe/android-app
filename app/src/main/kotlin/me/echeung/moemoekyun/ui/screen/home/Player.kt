@@ -55,6 +55,7 @@ import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,7 +83,6 @@ import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioState
-import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.service.VisualizerState
 import me.echeung.moemoekyun.ui.common.AlbumArt
 import me.echeung.moemoekyun.ui.common.AudioVisualizer
@@ -117,7 +117,7 @@ fun PlayerScaffold(
     val isSheetExpanded = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
     val isPlaying = !playPauseButtonState.showPlay
 
-    LaunchedEffect(isVisualizerEnabled, isPlaying, isSheetExpanded) {
+    SideEffect {
         onSetVisualizerActive(isVisualizerEnabled && isPlaying && isSheetExpanded)
     }
 
@@ -133,11 +133,11 @@ fun PlayerScaffold(
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
-            PlayerContent(
+            ExpandedPlayerContent(
                 radioState = radioState,
                 playPauseButtonState = playPauseButtonState,
                 accentColor = accentColor,
-                visualizerState = if (isSheetExpanded) visualizerState else VisualizerState.EMPTY,
+                visualizerState = visualizerState,
                 isVisualizerEnabled = isVisualizerEnabled,
                 onClickStation = onClickStation,
                 onClickHistory = onClickHistory,
@@ -170,32 +170,6 @@ fun PlayerScaffold(
             )
         }
     }
-}
-
-@Composable
-@OptIn(UnstableApi::class)
-private fun PlayerContent(
-    radioState: RadioState,
-    playPauseButtonState: PlayPauseButtonState,
-    accentColor: Color?,
-    visualizerState: VisualizerState,
-    isVisualizerEnabled: Boolean,
-    onClickStation: (Station) -> Unit,
-    onClickHistory: () -> Unit,
-    toggleFavorite: ((Int) -> Unit)?,
-    onClickCollapse: () -> Unit,
-) {
-    ExpandedPlayerContent(
-        radioState = radioState,
-        playPauseButtonState = playPauseButtonState,
-        accentColor = accentColor,
-        visualizerState = visualizerState,
-        isVisualizerEnabled = isVisualizerEnabled,
-        onClickCollapse = onClickCollapse,
-        onClickStation = onClickStation,
-        onClickHistory = onClickHistory,
-        toggleFavorite = toggleFavorite,
-    )
 }
 
 @OptIn(UnstableApi::class)
@@ -420,7 +394,6 @@ private fun SongInfoWithVisualizer(
         SongInfo(
             radioState,
             playPauseButtonState,
-            radioState.currentSong,
             onClickHistory,
             toggleFavorite,
         )
@@ -477,11 +450,11 @@ private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> U
 private fun SongInfo(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
-    currentSong: DomainSong?,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     val context = LocalContext.current
+    val currentSong = radioState.currentSong
 
     Column(
         modifier = Modifier
