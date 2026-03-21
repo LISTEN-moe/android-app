@@ -123,8 +123,8 @@ fun PlayerScaffold(
         visualizerAudioProcessor.isEnabled = isVisualizerEnabled && isPlaying && isSheetExpanded
     }
 
-    LaunchedEffect(visualizerAudioProcessor.isEnabled) {
-        if (visualizerAudioProcessor.isEnabled) {
+    LaunchedEffect(isVisualizerEnabled, isPlaying, isSheetExpanded) {
+        if (isVisualizerEnabled && isPlaying && isSheetExpanded) {
             while (true) {
                 visualizerAudioProcessor.emitSimulated()
                 delay(16)
@@ -149,6 +149,7 @@ fun PlayerScaffold(
                 playPauseButtonState = playPauseButtonState,
                 accentColor = accentColor,
                 visualizerState = if (isSheetExpanded) visualizerState else VisualizerState.EMPTY,
+                isVisualizerEnabled = isVisualizerEnabled,
                 onClickStation = onClickStation,
                 onClickHistory = onClickHistory,
                 toggleFavorite = toggleFavorite,
@@ -189,6 +190,7 @@ private fun PlayerContent(
     playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
@@ -199,6 +201,7 @@ private fun PlayerContent(
         playPauseButtonState = playPauseButtonState,
         accentColor = accentColor,
         visualizerState = visualizerState,
+        isVisualizerEnabled = isVisualizerEnabled,
         onClickCollapse = onClickCollapse,
         onClickStation = onClickStation,
         onClickHistory = onClickHistory,
@@ -273,6 +276,7 @@ private fun ExpandedPlayerContent(
     playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -297,6 +301,7 @@ private fun ExpandedPlayerContent(
                         playPauseButtonState = playPauseButtonState,
                         accentColor = accentColor,
                         visualizerState = visualizerState,
+                        isVisualizerEnabled = isVisualizerEnabled,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
@@ -308,6 +313,7 @@ private fun ExpandedPlayerContent(
                         playPauseButtonState = playPauseButtonState,
                         accentColor = accentColor,
                         visualizerState = visualizerState,
+                        isVisualizerEnabled = isVisualizerEnabled,
                         onClickCollapse = onClickCollapse,
                         onClickStation = onClickStation,
                         onClickHistory = onClickHistory,
@@ -326,6 +332,7 @@ private fun PortraitExpandedPlayerContent(
     playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -351,10 +358,12 @@ private fun PortraitExpandedPlayerContent(
         Box(
             contentAlignment = Alignment.BottomCenter,
         ) {
-            AudioVisualizer(
-                state = visualizerState,
-                accentColor = accentColor ?: MaterialTheme.colorScheme.primary,
-            )
+            if (isVisualizerEnabled) {
+                AudioVisualizer(
+                    state = visualizerState,
+                    accentColor = accentColor ?: MaterialTheme.colorScheme.primary,
+                )
+            }
             SongInfo(
                 radioState,
                 playPauseButtonState,
@@ -373,6 +382,7 @@ private fun LandscapeExpandedPlayerContent(
     playPauseButtonState: PlayPauseButtonState,
     accentColor: Color?,
     visualizerState: VisualizerState,
+    isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
@@ -404,10 +414,12 @@ private fun LandscapeExpandedPlayerContent(
             Box(
                 contentAlignment = Alignment.BottomCenter,
             ) {
-                AudioVisualizer(
-                    state = visualizerState,
-                    accentColor = accentColor ?: MaterialTheme.colorScheme.primary,
-                )
+                if (isVisualizerEnabled) {
+                    AudioVisualizer(
+                        state = visualizerState,
+                        accentColor = accentColor ?: MaterialTheme.colorScheme.primary,
+                    )
+                }
                 SongInfo(
                     radioState,
                     playPauseButtonState,
