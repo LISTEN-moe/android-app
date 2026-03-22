@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalAutofillManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -35,10 +36,12 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.Toolbar
+import me.echeung.moemoekyun.ui.common.rememberToolbarScrollBehavior
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LoginScreen(onBack: () -> Unit, screenModel: LoginScreenModel = hiltViewModel()) {
+    val toolbarScrollBehavior = rememberToolbarScrollBehavior()
     val context = LocalContext.current
     val autofillManager = LocalAutofillManager.current
 
@@ -55,7 +58,14 @@ fun LoginScreen(onBack: () -> Unit, screenModel: LoginScreenModel = hiltViewMode
     }
 
     Scaffold(
-        topBar = { Toolbar(titleResId = R.string.login, onBack = onBack) },
+        modifier = Modifier.nestedScroll(toolbarScrollBehavior.nestedScrollConnection),
+        topBar = {
+            Toolbar(
+                titleResId = R.string.login,
+                onBack = onBack,
+                scrollBehavior = toolbarScrollBehavior,
+            )
+        },
     ) { contentPadding ->
         BackgroundBox(
             modifier = Modifier

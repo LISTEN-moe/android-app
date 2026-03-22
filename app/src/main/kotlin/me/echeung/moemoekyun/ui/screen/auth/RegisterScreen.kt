@@ -19,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -26,9 +27,11 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.Toolbar
+import me.echeung.moemoekyun.ui.common.rememberToolbarScrollBehavior
 
 @Composable
 fun RegisterScreen(onBack: () -> Unit, screenModel: RegisterScreenModel = hiltViewModel()) {
+    val toolbarScrollBehavior = rememberToolbarScrollBehavior()
     val state by screenModel.state.collectAsState()
 
     LaunchedEffect(state.result) {
@@ -47,7 +50,14 @@ fun RegisterScreen(onBack: () -> Unit, screenModel: RegisterScreenModel = hiltVi
     val password2 = rememberTextFieldState("")
 
     Scaffold(
-        topBar = { Toolbar(titleResId = R.string.register, onBack = onBack) },
+        modifier = Modifier.nestedScroll(toolbarScrollBehavior.nestedScrollConnection),
+        topBar = {
+            Toolbar(
+                titleResId = R.string.register,
+                onBack = onBack,
+                scrollBehavior = toolbarScrollBehavior,
+            )
+        },
     ) { contentPadding ->
         BackgroundBox(
             modifier = Modifier

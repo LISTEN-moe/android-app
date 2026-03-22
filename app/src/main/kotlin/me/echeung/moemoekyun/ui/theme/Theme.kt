@@ -6,12 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 private val ThemePalette = darkColorScheme(
-    primary = Color(0xFFF60052),
-    onPrimary = Color(0xFFFFFFFF),
-    secondary = Color(0xFFB4B8C2),
+    primary = Color(0xFFFF015B),
+    onPrimary = Color(0xFFF0F0F2),
+    secondary = Color(0xFF8F92A1),
     primaryContainer = Color(0xFFF60052),
-    background = Color(0xFF1A1C29),
-    surface = Color(0xFF1A1C29),
+    background = Color(0xFF1A1D28),
+    surface = Color(0xFF1F232D),
+    surfaceContainer = Color(0xFF1F232D),
 )
 
 @Composable

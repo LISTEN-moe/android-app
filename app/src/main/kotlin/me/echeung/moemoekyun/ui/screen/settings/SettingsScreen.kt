@@ -10,6 +10,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
@@ -23,10 +25,12 @@ import me.echeung.moemoekyun.ui.common.Toolbar
 import me.echeung.moemoekyun.ui.common.preferences.ListPreference
 import me.echeung.moemoekyun.ui.common.preferences.PreferenceGroupHeader
 import me.echeung.moemoekyun.ui.common.preferences.SwitchPreference
+import me.echeung.moemoekyun.ui.common.rememberToolbarScrollBehavior
 import me.echeung.moemoekyun.util.system.LocaleUtil
 
 @Composable
 fun SettingsScreen(onBack: () -> Unit, screenModel: SettingsScreenModel = hiltViewModel()) {
+    val toolbarScrollBehavior = rememberToolbarScrollBehavior()
     val context = LocalContext.current
 
     val langs = remember { getLangs(context) }
@@ -44,7 +48,14 @@ fun SettingsScreen(onBack: () -> Unit, screenModel: SettingsScreenModel = hiltVi
     }
 
     Scaffold(
-        topBar = { Toolbar(titleResId = R.string.settings, onBack = onBack) },
+        modifier = Modifier.nestedScroll(toolbarScrollBehavior.nestedScrollConnection),
+        topBar = {
+            Toolbar(
+                titleResId = R.string.settings,
+                onBack = onBack,
+                scrollBehavior = toolbarScrollBehavior,
+            )
+        },
     ) { contentPadding ->
         LazyColumn(
             contentPadding = contentPadding,

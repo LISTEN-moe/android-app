@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,6 +43,7 @@ fun Toolbar(
     @StringRes titleResId: Int? = null,
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     Toolbar(
         title = {
@@ -49,16 +52,21 @@ fun Toolbar(
         onBack = onBack,
         actions = actions,
         modifier = modifier,
+        scrollBehavior = scrollBehavior,
     )
 }
 
 @Composable
-fun toolbarColors() = TopAppBarDefaults.topAppBarColors(
-    containerColor = MaterialTheme.colorScheme.primary,
+fun toolbarColors(isTransparent: Boolean = false) = TopAppBarDefaults.topAppBarColors(
+    containerColor = if (isTransparent) Color.Transparent else MaterialTheme.colorScheme.surface,
     navigationIconContentColor = Color.White,
     titleContentColor = Color.White,
     actionIconContentColor = Color.White,
 )
+
+@Composable
+fun rememberToolbarScrollBehavior(): TopAppBarScrollBehavior =
+    TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
 @Composable
 fun Toolbar(
@@ -66,6 +74,7 @@ fun Toolbar(
     modifier: Modifier = Modifier,
     onBack: (() -> Unit)? = null,
     actions: @Composable RowScope.() -> Unit = {},
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     TopAppBar(
         title = title,
@@ -77,6 +86,7 @@ fun Toolbar(
         actions = actions,
         modifier = modifier,
         colors = toolbarColors(),
+        scrollBehavior = scrollBehavior,
     )
 }
 

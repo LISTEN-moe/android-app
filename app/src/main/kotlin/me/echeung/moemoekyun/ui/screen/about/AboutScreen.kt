@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -41,10 +42,12 @@ import androidx.compose.ui.unit.dp
 import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.Toolbar
+import me.echeung.moemoekyun.ui.common.rememberToolbarScrollBehavior
 import me.echeung.moemoekyun.ui.theme.AppTheme
 
 @Composable
 fun AboutScreen(onBack: () -> Unit, onNavigateLicenses: () -> Unit) {
+    val toolbarScrollBehavior = rememberToolbarScrollBehavior()
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
 
@@ -62,7 +65,14 @@ fun AboutScreen(onBack: () -> Unit, onNavigateLicenses: () -> Unit) {
     }
 
     Scaffold(
-        topBar = { Toolbar(titleResId = R.string.about, onBack = onBack) },
+        modifier = Modifier.nestedScroll(toolbarScrollBehavior.nestedScrollConnection),
+        topBar = {
+            Toolbar(
+                titleResId = R.string.about,
+                onBack = onBack,
+                scrollBehavior = toolbarScrollBehavior,
+            )
+        },
     ) { contentPadding ->
         LazyColumn(
             contentPadding = contentPadding,

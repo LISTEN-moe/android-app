@@ -10,10 +10,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -25,6 +27,7 @@ import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.service.PlaybackService
 import me.echeung.moemoekyun.ui.common.BackgroundBox
+import me.echeung.moemoekyun.ui.common.rememberToolbarScrollBehavior
 import me.echeung.moemoekyun.ui.common.toolbarColors
 
 @Composable
@@ -37,6 +40,9 @@ fun HomeScreen(
     onShowHistory: (List<DomainSong>) -> Unit,
     screenModel: HomeScreenModel = hiltViewModel(),
 ) {
+    val toolbarScrollBehavior = rememberToolbarScrollBehavior()
+    val context = LocalContext.current
+
     val state by screenModel.state.collectAsStateWithLifecycle()
 
     val radioState by screenModel.radioState.collectAsStateWithLifecycle()
@@ -44,8 +50,6 @@ fun HomeScreen(
 
     val visualizerState by screenModel.visualizerState.collectAsStateWithLifecycle()
     val isVisualizerEnabled by screenModel.isVisualizerEnabled.collectAsStateWithLifecycle()
-
-    val context = LocalContext.current
 
     val player by produceState<MediaController?>(null) {
         val sessionToken = SessionToken(context, ComponentName(context, PlaybackService::class.java))
@@ -77,8 +81,10 @@ fun HomeScreen(
         toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
         content = {
             Scaffold(
+                modifier = Modifier.nestedScroll(toolbarScrollBehavior.nestedScrollConnection),
                 topBar = {
                     HomeToolbar(
+                        scrollBehavior = toolbarScrollBehavior,
                         isAuthenticated = isAuthenticated,
                         onNavigateSearch = onNavigateSearch,
                         onNavigateAbout = onNavigateAbout,
@@ -119,6 +125,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeToolbar(
+    scrollBehavior: TopAppBarScrollBehavior,
     isAuthenticated: Boolean,
     onNavigateSearch: () -> Unit,
     onNavigateAbout: () -> Unit,
@@ -150,6 +157,7 @@ private fun HomeToolbar(
                 )
             }
         },
-        colors = toolbarColors(),
+        colors = toolbarColors(isTransparent = true),
+        scrollBehavior = scrollBehavior,
     )
 }

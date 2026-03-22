@@ -5,17 +5,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.ui.common.Toolbar
+import me.echeung.moemoekyun.ui.common.rememberToolbarScrollBehavior
 
 @Composable
 fun LicensesScreen(onBack: () -> Unit) {
+    val toolbarScrollBehavior = rememberToolbarScrollBehavior()
     val libs by produceLibraries()
 
     Scaffold(
-        topBar = { Toolbar(titleResId = R.string.licenses, onBack = onBack) },
+        modifier = Modifier.nestedScroll(toolbarScrollBehavior.nestedScrollConnection),
+        topBar = {
+            Toolbar(
+                titleResId = R.string.licenses,
+                onBack = onBack,
+                scrollBehavior = toolbarScrollBehavior,
+            )
+        },
     ) { contentPadding ->
         LibrariesContainer(
             modifier = Modifier
