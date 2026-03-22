@@ -295,7 +295,11 @@ private fun PortraitExpandedPlayerContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.systemBars)
+            .windowInsetsPadding(
+                WindowInsets.systemBars.only(
+                    WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
+                ),
+            )
             .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -334,7 +338,11 @@ private fun LandscapeExpandedPlayerContent(
 ) {
     Row(
         modifier = Modifier
-            .windowInsetsPadding(WindowInsets.systemBars),
+            .windowInsetsPadding(
+                WindowInsets.systemBars.only(
+                    WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
+                ),
+            ),
     ) {
         Box(
             modifier = Modifier
@@ -451,6 +459,7 @@ private fun SongInfo(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
             .padding(vertical = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),

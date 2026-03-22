@@ -13,7 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import me.echeung.moemoekyun.service.VisualizerState
@@ -22,7 +25,7 @@ import kotlin.math.min
 private val MaxHeight = 120.dp
 private val MinBarWidth = 12.dp
 private val BarGap = 2.dp
-private val BarCornerRadius = 2.dp
+private val BarCornerRadius = 8.dp
 private const val ACCENT_BAR_ALPHA = 0.5f
 
 @Composable
@@ -64,6 +67,7 @@ fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
 
         val totalGapWidth = (barCount - 1) * gapPx
         val barWidth = (size.width - totalGapWidth) / barCount
+        val topBarCornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx)
 
         for (i in 0 until barCount) {
             // If fewer bars than bands, average adjacent bands into each bar.
@@ -81,11 +85,20 @@ fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
             val x = i * (barWidth + gapPx)
             val y = size.height - barHeight
 
-            drawRoundRect(
+            drawPath(
+                Path().apply {
+                    addRoundRect(
+                        RoundRect(
+                            rect = Rect(
+                                offset = Offset(x, y),
+                                size = Size(barWidth, barHeight),
+                            ),
+                            topLeft = topBarCornerRadius,
+                            topRight = topBarCornerRadius,
+                        ),
+                    )
+                },
                 color = barColor,
-                topLeft = Offset(x, y),
-                size = Size(barWidth, barHeight),
-                cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
             )
         }
     }
