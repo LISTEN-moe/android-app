@@ -10,6 +10,7 @@ private val OnPrimary = Color(0xFFF0F0F2)
 private val Secondary = Color(0xFF8F92A1)
 private val Background = Color(0xFF1A1D28)
 private val Surface = Color(0xFF1F232D)
+private val Outline = Color(0xFF2C2829)
 
 private val JpopColorScheme = darkColorScheme(
     primary = Color(0xFFFF015B),
@@ -19,6 +20,8 @@ private val JpopColorScheme = darkColorScheme(
     background = Background,
     surface = Surface,
     surfaceContainer = Surface,
+    outline = Outline,
+    outlineVariant = Outline,
 )
 
 private val KpopColorScheme = darkColorScheme(
@@ -29,6 +32,8 @@ private val KpopColorScheme = darkColorScheme(
     background = Background,
     surface = Surface,
     surfaceContainer = Surface,
+    outline = Outline,
+    outlineVariant = Outline,
 )
 
 private fun colorSchemeForStation(station: Station) = when (station) {

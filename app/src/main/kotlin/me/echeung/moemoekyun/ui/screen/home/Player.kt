@@ -187,7 +187,7 @@ private fun BoxScope.CollapsedPlayerContent(
         contentColor = contentColorFor(surfaceColor),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
-            HorizontalDivider(color = MaterialTheme.colorScheme.secondary)
+            HorizontalDivider()
 
             Row(
                 modifier = Modifier
@@ -266,6 +266,7 @@ private fun ExpandedPlayerContent(
     toggleFavorite: ((Int) -> Unit)?,
 ) {
     val surfaceColor = MaterialTheme.colorScheme.surface
+
     Surface(
         color = surfaceColor,
     ) {
