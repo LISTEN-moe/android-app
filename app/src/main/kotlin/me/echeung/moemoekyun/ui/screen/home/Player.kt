@@ -10,18 +10,16 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ExpandMore
@@ -34,7 +32,7 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
@@ -61,7 +59,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -86,7 +83,8 @@ import me.echeung.moemoekyun.ui.common.AudioVisualizer
 import me.echeung.moemoekyun.ui.common.LocalAlbumArtAccentColor
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 
-val PlayerPeekHeight = 72.dp
+/** Reserved scroll space for the collapsed player strip (content height, excluding nav bar inset). */
+val PlayerPeekHeight = 80.dp
 
 @Composable
 @OptIn(UnstableApi::class)
@@ -160,6 +158,7 @@ fun PlayerScaffold(
             CollapsedPlayerContent(
                 radioState = radioState,
                 playPauseButtonState = playPauseButtonState,
+                toggleFavorite = toggleFavorite,
                 onClick = {
                     scope.launch {
                         scaffoldState.bottomSheetState.expand()
@@ -175,57 +174,80 @@ fun PlayerScaffold(
 private fun BoxScope.CollapsedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
+    toggleFavorite: ((Int) -> Unit)?,
     onClick: () -> Unit,
 ) {
+    val surfaceColor = MaterialTheme.colorScheme.surface
+
     Surface(
         modifier = Modifier
             .align(Alignment.BottomCenter)
-            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
-            .height(PlayerPeekHeight)
-            .padding(8.dp)
-            .clip(RoundedCornerShape(8.dp))
             .fillMaxWidth(),
+        color = surfaceColor.copy(alpha = 0.88f),
+        contentColor = contentColorFor(surfaceColor),
     ) {
-        Row(
-            modifier = Modifier.clickable(onClick = onClick),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            AlbumArt(
-                albumArtUrl = radioState.albumArtUrl,
-                openUrlOnClick = false,
-            )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            HorizontalDivider(color = MaterialTheme.colorScheme.secondary)
 
-            Column(
+            Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
+                    .fillMaxWidth()
+                    .clickable(onClick = onClick)
+                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
+                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                if (radioState.currentSong == null) {
-                    CircularProgressIndicator()
-                } else {
-                    Text(
-                        text = radioState.currentSong.title,
-                        maxLines = 1,
+                Box(modifier = Modifier.size(56.dp)) {
+                    AlbumArt(
+                        modifier = Modifier.fillMaxSize(),
+                        albumArtUrl = radioState.albumArtUrl,
+                        openUrlOnClick = false,
+                        cornerRadius = 8.dp,
                     )
+                }
 
-                    CompositionLocalProvider(
-                        LocalTextStyle provides MaterialTheme.typography.bodySmall,
-                        LocalContentColor provides MaterialTheme.colorScheme.secondary,
-                    ) {
+                PlayerCircularPlayPauseButton(
+                    playPauseButtonState = playPauseButtonState,
+                    size = 48.dp,
+                )
+
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                ) {
+                    if (radioState.currentSong == null) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                    } else {
                         Text(
-                            text = radioState.currentSong.artists.orEmpty(),
+                            text = radioState.currentSong.title,
+                            style = MaterialTheme.typography.titleSmall,
                             maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
+
+                        CompositionLocalProvider(
+                            LocalTextStyle provides MaterialTheme.typography.bodySmall,
+                            LocalContentColor provides MaterialTheme.colorScheme.secondary,
+                        ) {
+                            Text(
+                                text = radioState.currentSong.artists.orEmpty(),
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
                     }
                 }
-            }
 
-            IconButton(onClick = playPauseButtonState::onClick, enabled = playPauseButtonState.isEnabled) {
-                PlayStateIcon(playPauseButtonState)
+                if (toggleFavorite != null) {
+                    val song = radioState.currentSong
+                    SongFavoriteIconButton(
+                        songId = song?.id,
+                        favorited = song?.favorited == true,
+                        onToggleFavorite = toggleFavorite,
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.width(8.dp))
         }
     }
 }
@@ -511,28 +533,15 @@ private fun SongInfo(
             IconButton(onClick = onClickHistory) {
                 Icon(Icons.Outlined.History, contentDescription = stringResource(R.string.last_played))
             }
-            FloatingActionButton(
-                modifier = Modifier.size(64.dp),
-                onClick = playPauseButtonState::onClick,
-            ) {
-                PlayStateIcon(playPauseButtonState)
-            }
-            IconButton(
-                onClick = { currentSong?.let { toggleFavorite?.invoke(it.id) } },
-                enabled = currentSong != null && toggleFavorite != null,
-            ) {
-                if (currentSong?.favorited == true) {
-                    Icon(
-                        Icons.Outlined.Star,
-                        contentDescription = stringResource(R.string.action_unfavorite),
-                    )
-                } else {
-                    Icon(
-                        Icons.Outlined.StarOutline,
-                        contentDescription = stringResource(R.string.action_favorite),
-                    )
-                }
-            }
+            PlayerCircularPlayPauseButton(
+                playPauseButtonState = playPauseButtonState,
+                size = 64.dp,
+            )
+            SongFavoriteIconButton(
+                songId = currentSong?.id,
+                favorited = currentSong?.favorited == true,
+                onToggleFavorite = toggleFavorite,
+            )
         }
 
         Row(
@@ -552,6 +561,59 @@ private fun SongInfo(
                     Icon(Icons.Outlined.Person, contentDescription = null)
                     Text(it)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SongFavoriteIconButton(
+    songId: Int?,
+    favorited: Boolean,
+    onToggleFavorite: ((Int) -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
+    IconButton(
+        onClick = { songId?.let { onToggleFavorite?.invoke(it) } },
+        enabled = songId != null && onToggleFavorite != null,
+        modifier = modifier,
+    ) {
+        if (favorited) {
+            Icon(
+                imageVector = Icons.Outlined.Star,
+                contentDescription = stringResource(R.string.action_unfavorite),
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Outlined.StarOutline,
+                contentDescription = stringResource(R.string.action_favorite),
+            )
+        }
+    }
+}
+
+@OptIn(UnstableApi::class)
+@Composable
+private fun PlayerCircularPlayPauseButton(
+    playPauseButtonState: PlayPauseButtonState,
+    modifier: Modifier = Modifier,
+    size: Dp = 48.dp,
+) {
+    Surface(
+        modifier = modifier.size(size),
+        shape = CircleShape,
+        color = MaterialTheme.colorScheme.primary,
+        onClick = playPauseButtonState::onClick,
+        enabled = playPauseButtonState.isEnabled,
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CompositionLocalProvider(
+                LocalContentColor provides MaterialTheme.colorScheme.onPrimary,
+            ) {
+                PlayStateIcon(playPauseButtonState)
             }
         }
     }
