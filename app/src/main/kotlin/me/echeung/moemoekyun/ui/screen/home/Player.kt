@@ -311,6 +311,7 @@ private fun PortraitExpandedPlayerContent(
                 .fillMaxWidth(0.85f)
                 .weight(1f),
             albumArtUrl = radioState.albumArtUrl,
+            cornerRadius = 32.dp,
         )
 
         SongInfoWithVisualizer(
@@ -351,6 +352,7 @@ private fun LandscapeExpandedPlayerContent(
         ) {
             AlbumArt(
                 albumArtUrl = radioState.albumArtUrl,
+                cornerRadius = 32.dp,
             )
         }
 
