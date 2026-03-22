@@ -23,7 +23,7 @@ private val MaxHeight = 120.dp
 private val MinBarWidth = 12.dp
 private val BarGap = 2.dp
 private val BarCornerRadius = 2.dp
-private const val BAR_ALPHA = 0.12f
+private const val ACCENT_BAR_ALPHA = 0.5f
 
 @Composable
 fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
@@ -46,8 +46,11 @@ fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
         animated
     }
 
-    val onBackground = MaterialTheme.colorScheme.onBackground
-    val barColor = remember(onBackground) { onBackground.copy(alpha = BAR_ALPHA) }
+    val albumArtAccent = LocalAlbumArtAccentColor.current
+    val primary = MaterialTheme.colorScheme.primary
+    val barColor = remember(albumArtAccent, primary) {
+        (albumArtAccent ?: primary).copy(alpha = ACCENT_BAR_ALPHA)
+    }
 
     Canvas(
         modifier = modifier

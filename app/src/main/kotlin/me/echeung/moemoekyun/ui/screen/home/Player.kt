@@ -2,9 +2,6 @@ package me.echeung.moemoekyun.ui.screen.home
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.OptIn
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -86,6 +83,7 @@ import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.service.VisualizerState
 import me.echeung.moemoekyun.ui.common.AlbumArt
 import me.echeung.moemoekyun.ui.common.AudioVisualizer
+import me.echeung.moemoekyun.ui.common.LocalAlbumArtAccentColor
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 val PlayerPeekHeight = 72.dp
@@ -245,17 +243,13 @@ private fun ExpandedPlayerContent(
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
 ) {
-    val backgroundColor = animateColorAsState(
-        targetValue = accentColor ?: MaterialTheme.colorScheme.surface,
-        animationSpec = tween(500, 0, LinearEasing),
-        label = "playerBackground",
-    )
-
+    val surfaceColor = MaterialTheme.colorScheme.surface
     Surface(
-        color = backgroundColor.value,
+        color = surfaceColor,
     ) {
         CompositionLocalProvider(
-            LocalContentColor provides contentColorFor(backgroundColor.value),
+            LocalContentColor provides contentColorFor(surfaceColor),
+            LocalAlbumArtAccentColor provides accentColor,
         ) {
             BoxWithConstraints {
                 if (maxWidth < maxHeight) {
@@ -387,9 +381,7 @@ private fun SongInfoWithVisualizer(
         contentAlignment = Alignment.BottomCenter,
     ) {
         if (isVisualizerEnabled) {
-            AudioVisualizer(
-                state = visualizerState,
-            )
+            AudioVisualizer(state = visualizerState)
         }
         SongInfo(
             radioState,
