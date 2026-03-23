@@ -62,9 +62,13 @@ fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
             ((size.width + gapPx) / (minBarWidthPx + gapPx)).toInt().coerceAtLeast(1),
         )
 
-        val totalGapWidth = (barCount - 1) * gapPx
-        val barWidth = (size.width - totalGapWidth) / barCount
+        val barWidth = (size.width - (barCount - 1) * gapPx) / barCount / 2
         val topBarCornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx)
+
+        val centerX = size.width / 2
+        val halfBarGap = gapPx / 2
+        val barStep = barWidth + gapPx
+        val firstBarOffset = (barWidth / 2) + halfBarGap
 
         for (i in 0 until barCount) {
             // If fewer bars than bands, average adjacent bands into each bar.
@@ -79,7 +83,8 @@ fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
                 animatedMagnitudes[i]
             }
             val barHeight = barMagnitude * size.height
-            val x = i * (barWidth + gapPx)
+            val x1 = centerX + firstBarOffset + (i * barStep)
+            val x2 = centerX - firstBarOffset - (i * barStep)
             val y = size.height - barHeight
 
             drawPath(
@@ -87,7 +92,22 @@ fun AudioVisualizer(state: VisualizerState, modifier: Modifier = Modifier) {
                     addRoundRect(
                         RoundRect(
                             rect = Rect(
-                                offset = Offset(x, y),
+                                offset = Offset(x1, y),
+                                size = Size(barWidth, barHeight),
+                            ),
+                            topLeft = topBarCornerRadius,
+                            topRight = topBarCornerRadius,
+                        ),
+                    )
+                },
+                color = barColor,
+            )
+            drawPath(
+                Path().apply {
+                    addRoundRect(
+                        RoundRect(
+                            rect = Rect(
+                                offset = Offset(x2, y),
                                 size = Size(barWidth, barHeight),
                             ),
                             topLeft = topBarCornerRadius,

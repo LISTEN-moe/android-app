@@ -2,7 +2,7 @@ package me.echeung.moemoekyun.service
 
 data class VisualizerState(val magnitudes: FloatArray) {
     companion object {
-        const val BAND_COUNT = 32
+        const val BAND_COUNT = 16
         val EMPTY = VisualizerState(FloatArray(BAND_COUNT))
     }
 
