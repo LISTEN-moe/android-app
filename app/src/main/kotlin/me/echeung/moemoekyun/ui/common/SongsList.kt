@@ -35,9 +35,9 @@ fun LazyListScope.songsItems(
             Text(text = it.title)
         },
         supportingContent = {
-            it.artists?.let {
+            it.artists?.let { artists ->
                 Text(
-                    text = it,
+                    text = artists,
                     color = MaterialTheme.colorScheme.secondary,
                 )
             }

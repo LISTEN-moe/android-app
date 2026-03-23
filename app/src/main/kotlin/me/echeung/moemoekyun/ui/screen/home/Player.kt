@@ -513,17 +513,22 @@ private fun SongInfo(
                     },
             )
 
-            currentSong.artists?.let {
-                Text(
-                    text = it,
-                    textAlign = TextAlign.Center,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .clickable {
-                            context.copyToClipboard(currentSong.artists, currentSong.artists)
-                        },
-                )
+            CompositionLocalProvider(
+                LocalTextStyle provides MaterialTheme.typography.titleSmall,
+                LocalContentColor provides MaterialTheme.colorScheme.secondary,
+            ) {
+                currentSong.artists?.let {
+                    Text(
+                        text = it,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier
+                            .clickable {
+                                context.copyToClipboard(currentSong.artists, currentSong.artists)
+                            },
+                    )
+                }
             }
         }
 
@@ -553,6 +558,7 @@ private fun SongInfo(
         ) {
             CompositionLocalProvider(
                 LocalTextStyle provides MaterialTheme.typography.bodySmall,
+                LocalContentColor provides MaterialTheme.colorScheme.secondary,
             ) {
                 Icon(Icons.Outlined.Headphones, contentDescription = null)
 
@@ -605,9 +611,7 @@ private fun PlayerCircularPlayPauseButton(
         onClick = playPauseButtonState::onClick,
         modifier = modifier.size(size),
         shape = CircleShape,
-        containerColor = MaterialTheme.colorScheme.primary,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
-        enabled = playPauseButtonState.isEnabled,
+//        enabled = playPauseButtonState.isEnabled,
     ) {
         PlayStateIcon(playPauseButtonState)
     }
