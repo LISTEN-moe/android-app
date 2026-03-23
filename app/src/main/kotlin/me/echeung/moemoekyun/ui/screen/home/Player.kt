@@ -32,6 +32,7 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -600,23 +601,15 @@ private fun PlayerCircularPlayPauseButton(
     modifier: Modifier = Modifier,
     size: Dp = 48.dp,
 ) {
-    Surface(
+    FloatingActionButton(
+        onClick = playPauseButtonState::onClick,
         modifier = modifier.size(size),
         shape = CircleShape,
-        color = MaterialTheme.colorScheme.primary,
-        onClick = playPauseButtonState::onClick,
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
         enabled = playPauseButtonState.isEnabled,
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center,
-        ) {
-            CompositionLocalProvider(
-                LocalContentColor provides MaterialTheme.colorScheme.onPrimary,
-            ) {
-                PlayStateIcon(playPauseButtonState)
-            }
-        }
+        PlayStateIcon(playPauseButtonState)
     }
 }
 
