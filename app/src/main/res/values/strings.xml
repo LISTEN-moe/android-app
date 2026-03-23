@@ -22,8 +22,8 @@
 
     <!-- == Radio stations == -->
 
-    <string name="jpop">J-pop</string>
-    <string name="kpop">K-pop</string>
+    <string name="jpop">JPOP</string>
+    <string name="kpop">KPOP</string>
 
 
     <!-- == Sleep timer == -->
