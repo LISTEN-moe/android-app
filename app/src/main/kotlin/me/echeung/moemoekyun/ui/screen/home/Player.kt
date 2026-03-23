@@ -22,12 +22,12 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Headphones
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.BottomSheetScaffold
@@ -630,7 +630,7 @@ private fun PlayStateIcon(playPauseButtonState: PlayPauseButtonState) {
 
         playPauseButtonState.showPlay -> {
             Icon(
-                Icons.Outlined.PlayArrow,
+                Icons.Default.PlayArrow,
                 contentDescription = stringResource(R.string.action_play),
             )
         }
