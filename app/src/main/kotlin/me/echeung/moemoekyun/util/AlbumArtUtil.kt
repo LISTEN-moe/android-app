@@ -9,7 +9,7 @@ import androidx.compose.runtime.Immutable
 import androidx.core.graphics.BitmapCompat
 import androidx.core.graphics.ColorUtils
 import androidx.palette.graphics.Palette
-import androidx.palette.graphics.Target.DARK_VIBRANT
+import androidx.palette.graphics.Target.LIGHT_VIBRANT
 import androidx.palette.graphics.Target.MUTED
 import androidx.palette.graphics.Target.VIBRANT
 import androidx.palette.graphics.get
@@ -108,7 +108,7 @@ class AlbumArtUtil @Inject constructor(
     private suspend fun extractAccentColor(resource: Bitmap): Int? = withIOContext {
         try {
             val palette = Palette.from(resource).generate()
-            val swatch: Palette.Swatch? = palette[DARK_VIBRANT] ?: palette[VIBRANT] ?: palette[MUTED]
+            val swatch: Palette.Swatch? = palette[VIBRANT] ?: palette[LIGHT_VIBRANT] ?: palette[MUTED]
 
             if (swatch != null) {
                 var color = swatch.rgb
