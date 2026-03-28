@@ -6,12 +6,12 @@ import me.echeung.moemoekyun.R
 enum class Station(val socketUrl: String, val streamUrl: String, @StringRes val labelRes: Int) {
     JPOP(
         "wss://listen.moe/gateway_v2",
-        "https://listen.moe/fallback",
+        "https://listen.moe/stream",
         R.string.jpop,
     ),
     KPOP(
         "wss://listen.moe/kpop/gateway_v2",
-        "https://listen.moe/kpop/fallback",
+        "https://listen.moe/kpop/stream",
         R.string.kpop,
     ),
 }
