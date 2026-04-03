@@ -67,9 +67,10 @@ fun MusicScreen(onBack: () -> Unit, screenModel: MusicScreenModel = hiltViewMode
 
         LaunchedEffect(shouldLoadMore) {
             if (shouldLoadMore) {
-                when (state.mode) {
-                    MusicScreenModel.Mode.Latest -> screenModel.loadMoreLatest()
-                    MusicScreenModel.Mode.Searching -> screenModel.loadMoreSearch()
+                if (state.searchQuery.isBlank()) {
+                    screenModel.loadMoreLatest()
+                } else {
+                    screenModel.loadMoreSearch()
                 }
             }
         }

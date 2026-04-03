@@ -15,16 +15,16 @@ class SongsService @Inject constructor(private val api: ApiClient, private val s
     private val _favoriteEvents = MutableStateFlow<DomainSong?>(null)
     val favoriteEvents = _favoriteEvents.asStateFlow()
 
-    private val _cache = mutableMapOf<Int, Song>()
+    private val cache = mutableMapOf<Int, Song>()
 
     suspend fun getDetailedSong(songId: Int): DomainSong {
-        val cached = _cache[songId]
+        val cached = cache[songId]
         if (cached != null && !cached.albums.isNullOrEmpty()) {
             return songConverter.toDomainSong(cached)
         }
 
         val detailedSong = api.getSongDetails(songId)
-        _cache[songId] = detailedSong
+        cache[songId] = detailedSong
         return songConverter.toDomainSong(detailedSong)
     }
 
@@ -39,8 +39,8 @@ class SongsService @Inject constructor(private val api: ApiClient, private val s
             favoritedAtEpoch = if (newState) System.currentTimeMillis() else null,
         )
 
-        _cache[songId]?.let {
-            _cache[songId] = it.copy(
+        cache[songId]?.let {
+            cache[songId] = it.copy(
                 favorite = newState,
                 favoritedAt = if (newState) System.currentTimeMillis() else null,
             )

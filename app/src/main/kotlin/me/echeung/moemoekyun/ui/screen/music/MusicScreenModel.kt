@@ -22,8 +22,6 @@ import me.echeung.moemoekyun.client.api.SearchApiClient
 import me.echeung.moemoekyun.client.api.SearchResult
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.data.transform
-import me.echeung.moemoekyun.client.model.Song
-import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.interactor.RequestSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
@@ -58,10 +56,13 @@ class MusicScreenModel @Inject constructor(
                 .distinctUntilChanged()
                 .collectLatest { query ->
                     if (query.isBlank()) {
-                        _state.update { it.copy(mode = Mode.Latest) }
-                        if (_state.value.latestSongs.isEmpty()) fetchLatest()
+                        if (_state.value.latestSongs.isEmpty()) {
+                            fetchLatest()
+                        } else {
+                            _state.update { it.copy(searchSongs = emptyList(), nextCursor = null) }
+                        }
                     } else {
-                        runSearch(query, cursor = null)
+                        runSearch(query)
                     }
                 }
         }
@@ -73,25 +74,19 @@ class MusicScreenModel @Inject constructor(
 
     fun loadMoreLatest() {
         val state = _state.value
-        if (state.mode !is Mode.Latest || state.isLoadingMore || !state.hasMoreLatest) return
+        if (state.searchQuery.isNotBlank() || state.isLoadingMore || !state.hasMoreLatest) return
         val nextOffset = state.latestSongs.size
-        viewModelScope.launchIO {
-            _state.update { it.copy(isLoadingMore = true) }
-            try {
-                val response = apolloClient.query(
-                    LatestSongsQuery(PAGE_SIZE, nextOffset, kpopOptional()),
-                ).httpFetchPolicy(HttpFetchPolicy.NetworkOnly).execute()
-                val newSongs = response.data?.songs?.songs?.map { it.toDomainSong() }.orEmpty()
-                val totalCount = response.data?.songs?.count ?: 0
-                _state.update { s ->
-                    s.copy(
-                        latestSongs = s.latestSongs + newSongs,
-                        hasMoreLatest = s.latestSongs.size + newSongs.size < totalCount,
-                        isLoadingMore = false,
-                    )
-                }
-            } catch (_: Exception) {
-                _state.update { it.copy(isLoadingMore = false) }
+        loadMore {
+            val response = apolloClient.query(
+                LatestSongsQuery(PAGE_SIZE, nextOffset, kpopOptional()),
+            ).httpFetchPolicy(HttpFetchPolicy.NetworkOnly).execute()
+            val newSongs = response.data?.songs?.songs?.map { it.toDomainSong() }.orEmpty()
+            val totalCount = response.data?.songs?.count ?: 0
+            _state.update { s ->
+                s.copy(
+                    latestSongs = s.latestSongs + newSongs,
+                    hasMoreLatest = s.latestSongs.size + newSongs.size < totalCount,
+                )
             }
         }
     }
@@ -99,21 +94,15 @@ class MusicScreenModel @Inject constructor(
     fun loadMoreSearch() {
         val state = _state.value
         val cursor = state.nextCursor ?: return
-        if (state.isLoadingMore || state.mode !is Mode.Searching) return
-        viewModelScope.launchIO {
-            _state.update { it.copy(isLoadingMore = true) }
-            try {
-                val response = searchApiClient.search(state.searchQuery, cursor)
-                val newSongs = response.results.map { it.toDomainSong() }
-                _state.update { s ->
-                    s.copy(
-                        searchSongs = s.searchSongs + newSongs,
-                        nextCursor = response.nextCursor,
-                        isLoadingMore = false,
-                    )
-                }
-            } catch (_: Exception) {
-                _state.update { it.copy(isLoadingMore = false) }
+        if (state.isLoadingMore || state.searchQuery.isBlank()) return
+        loadMore {
+            val response = searchApiClient.search(state.searchQuery, cursor)
+            val newSongs = response.results.map { it.toDomainSong() }
+            _state.update { s ->
+                s.copy(
+                    searchSongs = s.searchSongs + newSongs,
+                    nextCursor = response.nextCursor,
+                )
             }
         }
     }
@@ -143,14 +132,12 @@ class MusicScreenModel @Inject constructor(
                 ).httpFetchPolicy(HttpFetchPolicy.NetworkOnly).execute()
                 val songs = response.data?.songs?.songs?.map { it.toDomainSong() }.orEmpty()
                 val totalCount = response.data?.songs?.count ?: 0
-                val actionsEnabled = getAuthenticatedUser.get() != null
                 _state.update {
                     it.copy(
-                        mode = Mode.Latest,
                         latestSongs = songs,
                         hasMoreLatest = songs.size < totalCount,
                         isLoading = false,
-                        actionsEnabled = actionsEnabled,
+                        actionsEnabled = getAuthenticatedUser.get() != null,
                     )
                 }
             } catch (e: Exception) {
@@ -159,21 +146,13 @@ class MusicScreenModel @Inject constructor(
         }
     }
 
-    private suspend fun runSearch(query: String, cursor: String?) {
-        val resetSongs = cursor == null
-        _state.update {
-            it.copy(
-                mode = Mode.Searching,
-                isLoading = resetSongs,
-                searchSongs = if (resetSongs) emptyList() else it.searchSongs,
-            )
-        }
+    private suspend fun runSearch(query: String) {
+        _state.update { it.copy(isLoading = true, searchSongs = emptyList(), nextCursor = null) }
         try {
-            val response = searchApiClient.search(query, cursor)
-            val songs = response.results.map { it.toDomainSong() }
-            _state.update { s ->
-                s.copy(
-                    searchSongs = songs,
+            val response = searchApiClient.search(query)
+            _state.update {
+                it.copy(
+                    searchSongs = response.results.map { r -> r.toDomainSong() },
                     nextCursor = response.nextCursor,
                     isLoading = false,
                 )
@@ -183,34 +162,28 @@ class MusicScreenModel @Inject constructor(
         }
     }
 
-    private fun LatestSongsQuery.Song.toDomainSong(): DomainSong = songConverter.toDomainSong(transform())
-
-    private fun SearchResult.toDomainSong(): DomainSong {
-        val song = Song(
-            id = id,
-            title = title,
-            titleRomaji = titleRomaji,
-            artists = artists.map { SongDescriptor(it.name, it.nameRomaji, it.image) },
-            albums = albums.map { SongDescriptor(it.name, it.nameRomaji, it.image) },
-            sources = sources.map { SongDescriptor(it.name, it.nameRomaji, it.image) },
-            duration = duration,
-        )
-        return songConverter.toDomainSong(song)
+    private fun loadMore(block: suspend () -> Unit) {
+        viewModelScope.launchIO {
+            _state.update { it.copy(isLoadingMore = true) }
+            try {
+                block()
+            } catch (_: Exception) {
+            } finally {
+                _state.update { it.copy(isLoadingMore = false) }
+            }
+        }
     }
+
+    private fun LatestSongsQuery.Song.toDomainSong() = songConverter.toDomainSong(transform())
+    private fun SearchResult.toDomainSong() = songConverter.toDomainSong(transform())
 
     private fun kpopOptional(): Optional<Boolean?> {
         val isKpop = preferenceUtil.station().get() == Station.KPOP
         return Optional.presentIfNotNull(isKpop.takeIf { it })
     }
 
-    sealed interface Mode {
-        data object Latest : Mode
-        data object Searching : Mode
-    }
-
     @Immutable
     data class State(
-        val mode: Mode = Mode.Latest,
         val latestSongs: List<DomainSong> = emptyList(),
         val searchSongs: List<DomainSong> = emptyList(),
         val searchQuery: String = "",
@@ -221,10 +194,7 @@ class MusicScreenModel @Inject constructor(
         val actionsEnabled: Boolean = false,
         val error: String? = null,
     ) {
-        val displayedSongs: List<DomainSong> get() = when (mode) {
-            Mode.Latest -> latestSongs
-            Mode.Searching -> searchSongs
-        }
+        val displayedSongs: List<DomainSong> get() = if (searchQuery.isBlank()) latestSongs else searchSongs
     }
 
     companion object {

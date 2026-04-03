@@ -5,6 +5,8 @@ import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LatestSongsQuery
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.UserQuery
+import me.echeung.moemoekyun.client.api.SearchDescriptor
+import me.echeung.moemoekyun.client.api.SearchResult
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.client.model.User
@@ -31,6 +33,18 @@ fun FavoritesQuery.Favorite.transform(): Song? {
 fun SongQuery.Song.transform() = songFields.transform()
 
 fun LatestSongsQuery.Song.transform() = songFields.transform()
+
+fun SearchResult.transform() = Song(
+    id = id,
+    title = title,
+    titleRomaji = titleRomaji,
+    artists = artists.map { it.toSongDescriptor() },
+    albums = albums.map { it.toSongDescriptor() },
+    sources = sources.map { it.toSongDescriptor() },
+    duration = duration,
+)
+
+private fun SearchDescriptor.toSongDescriptor() = SongDescriptor(name, nameRomaji, image)
 
 fun List<Error>?.toMessage() = this?.joinToString { it.message } ?: ""
 
