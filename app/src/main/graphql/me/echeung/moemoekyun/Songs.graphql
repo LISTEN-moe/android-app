@@ -45,3 +45,12 @@ query SongsQuery($offset: Int!, $count: Int!, $kpop: Boolean) {
         count
     }
 }
+
+query LatestSongsQuery($last: Int!, $offset: Int!, $kpop: Boolean) {
+    songs(last: $last, offset: $offset, kpop: $kpop) {
+        songs {
+            ...songFields
+        }
+        count
+    }
+}

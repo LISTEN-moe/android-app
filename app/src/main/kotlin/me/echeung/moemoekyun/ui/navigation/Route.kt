@@ -7,7 +7,7 @@ import me.echeung.moemoekyun.domain.songs.model.DomainSong
 sealed interface Route : NavKey {
     @Serializable data object Home : Route
 
-    @Serializable data object Search : Route
+    @Serializable data object Music : Route
 
     @Serializable data object Settings : Route
 
