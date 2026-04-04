@@ -42,6 +42,7 @@
     <!-- e.g. No results for "user's search query" -->
     <string name="no_results">No results for \"%s\"</string>
     <string name="latest_songs">New Releases</string>
+    <string name="see_more">See more</string>
 
 
     <!-- == Sort == -->
@@ -82,7 +83,6 @@
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Requested by: %s</string>
     <string name="event_start_title">An event is starting!</string>
-    <string name="see_full_history">See full history</string>
 
 
     <!-- == User tab == -->

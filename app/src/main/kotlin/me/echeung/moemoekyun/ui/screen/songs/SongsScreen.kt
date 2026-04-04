@@ -65,9 +65,11 @@ fun SongsScreen(songs: ImmutableList<DomainSong>, moreUrl: String? = null) {
 
                 if (moreUrl != null) {
                     item {
-                        Box(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+                        HorizontalDivider()
+
+                        Box(modifier = Modifier.fillMaxWidth().padding(16.dp)) {
                             TextButton(modifier = Modifier.fillMaxWidth(), onClick = { uriHandler.openUri(moreUrl) }) {
-                                Text(stringResource(R.string.see_full_history))
+                                Text(stringResource(R.string.see_more))
                             }
                         }
                     }
