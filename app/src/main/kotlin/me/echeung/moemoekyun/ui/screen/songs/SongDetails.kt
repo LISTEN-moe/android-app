@@ -70,15 +70,16 @@ fun SongDetails(
                     LocalTextStyle provides MaterialTheme.typography.bodySmall,
                     LocalContentColor provides MaterialTheme.colorScheme.secondary,
                 ) {
-                    Text(
-                        text = song.duration.takeIf { song.durationSeconds > 0 } ?: "-",
-                        maxLines = 1,
-                    )
+                    val content = listOfNotNull(
+                        song.artists,
+                        song.duration.takeIf { song.durationSeconds > 0 } ?: "--:--",
+                    ).joinToString(" · ")
+
+                    Text(text = content)
                 }
             }
         }
 
-        Section(R.string.song_artist, song.artists)
         Section(R.string.song_album, song.albums)
         Section(R.string.song_source, song.sources)
 

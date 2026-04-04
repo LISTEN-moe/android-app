@@ -41,7 +41,7 @@
     <string name="clear_query">Clear query</string>
     <!-- e.g. No results for "user's search query" -->
     <string name="no_results">No results for \"%s\"</string>
-    <string name="latest_songs">Latest Releases</string>
+    <string name="latest_songs">New Releases</string>
 
 
     <!-- == Sort == -->
