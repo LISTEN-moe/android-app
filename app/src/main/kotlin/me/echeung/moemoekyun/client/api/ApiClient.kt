@@ -11,6 +11,7 @@ import me.echeung.moemoekyun.FavoriteMutation
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LoginMfaMutation
 import me.echeung.moemoekyun.LoginMutation
+import me.echeung.moemoekyun.PlayHistoryQuery
 import me.echeung.moemoekyun.RegisterMutation
 import me.echeung.moemoekyun.RequestSongMutation
 import me.echeung.moemoekyun.SongQuery
@@ -120,6 +121,20 @@ class ApiClient @Inject constructor(private val client: ApolloClient, private va
         if (response.hasErrors()) {
             throw Exception(response.errors.toMessage())
         }
+    }
+
+    /**
+     * Gets the play history for the current station.
+     *
+     * @param kpop Whether to get history for the K-POP station.
+     */
+    suspend fun getPlayHistory(kpop: Boolean): List<Song> {
+        val response = client.query(
+            PlayHistoryQuery(Optional.presentIfNotNull(kpop)),
+        ).execute()
+        return response.data?.playStatistics?.songs
+            ?.map { it.transform() }
+            .orEmpty()
     }
 
     /**

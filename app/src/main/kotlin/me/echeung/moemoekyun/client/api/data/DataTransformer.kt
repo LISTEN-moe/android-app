@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.client.api.data
 import com.apollographql.apollo.api.Error
 import me.echeung.moemoekyun.FavoritesQuery
 import me.echeung.moemoekyun.LatestSongsQuery
+import me.echeung.moemoekyun.PlayHistoryQuery
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.UserQuery
 import me.echeung.moemoekyun.client.api.SearchDescriptor
@@ -33,6 +34,8 @@ fun FavoritesQuery.Favorite.transform(): Song? {
 fun SongQuery.Song.transform() = songFields.transform()
 
 fun LatestSongsQuery.Song.transform() = songFields.transform()
+
+fun PlayHistoryQuery.Song.transform() = song.songFields.transform()
 
 fun SearchResult.transform() = Song(
     id = id,

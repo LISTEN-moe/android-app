@@ -38,6 +38,7 @@ class SongsScreenModel @AssistedInject constructor(
                 state.copy(
                     songs = detailedSongs,
                     actionsEnabled = getAuthenticatedUser.get() != null,
+                    isLoading = false,
                 )
             }
         }
@@ -74,5 +75,5 @@ class SongsScreenModel @AssistedInject constructor(
     }
 
     @Immutable
-    data class State(val songs: List<DomainSong>, val actionsEnabled: Boolean = false)
+    data class State(val songs: List<DomainSong>, val actionsEnabled: Boolean = false, val isLoading: Boolean = true)
 }

@@ -41,7 +41,6 @@ sealed interface WebsocketResponse {
             val song: Song?,
             @Contextual
             val startTime: Instant?,
-            val lastPlayed: List<Song>?,
             val requester: User?,
             val event: Event?,
             val listeners: Int,

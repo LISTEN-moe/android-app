@@ -13,12 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 
 fun LazyListScope.songsItems(
     songs: ImmutableList<DomainSong>?,
     showFavoriteIcons: Boolean = false,
-    onShowSongs: (List<DomainSong>) -> Unit = {},
+    onShowSongs: (ImmutableList<DomainSong>) -> Unit = {},
 ) = items(
     items = songs.orEmpty(),
     key = { it.id },
@@ -26,7 +27,7 @@ fun LazyListScope.songsItems(
     ListItem(
         modifier = Modifier
             .clickable {
-                onShowSongs(listOf(it))
+                onShowSongs(persistentListOf(it))
             },
         colors = ListItemDefaults.colors(
             containerColor = Color.Transparent,

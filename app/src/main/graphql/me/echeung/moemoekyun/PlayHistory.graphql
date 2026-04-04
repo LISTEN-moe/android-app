@@ -1,0 +1,9 @@
+query PlayHistoryQuery($kpop: Boolean) {
+    playStatistics(offset: 0, count: 10, kpop: $kpop) {
+        songs {
+            song {
+                ...songFields
+            }
+        }
+    }
+}

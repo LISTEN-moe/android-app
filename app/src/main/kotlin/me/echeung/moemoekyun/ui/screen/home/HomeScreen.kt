@@ -12,6 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.produceState
 import androidx.compose.ui.Modifier
@@ -23,6 +24,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.session.MediaController
 import androidx.media3.session.SessionToken
 import com.google.common.util.concurrent.MoreExecutors
+import kotlinx.collections.immutable.ImmutableList
 import me.echeung.moemoekyun.R
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.service.PlaybackService
@@ -37,7 +39,7 @@ fun HomeScreen(
     onNavigateAbout: () -> Unit,
     onNavigateLogin: () -> Unit,
     onNavigateRegister: () -> Unit,
-    onShowHistory: (List<DomainSong>) -> Unit,
+    onShowHistory: (ImmutableList<DomainSong>, String?) -> Unit,
     screenModel: HomeScreenModel = hiltViewModel(),
 ) {
     val toolbarScrollBehavior = rememberToolbarScrollBehavior()
@@ -48,8 +50,18 @@ fun HomeScreen(
     val radioState by screenModel.radioState.collectAsStateWithLifecycle()
     val isAuthenticated = state.user != null
 
+    val historyState by screenModel.historyState.collectAsStateWithLifecycle()
+
     val visualizerState by screenModel.visualizerState.collectAsStateWithLifecycle()
     val isVisualizerEnabled by screenModel.isVisualizerEnabled.collectAsStateWithLifecycle()
+
+    LaunchedEffect(historyState) {
+        val current = historyState
+        if (current is HistoryState.Loaded) {
+            onShowHistory(current.songs, "https://listen.moe/music/history")
+            screenModel.resetHistoryState()
+        }
+    }
 
     val player by produceState<MediaController?>(null) {
         val sessionToken = SessionToken(context, ComponentName(context, PlaybackService::class.java))
@@ -73,10 +85,7 @@ fun HomeScreen(
         onSetVisualizerActive = screenModel::setVisualizerActive,
         onClickStation = screenModel::toggleLibrary,
         onClickHistory = {
-            val historySongs = listOfNotNull(radioState.currentSong) + radioState.pastSongs
-            if (historySongs.isNotEmpty()) {
-                onShowHistory(historySongs)
-            }
+            screenModel.loadHistory()
         },
         toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
         content = {
@@ -107,7 +116,7 @@ fun HomeScreen(
                             sortDescending = state.sortDescending,
                             onSortDescending = screenModel::sortDescending,
                             requestRandomSong = screenModel::requestRandomSong,
-                            onShowSongs = onShowHistory,
+                            onShowSongs = { songs -> onShowHistory(songs, null) },
                             contentPadding = contentPadding,
                         )
                     } else {

@@ -62,7 +62,6 @@ class RadioService @Inject constructor(
                             favorited = getFavoriteSongs.isFavorite(info.song.id),
                         ),
                         startTime = info?.startTime,
-                        pastSongs = info?.lastPlayed.orEmpty().map(songConverter::toDomainSong),
                         listeners = info?.listeners ?: 0,
                         requester = info?.requester?.displayName,
                         event = info?.event,
@@ -124,7 +123,6 @@ data class RadioState(
     val requester: String? = null,
     val currentSong: DomainSong? = null,
     val startTime: Instant? = null,
-    val pastSongs: List<DomainSong> = emptyList(),
     val event: Event? = null,
 ) {
     val albumArtUrl: String?

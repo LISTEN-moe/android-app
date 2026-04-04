@@ -20,6 +20,7 @@ import me.echeung.moemoekyun.domain.radio.RadioService
 import me.echeung.moemoekyun.domain.radio.interactor.SetStation
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
+import me.echeung.moemoekyun.domain.songs.interactor.GetPlayHistory
 import me.echeung.moemoekyun.domain.songs.interactor.RequestSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.songs.model.search
@@ -42,6 +43,7 @@ class HomeScreenModel @Inject constructor(
     private val requestSong: RequestSong,
     private val getAuthenticatedUser: GetAuthenticatedUser,
     private val getFavoriteSongs: GetFavoriteSongs,
+    private val getPlayHistory: GetPlayHistory,
     private val loginLogout: LoginLogout,
     private val albumArtUtil: AlbumArtUtil,
     private val preferenceUtil: PreferenceUtil,
@@ -50,6 +52,9 @@ class HomeScreenModel @Inject constructor(
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
+
+    private val _historyState = MutableStateFlow<HistoryState>(HistoryState.Idle)
+    val historyState: StateFlow<HistoryState> = _historyState.asStateFlow()
 
     val radioState = radioService.state
 
@@ -154,6 +159,22 @@ class HomeScreenModel @Inject constructor(
         }
     }
 
+    fun loadHistory() {
+        viewModelScope.launchIO {
+            _historyState.value = HistoryState.Loading
+            val songs = try {
+                getPlayHistory.await(radioState.value.station == Station.KPOP)
+            } catch (_: Exception) {
+                emptyList()
+            }
+            _historyState.value = HistoryState.Loaded(songs.toImmutableList())
+        }
+    }
+
+    fun resetHistoryState() {
+        _historyState.value = HistoryState.Idle
+    }
+
     @Immutable
     data class State(
         val user: DomainUser? = null,
@@ -166,4 +187,10 @@ class HomeScreenModel @Inject constructor(
         val filteredFavorites: ImmutableList<DomainSong>?
             get() = favorites?.search(searchQuery)
     }
+}
+
+sealed interface HistoryState {
+    data object Idle : HistoryState
+    data object Loading : HistoryState
+    data class Loaded(val songs: ImmutableList<DomainSong>) : HistoryState
 }

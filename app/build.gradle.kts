@@ -115,6 +115,10 @@ kotlin {
 apollo {
     service("service") {
         packageName.set(appPackageName)
+        introspection {
+            endpointUrl.set("https://listen.moe/graphql")
+            schemaFile.set(file("src/main/graphql/me/echeung/moemoekyun/schema.graphqls"))
+        }
     }
 }
 

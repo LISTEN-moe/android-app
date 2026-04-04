@@ -61,7 +61,7 @@ fun AuthedHomeContent(
     sortDescending: Boolean,
     onSortDescending: (Boolean) -> Unit,
     requestRandomSong: () -> Unit,
-    onShowSongs: (List<DomainSong>) -> Unit,
+    onShowSongs: (ImmutableList<DomainSong>) -> Unit,
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {

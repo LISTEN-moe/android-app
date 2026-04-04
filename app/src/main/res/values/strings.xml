@@ -82,6 +82,7 @@
     <!-- e.g. Requested by: username -->
     <string name="requested_by">Requested by: %s</string>
     <string name="event_start_title">An event is starting!</string>
+    <string name="see_full_history">See full history</string>
 
 
     <!-- == User tab == -->

@@ -36,7 +36,7 @@ fun AppNavDisplay() {
                     onNavigateAbout = { backStack.add(Route.About) },
                     onNavigateLogin = { backStack.add(Route.Login) },
                     onNavigateRegister = { backStack.add(Route.Register) },
-                    onShowHistory = { songs -> backStack.add(Route.Songs(songs)) },
+                    onShowHistory = { songs, moreUrl -> backStack.add(Route.Songs(songs, moreUrl)) },
                 )
             }
             entry<Route.Music> {
@@ -63,7 +63,7 @@ fun AppNavDisplay() {
                 RegisterScreen(onBack = { backStack.removeLastOrNull() })
             }
             entry<Route.Songs>(metadata = BottomSheetSceneStrategy.bottomSheet()) { key ->
-                SongsScreen(key.songs)
+                SongsScreen(key.songs, key.moreUrl)
             }
         },
     )
