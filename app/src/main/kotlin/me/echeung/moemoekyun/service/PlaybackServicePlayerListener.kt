@@ -39,8 +39,8 @@ class PlaybackServicePlayerListener @AssistedInject constructor(
         val wasPlaying = player.isPlaying
 
         val fallbackPref = preferenceUtil.useFallbackStream()
-        if (!fallbackPref.get()) {
-            logcat { "Playback failed; switching to fallback stream" }
+        if (!fallbackPref.get() && error.errorCode in FALLBACK_TRIGGER_ERRORS) {
+            logcat { "Decoder error (${error.errorCode}); switching to fallback stream" }
             fallbackPref.set(true)
         }
 
@@ -61,3 +61,9 @@ class PlaybackServicePlayerListener @AssistedInject constructor(
         fun create(context: Context, player: Player): PlaybackServicePlayerListener
     }
 }
+
+private val FALLBACK_TRIGGER_ERRORS = intArrayOf(
+    PlaybackException.ERROR_CODE_DECODER_INIT_FAILED,
+    PlaybackException.ERROR_CODE_DECODING_FORMAT_UNSUPPORTED,
+    PlaybackException.ERROR_CODE_DECODING_FORMAT_EXCEEDS_CAPABILITIES,
+)
