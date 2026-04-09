@@ -130,14 +130,13 @@ class PlaybackService : MediaLibraryService() {
                 .build()
 
         scope.launchIO {
-            preferenceUtil.station()
-                .asFlow()
-                .collectWithUiContext { station ->
+            combine(
+                preferenceUtil.station().asFlow(),
+                preferenceUtil.useFallbackStream().asFlow(),
+            ) { station, useFallback -> station.toMediaItem(useFallback) }
+                .collectWithUiContext { mediaItem ->
                     with(player) {
-                        replaceMediaItem(
-                            0,
-                            station.toMediaItem(useFallback = preferenceUtil.useFallbackStream().get()),
-                        )
+                        replaceMediaItem(0, mediaItem)
                         prepare()
                     }
                 }

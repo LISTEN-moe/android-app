@@ -39,12 +39,15 @@ class PlaybackServicePlayerListener @AssistedInject constructor(
         val wasPlaying = player.isPlaying
 
         val fallbackPref = preferenceUtil.useFallbackStream()
-        if (!fallbackPref.get() && error.errorCode in FALLBACK_TRIGGER_ERRORS) {
-            logcat { "Decoder error (${error.errorCode}); switching to fallback stream" }
-            fallbackPref.set(true)
-        }
+        val useFallback = fallbackPref.get() ||
+            (error.errorCode in FALLBACK_TRIGGER_ERRORS).also {
+                if (it) {
+                    logcat { "Decoder error (${error.errorCode}); switching to fallback stream" }
+                    fallbackPref.set(true)
+                }
+            }
 
-        val mediaItem = preferenceUtil.station().get().toMediaItem(useFallback = fallbackPref.get())
+        val mediaItem = preferenceUtil.station().get().toMediaItem(useFallback = useFallback)
         player.setMediaItem(mediaItem)
         // Ensure we're "reset" to live
         player.seekToDefaultPosition()

@@ -21,7 +21,4 @@ enum class Station(
         "https://listen.moe/kpop/fallback",
         R.string.kpop,
     ),
-    ;
-
-    fun activeStreamUrl(useFallback: Boolean) = if (useFallback) fallbackStreamUrl else streamUrl
 }

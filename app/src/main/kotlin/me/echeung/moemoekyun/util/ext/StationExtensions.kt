@@ -4,6 +4,6 @@ import androidx.media3.common.MediaItem
 import me.echeung.moemoekyun.client.api.Station
 
 fun Station.toMediaItem(useFallback: Boolean = false) = MediaItem.Builder()
-    .setUri(activeStreamUrl(useFallback))
+    .setUri(if (useFallback) fallbackStreamUrl else streamUrl)
     .setMediaId(name)
     .build()
