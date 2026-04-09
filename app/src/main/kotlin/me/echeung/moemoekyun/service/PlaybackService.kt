@@ -31,8 +31,9 @@ import me.echeung.moemoekyun.util.ext.toMediaItem
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 
-const val FAVORITE_ACTION_ID = "action_favorite"
-const val UNFAVORITE_ACTION_ID = "action_unfavorite"
+const val ACTION_FAVORITE = "action_favorite"
+const val ACTION_UNFAVORITE = "action_unfavorite"
+const val ACTION_TOGGLE_PLAYBACK = "action_toggle_playback"
 
 @AndroidEntryPoint
 @OptIn(UnstableApi::class)
@@ -96,14 +97,14 @@ class PlaybackService : MediaLibraryService() {
             CommandButton.Builder(CommandButton.ICON_STAR_UNFILLED)
                 .setEnabled(true)
                 .setDisplayName(resources.getString(R.string.action_favorite))
-                .setSessionCommand(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
+                .setSessionCommand(SessionCommand(ACTION_FAVORITE, Bundle.EMPTY))
                 .setSlots(CommandButton.SLOT_BACK)
                 .build()
         val unfavoriteButton =
             CommandButton.Builder(CommandButton.ICON_STAR_FILLED)
                 .setEnabled(true)
                 .setDisplayName(resources.getString(R.string.action_unfavorite))
-                .setSessionCommand(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
+                .setSessionCommand(SessionCommand(ACTION_UNFAVORITE, Bundle.EMPTY))
                 .setSlots(CommandButton.SLOT_BACK)
                 .build()
 
@@ -196,6 +197,13 @@ class PlaybackService : MediaLibraryService() {
                     }
                 }
         }
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        if (intent?.action == ACTION_TOGGLE_PLAYBACK) {
+            if (player.isPlaying) player.pause() else player.play()
+        }
+        return super.onStartCommand(intent, flags, startId)
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {

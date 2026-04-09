@@ -172,6 +172,7 @@ dependencies {
     implementation(libs.androidx.palette)
     implementation(libs.androidx.splashscreen)
 
+    implementation(libs.bundles.glance)
     implementation(libs.bundles.media)
     implementation(libs.bundles.preferences)
 

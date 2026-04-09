@@ -18,6 +18,7 @@ import dagger.hilt.android.HiltAndroidApp
 import logcat.AndroidLogcatLogger
 import logcat.LogPriority
 import me.echeung.moemoekyun.domain.radio.RadioService
+import me.echeung.moemoekyun.widget.RadioWidgetUpdater
 import okhttp3.OkHttpClient
 import javax.inject.Inject
 
@@ -29,6 +30,9 @@ class App :
 
     @Inject
     lateinit var radioService: RadioService
+
+    @Inject
+    lateinit var radioWidgetUpdater: RadioWidgetUpdater
 
     @Inject
     lateinit var okHttpClient: OkHttpClient
@@ -43,6 +47,7 @@ class App :
 
     override fun onStart(owner: LifecycleOwner) {
         radioService.connect()
+        radioWidgetUpdater.startObserving()
     }
 
     @OptIn(ExperimentalCoilApi::class)
