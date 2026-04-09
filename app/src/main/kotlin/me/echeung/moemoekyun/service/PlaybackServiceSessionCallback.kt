@@ -97,7 +97,9 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
         logcat {
             "onPlaybackResumption request from: ${controller.packageName}, uid: ${controller.uid}, isForPlayback: $isForPlayback"
         }
-        val mediaItem = preferenceUtil.station().get().toMediaItem()
+        val mediaItem = preferenceUtil.station().get().toMediaItem(
+            useFallback = preferenceUtil.useFallbackStream().get(),
+        )
         return Futures.immediateFuture(
             MediaSession.MediaItemsWithStartPosition(
                 listOf(mediaItem),

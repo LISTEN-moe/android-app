@@ -3,15 +3,25 @@ package me.echeung.moemoekyun.client.api
 import androidx.annotation.StringRes
 import me.echeung.moemoekyun.R
 
-enum class Station(val socketUrl: String, val streamUrl: String, @StringRes val labelRes: Int) {
+enum class Station(
+    val socketUrl: String,
+    val streamUrl: String,
+    val fallbackStreamUrl: String,
+    @StringRes val labelRes: Int,
+) {
     JPOP(
         "wss://listen.moe/gateway_v2",
         "https://listen.moe/stream",
+        "https://listen.moe/fallback",
         R.string.jpop,
     ),
     KPOP(
         "wss://listen.moe/kpop/gateway_v2",
         "https://listen.moe/kpop/stream",
+        "https://listen.moe/kpop/fallback",
         R.string.kpop,
     ),
+    ;
+
+    fun activeStreamUrl(useFallback: Boolean) = if (useFallback) fallbackStreamUrl else streamUrl
 }

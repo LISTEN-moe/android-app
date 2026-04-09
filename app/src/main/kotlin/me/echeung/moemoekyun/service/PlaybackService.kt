@@ -136,7 +136,7 @@ class PlaybackService : MediaLibraryService() {
                     with(player) {
                         replaceMediaItem(
                             0,
-                            station.toMediaItem(),
+                            station.toMediaItem(useFallback = preferenceUtil.useFallbackStream().get()),
                         )
                         prepare()
                     }

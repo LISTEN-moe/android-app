@@ -10,6 +10,8 @@ class PreferenceUtil @Inject constructor(private val prefs: FlowSharedPreference
 
     fun station() = prefs.getEnum("library_mode_v2", Station.JPOP)
 
+    fun useFallbackStream() = prefs.getBoolean("pref_use_fallback_stream", false)
+
     fun shouldPreferRomaji() = prefs.getBoolean("pref_general_romaji", false)
 
     fun shouldShowRandomRequestTitle() = prefs.getBoolean("pref_general_random_request_title", true)
