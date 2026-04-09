@@ -2,7 +2,6 @@ package me.echeung.moemoekyun.ui.screen.songs
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBars
@@ -39,8 +38,9 @@ fun SongsScreen(songs: ImmutableList<DomainSong>, moreUrl: String? = null) {
         if (state.isLoading) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .windowInsetsPadding(WindowInsets.systemBars),
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.systemBars)
+                    .padding(vertical = 48.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 CircularProgressIndicator()
