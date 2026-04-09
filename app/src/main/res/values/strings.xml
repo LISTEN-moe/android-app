@@ -166,4 +166,11 @@
 
     <string name="notification_channel_name">Default</string>
 
+
+    <!-- == Homescreen widget == -->
+
+    <string name="widget_name">LISTEN.moe Player</string>
+    <string name="widget_description">Shows the current song with play and favourite controls</string>
+    <string name="widget_loading">Loading…</string>
+
 </resources>

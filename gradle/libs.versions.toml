@@ -1,5 +1,6 @@
 [versions]
 aboutlib = "14.0.0-b03"
+glance = "1.1.1"
 apollo = "4.4.2"
 coil = "3.4.0"
 coroutines = "1.10.2"
@@ -62,6 +63,9 @@ hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hil
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version = "1.3.0" }
 kotlin-metadata = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
+glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
+glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance" }
+
 immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.4.0" }
 
 logcat = { module = "com.squareup.logcat:logcat", version = "0.4" }
@@ -87,6 +91,7 @@ kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.
 [bundles]
 apollo = ["apollo-runtime", "apollo-http-cache"]
 coil = ["coil-core", "coil-compose", "coil-gif", "coil-network-okhttp"]
+glance = ["glance-appwidget", "glance-material3"]
 compose = ["compose-activity", "compose-material", "compose-material-icons-extended", "compose-material3", "compose-ui", "compose-ui-tooling", "compose-ui-util"]
 coroutines = ["coroutines-core", "coroutines-android"]
 junit-runtime = ["junit-platform-launcher", "junit-jupiter-engine"]

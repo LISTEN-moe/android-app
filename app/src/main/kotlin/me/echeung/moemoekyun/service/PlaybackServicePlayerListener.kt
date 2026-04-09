@@ -13,11 +13,13 @@ import logcat.asLog
 import logcat.logcat
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.toMediaItem
+import me.echeung.moemoekyun.widget.RadioWidgetUpdater
 
 class PlaybackServicePlayerListener @AssistedInject constructor(
     @Assisted private val context: Context,
     @Assisted private val player: Player,
     private val preferenceUtil: PreferenceUtil,
+    private val radioWidgetUpdater: RadioWidgetUpdater,
     dontBeNoisyReceiverFactory: PlaybackDontBeNoisyReceiver.Factory,
 ) : Player.Listener {
     private val dontBeNoisyReceiver = dontBeNoisyReceiverFactory.create(player)
@@ -29,6 +31,7 @@ class PlaybackServicePlayerListener @AssistedInject constructor(
         } else {
             context.unregisterReceiver(dontBeNoisyReceiver)
         }
+        radioWidgetUpdater.onPlayStateChanged(isPlaying)
     }
 
     override fun onPlayerError(error: PlaybackException) {
