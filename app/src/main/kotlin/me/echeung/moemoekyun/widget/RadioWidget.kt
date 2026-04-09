@@ -30,7 +30,6 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.ContentScale
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
-import androidx.glance.layout.defaultWeight
 import androidx.glance.layout.fillMaxHeight
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.padding
@@ -39,7 +38,6 @@ import androidx.glance.layout.width
 import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
-import androidx.glance.text.TextOverflow
 import androidx.glance.text.TextStyle
 import coil3.imageLoader
 import coil3.request.ImageRequest
@@ -53,9 +51,9 @@ class RadioWidget : GlanceAppWidget() {
 
     override val sizeMode = SizeMode.Responsive(
         setOf(
-            SIZE_SMALL,   // album art + play button
-            SIZE_MEDIUM,  // + song title
-            SIZE_LARGE,   // + artist + favorite button
+            SIZE_SMALL, // album art + play button
+            SIZE_MEDIUM, // + song title
+            SIZE_LARGE, // + artist + favorite button
         ),
     )
 
@@ -118,7 +116,6 @@ class RadioWidget : GlanceAppWidget() {
                                     color = GlanceTheme.colors.onSurface,
                                 ),
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
                             )
                             if (showArtistAndFav && artists != null) {
                                 Text(
@@ -128,7 +125,6 @@ class RadioWidget : GlanceAppWidget() {
                                         color = GlanceTheme.colors.secondary,
                                     ),
                                     maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
                                 )
                             }
                         } else {

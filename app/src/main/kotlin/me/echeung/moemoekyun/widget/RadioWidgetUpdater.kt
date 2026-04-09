@@ -60,7 +60,7 @@ class RadioWidgetUpdater @Inject constructor(
                                 remove(keyArtists)
                             }
                             if (radioState.albumArtUrl != null) {
-                                this[keyAlbumArtUrl] = radioState.albumArtUrl
+                                this[keyAlbumArtUrl] = radioState.albumArtUrl ?: ""
                             } else {
                                 remove(keyAlbumArtUrl)
                             }
