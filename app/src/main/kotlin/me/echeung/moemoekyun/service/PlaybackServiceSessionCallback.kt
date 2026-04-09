@@ -62,8 +62,8 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
             session.isAutoCompanionController(controller)
         ) {
             val sessionCommands = MediaSession.ConnectionResult.DEFAULT_SESSION_AND_LIBRARY_COMMANDS.buildUpon()
-                .add(SessionCommand(FAVORITE_ACTION_ID, Bundle.EMPTY))
-                .add(SessionCommand(UNFAVORITE_ACTION_ID, Bundle.EMPTY))
+                .add(SessionCommand(ACTION_FAVORITE, Bundle.EMPTY))
+                .add(SessionCommand(ACTION_UNFAVORITE, Bundle.EMPTY))
                 .build()
             return MediaSession.ConnectionResult.AcceptedResultBuilder(session)
                 .setAvailableSessionCommands(sessionCommands)
@@ -222,7 +222,7 @@ class PlaybackServiceSessionCallback @AssistedInject constructor(
     ): ListenableFuture<SessionResult> {
         logcat { "onCustomCommand request from: ${controller.packageName}, uid: ${controller.uid}" }
         return when (customCommand.customAction) {
-            FAVORITE_ACTION_ID, UNFAVORITE_ACTION_ID -> {
+            ACTION_FAVORITE, ACTION_UNFAVORITE -> {
                 toggleFavoriteSong()
                 Futures.immediateFuture(SessionResult(SessionResult.RESULT_SUCCESS))
             }
