@@ -21,8 +21,8 @@ android {
         applicationId = appPackageName
         minSdk = 26
         targetSdk = 36
-        versionCode = 215
-        versionName = "7.0.0-beta.4"
+        versionCode = 216
+        versionName = "7.0.0-beta.5"
     }
 
     buildFeatures {
