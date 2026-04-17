@@ -87,8 +87,8 @@ import me.echeung.moemoekyun.ui.common.CollapsedSongProgressBar
 import me.echeung.moemoekyun.ui.common.ExpandedSongProgressBar
 import me.echeung.moemoekyun.ui.common.LocalAlbumArtAccentColor
 import me.echeung.moemoekyun.ui.common.rememberSongProgress
-import kotlin.time.ExperimentalTime
 import me.echeung.moemoekyun.util.ext.copyToClipboard
+import kotlin.time.ExperimentalTime
 
 /** Reserved scroll space for the collapsed player strip (content height, excluding nav bar inset). */
 val PlayerPeekHeight = 80.dp
@@ -484,8 +484,7 @@ private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> U
     }
 }
 
-@OptIn(UnstableApi::class)
-@OptIn(ExperimentalTime::class)
+@OptIn(UnstableApi::class, ExperimentalTime::class)
 @Composable
 private fun SongInfo(
     radioState: RadioState,
