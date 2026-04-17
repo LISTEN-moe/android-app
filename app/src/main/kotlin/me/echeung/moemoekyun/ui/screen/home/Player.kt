@@ -547,13 +547,11 @@ private fun SongInfo(
                 }
             }
 
-            if (durationSeconds > 0L) {
-                ExpandedSongProgressBar(
-                    progress = progress,
-                    durationSeconds = durationSeconds,
-                    modifier = Modifier.padding(horizontal = 8.dp),
-                )
-            }
+            ExpandedSongProgressBar(
+                progress = progress,
+                durationSeconds = durationSeconds,
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
         }
 
         Row(
