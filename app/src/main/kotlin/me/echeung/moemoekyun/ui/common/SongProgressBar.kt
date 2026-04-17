@@ -1,0 +1,157 @@
+package me.echeung.moemoekyun.ui.common
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import java.util.Locale
+
+private const val PROGRESS_BAR_ALPHA = 0.85f
+private const val TRACK_ALPHA_FRACTION = 0.25f
+
+/**
+ * Returns a [0, 1] progress value that ticks in real-time based on wall-clock elapsed time.
+ * Source-agnostic: pass any epoch-millisecond start time from WebSocket, local playback, etc.
+ * Returns 0 if duration or start time is unknown.
+ */
+@Composable
+fun rememberSongProgress(
+    startTimeEpochMs: Long?,
+    durationSeconds: Long,
+): Float {
+    var progress by remember(startTimeEpochMs, durationSeconds) {
+        mutableFloatStateOf(
+            if (startTimeEpochMs != null && durationSeconds > 0L) {
+                computeProgress(startTimeEpochMs, durationSeconds)
+            } else {
+                0f
+            },
+        )
+    }
+
+    LaunchedEffect(startTimeEpochMs, durationSeconds) {
+        if (startTimeEpochMs == null || durationSeconds <= 0L) {
+            progress = 0f
+            return@LaunchedEffect
+        }
+        while (true) {
+            progress = computeProgress(startTimeEpochMs, durationSeconds)
+            delay(500L)
+        }
+    }
+
+    return progress
+}
+
+private fun computeProgress(startTimeEpochMs: Long, durationSeconds: Long): Float =
+    ((System.currentTimeMillis() - startTimeEpochMs) / 1000f / durationSeconds).coerceIn(0f, 1f)
+
+/** Thin full-width bar for the top edge of the collapsed player strip. No corner radius. */
+@Composable
+fun CollapsedSongProgressBar(
+    progress: Float,
+    modifier: Modifier = Modifier,
+) {
+    SongProgressBar(
+        progress = progress,
+        trackHeight = 3.dp,
+        cornerRadius = 0.dp,
+        modifier = modifier.fillMaxWidth(),
+    )
+}
+
+/** Thicker rounded bar with elapsed / total time labels for the expanded player. */
+@Composable
+fun ExpandedSongProgressBar(
+    progress: Float,
+    durationSeconds: Long,
+    totalTime: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        SongProgressBar(
+            progress = progress,
+            trackHeight = 6.dp,
+            cornerRadius = 3.dp,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text(
+                text = formatDuration((progress * durationSeconds).toLong()),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            Text(
+                text = totalTime,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SongProgressBar(
+    progress: Float,
+    trackHeight: Dp,
+    cornerRadius: Dp,
+    modifier: Modifier = Modifier,
+) {
+    val accentColor = LocalAlbumArtAccentColor.current
+    val primary = MaterialTheme.colorScheme.primary
+    val fillColor = remember(accentColor, primary) {
+        (accentColor ?: primary).copy(alpha = PROGRESS_BAR_ALPHA)
+    }
+    val trackColor = remember(fillColor) {
+        fillColor.copy(alpha = fillColor.alpha * TRACK_ALPHA_FRACTION)
+    }
+
+    Canvas(modifier = modifier.height(trackHeight)) {
+        val radius = CornerRadius(cornerRadius.toPx())
+
+        drawRoundRect(color = trackColor, cornerRadius = radius)
+
+        val fillWidth = size.width * progress.coerceIn(0f, 1f)
+        if (fillWidth > 0f) {
+            drawRoundRect(
+                color = fillColor,
+                size = Size(fillWidth, size.height),
+                cornerRadius = radius,
+            )
+        }
+    }
+}
+
+private fun formatDuration(totalSeconds: Long): String {
+    val minutes = totalSeconds / 60
+    val seconds = totalSeconds % 60
+    return if (minutes < 60) {
+        String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
+    } else {
+        val hours = minutes / 60
+        String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes % 60, seconds)
+    }
+}

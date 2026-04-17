@@ -83,7 +83,11 @@ import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.service.VisualizerState
 import me.echeung.moemoekyun.ui.common.AlbumArt
 import me.echeung.moemoekyun.ui.common.AudioVisualizer
+import me.echeung.moemoekyun.ui.common.CollapsedSongProgressBar
+import me.echeung.moemoekyun.ui.common.ExpandedSongProgressBar
 import me.echeung.moemoekyun.ui.common.LocalAlbumArtAccentColor
+import me.echeung.moemoekyun.ui.common.rememberSongProgress
+import kotlin.time.ExperimentalTime
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 
 /** Reserved scroll space for the collapsed player strip (content height, excluding nav bar inset). */
@@ -172,7 +176,7 @@ fun PlayerScaffold(
     }
 }
 
-@OptIn(UnstableApi::class)
+@OptIn(UnstableApi::class, ExperimentalTime::class)
 @Composable
 private fun BoxScope.CollapsedPlayerContent(
     radioState: RadioState,
@@ -181,6 +185,9 @@ private fun BoxScope.CollapsedPlayerContent(
     onClick: () -> Unit,
 ) {
     val surfaceColor = MaterialTheme.colorScheme.surface
+    val durationSeconds = radioState.currentSong?.durationSeconds ?: 0L
+    val startTimeMs = radioState.startTime?.toEpochMilliseconds()
+    val progress = rememberSongProgress(startTimeMs, durationSeconds)
 
     Surface(
         modifier = Modifier
@@ -190,6 +197,9 @@ private fun BoxScope.CollapsedPlayerContent(
         contentColor = contentColorFor(surfaceColor),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
+            if (durationSeconds > 0L) {
+                CollapsedSongProgressBar(progress = progress)
+            }
             HorizontalDivider()
 
             Row(
@@ -475,6 +485,7 @@ private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> U
 }
 
 @OptIn(UnstableApi::class)
+@OptIn(ExperimentalTime::class)
 @Composable
 private fun SongInfo(
     radioState: RadioState,
@@ -484,6 +495,9 @@ private fun SongInfo(
 ) {
     val context = LocalContext.current
     val currentSong = radioState.currentSong
+    val durationSeconds = currentSong?.durationSeconds ?: 0L
+    val startTimeMs = radioState.startTime?.toEpochMilliseconds()
+    val progress = rememberSongProgress(startTimeMs, durationSeconds)
 
     Column(
         modifier = Modifier
@@ -532,6 +546,15 @@ private fun SongInfo(
                             },
                     )
                 }
+            }
+
+            if (durationSeconds > 0L) {
+                ExpandedSongProgressBar(
+                    progress = progress,
+                    durationSeconds = durationSeconds,
+                    totalTime = currentSong.duration,
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
             }
         }
 
