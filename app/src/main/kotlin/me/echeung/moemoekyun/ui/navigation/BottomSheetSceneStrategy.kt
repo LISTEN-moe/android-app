@@ -4,6 +4,9 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.runtime.Composable
 import androidx.navigation3.runtime.NavEntry
+import androidx.navigation3.runtime.NavMetadataKey
+import androidx.navigation3.runtime.get
+import androidx.navigation3.runtime.metadata
 import androidx.navigation3.scene.OverlayScene
 import androidx.navigation3.scene.Scene
 import androidx.navigation3.scene.SceneStrategy
@@ -42,8 +45,7 @@ class BottomSheetSceneStrategy<T : Any> : SceneStrategy<T> {
 
     override fun SceneStrategyScope<T>.calculateScene(entries: List<NavEntry<T>>): Scene<T>? {
         val lastEntry = entries.lastOrNull()
-        val bottomSheetProperties =
-            lastEntry?.metadata?.get(BOTTOM_SHEET_KEY) as? ModalBottomSheetProperties
+        val bottomSheetProperties = lastEntry?.metadata?.get(BottomSheetKey)
         return bottomSheetProperties?.let { properties ->
             val previousEntries = entries.dropLast(1)
             BottomSheetScene(
@@ -63,10 +65,11 @@ class BottomSheetSceneStrategy<T : Any> : SceneStrategy<T> {
          *
          * @param modalBottomSheetProperties properties passed to the [ModalBottomSheet].
          */
-        fun bottomSheet(
-            modalBottomSheetProperties: ModalBottomSheetProperties = ModalBottomSheetProperties(),
-        ): Map<String, Any> = mapOf(BOTTOM_SHEET_KEY to modalBottomSheetProperties)
+        fun bottomSheet(modalBottomSheetProperties: ModalBottomSheetProperties = ModalBottomSheetProperties()) =
+            metadata {
+                put(BottomSheetKey, modalBottomSheetProperties)
+            }
 
-        private const val BOTTOM_SHEET_KEY = "bottomsheet"
+        private object BottomSheetKey : NavMetadataKey<ModalBottomSheetProperties>
     }
 }
