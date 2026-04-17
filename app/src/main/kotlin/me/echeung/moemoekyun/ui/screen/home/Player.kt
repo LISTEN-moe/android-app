@@ -551,7 +551,6 @@ private fun SongInfo(
                 ExpandedSongProgressBar(
                     progress = progress,
                     durationSeconds = durationSeconds,
-                    totalTime = currentSong.duration,
                     modifier = Modifier.padding(horizontal = 8.dp),
                 )
             }
