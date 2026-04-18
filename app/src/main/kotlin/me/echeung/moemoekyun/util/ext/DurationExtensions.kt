@@ -1,14 +1,11 @@
 package me.echeung.moemoekyun.util.ext
 
-import java.util.Locale
+import kotlin.time.Duration.Companion.seconds
 
-fun Long.formatDuration(): String {
-    val minutes = this / 60
-    val seconds = this % 60
-    return if (minutes < 60) {
-        String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
-    } else {
-        val hours = minutes / 60
-        String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes % 60, seconds)
+fun Long.formatDuration(): String = seconds.toComponents { hours, minutes, seconds, _ ->
+    buildString {
+        if (hours > 0) append("$hours:")
+        append(if (hours > 0) minutes.toString().padStart(2, '0') else minutes)
+        append(":${seconds.toString().padStart(2, '0')}")
     }
 }
