@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.socket.Socket
+import me.echeung.moemoekyun.client.api.sse.RadioSse
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
@@ -24,7 +25,6 @@ import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -34,6 +34,7 @@ class RadioService @Inject constructor(
     @ApplicationContext private val context: Context,
     private val preferenceUtil: PreferenceUtil,
     private val socket: Socket,
+    private val sse: RadioSse,
     private val songConverter: SongConverter,
     private val getFavoriteSongs: GetFavoriteSongs,
 ) : ConnectivityManager.NetworkCallback() {
@@ -57,12 +58,10 @@ class RadioService @Inject constructor(
                 .filterIsInstance<Socket.Result.Response>()
                 .collectLatest { socketResponse ->
                     val info = socketResponse.info
-
                     _state.value = _state.value.copy(
                         currentSong = info?.song?.let(songConverter::toDomainSong)?.copy(
                             favorited = getFavoriteSongs.isFavorite(info.song.id),
                         ),
-                        endTime = info?.startTime,
                         listeners = info?.listeners ?: 0,
                         requester = info?.requester?.displayName,
                         event = info?.event,
@@ -71,14 +70,19 @@ class RadioService @Inject constructor(
         }
 
         scope.launchIO {
+            sse.flow.collectLatest { metadata ->
+                val startedAt = metadata.startedAt?.let(Instant::parse) ?: return@collectLatest
+                _state.value = _state.value.copy(startTime = startedAt)
+            }
+        }
+
+        scope.launchIO {
             preferenceUtil.station().asFlow()
                 .distinctUntilChanged()
-                .collectLatest {
-                    _state.value = _state.value.copy(
-                        station = it,
-                    )
-
+                .collectLatest { station ->
+                    _state.value = _state.value.copy(station = station)
                     socket.reconnect()
+                    sse.connect(station)
                 }
         }
     }
@@ -91,22 +95,26 @@ class RadioService @Inject constructor(
 
     fun connect() {
         socket.connect()
+        sse.connect(preferenceUtil.station().get())
         context.connectivityManager.registerNetworkCallback(networkRequest, this)
     }
 
     fun disconnect() {
         socket.disconnect()
+        sse.disconnect()
         context.connectivityManager.unregisterNetworkCallback(this)
     }
 
     override fun onAvailable(network: Network) {
         super.onAvailable(network)
         socket.reconnect()
+        sse.connect(preferenceUtil.station().get())
     }
 
     override fun onLost(network: Network) {
         super.onLost(network)
         socket.disconnect()
+        sse.disconnect()
     }
 }
 
@@ -123,16 +131,9 @@ data class RadioState(
     val listeners: Int = 0,
     val requester: String? = null,
     val currentSong: DomainSong? = null,
-    // The WebSocket "startTime" is actually the song's end time. Subtract duration to get real start.
-    val endTime: Instant? = null,
+    val startTime: Instant? = null,
     val event: Event? = null,
 ) {
-    val startTime: Instant?
-        get() = endTime?.let { end ->
-            val durationSeconds = currentSong?.durationSeconds ?: return@let null
-            end - durationSeconds.seconds
-        }
-
     val albumArtUrl: String?
         get() = currentSong?.albumArtUrl ?: event?.image
 }

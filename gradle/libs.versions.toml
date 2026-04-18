@@ -76,6 +76,7 @@ navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref =
 okhttp-bom = { module = "com.squareup.okhttp3:okhttp-bom", version = "5.3.2" }
 okhttp-core = { module = "com.squareup.okhttp3:okhttp" }
 okhttp-logging = { module = "com.squareup.okhttp3:logging-interceptor" }
+okhttp-sse = { module = "com.squareup.okhttp3:okhttp-sse" }
 
 preferences-androidx = { module = "androidx.preference:preference-ktx", version = "1.2.1" }
 preferences-flow = { module = "com.github.tfcporciuncula:flow-preferences", version = "1.9.1" }
@@ -96,6 +97,6 @@ compose = ["compose-activity", "compose-material", "compose-material-icons-exten
 coroutines = ["coroutines-core", "coroutines-android"]
 junit-runtime = ["junit-platform-launcher", "junit-jupiter-engine"]
 media = ["androidx-media3-common", "androidx-media3-exoplayer", "androidx-media3-session"]
-okhttp = ["okhttp-core", "okhttp-logging"]
+okhttp = ["okhttp-core", "okhttp-logging", "okhttp-sse"]
 navigation = ["navigation3-runtime", "navigation3-ui", "androidx-lifecycle-viewmodel-navigation3", "hilt-navigation-compose"]
 preferences = ["preferences-androidx", "preferences-flow"]

@@ -189,8 +189,7 @@ private fun BoxScope.CollapsedPlayerContent(
 ) {
     val surfaceColor = MaterialTheme.colorScheme.surface
     val durationSeconds = radioState.currentSong?.durationSeconds ?: 0L
-    val startTimeMs = radioState.startTime?.toEpochMilliseconds()
-    val progress = rememberSongProgress(startTimeMs, durationSeconds)
+    val progress = rememberSongProgress(radioState.startTime?.toEpochMilliseconds(), durationSeconds)
 
     Surface(
         modifier = Modifier
@@ -496,8 +495,7 @@ private fun SongInfo(
     val context = LocalContext.current
     val currentSong = radioState.currentSong
     val durationSeconds = currentSong?.durationSeconds ?: 0L
-    val startTimeMs = radioState.startTime?.toEpochMilliseconds()
-    val progress = rememberSongProgress(startTimeMs, durationSeconds)
+    val progress = rememberSongProgress(radioState.startTime?.toEpochMilliseconds(), durationSeconds)
 
     Column(
         modifier = Modifier

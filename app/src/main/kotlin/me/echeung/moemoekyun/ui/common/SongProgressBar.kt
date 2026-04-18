@@ -34,7 +34,9 @@ private const val TRACK_ALPHA_FRACTION = 0.25f
 fun rememberSongProgress(startTimeEpochMs: Long?, durationSeconds: Long): Float {
     var progress by remember(startTimeEpochMs, durationSeconds) {
         mutableFloatStateOf(
-            if (startTimeEpochMs != null && durationSeconds > 0L) {
+            if (startTimeEpochMs != null &&
+                durationSeconds > 0L
+            ) {
                 computeProgress(startTimeEpochMs, durationSeconds)
             } else {
                 0f
@@ -47,7 +49,7 @@ fun rememberSongProgress(startTimeEpochMs: Long?, durationSeconds: Long): Float 
             progress = 0f
             return@LaunchedEffect
         }
-        while (progress < 1f) {
+        while (true) {
             progress = computeProgress(startTimeEpochMs, durationSeconds)
             delay(500L)
         }
