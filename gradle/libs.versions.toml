@@ -88,6 +88,8 @@ junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.re
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "6.0.3" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.1.11" }
+coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+turbine = { module = "app.cash.turbine:turbine", version = "1.2.0" }
 
 [bundles]
 apollo = ["apollo-runtime", "apollo-http-cache"]

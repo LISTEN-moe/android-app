@@ -10,17 +10,13 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterIsInstance
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.api.sse.QueueSse
 import me.echeung.moemoekyun.client.api.sse.RadioSse
 import me.echeung.moemoekyun.client.model.Event
-import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
-import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
@@ -37,8 +33,7 @@ class RadioService @Inject constructor(
     private val socket: Socket,
     private val sse: RadioSse,
     private val queueSse: QueueSse,
-    private val songConverter: SongConverter,
-    private val getFavoriteSongs: GetFavoriteSongs,
+    private val radioStateReducer: RadioStateReducer,
 ) : ConnectivityManager.NetworkCallback() {
 
     private val scope = MainScope()
@@ -52,30 +47,16 @@ class RadioService @Inject constructor(
 
     init {
         scope.launchIO {
-            combine(
-                socket.flow,
-                getFavoriteSongs.asFlow(),
-                preferenceUtil.shouldPreferRomaji().asFlow(),
-            ) { socketResponse, _, _ -> socketResponse }
-                .filterIsInstance<Socket.Result.Response>()
-                .collectLatest { socketResponse ->
-                    val info = socketResponse.info
+            radioStateReducer.radioStateFlow(socket.flow, sse.flow)
+                .collectLatest { update ->
                     _state.value = _state.value.copy(
-                        currentSong = info?.song?.let(songConverter::toDomainSong)?.copy(
-                            favorited = getFavoriteSongs.isFavorite(info.song.id),
-                        ),
-                        listeners = info?.listeners ?: 0,
-                        requester = info?.requester?.displayName,
-                        event = info?.event,
+                        currentSong = update.currentSong,
+                        startTime = update.startTime,
+                        listeners = update.listeners,
+                        requester = update.requester,
+                        event = update.event,
                     )
                 }
-        }
-
-        scope.launchIO {
-            sse.flow.collectLatest { metadata ->
-                val startedAt = metadata.startedAt?.let(Instant::parse) ?: return@collectLatest
-                _state.value = _state.value.copy(startTime = startedAt)
-            }
         }
 
         scope.launchIO {
