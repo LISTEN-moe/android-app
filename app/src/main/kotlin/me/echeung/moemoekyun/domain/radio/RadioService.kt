@@ -24,6 +24,7 @@ import me.echeung.moemoekyun.util.ext.connectivityManager
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -61,7 +62,7 @@ class RadioService @Inject constructor(
                         currentSong = info?.song?.let(songConverter::toDomainSong)?.copy(
                             favorited = getFavoriteSongs.isFavorite(info.song.id),
                         ),
-                        startTime = info?.startTime,
+                        endTime = info?.startTime,
                         listeners = info?.listeners ?: 0,
                         requester = info?.requester?.displayName,
                         event = info?.event,
@@ -122,9 +123,16 @@ data class RadioState(
     val listeners: Int = 0,
     val requester: String? = null,
     val currentSong: DomainSong? = null,
-    val startTime: Instant? = null,
+    // The WebSocket "startTime" is actually the song's end time. Subtract duration to get real start.
+    val endTime: Instant? = null,
     val event: Event? = null,
 ) {
+    val startTime: Instant?
+        get() = endTime?.let { end ->
+            val durationSeconds = currentSong?.durationSeconds ?: return@let null
+            end - durationSeconds.seconds
+        }
+
     val albumArtUrl: String?
         get() = currentSong?.albumArtUrl ?: event?.image
 }
