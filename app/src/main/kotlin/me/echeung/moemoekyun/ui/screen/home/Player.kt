@@ -133,45 +133,48 @@ fun PlayerScaffold(
         },
     )
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetContent = {
-            ExpandedPlayerContent(
-                radioState = radioState,
-                playPauseButtonState = playPauseButtonState,
-                accentColor = accentColor,
-                visualizerState = visualizerState,
-                isVisualizerEnabled = isVisualizerEnabled,
-                onClickStation = onClickStation,
-                onClickHistory = onClickHistory,
-                toggleFavorite = toggleFavorite,
-                onClickCollapse = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.hide()
-                    }
-                },
-            )
-        },
-        sheetContainerColor = MaterialTheme.colorScheme.background,
-        sheetMaxWidth = Dp.Unspecified,
-        sheetPeekHeight = 0.dp,
-        sheetShape = RoundedCornerShape(0.dp),
-        sheetDragHandle = {},
-        modifier = modifier,
-    ) { contentPadding ->
-        Box {
-            content(contentPadding)
+    CompositionLocalProvider(
+        LocalAlbumArtAccentColor provides accentColor,
+    ) {
+        BottomSheetScaffold(
+            scaffoldState = scaffoldState,
+            sheetContent = {
+                ExpandedPlayerContent(
+                    radioState = radioState,
+                    playPauseButtonState = playPauseButtonState,
+                    visualizerState = visualizerState,
+                    isVisualizerEnabled = isVisualizerEnabled,
+                    onClickStation = onClickStation,
+                    onClickHistory = onClickHistory,
+                    toggleFavorite = toggleFavorite,
+                    onClickCollapse = {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.hide()
+                        }
+                    },
+                )
+            },
+            sheetContainerColor = MaterialTheme.colorScheme.background,
+            sheetMaxWidth = Dp.Unspecified,
+            sheetPeekHeight = 0.dp,
+            sheetShape = RoundedCornerShape(0.dp),
+            sheetDragHandle = {},
+            modifier = modifier,
+        ) { contentPadding ->
+            Box {
+                content(contentPadding)
 
-            CollapsedPlayerContent(
-                radioState = radioState,
-                playPauseButtonState = playPauseButtonState,
-                toggleFavorite = toggleFavorite,
-                onClick = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.expand()
-                    }
-                },
-            )
+                CollapsedPlayerContent(
+                    radioState = radioState,
+                    playPauseButtonState = playPauseButtonState,
+                    toggleFavorite = toggleFavorite,
+                    onClick = {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.expand()
+                        }
+                    },
+                )
+            }
         }
     }
 }
@@ -270,7 +273,6 @@ private fun BoxScope.CollapsedPlayerContent(
 private fun ExpandedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
-    accentColor: Color?,
     visualizerState: VisualizerState,
     isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
@@ -285,7 +287,6 @@ private fun ExpandedPlayerContent(
     ) {
         CompositionLocalProvider(
             LocalContentColor provides contentColorFor(surfaceColor),
-            LocalAlbumArtAccentColor provides accentColor,
         ) {
             BoxWithConstraints {
                 if (maxWidth < maxHeight) {

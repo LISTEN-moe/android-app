@@ -64,7 +64,7 @@ private fun computeProgress(startTimeEpochMs: Long, durationSeconds: Long): Floa
 fun CollapsedSongProgressBar(progress: Float, modifier: Modifier = Modifier) {
     SongProgressBar(
         progress = progress,
-        trackHeight = 3.dp,
+        trackHeight = 2.dp,
         cornerRadius = 0.dp,
         modifier = modifier.fillMaxWidth(),
     )
