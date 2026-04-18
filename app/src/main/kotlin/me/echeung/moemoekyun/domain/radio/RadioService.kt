@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterIsInstance
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.socket.Socket
+import me.echeung.moemoekyun.client.api.sse.QueueSse
 import me.echeung.moemoekyun.client.api.sse.RadioSse
 import me.echeung.moemoekyun.client.model.Event
 import me.echeung.moemoekyun.domain.songs.interactor.GetFavoriteSongs
@@ -35,6 +36,7 @@ class RadioService @Inject constructor(
     private val preferenceUtil: PreferenceUtil,
     private val socket: Socket,
     private val sse: RadioSse,
+    private val queueSse: QueueSse,
     private val songConverter: SongConverter,
     private val getFavoriteSongs: GetFavoriteSongs,
 ) : ConnectivityManager.NetworkCallback() {
@@ -77,12 +79,19 @@ class RadioService @Inject constructor(
         }
 
         scope.launchIO {
+            queueSse.flow.collectLatest { queue ->
+                _state.value = _state.value.copy(queueCount = queue.amount)
+            }
+        }
+
+        scope.launchIO {
             preferenceUtil.station().asFlow()
                 .distinctUntilChanged()
                 .collectLatest { station ->
                     _state.value = _state.value.copy(station = station)
                     socket.reconnect()
                     sse.connect(station)
+                    queueSse.connect(station)
                 }
         }
     }
@@ -94,27 +103,33 @@ class RadioService @Inject constructor(
     }
 
     fun connect() {
+        val station = preferenceUtil.station().get()
         socket.connect()
-        sse.connect(preferenceUtil.station().get())
+        sse.connect(station)
+        queueSse.connect(station)
         context.connectivityManager.registerNetworkCallback(networkRequest, this)
     }
 
     fun disconnect() {
         socket.disconnect()
         sse.disconnect()
+        queueSse.disconnect()
         context.connectivityManager.unregisterNetworkCallback(this)
     }
 
     override fun onAvailable(network: Network) {
         super.onAvailable(network)
+        val station = preferenceUtil.station().get()
         socket.reconnect()
-        sse.connect(preferenceUtil.station().get())
+        sse.connect(station)
+        queueSse.connect(station)
     }
 
     override fun onLost(network: Network) {
         super.onLost(network)
         socket.disconnect()
         sse.disconnect()
+        queueSse.disconnect()
     }
 }
 
@@ -130,6 +145,7 @@ data class RadioState(
     val station: Station = Station.JPOP,
     val listeners: Int = 0,
     val requester: String? = null,
+    val queueCount: Int? = null,
     val currentSong: DomainSong? = null,
     val startTime: Instant? = null,
     val event: Event? = null,

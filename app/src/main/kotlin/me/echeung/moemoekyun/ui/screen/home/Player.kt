@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.QueueMusic
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.outlined.Headphones
@@ -589,6 +590,12 @@ private fun SongInfo(
                     Text("•")
                     Icon(Icons.Outlined.Person, contentDescription = null)
                     Text(it)
+                }
+
+                radioState.queueCount?.takeIf { it > 0 }?.let {
+                    Text("•")
+                    Icon(Icons.AutoMirrored.Outlined.QueueMusic, contentDescription = null)
+                    Text(it.toString())
                 }
             }
         }

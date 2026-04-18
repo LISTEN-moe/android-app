@@ -11,3 +11,6 @@ data class SseMetadata(
     @SerialName("started_at")
     val startedAt: String? = null,
 )
+
+@Serializable
+data class SseQueue(val service: String, val amount: Int)

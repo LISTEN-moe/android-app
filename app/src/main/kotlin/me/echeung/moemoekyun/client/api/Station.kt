@@ -8,6 +8,7 @@ enum class Station(
     val streamUrl: String,
     val fallbackStreamUrl: String,
     val sseMounts: List<String>,
+    val sseService: String,
     @StringRes val labelRes: Int,
 ) {
     JPOP(
@@ -15,6 +16,7 @@ enum class Station(
         "https://listen.moe/stream",
         "https://listen.moe/fallback",
         listOf("/stream", "/fallback"),
+        "jpop",
         R.string.jpop,
     ),
     KPOP(
@@ -22,6 +24,7 @@ enum class Station(
         "https://listen.moe/kpop/stream",
         "https://listen.moe/kpop/fallback",
         listOf("/kpop/stream", "/kpop/fallback"),
+        "kpop",
         R.string.kpop,
     ),
 }
