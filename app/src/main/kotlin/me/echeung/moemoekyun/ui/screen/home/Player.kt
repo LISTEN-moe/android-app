@@ -83,8 +83,12 @@ import me.echeung.moemoekyun.domain.radio.RadioState
 import me.echeung.moemoekyun.service.VisualizerState
 import me.echeung.moemoekyun.ui.common.AlbumArt
 import me.echeung.moemoekyun.ui.common.AudioVisualizer
+import me.echeung.moemoekyun.ui.common.CollapsedSongProgressBar
+import me.echeung.moemoekyun.ui.common.ExpandedSongProgressBar
 import me.echeung.moemoekyun.ui.common.LocalAlbumArtAccentColor
+import me.echeung.moemoekyun.ui.common.rememberSongProgress
 import me.echeung.moemoekyun.util.ext.copyToClipboard
+import kotlin.time.ExperimentalTime
 
 /** Reserved scroll space for the collapsed player strip (content height, excluding nav bar inset). */
 val PlayerPeekHeight = 80.dp
@@ -129,50 +133,53 @@ fun PlayerScaffold(
         },
     )
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetContent = {
-            ExpandedPlayerContent(
-                radioState = radioState,
-                playPauseButtonState = playPauseButtonState,
-                accentColor = accentColor,
-                visualizerState = visualizerState,
-                isVisualizerEnabled = isVisualizerEnabled,
-                onClickStation = onClickStation,
-                onClickHistory = onClickHistory,
-                toggleFavorite = toggleFavorite,
-                onClickCollapse = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.hide()
-                    }
-                },
-            )
-        },
-        sheetContainerColor = MaterialTheme.colorScheme.background,
-        sheetMaxWidth = Dp.Unspecified,
-        sheetPeekHeight = 0.dp,
-        sheetShape = RoundedCornerShape(0.dp),
-        sheetDragHandle = {},
-        modifier = modifier,
-    ) { contentPadding ->
-        Box {
-            content(contentPadding)
+    CompositionLocalProvider(
+        LocalAlbumArtAccentColor provides accentColor,
+    ) {
+        BottomSheetScaffold(
+            scaffoldState = scaffoldState,
+            sheetContent = {
+                ExpandedPlayerContent(
+                    radioState = radioState,
+                    playPauseButtonState = playPauseButtonState,
+                    visualizerState = visualizerState,
+                    isVisualizerEnabled = isVisualizerEnabled,
+                    onClickStation = onClickStation,
+                    onClickHistory = onClickHistory,
+                    toggleFavorite = toggleFavorite,
+                    onClickCollapse = {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.hide()
+                        }
+                    },
+                )
+            },
+            sheetContainerColor = MaterialTheme.colorScheme.background,
+            sheetMaxWidth = Dp.Unspecified,
+            sheetPeekHeight = 0.dp,
+            sheetShape = RoundedCornerShape(0.dp),
+            sheetDragHandle = {},
+            modifier = modifier,
+        ) { contentPadding ->
+            Box {
+                content(contentPadding)
 
-            CollapsedPlayerContent(
-                radioState = radioState,
-                playPauseButtonState = playPauseButtonState,
-                toggleFavorite = toggleFavorite,
-                onClick = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.expand()
-                    }
-                },
-            )
+                CollapsedPlayerContent(
+                    radioState = radioState,
+                    playPauseButtonState = playPauseButtonState,
+                    toggleFavorite = toggleFavorite,
+                    onClick = {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.expand()
+                        }
+                    },
+                )
+            }
         }
     }
 }
 
-@OptIn(UnstableApi::class)
+@OptIn(UnstableApi::class, ExperimentalTime::class)
 @Composable
 private fun BoxScope.CollapsedPlayerContent(
     radioState: RadioState,
@@ -181,6 +188,9 @@ private fun BoxScope.CollapsedPlayerContent(
     onClick: () -> Unit,
 ) {
     val surfaceColor = MaterialTheme.colorScheme.surface
+    val durationSeconds = radioState.currentSong?.durationSeconds ?: 0L
+    val startTimeMs = radioState.startTime?.toEpochMilliseconds()
+    val progress = rememberSongProgress(startTimeMs, durationSeconds)
 
     Surface(
         modifier = Modifier
@@ -190,6 +200,9 @@ private fun BoxScope.CollapsedPlayerContent(
         contentColor = contentColorFor(surfaceColor),
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
+            if (durationSeconds > 0L) {
+                CollapsedSongProgressBar(progress = progress)
+            }
             HorizontalDivider()
 
             Row(
@@ -260,7 +273,6 @@ private fun BoxScope.CollapsedPlayerContent(
 private fun ExpandedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
-    accentColor: Color?,
     visualizerState: VisualizerState,
     isVisualizerEnabled: Boolean,
     onClickCollapse: () -> Unit,
@@ -275,7 +287,6 @@ private fun ExpandedPlayerContent(
     ) {
         CompositionLocalProvider(
             LocalContentColor provides contentColorFor(surfaceColor),
-            LocalAlbumArtAccentColor provides accentColor,
         ) {
             BoxWithConstraints {
                 if (maxWidth < maxHeight) {
@@ -474,7 +485,7 @@ private fun StationPicker(radioState: RadioState, onClickStation: (Station) -> U
     }
 }
 
-@OptIn(UnstableApi::class)
+@OptIn(UnstableApi::class, ExperimentalTime::class)
 @Composable
 private fun SongInfo(
     radioState: RadioState,
@@ -484,6 +495,9 @@ private fun SongInfo(
 ) {
     val context = LocalContext.current
     val currentSong = radioState.currentSong
+    val durationSeconds = currentSong?.durationSeconds ?: 0L
+    val startTimeMs = radioState.startTime?.toEpochMilliseconds()
+    val progress = rememberSongProgress(startTimeMs, durationSeconds)
 
     Column(
         modifier = Modifier
@@ -533,6 +547,12 @@ private fun SongInfo(
                     )
                 }
             }
+
+            ExpandedSongProgressBar(
+                progress = progress,
+                durationSeconds = durationSeconds,
+                modifier = Modifier.padding(horizontal = 8.dp),
+            )
         }
 
         Row(

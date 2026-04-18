@@ -3,7 +3,7 @@ package me.echeung.moemoekyun.domain.songs.model
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.SongDescriptor
 import me.echeung.moemoekyun.util.PreferenceUtil
-import java.util.Locale
+import me.echeung.moemoekyun.util.ext.formatDuration
 import javax.inject.Inject
 
 class SongConverter @Inject constructor(private val preferenceUtil: PreferenceUtil) {
@@ -36,17 +36,7 @@ class SongConverter @Inject constructor(private val preferenceUtil: PreferenceUt
         }
         .joinToString()
 
-    private fun Song.duration(): String {
-        var minutes = (duration / 60).toLong()
-        val seconds = (duration % 60).toLong()
-        return if (minutes < 60) {
-            String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds)
-        } else {
-            val hours = minutes / 60
-            minutes %= 60
-            String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds)
-        }
-    }
+    private fun Song.duration(): String = duration.toLong().formatDuration()
 
     private fun Song.albumArtUrl(): String? {
         val album = albums?.firstOrNull { it.image != null }
