@@ -83,22 +83,22 @@ fun ExpandedSongProgressBar(progress: Float, durationSeconds: Long, modifier: Mo
             modifier = Modifier.fillMaxWidth(),
         )
 
-        if (durationSeconds > 0L) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(
-                    text = (progress * durationSeconds).toLong().formatDuration(),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-                Text(
-                    text = durationSeconds.formatDuration(),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.secondary,
-                )
-            }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            val elapsed = if (durationSeconds > 0L) (progress * durationSeconds).toLong().formatDuration() else ""
+            val total = if (durationSeconds > 0L) durationSeconds.formatDuration() else ""
+            Text(
+                text = elapsed,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+            )
+            Text(
+                text = total,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+            )
         }
     }
 }
