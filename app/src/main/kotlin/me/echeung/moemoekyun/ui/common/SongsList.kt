@@ -3,9 +3,6 @@ package me.echeung.moemoekyun.ui.common
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +15,6 @@ import me.echeung.moemoekyun.domain.songs.model.DomainSong
 
 fun LazyListScope.songsItems(
     songs: ImmutableList<DomainSong>?,
-    showFavoriteIcons: Boolean = false,
     onShowSongs: (ImmutableList<DomainSong>) -> Unit = {},
 ) = items(
     items = songs.orEmpty(),
@@ -40,15 +36,6 @@ fun LazyListScope.songsItems(
                 Text(
                     text = artists,
                     color = MaterialTheme.colorScheme.secondary,
-                )
-            }
-        },
-        trailingContent = {
-            if (showFavoriteIcons && it.favorited) {
-                Icon(
-                    imageVector = Icons.Filled.Favorite,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
                 )
             }
         },
