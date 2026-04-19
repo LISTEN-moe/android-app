@@ -44,11 +44,16 @@ class RadioService @Inject constructor(
     init {
         scope.launchIO {
             songUpdateMapper.flow(socket.flow).collectLatest { update ->
+                val previousSong = _state.value.currentSong
+                val songChanged = previousSong != null && update.currentSong?.id != previousSong.id
                 _state.value = _state.value.copy(
                     currentSong = update.currentSong,
                     listeners = update.listeners,
                     requester = update.requester,
                     event = update.event,
+                    // Clear start time when the song changes so the progress bar resets to 0
+                    // while we wait for the SSE event to provide the new start time.
+                    startTime = if (songChanged) null else _state.value.startTime,
                 )
             }
         }
