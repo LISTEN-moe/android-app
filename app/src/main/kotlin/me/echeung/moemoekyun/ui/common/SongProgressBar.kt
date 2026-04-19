@@ -27,8 +27,7 @@ private const val TRACK_ALPHA_FRACTION = 0.25f
 
 /**
  * Returns a [0, 1] progress value that ticks in real-time based on wall-clock elapsed time.
- * Returns 0 if duration or start time is unknown, or if the elapsed time exceeds the duration
- * (which indicates the start time belongs to the previous song and the new SSE hasn't arrived yet).
+ * Returns 0 if duration or start time is unknown.
  */
 @Composable
 fun rememberSongProgress(startTimeEpochMs: Long?, durationSeconds: Long): Float {
@@ -58,10 +57,10 @@ fun rememberSongProgress(startTimeEpochMs: Long?, durationSeconds: Long): Float 
 
 private fun computeProgress(startTimeEpochMs: Long, durationSeconds: Long): Float {
     val elapsed = (System.currentTimeMillis() - startTimeEpochMs) / 1000f
-    // Elapsed > duration means this start time belongs to the previous song;
-    // return 0 so the bar resets until the SSE event arrives for the new song.
+    // If elapsed exceeds duration the start time is stale (belongs to the previous song).
+    // Return 0 so the bar resets and waits for the next SSE event.
     if (elapsed > durationSeconds) return 0f
-    return (elapsed / durationSeconds).coerceIn(0f, 1f)
+    return (elapsed / durationSeconds).coerceAtLeast(0f)
 }
 
 /** Thin full-width bar for the top edge of the collapsed player strip. No corner radius. */
