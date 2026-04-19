@@ -27,16 +27,13 @@ private const val TRACK_ALPHA_FRACTION = 0.25f
 
 /**
  * Returns a [0, 1] progress value that ticks in real-time based on wall-clock elapsed time.
- * Source-agnostic: pass any epoch-millisecond start time from WebSocket, local playback, etc.
  * Returns 0 if duration or start time is unknown.
  */
 @Composable
 fun rememberSongProgress(startTimeEpochMs: Long?, durationSeconds: Long): Float {
     var progress by remember(startTimeEpochMs, durationSeconds) {
         mutableFloatStateOf(
-            if (startTimeEpochMs != null &&
-                durationSeconds > 0L
-            ) {
+            if (startTimeEpochMs != null && durationSeconds > 0L) {
                 computeProgress(startTimeEpochMs, durationSeconds)
             } else {
                 0f
@@ -49,7 +46,7 @@ fun rememberSongProgress(startTimeEpochMs: Long?, durationSeconds: Long): Float 
             progress = 0f
             return@LaunchedEffect
         }
-        while (true) {
+        while (progress < 1f) {
             progress = computeProgress(startTimeEpochMs, durationSeconds)
             delay(500L)
         }

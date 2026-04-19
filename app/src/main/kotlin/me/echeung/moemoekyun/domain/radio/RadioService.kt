@@ -33,30 +33,30 @@ class RadioService @Inject constructor(
     private val socket: Socket,
     private val sse: RadioSse,
     private val queueSse: QueueSse,
-    private val radioStateReducer: RadioStateReducer,
+    private val songUpdateMapper: SongUpdateMapper,
 ) : ConnectivityManager.NetworkCallback() {
 
     private val scope = MainScope()
 
-    private val _state = MutableStateFlow(
-        RadioState(
-            station = preferenceUtil.station().get(),
-        ),
-    )
+    private val _state = MutableStateFlow(RadioState(station = preferenceUtil.station().get()))
     val state = _state.asStateFlow()
 
     init {
         scope.launchIO {
-            radioStateReducer.radioStateFlow(socket.flow, sse.flow)
-                .collectLatest { update ->
-                    _state.value = _state.value.copy(
-                        currentSong = update.currentSong,
-                        startTime = update.startTime,
-                        listeners = update.listeners,
-                        requester = update.requester,
-                        event = update.event,
-                    )
-                }
+            songUpdateMapper.flow(socket.flow).collectLatest { update ->
+                _state.value = _state.value.copy(
+                    currentSong = update.currentSong,
+                    listeners = update.listeners,
+                    requester = update.requester,
+                    event = update.event,
+                )
+            }
+        }
+
+        scope.launchIO {
+            sseStartTimes(sse.flow).collectLatest { startTime ->
+                _state.value = _state.value.copy(startTime = startTime)
+            }
         }
 
         scope.launchIO {
