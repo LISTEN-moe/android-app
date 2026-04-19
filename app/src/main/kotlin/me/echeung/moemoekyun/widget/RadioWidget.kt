@@ -183,7 +183,9 @@ class RadioWidget : GlanceAppWidget() {
     @Composable
     private fun FavoriteButton(songId: Int, isFavorited: Boolean) {
         Image(
-            provider = ImageProvider(if (isFavorited) R.drawable.ic_star_24dp else R.drawable.ic_star_border_24dp),
+            provider = ImageProvider(
+                if (isFavorited) R.drawable.ic_favorite_24dp else R.drawable.ic_favorite_outline_24dp,
+            ),
             contentDescription = null,
             colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
             modifier = GlanceModifier

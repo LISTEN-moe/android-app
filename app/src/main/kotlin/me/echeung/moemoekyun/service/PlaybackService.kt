@@ -94,14 +94,14 @@ class PlaybackService : MediaLibraryService() {
         )
 
         val favoriteButton =
-            CommandButton.Builder(CommandButton.ICON_STAR_UNFILLED)
+            CommandButton.Builder(CommandButton.ICON_HEART_UNFILLED)
                 .setEnabled(true)
                 .setDisplayName(resources.getString(R.string.action_favorite))
                 .setSessionCommand(SessionCommand(ACTION_FAVORITE, Bundle.EMPTY))
                 .setSlots(CommandButton.SLOT_BACK)
                 .build()
         val unfavoriteButton =
-            CommandButton.Builder(CommandButton.ICON_STAR_FILLED)
+            CommandButton.Builder(CommandButton.ICON_HEART_FILLED)
                 .setEnabled(true)
                 .setDisplayName(resources.getString(R.string.action_unfavorite))
                 .setSessionCommand(SessionCommand(ACTION_UNFAVORITE, Bundle.EMPTY))

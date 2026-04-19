@@ -25,14 +25,14 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.QueueMusic
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.ExpandMore
+import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material.icons.outlined.Headphones
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.StarOutline
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
@@ -616,12 +616,12 @@ private fun SongFavoriteIconButton(
     ) {
         if (favorited) {
             Icon(
-                imageVector = Icons.Outlined.Star,
+                imageVector = Icons.Filled.Favorite,
                 contentDescription = stringResource(R.string.action_unfavorite),
             )
         } else {
             Icon(
-                imageVector = Icons.Outlined.StarOutline,
+                imageVector = Icons.Outlined.FavoriteBorder,
                 contentDescription = stringResource(R.string.action_favorite),
             )
         }

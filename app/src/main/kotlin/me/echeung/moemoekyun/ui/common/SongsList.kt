@@ -4,7 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
@@ -46,7 +46,7 @@ fun LazyListScope.songsItems(
         trailingContent = {
             if (showFavoriteIcons && it.favorited) {
                 Icon(
-                    imageVector = Icons.Outlined.Star,
+                    imageVector = Icons.Filled.Favorite,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
                 )
