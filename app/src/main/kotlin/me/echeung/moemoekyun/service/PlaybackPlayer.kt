@@ -77,10 +77,10 @@ class PlaybackPlayer @Inject constructor(player: Player, scope: CoroutineScope, 
     }
 
     override fun handleSetPlayWhenReady(playWhenReady: Boolean): ListenableFuture<*> {
-        // Seek to the live edge when starting fresh, but not when resuming from pause —
-        // otherwise resuming will restart the stream from the beginning.
-        if (playWhenReady && (playbackState == STATE_IDLE || playbackState == STATE_ENDED)) {
-            logcat { "will seek to default position and start playing" }
+        // Always seek to the live edge when starting playback, including resuming from pause,
+        // so we don't resume from stale buffered data that accumulated while paused.
+        if (playWhenReady) {
+            logcat { "will seek to default position and start playing (state=$playbackState)" }
             player.seekToDefaultPosition()
         }
         return super.handleSetPlayWhenReady(playWhenReady)
