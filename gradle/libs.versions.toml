@@ -6,7 +6,7 @@ coroutines = "1.10.2"
 glance = "1.1.1"
 hilt = "2.59.2"
 junit = "6.0.3"
-kotlin = "2.3.20"
+kotlin = "2.3.21"
 media3 = "1.10.0"
 navigation3 = "1.1.1"
 
@@ -15,7 +15,7 @@ android-application = { id = "com.android.application", version = "9.1.1" }
 
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-ksp = { id = "com.google.devtools.ksp", version = "2.3.6" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.7" }
 
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutlib" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
