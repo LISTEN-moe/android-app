@@ -16,6 +16,7 @@ import me.echeung.moemoekyun.fragment.SongListFields
 
 fun UserQuery.User.transform() = User(
     this.uuid,
+    this.username,
     this.displayName!!,
     this.avatarImage,
     this.bannerImage,

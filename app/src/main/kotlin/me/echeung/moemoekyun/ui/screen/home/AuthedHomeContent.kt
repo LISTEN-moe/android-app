@@ -155,7 +155,7 @@ private fun UserInfo(user: DomainUser, onClickLogOut: () -> Unit) {
 
             Text(
                 modifier = Modifier.weight(1f),
-                text = user.username,
+                text = user.displayName,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

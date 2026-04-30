@@ -6,7 +6,8 @@ import javax.inject.Inject
 class UserConverter @Inject constructor() {
 
     fun toDomainUser(user: User): DomainUser = DomainUser(
-        username = user.displayName,
+        username = user.username,
+        displayName = user.displayName,
         avatarUrl = "$CDN_AVATAR_URL/${user.avatarImage}".takeIf { user.avatarImage != null },
         bannerUrl = "$CDN_BANNER_URL/${user.bannerImage}".takeIf { user.bannerImage != null },
     )
