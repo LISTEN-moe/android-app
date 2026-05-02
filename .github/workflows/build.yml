@@ -71,3 +71,7 @@ jobs:
           prerelease: ${{ env.IS_PRERELEASE }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+- name: Upload APK
+uses: actions/upload-artifact@v4
+with: app-release
+path: android/app/build/outputs/apk/release/app-release.apk
