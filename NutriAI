@@ -1,0 +1,1 @@
+npx eas-cli@latest workflow:run create-production-builds.yml
