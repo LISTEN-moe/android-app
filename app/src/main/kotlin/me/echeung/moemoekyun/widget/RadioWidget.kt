@@ -3,6 +3,7 @@ package me.echeung.moemoekyun.widget
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -84,6 +85,9 @@ class RadioWidget : GlanceAppWidget() {
         val showTitle = size.width >= SIZE_MEDIUM.width
         val showArtistAndFav = size.width >= SIZE_LARGE.width
 
+        // SIZE_MEDIUM+ matches the collapsed player design; SIZE_SMALL stays compact.
+        val useLargeLayout = showTitle
+
         Box(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -92,26 +96,39 @@ class RadioWidget : GlanceAppWidget() {
             contentAlignment = Alignment.CenterStart,
         ) {
             Row(
-                modifier = GlanceModifier.fillMaxSize().padding(8.dp),
+                modifier = GlanceModifier
+                    .fillMaxSize()
+                    .padding(
+                        horizontal = if (useLargeLayout) 12.dp else 8.dp,
+                        vertical = if (useLargeLayout) 10.dp else 8.dp,
+                    ),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                AlbumArtImage(albumArt)
+                AlbumArtImage(
+                    bitmap = albumArt,
+                    size = if (useLargeLayout) 56.dp else 40.dp,
+                    cornerRadius = if (useLargeLayout) 8.dp else 6.dp,
+                )
 
-                Spacer(GlanceModifier.width(8.dp))
+                Spacer(GlanceModifier.width(if (useLargeLayout) 12.dp else 8.dp))
 
                 if (showTitle) {
+                    // Matches collapsed player order: art → FAB → text → fav
+                    PlayPauseButton(isPlaying, useFabStyle = true)
+
+                    Spacer(GlanceModifier.width(12.dp))
+
                     Column(
                         modifier = GlanceModifier
                             .defaultWeight()
-                            .fillMaxHeight()
-                            .padding(horizontal = 4.dp),
+                            .fillMaxHeight(),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         if (title != null) {
                             Text(
                                 text = title,
                                 style = TextStyle(
-                                    fontSize = 13.sp,
+                                    fontSize = 14.sp,
                                     fontWeight = FontWeight.Medium,
                                     color = GlanceTheme.colors.onSurface,
                                 ),
@@ -121,7 +138,7 @@ class RadioWidget : GlanceAppWidget() {
                                 Text(
                                     text = artists,
                                     style = TextStyle(
-                                        fontSize = 11.sp,
+                                        fontSize = 12.sp,
                                         color = GlanceTheme.colors.secondary,
                                     ),
                                     maxLines = 1,
@@ -134,23 +151,21 @@ class RadioWidget : GlanceAppWidget() {
                             )
                         }
                     }
+
+                    if (showArtistAndFav && isAuthenticated && songId != null) {
+                        FavoriteButton(songId, isFavorited)
+                    }
                 } else {
                     Spacer(GlanceModifier.defaultWeight())
-                }
-
-                PlayPauseButton(isPlaying)
-
-                if (showArtistAndFav && isAuthenticated && songId != null) {
-                    Spacer(GlanceModifier.width(4.dp))
-                    FavoriteButton(songId, isFavorited)
+                    PlayPauseButton(isPlaying, useFabStyle = false)
                 }
             }
         }
     }
 
     @Composable
-    private fun AlbumArtImage(bitmap: Bitmap?) {
-        val mod = GlanceModifier.size(40.dp).cornerRadius(6.dp)
+    private fun AlbumArtImage(bitmap: Bitmap?, size: Dp = 40.dp, cornerRadius: Dp = 6.dp) {
+        val mod = GlanceModifier.size(size).cornerRadius(cornerRadius)
         if (bitmap != null) {
             Image(
                 provider = ImageProvider(bitmap),
@@ -169,15 +184,34 @@ class RadioWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun PlayPauseButton(isPlaying: Boolean) {
-        Image(
-            provider = ImageProvider(if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp),
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
-            modifier = GlanceModifier
-                .size(40.dp)
-                .clickable(actionRunCallback<PlayPauseAction>()),
-        )
+    private fun PlayPauseButton(isPlaying: Boolean, useFabStyle: Boolean = false) {
+        val icon = ImageProvider(if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp)
+        if (useFabStyle) {
+            Box(
+                modifier = GlanceModifier
+                    .size(48.dp)
+                    .cornerRadius(24.dp)
+                    .background(GlanceTheme.colors.primary)
+                    .clickable(actionRunCallback<PlayPauseAction>()),
+                contentAlignment = Alignment.Center,
+            ) {
+                Image(
+                    provider = icon,
+                    contentDescription = null,
+                    colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
+                    modifier = GlanceModifier.size(24.dp),
+                )
+            }
+        } else {
+            Image(
+                provider = icon,
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+                modifier = GlanceModifier
+                    .size(40.dp)
+                    .clickable(actionRunCallback<PlayPauseAction>()),
+            )
+        }
     }
 
     @Composable
@@ -200,8 +234,8 @@ class RadioWidget : GlanceAppWidget() {
 
     companion object {
         private val SIZE_SMALL = DpSize(110.dp, 56.dp)
-        private val SIZE_MEDIUM = DpSize(180.dp, 56.dp)
-        private val SIZE_LARGE = DpSize(270.dp, 56.dp)
+        private val SIZE_MEDIUM = DpSize(180.dp, 80.dp)
+        private val SIZE_LARGE = DpSize(270.dp, 80.dp)
     }
 }
 
