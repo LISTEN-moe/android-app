@@ -40,12 +40,17 @@ import androidx.glance.state.PreferencesGlanceStateDefinition
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
+import androidx.glance.unit.ColorProvider
 import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.request.SuccessResult
 import coil3.request.allowHardware
 import coil3.toBitmap
 import me.echeung.moemoekyun.R
+import me.echeung.moemoekyun.client.api.Station
+import me.echeung.moemoekyun.ui.theme.ColorJpopPrimary
+import me.echeung.moemoekyun.ui.theme.ColorKpopPrimary
+import me.echeung.moemoekyun.ui.theme.ColorOnPrimary
 
 class RadioWidget : GlanceAppWidget() {
 
@@ -75,6 +80,9 @@ class RadioWidget : GlanceAppWidget() {
     private fun Content(albumArt: Bitmap?) {
         val prefs = currentState<Preferences>()
         val size = LocalSize.current
+
+        val station = prefs[keyStation]?.let { runCatching { Station.valueOf(it) }.getOrNull() } ?: Station.JPOP
+        val fabColor = ColorProvider(if (station == Station.KPOP) ColorKpopPrimary else ColorJpopPrimary)
 
         val title = prefs[keyTitle]
         val artists = prefs[keyArtists]
@@ -115,7 +123,7 @@ class RadioWidget : GlanceAppWidget() {
 
                 if (showTitle) {
                     // Matches collapsed player order: art → FAB → text → fav
-                    PlayPauseButton(isPlaying, useFabStyle = true)
+                    PlayPauseButton(isPlaying, fabColor = fabColor, useFabStyle = true)
 
                     Spacer(GlanceModifier.width(12.dp))
 
@@ -158,7 +166,7 @@ class RadioWidget : GlanceAppWidget() {
                     }
                 } else {
                     Spacer(GlanceModifier.defaultWeight())
-                    PlayPauseButton(isPlaying, useFabStyle = false)
+                    PlayPauseButton(isPlaying, fabColor = fabColor, useFabStyle = false)
                 }
             }
         }
@@ -185,21 +193,21 @@ class RadioWidget : GlanceAppWidget() {
     }
 
     @Composable
-    private fun PlayPauseButton(isPlaying: Boolean, useFabStyle: Boolean = false) {
+    private fun PlayPauseButton(isPlaying: Boolean, fabColor: ColorProvider, useFabStyle: Boolean = false) {
         val icon = ImageProvider(if (isPlaying) R.drawable.ic_pause_24dp else R.drawable.ic_play_arrow_24dp)
         if (useFabStyle) {
             Box(
                 modifier = GlanceModifier
                     .size(48.dp)
                     .cornerRadius(24.dp)
-                    .background(GlanceTheme.colors.primary)
+                    .background(fabColor)
                     .clickable(actionRunCallback<PlayPauseAction>()),
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
                     provider = icon,
                     contentDescription = null,
-                    colorFilter = ColorFilter.tint(GlanceTheme.colors.onPrimary),
+                    colorFilter = ColorFilter.tint(ColorProvider(ColorOnPrimary)),
                     modifier = GlanceModifier.size(24.dp),
                 )
             }
@@ -217,20 +225,25 @@ class RadioWidget : GlanceAppWidget() {
 
     @Composable
     private fun FavoriteButton(songId: Int, isFavorited: Boolean) {
-        Image(
-            provider = ImageProvider(
-                if (isFavorited) R.drawable.ic_favorite_24dp else R.drawable.ic_favorite_outline_24dp,
-            ),
-            contentDescription = null,
-            colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+        Box(
             modifier = GlanceModifier
-                .size(40.dp)
+                .size(48.dp)
                 .clickable(
                     actionRunCallback<FavoriteAction>(
                         actionParametersOf(songIdParam to songId),
                     ),
                 ),
-        )
+            contentAlignment = Alignment.Center,
+        ) {
+            Image(
+                provider = ImageProvider(
+                    if (isFavorited) R.drawable.ic_favorite_24dp else R.drawable.ic_favorite_outline_24dp,
+                ),
+                contentDescription = null,
+                colorFilter = ColorFilter.tint(GlanceTheme.colors.onSurface),
+                modifier = GlanceModifier.size(24.dp),
+            )
+        }
     }
 
     companion object {

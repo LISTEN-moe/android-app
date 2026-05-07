@@ -73,6 +73,7 @@ class RadioWidgetUpdater @Inject constructor(
                             remove(keyIsFavorited)
                             remove(keySongId)
                         }
+                        this[keyStation] = radioState.station.name
                         this[keyIsPlaying] = playing
                         this[keyIsAuthenticated] = user != null
                     }

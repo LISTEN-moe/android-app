@@ -6,15 +6,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import me.echeung.moemoekyun.client.api.Station
 
-private val OnPrimary = Color(0xFFF0F0F2)
+internal val ColorOnPrimary = Color(0xFFF0F0F2)
+internal val ColorJpopPrimary = Color(0xFFFF015B)
+internal val ColorKpopPrimary = Color(0xFF30A9ED)
+
 private val Secondary = Color(0xFF8F92A1)
 private val Background = Color(0xFF1A1D28)
 private val Surface = Color(0xFF1F232D)
 private val Outline = Color(0xFF2C2829)
 
 private val JpopColorScheme = darkColorScheme(
-    primary = Color(0xFFFF015B),
-    onPrimary = OnPrimary,
+    primary = ColorJpopPrimary,
+    onPrimary = ColorOnPrimary,
     secondary = Secondary,
     primaryContainer = Color(0xFFF60052),
     background = Background,
@@ -25,8 +28,8 @@ private val JpopColorScheme = darkColorScheme(
 )
 
 private val KpopColorScheme = darkColorScheme(
-    primary = Color(0xFF30A9ED),
-    onPrimary = OnPrimary,
+    primary = ColorKpopPrimary,
+    onPrimary = ColorOnPrimary,
     secondary = Secondary,
     primaryContainer = Color(0xFF1587C9),
     background = Background,
