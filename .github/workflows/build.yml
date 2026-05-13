@@ -17,6 +17,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@a5ad31d6a139d249332a2605b85202e8c0b78450 # v2.19.1
+        with:
+          egress-policy: block
+          allowed-endpoints: >
+            api.adoptopenjdk.net:443
+            api.github.com:443
+            dl.google.com:443
+            github.com:443
+            maven.google.com:443
+            plugins.gradle.org:443
+            release-assets.githubusercontent.com:443
+            repo.maven.apache.org:443
+            spdx.org:443
+
       - name: Clone repo
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
