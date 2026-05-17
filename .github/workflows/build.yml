@@ -30,6 +30,7 @@ jobs:
             plugins.gradle.org:443
             release-assets.githubusercontent.com:443
             repo.maven.apache.org:443
+            services.gradle.org:443
             spdx.org:443
 
       - name: Clone repo
