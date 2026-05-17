@@ -2,7 +2,7 @@
 aboutlib = "14.2.0"
 apollo = "4.4.3"
 coil = "3.4.0"
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 glance = "1.1.1"
 hilt = "2.59.2"
 junit = "6.0.3"
