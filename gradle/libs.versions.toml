@@ -1,6 +1,6 @@
 [versions]
 aboutlib = "14.2.0"
-apollo = "4.4.3"
+apollo = "5.0.0"
 coil = "3.4.0"
 coroutines = "1.11.0"
 glance = "1.1.1"
