@@ -25,7 +25,7 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "14.2.0" }
 aboutLibraries-compose = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutlib" }
 
 androidx-appcompat = "androidx.appcompat:appcompat:1.7.1"
-androidx-lifecycle = "androidx.lifecycle:lifecycle-process:2.10.0"
+androidx-lifecycle = "androidx.lifecycle:lifecycle-process:2.11.0"
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose" }
 androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version = "2.10.0" }
 androidx-media3-common = { module = "androidx.media3:media3-common-ktx", version.ref = "media3" }
