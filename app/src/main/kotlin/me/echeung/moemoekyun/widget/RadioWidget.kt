@@ -14,6 +14,7 @@ import androidx.glance.GlanceModifier
 import androidx.glance.GlanceTheme
 import androidx.glance.Image
 import androidx.glance.ImageProvider
+import androidx.glance.LocalContext
 import androidx.glance.LocalSize
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
@@ -81,11 +82,13 @@ class RadioWidget : GlanceAppWidget() {
         val prefs = currentState<Preferences>()
         val size = LocalSize.current
 
+        val context = LocalContext.current
         val station = prefs[keyStation]?.let { runCatching { Station.valueOf(it) }.getOrNull() } ?: Station.JPOP
         val fabColor = ColorProvider(if (station == Station.KPOP) ColorKpopPrimary else ColorJpopPrimary)
 
         val title = prefs[keyTitle]
-        val artists = prefs[keyArtists]
+            ?: context.getString(if (station == Station.KPOP) R.string.kpop else R.string.jpop)
+        val artists = prefs[keyArtists] ?: context.getString(R.string.app_name)
         val isPlaying = prefs[keyIsPlaying] ?: false
         val isFavorited = prefs[keyIsFavorited] ?: false
         val isAuthenticated = prefs[keyIsAuthenticated] ?: false
@@ -133,30 +136,23 @@ class RadioWidget : GlanceAppWidget() {
                             .fillMaxHeight(),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        if (title != null) {
+                        Text(
+                            text = title,
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = GlanceTheme.colors.onSurface,
+                            ),
+                            maxLines = 1,
+                        )
+                        if (showArtistAndFav) {
                             Text(
-                                text = title,
+                                text = artists,
                                 style = TextStyle(
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.Medium,
-                                    color = GlanceTheme.colors.onSurface,
+                                    fontSize = 12.sp,
+                                    color = GlanceTheme.colors.secondary,
                                 ),
                                 maxLines = 1,
-                            )
-                            if (showArtistAndFav && artists != null) {
-                                Text(
-                                    text = artists,
-                                    style = TextStyle(
-                                        fontSize = 12.sp,
-                                        color = GlanceTheme.colors.secondary,
-                                    ),
-                                    maxLines = 1,
-                                )
-                            }
-                        } else {
-                            Text(
-                                text = "…",
-                                style = TextStyle(color = GlanceTheme.colors.onSurface),
                             )
                         }
                     }
