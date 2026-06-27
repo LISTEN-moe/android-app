@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -89,10 +88,6 @@ fun AuthedHomeContent(
         }
 
         songsItems(songs = favorites, onShowSongs = onShowSongs)
-
-        item {
-            Spacer(modifier = Modifier.height(PlayerPeekHeight + contentPadding.calculateBottomPadding()))
-        }
     }
 }
 

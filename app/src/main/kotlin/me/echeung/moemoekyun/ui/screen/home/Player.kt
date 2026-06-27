@@ -2,17 +2,19 @@ package me.echeung.moemoekyun.ui.screen.home
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.OptIn
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,6 +37,7 @@ import androidx.compose.material.icons.outlined.Pause
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -45,17 +48,19 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MultiChoiceSegmentedButtonRow
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
+import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -64,12 +69,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.lerp
 import androidx.media3.common.Player
 import androidx.media3.common.listen
 import androidx.media3.common.util.UnstableApi
@@ -91,7 +99,7 @@ import me.echeung.moemoekyun.ui.common.rememberSongProgress
 import me.echeung.moemoekyun.util.ext.copyToClipboard
 import kotlin.time.ExperimentalTime
 
-/** Reserved scroll space for the collapsed player strip (content height, excluding nav bar inset). */
+/** Visible height of the collapsed player bar (excluding the bottom system bar inset). */
 val PlayerPeekHeight = 80.dp
 
 @Composable
@@ -107,18 +115,18 @@ fun PlayerScaffold(
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
     modifier: Modifier = Modifier,
-    content: @Composable BoxScope.(PaddingValues) -> Unit,
+    content: @Composable (PaddingValues) -> Unit,
 ) {
     val scope = rememberCoroutineScope()
     val playPauseButtonState = rememberPlayPauseButtonState(mediaController)
     val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.Expanded,
-            skipHiddenState = false,
+        bottomSheetState = rememberBottomSheetState(
+            initialValue = SheetValue.PartiallyExpanded,
         ),
     )
+    val sheetState = scaffoldState.bottomSheetState
 
-    val isSheetExpanded = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded
+    val isSheetExpanded = sheetState.currentValue == SheetValue.Expanded
     val isPlaying = !playPauseButtonState.showPlay
 
     SideEffect {
@@ -127,12 +135,14 @@ fun PlayerScaffold(
 
     BackHandler(
         enabled = isSheetExpanded,
-        onBack = {
-            scope.launch {
-                scaffoldState.bottomSheetState.hide()
-            }
-        },
+        onBack = { scope.launch { sheetState.partialExpand() } },
     )
+
+    val bottomInset = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
+    val expandProgress = rememberSheetExpandProgress(sheetState, PlayerPeekHeight + bottomInset)
+
+    val surfaceColor = MaterialTheme.colorScheme.surface
+    val sheetBackground = surfaceColor.copy(alpha = lerp(COLLAPSED_SHEET_ALPHA, 1f, expandProgress.value))
 
     CompositionLocalProvider(
         LocalAlbumArtAccentColor provides accentColor,
@@ -140,131 +150,169 @@ fun PlayerScaffold(
         BottomSheetScaffold(
             scaffoldState = scaffoldState,
             sheetContent = {
-                ExpandedPlayerContent(
-                    radioState = radioState,
-                    playPauseButtonState = playPauseButtonState,
-                    visualizerState = visualizerState,
-                    isVisualizerEnabled = isVisualizerEnabled,
-                    onClickStation = onClickStation,
-                    onClickHistory = onClickHistory,
-                    toggleFavorite = toggleFavorite,
-                    onClickCollapse = {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.hide()
-                        }
-                    },
-                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(sheetBackground)
+                        .then(expandProgress.measureModifier),
+                ) {
+                    ExpandedPlayerContent(
+                        radioState = radioState,
+                        playPauseButtonState = playPauseButtonState,
+                        visualizerState = visualizerState,
+                        isVisualizerEnabled = isVisualizerEnabled,
+                        onClickStation = onClickStation,
+                        onClickHistory = onClickHistory,
+                        toggleFavorite = toggleFavorite,
+                        onClickCollapse = { scope.launch { sheetState.partialExpand() } },
+                        modifier = Modifier.alpha(expandProgress.value),
+                    )
+                    CollapsedPlayerContent(
+                        radioState = radioState,
+                        playPauseButtonState = playPauseButtonState,
+                        toggleFavorite = toggleFavorite,
+                        bottomInset = bottomInset,
+                        onClick = { scope.launch { sheetState.expand() } },
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .alpha(1f - expandProgress.value),
+                    )
+                }
             },
-            sheetContainerColor = MaterialTheme.colorScheme.background,
+            sheetContainerColor = Color.Transparent,
+            sheetContentColor = contentColorFor(surfaceColor),
             sheetMaxWidth = Dp.Unspecified,
-            sheetPeekHeight = 0.dp,
+            sheetPeekHeight = PlayerPeekHeight + bottomInset,
             sheetShape = RoundedCornerShape(0.dp),
+            sheetShadowElevation = 0.dp,
             sheetDragHandle = {},
             modifier = modifier,
-        ) { contentPadding ->
-            Box {
-                content(contentPadding)
+            content = content,
+        )
+    }
+}
 
-                CollapsedPlayerContent(
-                    radioState = radioState,
-                    playPauseButtonState = playPauseButtonState,
-                    toggleFavorite = toggleFavorite,
-                    onClick = {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
-                        }
-                    },
-                )
+/** Background opacity of the sheet when only the collapsed bar is showing. */
+private const val COLLAPSED_SHEET_ALPHA = 0.88f
+
+/**
+ * Continuous 0..1 drag progress for a [SheetState] with [SheetValue.PartiallyExpanded] and
+ * [SheetValue.Expanded] anchors. 0 = peek, 1 = fully expanded.
+ *
+ * Attach [SheetExpandProgress.measureModifier] to the sheet content so the helper can read its
+ * laid-out height (needed because the partial-anchor offset is not exposed by the public API).
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun rememberSheetExpandProgress(sheetState: SheetState, peekHeight: Dp): SheetExpandProgress {
+    val peekHeightPx = with(LocalDensity.current) { peekHeight.toPx() }
+    var sheetContentHeightPx by remember { mutableIntStateOf(0) }
+    val value by remember {
+        derivedStateOf {
+            val draggableRange = sheetContentHeightPx - peekHeightPx
+            if (draggableRange <= 0f) {
+                if (sheetState.targetValue == SheetValue.Expanded) 1f else 0f
+            } else {
+                val offset = runCatching { sheetState.requireOffset() }.getOrNull() ?: return@derivedStateOf 0f
+                (1f - offset / draggableRange).coerceIn(0f, 1f)
             }
         }
     }
+    return remember(sheetState) {
+        SheetExpandProgress(
+            valueProvider = { value },
+            measureModifier = Modifier.onSizeChanged { sheetContentHeightPx = it.height },
+        )
+    }
+}
+
+private class SheetExpandProgress(private val valueProvider: () -> Float, val measureModifier: Modifier) {
+    val value: Float get() = valueProvider()
 }
 
 @OptIn(UnstableApi::class, ExperimentalTime::class)
 @Composable
-private fun BoxScope.CollapsedPlayerContent(
+private fun CollapsedPlayerContent(
     radioState: RadioState,
     playPauseButtonState: PlayPauseButtonState,
     toggleFavorite: ((Int) -> Unit)?,
+    bottomInset: Dp,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val surfaceColor = MaterialTheme.colorScheme.surface
     val durationSeconds = radioState.currentSong?.durationSeconds ?: 0L
     val progress = rememberSongProgress(radioState.startTime?.toEpochMilliseconds(), durationSeconds)
 
-    Surface(
-        modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .fillMaxWidth(),
-        color = surfaceColor.copy(alpha = 0.88f),
-        contentColor = contentColorFor(surfaceColor),
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            if (durationSeconds > 0L) {
-                CollapsedSongProgressBar(progress = progress)
-            }
-            HorizontalDivider()
+        if (durationSeconds > 0L) {
+            CollapsedSongProgressBar(progress = progress)
+        }
+        HorizontalDivider()
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable(onClick = onClick)
-                    .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
-                    .padding(horizontal = 12.dp, vertical = 10.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                Box(modifier = Modifier.size(56.dp)) {
-                    AlbumArt(
-                        modifier = Modifier.fillMaxSize(),
-                        albumArtUrl = radioState.albumArtUrl,
-                        openUrlOnClick = false,
-                        cornerRadius = 8.dp,
-                    )
-                }
-
-                PlayerCircularPlayPauseButton(
-                    playPauseButtonState = playPauseButtonState,
-                    size = 48.dp,
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(PlayerPeekHeight)
+                .padding(horizontal = 12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+        ) {
+            Box(modifier = Modifier.size(56.dp)) {
+                AlbumArt(
+                    modifier = Modifier.fillMaxSize(),
+                    albumArtUrl = radioState.albumArtUrl,
+                    openUrlOnClick = false,
+                    cornerRadius = 8.dp,
                 )
+            }
 
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(2.dp),
-                ) {
-                    if (radioState.currentSong == null) {
-                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                    } else {
+            PlayerCircularPlayPauseButton(
+                playPauseButtonState = playPauseButtonState,
+                size = 48.dp,
+            )
+
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                if (radioState.currentSong == null) {
+                    CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                } else {
+                    Text(
+                        text = radioState.currentSong.title,
+                        style = MaterialTheme.typography.titleSmall,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+
+                    CompositionLocalProvider(
+                        LocalTextStyle provides MaterialTheme.typography.bodySmall,
+                        LocalContentColor provides MaterialTheme.colorScheme.secondary,
+                    ) {
                         Text(
-                            text = radioState.currentSong.title,
-                            style = MaterialTheme.typography.titleSmall,
+                            text = radioState.currentSong.artists.orEmpty(),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
-
-                        CompositionLocalProvider(
-                            LocalTextStyle provides MaterialTheme.typography.bodySmall,
-                            LocalContentColor provides MaterialTheme.colorScheme.secondary,
-                        ) {
-                            Text(
-                                text = radioState.currentSong.artists.orEmpty(),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
                     }
                 }
+            }
 
-                if (toggleFavorite != null) {
-                    val song = radioState.currentSong
-                    SongFavoriteIconButton(
-                        songId = song?.id,
-                        favorited = song?.favorited == true,
-                        onToggleFavorite = toggleFavorite,
-                    )
-                }
+            if (toggleFavorite != null) {
+                val song = radioState.currentSong
+                SongFavoriteIconButton(
+                    songId = song?.id,
+                    favorited = song?.favorited == true,
+                    onToggleFavorite = toggleFavorite,
+                )
             }
         }
+
+        Spacer(modifier = Modifier.height(bottomInset))
     }
 }
 
@@ -279,40 +327,31 @@ private fun ExpandedPlayerContent(
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
+    modifier: Modifier = Modifier,
 ) {
-    val surfaceColor = MaterialTheme.colorScheme.surface
-
-    Surface(
-        color = surfaceColor,
-    ) {
-        CompositionLocalProvider(
-            LocalContentColor provides contentColorFor(surfaceColor),
-        ) {
-            BoxWithConstraints {
-                if (maxWidth < maxHeight) {
-                    PortraitExpandedPlayerContent(
-                        radioState = radioState,
-                        playPauseButtonState = playPauseButtonState,
-                        visualizerState = visualizerState,
-                        isVisualizerEnabled = isVisualizerEnabled,
-                        onClickCollapse = onClickCollapse,
-                        onClickStation = onClickStation,
-                        onClickHistory = onClickHistory,
-                        toggleFavorite = toggleFavorite,
-                    )
-                } else {
-                    LandscapeExpandedPlayerContent(
-                        radioState = radioState,
-                        playPauseButtonState = playPauseButtonState,
-                        visualizerState = visualizerState,
-                        isVisualizerEnabled = isVisualizerEnabled,
-                        onClickCollapse = onClickCollapse,
-                        onClickStation = onClickStation,
-                        onClickHistory = onClickHistory,
-                        toggleFavorite = toggleFavorite,
-                    )
-                }
-            }
+    BoxWithConstraints(modifier = modifier) {
+        if (maxWidth < maxHeight) {
+            PortraitExpandedPlayerContent(
+                radioState = radioState,
+                playPauseButtonState = playPauseButtonState,
+                visualizerState = visualizerState,
+                isVisualizerEnabled = isVisualizerEnabled,
+                onClickCollapse = onClickCollapse,
+                onClickStation = onClickStation,
+                onClickHistory = onClickHistory,
+                toggleFavorite = toggleFavorite,
+            )
+        } else {
+            LandscapeExpandedPlayerContent(
+                radioState = radioState,
+                playPauseButtonState = playPauseButtonState,
+                visualizerState = visualizerState,
+                isVisualizerEnabled = isVisualizerEnabled,
+                onClickCollapse = onClickCollapse,
+                onClickStation = onClickStation,
+                onClickHistory = onClickHistory,
+                toggleFavorite = toggleFavorite,
+            )
         }
     }
 }

@@ -31,6 +31,7 @@ import me.echeung.moemoekyun.service.PlaybackService
 import me.echeung.moemoekyun.ui.common.BackgroundBox
 import me.echeung.moemoekyun.ui.common.rememberToolbarScrollBehavior
 import me.echeung.moemoekyun.ui.common.toolbarColors
+import me.echeung.moemoekyun.ui.util.plus
 
 @Composable
 fun HomeScreen(
@@ -88,7 +89,7 @@ fun HomeScreen(
             screenModel.loadHistory()
         },
         toggleFavorite = screenModel::toggleFavorite.takeIf { isAuthenticated },
-        content = {
+        content = { playerPadding ->
             Scaffold(
                 modifier = Modifier.nestedScroll(toolbarScrollBehavior.nestedScrollConnection),
                 topBar = {
@@ -100,10 +101,11 @@ fun HomeScreen(
                         onNavigateSettings = onNavigateSettings,
                     )
                 },
-            ) { contentPadding ->
+            ) { scaffoldPadding ->
                 BackgroundBox(
                     modifier = Modifier.fillMaxSize(),
                 ) {
+                    val contentPadding = scaffoldPadding + playerPadding
                     if (isAuthenticated) {
                         AuthedHomeContent(
                             user = state.user!!,
