@@ -26,25 +26,35 @@ import androidx.compose.ui.unit.Dp
 internal fun rememberSheetExpandProgress(sheetState: SheetState, peekHeight: Dp): SheetExpandProgress {
     val peekHeightPx = with(LocalDensity.current) { peekHeight.toPx() }
     var sheetContentHeightPx by remember { mutableIntStateOf(0) }
+    val draggableRangePx by remember {
+        derivedStateOf { (sheetContentHeightPx - peekHeightPx).coerceAtLeast(0f) }
+    }
     val value by remember {
         derivedStateOf {
-            val draggableRange = sheetContentHeightPx - peekHeightPx
-            if (draggableRange <= 0f) {
+            if (draggableRangePx <= 0f) {
                 if (sheetState.targetValue == SheetValue.Expanded) 1f else 0f
             } else {
                 val offset = runCatching { sheetState.requireOffset() }.getOrNull() ?: return@derivedStateOf 0f
-                (1f - offset / draggableRange).coerceIn(0f, 1f)
+                (1f - offset / draggableRangePx).coerceIn(0f, 1f)
             }
         }
     }
     return remember(sheetState) {
         SheetExpandProgress(
             valueProvider = { value },
+            draggableRangePxProvider = { draggableRangePx },
             measureModifier = Modifier.onSizeChanged { sheetContentHeightPx = it.height },
         )
     }
 }
 
-internal class SheetExpandProgress(private val valueProvider: () -> Float, val measureModifier: Modifier) {
+internal class SheetExpandProgress(
+    private val valueProvider: () -> Float,
+    private val draggableRangePxProvider: () -> Float,
+    val measureModifier: Modifier,
+) {
     val value: Float get() = valueProvider()
+
+    /** Pixels between the peek and fully-expanded sheet positions. 0 until first layout. */
+    val draggableRangePx: Float get() = draggableRangePxProvider()
 }

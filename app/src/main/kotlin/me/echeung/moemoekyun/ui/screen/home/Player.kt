@@ -1,6 +1,5 @@
 package me.echeung.moemoekyun.ui.screen.home
 
-import androidx.activity.compose.BackHandler
 import androidx.annotation.OptIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -72,13 +71,13 @@ fun PlayerScaffold(
         onSetVisualizerActive(isVisualizerEnabled && isPlaying && isSheetExpanded)
     }
 
-    BackHandler(
-        enabled = isSheetExpanded,
-        onBack = { scope.launch { sheetState.partialExpand() } },
-    )
-
     val bottomInset = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
     val expandProgress = rememberSheetExpandProgress(sheetState, PlayerPeekHeight + bottomInset)
+    val predictiveBackModifier = rememberPredictiveBackSlideDown(
+        enabled = isSheetExpanded,
+        expandProgress = expandProgress,
+        onCommit = { sheetState.partialExpand() },
+    )
 
     val surfaceColor = MaterialTheme.colorScheme.surface
     val sheetBackground = surfaceColor.copy(alpha = lerp(COLLAPSED_SHEET_ALPHA, 1f, expandProgress.value))
@@ -92,6 +91,7 @@ fun PlayerScaffold(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
+                        .then(predictiveBackModifier)
                         .background(sheetBackground)
                         .then(expandProgress.measureModifier),
                 ) {
