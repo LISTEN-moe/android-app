@@ -60,6 +60,7 @@ fun PlayerScaffold(
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(
             initialValue = SheetValue.PartiallyExpanded,
+            enabledValues = setOf(SheetValue.PartiallyExpanded, SheetValue.Expanded),
         ),
     )
     val sheetState = scaffoldState.bottomSheetState
