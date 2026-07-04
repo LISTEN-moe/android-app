@@ -5,9 +5,9 @@ import kotlin.time.Duration.Companion.seconds
 /**
  * Elapsed play time in ms for a song, clamped to [0, duration].
  *
- * Staleness from WS/SSE drift is handled upstream: RadioService clears the startTime when a new song
- * arrives, so a non-null start time here always belongs to the current song. This only clamps the
- * value into range so callers extrapolating from it stay stable at the song's start and end.
+ * The start time comes from the SSE metadata stream (the song's true start), so a non-null value
+ * always belongs to the current song. This only clamps the value into range so callers extrapolating
+ * from it stay stable at the song's start and end.
  */
 fun songElapsedMs(startTimeEpochMs: Long, durationSeconds: Long, nowMs: Long = System.currentTimeMillis()): Long {
     val elapsedMs = nowMs - startTimeEpochMs
