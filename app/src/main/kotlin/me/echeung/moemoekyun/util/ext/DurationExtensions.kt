@@ -2,6 +2,23 @@ package me.echeung.moemoekyun.util.ext
 
 import kotlin.time.Duration.Companion.seconds
 
+/**
+ * Elapsed play time in ms for a song, clamped to [0, duration].
+ *
+ * Staleness from WS/SSE drift is handled upstream: RadioService clears the startTime when a new song
+ * arrives, so a non-null start time here always belongs to the current song. This only clamps the
+ * value into range so callers extrapolating from it stay stable at the song's start and end.
+ */
+fun songElapsedMs(startTimeEpochMs: Long, durationSeconds: Long, nowMs: Long = System.currentTimeMillis()): Long {
+    val elapsedMs = nowMs - startTimeEpochMs
+    val durationMs = durationSeconds.seconds.inWholeMilliseconds
+    return when {
+        elapsedMs < 0 -> 0
+        durationMs > 0 -> elapsedMs.coerceAtMost(durationMs)
+        else -> elapsedMs
+    }
+}
+
 fun Long.formatDuration(): String = seconds.toComponents { hours, minutes, seconds, _ ->
     buildString {
         if (hours > 0) append("$hours:")

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 import me.echeung.moemoekyun.util.ext.formatDuration
+import me.echeung.moemoekyun.util.ext.songElapsedMs
 
 private const val PROGRESS_BAR_ALPHA = 0.85f
 private const val TRACK_ALPHA_FRACTION = 0.25f
@@ -56,11 +57,8 @@ fun rememberSongProgress(startTimeEpochMs: Long?, durationSeconds: Long): Float 
 }
 
 private fun computeProgress(startTimeEpochMs: Long, durationSeconds: Long): Float {
-    val elapsed = (System.currentTimeMillis() - startTimeEpochMs) / 1000f
-    // If elapsed exceeds duration the start time is stale (belongs to the previous song).
-    // Return 0 so the bar resets and waits for the next SSE event.
-    if (elapsed > durationSeconds) return 0f
-    return (elapsed / durationSeconds).coerceAtLeast(0f)
+    val elapsedMs = songElapsedMs(startTimeEpochMs, durationSeconds)
+    return (elapsedMs / (durationSeconds * 1000f)).coerceAtLeast(0f)
 }
 
 /** Thin full-width bar for the top edge of the collapsed player strip. No corner radius. */

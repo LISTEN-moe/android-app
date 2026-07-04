@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.collectLatest
 import logcat.logcat
 import me.echeung.moemoekyun.domain.radio.interactor.CurrentSong
 import me.echeung.moemoekyun.util.ext.launchIO
+import me.echeung.moemoekyun.util.ext.songElapsedMs
 import me.echeung.moemoekyun.util.ext.withUIContext
 import javax.inject.Inject
 import kotlin.time.Clock
@@ -44,8 +45,11 @@ class PlaybackPlayer @Inject constructor(player: Player, scope: CoroutineScope, 
     override fun getState(): State {
         val state = super.getState()
 
+        // A null start time means the current song's start time hasn't arrived yet,
+        // so report no position until then.
         val positionSupplier = currentStartTime?.let {
-            val elapsedMs = (Clock.System.now() - it).inWholeMilliseconds
+            val elapsedMs =
+                songElapsedMs(it.toEpochMilliseconds(), currentDuration, Clock.System.now().toEpochMilliseconds())
             PositionSupplier.getExtrapolating(elapsedMs, 1f)
         } ?: PositionSupplier.getConstant(C.TIME_UNSET)
 
