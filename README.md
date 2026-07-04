@@ -7,8 +7,24 @@
 
 <a href="https://f-droid.org/app/me.echeung.moemoekyun.fdroid">
   <img height="80" alt="Get it on F-Droid"
-       src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png">
+       src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png" />
 </a>
+
+<a href="https://github.com/LISTEN-moe/android-app/blob/main/README.md#obtainium">
+	<img height="80" alt="Get it on Obtainium"
+		 src="https://github.com/ImranR98/Obtainium/blob/main/assets/graphics/badge_obtainium.png" />
+</a>
+
+### Obtainium
+
+**Getting updates directly from GitHub releases with [Obtainium](https://github.com/ImranR98/Obtainium/blob/main/README.md).**
+
+In the "Add App" screen:
+
+1. Add the following URL: `https://github.com/LISTEN-moe/android-app`
+1. To receive updates for prereleases, enable "Include prereleases"
+1. Tap the "Add" button at the top beside the URL entered in the first step
+1. Install the app!
 
 
 ## About
