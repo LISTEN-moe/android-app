@@ -1,6 +1,7 @@
 package me.echeung.moemoekyun.client.api.socket
 
 import kotlinx.serialization.DeserializationStrategy
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonContentPolymorphicSerializer
 import kotlinx.serialization.json.JsonElement
@@ -33,7 +34,16 @@ sealed interface WebsocketResponse {
     @Serializable
     data class Update(val t: String?, val d: Details?) : WebsocketResponse {
         @Serializable
-        data class Details(val song: Song?, val requester: User?, val event: Event?, val listeners: Int)
+        data class Details(
+            val song: Song?,
+            val requester: User?,
+            val event: Event?,
+            val listeners: Int,
+            // The wire field is named "startTime" but is actually the song's *end* time (ISO-8601);
+            // Consumers should subtract the duration to derive the real start time.
+            @SerialName("startTime")
+            val endTime: String? = null,
+        )
 
         fun isValidUpdate(): Boolean = (
             t == TRACK_UPDATE ||
