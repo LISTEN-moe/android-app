@@ -20,6 +20,8 @@ class PreferenceUtil @Inject constructor(private val prefs: FlowSharedPreference
 
     fun shouldShowVisualizer() = prefs.getBoolean("pref_audio_visualizer", true)
 
+    fun isPlayerExpanded() = prefs.getBoolean("player_expanded", false)
+
     fun songsSortType() = prefs.getEnum("all_songs_sort_type", SortType.TITLE)
     fun songsSortDescending() = prefs.getBoolean("all_songs_sort_desc", false)
 

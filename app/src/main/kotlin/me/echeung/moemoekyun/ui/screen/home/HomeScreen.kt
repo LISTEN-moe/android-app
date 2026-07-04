@@ -84,6 +84,8 @@ fun HomeScreen(
         visualizerState = visualizerState,
         isVisualizerEnabled = isVisualizerEnabled,
         onSetVisualizerActive = screenModel::setVisualizerActive,
+        initialExpanded = screenModel.initialPlayerExpanded,
+        onExpandedChange = screenModel::setPlayerExpanded,
         onClickStation = screenModel::toggleLibrary,
         onClickHistory = {
             screenModel.loadHistory()

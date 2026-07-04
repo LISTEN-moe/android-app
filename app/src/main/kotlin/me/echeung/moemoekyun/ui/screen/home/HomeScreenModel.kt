@@ -71,6 +71,12 @@ class HomeScreenModel @Inject constructor(
         if (!active) visualizerAudioProcessor.emitEmpty()
     }
 
+    val initialPlayerExpanded: Boolean = preferenceUtil.isPlayerExpanded().get()
+
+    fun setPlayerExpanded(expanded: Boolean) {
+        preferenceUtil.isPlayerExpanded().set(expanded)
+    }
+
     init {
         viewModelScope.launchIO {
             getAuthenticatedUser.asFlow()

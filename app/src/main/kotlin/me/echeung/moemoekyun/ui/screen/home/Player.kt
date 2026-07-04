@@ -17,8 +17,10 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -28,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.session.MediaController
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.domain.radio.RadioState
@@ -49,6 +52,8 @@ fun PlayerScaffold(
     visualizerState: VisualizerState,
     isVisualizerEnabled: Boolean,
     onSetVisualizerActive: (Boolean) -> Unit,
+    initialExpanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
     onClickStation: (Station) -> Unit,
     onClickHistory: () -> Unit,
     toggleFavorite: ((Int) -> Unit)?,
@@ -59,7 +64,7 @@ fun PlayerScaffold(
     val playPauseButtonState = rememberPlayPauseButtonState(mediaController)
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberBottomSheetState(
-            initialValue = SheetValue.PartiallyExpanded,
+            initialValue = if (initialExpanded) SheetValue.Expanded else SheetValue.PartiallyExpanded,
             enabledValues = setOf(SheetValue.PartiallyExpanded, SheetValue.Expanded),
         ),
     )
@@ -70,6 +75,13 @@ fun PlayerScaffold(
 
     SideEffect {
         onSetVisualizerActive(isVisualizerEnabled && isPlaying && isSheetExpanded)
+    }
+
+    // Persist the expanded/collapsed state so it's restored on next launch.
+    LaunchedEffect(sheetState) {
+        snapshotFlow { sheetState.currentValue }
+            .drop(1)
+            .collect { onExpandedChange(it == SheetValue.Expanded) }
     }
 
     val bottomInset = WindowInsets.systemBars.asPaddingValues().calculateBottomPadding()
