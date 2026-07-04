@@ -47,7 +47,7 @@ Translations are crowd-sourced through [CrowdIn](https://crwd.in/listenmoe-andro
 
 ### Release
 
-Tagged release builds are automatically uploaded to the Google Play Store via a [workflow](https://github.com/LISTEN-moe/android-app/blob/main/.github/workflows/build.yml).
+Tagged release builds are automatically uploaded to GitHub releases via a [workflow](https://github.com/LISTEN-moe/android-app/blob/main/.github/workflows/build.yml).
 
 F-Droid releases are also automated ([see F-Droid wiki](https://f-droid.org/wiki/page/me.echeung.moemoekyun.fdroid)).
 
