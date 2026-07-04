@@ -44,20 +44,31 @@ class RadioService @Inject constructor(
     init {
         scope.launchIO {
             songUpdateMapper.flow(socket.flow).collectLatest { update ->
-                _state.value = _state.value.copy(
+                val current = _state.value
+                // The WS TRACK_UPDATE carries startTime atomically with the song, so we always have a
+                // start time synced to the current song (no stale value, no gap waiting on a second
+                // stream). This is currently the sole source of startTime; the SSE metadata stream is
+                // kept connected but no longer feeds startTime (see the SSE collector below for why).
+                // Queue/notification updates carry no song or startTime; keep the current value then.
+                _state.value = current.copy(
                     currentSong = update.currentSong,
                     listeners = update.listeners,
                     requester = update.requester,
                     event = update.event,
+                    startTime = update.startTime ?: current.startTime,
                 )
             }
         }
 
         scope.launchIO {
-            sse.flow.collectLatest { metadata ->
-                _state.value = _state.value.copy(
-                    startTime = metadata.startedAt?.let(Instant::parse),
-                )
+            sse.flow.collectLatest { _ ->
+                // TODO: The SSE metadata stream also carries a startedAt, but we find it too bothersome
+                // to deal with the drift with the WS updates at the moment.
+                // This is particularly annoying to deal with since the MediaSession actually calculates its own
+                // progress based on a provided start time in PlaybackPlayer (PositionSupplier.getExtrapolating).
+
+                // val startedAt = metadata.startedAt?.let(Instant::parse) ?: return@collectLatest
+                // _state.value = _state.value.copy(startTime = startedAt)
             }
         }
 

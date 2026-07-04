@@ -12,7 +12,9 @@ import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.util.PreferenceUtil
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Transforms the raw WebSocket flow into [SongUpdate] values, re-emitting whenever
@@ -41,6 +43,8 @@ class SongUpdateMapper @Inject constructor(
                 listeners = info?.listeners ?: 0,
                 requester = info?.requester?.displayName,
                 event = info?.event,
+                startTime = info?.endTime?.let(Instant::parse)
+                    ?.minus((info.song?.duration ?: 0).seconds),
             )
         }
 }
@@ -51,4 +55,5 @@ data class SongUpdate(
     val listeners: Int = 0,
     val requester: String? = null,
     val event: Event? = null,
+    val startTime: Instant? = null,
 )
