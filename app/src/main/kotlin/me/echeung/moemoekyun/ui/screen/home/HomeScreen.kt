@@ -108,8 +108,8 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     val contentPadding = scaffoldPadding + playerPadding
-                    if (isAuthenticated) {
-                        AuthedHomeContent(
+                    when {
+                        isAuthenticated -> AuthedHomeContent(
                             user = state.user!!,
                             onClickLogOut = screenModel::logout,
                             favorites = state.filteredFavorites,
@@ -123,8 +123,12 @@ fun HomeScreen(
                             onShowSongs = { songs -> onShowHistory(songs, null) },
                             contentPadding = contentPadding,
                         )
-                    } else {
-                        UnauthedHomeContent(
+
+                        state.isLoadingUser -> LoadingHomeContent(
+                            contentPadding = contentPadding,
+                        )
+
+                        else -> UnauthedHomeContent(
                             onNavigateLogin = onNavigateLogin,
                             onNavigateRegister = onNavigateRegister,
                             contentPadding = contentPadding,
