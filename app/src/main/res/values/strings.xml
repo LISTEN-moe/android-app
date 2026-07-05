@@ -45,6 +45,17 @@
     <string name="see_more">See more</string>
 
 
+    <!-- == Rankings == -->
+
+    <string name="rankings_title">Last 24h rankings</string>
+    <string name="rankings_songs">Songs</string>
+    <string name="rankings_artists">Artists</string>
+    <string name="rankings_albums">Albums</string>
+    <string name="rankings_empty">No ranking data yet.</string>
+    <string name="rankings_see_full">See full rankings</string>
+    <string name="rankings_plays">%d plays</string>
+
+
     <!-- == Sort == -->
 
     <string name="sort">Sort</string>

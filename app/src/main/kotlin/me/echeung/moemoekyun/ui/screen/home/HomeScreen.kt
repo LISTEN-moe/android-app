@@ -1,8 +1,10 @@
 package me.echeung.moemoekyun.ui.screen.home
 
 import android.content.ComponentName
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
@@ -36,6 +38,7 @@ import me.echeung.moemoekyun.ui.util.plus
 @Composable
 fun HomeScreen(
     onNavigateSearch: () -> Unit,
+    onNavigateRankings: () -> Unit,
     onNavigateSettings: () -> Unit,
     onNavigateAbout: () -> Unit,
     onNavigateLogin: () -> Unit,
@@ -99,6 +102,7 @@ fun HomeScreen(
                         scrollBehavior = toolbarScrollBehavior,
                         isAuthenticated = isAuthenticated,
                         onNavigateSearch = onNavigateSearch,
+                        onNavigateRankings = onNavigateRankings,
                         onNavigateAbout = onNavigateAbout,
                         onNavigateSettings = onNavigateSettings,
                     )
@@ -145,17 +149,27 @@ private fun HomeToolbar(
     scrollBehavior: TopAppBarScrollBehavior,
     isAuthenticated: Boolean,
     onNavigateSearch: () -> Unit,
+    onNavigateRankings: () -> Unit,
     onNavigateAbout: () -> Unit,
     onNavigateSettings: () -> Unit,
 ) {
     TopAppBar(
         title = {},
         navigationIcon = {
-            if (isAuthenticated) {
-                IconButton(onClick = onNavigateSearch) {
+            Row {
+                if (isAuthenticated) {
+                    IconButton(onClick = onNavigateSearch) {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = stringResource(R.string.search),
+                        )
+                    }
+                }
+
+                IconButton(onClick = onNavigateRankings) {
                     Icon(
-                        imageVector = Icons.Outlined.Search,
-                        contentDescription = stringResource(R.string.search),
+                        imageVector = Icons.AutoMirrored.Outlined.TrendingUp,
+                        contentDescription = stringResource(R.string.rankings_title),
                     )
                 }
             }

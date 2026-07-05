@@ -8,7 +8,9 @@ import me.echeung.moemoekyun.client.api.Station
 
 internal val ColorOnPrimary = Color(0xFFF0F0F2)
 internal val ColorJpopPrimary = Color(0xFFFF015B)
+internal val ColorJpopContainer = Color(0xFFF60052)
 internal val ColorKpopPrimary = Color(0xFF30A9ED)
+internal val ColorKpopContainer = Color(0xFF1587C9)
 
 private val Secondary = Color(0xFF8F92A1)
 private val Background = Color(0xFF1A1D28)
@@ -19,7 +21,8 @@ private val JpopColorScheme = darkColorScheme(
     primary = ColorJpopPrimary,
     onPrimary = ColorOnPrimary,
     secondary = Secondary,
-    primaryContainer = Color(0xFFF60052),
+    primaryContainer = ColorJpopContainer,
+    secondaryContainer = ColorJpopContainer,
     background = Background,
     surface = Surface,
     surfaceContainer = Surface,
@@ -31,7 +34,8 @@ private val KpopColorScheme = darkColorScheme(
     primary = ColorKpopPrimary,
     onPrimary = ColorOnPrimary,
     secondary = Secondary,
-    primaryContainer = Color(0xFF1587C9),
+    primaryContainer = ColorKpopContainer,
+    secondaryContainer = ColorKpopContainer,
     background = Background,
     surface = Surface,
     surfaceContainer = Surface,

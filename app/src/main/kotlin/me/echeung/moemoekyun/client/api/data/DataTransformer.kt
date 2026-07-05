@@ -6,6 +6,8 @@ import me.echeung.moemoekyun.LatestSongsQuery
 import me.echeung.moemoekyun.PlayHistoryQuery
 import me.echeung.moemoekyun.SongQuery
 import me.echeung.moemoekyun.UserQuery
+import me.echeung.moemoekyun.client.api.ChartDescriptor
+import me.echeung.moemoekyun.client.api.ChartSongEntity
 import me.echeung.moemoekyun.client.api.SearchDescriptor
 import me.echeung.moemoekyun.client.api.SearchResult
 import me.echeung.moemoekyun.client.model.Song
@@ -49,6 +51,16 @@ fun SearchResult.transform() = Song(
 )
 
 private fun SearchDescriptor.toSongDescriptor() = SongDescriptor(name, nameRomaji, image)
+
+fun ChartSongEntity.transform() = Song(
+    id = id,
+    title = title,
+    titleRomaji = titleRomaji,
+    artists = artists.map { it.toSongDescriptor() },
+    albums = albums.map { it.toSongDescriptor() },
+)
+
+private fun ChartDescriptor.toSongDescriptor() = SongDescriptor(name, nameRomaji, image)
 
 fun List<Error>?.toMessage() = this?.joinToString { it.message } ?: ""
 

@@ -18,6 +18,7 @@ import me.echeung.moemoekyun.ui.screen.auth.LoginScreen
 import me.echeung.moemoekyun.ui.screen.auth.RegisterScreen
 import me.echeung.moemoekyun.ui.screen.home.HomeScreen
 import me.echeung.moemoekyun.ui.screen.music.MusicScreen
+import me.echeung.moemoekyun.ui.screen.rankings.RankingsScreen
 import me.echeung.moemoekyun.ui.screen.settings.SettingsScreen
 import me.echeung.moemoekyun.ui.screen.songs.SongsScreen
 
@@ -46,6 +47,7 @@ fun AppNavDisplay() {
             entry<Route.Home> {
                 HomeScreen(
                     onNavigateSearch = { backStack.add(Route.Music) },
+                    onNavigateRankings = { backStack.add(Route.Rankings) },
                     onNavigateSettings = { backStack.add(Route.Settings) },
                     onNavigateAbout = { backStack.add(Route.About) },
                     onNavigateLogin = { backStack.add(Route.Login) },
@@ -55,6 +57,11 @@ fun AppNavDisplay() {
             }
             entry<Route.Music> {
                 MusicScreen(
+                    onBack = { backStack.removeLastOrNull() },
+                )
+            }
+            entry<Route.Rankings> {
+                RankingsScreen(
                     onBack = { backStack.removeLastOrNull() },
                 )
             }
