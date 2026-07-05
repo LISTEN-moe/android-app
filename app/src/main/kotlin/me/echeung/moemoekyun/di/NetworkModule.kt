@@ -2,10 +2,9 @@ package me.echeung.moemoekyun.di
 
 import android.content.Context
 import com.apollographql.apollo.ApolloClient
-import com.apollographql.apollo.cache.http.HttpFetchPolicy
-import com.apollographql.apollo.cache.http.httpCache
-import com.apollographql.apollo.cache.http.httpFetchPolicy
-import com.apollographql.apollo.network.okHttpClient
+import com.apollographql.apollo.api.http.DefaultHttpRequestComposer
+import com.apollographql.apollo.network.http.DefaultHttpEngine
+import com.apollographql.apollo.network.http.HttpNetworkTransport
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +15,7 @@ import me.echeung.moemoekyun.BuildConfig
 import me.echeung.moemoekyun.client.api.ListenMoeApi
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
+import okhttp3.Cache
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -69,13 +69,23 @@ object NetworkModule {
     @Provides
     @Singleton
     fun apolloClient(@ApplicationContext context: Context, okHttpClient: OkHttpClient) = ApolloClient.Builder()
-        .serverUrl("https://listen.moe/graphql")
-        .httpCache(
-            directory = File(context.externalCacheDir, "apolloCache"),
-            maxSize = 1024 * 1024,
+        .networkTransport(
+            HttpNetworkTransport.Builder()
+                .httpRequestComposer(
+                    DefaultHttpRequestComposer(
+                        serverUrl = "https://listen.moe/graphql",
+                        enablePostCaching = true,
+                    ),
+                )
+                .httpEngine(
+                    DefaultHttpEngine {
+                        okHttpClient.newBuilder()
+                            .cache(Cache(File(context.externalCacheDir, "apolloCache"), maxSize = 1024 * 1024))
+                            .build()
+                    },
+                )
+                .build(),
         )
-        .httpFetchPolicy(HttpFetchPolicy.NetworkFirst)
-        .okHttpClient(okHttpClient)
         .build()
 
     @Provides
