@@ -108,8 +108,8 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                 ) {
                     val contentPadding = scaffoldPadding + playerPadding
-                    if (isAuthenticated) {
-                        AuthedHomeContent(
+                    when {
+                        isAuthenticated -> AuthedHomeContent(
                             user = state.user!!,
                             onClickLogOut = screenModel::logout,
                             favorites = state.filteredFavorites,
@@ -123,8 +123,14 @@ fun HomeScreen(
                             onShowSongs = { songs -> onShowHistory(songs, null) },
                             contentPadding = contentPadding,
                         )
-                    } else {
-                        UnauthedHomeContent(
+
+                        // Already have a token but the user data is still loading, so avoid
+                        // flashing the unauthenticated content.
+                        state.isLoadingUser -> LoadingHomeContent(
+                            contentPadding = contentPadding,
+                        )
+
+                        else -> UnauthedHomeContent(
                             onNavigateLogin = onNavigateLogin,
                             onNavigateRegister = onNavigateRegister,
                             contentPadding = contentPadding,

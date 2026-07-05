@@ -84,6 +84,7 @@ class HomeScreenModel @Inject constructor(
                     _state.update { state ->
                         state.copy(
                             user = it,
+                            hasAuthToken = getAuthenticatedUser.isAuthenticated(),
                         )
                     }
                 }
@@ -184,6 +185,7 @@ class HomeScreenModel @Inject constructor(
     @Immutable
     data class State(
         val user: DomainUser? = null,
+        val hasAuthToken: Boolean = false,
         val favorites: ImmutableList<DomainSong>? = null,
         val accentColor: Color? = null,
         val searchQuery: String? = null,
@@ -192,6 +194,13 @@ class HomeScreenModel @Inject constructor(
     ) {
         val filteredFavorites: ImmutableList<DomainSong>?
             get() = favorites?.search(searchQuery)
+
+        /**
+         * True when a token is stored but the user data hasn't loaded yet, i.e. we're likely
+         * authenticated and should avoid flashing the unauthenticated content.
+         */
+        val isLoadingUser: Boolean
+            get() = user == null && hasAuthToken
     }
 }
 
