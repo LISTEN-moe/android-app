@@ -5,8 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
-import com.apollographql.apollo.cache.http.HttpFetchPolicy
-import com.apollographql.apollo.cache.http.httpFetchPolicy
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -76,9 +74,9 @@ class MusicScreenModel @Inject constructor(
         if (state.searchQuery.isNotBlank() || state.isLoadingMore || !state.hasMoreLatest) return
         val nextOffset = state.latestSongs.size
         loadMore {
-            val response = apolloClient.query(
-                LatestSongsQuery(PAGE_SIZE, nextOffset, kpopOptional()),
-            ).httpFetchPolicy(HttpFetchPolicy.NetworkOnly).execute()
+            val response = apolloClient
+                .query(LatestSongsQuery(PAGE_SIZE, nextOffset, kpopOptional()))
+                .addHttpHeader("Cache-Control", "no-cache").execute()
             val newSongs = response.data?.songs?.songs?.map { it.toDomainSong() }.orEmpty()
             val totalCount = response.data?.songs?.count ?: 0
             _state.update { s ->
@@ -126,9 +124,9 @@ class MusicScreenModel @Inject constructor(
         viewModelScope.launchIO {
             _state.update { it.copy(isLoading = true, error = null) }
             try {
-                val response = apolloClient.query(
-                    LatestSongsQuery(PAGE_SIZE, 0, kpopOptional()),
-                ).httpFetchPolicy(HttpFetchPolicy.NetworkOnly).execute()
+                val response = apolloClient
+                    .query(LatestSongsQuery(PAGE_SIZE, 0, kpopOptional()))
+                    .addHttpHeader("Cache-Control", "no-cache").execute()
                 val songs = response.data?.songs?.songs?.map { it.toDomainSong() }.orEmpty()
                 val totalCount = response.data?.songs?.count ?: 0
                 _state.update {

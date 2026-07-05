@@ -2,9 +2,6 @@ package me.echeung.moemoekyun.client.api
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.api.Optional
-import com.apollographql.apollo.cache.http.HttpFetchPolicy
-import com.apollographql.apollo.cache.http.httpExpireTimeout
-import com.apollographql.apollo.cache.http.httpFetchPolicy
 import logcat.LogPriority
 import logcat.logcat
 import me.echeung.moemoekyun.FavoriteMutation
@@ -21,7 +18,6 @@ import me.echeung.moemoekyun.client.api.data.transform
 import me.echeung.moemoekyun.client.model.Song
 import me.echeung.moemoekyun.client.model.User
 import me.echeung.moemoekyun.util.PreferenceUtil
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -143,10 +139,7 @@ class ApiClient @Inject constructor(private val client: ApolloClient, private va
      * @param songId Song to get details for.
      */
     suspend fun getSongDetails(songId: Int): Song {
-        val response = client.query(SongQuery(songId))
-            .httpFetchPolicy(HttpFetchPolicy.CacheFirst)
-            .httpExpireTimeout(TimeUnit.DAYS.toMillis(1))
-            .execute()
+        val response = client.query(SongQuery(songId)).execute()
 
         return response.data?.song!!.transform()
     }
