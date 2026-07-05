@@ -124,8 +124,6 @@ fun HomeScreen(
                             contentPadding = contentPadding,
                         )
 
-                        // Already have a token but the user data is still loading, so avoid
-                        // flashing the unauthenticated content.
                         state.isLoadingUser -> LoadingHomeContent(
                             contentPadding = contentPadding,
                         )

@@ -13,14 +13,10 @@ import androidx.compose.ui.unit.dp
 import me.echeung.moemoekyun.ui.theme.AppTheme
 
 /**
- * Placeholder shown while the authenticated user's data is still loading. Kept intentionally
- * simple for now, but split out so it can be replaced with richer placeholder content later.
+ * Placeholder shown while the authenticated user's data is still loading.
  */
 @Composable
-fun LoadingHomeContent(
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-) {
+fun LoadingHomeContent(modifier: Modifier = Modifier, contentPadding: PaddingValues = PaddingValues(0.dp)) {
     Box(
         modifier = modifier
             .fillMaxSize()
