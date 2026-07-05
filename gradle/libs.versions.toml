@@ -66,7 +66,7 @@ kotlin-metadata = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version
 glance-appwidget = { module = "androidx.glance:glance-appwidget", version.ref = "glance" }
 glance-material3 = { module = "androidx.glance:glance-material3", version.ref = "glance" }
 
-immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.5.0" }
+immutables = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version = "0.5.1" }
 
 logcat = { module = "com.squareup.logcat:logcat", version = "0.4" }
 
