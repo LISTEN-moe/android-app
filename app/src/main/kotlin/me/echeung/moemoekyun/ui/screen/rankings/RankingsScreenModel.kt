@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.client.api.ChartEntityEntry
 import me.echeung.moemoekyun.client.api.ChartsApiClient
-import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.data.transform
+import me.echeung.moemoekyun.domain.radio.interactor.GetCurrentStation
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.interactor.RequestSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
@@ -31,6 +31,7 @@ class RankingsScreenModel @Inject constructor(
     private val favoriteSong: FavoriteSong,
     private val requestSong: RequestSong,
     private val getAuthenticatedUser: GetAuthenticatedUser,
+    private val getCurrentStation: GetCurrentStation,
     private val preferenceUtil: PreferenceUtil,
 ) : ViewModel() {
 
@@ -79,7 +80,7 @@ class RankingsScreenModel @Inject constructor(
                 val actionsEnabled = getAuthenticatedUser.get() != null
                 when (tab) {
                     RankingTab.SONGS -> {
-                        val response = chartsApiClient.songs(station())
+                        val response = chartsApiClient.songs(getCurrentStation.apiParam())
                         val songs = response.entries.map {
                             RankedSong(rank = it.rank, song = songConverter.toDomainSong(it.entity.transform()))
                         }.toImmutableList()
@@ -87,13 +88,13 @@ class RankingsScreenModel @Inject constructor(
                     }
 
                     RankingTab.ARTISTS -> {
-                        val response = chartsApiClient.artists(station())
+                        val response = chartsApiClient.artists(getCurrentStation.apiParam())
                         val artists = response.entries.map { it.toRankingEntity(EntityKind.ARTISTS) }.toImmutableList()
                         _state.update { it.copy(artists = artists, actionsEnabled = actionsEnabled, isLoading = false) }
                     }
 
                     RankingTab.ALBUMS -> {
-                        val response = chartsApiClient.albums(station())
+                        val response = chartsApiClient.albums(getCurrentStation.apiParam())
                         val albums = response.entries.map { it.toRankingEntity(EntityKind.ALBUMS) }.toImmutableList()
                         _state.update { it.copy(albums = albums, actionsEnabled = actionsEnabled, isLoading = false) }
                     }
@@ -103,8 +104,6 @@ class RankingsScreenModel @Inject constructor(
             }
         }
     }
-
-    private fun station(): String = if (preferenceUtil.station().get() == Station.KPOP) "kpop" else "jpop"
 
     private fun ChartEntityEntry.toRankingEntity(kind: EntityKind): RankingEntity {
         val preferRomaji = preferenceUtil.shouldPreferRomaji().get()

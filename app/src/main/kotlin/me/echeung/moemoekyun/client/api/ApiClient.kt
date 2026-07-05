@@ -91,7 +91,7 @@ class ApiClient @Inject constructor(private val client: ApolloClient, private va
     suspend fun getUserFavorites(): List<Song> {
         // TODO: do actual pagination
         val response = client.query(
-            FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)),
+            FavoritesQuery("@me", 0, 2500, Optional.presentIfNotNull(preferenceUtil.station().get().isKpop)),
         ).execute()
 
         return response.data?.user?.favorites?.favorites
@@ -115,7 +115,7 @@ class ApiClient @Inject constructor(private val client: ApolloClient, private va
      */
     suspend fun requestSong(songId: Int) {
         val response = client.mutation(
-            RequestSongMutation(songId, Optional.presentIfNotNull(preferenceUtil.station().get() == Station.KPOP)),
+            RequestSongMutation(songId, Optional.presentIfNotNull(preferenceUtil.station().get().isKpop)),
         ).execute()
 
         if (response.hasErrors()) {

@@ -20,14 +20,13 @@ import kotlinx.coroutines.flow.update
 import me.echeung.moemoekyun.LatestSongsQuery
 import me.echeung.moemoekyun.client.api.SearchApiClient
 import me.echeung.moemoekyun.client.api.SearchResult
-import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.data.transform
+import me.echeung.moemoekyun.domain.radio.interactor.GetCurrentStation
 import me.echeung.moemoekyun.domain.songs.interactor.FavoriteSong
 import me.echeung.moemoekyun.domain.songs.interactor.RequestSong
 import me.echeung.moemoekyun.domain.songs.model.DomainSong
 import me.echeung.moemoekyun.domain.songs.model.SongConverter
 import me.echeung.moemoekyun.domain.user.interactor.GetAuthenticatedUser
-import me.echeung.moemoekyun.util.PreferenceUtil
 import me.echeung.moemoekyun.util.ext.launchIO
 import javax.inject.Inject
 
@@ -40,7 +39,7 @@ class MusicScreenModel @Inject constructor(
     private val favoriteSong: FavoriteSong,
     private val requestSong: RequestSong,
     private val getAuthenticatedUser: GetAuthenticatedUser,
-    private val preferenceUtil: PreferenceUtil,
+    private val getCurrentStation: GetCurrentStation,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -178,7 +177,7 @@ class MusicScreenModel @Inject constructor(
     private fun SearchResult.toDomainSong() = songConverter.toDomainSong(transform())
 
     private fun kpopOptional(): Optional<Boolean?> {
-        val isKpop = preferenceUtil.station().get() == Station.KPOP
+        val isKpop = getCurrentStation.isKpop()
         return Optional.presentIfNotNull(isKpop.takeIf { it })
     }
 

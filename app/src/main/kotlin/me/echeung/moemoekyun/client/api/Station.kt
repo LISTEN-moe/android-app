@@ -27,4 +27,12 @@ enum class Station(
         "kpop",
         R.string.kpop,
     ),
+    ;
+
+    val isKpop: Boolean
+        get() = this == KPOP
+
+    /** Station identifier expected by REST endpoints (search, charts). */
+    val apiParam: String
+        get() = sseService
 }

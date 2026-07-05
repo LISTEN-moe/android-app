@@ -170,7 +170,7 @@ class HomeScreenModel @Inject constructor(
         viewModelScope.launchIO {
             _historyState.value = HistoryState.Loading
             val songs = try {
-                getPlayHistory.await(radioState.value.station == Station.KPOP)
+                getPlayHistory.await(radioState.value.station.isKpop)
             } catch (_: Exception) {
                 emptyList()
             }
