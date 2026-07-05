@@ -2,41 +2,21 @@ package me.echeung.moemoekyun.client.api
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class SearchApiClient @Inject constructor(private val okHttpClient: OkHttpClient, private val json: Json) {
+class SearchApiClient @Inject constructor(private val api: ListenMoeApi) {
 
-    suspend fun search(query: String, cursor: String? = null): SearchResponse {
-        val body = SearchRequest(
+    suspend fun search(query: String, cursor: String? = null): SearchResponse = api.search(
+        SearchRequest(
             searchText = query,
             limit = PAGE_SIZE,
             resultTypes = listOf("songs"),
             cursor = cursor,
             cursorDirection = if (cursor != null) "next" else null,
-        )
-
-        val requestBody = json.encodeToString(SearchRequest.serializer(), body)
-            .toRequestBody("application/json".toMediaType())
-
-        val request = Request.Builder()
-            .url("https://listen.moe/api/v1/search")
-            .post(requestBody)
-            .build()
-
-        val responseBody = okHttpClient.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw Exception("Search failed: ${response.code}")
-            response.body?.string() ?: throw Exception("Empty search response")
-        }
-
-        return json.decodeFromString(SearchResponse.serializer(), responseBody)
-    }
+        ),
+    )
 
     companion object {
         const val PAGE_SIZE = 50

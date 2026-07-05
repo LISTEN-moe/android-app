@@ -1,60 +1,29 @@
 package me.echeung.moemoekyun.client.api
 
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.Request
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class ChartsApiClient @Inject constructor(private val okHttpClient: OkHttpClient, private val json: Json) {
+class ChartsApiClient @Inject constructor(private val api: ListenMoeApi) {
 
     suspend fun songs(
         station: String,
         window: String = DEFAULT_WINDOW,
         mode: String = DEFAULT_MODE,
-    ): ChartSongsResponse {
-        val body = get("songs", station, window, mode)
-        return json.decodeFromString<ChartSongsResponse>(body)
-    }
+    ): ChartSongsResponse = api.chartSongs(station, window, mode)
 
     suspend fun artists(
         station: String,
         window: String = DEFAULT_WINDOW,
         mode: String = DEFAULT_MODE,
-    ): ChartEntitiesResponse {
-        val body = get("artists", station, window, mode)
-        return json.decodeFromString<ChartEntitiesResponse>(body)
-    }
+    ): ChartEntitiesResponse = api.chartArtists(station, window, mode)
 
     suspend fun albums(
         station: String,
         window: String = DEFAULT_WINDOW,
         mode: String = DEFAULT_MODE,
-    ): ChartEntitiesResponse {
-        val body = get("albums", station, window, mode)
-        return json.decodeFromString<ChartEntitiesResponse>(body)
-    }
-
-    private fun get(entityType: String, station: String, window: String, mode: String): String {
-        val url = "https://listen.moe/api/v1/charts/$entityType".toHttpUrl().newBuilder()
-            .addQueryParameter("station", station)
-            .addQueryParameter("window", window)
-            .addQueryParameter("mode", mode)
-            .build()
-
-        val request = Request.Builder()
-            .url(url)
-            .get()
-            .build()
-
-        return okHttpClient.newCall(request).execute().use { response ->
-            if (!response.isSuccessful) throw Exception("Charts request failed: ${response.code}")
-            response.body.string()
-        }
-    }
+    ): ChartEntitiesResponse = api.chartAlbums(station, window, mode)
 
     companion object {
         const val DEFAULT_WINDOW = "24h"

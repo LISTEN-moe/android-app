@@ -11,11 +11,17 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
 import me.echeung.moemoekyun.BuildConfig
+import me.echeung.moemoekyun.client.api.ListenMoeApi
 import me.echeung.moemoekyun.client.auth.AuthUtil
 import me.echeung.moemoekyun.util.system.NetworkUtil
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.create
 import java.io.File
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -71,6 +77,15 @@ object NetworkModule {
         .httpFetchPolicy(HttpFetchPolicy.NetworkFirst)
         .okHttpClient(okHttpClient)
         .build()
+
+    @Provides
+    @Singleton
+    fun listenMoeApi(okHttpClient: OkHttpClient, json: Json): ListenMoeApi = Retrofit.Builder()
+        .baseUrl("https://listen.moe/")
+        .client(okHttpClient)
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
+        .build()
+        .create()
 }
 
 private const val HEADER_AUTHZ = "Authorization"
