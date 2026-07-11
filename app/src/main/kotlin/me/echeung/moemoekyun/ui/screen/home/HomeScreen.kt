@@ -156,21 +156,21 @@ private fun HomeToolbar(
     TopAppBar(
         title = {},
         navigationIcon = {
-            Row {
-                if (isAuthenticated) {
+            if (isAuthenticated) {
+                Row {
                     IconButton(onClick = onNavigateSearch) {
                         Icon(
                             imageVector = Icons.Outlined.Search,
                             contentDescription = stringResource(R.string.search),
                         )
                     }
-                }
 
-                IconButton(onClick = onNavigateRankings) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.TrendingUp,
-                        contentDescription = stringResource(R.string.rankings_title),
-                    )
+                    IconButton(onClick = onNavigateRankings) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Outlined.TrendingUp,
+                            contentDescription = stringResource(R.string.rankings_title),
+                        )
+                    }
                 }
             }
         },
