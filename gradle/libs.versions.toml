@@ -5,7 +5,7 @@ coil = "3.5.0"
 coroutines = "1.11.0"
 glance = "1.1.1"
 hilt = "2.60.1"
-junit = "6.1.1"
+junit = "6.1.2"
 kotlin = "2.4.0"
 media3 = "1.10.1"
 navigation3 = "1.1.4"
@@ -90,7 +90,7 @@ serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", v
 
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "6.1.1" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "6.1.2" }
 kotest-assertions = { module = "io.kotest:kotest-assertions-core", version = "6.2.2" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 turbine = { module = "app.cash.turbine:turbine", version = "1.2.1" }
