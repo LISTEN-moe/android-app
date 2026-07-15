@@ -1,91 +1,77 @@
-name: CI
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - v*
-  pull_request:
+name: Build Android APK
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+on:
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build app
     runs-on: ubuntu-latest
-
     steps:
-      - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
-        with:
-          egress-policy: block
-          allowed-endpoints: >
-            api.adoptopenjdk.net:443
-            api.github.com:443
-            dl.google.com:443
-            github.com:443
-            maven.google.com:443
-            plugins-artifacts.gradle.org:443
-            plugins.gradle.org:443
-            release-assets.githubusercontent.com:443
-            repo.maven.apache.org:443
-            services.gradle.org:443
-            spdx.org:443
-            uploads.github.com:443
+      - uses: actions/checkout@v4
 
-      - name: Clone repo
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-
-      - name: Set up JDK
-        uses: actions/setup-java@0f481fcb613427c0f801b606911222b5b6f3083a # v5.5.0
+      - uses: actions/setup-node@v4
         with:
-          java-version: 21
+          node-version: '22'
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.1
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
           distribution: temurin
+          java-version: '17'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6.2.0
-
-      - name: Build app
-        run: ./gradlew :app:testFullDebugUnitTest :app:assembleFullRelease
-
-      # Sign APK and create release for tags
-
-      - name: Prepare build metadata
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
+      - name: Install React Native CLI
         run: |
-          set -x
-          VERSION_TAG="${GITHUB_REF/refs\/tags\//}"
-          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_ENV
-          if [[ "$VERSION_TAG" == *beta* ]] || [[ "$VERSION_TAG" == *alpha* ]]; then
-            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
-          else
-            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
-          fi
+          npm install -g @react-native-community/cli
+          mkdir -p artifacts/root-and-remedy/node_modules/.bin
+          ln -sf $(which react-native) artifacts/root-and-remedy/node_modules/.bin/react-native
 
-      - name: Sign APK
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
-        with:
-          releaseDirectory: app/build/outputs/apk/full/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "35.0.0"
+      - name: Install missing babel preset
+        run: |
+          mkdir -p /tmp/babel-preset-install
+          cd /tmp/babel-preset-install
+          npm init -y
+          npm install babel-preset-expo@54.0.10 --no-save
+          rsync -a --ignore-existing node_modules/ "$GITHUB_WORKSPACE/artifacts/root-and-remedy/node_modules/"
 
-      - name: Create release
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
-        with:
-          tag_name: ${{ env.VERSION_TAG }}
-          name: ${{ env.VERSION_TAG }}
-          body_path: distribution/whatsnew/whatsnew-en-US
-          files: |
-            ${{ env.SIGNED_RELEASE_FILE }}
-          draft: true
-          prerelease: ${{ env.IS_PRERELEASE }}
+      - name: Prebuild Android
+        working-directory: artifacts/root-and-remedy
+        run: npx expo prebuild --platform android --clean --no-install
+
+      - name: Configure release signing
+        working-directory: artifacts/root-and-remedy/android
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          keytool -genkeypair -v -keystore app/release.keystore \
+            -alias "$KEY_ALIAS" \
+            -keyalg RSA -keysize 2048 -validity 10000 \
+            -storetype PKCS12 \
+            -storepass "$STORE_PASSWORD" \
+            -keypass "$STORE_PASSWORD" \
+            -dname "CN=Herban Root and Remedy, OU=App, O=Herban, L=City, ST=State, C=US"
+          perl -0777 -pi -e 's/(signingConfigs\s*\{)/$1\n        release {\n            storeFile file("release.keystore")\n            storePassword System.getenv("RELEASE_STORE_PASSWORD")\n            keyAlias System.getenv("RELEASE_KEY_ALIAS")\n            keyPassword System.getenv("RELEASE_STORE_PASSWORD")\n        }\n/s' app/build.gradle
+          perl -0777 -pi -e 's/(release\s*\{[^}]*?)signingConfig signingConfigs\.debug/$1signingConfig signingConfigs.release/s' app/build.gradle
+
+      - name: Build release App Bundle
+        working-directory: artifacts/root-and-remedy/android
+        env:
+          NODE_ENV: production
+          RELEASE_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          EXPO_PUBLIC_REVENUECAT_ANDROID_API_KEY: goog_BiICKwxhkfBJJGqpFDJuoxpgACz
+          EXPO_PUBLIC_REVENUECAT_IOS_API_KEY: appl_mdlZqpCVgTbgpoPJCcEswVElQUC
+        run: ./gradlew bundleRelease
+
+      - name: Upload AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: herban-root-and-remedy
+          path: artifacts/root-and-remedy/android/app/build/outputs/bundle/release/app-release.aab
