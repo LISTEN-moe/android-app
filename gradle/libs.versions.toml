@@ -12,7 +12,7 @@ navigation3 = "1.1.4"
 retrofit = "3.0.0"
 
 [plugins]
-android-application = { id = "com.android.application", version = "9.2.1" }
+android-application = { id = "com.android.application", version = "9.3.1" }
 
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
