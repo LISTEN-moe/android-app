@@ -1,5 +1,5 @@
 [versions]
-aboutlib = "15.1.1"
+aboutlib = "15.2.0"
 apollo = "5.1.0"
 coil = "3.5.0"
 coroutines = "1.11.0"
