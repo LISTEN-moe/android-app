@@ -1,7 +1,7 @@
 [versions]
 aboutlib = "15.2.0"
 apollo = "5.1.0"
-coil = "3.6.2"
+coil = "3.6.3"
 coroutines = "1.11.0"
 glance = "1.2.0"
 hilt = "2.60.1"
