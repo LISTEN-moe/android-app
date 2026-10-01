@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import me.echeung.moemoekyun.client.api.Station
 import me.echeung.moemoekyun.client.api.socket.Socket
 import me.echeung.moemoekyun.client.api.sse.QueueSse
@@ -44,32 +45,31 @@ class RadioService @Inject constructor(
     init {
         scope.launchIO {
             songUpdateMapper.flow(socket.flow).collectLatest { update ->
-                val current = _state.value
-                // The WS TRACK_UPDATE carries startTime atomically with the song, so we always have a
-                // start time synced to the current song (no stale value, no gap waiting on a second
-                // stream). This is currently the sole source of startTime; the SSE metadata stream is
-                // kept connected but no longer feeds startTime (see the SSE collector below for why).
-                // Queue/notification updates carry no song or startTime; keep the current value then.
-                _state.value = current.copy(
+                // The WS owns song content (title/artist/duration/album art); the SSE owns timing.
+                // startTime is driven solely by the SSE metadata stream (see the SSE collector below),
+                // which reports the song's true start (accurate for mid-song joins too).
+                _state.value = _state.value.copy(
                     currentSong = update.currentSong,
                     listeners = update.listeners,
                     requester = update.requester,
                     event = update.event,
-                    startTime = update.startTime ?: current.startTime,
                 )
             }
         }
 
         scope.launchIO {
-            sse.flow.collectLatest { _ ->
-                // TODO: The SSE metadata stream also carries a startedAt, but we find it too bothersome
-                // to deal with the drift with the WS updates at the moment.
-                // This is particularly annoying to deal with since the MediaSession actually calculates its own
-                // progress based on a provided start time in PlaybackPlayer (PositionSupplier.getExtrapolating).
-
-                // val startedAt = metadata.startedAt?.let(Instant::parse) ?: return@collectLatest
-                // _state.value = _state.value.copy(startTime = startedAt)
-            }
+            // The SSE metadata stream is the authoritative timing source: its startedAt is the song's
+            // true start (accurate even when joining mid-song), unlike the WS which reports the end
+            // time. We only need the start time here — the WS drives all song content — so map to
+            // startedAt and dedup, updating startTime only when it actually changes (i.e. a new song).
+            sse.flow
+                .map { it.startedAt?.let(Instant::parse) }
+                .distinctUntilChanged()
+                .collectLatest { startedAt ->
+                    if (startedAt != null) {
+                        _state.value = _state.value.copy(startTime = startedAt)
+                    }
+                }
         }
 
         scope.launchIO {
