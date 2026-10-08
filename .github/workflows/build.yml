@@ -1,92 +1,518 @@
-name: CI
-on:
-  push:
-    branches:
-      - main
-    tags:
-      - v*
-  pull_request:
+import 'dart:async';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:blue_thermal_printer/blue_thermal_printer.dart';
+import 'package:permission_handler/permission_handler.dart';
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const AttoPrinterApp());
+}
 
-jobs:
-  build:
-    name: Build app
-    runs-on: ubuntu-latest
+class AttoPrinterApp extends StatelessWidget {
+  const AttoPrinterApp({Key? key}) : super(key: key);
 
-    steps:
-      - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@351661ca32ac09a36dc5ee2d536e3128f2a3c8ed # v2.22.0
-        with:
-          egress-policy: block
-          allowed-endpoints: >
-            api.adoptopenjdk.net:443
-            api.github.com:443
-            dl.google.com:443
-            github.com:443
-            maven.google.com:443
-            plugins-artifacts.gradle.org:443
-            plugins.gradle.org:443
-            release-assets.githubusercontent.com:443
-            repo.maven.apache.org:443
-            services.gradle.org:443
-            spdx.org:443
-            uploads.github.com:443
-            www.jitpack.io:443
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'تطبيق المصمم عطو للطباعة',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF0F172A),
+        primaryColor: const Color(0xFF0284C7),
+        textTheme: GoogleFonts.cairoTextTheme(ThemeData.dark().textTheme),
+      ),
+      home: const AttoPrinterHomePage(),
+    );
+  }
+}
 
-      - name: Clone repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+class AttoPrinterHomePage extends StatefulWidget {
+  const AttoPrinterHomePage({Key? key}) : super(key: key);
 
-      - name: Set up JDK
-        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
-        with:
-          java-version: 25
-          distribution: temurin
+  @override
+  State<AttoPrinterHomePage> createState() => _AttoPrinterHomePageState();
+}
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+class _AttoPrinterHomePageState extends State<AttoPrinterHomePage> {
+  final BlueThermalPrinter _bluetooth = BlueThermalPrinter.instance;
+  List<BluetoothDevice> _devices = [];
+  BluetoothDevice? _selectedDevice;
+  bool _isConnected = false;
+  bool _isPrinting = false;
+  final TextEditingController _textController = TextEditingController(
+    text: "أهلاً بك في نظام الطباعة الحرارية المتطور لمقاس 70 مم.\nتمت معايرة الخط بدقة 512 نقطة (36 حرفاً) ليتناسب تماماً مع الورقة دون أي خروج عن الحواف.\nشكراً لثقتكم الغالية بنا.",
+  );
 
-      - name: Build app
-        run: ./gradlew :app:testFullDebugUnitTest :app:assembleFullRelease
+  // شريط تحكم حجم الخط: 1 = صغير (46 حرف), 2 = متوسط (40 حرف - الافتراضي), 3 = كبير (26 حرف)
+  double _fontSizeLevel = 2.0;
 
-      # Sign APK and create release for tags
+  @override
+  void initState() {
+    super.initState();
+    _requestPermissionsAndInit();
+  }
 
-      - name: Prepare build metadata
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        run: |
-          set -x
-          VERSION_TAG="${GITHUB_REF/refs\/tags\//}"
-          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_ENV
-          if [[ "$VERSION_TAG" == *beta* ]] || [[ "$VERSION_TAG" == *alpha* ]]; then
-            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
-          else
-            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
-          fi
+  Future<void> _requestPermissionsAndInit() async {
+    // طلب أذونات البلوتوث والموقع لنظام أندرويد
+    await [
+      Permission.bluetooth,
+      Permission.bluetoothScan,
+      Permission.bluetoothConnect,
+      Permission.location,
+    ].request();
 
-      - name: Sign APK
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
-        with:
-          releaseDirectory: app/build/outputs/apk/full/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "35.0.0"
+    try {
+      List<BluetoothDevice> devices = await _bluetooth.getBondedDevices();
+      bool? isConnected = await _bluetooth.isConnected;
 
-      - name: Create release
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
-        with:
-          tag_name: ${{ env.VERSION_TAG }}
-          name: ${{ env.VERSION_TAG }}
-          body_path: distribution/whatsnew/whatsnew-en-US
-          files: |
-            ${{ env.SIGNED_RELEASE_FILE }}
-          draft: true
-          prerelease: ${{ env.IS_PRERELEASE }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      setState(() {
+        _devices = devices;
+        if (devices.isNotEmpty) {
+          _selectedDevice = devices.first;
+        }
+        _isConnected = isConnected ?? false;
+      });
+
+      _bluetooth.onStateChanged().listen((state) {
+        if (state == BlueThermalPrinter.DISCONNECTED) {
+          setState(() => _isConnected = false);
+        } else if (state == BlueThermalPrinter.CONNECTED) {
+          setState(() => _isConnected = true);
+        }
+      });
+    } catch (e) {
+      debugPrint("Error initializing bluetooth: $e");
+    }
+  }
+
+  Future<void> _toggleConnection() async {
+    if (_isConnected) {
+      await _bluetooth.disconnect();
+      setState(() => _isConnected = false);
+      _showToast("تم قطع الاتصال بالطابعة");
+    } else {
+      if (_selectedDevice == null) {
+        _showToast("يرجى اختيار طابعة أولاً من القائمة");
+        return;
+      }
+      try {
+        await _bluetooth.connect(_selectedDevice!);
+        setState(() => _isConnected = true);
+        _showToast("تم الاتصال بنجاح بالطابعة: ${_selectedDevice!.name}");
+      } catch (e) {
+        _showToast("فشل الاتصال: تأكد من تشغيل الطابعة والبلوتوث");
+      }
+    }
+  }
+
+  /// تقسيم النص الطويل ديناميكياً بناءً على حجم الخط المختار في السلايدر
+  List<String> _wrapTextFor80mm(String text, int maxChars) {
+    List<String> result = [];
+    final lines = text.split('\n');
+    for (var line in lines) {
+      if (line.length <= maxChars) {
+        result.add(line);
+      } else {
+        final words = line.split(' ');
+        String current = '';
+        for (var word in words) {
+          if ((current + ' ' + word).trim().length <= maxChars) {
+            current = (current + ' ' + word).trim();
+          } else {
+            if (current.isNotEmpty) result.add(current);
+            current = word;
+          }
+        }
+        if (current.isNotEmpty) result.add(current);
+      }
+    }
+    return result;
+  }
+
+  /// يطبع إيصال حراري 80 مم مع العنوان الثابت "المصمم عطو" وضبط حجم الخط المختار بالسلايدر
+  Future<void> _startPrinting() async {
+    if (!_isConnected) {
+      _showToast("الطابعة غير متصلة! يرجى الاتصال بالطابعة أولاً");
+      return;
+    }
+
+    if (_textController.text.trim().isEmpty) {
+      _showToast("يرجى كتابة نص في الصندوق للطباعة");
+      return;
+    }
+
+    setState(() => _isPrinting = true);
+
+    try {
+      // 1. طباعة اسم "المصمم عطو" بحجم عريض ومضاعف (Size 2) يتوسط ورقة 70 مم دون الخروج عن أطرافها
+      _bluetooth.printNewLine();
+      _bluetooth.printCustom("المصمم عطو", 2, 1); // Size 2 (Double Width + Double Height)
+      _bluetooth.printCustom("•• طابعة إيصالات حرارية 70 مم ••", 1, 1);
+      _bluetooth.printCustom("------------------------------------", 1, 1); // 36 حرفاً بالضبط لعرض 70 مم
+      
+      // التاريخ والوقت
+      final now = DateTime.now();
+      final dateStr = "${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')} ${now.hour.toString().padLeft(2, '0')}:${now.minute.toString().padLeft(2, '0')}";
+      _bluetooth.printCustom("تاريخ الإصدار: $dateStr", 1, 1);
+      _bluetooth.printCustom("------------------------------------", 1, 1);
+      _bluetooth.printNewLine();
+
+      // 2. طباعة النص المكتوب بالحجم المحدد من شريط التحكم (Slider) بمقاس 70 مم
+      final int maxChars = _fontSizeLevel == 1.0 ? 42 : _fontSizeLevel == 2.0 ? 36 : 24;
+      final int printSize = _fontSizeLevel == 3.0 ? 2 : 1;
+
+      final wrappedLines = _wrapTextFor80mm(_textController.text, maxChars);
+      for (final line in wrappedLines) {
+        if (line.trim().isNotEmpty) {
+          _bluetooth.printCustom(line, printSize, 2); // المحاذاة 2 (يمين للنصوص العربية)
+        } else {
+          _bluetooth.printNewLine();
+        }
+      }
+
+      _bluetooth.printNewLine();
+      _bluetooth.printCustom("------------------------------------", 1, 1);
+      _bluetooth.printCustom("شكراً لاختياركم المصمم عطو", 1, 1);
+      _bluetooth.printCustom("=== طابعة 70 مم • إيصال متناسق ===", 1, 1);
+      _bluetooth.printNewLine();
+      _bluetooth.printNewLine();
+      _bluetooth.printNewLine(); // تفريغ الورقة للقص 70 مم
+
+      _showToast("تمت الطباعة بنجاح على مقاس 70 مم!");
+    } catch (e) {
+      _showToast("حدث خطأ أثناء الطباعة: $e");
+    } finally {
+      setState(() => _isPrinting = false);
+    }
+  }
+
+  void _showToast(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: GoogleFonts.cairo(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        backgroundColor: const Color(0xFF0284C7),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Directionality(
+      textDirection: TextDirection.rtl,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF1E293B),
+          elevation: 2,
+          centerTitle: true,
+          title: Text(
+            "تطبيق المصمم عطو للطباعة",
+            style: GoogleFonts.cairo(
+              fontWeight: FontWeight.w900,
+              fontSize: 22,
+              color: Colors.white,
+            ),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.refresh, color: Colors.cyanAccent),
+              tooltip: "تحديث قائمة الطابعات",
+              onPressed: _requestPermissionsAndInit,
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // بطاقة الاتصال بالطابعة واختيار الطابعة المقترنة
+                Card(
+                  color: const Color(0xFF1E293B),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(
+                      color: _isConnected ? Colors.greenAccent.withOpacity(0.5) : Colors.slate.withOpacity(0.3),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              _isConnected ? Icons.bluetooth_connected : Icons.bluetooth,
+                              color: _isConnected ? Colors.greenAccent : const Color(0xFF38BDF8),
+                              size: 26,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              "الطابعات المقترنة (58 مم):",
+                              style: GoogleFonts.cairo(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
+                            ),
+                            const Spacer(),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: _isConnected ? Colors.green.withOpacity(0.2) : Colors.red.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.max(
+                                  BorderSide(color: _isConnected ? Colors.green : Colors.redAccent, width: 1),
+                                ),
+                              ),
+                              child: Text(
+                                _isConnected ? "متصل" : "غير متصل",
+                                style: GoogleFonts.cairo(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: _isConnected ? Colors.greenAccent : Colors.redAccent,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 14),
+
+                        // قائمة لاختيار الطابعة المقترنة
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF0F172A),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(color: Colors.white12),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<BluetoothDevice>(
+                              isExpanded: true,
+                              value: _selectedDevice,
+                              dropdownColor: const Color(0xFF1E293B),
+                              hint: Text(
+                                _devices.isEmpty ? "لا توجد طابعات مقترنة. قم بالاقتران من إعدادات البلوتوث" : "اختر طابعة حرارية",
+                                style: GoogleFonts.cairo(color: Colors.white70, fontSize: 14),
+                              ),
+                              items: _devices.map((device) {
+                                return DropdownMenuItem<BluetoothDevice>(
+                                  value: device,
+                                  child: Text(
+                                    "${device.name ?? 'طابعة غير معروفة'} (${device.address})",
+                                    style: GoogleFonts.cairo(color: Colors.white, fontSize: 14),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (device) {
+                                setState(() => _selectedDevice = device);
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+
+                        // زر الاتصال
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton.icon(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: _isConnected ? Colors.red.shade800 : const Color(0xFF0284C7),
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            ),
+                            icon: Icon(_isConnected ? Icons.link_off : Icons.link, color: Colors.white),
+                            label: Text(
+                              _isConnected ? "قطع الاتصال بالطابعة" : "اتصال بالطابعة المختارة",
+                              style: GoogleFonts.cairo(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.white),
+                            ),
+                            onPressed: _toggleConnection,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                // معاينة رأس الفاتورة الثابت
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E293B),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: const Color(0xFF38BDF8).withOpacity(0.3)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.verified, color: Color(0xFF38BDF8), size: 24),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          "ترويسة الفاتورة الثابتة: 'المصمم عطو' (عريض في أعلى الإيصال تلقائياً)",
+                          style: GoogleFonts.cairo(color: const Color(0xFFE2E8F0), fontSize: 13, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                // شريط تحكم (Slider) للتحكم في حجم خط الإيصال (صغير - متوسط - كبير)
+                Card(
+                  color: const Color(0xFF1E293B),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(color: const Color(0xFF059669).withOpacity(0.3)),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.format_size, color: Color(0xFF10B981), size: 20),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "شريط التحكم في حجم الخط:",
+                                  style: GoogleFonts.cairo(fontWeight: FontWeight.bold, fontSize: 14, color: Colors.white),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF059669).withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: const Color(0xFF10B981)),
+                              ),
+                              child: Text(
+                                _fontSizeLevel == 1.0
+                                    ? "خط صغير (مكثف)"
+                                    : _fontSizeLevel == 2.0
+                                        ? "خط متوسط (متناسق - الافتراضي)"
+                                        : "خط كبير (واضح جداً)",
+                                style: GoogleFonts.cairo(fontWeight: FontWeight.bold, fontSize: 12, color: const Color(0xFF34D399)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Slider(
+                          value: _fontSizeLevel,
+                          min: 1.0,
+                          max: 3.0,
+                          divisions: 2,
+                          activeColor: const Color(0xFF059669),
+                          inactiveColor: Colors.slate.shade700,
+                          label: _fontSizeLevel == 1.0 ? "صغير" : _fontSizeLevel == 2.0 ? "متوسط" : "كبير",
+                          onChanged: (val) {
+                            setState(() {
+                              _fontSizeLevel = val;
+                            });
+                          },
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("صغير (٤٢ حرفاً)", style: GoogleFonts.cairo(fontSize: 11, color: Colors.slate.shade400)),
+                            Text("متوسط (٣٦ حرفاً - 70مم)", style: GoogleFonts.cairo(fontSize: 11, color: const Color(0xFF34D399), fontWeight: FontWeight.bold)),
+                            Text("كبير (٢٤ حرفاً)", style: GoogleFonts.cairo(fontSize: 11, color: Colors.slate.shade400)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 18),
+
+                // صندوق نصي لكتابة الرسالة
+                Text(
+                  "نص الرسالة أو الفاتورة:",
+                  style: GoogleFonts.cairo(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _textController,
+                  maxLines: 6,
+                  style: GoogleFonts.cairo(fontSize: 15, color: Colors.white),
+                  decoration: InputDecoration(
+                    hintText: "اكتب هنا تفاصيل الرسالة، الأصناف، الأسعار أو الملاحظات...",
+                    hintStyle: GoogleFonts.cairo(color: Colors.white38),
+                    filled: true,
+                    fillColor: const Color(0xFF1E293B),
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide.none),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(14),
+                      borderSide: const BorderSide(color: Color(0xFF38BDF8), width: 2),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                // الزر الكبير في الأسفل
+                SizedBox(
+                  height: 65,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF059669),
+                      foregroundColor: Colors.white,
+                      elevation: 6,
+                      shadowColor: const Color(0xFF059669).withOpacity(0.5),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+                    ),
+                    onPressed: _isPrinting ? null : _startPrinting,
+                    child: _isPrinting
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const SizedBox(
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                              ),
+                              const SizedBox(width: 12),
+                              Text("جاري الطباعة الفورية...", style: GoogleFonts.cairo(fontSize: 18, fontWeight: FontWeight.w900)),
+                            ],
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.print, size: 28),
+                              const SizedBox(width: 10),
+                              Text(
+                                "اضغط هنا لبدء الطباعة الفورية",
+                                style: GoogleFonts.cairo(fontSize: 19, fontWeight: FontWeight.w900),
+                              ),
+                            ],
+                          ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
