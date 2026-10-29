@@ -1,92 +1,36 @@
-name: CI
+
+name: Build PakijBan APK
+
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-    tags:
-      - v*
-  pull_request:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build:
-    name: Build app
     runs-on: ubuntu-latest
 
     steps:
-      - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
-        with:
-          egress-policy: block
-          allowed-endpoints: >
-            api.adoptopenjdk.net:443
-            api.github.com:443
-            dl.google.com:443
-            github.com:443
-            maven.google.com:443
-            plugins-artifacts.gradle.org:443
-            plugins.gradle.org:443
-            release-assets.githubusercontent.com:443
-            repo.maven.apache.org:443
-            services.gradle.org:443
-            spdx.org:443
-            uploads.github.com:443
-            www.jitpack.io:443
+      - name: Checkout project
+        uses: actions/checkout@v4
 
-      - name: Clone repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up JDK
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          java-version: 25
           distribution: temurin
+          java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
-
-      - name: Build app
-        run: ./gradlew :app:testFullDebugUnitTest :app:assembleFullRelease
-
-      # Sign APK and create release for tags
-
-      - name: Prepare build metadata
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        run: |
-          set -x
-          VERSION_TAG="${GITHUB_REF/refs\/tags\//}"
-          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_ENV
-          if [[ "$VERSION_TAG" == *beta* ]] || [[ "$VERSION_TAG" == *alpha* ]]; then
-            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
-          else
-            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
-          fi
-
-      - name: Sign APK
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
+        uses: gradle/actions/setup-gradle@v4
         with:
-          releaseDirectory: app/build/outputs/apk/full/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "35.0.0"
+          gradle-version: '8.9'
 
-      - name: Create release
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+      - name: Build debug APK
+        run: gradle assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
         with:
-          tag_name: ${{ env.VERSION_TAG }}
-          name: ${{ env.VERSION_TAG }}
-          body_path: distribution/whatsnew/whatsnew-en-US
-          files: |
-            ${{ env.SIGNED_RELEASE_FILE }}
-          draft: true
-          prerelease: ${{ env.IS_PRERELEASE }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          name: PakijBan-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
