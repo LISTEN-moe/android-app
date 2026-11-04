@@ -1,92 +1,212 @@
-name: CI
+name: Build APK
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - v*
-  pull_request:
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
+  workflow_dispatch:
 jobs:
   build:
-    name: Build app
     runs-on: ubuntu-latest
-
     steps:
-      - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
-        with:
-          egress-policy: block
-          allowed-endpoints: >
-            api.adoptopenjdk.net:443
-            api.github.com:443
-            dl.google.com:443
-            github.com:443
-            maven.google.com:443
-            plugins-artifacts.gradle.org:443
-            plugins.gradle.org:443
-            release-assets.githubusercontent.com:443
-            repo.maven.apache.org:443
-            services.gradle.org:443
-            spdx.org:443
-            uploads.github.com:443
-            www.jitpack.io:443
+      - uses: actions/checkout@v4
 
-      - name: Clone repo
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-
-      - name: Set up JDK
-        uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6.1.0
-        with:
-          java-version: 25
-          distribution: temurin
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
-
-      - name: Build app
-        run: ./gradlew :app:testFullDebugUnitTest :app:assembleFullRelease
-
-      # Sign APK and create release for tags
-
-      - name: Prepare build metadata
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
+      - name: Generate Android project
+        shell: bash
         run: |
-          set -x
-          VERSION_TAG="${GITHUB_REF/refs\/tags\//}"
-          echo "VERSION_TAG=${VERSION_TAG}" >> $GITHUB_ENV
-          if [[ "$VERSION_TAG" == *beta* ]] || [[ "$VERSION_TAG" == *alpha* ]]; then
-            echo "IS_PRERELEASE=true" >> $GITHUB_ENV
-          else
-            echo "IS_PRERELEASE=false" >> $GITHUB_ENV
-          fi
+          set -e
+          test -f index.html
+          mkdir -p app/src/main/java/com/factorycrm/app
+          mkdir -p app/src/main/assets
+          mkdir -p app/src/main/res/values
+          mkdir -p app/src/main/res/drawable
+          cp index.html app/src/main/assets/index.html
+          if [ -f manifest.webmanifest ]; then cp manifest.webmanifest app/src/main/assets/; fi
 
-      - name: Sign APK
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: r0adkll/sign-android-release@349ebdef58775b1e0d8099458af0816dc79b6407 # v1
-        with:
-          releaseDirectory: app/build/outputs/apk/full/release
-          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
-          alias: ${{ secrets.ALIAS }}
-          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
-          keyPassword: ${{ secrets.KEY_PASSWORD }}
-        env:
-          BUILD_TOOLS_VERSION: "35.0.0"
+          cat > settings.gradle.kts <<'EOF'
+          pluginManagement {
+              repositories { google(); mavenCentral(); gradlePluginPortal() }
+          }
+          dependencyResolutionManagement {
+              repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+              repositories { google(); mavenCentral() }
+          }
+          rootProject.name = "FactoryCRM"
+          include(":app")
+          EOF
 
-      - name: Create release
-        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'LISTEN-moe/android-app'
-        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+          cat > build.gradle.kts <<'EOF'
+          plugins {
+              id("com.android.application") version "8.5.2" apply false
+              id("org.jetbrains.kotlin.android") version "1.9.24" apply false
+          }
+          EOF
+
+          cat > gradle.properties <<'EOF'
+          org.gradle.jvmargs=-Xmx2048m -Dfile.encoding=UTF-8
+          android.useAndroidX=true
+          android.nonTransitiveRClass=true
+          EOF
+
+          cat > app/build.gradle.kts <<'EOF'
+          plugins {
+              id("com.android.application")
+              id("org.jetbrains.kotlin.android")
+          }
+          android {
+              namespace = "com.factorycrm.app"
+              compileSdk = 34
+              defaultConfig {
+                  applicationId = "com.factorycrm.app"
+                  minSdk = 24
+                  targetSdk = 34
+                  versionCode = 1
+                  versionName = "1.0"
+              }
+              compileOptions {
+                  sourceCompatibility = JavaVersion.VERSION_17
+                  targetCompatibility = JavaVersion.VERSION_17
+              }
+              kotlinOptions { jvmTarget = "17" }
+          }
+          dependencies {
+              implementation("androidx.core:core-ktx:1.13.1")
+              implementation("androidx.appcompat:appcompat:1.7.0")
+              implementation("androidx.webkit:webkit:1.11.0")
+          }
+          EOF
+
+          cat > app/src/main/AndroidManifest.xml <<'EOF'
+          <?xml version="1.0" encoding="utf-8"?>
+          <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+              <uses-permission android:name="android.permission.INTERNET" />
+              <application
+                  android:allowBackup="true"
+                  android:icon="@drawable/ic_launcher"
+                  android:roundIcon="@drawable/ic_launcher"
+                  android:label="@string/app_name"
+                  android:supportsRtl="true"
+                  android:theme="@style/Theme.FactoryCRM">
+                  <activity
+                      android:name=".MainActivity"
+                      android:exported="true"
+                      android:configChanges="orientation|screenSize|keyboardHidden|smallestScreenSize|screenLayout|uiMode"
+                      android:windowSoftInputMode="adjustResize">
+                      <intent-filter>
+                          <action android:name="android.intent.action.MAIN" />
+                          <category android:name="android.intent.category.LAUNCHER" />
+                      </intent-filter>
+                  </activity>
+              </application>
+          </manifest>
+          EOF
+
+          cat > app/src/main/java/com/factorycrm/app/MainActivity.kt <<'EOF'
+          package com.factorycrm.app
+
+          import android.annotation.SuppressLint
+          import android.content.Intent
+          import android.graphics.Color
+          import android.net.Uri
+          import android.os.Bundle
+          import android.webkit.WebResourceRequest
+          import android.webkit.WebResourceResponse
+          import android.webkit.WebView
+          import android.webkit.WebViewClient
+          import androidx.activity.OnBackPressedCallback
+          import androidx.appcompat.app.AppCompatActivity
+          import androidx.webkit.WebViewAssetLoader
+
+          class MainActivity : AppCompatActivity() {
+              private lateinit var webView: WebView
+
+              @SuppressLint("SetJavaScriptEnabled")
+              override fun onCreate(savedInstanceState: Bundle?) {
+                  super.onCreate(savedInstanceState)
+                  window.statusBarColor = Color.parseColor("#111827")
+
+                  val assetLoader = WebViewAssetLoader.Builder()
+                      .addPathHandler("/assets/", WebViewAssetLoader.AssetsPathHandler(this))
+                      .build()
+
+                  webView = WebView(this).apply {
+                      settings.javaScriptEnabled = true
+                      settings.domStorageEnabled = true
+                      settings.allowFileAccess = false
+                      settings.allowContentAccess = false
+                      webViewClient = object : WebViewClient() {
+                          override fun shouldInterceptRequest(
+                              view: WebView, request: WebResourceRequest
+                          ): WebResourceResponse? = assetLoader.shouldInterceptRequest(request.url)
+
+                          override fun shouldOverrideUrlLoading(
+                              view: WebView, request: WebResourceRequest
+                          ): Boolean {
+                              val uri: Uri = request.url
+                              if (uri.host == "appassets.androidplatform.net") return false
+                              startActivity(Intent(Intent.ACTION_VIEW, uri))
+                              return true
+                          }
+                      }
+                  }
+                  setContentView(webView)
+
+                  onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+                      override fun handleOnBackPressed() {
+                          if (webView.canGoBack()) webView.goBack() else finish()
+                      }
+                  })
+
+                  if (savedInstanceState == null) {
+                      webView.loadUrl("https://appassets.androidplatform.net/assets/index.html")
+                  } else {
+                      webView.restoreState(savedInstanceState)
+                  }
+              }
+
+              override fun onSaveInstanceState(outState: Bundle) {
+                  super.onSaveInstanceState(outState)
+                  webView.saveState(outState)
+              }
+          }
+          EOF
+
+          cat > app/src/main/res/values/strings.xml <<'EOF'
+          <resources>
+              <string name="app_name">Factory CRM</string>
+          </resources>
+          EOF
+
+          cat > app/src/main/res/values/themes.xml <<'EOF'
+          <resources>
+              <style name="Theme.FactoryCRM" parent="Theme.AppCompat.Light.NoActionBar">
+                  <item name="android:statusBarColor">#111827</item>
+                  <item name="android:windowBackground">#F4F6F8</item>
+              </style>
+          </resources>
+          EOF
+
+          cat > app/src/main/res/drawable/ic_launcher.xml <<'EOF'
+          <vector xmlns:android="http://schemas.android.com/apk/res/android"
+              android:width="108dp" android:height="108dp"
+              android:viewportWidth="108" android:viewportHeight="108">
+              <path android:fillColor="#2563EB" android:pathData="M0,0h108v108h-108z"/>
+              <path android:fillColor="#FFFFFF"
+                  android:pathData="M28,76 L28,52 L44,62 L44,52 L60,62 L60,36 L68,36 L68,62 L80,62 L80,76 Z"/>
+          </vector>
+          EOF
+
+      - uses: actions/setup-java@v4
         with:
-          tag_name: ${{ env.VERSION_TAG }}
-          name: ${{ env.VERSION_TAG }}
-          body_path: distribution/whatsnew/whatsnew-en-US
-          files: |
-            ${{ env.SIGNED_RELEASE_FILE }}
-          draft: true
-          prerelease: ${{ env.IS_PRERELEASE }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          distribution: temurin
+          java-version: 17
+
+      - uses: android-actions/setup-android@v3
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.7
+
+      - name: Build APK
+        run: gradle assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: FactoryCRM-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
